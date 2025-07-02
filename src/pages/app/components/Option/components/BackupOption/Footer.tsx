@@ -13,7 +13,7 @@ import processor from "@service/backup/processor"
 import metaService from "@service/meta-service"
 import { formatTime } from "@util/time"
 import { ElButton, ElDivider, ElLoading, ElMessage, ElText } from "element-plus"
-import { defineComponent, toRef, type StyleValue } from "vue"
+import { defineComponent, type StyleValue } from "vue"
 import Clear from "./Clear"
 import Download from "./Download"
 

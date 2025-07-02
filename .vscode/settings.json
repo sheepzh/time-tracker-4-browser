@@ -2,7 +2,9 @@
     "editor.tabSize": 4,
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-        "source.fixAll": "always"
+        "source.fixAll": "always",
+        "source.organizeImports": "always",
+        "source.removeUnusedImports": "always",
     },
     "editor.foldingImportsByDefault": true,
     "editor.trimAutoWhitespace": true,

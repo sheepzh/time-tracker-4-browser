@@ -9,9 +9,9 @@ import { getVersion, onInstalled } from "@api/chrome/runtime"
 import CateInitializer from "./cate-initializer"
 import { type Migrator } from "./common"
 import HostMergeInitializer from "./host-merge-initializer"
+import LimitRuleMigrator from "./limit-rule-migrator"
 import LocalFileInitializer from "./local-file-initializer"
 import WhitelistInitializer from "./whitelist-initializer"
-import LimitRuleMigrator from "./limit-rule-migrator"
 
 /**
  * Version manager

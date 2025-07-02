@@ -39,7 +39,7 @@ test('', () => {
 })
 
 /**
- * Cross one day 
+ * Cross one day
  */
 test('', () => {
     const base = new Date()

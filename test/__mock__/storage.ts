@@ -1,5 +1,4 @@
 import StoragePromise from "@db/common/storage-promise"
-import { glob } from "fs"
 
 let store: Record<string, any> = {}
 

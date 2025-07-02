@@ -38,10 +38,11 @@ export declare function useLocalStorage<T>(key: string, defaultValue: T): [T, (v
 export declare function useLocalStorage<T>(key: string): [T, (val: T | undefined) => void]
 
 export * from "./useCached"
+export * from "./useLocalStorage"
 export * from "./useMediaSize"
 export * from "./useProvider"
 export * from "./useRequest"
 export * from "./useShadow"
 export * from "./useState"
 export * from "./useSwitch"
-export * from "./useLocalStorage"
+

@@ -6,7 +6,7 @@
  */
 
 import { getUsedStorage } from "@db/memory-detector"
-import { openLog, closeLog } from "./logger"
+import { closeLog, openLog } from "./logger"
 
 /**
  * Show the memory info
