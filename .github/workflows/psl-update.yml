@@ -1,0 +1,33 @@
+name: PSL Updates
+on:
+    workflow_dispatch:
+    schedule:
+        - cron: "0 0 1 * *"
+jobs:
+    sync:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Prepare branch
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 1
+                  token: ${{secrets.GITHUB_TOKEN}}
+            - name: Test using Node.js
+              uses: actions/setup-node@v1
+              with:
+                  node-version: "v22"
+            - name: Install ts-node
+              run: npm i -g ts-node
+            - name: Install dependencies
+              run: npm install
+            - name: Update psl
+              run: ts-node ./script/psl.ts
+            - name: Create Pull Request
+              uses: peter-evans/create-pull-request@v7
+              with:
+                  commit-message: "chore(psl): update PSL list by bot"
+                  branch: psl-update/patch
+                  title: "chore(psl): update PSL list by bot"
+                  body: "Automated update [PSL](https://publicsuffix.org/list/effective_tld_names.dat)"
+                  author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+                  sign-commits: true
