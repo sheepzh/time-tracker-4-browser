@@ -71,7 +71,7 @@
         "@vueuse/core": "^13.4.0",
         "countup.js": "^2.9.0",
         "echarts": "^5.6.0",
-        "element-plus": "2.10.2",
+        "element-plus": "2.10.3",
         "js-base64": "^3.7.7",
         "punycode": "^2.3.1",
         "stream-browserify": "^3.0.0",
