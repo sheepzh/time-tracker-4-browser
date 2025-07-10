@@ -93,7 +93,7 @@ export function sendMsg2Tab<T = any, R = any>(tabId: number, code: timer.mq.ReqC
 type TabHandler<Event> = (tabId: number, ev: Event, tab?: ChromeTab) => void
 
 export function onTabActivated(handler: TabHandler<ChromeTabActiveInfo>): void {
-    chrome.tabs.onActivated.addListener((activeInfo: chrome.tabs.TabActiveInfo) => {
+    chrome.tabs.onActivated.addListener((activeInfo: chrome.tabs.OnActivatedInfo) => {
         handleError("tabActivated")
         handler(activeInfo?.tabId, activeInfo)
     })
