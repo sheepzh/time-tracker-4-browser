@@ -65,7 +65,7 @@ const _default = defineComponent(() => {
                 <Flex column width="100%" gap={8}>
                     {data.cond?.map((url, idx) => (
                         <Flex
-                            key={url}
+                            key={`${url}-${idx}`}
                             height={32}
                             align="center"
                             justify="space-between"
