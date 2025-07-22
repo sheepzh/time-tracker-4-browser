@@ -25,9 +25,9 @@ export async function createLimitRule(rule: timer.limit.Rule, page: Page) {
     await sleep(.1)
     const { time, weekly, visitTime, count, weeklyCount } = rule || {}
     const timeInputs = await page.$$('.el-dialog .el-date-editor input')
-    await fillTimeLimit(time!, timeInputs[0], page)
-    await fillTimeLimit(weekly!, timeInputs[1], page)
-    await fillTimeLimit(visitTime!, timeInputs[2], page)
+    await fillTimeLimit(time, timeInputs[0], page)
+    await fillTimeLimit(weekly, timeInputs[1], page)
+    await fillTimeLimit(visitTime, timeInputs[2], page)
     const visitInputs = await page.$$('.el-dialog .el-input-number input')
     await fillVisitLimit(count!, visitInputs[0], page)
     await fillVisitLimit(weeklyCount!, visitInputs[1], page)
@@ -35,9 +35,16 @@ export async function createLimitRule(rule: timer.limit.Rule, page: Page) {
     // 4. Save
     await sleep(.3)
     await page.click('.el-dialog .el-button.el-button--success')
+    if (rule.allowDelay) {
+        await page.waitForSelector('.el-table__body .el-table__row td:nth-child(9) .el-switch')
+        await page.evaluate(async () => {
+            document.querySelector<HTMLElement>('.el-table__body .el-table__row td:nth-child(9) .el-switch')?.click()
+        })
+        await sleep(.3)
+    }
 }
 
-export async function fillTimeLimit(value: number, input: ElementHandle<HTMLInputElement>, page: Page): Promise<void> {
+export async function fillTimeLimit(value: number | undefined, input: ElementHandle<HTMLInputElement>, page: Page): Promise<void> {
     value = value ?? 0
     const hour = Math.floor(value / 3600)
     value = value - hour * 3600
@@ -45,7 +52,7 @@ export async function fillTimeLimit(value: number, input: ElementHandle<HTMLInpu
     const second = value - minute * 60
     await input.click()
     await sleep(.5)
-    const panel = await page.$('.el-popper div.el-time-panel')
+    const panel = await page.$('.el-popper:not([style*="display:none"]):not([style*="display: none"]) div.el-time-panel')
     await panel!.evaluate(async (el, hour, minute, second) => {
         const hourSpinner = el.querySelector('.el-scrollbar:first-child .el-scrollbar__wrap')
         hourSpinner!.scrollTo(0, hour * 32)
@@ -58,6 +65,7 @@ export async function fillTimeLimit(value: number, input: ElementHandle<HTMLInpu
         const confirmBtn = el.querySelector('.el-time-panel__footer .el-time-panel__btn.confirm') as HTMLButtonElement
         confirmBtn.click()
     }, hour, minute, second)
+    await sleep(.2)
 }
 
 export async function fillVisitLimit(value: number, input: ElementHandle<HTMLInputElement>, page: Page) {

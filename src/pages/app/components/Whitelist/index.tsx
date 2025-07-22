@@ -8,28 +8,27 @@
 import { t } from "@app/locale"
 import Flex from "@pages/components/Flex"
 import { ElAlert, ElCard } from "element-plus"
-import { defineComponent } from "vue"
+import { type FunctionalComponent } from "vue"
 import ContentContainer from "../common/ContentContainer"
 import WhitePanel from "./WhitePanel"
 
-const Whitelist = defineComponent(() => {
-    return () => (
-        <ContentContainer>
-            <ElCard>
-                <Flex gap={20} column>
-                    <ElAlert
-                        title={t(msg => msg.whitelist.infoAlertTitle)}
-                        style={{ padding: "15px 25px" }}
-                        closable={false}
-                    >
-                        <li>{t(msg => msg.whitelist.infoAlert0)}</li>
-                        <li>{t(msg => msg.whitelist.infoAlert1)}</li>
-                    </ElAlert>
-                    <WhitePanel />
-                </Flex>
-            </ElCard>
-        </ContentContainer>
-    )
-})
+const Whitelist: FunctionalComponent = () => (
+    <ContentContainer>
+        <ElCard>
+            <Flex gap={20} column>
+                <ElAlert
+                    title={t(msg => msg.whitelist.infoAlertTitle)}
+                    style={{ padding: "15px 25px" }}
+                    closable={false}
+                >
+                    <li>{t(msg => msg.whitelist.infoAlert0)}</li>
+                    <li>{t(msg => msg.whitelist.infoAlert1)}</li>
+                </ElAlert>
+                <WhitePanel />
+            </Flex>
+        </ElCard>
+    </ContentContainer>
+)
+Whitelist.displayName = 'Whitelist'
 
 export default Whitelist
