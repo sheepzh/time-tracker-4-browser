@@ -5,15 +5,15 @@ import { TAG_NAME } from "@cs/limit/element"
 import { t } from "@cs/locale"
 import { Plus, Timer } from "@element-plus/icons-vue"
 import optionHolder from "@service/components/option-holder"
-import { meetTimeLimit } from "@util/limit"
+import { meetTimeLimit } from '@util/limit'
 import { ElButton } from "element-plus"
 import { computed, defineComponent } from "vue"
 import { useDelayHandler, useReason, useRule } from "../context"
 
-async function handleMore5Minutes(rule: timer.limit.Item, callback: () => void) {
+async function handleMore5Minutes(rule: timer.limit.Item | null, callback: () => void) {
     let promise: Promise<void> | undefined = undefined
     const ele = document.querySelector(TAG_NAME)?.shadowRoot?.querySelector('body')
-    if (await judgeVerificationRequired(rule)) {
+    if (rule && await judgeVerificationRequired(rule)) {
         const option = await optionHolder.get()
         promise = processVerification(option, { appendTo: ele ?? undefined })
         promise ? promise.then(callback).catch(() => { }) : callback()
@@ -29,16 +29,16 @@ const _default = defineComponent(() => {
         const { type, allowDelay, delayCount = 0 } = reason.value || {}
         if (!allowDelay) return false
 
-        const { time, weekly, visit, waste, weeklyWaste } = rule.value || {}
+        const { time, weekly, visitTime, waste, weeklyWaste } = rule.value || {}
         let realLimit = 0, realWaste = 0
         if (type === 'DAILY') {
             realLimit = time ?? 0
-            realWaste = waste
+            realWaste = waste ?? 0
         } else if (type === 'WEEKLY') {
             realLimit = weekly ?? 0
-            realWaste = weeklyWaste
+            realWaste = weeklyWaste ?? 0
         } else if (type === 'VISIT') {
-            realLimit = visit
+            realLimit = visitTime ?? 0
             realWaste = reason.value?.getVisitTime?.() ?? 0
         } else {
             return false

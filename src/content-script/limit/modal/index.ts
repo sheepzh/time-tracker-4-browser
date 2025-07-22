@@ -46,8 +46,13 @@ const createHeader = () => {
 }
 
 class ScreenLocker {
+    private beforeOverflow: string | undefined
+
     private doLock() {
-        if (document?.documentElement) {
+        const ele = document?.documentElement
+        this.beforeOverflow = undefined
+        if (ele) {
+            this.beforeOverflow = ele.style.overflow
             document.documentElement.style.setProperty('overflow', 'hidden', 'important')
         }
     }
@@ -60,7 +65,7 @@ class ScreenLocker {
 
     unlock() {
         if (document?.documentElement) {
-            document.documentElement.style.overflow = ''
+            document.documentElement.style.overflow = this.beforeOverflow ?? ''
         }
     }
 }
@@ -78,6 +83,7 @@ class ModalInstance implements MaskModal {
     screenLocker = new ScreenLocker()
 
     constructor(url: string) {
+        (window as any)['__modal__'] = this
         this.url = url
     }
 
@@ -115,8 +121,11 @@ class ModalInstance implements MaskModal {
     }
 
     private refresh() {
-        const reason = this.reasons?.[0]
-        reason ? this.show(reason) : this.hide()
+        setTimeout(() => {
+            // update vue ref in another micro task
+            const reason = this.reasons?.[0]
+            reason ? this.show(reason) : this.hide()
+        })
     }
 
     private async init() {

@@ -1,13 +1,12 @@
-import { defineComponent } from "vue"
+import { type FunctionalComponent } from "vue"
 import ContentContainer from "../common/ContentContainer"
 import Description from "./Description"
 
-const _default = defineComponent({
-    render: () => (
-        <ContentContainer>
-            <Description />
-        </ContentContainer>
-    )
-})
+const About: FunctionalComponent = () => (
+    <ContentContainer>
+        <Description />
+    </ContentContainer>
+)
+About.displayName = 'About'
 
-export default _default
+export default About
