@@ -358,6 +358,7 @@
         "item": {
             "name": "Regelname",
             "condition": "Eingeschränkte URL",
+            "daily": "Tägliches Limit",
             "weekly": "Wöchentliches Limit",
             "weekStartInfo": "Der erste Tag jeder Woche ist {weekStart}, Sie können diesen Wert in den Statistikoptionen ändern",
             "delayCount": "Anzahl der Verspätungen",
@@ -365,9 +366,13 @@
             "visitTime": "Limit pro Besuch",
             "period": "Unzulässiger Zeitraum",
             "enabled": "Ermöglicht",
+            "locked": "Gesperrt",
             "effectiveDay": "Wirksam auf",
             "delayAllowed": "Weitere 5 Minuten",
-            "delayAllowedInfo": "Wenn es zu einer Zeitüberschreitung kommt, erlauben Sie eine vorübergehende Verzögerung von 5 Minuten"
+            "delayAllowedInfo": "Wenn es zu einer Zeitüberschreitung kommt, erlauben Sie eine vorübergehende Verzögerung von 5 Minuten",
+            "visits": "Besuche",
+            "or": "oder",
+            "notEffective": "Nicht wirksam"
         },
         "step": {
             "base": "Basisdaten",
@@ -381,10 +386,12 @@
             "noUrl": "Nicht ausgefüllte eingeschränkte URL",
             "noRule": "Keine Regeln ausgefüllt",
             "deleteConfirm": "Möchten Sie die Regel [{name}] löschen?",
+            "lockConfirm": "Wenn gesperrt, müssen alle Operationen geprüft werden, auch wenn die Regel nicht ausgelöst wird.",
             "inputTestUrl": "Bitte geben Sie zunächst den zu testenden URL-Link ein",
             "clickTestButton": "Klicken Sie nach der Eingabe bitte auf die Schaltfläche ({buttonText}).",
             "noRuleMatched": "Die URL entspricht keinen Regeln",
-            "rulesMatched": "Die URL erfüllt die folgenden Regeln:"
+            "rulesMatched": "Die URL erfüllt die folgenden Regeln:",
+            "timeout": "Zeit ist abgelaufen! XD"
         },
         "verification": {
             "inputTip": "Die Regel wurde ausgelöst oder gesperrt. Um fortzufahren, geben Sie bitte innerhalb von {second} Sekunden die Antwort auf die folgende Frage ein: {prompt}",
@@ -395,7 +402,8 @@
             "incorrectAnswer": "Falsche Antwort",
             "pi": "{digitCount} Ziffern von {startIndex} bis {endIndex} des Dezimalteils von π",
             "confession": "Zeit vergeht"
-        }
+        },
+        "reminder": "Weniger als {min} Minuten bis zum Zeitlimit!"
     },
     "fr": {
         "filterDisabled": "Activé uniquement",

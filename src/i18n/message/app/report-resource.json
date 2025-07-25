@@ -203,8 +203,9 @@
     },
     "ar": {
         "exportFileName": "وقت_التصفح_الخاص_بي",
+        "total": "إجمالي الزيارات: {visit} مرة، المدة الإجمالية: {focus}",
         "batchDelete": {
-            "noSelectedMsg": "الرجاء تحديد الصف الذي تريد حذفه في الجدول أولاً",
+            "noSelectedMsg": "الرجاء تحديد الصف الذي تريد حذفه من الجدول أولاً",
             "confirmMsg": "سيتم حذف {count} سجلًا لمواقع مثل {example} في {date}!",
             "confirmMsgAll": "سيتم حذف {count} سجلًا للمواقع مثل {example}!",
             "confirmMsgRange": "سيتم حذف {count} سجلًا لمواقع مثل {example} بين {start} و{end}!"
