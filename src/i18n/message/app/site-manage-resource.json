@@ -342,6 +342,7 @@
     },
     "fr": {
         "deleteConfirmMsg": "{host} sera supprimé",
+        "genAliasConfirmMsg": "Compléter automatiquement les noms de sites par lots ?",
         "column": {
             "type": "Type de Site",
             "alias": "Nom du site",

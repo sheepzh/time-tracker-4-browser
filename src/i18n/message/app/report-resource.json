@@ -163,6 +163,7 @@
     },
     "fr": {
         "exportFileName": "Mon_heure_de_navigation",
+        "total": "Visites totales : {visit} fois, durée totale : {focus}",
         "batchDelete": {
             "noSelectedMsg": "Veuillez d'abord sélectionner la ligne que vous souhaitez supprimer dans le tableau",
             "confirmMsg": "{count} enregistrements pour des sites comme {example} le {date} seront supprimés !",

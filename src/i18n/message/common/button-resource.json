@@ -169,6 +169,7 @@
     },
     "fr": {
         "create": "Nouveau",
+        "add": "Ajouter",
         "delete": "Supprimer",
         "batchDelete": "Suppression par Lot",
         "modify": "Modifier",
@@ -184,6 +185,7 @@
         "operation": "Opérations",
         "configuration": "Paramètres",
         "clear": "Effacer",
+        "enable": "Activer",
         "batchEnable": "Activation par Lot",
         "batchDisable": "Désactivation par Lot"
     },
