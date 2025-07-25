@@ -46,13 +46,9 @@ const createHeader = () => {
 }
 
 class ScreenLocker {
-    private beforeOverflow: string | undefined
-
     private doLock() {
         const ele = document?.documentElement
-        this.beforeOverflow = undefined
         if (ele) {
-            this.beforeOverflow = ele.style.overflow
             document.documentElement.style.setProperty('overflow', 'hidden', 'important')
         }
     }
@@ -65,7 +61,7 @@ class ScreenLocker {
 
     unlock() {
         if (document?.documentElement) {
-            document.documentElement.style.overflow = this.beforeOverflow ?? ''
+            document.documentElement.style.overflow = 'auto'
         }
     }
 }
