@@ -407,18 +407,25 @@
     },
     "fr": {
         "filterDisabled": "Activé uniquement",
+        "wildcardTip": "Vous pouvez utiliser des wildcards pour correspondre à des sous-domaines ou sous-pages !",
         "item": {
             "name": "Nom de règle",
             "condition": "URL restreinte",
+            "daily": "Limite quotidienne",
+            "weekly": "Limite hebdomadaire",
             "weekStartInfo": "Le premier jour de chaque semaine est {weekStart}, vous pouvez modifier cette valeur dans les options de statistiques",
             "delayCount": "Nombre de retards",
             "detail": "Détail des règles",
             "visitTime": "Limite par visite",
             "period": "Périodes bloquées",
             "enabled": "Activé",
+            "locked": "Verrouillé",
             "effectiveDay": "Effectif le",
             "delayAllowed": "Plus de 5 minutes",
-            "delayAllowedInfo": "Si le délai est écoulé, autorisez un délai temporaire de 5 minutes"
+            "delayAllowedInfo": "Si le délai est écoulé, autorisez un délai temporaire de 5 minutes",
+            "visits": "visites",
+            "or": "ou",
+            "notEffective": "Non efficace"
         },
         "step": {
             "base": "Informations de base",
@@ -432,10 +439,12 @@
             "noUrl": "Aucune URL de restriction configurée",
             "noRule": "Aucune règle remplie",
             "deleteConfirm": "Voulez-vous supprimer la règle [{name}]?",
+            "lockConfirm": "Si verrouillé, toutes les opérations nécessiteront une vérification, même si la règle n'est pas activée.",
             "inputTestUrl": "Veuillez entrer le lien URL à tester en premier",
             "clickTestButton": "Après l'entrée, cliquez sur le bouton ({buttonText})",
             "noRuleMatched": "L'URL ne correspond à aucune règle",
-            "rulesMatched": "L'URL atteint les règles suivantes :"
+            "rulesMatched": "L'URL atteint les règles suivantes :",
+            "timeout": "Temps écoulé ! XD"
         },
         "verification": {
             "inputTip": "La règle a été déclenchée ou verrouillée. Pour continuer, veuillez répondre à la question suivante dans un délai de {second} secondes : {prompt}",
@@ -446,7 +455,8 @@
             "incorrectAnswer": "Réponse incorrecte",
             "pi": "{digitCount} chiffres de {startIndex} à {endIndex} de la partie décimale de π",
             "confession": "Le temps, c'est de l'argent"
-        }
+        },
+        "reminder": "Moins de {min} minutes jusqu'à la limite de temps !"
     },
     "ru": {
         "filterDisabled": "Только включен",

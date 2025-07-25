@@ -138,7 +138,9 @@
     "fr": {
         "date": "Date",
         "host": "Site",
+        "group": "Groupe d'onglets",
         "focus": "Durée",
+        "run": "Durée d'exécution",
         "time": "Visites",
         "operation": {
             "add2Whitelist": "Whitelist",

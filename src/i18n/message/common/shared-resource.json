@@ -120,6 +120,7 @@
                 "date": "Date",
                 "domain": "URL",
                 "cate": "Catégorie",
+                "group": "Groupe d'onglets",
                 "notMerge": "Non Fusionner"
             }
         },
