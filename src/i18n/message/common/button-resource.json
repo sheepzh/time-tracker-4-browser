@@ -209,6 +209,7 @@
     },
     "ar": {
         "create": "جديد",
+        "add": "أضف",
         "delete": "حذف",
         "batchDelete": "حذف جماعي",
         "modify": "تعديل",
@@ -224,6 +225,7 @@
         "operation": "إجراءات",
         "configuration": "إعدادات",
         "clear": "مسح",
+        "enable": "تفعيل",
         "batchEnable": "تمكين جماعي",
         "batchDisable": "تعطيل جماعي"
     }
