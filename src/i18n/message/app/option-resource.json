@@ -1090,7 +1090,8 @@
                     "off": "Toujours éteint",
                     "timed": "Horaire"
                 }
-            }
+            },
+            "animationDuration": "La durée de l'animation initiale du graphique {input}"
         },
         "statistics": {
             "title": "Statistiques",
@@ -1099,6 +1100,9 @@
             "countLocalFiles": "{input} S'il faut compter le temps jusqu'à {localFileTime} {info} dans le navigateur",
             "localFileTime": "lire un fichier local",
             "localFilesInfo": "Prend en charge les fichiers de types tels que PDF, image, txt et json.",
+            "countTabGroup": "{input} Suivre le temps des groupes d'onglets {info}",
+            "tabGroupInfo": "Lorsque vous supprimez un groupe d'onglets, les données seront également supprimées.",
+            "tabGroupsPermGrant": "Cette fonctionnalité nécessite des autorisations pertinentes",
             "collectSiteName": "{input} S'il faut collecter automatiquement {siteName} {siteNameUsage} lors de la visite de la page d'accueil du site",
             "siteName": "le nom du site",
             "siteNameUsage": "Les données sont uniquement stockées localement et seront affichées à la place de l'URL pour augmenter la reconnaissance. Bien entendu, vous pouvez également personnaliser le nom de chaque site.",
@@ -1109,6 +1113,7 @@
         },
         "dailyLimit": {
             "prompt": "Invite affichée en cas de restriction {input}",
+            "reminder": "{input} Rappel {minInput} minutes avant la fin du temps",
             "level": {
                 "label": "Comment déverrouiller en étant restreint {input}",
                 "nothing": "Autoriser le déverrouillage direct sur la page d'administration",
@@ -1123,7 +1128,9 @@
                 },
                 "strict": "Ne pas autoriser le déblocage quand même",
                 "strictTitle": "Confirmation de l'opération",
-                "strictContent": "Lorsque vous sélectionnez cette option, si un site déclenche une limite quotidienne, vous ne serez pas autorisé à le débloquer manuellement sauf en attendant le lendemain. Si les règles ne sont pas correctement configurées, elles peuvent très bien gêner vos routines !"
+                "strictContent": "Lorsque vous sélectionnez cette option, si un site déclenche une limite quotidienne, vous ne serez pas autorisé à le débloquer manuellement sauf en attendant le lendemain. Si les règles ne sont pas correctement configurées, elles peuvent très bien gêner vos routines !",
+                "pswFormLabel": "Mot de passe",
+                "pswFormAgain": "Retapez"
             }
         },
         "backup": {
@@ -1176,6 +1183,13 @@
         },
         "resetButton": "Réinitialiser",
         "resetSuccess": "Remise à zéro avec succès !",
+        "exportButton": "Exporter les paramètres",
+        "importButton": "Importer les paramètres",
+        "exportSuccess": "Paramètres exportés avec succès",
+        "importSuccess": "Paramètres importés avec succès",
+        "importError": "Échec de l'import : fichier de paramètres invalide",
+        "importConfirm": "Paramètres importés avec succès, veuillez Actualiser la page pour appliquer les modifications !",
+        "reloadButton": "Actualiser",
         "defaultValue": "Par défaut : {default}"
     },
     "ru": {
