@@ -184,6 +184,9 @@
             "countLocalFiles": "{input} 是否統計瀏覽器 {localFileTime} {info}",
             "localFileTime": "讀取本機檔案時間",
             "localFilesInfo": "支援 PDF、圖片、txt 及 json 等格式",
+            "countTabGroup": "{input} 是否追蹤分頁群組的時間 {info}",
+            "tabGroupInfo": "刪除分頁群組時，相關的時間追蹤數據也會一併清除。",
+            "tabGroupsPermGrant": "此功能需要相關權限才能運作",
             "collectSiteName": "{input} 造訪網站首頁時自動收集 {siteName} {siteNameUsage}",
             "siteName": "網站名稱",
             "siteNameUsage": "資料僅儲存於本地，將取代網域名稱提升辨識度，您可自訂各網站名稱",
@@ -1238,5 +1241,21 @@
         "resetButton": "Сброс",
         "resetSuccess": "Сброс к настройкам по умолчанию выполнен успешно!",
         "defaultValue": "По умолчанию: {default}"
+    },
+    "ar": {
+        "yes": "نعم",
+        "no": "لا",
+        "popup": {
+            "title": "صفحة منبثقة",
+            "max": "عرض أول {input} عنصر من البيانات",
+            "displaySiteName": "{input} هل يتم عرض {siteName} بدلاً من الرابط"
+        },
+        "appearance": {
+            "title": "المظهر",
+            "displayWhitelist": "{input} هل يتم عرض {whitelist} في {contextMenu}"
+        },
+        "resetButton": "إعادة الضبط",
+        "resetSuccess": "تم إعادة الضبط إلى الإعدادات الإفتراضية بنجاح!",
+        "defaultValue": "الوضع الإفتراضي: {default}"
     }
 }
