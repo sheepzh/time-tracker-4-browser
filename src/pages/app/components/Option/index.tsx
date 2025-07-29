@@ -5,7 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 import { MediaSize, useMediaSize } from "@hooks/useMediaSize"
-import { defineComponent, ref, type Ref } from "vue"
+import { ElScrollbar } from 'element-plus'
+import { defineComponent, ref, type Ref, type StyleValue } from "vue"
 import { type JSX } from "vue/jsx-runtime"
 import { type OptionCategory, type OptionInstance } from "./common"
 import AccessibilityOption from "./components/AccessibilityOption"
@@ -41,9 +42,13 @@ const _default = defineComponent(() => {
 
     const handleReset = (cate: OptionCategory) => paneRefMap[cate]?.value?.reset?.()
 
-    return () => mediaSize.value <= MediaSize.sm
-        ? <Select v-slots={slots} />
-        : <Tabs onReset={handleReset} v-slots={slots} />
+    return () => (
+        <ElScrollbar height="100%" style={{ width: '100%' } satisfies StyleValue}>
+            {mediaSize.value <= MediaSize.sm
+                ? <Select v-slots={slots} />
+                : <Tabs onReset={handleReset} v-slots={slots} />}
+        </ElScrollbar>
+    )
 })
 
 export default _default

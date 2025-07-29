@@ -39,12 +39,23 @@ export async function getTranslationStatus(): Promise<TranslationStatusInfo[]> {
 }
 
 export async function getMembers(): Promise<MemberInfo[]> {
-    const limit = 20
+    const result: MemberInfo[] = []
     const auth = `Bearer ${PUBLIC_TOKEN}`
-    const url = `https://api.crowdin.com/api/v2/projects/${CROWDIN_PROJECT_ID}/members?limit=${limit}`
-    const response: AxiosResponse = await axios.get(url, {
-        headers: { "Authorization": auth }
-    })
-    const data: { data: { data: MemberInfo }[] } = response.data
-    return data.data.map(i => i.data)
+
+    const limit = 10
+    let offset = 0
+    while (true) {
+        const url = `https://api.crowdin.com/api/v2/projects/${CROWDIN_PROJECT_ID}/members?limit=${limit}&offset=${offset}`
+        const response: AxiosResponse = await axios.get(url, {
+            headers: { "Authorization": auth }
+        })
+        const data: { data: { data: MemberInfo }[] } = response.data
+        const newItems = data?.data?.map(i => i.data) ?? []
+        result.push(...newItems)
+
+        if (newItems.length < limit) break
+
+        offset += limit
+    }
+    return result
 }

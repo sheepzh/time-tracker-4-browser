@@ -6,7 +6,8 @@
  */
 
 import Flex from "@pages/components/Flex"
-import { defineComponent } from "vue"
+import { ElScrollbar } from 'element-plus'
+import { defineComponent, type StyleValue } from "vue"
 import ContentContainer from "../common/ContentContainer"
 import ClearPanel from "./ClearPanel"
 import MemoryInfo from "./MemoryInfo"
@@ -17,18 +18,20 @@ export default defineComponent(() => {
     initDataManage()
 
     return () => (
-        <ContentContainer>
-            <Flex gap={22} height={490}>
-                <Flex height='100%' flex={8}>
-                    <MemoryInfo />
+        <ElScrollbar height="100%" style={{ width: '100%' } satisfies StyleValue}>
+            <ContentContainer>
+                <Flex gap={22} height={490}>
+                    <Flex height='100%' flex={8}>
+                        <MemoryInfo />
+                    </Flex>
+                    <Flex height='100%' flex={11}>
+                        <ClearPanel />
+                    </Flex>
+                    <Flex height='100%' flex={5}>
+                        <Migration />
+                    </Flex>
                 </Flex>
-                <Flex height='100%' flex={11}>
-                    <ClearPanel />
-                </Flex>
-                <Flex height='100%' flex={5}>
-                    <Migration />
-                </Flex>
-            </Flex>
-        </ContentContainer >
+            </ContentContainer >
+        </ElScrollbar>
     )
 })
