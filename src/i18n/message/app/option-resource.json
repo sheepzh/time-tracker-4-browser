@@ -1252,7 +1252,45 @@
         },
         "appearance": {
             "title": "المظهر",
-            "displayWhitelist": "{input} هل يتم عرض {whitelist} في {contextMenu}"
+            "displayWhitelist": "{input} هل يتم عرض {whitelist} في {contextMenu}",
+            "displayBadgeText": "{input}  هل يتم عرض {timeInfo} على {icon}",
+            "badgeBgColor": "لون خلفية المؤقت المتواجد على الأيقونة {input}",
+            "icon": "أيقونة الإضافة",
+            "badgeTextContent": "وقت التصفح للموقع الحالي",
+            "locale": {
+                "label": "اللغة {input}",
+                "default": "لغة المتصفح",
+                "changeConfirm": "تم تغيير اللغة بنجاح، يرجى إعادة تحميل هذه الصفحة!",
+                "reloadButton": "إعادة التحميل"
+            },
+            "printInConsole": {
+                "label": "{input}  هل يتم طباعة {info} في {console}",
+                "console": "وحدة التحكم",
+                "info": "عدد زيارات الموقع الحالي اليوم"
+            },
+            "darkMode": {
+                "label": "الوضع الداكن {input}",
+                "options": {
+                    "default": "نفس وضع المتصفح",
+                    "on": "تفعيل دائم",
+                    "off": "إيقاف دائم",
+                    "timed": "تفعيل مؤقت"
+                }
+            },
+            "animationDuration": "مدة تحريك الرسوم البيانية {input}"
+        },
+        "statistics": {
+            "title": "الإحصائيات",
+            "countLocalFiles": "{input}  هل يتم حساب الوقت عند فتح {localFileTime} في المتصفح {info}",
+            "localFileTime": "الملفات المحلية",
+            "localFilesInfo": "يدعم ملفات مثل PDF، الصور، txt و json.",
+            "collectSiteName": "{input}  هل يتم أخذ {siteName} {siteNameUsage} تلقائيًا عند زيارة الصفحة الرئيسية",
+            "siteName": "اسم الموقع الإلكتروني",
+            "siteNameUsage": "يتم تخزين البيانات محليًا فقط وسيتم عرضها بدلاً من الرابط لزيادة الوضوح. يمكنك أيضًا تخصيص اسم كل موقع.",
+            "fileAccessDisabled": "الوصول إلى عناوين الملفات غير مسموح به حاليًا. يرجى تفعيل الخاصية من صفحة الإدارة أولاً"
+        },
+        "backup": {
+            "title": "النسخ الاحتياطي للبيانات"
         },
         "resetButton": "إعادة الضبط",
         "resetSuccess": "تم إعادة الضبط إلى الإعدادات الإفتراضية بنجاح!",
