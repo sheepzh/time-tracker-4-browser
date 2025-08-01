@@ -4,7 +4,14 @@ All notable changes to Time Tracker will be documented in this file.
 
 It is worth mentioning that the release time of each change refers to the time when the installation package is submitted to the webstore. It is about one week for Edge to moderate packages, while only 1-2 days for Chrome and Firefox.
 
-## [3.5.5] - 2025-0-26
+
+## [3.5.6] - 2025-08-01
+
+-   Fixed the scrollbar style conflict with [huaban.com](https://github.com/sheepzh/time-tracker-4-browser/issues/524)
+-   Added some French and Arabic translations
+-   Upgraded Echarts to v6 with a more modern style
+
+## [3.5.5] - 2025-07-26
 
 -   Still that bug = =
 -   Added some translations, thanks to [zakno52](https://github.com/zakno52)
