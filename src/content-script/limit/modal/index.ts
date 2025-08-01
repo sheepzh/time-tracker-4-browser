@@ -1,4 +1,4 @@
-import { getUrl, sendMsg2Runtime } from '@api/chrome/runtime'
+import { getRuntimeId, getUrl, sendMsg2Runtime } from '@api/chrome/runtime'
 import optionService from '@service/option-service'
 import { init as initTheme, toggle } from '@util/dark-mode'
 import { createApp, Ref, type App } from 'vue'
@@ -46,23 +46,30 @@ const createHeader = () => {
 }
 
 class ScreenLocker {
-    private doLock() {
-        const ele = document?.documentElement
-        if (ele) {
-            document.documentElement.style.setProperty('overflow', 'hidden', 'important')
-        }
-    }
+    private styleId = `time-tracker-style-${getRuntimeId()}`
+    private lockedCls = `time-tracker-locked-${getRuntimeId()}`
 
     lock() {
-        this.doLock()
-        // Re-lock after 200ms to avoid being unlocked by the original website
-        setTimeout(() => this.doLock(), 200)
+        this.insertStyle()
+        document?.documentElement?.classList?.add?.(this.lockedCls)
     }
 
     unlock() {
-        if (document?.documentElement) {
-            document.documentElement.style.overflow = 'auto'
-        }
+        document?.documentElement?.classList?.remove(this.lockedCls)
+    }
+
+    private insertStyle() {
+        if (!document) return
+        if (document.getElementById(this.styleId)) return
+        const style = document.createElement('style')
+        style.id = this.styleId
+        const css = `
+            .${this.lockedCls} {
+                overflow: hidden !important;
+            }
+        `
+        style.appendChild(document.createTextNode(css))
+        document.head?.appendChild(style)
     }
 }
 
