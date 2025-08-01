@@ -1,0 +1,91 @@
+name: Publish to all stores
+on: [workflow_dispatch]
+
+jobs:
+    setup:
+        name: Setup and build
+        runs-on: ubuntu-latest
+        outputs:
+            target-zip: ${{ steps.build.outputs.target-zip }}
+            firefox-zip: ${{ steps.build.outputs.firefox-zip }}
+            source-zip: ${{ steps.build.outputs.source-zip }}
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                fetch-depth: 0
+
+            - name: Setup NodeJS
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "v20.11.0"
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Build for all platforms
+              id: build
+              run: |
+                npm run build
+                npm run build:firefox
+                echo "target-zip=market_packages/target.zip" >> $GITHUB_OUTPUT
+                echo "firefox-zip=market_packages/target.firefox.zip" >> $GITHUB_OUTPUT
+                echo "source-zip=market_packages/target.src.zip" >> $GITHUB_OUTPUT
+
+    publish-chrome:
+        name: Publish to Chrome Web Store
+        needs: setup
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/download-artifact@v4
+              with:
+                name: build-artifacts
+                path: market_packages
+
+            - name: Publish to Chrome Web Store
+              uses: mnao305/chrome-extension-upload@v5.0.0
+              with:
+                file-path: ${{ needs.setup.outputs.target-zip }}
+                extension-id: dkdhhcbjijekmneelocdllcldcpmekmm
+                client-id: ${{ secrets.CHROME_CLIENT_ID }}
+                client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
+                refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
+                publish: true
+
+    publish-edge:
+        name: Publish to Edge Addons
+        needs: setup
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/download-artifact@v4
+            with:
+              name: build-artifacts
+              path: market_packages
+
+          - name: Publish to Edge Addons
+            uses: wdzeng/edge-addon@v2
+            with:
+              zip-path: ${{ needs.setup.outputs.target-zip }}
+              product-id: 2a99ae83-5ec8-4ad2-aa63-9a276fc708ce
+              client-id: ${{ secrets.EDGE_CLIENT_ID }}
+              api-key: ${{ secrets.EDGE_API_KEY }}
+              upload-only: false
+
+    publish-firefox:
+        name: Publish to Firefox Addons
+        needs: setup
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/download-artifact@v4
+            with:
+              name: build-artifacts
+              path: market_packages
+
+          - name: Publish to Firefox Addons
+            uses: wdzeng/firefox-addon@v1.2.0-alpha.0
+            with:
+              addon-guid: "{a8cf72f7-09b7-4cd4-9aaa-7a023bf09916}"
+              xpi-path: ${{ needs.setup.outputs.firefox-zip }}
+              source-file-path: ${{ needs.setup.outputs.source-zip }}
+              compatibility: firefox, android
+              jwt-issuer: ${{ secrets.FIREFOX_JWD_ISSUER }}
+              jwt-secret: ${{ secrets.FIREFOX_JWD_SECRET }}
