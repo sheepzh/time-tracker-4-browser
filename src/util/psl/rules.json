@@ -571,48 +571,315 @@
         "c": {
             "on": {
                 "c": {
+                    "af-south-1": {
+                        "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "transfer-webapp": 1
+                        }
+                    },
+                    "ap-east-1": {
+                        "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "transfer-webapp": 1
+                        }
+                    },
                     "ap-northeast-1": {
                         "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "transfer-webapp": 1
+                        }
+                    },
+                    "ap-northeast-2": {
+                        "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "transfer-webapp": 1
+                        }
+                    },
+                    "ap-northeast-3": {
+                        "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "transfer-webapp": 1
+                        }
+                    },
+                    "ap-south-1": {
+                        "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "transfer-webapp": 1
+                        }
+                    },
+                    "ap-south-2": {
+                        "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
                             "transfer-webapp": 1
                         }
                     },
                     "ap-southeast-1": {
                         "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
                             "transfer-webapp": 1
                         }
                     },
                     "ap-southeast-2": {
                         "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "transfer-webapp": 1
+                        }
+                    },
+                    "ap-southeast-3": {
+                        "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "transfer-webapp": 1
+                        }
+                    },
+                    "ap-southeast-4": {
+                        "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "transfer-webapp": 1
+                        }
+                    },
+                    "ap-southeast-5": {
+                        "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "transfer-webapp": 1
+                        }
+                    },
+                    "ca-central-1": {
+                        "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "transfer-webapp": 1
+                        }
+                    },
+                    "ca-west-1": {
+                        "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
                             "transfer-webapp": 1
                         }
                     },
                     "eu-central-1": {
                         "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "transfer-webapp": 1
+                        }
+                    },
+                    "eu-central-2": {
+                        "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
                             "transfer-webapp": 1
                         }
                     },
                     "eu-north-1": {
                         "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "transfer-webapp": 1
+                        }
+                    },
+                    "eu-south-1": {
+                        "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "transfer-webapp": 1
+                        }
+                    },
+                    "eu-south-2": {
+                        "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
                             "transfer-webapp": 1
                         }
                     },
                     "eu-west-1": {
                         "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "transfer-webapp": 1
+                        }
+                    },
+                    "eu-west-2": {
+                        "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "transfer-webapp": 1
+                        }
+                    },
+                    "eu-west-3": {
+                        "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "transfer-webapp": 1
+                        }
+                    },
+                    "il-central-1": {
+                        "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "transfer-webapp": 1
+                        }
+                    },
+                    "me-central-1": {
+                        "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "transfer-webapp": 1
+                        }
+                    },
+                    "me-south-1": {
+                        "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "transfer-webapp": 1
+                        }
+                    },
+                    "sa-east-1": {
+                        "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
                             "transfer-webapp": 1
                         }
                     },
                     "us-east-1": {
                         "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
                             "transfer-webapp": 1
                         }
                     },
                     "us-east-2": {
                         "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "transfer-webapp": 1
+                        }
+                    },
+                    "us-gov-east-1": {
+                        "c": {
+                            "transfer-webapp": 1,
+                            "transfer-webapp-fips": 1
+                        }
+                    },
+                    "us-gov-west-1": {
+                        "c": {
+                            "transfer-webapp": 1,
+                            "transfer-webapp-fips": 1
+                        }
+                    },
+                    "us-west-1": {
+                        "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
                             "transfer-webapp": 1
                         }
                     },
                     "us-west-2": {
                         "c": {
+                            "airflow": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
                             "transfer-webapp": 1
                         }
                     }
@@ -1990,6 +2257,34 @@
                             }
                         }
                     },
+                    "amazonwebservices": {
+                        "c": {
+                            "on": {
+                                "c": {
+                                    "cn-north-1": {
+                                        "c": {
+                                            "airflow": {
+                                                "c": {
+                                                    "*": 1
+                                                }
+                                            },
+                                            "transfer-webapp": 1
+                                        }
+                                    },
+                                    "cn-northwest-1": {
+                                        "c": {
+                                            "airflow": {
+                                                "c": {
+                                                    "*": 1
+                                                }
+                                            },
+                                            "transfer-webapp": 1
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
                     "sagemaker": {
                         "c": {
                             "cn-north-1": {
@@ -2231,6 +2526,11 @@
                                 }
                             },
                             "ap-southeast-4": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "ap-southeast-5": {
                                 "c": {
                                     "*": 1
                                 }
@@ -3307,6 +3607,11 @@
                             "auth": 1
                         }
                     },
+                    "ap-southeast-7": {
+                        "c": {
+                            "auth": 1
+                        }
+                    },
                     "ca-central-1": {
                         "c": {
                             "auth": 1
@@ -3368,6 +3673,11 @@
                         }
                     },
                     "me-south-1": {
+                        "c": {
+                            "auth": 1
+                        }
+                    },
+                    "mx-central-1": {
                         "c": {
                             "auth": 1
                         }
@@ -3897,6 +4207,11 @@
                     }
                 }
             },
+            "oaiusercontent": {
+                "c": {
+                    "*": 1
+                }
+            },
             "observableusercontent": {
                 "c": {
                     "static": 1
@@ -4405,11 +4720,6 @@
             "taifun-dns": 1,
             "test-iserv": 1,
             "traeumtgerade": 1,
-            "uberspace": {
-                "c": {
-                    "*": 1
-                }
-            },
             "virtual-user": 1,
             "virtualuser": 1,
             "webspaceconfig": 1,
@@ -11095,7 +11405,12 @@
             "us": 1,
             "webhop": 1,
             "webredirect": 1,
-            "wmcloud": 1,
+            "wmcloud": {
+                "c": {
+                    "beta": 1
+                },
+                "l": 1
+            },
             "wmflabs": 1,
             "za": 1,
             "zapto": 1
@@ -11868,6 +12183,7 @@
                 },
                 "l": 1
             },
+            "lovable": 1,
             "migration": {
                 "c": {
                     "*": 1
@@ -12070,6 +12386,7 @@
             "com": 1,
             "gov": 1,
             "hashbang": 1,
+            "lovable": 1,
             "mil": 1,
             "net": 1,
             "now": 1,
