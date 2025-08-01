@@ -1253,6 +1253,8 @@
         "appearance": {
             "title": "المظهر",
             "displayWhitelist": "{input} هل يتم عرض {whitelist} في {contextMenu}",
+            "whitelistItem": "اختصارات القائمة البيضاء",
+            "contextMenu": "قائمة السياق",
             "displayBadgeText": "{input}  هل يتم عرض {timeInfo} على {icon}",
             "badgeBgColor": "لون خلفية المؤقت المتواجد على الأيقونة {input}",
             "icon": "أيقونة الإضافة",
@@ -1281,19 +1283,78 @@
         },
         "statistics": {
             "title": "الإحصائيات",
+            "autoPauseTrack": "{input} إيقاف تتبع الوقت إذا لم يكن هناك تفاعل {info} لمدة {maxTime}",
+            "noActivityInfo": "الفأرة ولوحة المفاتيح غير نشطة والشاشة ليست في وضع ملء الشاشة",
             "countLocalFiles": "{input}  هل يتم حساب الوقت عند فتح {localFileTime} في المتصفح {info}",
             "localFileTime": "الملفات المحلية",
             "localFilesInfo": "يدعم ملفات مثل PDF، الصور، txt و json.",
+            "countTabGroup": "{input} هل يتم تتبع وقت مجموعات علامات التبويب {info}",
+            "tabGroupInfo": "عند حذف مجموعة علامات تبويب، سيتم حذف البيانات أيضًا.",
+            "tabGroupsPermGrant": "هذه الميزة تتطلب أذونات ذات صلة",
             "collectSiteName": "{input}  هل يتم أخذ {siteName} {siteNameUsage} تلقائيًا عند زيارة الصفحة الرئيسية",
             "siteName": "اسم الموقع الإلكتروني",
             "siteNameUsage": "يتم تخزين البيانات محليًا فقط وسيتم عرضها بدلاً من الرابط لزيادة الوضوح. يمكنك أيضًا تخصيص اسم كل موقع.",
-            "fileAccessDisabled": "الوصول إلى عناوين الملفات غير مسموح به حاليًا. يرجى تفعيل الخاصية من صفحة الإدارة أولاً"
+            "fileAccessDisabled": "الوصول إلى عناوين الملفات غير مسموح به حاليًا. يرجى تفعيل الخاصية من صفحة الإدارة أولاً",
+            "fileAccessFirefox": "عذراً، هذه الميزة غير مدعومة في فايرفوكس",
+            "weekStart": "اليوم الأول لكل أسبوع {input}",
+            "weekStartAsNormal": "بشكل عادي"
         },
         "backup": {
-            "title": "النسخ الاحتياطي للبيانات"
+            "title": "النسخ الاحتياطي للبيانات",
+            "type": "نوع الربط الخارجي {input}",
+            "client": "اسم العميل {input}",
+            "meta": {
+                "none": {
+                    "label": "معطّل دائمًا"
+                },
+                "gist": {
+                    "authInfo": "مطلوب رمز وصول واحد على الأقل مع صلاحية Gist"
+                },
+                "obsidian_local_rest_api": {
+                    "endpointInfo": "متوفر HTTP فقط، حيث لا يمكن تكوين مشاركة الموارد عبر المنشأ (CORS) لصفحات الاضافة"
+                }
+            },
+            "label": {
+                "path": "مسار المجلد {input}",
+                "account": "اسم المستخدم {input}",
+                "password": "كلمة المرور {input}"
+            },
+            "operation": "إنشاء نسخة إحتياطية",
+            "download": {
+                "btn": "تحميل",
+                "step2": "تأكيد البيانات",
+                "willDownload": "ليتم تحميله",
+                "confirmTip": "سيتم تنزيل {size} من البيانات من [{clientName}]"
+            },
+            "clear": {
+                "btn": "مسح",
+                "confirmTip": "سيتم حذف {rowCount} من البيانات لـ {hostCount} موقعًا التي يتتبعها [{clientName}]!"
+            },
+            "clientTable": {
+                "selectTip": "اختر عميلاً",
+                "dataRange": "مجال البيانات",
+                "notSelected": "لم يتم اختيار العميل",
+                "current": "الحالي"
+            },
+            "lastTimeTip": "وقت النسخ الاحتياطي الأخير: {lastTime}",
+            "auto": {
+                "label": "تفعيل النسخ الاحتياطي التلقائي",
+                "interval": "والتشغيل كل {input} دقيقة"
+            }
+        },
+        "accessibility": {
+            "title": "إمكانية الوصول",
+            "chartDecal": "{input} هل يتم عرض الزخرفة على الرسم البياني"
         },
         "resetButton": "إعادة الضبط",
         "resetSuccess": "تم إعادة الضبط إلى الإعدادات الإفتراضية بنجاح!",
+        "exportButton": "تصدير الإعدادات",
+        "importButton": "استيراد الإعدادات",
+        "exportSuccess": "تم تصدير الإعدادات بنجاح",
+        "importSuccess": "تم استيراد الإعدادات بنجاح",
+        "importError": "فشل الاستيراد: ملف الإعدادات غير صالح",
+        "importConfirm": "تم استيراد الإعدادات بنجاح، يرجى إعادة تحميل الصفحة لتطبيق التغييرات!",
+        "reloadButton": "إعادة التحميل",
         "defaultValue": "الوضع الإفتراضي: {default}"
     }
 }
