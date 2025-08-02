@@ -186,6 +186,10 @@
         }
     },
     "es": {
+        "target": {
+            "site": "Sitio web",
+            "cate": "Categoría"
+        },
         "common": {
             "focusTotal": "Tiempo total de navegación",
             "visitTotal": "Total de visitas",

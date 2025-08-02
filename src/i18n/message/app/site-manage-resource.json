@@ -258,6 +258,7 @@
     },
     "es": {
         "deleteConfirmMsg": "Se eliminará {host}",
+        "genAliasConfirmMsg": "¿Completar automáticamente los nombres de sitios en lotes?",
         "column": {
             "type": "Tipo de sitio",
             "alias": "Nombre del sitio",

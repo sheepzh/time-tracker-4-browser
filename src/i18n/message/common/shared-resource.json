@@ -93,6 +93,7 @@
                 "date": "Fecha",
                 "domain": "URL",
                 "cate": "Categoría",
+                "group": "Grupo de pestañas",
                 "notMerge": "No fusionar"
             }
         },

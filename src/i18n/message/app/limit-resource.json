@@ -311,9 +311,11 @@
     },
     "es": {
         "filterDisabled": "Solo habilitados",
+        "wildcardTip": "¡Puedes usar comodines para coincidir con subdominios o subpáginas!",
         "item": {
             "name": "Nombre de la regla",
             "condition": "URL restringida",
+            "daily": "Límite diario",
             "weekly": "Límite semanal",
             "weekStartInfo": "El primer día de cada semana es {weekStart}, puedes cambiar este valor en las opciones de estadísticas",
             "delayCount": "Contagem de atraso",
@@ -321,9 +323,13 @@
             "visitTime": "Límite por visita",
             "period": "Periodos no permitidos",
             "enabled": "Habilitado",
+            "locked": "Bloqueado",
             "effectiveDay": "En vigor él",
             "delayAllowed": "Más de 5 minutos",
-            "delayAllowedInfo": "Si se pausa, permite un retraso temporal de 5 minutos"
+            "delayAllowedInfo": "Si se pausa, permite un retraso temporal de 5 minutos",
+            "visits": "visitas",
+            "or": "o",
+            "notEffective": "No efectivo"
         },
         "step": {
             "base": "Información básica",
@@ -337,10 +343,12 @@
             "noUrl": "URL restringida sin completar",
             "noRule": "No hay reglas llenadas",
             "deleteConfirm": "¿Deseas eliminar la regla de {cond}?",
+            "lockConfirm": "Si está bloqueado, todas las operaciones requerirán verificación incluso si no se activa la regla.",
             "inputTestUrl": "Por favor, introduce primero el enlace URL a ser probado",
             "clickTestButton": "Después de ingresarla, haz clic en el botón ({buttonText})",
             "noRuleMatched": "La URL no sigue ninguna regla",
-            "rulesMatched": "La URL sigue las siguientes reglas:"
+            "rulesMatched": "La URL sigue las siguientes reglas:",
+            "timeout": "¡Tiempo se acabó! XD"
         },
         "verification": {
             "inputTip": "La regla se ha activado o bloqueado. Para continuar, responda la siguiente pregunta en menos de {second} segundos: {prompt}",
@@ -351,7 +359,8 @@
             "incorrectAnswer": "Respuesta incorrecta",
             "pi": "{digitCount} dígitos de {startIndex} a {endIndex} de la parte decimal de π",
             "confession": "El tiempo se está fugando"
-        }
+        },
+        "reminder": "¡Menos de {min} minutos hasta el límite de tiempo!"
     },
     "de": {
         "filterDisabled": "Nur aktiviert",

@@ -129,6 +129,7 @@
     },
     "es": {
         "create": "Nuevo",
+        "add": "Añadir",
         "delete": "Eliminar",
         "batchDelete": "Eliminar en Lote",
         "modify": "Editar",
@@ -144,6 +145,7 @@
         "operation": "Acciones",
         "configuration": "Configuración",
         "clear": "Limpiar",
+        "enable": "Activar",
         "batchEnable": "Habilitar en Lote",
         "batchDisable": "Deshabilitar en Lote"
     },
