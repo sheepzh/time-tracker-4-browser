@@ -842,7 +842,8 @@
                     "off": "Siempre apagado",
                     "timed": "Cronometrado"
                 }
-            }
+            },
+            "animationDuration": "Duración de la animación inicial del gráfico {input}"
         },
         "statistics": {
             "title": "Estadísticas",
@@ -851,6 +852,9 @@
             "countLocalFiles": "{input}  Contar el tiempo para {localFileTime} {info} en el navegador",
             "localFileTime": "leer un archivo local",
             "localFilesInfo": "Soporta archivos de tipos como PDF, imagen, TXT y JSON",
+            "countTabGroup": "{input} Rastrear el tiempo de los grupos de pestañas {info}",
+            "tabGroupInfo": "Al eliminar un grupo de pestañas, sus datos también se borrarán.",
+            "tabGroupsPermGrant": "Esta función requiere permisos pertinentes",
             "collectSiteName": "{input}  Recopilar automáticamente {siteName} {siteNameUsage} al visitar la página principal del sitio",
             "siteName": "el nombre del sitio",
             "siteNameUsage": "Los datos solo se almacenan localmente y se mostrarán en lugar de la URL para aumentar el reconocimiento. Por supuesto, también puedes personalizar el nombre de cada sitio.",
@@ -931,6 +935,13 @@
         },
         "resetButton": "Restablecer",
         "resetSuccess": "¡Restablecer predeterminado con éxito!",
+        "exportButton": "Exportar configuración",
+        "importButton": "Importar configuración",
+        "exportSuccess": "Configuración exportada correctamente",
+        "importSuccess": "Configuración importada correctamente",
+        "importError": "Error al importar: Archivo de configuración no válido",
+        "importConfirm": "¡Configuración importada! Recarga la página para aplicar los cambios.",
+        "reloadButton": "Recargar",
         "defaultValue": "Predeterminado: {default}"
     },
     "de": {
@@ -1299,6 +1310,28 @@
             "weekStart": "اليوم الأول لكل أسبوع {input}",
             "weekStartAsNormal": "بشكل عادي"
         },
+        "dailyLimit": {
+            "prompt": "رسالة التنبيه عند التقييد {input}",
+            "reminder": "{input} تذكير {minInput} دقائق قبل انتهاء الوقت",
+            "level": {
+                "label": "طريقة فك القيد أثناء التقييد {input}",
+                "nothing": "السماح بالفك المباشر من صفحة الإدارة",
+                "password": "يجب إدخال كلمة المرور لفك القيد",
+                "verification": "يجب إدخال رمز التحقق لفك القيد",
+                "passwordLabel": "كلمة المرور لفك القيد {input}",
+                "verificationLabel": "صعوبة رمز التحقق {input}",
+                "verificationDifficulty": {
+                    "easy": "سهل",
+                    "hard": "صعب",
+                    "disgusting": "معقد جدًا"
+                },
+                "strict": "عدم السماح بالفك بأي طريقة",
+                "strictTitle": "تأكيد العملية",
+                "strictContent": "عند اختيار هذا الخيار، إذا تم تقييد موقع ما، لن يُسمح لك بفك القيد يدويًا إلا بانتظار اليوم التالي. إذا لم يتم إعداد القواعد بشكل صحيح، قد تعيق روتينك اليومي!",
+                "pswFormLabel": "كلمة المرور",
+                "pswFormAgain": "إعادة الإدخال"
+            }
+        },
         "backup": {
             "title": "النسخ الاحتياطي للبيانات",
             "type": "نوع الربط الخارجي {input}",
@@ -1315,6 +1348,7 @@
                 }
             },
             "label": {
+                "endpoint": "عنوان النقطة الطرفية {info} {input}",
                 "path": "مسار المجلد {input}",
                 "account": "اسم المستخدم {input}",
                 "password": "كلمة المرور {input}"

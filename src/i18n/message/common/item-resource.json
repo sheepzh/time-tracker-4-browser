@@ -107,7 +107,9 @@
     "es": {
         "date": "Fecha",
         "host": "Dominio",
+        "group": "Grupo de pestañas",
         "focus": "Duración",
+        "run": "Tiempo de ejecución",
         "time": "Visitas",
         "operation": {
             "add2Whitelist": "Lista blanca",

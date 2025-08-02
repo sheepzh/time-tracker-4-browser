@@ -124,6 +124,7 @@
     },
     "es": {
         "exportFileName": "Mi_Tiempo_De_Navegación",
+        "total": "Visitas totales: {visit} veces, duración total: {focus}",
         "batchDelete": {
             "noSelectedMsg": "Por favor, selecciona en la tabla primero la fila que deseas eliminar",
             "confirmMsg": "¡Se eliminarán {count} registros de sitios como {example} del {date}!",
