@@ -69,6 +69,7 @@ const _default = defineComponent((_, ctx) => {
         </OptionItem>
         {backupType.value === 'gist' && <>
             <OptionItem
+                key="gist-token"
                 label={_ => 'Personal Access Token {info} {input}'}
                 v-slots={{
                     info: () => <OptionTooltip>{t(msg => msg.option.backup.meta.gist.authInfo)}</OptionTooltip>
@@ -86,6 +87,7 @@ const _default = defineComponent((_, ctx) => {
         </>}
         {backupType.value === 'obsidian_local_rest_api' && <>
             <OptionItem
+                key="obsidian-endpoint"
                 label={msg => msg.option.backup.label.endpoint}
                 v-slots={{
                     info: () => <OptionTooltip>{t(msg => msg.option.backup.meta.obsidian_local_rest_api.endpointInfo)}</OptionTooltip>
@@ -129,6 +131,7 @@ const _default = defineComponent((_, ctx) => {
         </>}
         {backupType.value === 'web_dav' && <>
             <OptionItem
+                key="web-dav-endpoint"
                 label={msg => msg.option.backup.label.endpoint}
                 v-slots={{ info: () => '' }}
                 required
