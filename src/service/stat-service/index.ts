@@ -12,7 +12,7 @@ import siteDatabase from "@db/site-database"
 import statDatabase, { type StatCondition } from "@db/stat-database"
 import { groupBy } from "@util/array"
 import { judgeVirtualFast } from "@util/pattern"
-import { distinctSites, SiteMap } from "@util/site"
+import { CATE_NOT_SET_ID, distinctSites, SiteMap } from "@util/site"
 import { isGroup, isNormalSite, isSite } from "@util/stat"
 import { log } from "../../common/logger"
 import CustomizedHostMergeRuler from "../components/host-merge-ruler"
@@ -112,6 +112,11 @@ interface StatService {
     canReadRemote(): Promise<boolean>
 }
 
+function filterByCateId(itemCateId: number | undefined, cateIds: number[] | undefined): boolean {
+    if (!cateIds?.length) return true
+    return cateIds.includes(itemCateId ?? CATE_NOT_SET_ID)
+}
+
 /**
  * Service of timer
  * @since 0.0.5
@@ -193,7 +198,7 @@ class StatServiceImpl implements StatService {
         siteRows = siteRows
             .filter(({ siteKey: { host: siteHost } }) => !host || host === siteHost)
             .filter(({ siteKey: { host: siteHost }, alias }) => !query || siteHost.includes(query) || !!alias?.includes(query))
-            .filter(({ cateId }) => !cateIds?.length || (cateId && cateIds.includes(cateId)))
+            .filter(({ cateId }) => filterByCateId(cateId, cateIds))
         // Merge by date
         needMergeDate && (siteRows = mergeDate(siteRows))
         // Sort
