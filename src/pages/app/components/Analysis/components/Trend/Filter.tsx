@@ -5,12 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 
+import DateRangeFilterItem from '@app/components/common/filter/DateRangeFilterItem'
 import { t } from "@app/locale"
-import { dateFormat } from "@i18n/element"
 import { type ElementDatePickerShortcut } from "@pages/element-ui/date"
-import { getDatePickerIconSlots } from "@pages/element-ui/rtl"
 import { daysAgo } from "@util/time"
-import { ElDatePicker } from "element-plus"
 import { defineComponent } from "vue"
 import { useAnalysisTrendDateRange } from "./context"
 
@@ -32,19 +30,13 @@ const _default = defineComponent(() => {
     const dateRange = useAnalysisTrendDateRange()
 
     return () => (
-        <div>
-            <ElDatePicker
-                modelValue={dateRange.value}
-                disabledDate={(date: Date) => date.getTime() > new Date().getTime()}
-                format={dateFormat()}
-                type="daterange"
-                shortcuts={SHORTCUTS}
-                rangeSeparator="-"
-                clearable={false}
-                onUpdate:modelValue={(newVal: [Date, Date]) => dateRange.value = newVal}
-                v-slots={getDatePickerIconSlots()}
-            />
-        </div>
+        <DateRangeFilterItem
+            modelValue={dateRange.value}
+            disabledDate={(date: Date) => date.getTime() > new Date().getTime()}
+            shortcuts={SHORTCUTS}
+            clearable={false}
+            onChange={newVal => newVal && (dateRange.value = newVal)}
+        />
     )
 })
 
