@@ -234,7 +234,7 @@ class StatServiceImpl implements StatService {
         inclusiveRemote && (siteRows = await processRemote(siteRows, param))
 
         // Fill site info
-        this.fillSite(siteRows)
+        await this.fillSite(siteRows)
         const categories = await cateDatabase.listAll()
         let cateRows = mergeCate(siteRows, categories)
         // Filter
