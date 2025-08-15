@@ -37,7 +37,7 @@ const _default = defineComponent(() => {
     })
 
     const {
-        list,
+        list, table,
         changeEnabled, changeDelay, changeLocked
     } = useLimitTable()
 
@@ -45,9 +45,10 @@ const _default = defineComponent(() => {
 
     return () => (
         <ElTable
+            ref={table}
             border fit highlightCurrentRow
             style={{ width: "100%" }}
-            maxHeight="100%"
+            height="100%"
             data={list.value}
             defaultSort={historySort.value}
             onSort-change={(val: Sort) => historySort.value = { prop: val?.prop, order: val?.order }}

@@ -18,6 +18,7 @@ export type TestInstance = {
 }
 
 type Context = {
+    table: Ref<TableInstance | undefined>
     filter: Reactive<LimitFilterOption>
     list: Ref<timer.limit.Item[]>, refresh: NoArgCallback,
     deleteRow: ArgCallback<timer.limit.Item>
@@ -148,6 +149,7 @@ export const useLimitProvider = () => {
     const test = () => testInst.value?.show?.()
 
     useProvide<Context>(NAMESPACE, {
+        table,
         filter,
         list, refresh,
         deleteRow,
@@ -163,8 +165,8 @@ export const useLimitProvider = () => {
 
 export const useLimitFilter = (): Reactive<LimitFilterOption> => useProvider<Context, 'filter'>(NAMESPACE, "filter").filter
 
-export const useLimitTable = () => useProvider<Context, 'list' | 'refresh' | 'deleteRow' | 'changeEnabled' | 'changeDelay' | 'changeLocked'>(
-    NAMESPACE, 'list', 'refresh', 'deleteRow', 'changeEnabled', 'changeDelay', 'changeLocked'
+export const useLimitTable = () => useProvider<Context, 'list' | 'table' | 'refresh' | 'deleteRow' | 'changeEnabled' | 'changeDelay' | 'changeLocked'>(
+    NAMESPACE, 'list', 'table', 'refresh', 'deleteRow', 'changeEnabled', 'changeDelay', 'changeLocked'
 )
 
 export const useLimitBatch = () => useProvider<Context, 'batchDelete' | 'batchEnable' | 'batchDisable'>(
