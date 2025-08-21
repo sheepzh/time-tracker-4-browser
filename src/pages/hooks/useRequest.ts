@@ -52,7 +52,9 @@ export const useRequest = <P extends any[], T>(getter: (...p: P) => Promise<T> |
 
     const refreshAsync = async (...p: P) => {
         loading.value = true
-        const loadingEl = await findLoadingEl(loadingTarget)
+        let loadingEl = await findLoadingEl(loadingTarget)
+        // fallback use document
+        !loadingEl && loadingText && (loadingEl = document.body)
         const loadingInstance = loadingEl ? ElLoadingService({ target: loadingEl, text: loadingText }) : null
         try {
             param.value = p
