@@ -3,6 +3,7 @@
         "weekDays": "周一|周二|周三|周四|周五|周六|周日",
         "months": "1月|2月|3月|4月|5月|6月|7月|8月|9月|10月|11月|12月",
         "dateFormat": "{y}/{m}/{d}",
+        "monthDateFormat": "{m}/{d}",
         "timeFormat": "{y}/{m}/{d} {h}:{i}:{s}",
         "simpleTimeFormat": "{m}/{d} {h}:{i}",
         "label": {
@@ -25,6 +26,7 @@
         "weekDays": "週一|週二|週三|週四|週五|週六|週日",
         "months": "1月|2月|3月|4月|5月|6月|7月|8月|9月|10月|11月|12月",
         "dateFormat": "{y}/{m}/{d}",
+        "monthDateFormat": "{m}/{d}",
         "timeFormat": "{y}/{m}/{d} {h}:{i}:{s}",
         "simpleTimeFormat": "{m}/{d} {h}:{i}",
         "label": {
@@ -47,6 +49,7 @@
         "weekDays": "Mon|Tue|Wed|Thu|Fri|Sat|Sun",
         "months": "Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec",
         "dateFormat": "{m}/{d}/{y}",
+        "monthDateFormat": "{m}/{d}",
         "timeFormat": "{m}/{d}/{y} {h}:{i}:{s}",
         "simpleTimeFormat": "{m}/{d} {h}:{i}",
         "label": {
@@ -69,6 +72,7 @@
         "weekDays": "月|火|水|木|金|土|日",
         "months": "1月|2月|3月|4月|5月|6月|7月|8月|9月|10月|11月|12月",
         "dateFormat": "{y}/{m}/{d}",
+        "monthDateFormat": "{m}/{d}",
         "timeFormat": "{y}/{m}/{d} {h}:{i}:{s}",
         "simpleTimeFormat": "{m}/{d} {h}:{i}",
         "label": {
@@ -91,6 +95,7 @@
         "weekDays": "Seg|Ter|Qua|Qui|Sex|Sáb|Dom",
         "months": "Jan|Fev|Mar|Abr|Mai|Jun|Jul|Ago|Set|Out|Nov|Dez",
         "dateFormat": "{d}/{m}/{y}",
+        "monthDateFormat": "{d}/{m}",
         "timeFormat": "{d}/{m}/{y} {h}:{i}:{s}",
         "simpleTimeFormat": "{d}/{m} {h}:{i}",
         "label": {
@@ -113,6 +118,7 @@
         "weekDays": "Пн|Вт|Ср|Чт|Пт|Сб|Нд",
         "months": "січ|лют|бер|кві|тра|чер|лип|сер|вер|жов|лис|гру",
         "dateFormat": "{d}.{m}.{y}",
+        "monthDateFormat": "{d}.{m}",
         "timeFormat": "{d}.{m}.{y} {h}:{i}:{s}",
         "simpleTimeFormat": "{d}.{m} {h}:{i}",
         "label": {
@@ -135,6 +141,7 @@
         "weekDays": "Lun|Mar|Mié|Jue|Vie|Sáb|Dom",
         "months": "Ene|Feb|Mar|Abr|May|Jun|Jul|Ago|Sep|Oct|Nov|Dic",
         "dateFormat": "{d}/{m}/{y}",
+        "monthDateFormat": "{d}/{m}",
         "timeFormat": "{d}/{m}/{y} {h}:{i}:{s}",
         "simpleTimeFormat": "{d}/{m} {h}:{i}",
         "label": {
@@ -157,6 +164,7 @@
         "weekDays": "Mo|Di|Mi|Do|Fr|Sa|So",
         "months": "Jan|Feb|Mär|Apr|Mai|Jun|Jul|Aug|Sep|Okt|Nov|Dez",
         "dateFormat": "{d}.{m}.{y}",
+        "monthDateFormat": "{d}.{m}",
         "timeFormat": "{d}.{m}.{y} {h}:{i}:{s}",
         "simpleTimeFormat": "{d}.{m}. {h}:{i}",
         "label": {
@@ -179,6 +187,7 @@
         "weekDays": "Lun|Mar|Mer|Jeu|Ven|Sam|Dim",
         "months": "Janv|Févr|Mars|Avr|Mai|Juin|Juil|Août|Sept|Oct|Nov|Déc",
         "dateFormat": "{d}/{m}/{y}",
+        "monthDateFormat": "{d}/{m}",
         "timeFormat": "{d}/{m}/{y} {h}:{i}:{s}",
         "simpleTimeFormat": "{d}/{m} {h}:{i}",
         "label": {
@@ -201,6 +210,7 @@
         "weekDays": "Пн|Вт|Ср|Чт|Пт|Сб|Вс",
         "months": "Янв|Фев|Мар|Апр|Май|Июн|Июл|Авг|Сен|Окт|Ноя|Дек",
         "dateFormat": "{d}.{m}.{y}",
+        "monthDateFormat": "{d}.{m}",
         "timeFormat": "{d}.{m}.{y} {h}:{i}:{s}",
         "simpleTimeFormat": "{d}.{m} {h}:{i}",
         "label": {
@@ -223,6 +233,7 @@
         "weekDays": "الاثنين|الثلاثاء|الأربعاء|الخميس|الجمعة|السبت|الأحد",
         "months": "يناير|فبراير|مارس|أبريل|مايو|يونيو|يوليو|أغسطس|سبتمبر|أكتوبر|نوفمبر|ديسمبر",
         "dateFormat": "{d}/{m}/{y}",
+        "monthDateFormat": "{d}/{m}",
         "timeFormat": "{d} {m} {y}، {h}:{i}:{s}",
         "simpleTimeFormat": "{d} {m}، {h}:{i}",
         "label": {

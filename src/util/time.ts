@@ -178,11 +178,10 @@ export function getMonthTime(target: Date): [Date, Date] {
  * @returns the start of this day
  * @since 1.0.0
  */
-export function getStartOfDay(target: Date) {
-    const currentMonth = target.getMonth()
-    const currentYear = target.getFullYear()
-    const currentDate = target.getDate()
-    return new Date(currentYear, currentMonth, currentDate)
+export function getStartOfDay(target: Date | number) {
+    const date = new Date(target)
+    date.setHours(0, 0, 0, 0)
+    return date
 }
 
 /**
@@ -227,14 +226,15 @@ export function getDayLength(dateStart: Date, dateEnd: Date): number {
  *  []                      if 2022-06-10 00:00:00 to 2022-06-09 00:00:01
  *  [20221110, 20221111]    if 2022-11-10 08:00:00 to 2022-11-11 00:00:01
  */
-export function getAllDatesBetween(dateStart: Date, dateEnd: Date): string[] {
+export function getAllDatesBetween(dateStart: Date, dateEnd: Date, formatter?: Converter<Date, string>): string[] {
     let cursor = new Date(dateStart)
     let dates: string[] = []
+    formatter = formatter ?? formatTimeYMD
     do {
-        dates.push(formatTimeYMD(cursor))
+        dates.push(formatter(cursor))
         cursor = new Date(cursor.getTime() + MILL_PER_DAY)
     } while (cursor.getTime() < dateEnd.getTime())
-    isSameDay(cursor, dateEnd) && dates.push(formatTimeYMD(dateEnd))
+    isSameDay(cursor, dateEnd) && dates.push(formatter(dateEnd))
     return dates
 }
 

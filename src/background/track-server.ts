@@ -98,7 +98,7 @@ async function handleIncVisitEvent(param: { host: string, url: string }, sender:
 function splitRunTime(start: number, end: number): Record<string, number> {
     const res: Record<string, number> = {}
     while (start < end) {
-        const startOfNextDay = getStartOfDay(new Date(start)).getTime() + MILL_PER_DAY
+        const startOfNextDay = getStartOfDay(start).getTime() + MILL_PER_DAY
         const newStart = Math.min(end, startOfNextDay)
         const runTime = newStart - start
         runTime && (res[formatTimeYMD(start)] = runTime)

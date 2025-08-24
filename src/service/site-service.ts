@@ -7,7 +7,7 @@
 
 import { listTabs, sendMsg2Tab } from "@api/chrome/tab"
 import siteDatabase, { type SiteCondition } from "@db/site-database"
-import { groupBy } from "@util/array"
+import { toMap } from "@util/array"
 import { identifySiteKey, SiteMap, supportCategory } from "@util/site"
 import { slicePageResult } from "./components/page-info"
 
@@ -128,7 +128,7 @@ class SiteService {
         if (!keys?.length) return
 
         const allSites = await siteDatabase.getBatch(keys)
-        const siteMap = groupBy(allSites, identifySiteKey, l => l?.[0])
+        const siteMap = toMap(allSites, identifySiteKey)
 
         const toSave = keys.map(k => {
             const s = siteMap[identifySiteKey(k)]
@@ -150,7 +150,7 @@ class SiteService {
      */
     async get(siteKey: timer.site.SiteKey): Promise<timer.site.SiteInfo | undefined> {
         const info = await siteDatabase.get(siteKey)
-        return info || siteKey
+        return info ?? siteKey
     }
 }
 

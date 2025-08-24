@@ -3,7 +3,7 @@ import { getInfoColor, getPrimaryTextColor } from "@pages/util/style"
 import { t } from "@popup/locale"
 import cateService from "@service/cate-service"
 import { mergeDate } from "@service/stat-service/merge/date"
-import { groupBy } from "@util/array"
+import { toMap } from "@util/array"
 import { CATE_NOT_SET_ID } from "@util/site"
 import { isCate } from "@util/stat"
 import { type PieSeriesOption } from "echarts/charts"
@@ -95,7 +95,7 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
         const inactiveColor = getInfoColor()
 
         const cates = await cateService.listAll()
-        const cateNameMap = groupBy(cates, c => c.id, l => l?.[0]?.name)
+        const cateNameMap = toMap(cates, c => c.id, c => c.name)
         cateNameMap[CATE_NOT_SET_ID] = t(msg => msg.shared.cate.notSet)
 
         let legend: LegendComponentOption = {

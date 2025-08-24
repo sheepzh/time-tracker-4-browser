@@ -9,6 +9,7 @@ import { sendMsg2Runtime } from "@api/chrome/runtime"
 import { initLocale } from "@i18n"
 import processLimit from "./limit"
 import printInfo from "./printer"
+import processTimeline from './timeline'
 import NormalTracker from "./tracker/normal"
 import RunTimeTracker from "./tracker/run-time"
 
@@ -72,6 +73,8 @@ async function main() {
     const needPrintInfo = await sendMsg2Runtime('cs.printTodayInfo')
     !!needPrintInfo && printInfo(host)
     await processLimit(url)
+
+    processTimeline()
 
     // Increase visit count at the end
     await sendMsg2Runtime('cs.incVisitCount', { host, url })

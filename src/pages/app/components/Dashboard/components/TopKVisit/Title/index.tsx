@@ -44,7 +44,6 @@ const Title = defineComponent(() => {
                 })}
             </Flex>
             <ElRadioGroup
-                class='dashboard-top-k-chart-filter'
                 size="small"
                 modelValue={filter.topKChartType}
                 onChange={val => filter.topKChartType = val as TopKChartType}

@@ -24,6 +24,13 @@ export type DashboardMessage = {
     monthOnMonth: {
         title: string
     }
+    timeline: {
+        title: string
+        busyScore: string
+        busyScoreDesc: string
+        focusScore: string
+        focusScoreDesc: string
+    }
 }
 
 const _default: Messages<DashboardMessage> = resource

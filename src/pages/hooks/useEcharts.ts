@@ -21,6 +21,10 @@ export abstract class EchartsWrapper<BizOption, EchartsOption> {
      * true if need to re-generate option while size changing, or false
      */
     protected isSizeSensitize: boolean = false
+    /**
+     * true if need to clear all the before series when setOption
+     */
+    protected replaceSeries: boolean = false
     private lastBizOption: BizOption | undefined
 
     init(container: HTMLDivElement) {
@@ -40,7 +44,8 @@ export abstract class EchartsWrapper<BizOption, EchartsOption> {
 
         await this.postChartOption(option)
 
-        this.instance?.setOption(option, { notMerge: false })
+        const replaceMerge = this.replaceSeries ? ['series'] : undefined
+        this.instance?.setOption(option, { notMerge: false, replaceMerge })
     }
 
     protected async postChartOption(option: EchartsOption & BaseEchartsOption) {

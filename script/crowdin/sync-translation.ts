@@ -1,6 +1,6 @@
 
 import { type SourceFilesModel } from "@crowdin/crowdin-api-client"
-import { groupBy } from "@util/array"
+import { toMap } from "@util/array"
 import { exitWith } from "../util/process"
 import { type CrowdinClient, getClientFromEnv } from "./client"
 import {
@@ -14,7 +14,7 @@ const CROWDIN_USER_ID_OF_OWNER = 15266594
 async function processDirMessage(client: CrowdinClient, file: SourceFilesModel.File, message: ItemSet, lang: CrowdinLanguage): Promise<void> {
     console.log(`Start to process dir message: fileName=${file.name}, lang=${lang}`)
     const strings = await client.listStringsByFile(file.id)
-    const stringMap = groupBy(strings, s => s.identifier, l => l[0])
+    const stringMap = toMap(strings, s => s.identifier)
     for (const [identifier, text] of Object.entries(message)) {
         const string = stringMap[identifier]
         if (!string) {
@@ -52,7 +52,7 @@ async function processDir(client: CrowdinClient, dir: Dir, branch: SourceFilesMo
     }
     const files = await client.listFilesByDirectory(directory!.id)
     console.log(`find ${files.length} files of ${dir}`)
-    const fileMap = groupBy(files, f => f.name, l => l[0])
+    const fileMap = toMap(files, f => f.name)
     for (const [fileName, message] of Object.entries(messages)) {
         console.log(`Start to sync translations of ${dir}/${fileName}`)
         if (isIgnored(dir, fileName)) {

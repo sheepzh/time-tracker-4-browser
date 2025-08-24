@@ -36,6 +36,8 @@ declare namespace timer.mq {
         | "cs.idleChange"
         // @since 3.2.0
         | "cs.getRunSites"
+        // @since 3.6.1
+        | "cs.timelineEv"
 
     type ResCode = "success" | "fail" | "ignore"
 

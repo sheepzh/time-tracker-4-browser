@@ -34,6 +34,42 @@ export function groupBy<T, R>(
     return result
 }
 
+export function toMap<E, K extends string | number>(
+    arr: E[],
+    keyFun: (e: E, idx: number) => K | undefined | null,
+): Record<K, E>
+
+export function toMap<E, K extends string | number, V>(
+    arr: E[],
+    keyFun: (e: E, idx: number) => K | undefined | null,
+    valFunc: (t: E, key: K) => V,
+): Record<K, V>
+
+/**
+ * To map
+ *
+ * @param arr original array
+ * @param keyFunc key generator
+ * @param valFunc value generator
+ * @returns k-v map
+ * @since 3.6.1
+ */
+export function toMap<E, K extends string | number, V>(
+    arr: E[],
+    keyFunc: (e: E, idx: number) => K | undefined | null,
+    valFunc?: (t: E, key: K) => V,
+): Record<K, E | V> {
+    const result: Record<string | number, V | E> = {}
+    arr.forEach((e, i) => {
+        const key = keyFunc(e, i)
+        if (key === undefined || key === null) {
+            return
+        }
+        result[key] = valFunc ? valFunc(e, key) : e
+    })
+    return result
+}
+
 /**
  * Rotate the array without new one returned
  *

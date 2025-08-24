@@ -85,7 +85,7 @@ function cvt2SiteInfo(key: timer.site.SiteKey, entry: _Entry | undefined): timer
     const { a, i, c, r } = entry || {}
     const siteInfo: timer.site.SiteInfo = { ...key }
     siteInfo.alias = a
-    siteInfo.cate = c
+    siteInfo.cate = c ?? CATE_NOT_SET_ID
     siteInfo.iconUrl = i
     siteInfo.run = !!r
     return siteInfo

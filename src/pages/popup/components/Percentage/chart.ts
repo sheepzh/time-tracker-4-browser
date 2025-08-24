@@ -2,7 +2,7 @@ import { createTab } from "@api/chrome/tab"
 import { getCssVariable, getPrimaryTextColor, getSecondaryTextColor } from "@pages/util/style"
 import { calJumpUrl } from "@popup/common"
 import { t } from "@popup/locale"
-import { groupBy, sum } from "@util/array"
+import { sum, toMap } from "@util/array"
 import { IS_SAFARI } from "@util/constant/environment"
 import { isRtl } from "@util/document"
 import { generateSiteLabel } from "@util/site"
@@ -199,7 +199,7 @@ type CustomOption = Pick<
 
 export function generateSiteSeriesOption(rows: timer.stat.Row[], result: PercentageResult, customOption: CustomOption): PieSeriesOption {
     const { displaySiteName, query: { dimension }, itemCount, groups } = result || {}
-    const groupMap = groupBy(groups, g => g.id, l => l[0])
+    const groupMap = toMap(groups, g => g.id)
 
     const chartRows = cvt2ChartRows(rows, dimension, itemCount)
     const iconRich: PieLabelRichOption = {}

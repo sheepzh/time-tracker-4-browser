@@ -12,6 +12,7 @@ import optionHolder from "@service/components/option-holder"
 import whitelistHolder from "@service/components/whitelist-holder"
 import limitService from "@service/limit-service"
 import siteService from "@service/site-service"
+import { saveTimelineEvent } from '@service/timeline-service'
 import { getAppPageUrl } from "@util/constant/url"
 import { extractFileHost, extractHostname } from "@util/pattern"
 import badgeManager from "./badge-manager"
@@ -73,4 +74,5 @@ export default function init(dispatcher: MessageDispatcher) {
             const exist = await siteService.get(site)
             return exist?.run ? site : null
         })
+        .register<timer.timeline.Event, void>('cs.timelineEv', ev => saveTimelineEvent(ev))
 }

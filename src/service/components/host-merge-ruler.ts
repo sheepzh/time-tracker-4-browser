@@ -53,7 +53,7 @@ function convert(dbItem: timer.merge.Rule): RegRuleItem | [string, string | numb
     }
 }
 
-export default class CustomizedHostMergeRuler implements timer.merge.Merger {
+export default class CustomizedHostMergeRuler {
     private noRegMergeRules: { [origin: string]: string | number } = {}
 
     private regulars: RegRuleItem[] = []
