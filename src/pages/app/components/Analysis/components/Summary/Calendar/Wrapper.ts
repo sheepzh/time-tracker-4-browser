@@ -9,7 +9,7 @@ import { periodFormatter } from "@app/util/time"
 import { EchartsWrapper } from "@hooks/useEcharts"
 import { getRegularTextColor, getSecondaryTextColor } from "@pages/util/style"
 import weekHelper from "@service/components/week-helper"
-import { groupBy, rotate } from "@util/array"
+import { groupBy, rotate, toMap } from "@util/array"
 import { formatTime, getAllDatesBetween, MILL_PER_WEEK, parseTime } from "@util/time"
 import type {
     ComposeOption,
@@ -156,7 +156,7 @@ class Wrapper extends EchartsWrapper<BizOption, EcOption> {
         const endTime = new Date()
         const [startTime,] = await weekHelper.getWeekDate(endTime.getTime() - MILL_PER_WEEK * (colNum - 1))
         const allDates = getAllDatesBetween(startTime, endTime)
-        const value = groupBy(rows, r => r.date, l => l?.[0]?.focus)
+        const value = toMap(rows, r => r.date, r => r.focus)
         const data: _Value[] = []
         allDates.forEach((date, index) => {
             const dailyMills = value[date] || 0

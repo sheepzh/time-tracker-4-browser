@@ -13,13 +13,15 @@ import Flex from "@pages/components/Flex"
 import metaService from "@service/meta-service"
 import { REVIEW_PAGE } from "@util/constant/url"
 import { ElRow, ElScrollbar } from "element-plus"
-import { computed, defineComponent, FunctionalComponent } from "vue"
+import { defineComponent, FunctionalComponent } from "vue"
 import { useRouter } from "vue-router"
 import ContentContainer from "../common/ContentContainer"
 import Calendar from "./components/Calendar"
 import Indicator from "./components/Indicator"
 import MonthOnMonth from "./components/MonthOnMonth"
+import Timeline from './components/Timeline'
 import TopKVisit from "./components/TopKVisit"
+import "./dashboard.sass"
 import DashboardCard from './DashboardCard'
 
 const ROW_GUTTER = 15
@@ -47,7 +49,6 @@ const _default = defineComponent(() => {
 
     const mediaSize = useMediaSize()
     const isXs = useXsState()
-    const showCalendar = computed(() => mediaSize.value >= MediaSize.lg)
 
     return () => (
         <ElScrollbar>
@@ -76,9 +77,12 @@ const _default = defineComponent(() => {
                                 <TopKVisit />
                             </DashboardCard>
                         </>}
-                    <DashboardCard v-show={showCalendar.value} span={24}>
-                        <Calendar />
-                    </DashboardCard>
+                    {mediaSize.value >= MediaSize.lg && <>
+                        <DashboardCard span={24} height={290}>
+                            <Calendar />
+                        </DashboardCard>
+                        <Timeline height={260} />
+                    </>}
                 </ElRow>
                 <Flex v-show={showHelp || showRate.value}>
                     {showRate.value ? (

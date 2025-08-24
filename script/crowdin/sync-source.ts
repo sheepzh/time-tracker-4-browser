@@ -1,5 +1,5 @@
 import { type SourceFilesModel, type SourceStringsModel } from "@crowdin/crowdin-api-client"
-import { groupBy } from "@util/array"
+import { toMap } from "@util/array"
 import { type CrowdinClient, getClientFromEnv, type NameKey } from "./client"
 import {
     ALL_DIRS,
@@ -33,7 +33,7 @@ async function processStrings(
     fileContent: ItemSet,
 ) {
     const existStrings = await client.listStringsByFile(existFile.id)
-    const existStringsKeyMap = groupBy(existStrings, s => s.identifier, l => l[0])
+    const existStringsKeyMap = toMap(existStrings, s => s.identifier)
     const strings2Delete: SourceStringsModel.String[] = []
     const strings2Create: ItemSet = {}
     const strings2Update: ItemSet = {}
@@ -70,7 +70,7 @@ async function processByDir(client: CrowdinClient, dir: Dir, branch: SourceFiles
     // 3. list all files in directory
     const existFiles = await client.listFilesByDirectory(directory.id)
     console.log("Exists file count: " + existFiles.length)
-    const existFileNameMap = groupBy(existFiles, f => f.name, l => l[0])
+    const existFileNameMap = toMap(existFiles, f => f.name)
     // 4. create new files
     for (const [fileName, msg] of Object.entries(messages)) {
         if (isIgnored(dir, fileName)) {

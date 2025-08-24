@@ -49,3 +49,5 @@ declare type Getter<T> = () => T | Promise<T>
 declare type NoArgCallback = () => void
 
 declare type ArgCallback<T> = (val: T) => void
+
+declare type Converter<T, R> = (val: T) => R

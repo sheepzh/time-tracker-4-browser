@@ -31,6 +31,7 @@ function optionOf(lastPeriodItems: Row[], thisPeriodItems: Row[], domWidth: numb
         tooltip: {
             trigger: 'axis',
             axisPointer: { type: 'shadow' },
+            borderWidth: 0,
             formatter(params: TopLevelFormatterParams) {
                 if (!Array.isArray(params)) return ''
                 const [thisItem, lastItem] = params.map(v => v.data as _Value).map(v => v.row) || []

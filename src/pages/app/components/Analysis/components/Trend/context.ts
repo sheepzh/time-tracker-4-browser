@@ -7,7 +7,7 @@
 
 import { cvt2LocaleTime } from "@app/util/time"
 import { useProvide, useProvider } from "@hooks"
-import { groupBy } from "@util/array"
+import { toMap } from "@util/array"
 import { daysAgo, getAllDatesBetween, getDayLength, MILL_PER_DAY } from "@util/time"
 import { computed, onMounted, ref, watch, type Ref } from "vue"
 import { useAnalysisRows } from "../../context"
@@ -56,12 +56,12 @@ function computeIndicatorSet(
     const allDates = start && end ? getAllDatesBetween(start, end) : []
     if (!rows) {
         // No data
-        return [undefined, groupBy(allDates, date => date, _l => undefined)]
+        return [undefined, toMap(allDates, date => date, _l => undefined)]
     }
 
     const days = allDates.length
     const periodRows = rows.filter(({ date }) => allDates.includes(date ?? ''))
-    const periodRowMap = groupBy(periodRows, r => r.date, a => a[0])
+    const periodRowMap = toMap(periodRows, r => r.date)
     let focusMax: DailyIndicator
     let visitMax: DailyIndicator
     let focusTotal: number, visitTotal: number, activeDay: number

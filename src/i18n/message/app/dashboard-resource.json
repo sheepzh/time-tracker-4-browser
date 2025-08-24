@@ -15,6 +15,13 @@
         },
         "monthOnMonth": {
             "title": "浏览时间环比趋势"
+        },
+        "timeline": {
+            "title": "近 {n} 天时间线",
+            "busyScore": "忙碌指数",
+            "busyScoreDesc": "与每小时浏览的总时长和网站数量有关，详细计算公式请查看源代码",
+            "focusScore": "专注指数",
+            "focusScoreDesc": "与同一网站连续浏览总时长有关，详细计算公式请查看源代码"
         }
     },
     "zh_TW": {
@@ -51,6 +58,13 @@
         },
         "monthOnMonth": {
             "title": "Browsing time month-on-month trend"
+        },
+        "timeline": {
+            "title": "Timeline of the recent {n} days",
+            "busyScore": "Busy Score",
+            "busyScoreDesc": "Related to the total browsing time and the number of websites per hour. See the source code for calculation formula",
+            "focusScore": "Focus Score",
+            "focusScoreDesc": "Related to the total time of continuous browsing of the same website. See the source code for calculation formula"
         }
     },
     "ja": {

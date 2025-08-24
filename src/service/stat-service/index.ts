@@ -10,7 +10,7 @@ import mergeRuleDatabase from "@db/merge-rule-database"
 import cateDatabase from "@db/site-cate-database"
 import siteDatabase from "@db/site-database"
 import statDatabase, { type StatCondition } from "@db/stat-database"
-import { groupBy } from "@util/array"
+import { toMap } from "@util/array"
 import { judgeVirtualFast } from "@util/pattern"
 import { CATE_NOT_SET_ID, distinctSites, SiteMap } from "@util/site"
 import { isGroup, isNormalSite, isSite } from "@util/stat"
@@ -275,7 +275,7 @@ class StatServiceImpl implements StatService {
         } = param ?? {}
         const list = await statDatabase.selectGroup({ date })
         const groups = await listAllGroups()
-        const groupMap = groupBy(groups, g => g.id, l => l[0])
+        const groupMap = toMap(groups, g => g.id)
         let rows: timer.stat.GroupRow[] = list.map(({ date, time, focus, run, host }) => {
             const groupKey = parseInt(host)
             const { title, color } = groupMap[groupKey] ?? {}

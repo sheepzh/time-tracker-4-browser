@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { allMatch, anyMatch, average, groupBy, rotate, sum } from "@util/array"
+import { allMatch, anyMatch, average, groupBy, rotate, sum, toMap } from "@util/array"
 
 describe("util/array", () => {
 
@@ -65,5 +65,69 @@ describe("util/array", () => {
         const arr = [100, 20, 30]
         expect(anyMatch(arr, a => a >= 100)).toBeTruthy()
         expect(anyMatch(arr, a => a > 100)).toBeFalsy()
+    })
+})
+
+describe('toMap', () => {
+
+    const users = [
+        { id: 1, name: 'Alice', role: 'admin' },
+        { id: 2, name: 'Bob', role: 'user' },
+        { id: 3, name: 'Charlie', role: 'guest' },
+    ]
+
+    const products = [
+        { id: 'p1', name: 'Laptop', price: 1200 },
+        { id: 'p2', name: 'Mouse', price: 25 },
+        { id: 'p3', name: 'Keyboard', price: 75 },
+    ]
+
+    test('should create a map with array elements as values when valFunc is not provided', () => {
+        const userMap = toMap(users, u => u.id)
+        expect(userMap).toEqual({
+            1: { id: 1, name: 'Alice', role: 'admin' },
+            2: { id: 2, name: 'Bob', role: 'user' },
+            3: { id: 3, name: 'Charlie', role: 'guest' },
+        })
+    })
+
+    test('should create a map with transformed values when valFunc is provided', () => {
+        const userRolesMap = toMap(users, u => u.id, u => u.role)
+        expect(userRolesMap).toEqual({
+            1: 'admin',
+            2: 'user',
+            3: 'guest',
+        })
+    })
+
+    test('should handle string keys correctly', () => {
+        const productMap = toMap(products, p => p.id)
+
+        expect(productMap).toEqual({
+            'p1': { id: 'p1', name: 'Laptop', price: 1200 },
+            'p2': { id: 'p2', name: 'Mouse', price: 25 },
+            'p3': { id: 'p3', name: 'Keyboard', price: 75 },
+        })
+    })
+
+    test('should return an empty map for an empty array', () => {
+        const emptyArray: any[] = []
+        const emptyMap = toMap(emptyArray, i => i.id)
+        expect(emptyMap).toEqual({})
+    })
+
+    test('should overwrite existing keys with later elements', () => {
+        const usersWithDuplicateKey = [
+            { id: 1, name: 'Alice', role: 'admin' },
+            { id: 2, name: 'Bob', role: 'user' },
+            { id: 1, name: 'John', role: 'guest' }, // ID 1 重复
+        ]
+
+        const userMap = toMap(usersWithDuplicateKey, u => u.id)
+
+        expect(userMap).toEqual({
+            1: { id: 1, name: 'John', role: 'guest' },
+            2: { id: 2, name: 'Bob', role: 'user' },
+        })
     })
 })

@@ -2,7 +2,7 @@ import { useLocalStorage, useRequest } from "@hooks"
 import { useProvide, useProvider } from "@hooks/useProvider"
 import cateService from "@service/cate-service"
 import optionService from "@service/option-service"
-import { groupBy } from "@util/array"
+import { toMap } from "@util/array"
 import { isDarkMode, toggle } from "@util/dark-mode"
 import { CATE_NOT_SET_ID } from "@util/site"
 import { reactive, type Reactive, ref, type Ref, toRaw, watch } from "vue"
@@ -40,7 +40,7 @@ export const initPopupContext = (): Ref<number> => {
 
     const { data: cateNameMap } = useRequest(async () => {
         const categories = await cateService.listAll()
-        const result = groupBy(categories || [], c => c?.id, l => l?.[0]?.name)
+        const result = toMap(categories ?? [], c => c.id, c => c.name)
         result[CATE_NOT_SET_ID] = t(msg => msg.shared.cate.notSet)
         return result
     }, { defaultValue: {} })

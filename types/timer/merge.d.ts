@@ -6,13 +6,10 @@ declare namespace timer.merge {
         origin: string
         /**
          * The merge result
-         * 
+         *
          * + Empty string means equals to the origin host
          * + Number means the count of kept dots, must be natural number (int & >=0)
          */
         merged: string | number
-    }
-    interface Merger {
-        merge(host: string): string
     }
 }

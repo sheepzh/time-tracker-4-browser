@@ -45,7 +45,10 @@ const fetchData = async (): Promise<[thisMonth: Row[], lastMonth: Row[]]> => {
 }
 
 const _default = defineComponent(() => {
-    const { elRef } = useEcharts(Wrapper, fetchData)
+    const { elRef } = useEcharts(Wrapper, fetchData, {
+        // force to fix the size is different from the parent
+        afterInit: ew => ew.resize(),
+    })
     return () => (
         <Flex height="100%" column gap={4}>
             <ChartTitle text={t(msg => msg.dashboard.monthOnMonth.title, { k: TOP_NUM })} />
