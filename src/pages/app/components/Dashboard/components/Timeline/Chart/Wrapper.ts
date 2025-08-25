@@ -16,7 +16,7 @@ export type BizData = {
     dates: string[]
 }
 
-type EcOption = ComposeOption<
+export type EcOption = ComposeOption<
     | CustomSeriesOption
     | GridComponentOption
     | TooltipComponentOption
