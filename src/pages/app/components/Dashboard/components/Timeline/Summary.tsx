@@ -1,30 +1,23 @@
 import { t } from '@app/locale'
 import { InfoFilled } from '@element-plus/icons-vue'
+import { useShadow } from '@hooks/index'
 import Flex from '@pages/components/Flex'
 import { groupBy } from '@util/array'
 import { MILL_PER_HOUR, MILL_PER_MINUTE } from '@util/time'
 import { ElIcon, ElRate, ElText, ElTooltip } from 'element-plus'
-import { computed, defineComponent, FunctionalComponent } from 'vue'
-
-type ScoreValue = 1 | 2 | 3 | 4 | 5
+import { computed, defineComponent, watch } from 'vue'
 
 type AnalysisResult = {
-    busy: ScoreValue
-    focus: ScoreValue
+    busy: number
+    focus: number
 }
+
+const MAX_SCORE = 5
 
 const defaultResult = (): AnalysisResult => ({
     busy: 1,
     focus: 1,
 })
-
-const cvtRaw2Score = (raw: number): ScoreValue => {
-    if (raw < 1.5) return 1
-    else if (raw < 2.5) return 2
-    else if (raw < 3.5) return 3
-    else if (raw < 4.5) return 4
-    else return 5
-}
 
 const computeSessionScore = (ticks: timer.timeline.Tick[], hourCount: number) => {
     let continuousSessions = 0
@@ -50,7 +43,7 @@ const computeSessionScore = (ticks: timer.timeline.Tick[], hourCount: number) =>
     if (currentSession.length > 1) continuousSessions++
 
     const sessionDensity = continuousSessions / Math.max(1, hourCount / 10)
-    return Math.min(sessionDensity, 1)
+    return Math.min(sessionDensity, MAX_SCORE)
 }
 
 const analyze = (ticks: timer.timeline.Tick[]): AnalysisResult => {
@@ -69,39 +62,42 @@ const analyze = (ticks: timer.timeline.Tick[]): AnalysisResult => {
 
     // busyScore = timeDensity * 0.6 + hostCountPerHour * 0.4
     const timeDensity = totalActiveTime / totalRange
+    const timeDensityScore = Math.min(timeDensity / 0.3, MAX_SCORE)
     const maxHostCount = Object.values(hourlyData).map(hosts => hosts.size).sort((a, b) => b - a)[0]!
-    const busyRawScore = (timeDensity * 0.6 + (Math.min(maxHostCount / 10, 1) * 0.4)) * 5
+    const hostMaxScore = Math.min(maxHostCount / 4, MAX_SCORE)
+    const busy = timeDensityScore * 0.6 + hostMaxScore * 0.4
 
     // focusScore = duration * 0.7 + session * 0.3
     const avgDuration = totalActiveTime / ticks.length
-    const avgDurationScore = Math.min(avgDuration / (2 * MILL_PER_MINUTE), 1)
+    const avgDurationScore = Math.min(avgDuration / (2 * MILL_PER_MINUTE), MAX_SCORE)
     const sessionScore = computeSessionScore(ticks, Object.keys(hourlyData).length)
-    const focusRawScore = (avgDurationScore * 0.7 + sessionScore * 0.3) * 5
+    const focus = avgDurationScore * 0.7 + sessionScore * 0.3
 
-    return {
-        busy: cvtRaw2Score(busyRawScore),
-        focus: cvtRaw2Score(focusRawScore),
-    }
+    return { busy, focus }
 }
 
-const Score: FunctionalComponent<{ score: ScoreValue, label: string, desc: string }> = ({ score, label, desc }) => (
-    <Flex align='center' column justify='center' gap={10}>
-        <ElText>
-            {`${label} `}
-            <ElTooltip content={desc}>
-                <ElText size='small'>
-                    <ElIcon>
-                        <InfoFilled />
-                    </ElIcon>
-                </ElText>
-            </ElTooltip>
-        </ElText>
-        <ElRate disabled modelValue={score} />
-    </Flex>
-)
+const Score = defineComponent<{ score: number, label: string, desc: string }>(props => {
+    const [score] = useShadow(() => props.score)
+    return () => (
+        <Flex align='center' column justify='center' gap={10}>
+            <ElText>
+                {`${props.label} `}
+                <ElTooltip content={props.desc}>
+                    <ElText size='small'>
+                        <ElIcon>
+                            <InfoFilled />
+                        </ElIcon>
+                    </ElText>
+                </ElTooltip>
+            </ElText>
+            <ElRate disabled modelValue={parseFloat(score.value.toFixed(1))} showScore />
+        </Flex>
+    )
+}, { props: ['desc', 'label', 'score'] })
 
 const Summary = defineComponent<{ data: timer.timeline.Tick[] }>(props => {
     const ticks = computed(() => analyze(props.data))
+    watch([ticks], () => console.log(ticks.value))
 
     return () => (
         <Flex column justify='center' gap={30} height='100%'>

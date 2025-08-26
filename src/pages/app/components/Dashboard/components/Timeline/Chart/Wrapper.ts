@@ -144,6 +144,18 @@ const generateSeries = (biz: BizData, legendColors: Record<string, string>): EcO
     })
 }
 
+const calcDataZoomDefaultRange = (activities: Activity[]): [start: number | undefined, end: number | undefined] => {
+    if (!activities.length) return [undefined, undefined]
+    let min = activities.map(a => a.start).reduce((a, b) => b < a ? b : a)
+    let max = activities.map(({ start, duration }) => start + duration).reduce((a, b) => b > a ? b : a)
+
+    const interval = 30 * MILL_PER_MINUTE
+    min = Math.floor(min / interval) * interval
+    max = Math.ceil(max / interval) * interval
+
+    return [min, max]
+}
+
 class Wrapper extends EchartsWrapper<BizData, EcOption> {
     protected replaceSeries: boolean = true
 
@@ -163,6 +175,8 @@ class Wrapper extends EchartsWrapper<BizData, EcOption> {
             return name ? `${name} (${key})` : key
         }
 
+        const [zoomStart, zoomEnd] = calcDataZoomDefaultRange(bizData.activities)
+
         return {
             grid: {
                 left: gridLeft, width: domWidth - gridLeft - LEGEND_WIDTH,
@@ -175,6 +189,8 @@ class Wrapper extends EchartsWrapper<BizData, EcOption> {
                 height: 20,
                 labelFormatter: '',
                 handleStyle: { opacity: 0 },
+                startValue: zoomStart,
+                endValue: zoomEnd,
             },
             yAxis: {
                 type: 'category',

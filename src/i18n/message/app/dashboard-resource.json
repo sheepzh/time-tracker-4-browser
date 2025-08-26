@@ -61,9 +61,9 @@
         },
         "timeline": {
             "title": "Timeline of the recent {n} days",
-            "busyScore": "Busy Score",
+            "busyScore": "Busyness",
             "busyScoreDesc": "Related to the total browsing time and the number of websites per hour. See the source code for calculation formula",
-            "focusScore": "Focus Score",
+            "focusScore": "Focusness",
             "focusScoreDesc": "Related to the total time of continuous browsing of the same website. See the source code for calculation formula"
         }
     },
