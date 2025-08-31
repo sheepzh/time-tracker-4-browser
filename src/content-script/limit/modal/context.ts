@@ -6,7 +6,18 @@ import { type LimitReason } from "../common"
 
 const REASON_KEY = "display_reason"
 const RULE_KEY = "display_rule"
+const GLOBAL_KEY = "delay_global"
 const DELAY_HANDLER_KEY = 'delay_handler'
+
+type GlobalParam = {
+    url: string
+}
+
+export const provideGlobalParam = (app: App<Element>, gp: GlobalParam) => {
+    app.provide(GLOBAL_KEY, gp)
+}
+
+export const useGlobalParam = () => inject(GLOBAL_KEY) as GlobalParam
 
 export const provideReason = (app: App<Element>): Ref<LimitReason | undefined> => {
     const reason = ref<LimitReason>()

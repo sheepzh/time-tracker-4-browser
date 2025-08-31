@@ -1,4 +1,7 @@
-import { calcTimeState, cleanCond, dateMinute2Idx, hasLimited, hasWeeklyLimited, isEffective, isEnabledAndEffective, matches, meetLimit, meetTimeLimit, period2Str } from "@util/limit"
+import {
+    calcTimeState, cleanCond, dateMinute2Idx, hasLimited, hasWeeklyLimited, isEffective, isEnabledAndEffective,
+    matchCond, matches, meetLimit, meetTimeLimit, period2Str
+} from "@util/limit"
 
 describe('util/limit', () => {
     test('cleanCond', () => {
@@ -16,6 +19,13 @@ describe('util/limit', () => {
         expect(matches(cond, 'http://hk.google.com')).toBe(true)
         expect(matches(cond, 'http://github.com/sheepzh/timer')).toBe(true)
         expect(matches(cond, 'http://github.com')).toBe(false)
+    })
+
+    test('matchCond', () => {
+        const cond = ['www.baidu.com', '*.google.com', 'github.com/sheepzh', 'github.com']
+        expect(matchCond(cond, 'http://www.baidu.com')).toEqual(['www.baidu.com'])
+        expect(matchCond(cond, 'https://github.com/sheepzh/time-tracker-for-browser')).toEqual(['github.com/sheepzh', 'github.com'])
+        expect(matchCond(cond, 'https://www.github.com')).toEqual([])
     })
 
     test('meetLimit', () => {

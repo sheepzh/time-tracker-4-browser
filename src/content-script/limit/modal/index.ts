@@ -5,7 +5,7 @@ import { createApp, Ref, type App } from 'vue'
 import { exitFullscreen, isSameReason, type LimitReason, type MaskModal } from '../common'
 import { TAG_NAME, type RootElement } from '../element'
 import Main from './Main'
-import { provideDelayHandler, provideReason } from './context'
+import { provideDelayHandler, provideGlobalParam, provideReason } from './context'
 
 function pauseAllVideo(): void {
     const elements = document?.getElementsByTagName('video')
@@ -156,6 +156,7 @@ class ModalInstance implements MaskModal {
     private initApp() {
         this.app = createApp(Main)
         this.reason = provideReason(this.app)
+        provideGlobalParam(this.app, { url: this.url })
         provideDelayHandler(this.app, () => this.delayHandlers?.forEach(h => h?.()))
         this.body && this.app.mount(this.body)
     }

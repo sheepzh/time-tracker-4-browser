@@ -14,10 +14,16 @@ export const cleanCond = (origin: string | undefined): string | undefined => {
     return res || undefined
 }
 
+const matchUrl = (cond: string, url: string): boolean => {
+    return new RegExp(`^.*//${cond.split('*').join('.*')}`).test(url)
+}
+
 export function matches(cond: timer.limit.Item['cond'], url: string): boolean {
-    return cond?.some?.(
-        c => new RegExp(`^.*//${(c || '').split('*').join('.*')}`).test(url)
-    )
+    return cond.some(c => matchUrl(c, url))
+}
+
+export function matchCond(cond: timer.limit.Item['cond'], url: string): string[] {
+    return cond.filter(c => matchUrl(c, url))
 }
 
 export const meetLimit = (limit: number | undefined, value: number | undefined): boolean => {

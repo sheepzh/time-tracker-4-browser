@@ -1,11 +1,20 @@
 import { t } from "@cs/locale"
 import { useRequest } from "@hooks/useRequest"
 import Flex from "@pages/components/Flex"
-import { meetLimit, meetTimeLimit, period2Str } from "@util/limit"
+import { matchCond, meetLimit, meetTimeLimit, period2Str } from "@util/limit"
 import { formatPeriodCommon, MILL_PER_SECOND } from "@util/time"
 import { ElDescriptions, ElDescriptionsItem, ElTag } from "element-plus"
 import { computed, defineComponent } from "vue"
-import { useReason, useRule } from "../context"
+import { useGlobalParam, useReason, useRule } from "../context"
+
+const renderBaseItems = (rule: timer.limit.Rule | null, url: string) => <>
+    <ElDescriptionsItem label={t(msg => msg.limit.item.name)} labelAlign="right">
+        {rule?.name ?? '-'}
+    </ElDescriptionsItem>
+    <ElDescriptionsItem label={t(msg => msg.limit.item.condition)} labelAlign='right'>
+        {matchCond(rule?.cond ?? [], url)?.join(', ')}
+    </ElDescriptionsItem>
+</>
 
 const TimeDescriptions = defineComponent({
     props: {
@@ -21,15 +30,14 @@ const TimeDescriptions = defineComponent({
     setup(props) {
         const rule = useRule()
         const reason = useReason()
+        const { url } = useGlobalParam()
 
         const timeLimited = computed(() => meetTimeLimit(props.time ?? 0, props.waste ?? 0, !!reason.value?.allowDelay, reason.value?.delayCount ?? 0))
         const visitLimited = computed(() => meetLimit(props.count ?? 0, props.visit ?? 0))
 
         return () => (
             <ElDescriptions border column={1} labelWidth={130}>
-                <ElDescriptionsItem label={t(msg => msg.limit.item.name)} labelAlign="right">
-                    {rule.value?.name ?? '-'}
-                </ElDescriptionsItem>
+                {renderBaseItems(rule.value, url)}
                 <ElDescriptionsItem label={props.ruleLabel} labelAlign="right">
                     <Flex gap={5} width={200}>
                         <ElTag v-show={!!props.time}>{formatPeriodCommon((props.time ?? 0) * MILL_PER_SECOND)}</ElTag>
@@ -67,6 +75,7 @@ const TimeDescriptions = defineComponent({
 const _default = defineComponent(() => {
     const reason = useReason()
     const rule = useRule()
+    const { url } = useGlobalParam()
     const type = computed(() => reason.value?.type)
 
     const { data: browsingTime, refresh: refreshBrowsingTime } = useRequest(() => {
@@ -98,9 +107,7 @@ const _default = defineComponent(() => {
                 dataLabel={t(msg => msg.calendar.range.thisWeek)}
             />
             <ElDescriptions border column={1} v-show={type.value === 'VISIT'}>
-                <ElDescriptionsItem label={t(msg => msg.limit.item.name)} labelAlign="right">
-                    {rule.value?.name || '-'}
-                </ElDescriptionsItem>
+                {renderBaseItems(rule.value, url)}
                 <ElDescriptionsItem label={t(msg => msg.limit.item.visitTime)} labelAlign="right">
                     {formatPeriodCommon((rule.value?.visitTime ?? 0) * MILL_PER_SECOND) || '-'}
                 </ElDescriptionsItem>
@@ -114,9 +121,7 @@ const _default = defineComponent(() => {
                 </ElDescriptionsItem>
             </ElDescriptions>
             <ElDescriptions border column={1} v-show={type.value === 'PERIOD'}>
-                <ElDescriptionsItem label={t(msg => msg.limit.item.name)} labelAlign="right">
-                    {rule.value?.name || '-'}
-                </ElDescriptionsItem>
+                {renderBaseItems(rule.value, url)}
                 <ElDescriptionsItem label={t(msg => msg.limit.item.period)} labelAlign="right">
                     {
                         rule.value?.periods?.length
