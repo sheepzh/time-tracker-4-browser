@@ -170,10 +170,8 @@
     "agency": 1,
     "ai": {
         "c": {
-            "caffeine": 1,
             "com": 1,
             "framer": 1,
-            "id": 1,
             "net": 1,
             "off": 1,
             "org": 1,
@@ -325,6 +323,11 @@
             "nyat": 1,
             "on-fleek": 1,
             "ondigitalocean": 1,
+            "railway": {
+                "c": {
+                    "up": 1
+                }
+            },
             "replit": {
                 "c": {
                     "id": 1
@@ -361,6 +364,7 @@
                 }
             },
             "vercel": 1,
+            "wal": 1,
             "wdh": 1,
             "web": 1,
             "windsurf": 1,
@@ -514,12 +518,7 @@
                 "c": {
                     "act": 1,
                     "catholic": 1,
-                    "nsw": {
-                        "c": {
-                            "schools": 1
-                        },
-                        "l": 1
-                    },
+                    "nsw": 1,
                     "nt": 1,
                     "qld": 1,
                     "sa": 1,
@@ -536,6 +535,12 @@
                     "tas": 1,
                     "vic": 1,
                     "wa": 1
+                },
+                "l": 1
+            },
+            "hrsn": {
+                "c": {
+                    "vps": 1
                 },
                 "l": 1
             },
@@ -1444,6 +1449,7 @@
             "am": 1,
             "anani": 1,
             "aparecida": 1,
+            "api": 1,
             "app": 1,
             "arq": 1,
             "art": 1,
@@ -1537,6 +1543,7 @@
                 "l": 1
             },
             "gru": 1,
+            "ia": 1,
             "imb": 1,
             "ind": 1,
             "inf": 1,
@@ -1632,6 +1639,7 @@
             "sjc": 1,
             "slg": 1,
             "slz": 1,
+            "social": 1,
             "sorocaba": 1,
             "srv": 1,
             "taxi": 1,
@@ -1649,6 +1657,7 @@
             "vix": 1,
             "vlog": 1,
             "wiki": 1,
+            "xyz": 1,
             "zlg": 1
         },
         "l": 1
@@ -1996,6 +2005,7 @@
                     "it1": 1
                 }
             },
+            "jote": 1,
             "jotelulu": 1,
             "keliweb": {
                 "c": {
@@ -2371,6 +2381,7 @@
                 "l": 1
             },
             "gov": 1,
+            "hidns": 1,
             "leadpages": 1,
             "lpages": 1,
             "mil": 1,
@@ -2389,7 +2400,13 @@
                 },
                 "l": 1
             },
-            "supabase": 1,
+            "supabase": {
+                "c": {
+                    "realtime": 1,
+                    "storage": 1
+                },
+                "l": 1
+            },
             "xmit": {
                 "c": {
                     "*": 1
@@ -4218,6 +4235,8 @@
                 }
             },
             "on-aptible": 1,
+            "on-forge": 1,
+            "on-vapor": 1,
             "onfabrica": 1,
             "onrender": 1,
             "onthewifi": 1,
@@ -4269,6 +4288,16 @@
             "qa2": 1,
             "qbuser": 1,
             "qualifioapp": 1,
+            "qualyhqpartner": {
+                "c": {
+                    "*": 1
+                }
+            },
+            "qualyhqportal": {
+                "c": {
+                    "*": 1
+                }
+            },
             "quicksytes": 1,
             "quipelements": {
                 "c": {
@@ -4312,6 +4341,8 @@
                     }
                 }
             },
+            "same-app": 1,
+            "same-preview": 1,
             "saves-the-whales": 1,
             "scrysec": 1,
             "securitytactics": 1,
@@ -4575,6 +4606,7 @@
                 }
             },
             "e4": 1,
+            "gov": 1,
             "metacentrum": {
                 "c": {
                     "cloud": {
@@ -4616,6 +4648,7 @@
             "4lima": 1,
             "barsy": 1,
             "bplaced": 1,
+            "co": 1,
             "com": 1,
             "community-pro": 1,
             "cosidns": {
@@ -4799,6 +4832,12 @@
             "deno": 1,
             "deno-staging": 1,
             "deta": 1,
+            "erp": {
+                "c": {
+                    "web": 1
+                },
+                "l": 1
+            },
             "evervault": {
                 "c": {
                     "relay": 1
@@ -5498,7 +5537,6 @@
     "giving": 1,
     "gl": {
         "c": {
-            "biz": 1,
             "co": 1,
             "com": 1,
             "edu": 1,
@@ -6064,7 +6102,6 @@
             "hostyhosting": 1,
             "hypernode": 1,
             "hzc": 1,
-            "icp-api": 1,
             "icp0": {
                 "c": {
                     "raw": {
@@ -9391,7 +9428,6 @@
             "edu": 1,
             "filegear": 1,
             "filegear-sg": 1,
-            "glitch": 1,
             "gov": 1,
             "hopto": 1,
             "i234": 1,
@@ -9889,6 +9925,11 @@
             "homelinux": 1,
             "homeunix": 1,
             "hu": 1,
+            "icp": {
+                "c": {
+                    "*": 1
+                }
+            },
             "in": 1,
             "in-dsl": 1,
             "in-the-band": 1,
@@ -10064,7 +10105,8 @@
                 },
                 "l": 1
             },
-            "za": 1
+            "za": 1,
+            "zabc": 1
         },
         "l": 1
     },
@@ -11994,7 +12036,6 @@
     "realty": 1,
     "recipes": 1,
     "red": 1,
-    "redstone": 1,
     "redumbrella": 1,
     "rehab": 1,
     "reise": 1,
@@ -12466,6 +12507,7 @@
                 }
             },
             "preview": 1,
+            "sourcecraft": 1,
             "square": 1,
             "srht": 1,
             "tst": {
@@ -13293,8 +13335,7 @@
             },
             "de": {
                 "c": {
-                    "cc": 1,
-                    "lib": 1
+                    "cc": 1
                 },
                 "l": 1
             },
@@ -13797,7 +13838,12 @@
     "viking": 1,
     "villas": 1,
     "vin": 1,
-    "vip": 1,
+    "vip": {
+        "c": {
+            "hidns": 1
+        },
+        "l": 1
+    },
     "virgin": 1,
     "visa": 1,
     "vision": 1,
