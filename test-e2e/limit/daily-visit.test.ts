@@ -42,7 +42,7 @@ describe('Daily time limit', () => {
             const descEl = shadow!.shadowRoot!.querySelector('#app .el-descriptions:not([style*="display: none"])')
             const trs = descEl!.querySelectorAll('tr')
             const name = trs[0].querySelector('td:nth-child(2)')!.textContent
-            const count = trs[2].querySelector('td:nth-child(2) .el-tag--danger')!.textContent
+            const count = trs[3].querySelector('td:nth-child(2) .el-tag--danger')!.textContent
             return { name, count }
         })
 
