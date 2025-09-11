@@ -35,57 +35,58 @@ const ARROW_BTN_STYLE: StyleValue = {
     padding: '8px 1px',
 }
 
-const DateRangeFilterItem = defineComponent<Props>(props => {
-    const rtl = isRtl()
-
-    const backwardDate = computed(() => {
-        const start = props.modelValue?.[0]
-        if (!start) return undefined
-        const time = start.getTime()
-        return new Date(time - MILL_PER_DAY)
-    })
+const useRange = (props: Props) => {
     const backwardDisabled = computed(() => {
-        if (!backwardDate.value) return true
+        const start = props.modelValue?.[0]
+        if (!start) return true
         const { disabledDate } = props
         if (!disabledDate) return false
-        return disabledDate(backwardDate.value)
-    })
-    const forwardDate = computed(() => {
-        const end = props.modelValue?.[1]
-        if (!end) return undefined
-        const time = end.getTime()
-        return new Date(time + MILL_PER_DAY)
-    })
-    const forwardDisabled = computed(() => {
-        if (!forwardDate.value) return true
-        const { disabledDate } = props
-        if (!disabledDate) return false
-        return disabledDate(forwardDate.value)
+        const lastDay = new Date(start.getTime() - MILL_PER_DAY)
+        return disabledDate(lastDay)
     })
 
-    const handleChange = (newVal: [Date, Date] | undefined) => {
-        const [start, end] = newVal || []
-        const isClearChosen = !start?.getTime?.() && !end?.getTime?.()
-        if (isClearChosen) newVal = undefined
-        props.onChange(newVal)
+    const forwardDisabled = computed(() => {
+        const end = props.modelValue?.[1]
+        if (!end) return true
+        const { disabledDate } = props
+        if (!disabledDate) return false
+        const nextDate = new Date(end.getTime() + MILL_PER_DAY)
+        return disabledDate(nextDate)
+    })
+
+    const shift = (dayNum: number) => {
+        const { modelValue, onChange } = props
+        const [start, end] = modelValue ?? []
+        if (!start || !end) return
+        const millDiff = MILL_PER_DAY * dayNum
+        const newStart = new Date(start.getTime() + millDiff)
+        const newEnd = new Date(end.getTime() + millDiff)
+        onChange?.([newStart, newEnd])
     }
 
     const clearable = toRef(props, "clearable", true)
 
-    const shortcuts = () => {
+    const shortcuts = computed(() => {
         const { shortcuts: value } = props
         if (!value?.length || !clearable.value) return value
         return [...value, clearShortcut()]
-    }
+    })
 
-    const backward = () => {
-        const { modelValue, onChange } = props
-        backwardDate.value && modelValue && onChange([backwardDate.value, modelValue[1]])
+    return {
+        backwardDisabled, forwardDisabled,
+        shift,
+        clearable, shortcuts,
     }
-    const forward = () => {
-        const { modelValue, onChange } = props
-        forwardDate.value && modelValue && onChange([modelValue[0], forwardDate.value])
-    }
+}
+
+const DateRangeFilterItem = defineComponent<Props>(props => {
+    const rtl = isRtl()
+    const {
+        backwardDisabled,
+        forwardDisabled,
+        shift,
+        shortcuts, clearable,
+    } = useRange(props)
 
     return () => (
         <span class="filter-item">
@@ -93,7 +94,7 @@ const DateRangeFilterItem = defineComponent<Props>(props => {
                 <ElButton
                     disabled={backwardDisabled.value}
                     icon={rtl ? ArrowRight : ArrowLeft}
-                    onClick={backward}
+                    onClick={() => shift(-1)}
                     style={{
                         ...ARROW_BTN_STYLE,
                         ...rtl ? {
@@ -111,8 +112,8 @@ const DateRangeFilterItem = defineComponent<Props>(props => {
                     type="daterange"
                     rangeSeparator="-"
                     disabledDate={props.disabledDate}
-                    shortcuts={shortcuts()}
-                    onUpdate:modelValue={newVal => handleChange(toRaw(newVal))}
+                    shortcuts={shortcuts.value}
+                    onUpdate:modelValue={newVal => props.onChange?.(toRaw(newVal) ?? undefined)}
                     startPlaceholder={props.startPlaceholder}
                     endPlaceholder={props.endPlaceholder}
                     clearable={clearable.value}
@@ -125,7 +126,7 @@ const DateRangeFilterItem = defineComponent<Props>(props => {
                 <ElButton
                     disabled={forwardDisabled.value}
                     icon={rtl ? ArrowLeft : ArrowRight}
-                    onClick={forward}
+                    onClick={() => shift(1)}
                     style={{
                         ...ARROW_BTN_STYLE,
                         ...rtl ? {
