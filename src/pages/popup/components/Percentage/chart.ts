@@ -1,5 +1,5 @@
 import { createTab } from "@api/chrome/tab"
-import { getCssVariable, getPrimaryTextColor, getSecondaryTextColor } from "@pages/util/style"
+import { getCssVariable, getInfoColor, getPrimaryTextColor, getSecondaryTextColor } from "@pages/util/style"
 import { calJumpUrl } from "@popup/common"
 import { t } from "@popup/locale"
 import { sum, toMap } from "@util/array"
@@ -204,23 +204,22 @@ export function generateSiteSeriesOption(rows: timer.stat.Row[], result: Percent
     const chartRows = cvt2ChartRows(rows, dimension, itemCount)
     const iconRich: PieLabelRichOption = {}
     const data = chartRows.map(row => {
-        const value = row[dimension]
-        let name = 'NaN'
+        const item: PieSeriesItemOption = { name: 'NaN', value: row[dimension], row }
         if (isOther(row)) {
-            const { count } = row
-            name = t(msg => msg.content.percentage.otherLabel, { count })
+            item.itemStyle = { color: getInfoColor() }
+            item.name = t(msg => msg.content.percentage.otherLabel, { count: row.count })
         } else if (isSite(row)) {
             const { siteKey, alias, iconUrl } = row
             const { host } = siteKey || {}
-            name = (displaySiteName ? (alias ?? host) : host) ?? ''
+            const name = item.name = (displaySiteName ? (alias ?? host) : host) ?? ''
             const richValue: PieLabelRichValueOption = { ...BASE_LABEL_RICH_VALUE }
             iconUrl && (richValue.backgroundColor = { image: iconUrl })
             iconRich[legend2LabelStyle(name)] = richValue
         } else if (isGroup(row)) {
-            name = getGroupName(groupMap, row)
+            item.name = getGroupName(groupMap, row)
         }
 
-        return { name, value, row } satisfies PieSeriesItemOption
+        return item
     })
 
     const textColor = getPrimaryTextColor()
