@@ -24,6 +24,7 @@ describe('util/limit', () => {
         expect(matches(cond, 'http://t.bilibili.com/')).toBe(true)
         expect(matches(cond, 'https://www.bilibili.com/video/BV3527/')).toBe(true)
     })
+    
     test('matchCond', () => {
         const cond = ['www.baidu.com', '*.google.com', 'github.com/sheepzh', 'github.com','+www.bilibili.com/cheese','*.bilibili.com*']
         expect(matchCond(cond, 'http://www.baidu.com')).toEqual(['www.baidu.com'])
