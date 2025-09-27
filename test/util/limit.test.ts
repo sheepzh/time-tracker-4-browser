@@ -13,17 +13,17 @@ describe('util/limit', () => {
     })
 
     test('matches', () => {
-        const cond = ['www.baidu.com', '*.google.com', 'github.com', '+github.com/KHDKR','+www.bilibili.com/cheese','*.bilibili.com*']
+        const cond = ['www.baidu.com', '*.google.com', 'github.com/sheepzh', '+github.com/sheepzh/timer','+www.bilibili.com/cheese','*.bilibili.com*']
 
         expect(matches(cond, 'https://www.baidu.com')).toBe(true)
         expect(matches(cond, 'http://hk.google.com')).toBe(true)
-        expect(matches(cond, 'http://github.com/sheepzh/timer')).toBe(true)
-        expect(matches(cond, 'http://github.com/KHDKR')).toBe(false)
+        expect(matches(cond, 'http://github.com/sheepzh/poetry')).toBe(true)
+        expect(matches(cond, 'http://github.com/sheepzh/timer')).toBe(false)
+        expect(matches(cond, 'http://github.com/sheepzh/timer/test')).toBe(false)
         expect(matches(cond, 'http://www.bilibili.com/cheese/list')).toBe(false)
         expect(matches(cond, 'http://t.bilibili.com/')).toBe(true)
         expect(matches(cond, 'https://www.bilibili.com/video/BV3527/')).toBe(true)
     })
-
     test('matchCond', () => {
         const cond = ['www.baidu.com', '*.google.com', 'github.com/sheepzh', 'github.com','+www.bilibili.com/cheese','*.bilibili.com*']
         expect(matchCond(cond, 'http://www.baidu.com')).toEqual(['www.baidu.com'])
