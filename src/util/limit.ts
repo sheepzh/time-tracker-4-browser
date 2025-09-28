@@ -24,13 +24,10 @@ export function matches(cond: timer.limit.Item['cond'], url: string): boolean {
     const excludeRules = cond
         .filter(rule => rule.startsWith('+'))
         .map(rule => rule.slice(1)) // 去掉开头的 "+"（如 "+github.com/KHDKR" → "github.com/KHDKR"）
-
     const normalRules = cond.filter(rule => !rule.startsWith('+'))
-
     // 2. 优先判断排除规则：只要命中一个，直接返回 false（排除规则优先级最高）
     const isExcluded = excludeRules.some(excludeRule => matchUrl(excludeRule, url))
     if (isExcluded) return false
-
     // 3. 再判断普通规则：命中一个即可返回 true
     return normalRules.some(normalRule => matchUrl(normalRule, url))
 }
@@ -38,12 +35,16 @@ export function matches(cond: timer.limit.Item['cond'], url: string): boolean {
 // 同步修改 matchCond（依赖 matchUrl，自动适配新逻辑）
 // 功能：返回所有匹配的规则（排除规则不会被返回，因为优先过滤了）
 export function matchCond(cond: timer.limit.Item['cond'], url: string): string[] {
-    const excludeRulePrefixes = new Set(cond.filter(r => r.startsWith('+')).map(r => r.slice(1)))
+    // 1. 分离「排除规则（+开头）」和「普通规则」
+    const excludeRules = cond
+        .filter(rule => rule.startsWith('+'))
+        .map(rule => rule.slice(1)) // 去掉开头的 "+"（如 "+github.com/KHDKR" → "github.com/KHDKR"）
+    const normalRules = cond.filter(rule => !rule.startsWith('+'))
+    // 2. 优先判断排除规则：只要命中一个，直接返回 false（排除规则优先级最高）
+    const isExcluded = excludeRules.some(excludeRule => matchUrl(excludeRule, url))
+    if (isExcluded) return []
     // 返回匹配的普通规则（排除规则不参与返回）
-    return cond.filter(rule => {
-        if (rule.startsWith('+')) return false // 排除规则不加入结果
-        return matchUrl(rule, url) && !excludeRulePrefixes.has(rule)
-    })
+    return normalRules.filter(normalRule => matchUrl(normalRule, url))
 }
 
 export const meetLimit = (limit: number | undefined, value: number | undefined): boolean => {
