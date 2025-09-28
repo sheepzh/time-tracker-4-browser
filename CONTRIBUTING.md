@@ -21,10 +21,11 @@ Some free open source tools are also integrated:
 ## 2. Steps
 
 1. Fork your repository
-2. Install dependencies
+2. Install dependencies and initialize
 
 ```shell
 npm install
+npm run prepare
 ```
 
 3. Create your own branch
