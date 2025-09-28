@@ -36,6 +36,6 @@ const option = optionGenerator({ outputPath, manifest, mode: "production" })
 const { plugins = [] } = option
 plugins.push(filemanagerPlugin)
 option.plugins = plugins
-// option.devtool = false
+option.devtool = false
 
 export default option
