@@ -33,7 +33,18 @@ const saveCache = <T>(key: string, val: T) => {
     }
 }
 
-export const useCached = <T>(key: string | undefined, defaultValue?: T, defaultFirst?: boolean): Result<T> => {
+export function useCached<T>(key: string, defaultValue: T, defaultFirst?: boolean): { data: Ref<T>, setter: (val: T) => void }
+export function useCached<T>(
+    key: string | undefined,
+    defaultValue?: T,
+    defaultFirst?: boolean,
+): { data: Ref<T | undefined>, setter: (val: T | undefined) => void }
+
+export function useCached<T>(
+    key: string | undefined,
+    defaultValue?: T,
+    defaultFirst?: boolean,
+): Result<T> {
     if (!key) {
         const [data, setter] = useState(defaultValue)
         return { data, setter }

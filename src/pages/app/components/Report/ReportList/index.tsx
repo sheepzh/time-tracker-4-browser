@@ -1,5 +1,5 @@
 import { t } from "@app/locale"
-import { useScrollRequest } from "@hooks/useScrollRequest"
+import { useScrollRequest } from "@hooks"
 import { getHost } from "@util/stat"
 import { ElCard } from "element-plus"
 import { defineComponent, ref } from "vue"
@@ -7,7 +7,7 @@ import { queryPage } from "../common"
 import { useReportFilter } from "../context"
 import type { DisplayComponent } from "../types"
 import Item from "./Item"
-import "./style"
+import "./style.sass"
 
 const _default = defineComponent((_, ctx) => {
     const filterOption = useReportFilter()

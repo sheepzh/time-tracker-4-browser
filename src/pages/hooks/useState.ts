@@ -1,10 +1,20 @@
-import { ref, type Ref, shallowRef } from "vue"
+import { type ShallowRef, shallowRef } from "vue"
 
-export const useState = <T,>(defaultValue?: T):
-    | [state: Ref<T>, setter: (val: T) => void, reset: () => void]
-    | [state: Ref<T | undefined>, setter: (val?: T) => void, reset: () => void] => {
+export function useState<T>(defaultValue: T): [
+    state: ShallowRef<T>,
+    setter: (val: T) => void,
+    reset: () => void,
+]
+export function useState<T>(defaultValue?: T): [
+    state: ShallowRef<T | undefined>,
+    setter: (val?: T) => void,
+    reset: () => void,
+]
+export function useState<T>(defaultValue?: T):
+    | [state: ShallowRef<T>, setter: (val: T) => void, reset: () => void]
+    | [state: ShallowRef<T | undefined>, setter: (val?: T) => void, reset: () => void] {
     if (defaultValue === undefined || defaultValue === null) {
-        const result = ref<T>()
+        const result = shallowRef<T>()
         return [
             result,
             (val?: T) => result.value = val,

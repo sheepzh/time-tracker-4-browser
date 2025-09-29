@@ -1,6 +1,6 @@
 import { getUrl } from "@api/chrome/runtime"
 import { t } from "@cs/locale"
-import { useRequest } from "@hooks"
+import { useRequest } from "@hooks/useRequest"
 import optionHolder from "@service/components/option-holder"
 import { defineComponent } from "vue"
 

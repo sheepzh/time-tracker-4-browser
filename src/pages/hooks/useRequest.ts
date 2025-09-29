@@ -37,7 +37,19 @@ const findLoadingEl = async (target: RequestOption<unknown, unknown[]>['loadingT
     return undefined
 }
 
-export const useRequest = <P extends any[], T>(getter: (...p: P) => Promise<T> | T, option?: RequestOption<T, P>): RequestResult<T, P> => {
+export function useRequest<P extends any[], T>(
+    getter: (...p: P) => Awaitable<T>,
+    option: MakeRequired<RequestOption<T, P>, 'defaultValue'>,
+): RequestResult<T, P>
+export function useRequest<P extends any[], T>(
+    getter: (...p: P) => Awaitable<T | undefined>,
+    option?: RequestOption<T, P>,
+): RequestResult<T | undefined, P>
+
+export function useRequest<P extends any[], T>(
+    getter: (...p: P) => Promise<T> | T,
+    option?: RequestOption<T, P>,
+): RequestResult<T, P> {
     const {
         manual = false,
         defaultValue, defaultParam = ([] as any[] as P),
@@ -81,8 +93,4 @@ export const useRequest = <P extends any[], T>(getter: (...p: P) => Promise<T> |
     }
     const refreshAgain = () => param.value && refresh(...param.value)
     return { data, ts, refresh, refreshAsync, refreshAgain, loading, param }
-}
-
-export const useManualRequest = <P extends any[], T>(getter: (...p: P) => Promise<T> | T, option?: Omit<RequestOption<T, P>, 'manual'>): RequestResult<T, P> => {
-    return useRequest(getter, { ...option || {}, manual: true })
 }

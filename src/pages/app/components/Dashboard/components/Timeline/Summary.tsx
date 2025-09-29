@@ -1,6 +1,6 @@
 import { t } from '@app/locale'
 import { InfoFilled } from '@element-plus/icons-vue'
-import { useShadow } from '@hooks/index'
+import { useShadow } from '@hooks'
 import Flex from '@pages/components/Flex'
 import { groupBy } from '@util/array'
 import { MILL_PER_HOUR, MILL_PER_MINUTE } from '@util/time'

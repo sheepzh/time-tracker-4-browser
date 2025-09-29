@@ -6,6 +6,7 @@ export async function executeScript(tabId: number, files: string[]): Promise<voi
         try {
             await chrome.scripting.executeScript({ target: { tabId }, files })
         } catch {
+            console.warn(`Failed to execute scrips: ${files}`)
         }
     } else {
         await Promise.all(files.map(file => executeScriptMv2(tabId, file)))
