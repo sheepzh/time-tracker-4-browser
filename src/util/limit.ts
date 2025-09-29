@@ -18,33 +18,55 @@ const matchUrl = (cond: string, url: string): boolean => {
     return new RegExp(`^.*//${cond.split('*').join('.*')}`).test(url)
 }
 
-// 重写 matches，支持排除规则（+开头）
+/**
+ * checks whether the provided URL matches the rule list (cond), following the exclusion rule priority
+ * @param cond
+ * @param url
+ */
 export function matches(cond: timer.limit.Item['cond'], url: string): boolean {
-    // 1. 分离「排除规则（+开头）」和「普通规则」
-    const excludeRules = cond
-        .filter(rule => rule.startsWith('+'))
-        .map(rule => rule.slice(1)) // 去掉开头的 "+"（如 "+github.com/KHDKR" → "github.com/KHDKR"）
-    const normalRules = cond.filter(rule => !rule.startsWith('+'))
-    // 2. 优先判断排除规则：只要命中一个，直接返回 false（排除规则优先级最高）
-    const isExcluded = excludeRules.some(excludeRule => matchUrl(excludeRule, url))
-    if (isExcluded) return false
-    // 3. 再判断普通规则：命中一个即可返回 true
-    return normalRules.some(normalRule => matchUrl(normalRule, url))
+    const normalRules: string[] = [];
+    const excludeRules: string[] = [];
+    for (const rule of cond) {
+        if (rule.startsWith('+')) {
+            const excludeRule = rule.slice(1);
+            excludeRules.push(excludeRule);
+        } else {
+            normalRules.push(rule);
+        }
+    }
+    for (const excludeRule of excludeRules) {
+        if (matchUrl(excludeRule, url)) return false;
+    }
+    for (const normalRule of normalRules) {
+        if (matchUrl(normalRule, url))  return true;
+    }
+    return false;
 }
 
-// 同步修改 matchCond（依赖 matchUrl，自动适配新逻辑）
-// 功能：返回所有匹配的规则（排除规则不会被返回，因为优先过滤了）
+/**
+ * determines which normal rules in the given list (cond) match the provided URL, strictly adhering to exclusion rule priority
+ * @param cond
+ * @param url
+ */
 export function matchCond(cond: timer.limit.Item['cond'], url: string): string[] {
-    // 1. 分离「排除规则（+开头）」和「普通规则」
-    const excludeRules = cond
-        .filter(rule => rule.startsWith('+'))
-        .map(rule => rule.slice(1)) // 去掉开头的 "+"（如 "+github.com/KHDKR" → "github.com/KHDKR"）
-    const normalRules = cond.filter(rule => !rule.startsWith('+'))
-    // 2. 优先判断排除规则：只要命中一个，直接返回 false（排除规则优先级最高）
-    const isExcluded = excludeRules.some(excludeRule => matchUrl(excludeRule, url))
-    if (isExcluded) return []
-    // 返回匹配的普通规则（排除规则不参与返回）
-    return normalRules.filter(normalRule => matchUrl(normalRule, url))
+    const normalRules: string[] = [];
+    const excludeRules: string[] = [];
+    for (const rule of cond) {
+        if (rule.startsWith('+')) {
+            const excludeRule = rule.slice(1);
+            excludeRules.push(excludeRule);
+        } else {
+            normalRules.push(rule);
+        }
+    }
+    for (const excludeRule of excludeRules) {
+        if (matchUrl(excludeRule, url)) return [];
+    }
+    const matchedNormalRules: string[] = [];
+    for (const normalRule of normalRules) {
+        if (matchUrl(normalRule, url))  matchedNormalRules.push(normalRule);
+    }
+    return matchedNormalRules;
 }
 
 export const meetLimit = (limit: number | undefined, value: number | undefined): boolean => {
