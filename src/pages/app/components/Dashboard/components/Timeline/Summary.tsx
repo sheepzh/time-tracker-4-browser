@@ -5,7 +5,7 @@ import Flex from '@pages/components/Flex'
 import { groupBy } from '@util/array'
 import { MILL_PER_HOUR, MILL_PER_MINUTE } from '@util/time'
 import { ElIcon, ElRate, ElText, ElTooltip } from 'element-plus'
-import { computed, defineComponent, watch } from 'vue'
+import { computed, defineComponent } from 'vue'
 
 type AnalysisResult = {
     busy: number
@@ -97,7 +97,6 @@ const Score = defineComponent<{ score: number, label: string, desc: string }>(pr
 
 const Summary = defineComponent<{ data: timer.timeline.Tick[] }>(props => {
     const ticks = computed(() => analyze(props.data))
-    watch([ticks], () => console.log(ticks.value))
 
     return () => (
         <Flex column justify='center' gap={30} height='100%'>

@@ -79,7 +79,7 @@ const _default = defineComponent((_, ctx) => {
             }
             option.limitLevel = val
         } catch (e) {
-            console.log("Failed to verify", e)
+            console.warn("Failed to verify", e)
         }
     }
 
@@ -89,7 +89,7 @@ const _default = defineComponent((_, ctx) => {
             option.limitPassword = await modifyPsw()
             ElMessage.success(t(msg => msg.operation.successMsg))
         } catch (e) {
-            console.log("Failed to verify", e)
+            console.warn("Failed to verify", e)
         }
     }
 
@@ -154,7 +154,7 @@ const _default = defineComponent((_, ctx) => {
                 size="small"
                 onChange={(val: timer.limit.VerificationDifficulty) => verify()
                     .then(() => option.limitVerifyDifficulty = val)
-                    .catch(console.log)
+                    .catch(console.warn)
                 }
             >
                 {ALL_DIFF.map(item => <ElOption value={item} label={t(msg => msg.option.dailyLimit.level.verificationDifficulty[item])} />)}

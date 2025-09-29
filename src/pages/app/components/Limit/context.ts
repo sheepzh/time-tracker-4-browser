@@ -110,7 +110,7 @@ export const useLimitProvider = () => {
             row.enabled = enabled
             await limitService.updateEnabled(toRaw(row))
         } catch (e) {
-            console.log(e)
+            console.warn(e)
         }
     }
 
@@ -121,7 +121,7 @@ export const useLimitProvider = () => {
             row.allowDelay = delayable
             await limitService.updateDelay(toRaw(row))
         } catch (e) {
-            console.log(e)
+            console.warn(e)
         }
     }
 
@@ -137,7 +137,7 @@ export const useLimitProvider = () => {
             row.locked = locked
             await limitService.updateLocked(toRaw(row))
         } catch (e) {
-            console.log(e)
+            console.warn(e)
         }
     }
 

@@ -28,7 +28,7 @@ const NumberGrow = defineComponent<Props>(props => {
             separator: getNumberSeparator(),
         })
         if (countUp.value.error) {
-            console.log(countUp.value.error)
+            console.warn(countUp.value.error)
         }
         countUp.value.start()
     })

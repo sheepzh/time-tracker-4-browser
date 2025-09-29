@@ -67,7 +67,7 @@ async function noticeLimitChanged() {
     tabs.forEach(({ id, url }) => {
         if (!id || !url) return
         const limitedItems = effectiveItems.filter(item => matches(item?.cond, url))
-        sendMsg2Tab(id, 'limitChanged', limitedItems).catch(err => console.log(err.message))
+        sendMsg2Tab(id, 'limitChanged', limitedItems).catch(err => console.warn(err.message))
     })
 }
 
