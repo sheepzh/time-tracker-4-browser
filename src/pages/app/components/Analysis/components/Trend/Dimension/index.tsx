@@ -5,13 +5,13 @@
  * https://opensource.org/licenses/MIT
  */
 import { formatValue, type DimensionEntry, type RingValue, type ValueFormatter } from "@app/components/Analysis/util"
+import { GRID_CELL_STYLE } from '@app/components/common/grid'
 import { KanbanIndicatorCell } from "@app/components/common/kanban"
 import { cvt2LocaleTime } from "@app/util/time"
-import { useXsState } from "@hooks/useMediaSize"
+import { useXsState } from "@hooks"
 import Box from "@pages/components/Box"
 import Flex from "@pages/components/Flex"
 import { defineComponent } from "vue"
-import { GRID_CELL_STYLE } from "../../../../common/grid"
 import Chart from "./Chart"
 
 export type DimensionData = {

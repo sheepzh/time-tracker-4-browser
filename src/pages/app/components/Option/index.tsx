@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { MediaSize, useMediaSize } from "@hooks/useMediaSize"
+import { MediaSize, useMediaSize } from "@hooks"
 import { ElScrollbar } from 'element-plus'
 import { defineComponent, ref, type Ref, type StyleValue } from "vue"
 import { type JSX } from "vue/jsx-runtime"

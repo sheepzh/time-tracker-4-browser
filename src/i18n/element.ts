@@ -1,21 +1,21 @@
 import ElementPlus from 'element-plus'
-import { type Language } from "element-plus/lib/locale"
+import { type Language } from "element-plus/es/locale"
 import { type App } from "vue"
 import { locale, t } from "."
 import calendarMessages from "./message/common/calendar"
 
 const LOCALES: { [locale in timer.Locale]: () => Promise<{ default: Language }> } = {
-    zh_CN: () => import('element-plus/lib/locale/lang/zh-cn'),
-    zh_TW: () => import('element-plus/lib/locale/lang/zh-tw'),
-    en: () => import('element-plus/lib/locale/lang/en'),
-    ja: () => import('element-plus/lib/locale/lang/ja'),
-    pt_PT: () => import('element-plus/lib/locale/lang/pt'),
-    uk: () => import('element-plus/lib/locale/lang/uk'),
-    es: () => import('element-plus/lib/locale/lang/es'),
-    de: () => import('element-plus/lib/locale/lang/de'),
-    fr: () => import('element-plus/lib/locale/lang/fr'),
-    ru: () => import('element-plus/lib/locale/lang/ru'),
-    ar: () => import('element-plus/lib/locale/lang/ar'),
+    zh_CN: () => import('element-plus/es/locale/lang/zh-cn'),
+    zh_TW: () => import('element-plus/es/locale/lang/zh-tw'),
+    en: () => import('element-plus/es/locale/lang/en'),
+    ja: () => import('element-plus/es/locale/lang/ja'),
+    pt_PT: () => import('element-plus/es/locale/lang/pt'),
+    uk: () => import('element-plus/es/locale/lang/uk'),
+    es: () => import('element-plus/es/locale/lang/es'),
+    de: () => import('element-plus/es/locale/lang/de'),
+    fr: () => import('element-plus/es/locale/lang/fr'),
+    ru: () => import('element-plus/es/locale/lang/ru'),
+    ar: () => import('element-plus/es/locale/lang/ar'),
 }
 
 export const initElementLocale = async (app: App) => {

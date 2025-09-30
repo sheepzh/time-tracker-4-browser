@@ -5,9 +5,9 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import { useWindowSize } from "@hooks/useWindowSize"
 import optionHolder from "@service/components/option-holder"
 import { processAnimation, processAria, processRtl } from "@util/echarts"
-import { useWindowSize } from "@vueuse/core"
 import { type AriaComponentOption, type ComposeOption } from "echarts"
 import { type ECharts, init } from "echarts/core"
 import { ElLoading } from "element-plus"
@@ -85,7 +85,6 @@ export const useEcharts = <BizOption, EchartsOption, EW extends EchartsWrapper<B
     option?: {
         hideLoading?: boolean
         manual?: boolean
-        watch?: boolean
         afterInit?: (ew: EW) => void
     }): WrapperResult<BizOption, EchartsOption, EW> => {
     const elRef = ref<HTMLDivElement>()
@@ -93,7 +92,6 @@ export const useEcharts = <BizOption, EchartsOption, EW extends EchartsWrapper<B
     const {
         hideLoading = false,
         manual = false,
-        watch: watchRef = true,
         afterInit,
     } = option || {}
 
@@ -111,7 +109,7 @@ export const useEcharts = <BizOption, EchartsOption, EW extends EchartsWrapper<B
         target && wrapperInstance.init(target)
         afterInit?.(wrapperInstance)
         !manual && refresh()
-        watchRef && isRef(fetch) && watch(fetch, refresh)
+        isRef(fetch) && watch(fetch, refresh)
     })
 
     const { width, height } = useWindowSize()

@@ -6,7 +6,7 @@
 */
 
 import { CROWDIN_PROJECT_ID } from "@util/constant/url"
-import axios, { type AxiosResponse } from "axios"
+import { fetchGet } from './http'
 
 /**
  * Used to obtain translation status
@@ -31,10 +31,8 @@ export async function getTranslationStatus(): Promise<TranslationStatusInfo[]> {
     const limit = 500
     const auth = `Bearer ${PUBLIC_TOKEN}`
     const url = `https://api.crowdin.com/api/v2/projects/${CROWDIN_PROJECT_ID}/languages/progress?limit=${limit}`
-    const response: AxiosResponse = await axios.get(url, {
-        headers: { "Authorization": auth }
-    })
-    const data: { data: { data: TranslationStatusInfo }[] } = response.data
+    const response = await fetchGet(url, { headers: { "Authorization": auth } })
+    const data: { data: { data: TranslationStatusInfo }[] } = await response.json()
     return data.data.map(i => i.data)
 }
 
@@ -46,10 +44,8 @@ export async function getMembers(): Promise<MemberInfo[]> {
     let offset = 0
     while (true) {
         const url = `https://api.crowdin.com/api/v2/projects/${CROWDIN_PROJECT_ID}/members?limit=${limit}&offset=${offset}`
-        const response: AxiosResponse = await axios.get(url, {
-            headers: { "Authorization": auth }
-        })
-        const data: { data: { data: MemberInfo }[] } = response.data
+        const response = await fetchGet(url, { headers: { "Authorization": auth } })
+        const data: { data: { data: MemberInfo }[] } = await response.json()
         const newItems = data?.data?.map(i => i.data) ?? []
         result.push(...newItems)
 

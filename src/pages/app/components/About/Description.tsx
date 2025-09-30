@@ -1,6 +1,5 @@
 import { t } from "@app/locale"
-import { useMediaSize } from "@hooks"
-import { MediaSize } from "@hooks/useMediaSize"
+import { MediaSize, useMediaSize } from "@hooks"
 import { locale } from "@i18n"
 import Flex from "@pages/components/Flex"
 import metaService from "@service/meta-service"

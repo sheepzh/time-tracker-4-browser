@@ -9,7 +9,7 @@ import ChartTitle from '@app/components/Dashboard/ChartTitle'
 import { t } from '@app/locale'
 import { TIMELINE_LIFE_CYCLE } from '@db/timeline-database'
 import { Collection, Files, Link } from '@element-plus/icons-vue'
-import { useShadow } from '@hooks/index'
+import { useShadow } from '@hooks'
 import { useEcharts } from "@hooks/useEcharts"
 import Flex from "@pages/components/Flex"
 import { type ECElementEvent, type ECharts } from "echarts/core"

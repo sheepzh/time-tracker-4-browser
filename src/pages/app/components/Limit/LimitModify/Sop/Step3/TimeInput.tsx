@@ -1,8 +1,7 @@
 import { CircleClose, Clock } from "@element-plus/icons-vue"
-import { useState } from "@hooks"
+import { useDebounceFn, useState } from "@hooks"
 import { getStyle } from "@pages/util/style"
 import { range } from "@util/array"
-import { useDebounceFn } from "@vueuse/core"
 import { Effect, ElIcon, ElInput, ElPopover, ElScrollbar, ScrollbarInstance, useLocale, useNamespace } from "element-plus"
 import { computed, defineComponent, nextTick, onMounted, ref, Transition, watch } from "vue"
 
@@ -79,7 +78,7 @@ const TimeSpinner = defineComponent({
                 const estimatedIdx = Math.round((scrollTop - (scrollbarH * 0.5 - 10) / itemH + 3) / itemH)
                 const value = Math.min(estimatedIdx, props.max - 1)
                 debounceChangeValue(value)
-            })
+            }, { passive: true })
         }
 
         onMounted(() => {

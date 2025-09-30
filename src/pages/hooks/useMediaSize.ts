@@ -1,4 +1,4 @@
-import { useWindowSize } from "@vueuse/core"
+import { useWindowSize } from "@hooks"
 import { computed } from "vue"
 
 export enum MediaSize {

@@ -8,7 +8,7 @@
 import { GRID_CELL_STYLE, GRID_WRAPPER_STYLE } from "@app/components/common/grid"
 import { KanbanCard } from "@app/components/common/kanban"
 import { t } from "@app/locale"
-import { useXsState } from "@hooks/useMediaSize"
+import { useXsState } from "@hooks"
 import Flex from "@pages/components/Flex"
 import { computed, defineComponent, type StyleValue } from "vue"
 import { initProvider } from "./context"

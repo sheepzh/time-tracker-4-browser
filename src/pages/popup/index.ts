@@ -14,7 +14,7 @@ import { createApp } from "vue"
 import Main from "./Main"
 import { type FrameRequest, type FrameResponse } from "./message"
 import initRouter from "./router"
-import "./style"
+import "./style/index.sass"
 
 function send2ParentWindow(data: any): Promise<void> {
     return new Promise(resolve => {

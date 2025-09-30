@@ -12,7 +12,7 @@ import { defineComponent, type StyleValue } from "vue"
 import { RouterView } from "vue-router"
 import HeadNav from "./menu/Nav"
 import SideMenu from "./menu/Side"
-import "./style"
+import "./style.sass"
 import VersionTag from "./VersionTag"
 
 const _default = defineComponent(() => {

@@ -1,8 +1,8 @@
 {
     "compilerOptions": {
         "baseUrl": "./",
-        "module": "CommonJS",
-        "target": "ESNext",
+        "module": "commonjs",
+        "target": "esnext",
         "lib": [
             "ES2023"
         ],
@@ -15,7 +15,6 @@
         "strict": true,
         "resolveJsonModule": true,
         "importHelpers": true,
-        "moduleResolution": "node",
         "skipLibCheck": true,
         "paths": {
             "@api/*": [
