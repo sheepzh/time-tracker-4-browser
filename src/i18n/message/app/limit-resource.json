@@ -1,7 +1,7 @@
 {
     "zh_CN": {
         "filterDisabled": "过滤无效规则",
-        "wildcardTip": "您可以使用通配符来匹配子域名或子页面！",
+        "wildcardTip": "您可以使用通配符来匹配子域名或子页面，使用\"+\"作为前缀来排除子页面！",
         "item": {
             "name": "规则名称",
             "condition": "限制网址",
@@ -56,7 +56,7 @@
     },
     "zh_TW": {
         "filterDisabled": "過濾無效規則",
-        "wildcardTip": "你可以使用萬用字元來匹配子網域或子頁面！",
+        "wildcardTip": "你可以使用萬用字元來匹配子網域或子頁面，使用\"+\"作為前置詞來排除子頁面！",
         "item": {
             "name": "規則名稱",
             "condition": "限制網址",
@@ -109,7 +109,7 @@
     },
     "en": {
         "filterDisabled": "Only enabled",
-        "wildcardTip": "You can use wildcards to match subdomains or subpages!",
+        "wildcardTip": "You can use wildcards to match subdomains or subpages, and use \"+\" as a prefix to exclude subpages!",
         "item": {
             "name": "Rule name",
             "condition": "Restricted URL",
@@ -162,6 +162,7 @@
     },
     "ja": {
         "filterDisabled": "有效",
+        "wildcardTip": "ワイルドカードを使用してサブドメインまたはサブページに一致させることができ、「+」をプレフィックスとしてサブページを除外することができます！",
         "item": {
             "name": "規則名",
             "condition": "制限 URL",
@@ -211,7 +212,7 @@
     },
     "pt_PT": {
         "filterDisabled": "Apenas ativos",
-        "wildcardTip": "Pode usar wildcards para corresponder a subdomínios ou subpáginas!",
+        "wildcardTip": "Pode usar wildcards para corresponder a subdomínios ou subpáginas, e usar o \"+\" como prefixo para excluir subpáginas!",
         "item": {
             "name": "Nome da regra",
             "condition": "URL restrito",
@@ -311,7 +312,7 @@
     },
     "es": {
         "filterDisabled": "Solo habilitados",
-        "wildcardTip": "¡Puedes usar comodines para coincidir con subdominios o subpáginas!",
+        "wildcardTip": "¡Puedes usar comodines para coincidir con subdominios o subpáginas, y usar el \"+\" como prefijo para excluir subpáginas!",
         "item": {
             "name": "Nombre de la regla",
             "condition": "URL restringida",
@@ -416,7 +417,7 @@
     },
     "fr": {
         "filterDisabled": "Activé uniquement",
-        "wildcardTip": "Vous pouvez utiliser des wildcards pour correspondre à des sous-domaines ou sous-pages !",
+        "wildcardTip": "Vous pouvez utiliser des wildcards pour correspondre à des sous-domaines ou sous-pages, et utiliser le \"+\" comme préfixe pour exclure des sous-pages !",
         "item": {
             "name": "Nom de règle",
             "condition": "URL restreinte",
@@ -513,7 +514,7 @@
     },
     "ar": {
         "filterDisabled": "تم التمكين فقط",
-        "wildcardTip": "يمكنك استخدام الرموز البديلة لتشمل النطاقات أو الصفحات الفرعية!",
+        "wildcardTip": "يمكنك استخدام الرموز البديلة لتطابق النطاقات الفرعية أو الصفحات الفرعية، ويمكنك استخدام العلامة \"+\" كبادئة لاستبعاد الصفحات الفرعية！",
         "item": {
             "name": "اسم القاعدة",
             "condition": "عنوان URL مقيد",
