@@ -6,7 +6,7 @@
  */
 
 import FIFOCache from "@util/fifo-cache"
-import { fetchGet, fetchPost } from "./http"
+import { fetchGet, fetchGetWithTry, fetchPost } from "./http"
 
 type BaseFile = {
     filename: string
@@ -144,7 +144,7 @@ export async function getJsonFileContent<T>(file: File): Promise<T | null> {
     if (!rawUrl) {
         return null
     }
-    const response = await fetchGet(rawUrl)
+    const response = await fetchGetWithTry(rawUrl, 3)
     return await response.json()
 }
 

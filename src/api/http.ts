@@ -5,6 +5,19 @@ export type FetchResult<T> = {
     statusCode: number
 }
 
+export async function fetchGetWithTry(url: string, maxTry: number, option?: Option): Promise<Response> {
+    let count = 0
+    do {
+        count++
+        try {
+            return await fetch(url, { ...option, method: "GET" })
+        } catch (e) {
+            console.error(`Failed to fetch get: url=${url}, tryCnt=${count}, err=${e}`)
+        }
+    } while (count < maxTry)
+    throw Error(`Unable to obtain within the maximum number of attempts: url=${url}, maxCnt=${maxTry}`)
+}
+
 export async function fetchGet(url: string, option?: Option): Promise<Response> {
     try {
         const response = await fetch(url, {
