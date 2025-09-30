@@ -18,12 +18,42 @@ const matchUrl = (cond: string, url: string): boolean => {
     return new RegExp(`^.*//${cond.split('*').join('.*')}`).test(url)
 }
 
+const WHITE_PREFIX = '+'    //Denotes an exclusion rule when used as a prefix in a condition string
+
+/**
+ * checks whether the provided URL matches the rule list (cond), following the exclusion rule priority
+ * @param cond
+ * @param url
+ */
 export function matches(cond: timer.limit.Item['cond'], url: string): boolean {
-    return cond.some(c => matchUrl(c, url))
+    let hit = false
+    for (let i = cond.length - 1; i >= 0; i--) {
+        const rule = cond[i]
+        if (rule.startsWith(WHITE_PREFIX)) {
+            if (matchUrl(rule.slice(1), url)) return false
+        } else {
+            hit = hit || matchUrl(rule, url)
+        }
+    }
+    return hit
 }
 
+/**
+ * determines which normal rules in the given list (cond) match the provided URL, strictly adhering to exclusion rule priority
+ * @param cond
+ * @param url
+ */
 export function matchCond(cond: timer.limit.Item['cond'], url: string): string[] {
-    return cond.filter(c => matchUrl(c, url))
+    const matchedNormalRules: string[] = [];
+    for (let i = cond.length - 1; i >= 0; i--) {
+        const rule = cond[i];
+        if (rule.startsWith(WHITE_PREFIX)) {
+            if (matchUrl(rule.slice(1), url))   return [];  //Immediately return an empty array if an exclusion rule is hit
+        } else {
+            if (matchUrl(rule, url))    matchedNormalRules.push(rule);
+        }
+    }
+    return matchedNormalRules;
 }
 
 export const meetLimit = (limit: number | undefined, value: number | undefined): boolean => {
