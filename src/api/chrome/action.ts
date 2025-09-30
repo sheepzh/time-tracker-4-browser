@@ -10,8 +10,8 @@ export function setBadgeText(text: string, tabId: number | undefined): Promise<v
     }))
 }
 
-export function setBadgeBgColor(color: string | chrome.action.ColorArray | undefined): Promise<void> {
-    let realColor: string | chrome.action.ColorArray = color ?? (
+export function setBadgeBgColor(color: string | chrome.extensionTypes.ColorArray | undefined): Promise<void> {
+    let realColor: string | chrome.extensionTypes.ColorArray = color ?? (
         // Use null to clear bg color for Firefox
         IS_FIREFOX ? null as unknown as string : [0, 0, 0, 0]
     )
