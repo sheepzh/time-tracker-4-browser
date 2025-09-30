@@ -109,21 +109,15 @@ const staticOptions: Configuration = {
     resolve: {
         extensions: ['.ts', '.tsx', ".js", '.css', '.scss', '.sass'],
         tsConfig: join(__dirname, '..', 'tsconfig.json'),
-        fallback: {
-            // fallbacks of axios's dependencies start
-            stream: require.resolve('stream-browserify'),
-            zlib: false,
-            https: false,
-            http: false,
-            url: false,
-            assert: false,
-            // fallbacks of axios's dependencies end
-        }
     },
     optimization: {
         splitChunks: {
             chunks: chunkFilter,
             cacheGroups: {
+                elementPlus: {
+                    name: 'element-plus',
+                    test: /[\\/]node_modules[\\/]element-plus[\\/]/,
+                },
                 defaultVendors: {
                     filename: 'vendor/[name].js'
                 }
@@ -191,10 +185,8 @@ const generateOption = ({ outputPath, manifest, mode }: Option) => {
             filename: '[name].js',
         },
         plugins, mode,
-    }
-    if (mode === "development") {
         // no eval with development, but generate *.map.js
-        config.devtool = 'cheap-module-source-map'
+        devtool: mode === 'development' ? 'cheap-module-source-map' : false,
     }
     return config
 }

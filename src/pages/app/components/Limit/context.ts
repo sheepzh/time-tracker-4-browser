@@ -1,7 +1,6 @@
 import { t } from "@app/locale"
-import { useManualRequest, useProvide, useProvider, useRequest } from "@hooks"
+import { useDocumentVisibility, useManualRequest, useProvide, useProvider, useRequest } from "@hooks"
 import limitService from "@service/limit-service"
-import { useDocumentVisibility } from "@vueuse/core"
 import { ElMessage, ElMessageBox, type TableInstance } from "element-plus"
 import { Reactive, reactive, ref, toRaw, watch, type Ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
@@ -110,7 +109,7 @@ export const useLimitProvider = () => {
             row.enabled = enabled
             await limitService.updateEnabled(toRaw(row))
         } catch (e) {
-            console.log(e)
+            console.warn(e)
         }
     }
 
@@ -121,7 +120,7 @@ export const useLimitProvider = () => {
             row.allowDelay = delayable
             await limitService.updateDelay(toRaw(row))
         } catch (e) {
-            console.log(e)
+            console.warn(e)
         }
     }
 
@@ -137,7 +136,7 @@ export const useLimitProvider = () => {
             row.locked = locked
             await limitService.updateLocked(toRaw(row))
         } catch (e) {
-            console.log(e)
+            console.warn(e)
         }
     }
 

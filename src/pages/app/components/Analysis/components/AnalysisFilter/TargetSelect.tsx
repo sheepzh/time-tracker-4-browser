@@ -1,11 +1,10 @@
 import { useCategories } from "@app/context"
 import { t } from "@app/locale"
-import { useRequest, useState } from "@hooks"
+import { useDebounce, useRequest, useState } from "@hooks"
 import Flex from "@pages/components/Flex"
 import siteService from "@service/site-service"
 import statService from "@service/stat-service"
 import { identifySiteKey, parseSiteKeyFromIdentity, SiteMap } from "@util/site"
-import { useDebounce } from "@vueuse/core"
 import { ElSelectV2, ElTag, useNamespace } from "element-plus"
 import type { OptionType } from "element-plus/es/components/select-v2/src/select.types"
 import { computed, defineComponent, type FunctionalComponent, onMounted, ref, type StyleValue } from "vue"
@@ -118,7 +117,7 @@ const TargetSelect = defineComponent(() => {
     )
 
     const [query, setQuery] = useState('')
-    const debouncedQuery = useDebounce<string>(query, 50)
+    const debouncedQuery = useDebounce(query, 50)
 
     const options = computed(() => {
         const q = debouncedQuery.value?.trim?.()

@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { listenMediaSizeChange } from "@hooks/useMediaSize"
+import { listenMediaSizeChange } from "@hooks"
 import { initLocale } from "@i18n"
 import { initElementLocale } from "@i18n/element"
 import optionService from "@service/option-service"
@@ -16,8 +16,7 @@ import '../../common/timer'
 import { initEcharts } from "./echarts"
 import Main from "./Layout"
 import installRouter from "./router"
-// global css
-import './styles'
+import './styles/index.sass'
 
 async function main() {
     // Init theme with cache first

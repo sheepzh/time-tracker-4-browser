@@ -122,7 +122,6 @@ export async function filter(this: StatDatabase, condition?: StatCondition, only
         const date = key.substring(0, 8)
         let host = key.substring(8)
         if (onlyGroup) {
-            // console.log(date, host,)
             if (host.startsWith(GROUP_PREFIX)) {
                 host = host.substring(GROUP_PREFIX.length)
                 result.push({ date, host, value: value as timer.core.Result })

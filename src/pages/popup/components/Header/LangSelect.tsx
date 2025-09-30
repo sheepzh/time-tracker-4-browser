@@ -1,5 +1,6 @@
 import { createTab } from "@api/chrome/tab"
-import { useManualRequest, useRequest } from "@hooks/useRequest"
+import { useManualRequest } from "@hooks/useManualRequest"
+import { useRequest } from "@hooks/useRequest"
 import { ALL_LOCALES, handleLocaleOption, localeSameAsBrowser, t } from "@i18n"
 import optionMessages from "@i18n/message/app/option"
 import localeMessages from "@i18n/message/common/locale"

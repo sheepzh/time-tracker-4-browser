@@ -2,6 +2,9 @@ name: Publish Extension to All Stores
 
 on: [workflow_dispatch]
 
+env:
+    MAX_PACKAGE_SIZE: 2621440 # 2.5MB in bytes
+
 jobs:
     build:
         runs-on: ubuntu-latest
@@ -24,6 +27,30 @@ jobs:
 
             - name: Build for Firefox
               run: npm run build:firefox
+
+            - name: Check file sizes
+              run: |
+                  # Check Chrome/Edge package size
+                  CHROME_SIZE=$(ls -l market_packages/target.zip | awk '{print $5}')
+                  echo "Chrome/Edge package: $CHROME_SIZE bytes"
+
+                  if [ $CHROME_SIZE -gt $MAX_PACKAGE_SIZE ]; then
+                      echo "❌ Error: Chrome/Edge package exceeds size limit"
+                      exit 1
+                  else
+                      echo "✅ Chrome/Edge package size is within limit"
+                  fi
+
+                  # Check Firefox package size
+                  FIREFOX_SIZE=$(ls -l market_packages/target.firefox.zip | awk '{print $5}')
+                  echo "Firefox package: $FIREFOX_SIZE bytes"
+
+                  if [ $FIREFOX_SIZE -gt $MAX_PACKAGE_SIZE ]; then
+                      echo "❌ Error: Firefox package exceeds size limit"
+                      exit 1
+                  else
+                      echo "✅ Firefox package size is within limit"
+                  fi
 
             - name: Upload Chrome/Edge Artifact
               uses: actions/upload-artifact@v4

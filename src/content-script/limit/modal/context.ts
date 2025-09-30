@@ -1,7 +1,7 @@
-import { useRequest } from "@hooks/useRequest"
+import { useRequest } from '@hooks/useRequest'
+import { useWindowFocus } from '@hooks/useWindowFocus'
 import limitService from "@service/limit-service"
-import { useWindowFocus } from "@vueuse/core"
-import { type App, inject, provide, type Ref, ref, watch } from "vue"
+import { type App, inject, provide, type Ref, shallowRef, watch } from "vue"
 import { type LimitReason } from "../common"
 
 const REASON_KEY = "display_reason"
@@ -20,7 +20,7 @@ export const provideGlobalParam = (app: App<Element>, gp: GlobalParam) => {
 export const useGlobalParam = () => inject(GLOBAL_KEY) as GlobalParam
 
 export const provideReason = (app: App<Element>): Ref<LimitReason | undefined> => {
-    const reason = ref<LimitReason>()
+    const reason = shallowRef<LimitReason>()
     app.provide(REASON_KEY, reason)
     return reason
 }

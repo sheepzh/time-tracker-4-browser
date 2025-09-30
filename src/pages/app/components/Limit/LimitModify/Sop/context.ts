@@ -1,5 +1,5 @@
 import { t } from "@app/locale"
-import { useProvide, useProvider } from "@hooks/useProvider"
+import { useProvide, useProvider } from "@hooks"
 import { range } from "@util/array"
 import { ElMessage } from "element-plus"
 import { type Reactive, reactive, ref, toRaw } from "vue"

@@ -6,13 +6,12 @@
  */
 import ColumnHeader from "@app/components/common/ColumnHeader"
 import { t } from "@app/locale"
-import { useRequest } from "@hooks"
+import { useLocalStorage, useRequest, useState } from "@hooks"
 import { type ElTableRowScope } from "@pages/element-ui/table"
 import weekHelper from "@service/components/week-helper"
 import { isEffective } from "@util/limit"
-import { useLocalStorage } from "@vueuse/core"
 import { ElSwitch, ElTable, ElTableColumn, ElTag, type Sort } from "element-plus"
-import { defineComponent } from "vue"
+import { defineComponent, watch } from "vue"
 import { useLimitTable } from "../context"
 import LimitOperationColumn from "./column/LimitOperationColumn"
 import RuleContent from "./RuleContent"
@@ -41,7 +40,12 @@ const _default = defineComponent(() => {
         changeEnabled, changeDelay, changeLocked
     } = useLimitTable()
 
-    const historySort = useLocalStorage<Sort>('__limit_sort_default__', { prop: DEFAULT_SORT_COL, order: 'descending' })
+    const [cachedSort, setCachedSort] = useLocalStorage<Sort>(
+        '__limit_sort_default__', { prop: DEFAULT_SORT_COL, order: 'descending' }
+    )
+
+    const [sort, setSort] = useState(cachedSort)
+    watch(sort, () => setCachedSort(sort.value))
 
     return () => (
         <ElTable
@@ -50,8 +54,8 @@ const _default = defineComponent(() => {
             style={{ width: "100%" }}
             height="100%"
             data={list.value}
-            defaultSort={historySort.value}
-            onSort-change={(val: Sort) => historySort.value = { prop: val?.prop, order: val?.order }}
+            defaultSort={sort.value}
+            onSort-change={(val: Sort) => setSort({ prop: val?.prop, order: val?.order })}
         >
             <ElTableColumn type="selection" align="center" fixed="left" />
             <ElTableColumn

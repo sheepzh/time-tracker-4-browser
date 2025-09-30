@@ -6,8 +6,7 @@
  */
 
 import { t } from "@app/locale"
-import { useManualRequest, useMediaSize, useRequest } from "@hooks"
-import { MediaSize, useXsState } from "@hooks/useMediaSize"
+import { MediaSize, useManualRequest, useMediaSize, useRequest, useXsState } from "@hooks"
 import { isTranslatingLocale, locale } from "@i18n"
 import Flex from "@pages/components/Flex"
 import metaService from "@service/meta-service"

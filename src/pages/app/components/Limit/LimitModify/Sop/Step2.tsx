@@ -7,7 +7,7 @@
 
 import { t } from "@app/locale"
 import { Delete, WarnTriangleFilled } from "@element-plus/icons-vue"
-import { useState } from "@hooks/index"
+import { useState } from "@hooks"
 import Flex from "@pages/components/Flex"
 import { cleanCond } from "@util/limit"
 import { ElButton, ElDivider, ElIcon, ElInput, ElLink, ElMessage, ElScrollbar, ElText, type ScrollbarInstance } from "element-plus"

@@ -2,6 +2,7 @@ import path from "path"
 import manifest from "../src/manifest"
 import { FileManagerPlugin } from "./plugins/file-manager"
 import optionGenerator from "./rspack.common"
+import { enhancePluginWith } from './util'
 
 const { name, version } = require(path.join(__dirname, '..', 'package.json'))
 
@@ -33,9 +34,7 @@ const filemanagerPlugin = new FileManagerPlugin({
 
 const option = optionGenerator({ outputPath, manifest, mode: "production" })
 
-const { plugins = [] } = option
-plugins.push(filemanagerPlugin)
-option.plugins = plugins
-// option.devtool = false
+enhancePluginWith(option, filemanagerPlugin)
+option.devtool = false
 
 export default option

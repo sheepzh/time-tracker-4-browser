@@ -136,7 +136,7 @@ function render2Svg(chartData: ChartData): string {
         grid: {
             left: '3%',
             right: '4%',
-            bottom: '3%',
+            bottom: '8%',
             containLabel: true
         },
         xAxis: [{

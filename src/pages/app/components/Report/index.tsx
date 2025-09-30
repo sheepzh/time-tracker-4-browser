@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { useXsState } from "@hooks/useMediaSize"
+import { useXsState } from "@hooks"
 import { defineComponent } from "vue"
 import ContentContainer from "../common/ContentContainer"
 import { initReportContext } from "./context"

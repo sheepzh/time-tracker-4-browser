@@ -1,5 +1,4 @@
-import { useLocalStorage, useRequest } from "@hooks"
-import { useProvide, useProvider } from "@hooks/useProvider"
+import { useLocalStorage, useProvide, useProvider, useRequest } from "@hooks"
 import cateService from "@service/cate-service"
 import optionService from "@service/option-service"
 import { toMap } from "@util/array"

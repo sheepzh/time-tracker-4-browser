@@ -98,7 +98,6 @@ async function generateOption(rows: timer.stat.Row[] = [], timeFormat: timer.app
         title: generateTitleOption(title),
         grid: {
             left: `${MARGIN_LEFT_P}%`,
-            containLabel: true,
             right: `${MARGIN_RIGHT_P}%`,
             top: "16%",
             bottom: '4%',

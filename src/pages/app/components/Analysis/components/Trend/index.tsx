@@ -4,17 +4,17 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import { GRID_WRAPPER_STYLE } from '@app/components/common/grid'
 import { KanbanCard } from "@app/components/common/kanban"
 import { t } from "@app/locale"
 import { periodFormatter } from "@app/util/time"
-import { useXsState } from "@hooks/useMediaSize"
+import { useXsState } from "@hooks"
 import Flex from "@pages/components/Flex"
 import { defineComponent } from "vue"
-import { useAnalysisTimeFormat } from "../../context"
+import { useAnalysisTimeFormat } from '../../context'
 import { initAnalysisTrend } from "./context"
 import Dimension from "./Dimension"
 import Filter from "./Filter"
-import { GRID_WRAPPER_STYLE } from "../../../common/grid"
 import Total from "./Total"
 
 const visitFormatter = (val: number | undefined) => (Number.isInteger(val) ? val?.toString() : val?.toFixed(1)) ?? '-'
