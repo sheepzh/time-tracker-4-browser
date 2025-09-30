@@ -18,29 +18,24 @@ const matchUrl = (cond: string, url: string): boolean => {
     return new RegExp(`^.*//${cond.split('*').join('.*')}`).test(url)
 }
 
+const WHITE_PREFIX = '+'    //Denotes an exclusion rule when used as a prefix in a condition string
+
 /**
  * checks whether the provided URL matches the rule list (cond), following the exclusion rule priority
  * @param cond
  * @param url
  */
 export function matches(cond: timer.limit.Item['cond'], url: string): boolean {
-    const normalRules: string[] = [];
-    const excludeRules: string[] = [];
-    for (const rule of cond) {
-        if (rule.startsWith('+')) {
-            const excludeRule = rule.slice(1);
-            excludeRules.push(excludeRule);
+    let hit = false
+    for (let i = cond.length - 1; i >= 0; i--) {
+        const rule = cond[i]
+        if (rule.startsWith(WHITE_PREFIX)) {
+            if (matchUrl(rule.slice(1), url)) return false
         } else {
-            normalRules.push(rule);
+            hit = hit || matchUrl(rule, url)
         }
     }
-    for (const excludeRule of excludeRules) {
-        if (matchUrl(excludeRule, url)) return false;
-    }
-    for (const normalRule of normalRules) {
-        if (matchUrl(normalRule, url))  return true;
-    }
-    return false;
+    return hit
 }
 
 /**
@@ -49,22 +44,14 @@ export function matches(cond: timer.limit.Item['cond'], url: string): boolean {
  * @param url
  */
 export function matchCond(cond: timer.limit.Item['cond'], url: string): string[] {
-    const normalRules: string[] = [];
-    const excludeRules: string[] = [];
-    for (const rule of cond) {
-        if (rule.startsWith('+')) {
-            const excludeRule = rule.slice(1);
-            excludeRules.push(excludeRule);
-        } else {
-            normalRules.push(rule);
-        }
-    }
-    for (const excludeRule of excludeRules) {
-        if (matchUrl(excludeRule, url)) return [];
-    }
     const matchedNormalRules: string[] = [];
-    for (const normalRule of normalRules) {
-        if (matchUrl(normalRule, url))  matchedNormalRules.push(normalRule);
+    for (let i = cond.length - 1; i >= 0; i--) {
+        const rule = cond[i];
+        if (rule.startsWith(WHITE_PREFIX)) {
+            if (matchUrl(rule.slice(1), url))   return [];  //Immediately return an empty array if an exclusion rule is hit
+        } else {
+            if (matchUrl(rule, url))    matchedNormalRules.push(rule);
+        }
     }
     return matchedNormalRules;
 }

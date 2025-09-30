@@ -24,11 +24,11 @@ describe('util/limit', () => {
         expect(matches(cond, 'http://t.bilibili.com/')).toBe(true)
         expect(matches(cond, 'https://www.bilibili.com/video/BV3527/')).toBe(true)
     })
-    
+
     test('matchCond', () => {
         const cond = ['www.baidu.com', '*.google.com', 'github.com/sheepzh', 'github.com','+www.bilibili.com/cheese','*.bilibili.com*']
         expect(matchCond(cond, 'http://www.baidu.com')).toEqual(['www.baidu.com'])
-        expect(matchCond(cond, 'https://github.com/sheepzh/time-tracker-for-browser')).toEqual(['github.com/sheepzh', 'github.com'])
+        expect(matchCond(cond, 'https://github.com/sheepzh/time-tracker-for-browser')).toEqual(['github.com', 'github.com/sheepzh'])
         expect(matchCond(cond, 'https://www.github.com')).toEqual([])
         expect(matchCond(cond, 'https://www.bilibili.com/cheese/list')).toEqual([])
         expect(matchCond(cond, 'https://www.bilibili.com/vedio')).toEqual(['*.bilibili.com*'])
