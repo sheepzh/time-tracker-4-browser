@@ -54,7 +54,7 @@ const _default = defineComponent(() => {
                             </ElButton>
                         )
                     }}
-                    placeholder="www.demo.com, *.demo.com, demo.com/blog/*, demo.com/**"
+                    placeholder="www.demo.com, *.demo.com, demo.com/blog/*, demo.com/**, +www.demo.com/blog/list"
                 />
                 <ElText style={{ textAlign: 'start', width: '100%', paddingInlineStart: '10px' } satisfies StyleValue}>
                     {t(msg => msg.limit.wildcardTip)}
