@@ -299,12 +299,14 @@
             "flutterflow": 1,
             "framer": 1,
             "github": 1,
+            "hackclub": 1,
             "hasura": 1,
             "hosted": {
                 "c": {
                     "*": 1
                 }
             },
+            "leapcell": 1,
             "loginline": 1,
             "lovable": 1,
             "luyani": 1,
@@ -1139,6 +1141,11 @@
     "azure": 1,
     "ba": {
         "c": {
+            "brendly": {
+                "c": {
+                    "shop": 1
+                }
+            },
             "com": 1,
             "edu": 1,
             "gov": 1,
@@ -1827,6 +1834,7 @@
     "cc": {
         "c": {
             "cleverapps": 1,
+            "cloud-ip": 1,
             "cloudns": 1,
             "csx": 1,
             "fantasyleague": 1,
@@ -2441,6 +2449,7 @@
             "3utilities": 1,
             "4u": 1,
             "a2hosted": 1,
+            "abrdns": 1,
             "adobeaemcloud": {
                 "c": {
                     "dev": {
@@ -2452,8 +2461,6 @@
                 "l": 1
             },
             "africa": 1,
-            "airkitapps": 1,
-            "airkitapps-au": 1,
             "aivencloud": 1,
             "aliases121": 1,
             "alibabacloudcs": 1,
@@ -4116,6 +4123,8 @@
                     "demo": 1
                 }
             },
+            "jote-dr-lt1": 1,
+            "jote-rd-lt1": 1,
             "joyent": {
                 "c": {
                     "cns": {
@@ -4185,7 +4194,6 @@
             "mydatto": 1,
             "mydbserver": 1,
             "mydobiss": 1,
-            "mydrobo": 1,
             "myiphost": 1,
             "mynascloud": 1,
             "myqnapcloud": 1,
@@ -4315,6 +4323,7 @@
             "reservd": 1,
             "reserve-online": 1,
             "rhcloud": 1,
+            "rice-labs": 1,
             "routingthecloud": 1,
             "ru": 1,
             "sa": 1,
@@ -4756,6 +4765,11 @@
             "virtual-user": 1,
             "virtualuser": 1,
             "webspaceconfig": 1,
+            "xenonconnect": {
+                "c": {
+                    "*": 1
+                }
+            },
             "xn--gnstigbestellen-zvb": 1,
             "xn--gnstigliefern-wob": 1
         },
@@ -4872,6 +4886,7 @@
                     "*": 1
                 }
             },
+            "leapcell": 1,
             "localcert": {
                 "c": {
                     "user": {
@@ -5230,7 +5245,6 @@
     },
     "eu": {
         "c": {
-            "airkitapps": 1,
             "barsy": 1,
             "cloudns": 1,
             "diskstation": 1,
@@ -5751,6 +5765,7 @@
     "hospital": 1,
     "host": {
         "c": {
+            "bolt": 1,
             "cloudaccess": 1,
             "easypanel": 1,
             "fastvps": 1,
@@ -5865,6 +5880,7 @@
             "biz": 1,
             "co": 1,
             "desa": 1,
+            "e": 1,
             "go": 1,
             "kop": 1,
             "mil": 1,
@@ -11222,6 +11238,7 @@
             "barsy": 1,
             "eero": 1,
             "eero-stage": 1,
+            "leapcell": 1,
             "websitebuilder": 1
         },
         "l": 1
@@ -12207,6 +12224,7 @@
                     "*": 1
                 }
             },
+            "canva": 1,
             "code": {
                 "c": {
                     "*": 1
@@ -12233,7 +12251,6 @@
             "onporter": 1,
             "ravendb": 1,
             "repl": 1,
-            "servers": 1,
             "stackit": 1,
             "val": {
                 "c": {
@@ -12438,7 +12455,8 @@
                     "eu": 1,
                     "us": 1
                 }
-            }
+            },
+            "teleport": 1
         },
         "l": 1
     },
@@ -12510,6 +12528,7 @@
             "sourcecraft": 1,
             "square": 1,
             "srht": 1,
+            "support": 1,
             "tst": {
                 "c": {
                     "*": 1
@@ -13505,8 +13524,7 @@
             "ms": {
                 "c": {
                     "cc": 1,
-                    "k12": 1,
-                    "lib": 1
+                    "k12": 1
                 },
                 "l": 1
             },
