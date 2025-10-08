@@ -35,13 +35,13 @@
     },
     "zh_TW": {
         "label": {
-            "name": "擴充名稱",
+            "name": "名稱",
             "version": "版本",
             "website": "官網",
             "installation": "安裝",
             "thanks": "致謝",
             "privacy": "隱私權",
-            "license": "授權",
+            "license": "許可證",
             "support": "支援"
         },
         "text": {
