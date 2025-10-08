@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { t } from "@app/locale"
+import AlertLines from '@app/components/common/AlertLines'
 import Flex from "@pages/components/Flex"
-import { ElAlert, ElCard } from "element-plus"
+import { ElCard } from "element-plus"
 import { type FunctionalComponent } from "vue"
 import ContentContainer from "../common/ContentContainer"
 import WhitePanel from "./WhitePanel"
@@ -16,14 +16,13 @@ const Whitelist: FunctionalComponent = () => (
     <ContentContainer>
         <ElCard>
             <Flex gap={20} column>
-                <ElAlert
-                    title={t(msg => msg.whitelist.infoAlertTitle)}
-                    style={{ padding: "15px 25px" }}
-                    closable={false}
-                >
-                    <li>{t(msg => msg.whitelist.infoAlert0)}</li>
-                    <li>{t(msg => msg.whitelist.infoAlert1)}</li>
-                </ElAlert>
+                <AlertLines
+                    title={msg => msg.whitelist.infoAlertTitle}
+                    lines={[
+                        msg => msg.whitelist.infoAlert0,
+                        msg => msg.whitelist.infoAlert1,
+                    ]}
+                />
                 <WhitePanel />
             </Flex>
         </ElCard>
