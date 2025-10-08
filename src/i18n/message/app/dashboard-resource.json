@@ -40,6 +40,13 @@
         },
         "monthOnMonth": {
             "title": "瀏覽時數月環比趨勢"
+        },
+        "timeline": {
+            "title": "最近 {n} 天的时间线",
+            "busyScore": "繁忙度",
+            "busyScoreDesc": "与與總瀏覽時間和每小時的網站數量有關。計算公式请查看源代碼",
+            "focusScore": "专注度",
+            "focusScoreDesc": "與連續瀏覽同一網站的總時間有關。計算公式请查看源代碼"
         }
     },
     "en": {
