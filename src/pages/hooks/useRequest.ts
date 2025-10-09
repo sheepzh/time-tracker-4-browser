@@ -1,5 +1,8 @@
 import { ElLoadingService } from "element-plus"
-import { onBeforeMount, onMounted, ref, watch, type Ref, type WatchSource } from "vue"
+import {
+    onBeforeMount, onMounted, ref, shallowRef, watch,
+    type Ref, type ShallowRef, type WatchSource,
+} from "vue"
 
 export type RequestOption<T, P extends any[]> = {
     manual?: boolean
@@ -13,13 +16,13 @@ export type RequestOption<T, P extends any[]> = {
 }
 
 export type RequestResult<T, P extends any[]> = {
-    data: Ref<T>
-    ts: Ref<number>
+    data: ShallowRef<T>
+    ts: ShallowRef<number>
     refresh: (...p: P) => void
     refreshAsync: (...p: P) => Promise<void>
     refreshAgain: () => void
-    loading: Ref<boolean>
-    param: Ref<P | undefined>
+    loading: ShallowRef<boolean>
+    param: ShallowRef<P | undefined>
 }
 
 const findLoadingEl = async (target: RequestOption<unknown, unknown[]>['loadingTarget']): Promise<string | HTMLElement | undefined> => {
@@ -57,7 +60,7 @@ export function useRequest<P extends any[], T>(
         deps,
         onSuccess, onError,
     } = option || {}
-    const data = ref(defaultValue) as Ref<T>
+    const data = shallowRef(defaultValue) as ShallowRef<T>
     const loading = ref(false)
     const param = ref<P>()
     const ts = ref<number>(Date.now())
@@ -89,7 +92,7 @@ export function useRequest<P extends any[], T>(
         hook(() => refresh(...defaultParam))
     }
     if (deps && (!Array.isArray(deps) || deps?.length)) {
-        watch(deps, () => refresh(...defaultParam))
+        watch(deps, () => refresh(...defaultParam), { deep: true })
     }
     const refreshAgain = () => param.value && refresh(...param.value)
     return { data, ts, refresh, refreshAsync, refreshAgain, loading, param }

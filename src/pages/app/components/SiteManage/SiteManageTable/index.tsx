@@ -11,21 +11,16 @@ import { type ElTableRowScope } from "@pages/element-ui/table"
 import siteService from "@service/site-service"
 import { SiteMap } from "@util/site"
 import { ElMessage, ElSwitch, ElTable, ElTableColumn } from "element-plus"
-import { defineComponent, toRaw } from "vue"
+import { defineComponent } from "vue"
 import Category from "../../common/category/CategoryEditable"
+import { useSiteManageTable } from '../useSiteManage'
 import AliasColumn, { genInitialAlias } from "./column/AliasColumn"
 import OperationColumn from "./column/OperationColumn"
 import TypeColumn from "./column/TypeColumn"
 
-type Props = {
-    data?: timer.site.SiteInfo[]
-    onRowDelete?: ArgCallback<timer.site.SiteInfo>
-    onRowModify?: ArgCallback<timer.site.SiteInfo>
-    onAliasGenerated?: NoArgCallback
-    onSelectionChange?: ArgCallback<timer.site.SiteInfo[]>
-}
+const _default = defineComponent<{}>(() => {
+    const { setSelected, refresh, pagination } = useSiteManageTable()
 
-const _default = defineComponent<Props>(props => {
     const handleIconError = async (row: timer.site.SiteInfo) => {
         await siteService.removeIconUrl(row)
         row.iconUrl = undefined
@@ -35,11 +30,11 @@ const _default = defineComponent<Props>(props => {
         // Save
         await siteService.saveRun(row, val)
         row.run = val
-        props.onRowModify?.(toRaw(row))
+        refresh()
     }
 
     const handleBatchGenerate = async () => {
-        let data = props.data
+        let data = pagination.value?.list
         if (!data?.length) {
             return ElMessage.info("No data")
         }
@@ -50,16 +45,16 @@ const _default = defineComponent<Props>(props => {
             newAlias && toSave.put(site, newAlias)
         })
         await siteService.batchSaveAliasNoRewrite(toSave)
-        props.onAliasGenerated?.()
+        refresh()
         ElMessage.success(t(msg => msg.operation.successMsg))
     }
 
     return () => (
         <ElTable
-            data={props.data}
+            data={pagination.value?.list}
             height="100%"
             highlightCurrentRow border fit
-            onSelection-change={props.onSelectionChange}
+            onSelection-change={setSelected}
         >
             <ElTableColumn type="selection" align="center" />
             <ElTableColumn
@@ -87,7 +82,7 @@ const _default = defineComponent<Props>(props => {
                     )
                 }}
             />
-            <AliasColumn onRowAliasSaved={props.onRowModify} onBatchGenerate={handleBatchGenerate} />
+            <AliasColumn />
             <ElTableColumn
                 label={t(msg => msg.siteManage.column.cate)}
                 minWidth={140}
@@ -113,9 +108,9 @@ const _default = defineComponent<Props>(props => {
                     />
                 )}
             </ElTableColumn>
-            <OperationColumn onDelete={props.onRowDelete} />
+            <OperationColumn />
         </ElTable>
     )
-}, { props: ['data', 'onRowDelete', 'onRowModify', 'onAliasGenerated', 'onSelectionChange'] })
+})
 
 export default _default

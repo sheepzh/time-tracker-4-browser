@@ -11,7 +11,7 @@ async function clickRunTimeChange(siteHost: string): Promise<void> {
     await sitePage.keyboard.press('Enter')
     await sleep(.1)
     await sitePage.evaluate(() => {
-        const runTimeSwitch = document.querySelector<HTMLDivElement>('#site-manage-table-wrapper table > tbody > tr > td.el-table_1_column_7 .el-switch')
+        const runTimeSwitch = document.querySelector<HTMLDivElement>('table > tbody > tr > td.el-table_1_column_7 .el-switch')
         runTimeSwitch?.click()
     })
     setTimeout(() => sitePage.close(), 200)
