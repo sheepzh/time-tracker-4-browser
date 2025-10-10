@@ -13,19 +13,26 @@ jobs:
               run: npm install
             - name: Install http-server
               run: npm install -g http-server pm2
-            - name: Build e2e outputs
-              run: npm run dev:e2e
             - name: Build production outputs
               run: npm run build
-
             - name: Start up mock server
               run: |
                   pm2 start 'http-server ./test-e2e/example -p 12345'
                   pm2 start 'http-server ./test-e2e/example -p 12346'
-
-            - name: Run tests
+            - name: Build e2e outputs for chrome
+              run: npm run dev:e2e
+            - name: Run tests for Chrome
               env:
                   USE_HEADLESS_PUPPETEER: true
+              run: npm run test-e2e
+            - name: Install Firefox for Puppeteer
+              run: npx puppeteer browsers install firefox
+            - name: Build firefox e2e outputs
+              run: npm run dev:e2e-firefox
+            - name: Run tests for Firefox
+              env:
+                  USE_HEADLESS_PUPPETEER: true
+                  USE_FIREFOX_PUPPETEER: true
               run: npm run test-e2e
             - name: Tests ✅
               if: ${{ success() }}

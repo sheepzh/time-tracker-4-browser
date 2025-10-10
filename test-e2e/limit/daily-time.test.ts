@@ -6,7 +6,7 @@ let context: LaunchContext
 describe('Daily time limit', () => {
     beforeEach(async () => context = await launchBrowser())
 
-    afterEach(() => context.close())
+    // afterEach(() => context.close())
 
     test('basic', async () => {
         const limitTime = 2
@@ -17,6 +17,7 @@ describe('Daily time limit', () => {
             time: limitTime,
             enabled: true, allowDelay: false, locked: false,
         }
+        console.log('Demo rule: ', demoRule)
 
         // 1. Insert limit rule
         await createLimitRule(demoRule, limitPage)
