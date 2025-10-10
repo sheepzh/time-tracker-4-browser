@@ -9,6 +9,7 @@
         "dev:firefox": "rspack --config=rspack/rspack.dev.firefox.ts --watch",
         "dev:safari": "rspack --config=rspack/rspack.dev.safari.ts --watch",
         "dev:e2e": "rspack --config=rspack/rspack.e2e.ts",
+        "dev:e2e-firefox": "rspack --config=rspack/rspack.e2e.firefox.ts",
         "analyze": "rspack --config=rspack/rspack.analyze.ts",
         "android-firefox": "web-ext run -t firefox-android --firefox-apk org.mozilla.fenix -s dist_dev_firefox --adb-device ",
         "build": "rspack --config=rspack/rspack.prod.ts",

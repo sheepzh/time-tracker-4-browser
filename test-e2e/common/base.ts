@@ -1,7 +1,10 @@
-import { type Browser, launch, type Page } from "puppeteer"
+import { readFile } from 'fs/promises'
+import { join } from 'path'
+import { type Browser, launch, type Page, SupportedBrowser } from "puppeteer"
 import { E2E_OUTPUT_PATH } from "../../rspack/constant"
 
 const USE_HEADLESS_PUPPETEER = !!process.env['USE_HEADLESS_PUPPETEER']
+const TARGET: SupportedBrowser = process.env['USE_FIREFOX_PUPPETEER'] ? 'firefox' : 'chrome'
 
 export interface LaunchContext {
     browser: Browser
@@ -31,6 +34,11 @@ class LaunchContextWrapper implements LaunchContext {
 
     async openAppPage(route: string): Promise<Page> {
         const page = await this.browser.newPage()
+        if (TARGET === 'firefox') {
+            page.goto(`moz-extension://${this.extensionId}/static/app.html#${route}`)
+            await sleep(.1)
+            return page
+        }
         await page.goto(`chrome-extension://${this.extensionId}/static/app.html#${route}`)
         return page
     }
@@ -54,24 +62,75 @@ class LaunchContextWrapper implements LaunchContext {
 export async function launchBrowser(dirPath?: string): Promise<LaunchContext> {
     dirPath = dirPath ?? E2E_OUTPUT_PATH
 
-    const browser = await launch({
-        defaultViewport: null,
-        headless: USE_HEADLESS_PUPPETEER,
-        args: [
-            `--disable-extensions-except=${dirPath}`,
-            `--load-extension=${dirPath}`,
-            '--start-maximized',
-            '--no-sandbox',
-        ],
-    })
-    const serviceWorker = await browser.waitForTarget(target => target.type() === 'service_worker')
-    const url = serviceWorker.url()
-    let extensionId: string | undefined = url.split('/')[2]
-    if (!extensionId) {
-        throw new Error('Failed to detect extension id')
+    if (TARGET === 'chrome') {
+        const browser = await launch({
+            defaultViewport: null,
+            headless: USE_HEADLESS_PUPPETEER,
+            args: [
+                `--disable-extensions-except=${dirPath}`,
+                `--load-extension=${dirPath}`,
+                '--start-maximized',
+                '--no-sandbox',
+            ],
+        })
+        const serviceWorker = await browser.waitForTarget(target => target.type() === 'service_worker')
+        const url = serviceWorker.url()
+        const extensionId: string | undefined = url.split('/')[2]
+        if (!extensionId) {
+            throw new Error('Failed to detect extension id')
+        }
+        return new LaunchContextWrapper(browser, extensionId)
+    } else if (TARGET === 'firefox') {
+        const browser = await launch({
+            defaultViewport: null,
+            headless: USE_HEADLESS_PUPPETEER,
+            protocol: 'webDriverBiDi',
+            browser: 'firefox',
+            args: [
+                '--disable-web-security',
+                '--no-sandbox',
+            ],
+        })
+        const addonId = await browser.installExtension(dirPath)
+        const profileDir = getFirefoxProfileDir(browser)
+        if (!profileDir) {
+            throw new Error('Failed to get firefox profile dir')
+        }
+        const internalUUID = await readUuidFromPrefs(profileDir, addonId)
+        return new LaunchContextWrapper(browser, internalUUID)
+    } else {
+        throw new Error('Unsupported browser: ' + TARGET)
     }
+}
 
-    return new LaunchContextWrapper(browser, extensionId)
+function getFirefoxProfileDir(browser: Browser): string | undefined {
+    const proc = browser.process()
+    const args = proc?.spawnargs ?? []
+    const idx = args.findIndex(a => a === '--profile')
+    if (idx >= 0 && args[idx + 1]) {
+        return args[idx + 1]
+    }
+    return undefined
+}
+
+async function readUuidFromPrefs(profileDir: string, addonId: string): Promise<string> {
+    const jsPath = join(profileDir, 'prefs.js')
+    while (true) {
+        try {
+            const text = await readFile(jsPath, 'utf-8')
+            const re = /user_pref\("extensions\.webextensions\.uuids",\s*"((?:\\.|[^"\\])*)"\)/
+            const m = re.exec(text)
+            if (!m) continue
+            const escaped = m[1]
+            const jsonText = JSON.parse(`"${escaped}"`)
+            const mappings = JSON.parse(jsonText)
+            const uuid = mappings[addonId]
+            if (uuid) return uuid
+        } catch (e) {
+            console.info('Waiting for prefs.js to be ready...', e)
+            await sleep(0.1)
+        }
+    }
 }
 
 export function sleep(seconds: number): Promise<void> {

@@ -7,28 +7,30 @@
 
 import { t } from "@app/locale"
 import { Check, Close, WarnTriangleFilled } from "@element-plus/icons-vue"
-import { useState, useSwitch } from "@hooks"
+import { useRequest, useState, useSwitch } from "@hooks"
 import Flex from "@pages/components/Flex"
-import siteService from "@service/site-service"
+import siteService, { type SiteQueryParam } from "@service/site-service"
 import { supportCategory } from "@util/site"
 import { ElButton, ElDialog, ElForm, ElFormItem, ElMessage, ElMessageBox } from "element-plus"
-import { computed, defineComponent, markRaw, ref, type VNode } from "vue"
+import { computed, defineComponent, markRaw, ref } from "vue"
 import ContentContainer from "../common/ContentContainer"
 import Pagination from "../common/Pagination"
 import CategorySelect from "../common/category/CategorySelect"
-import SiteManageFilter from "./SiteManageFilter"
+import SiteManageFilter, { type FilterOption } from "./SiteManageFilter"
 import Modify, { type ModifyInstance } from './SiteManageModify'
 import SiteManageTable from "./SiteManageTable"
-import { initSiteManage } from './useSiteManage'
 
 export default defineComponent(() => {
-    const loadingTarget = ref<VNode>()
-    const {
-        page, pagination, refresh, loading,
-        selected
-    } = initSiteManage(() => loadingTarget.value?.el as HTMLElement | undefined)
+    const [filterOption, setFilterOption] = useState<FilterOption>()
     const modify = ref<ModifyInstance>()
+    const [page, setPage] = useState<timer.common.PageQuery>({ num: 1, size: 20 })
+    const { data: pagination, refresh, loading } = useRequest(() => {
+        const { query: fuzzyQuery, cateIds, types } = filterOption.value || {}
+        const param: SiteQueryParam = { fuzzyQuery, cateIds, types }
+        return siteService.selectByPage(param, page.value)
+    }, { loadingTarget: '#site-manage-table-wrapper', deps: [filterOption, page] })
 
+    const [selected, setSelected] = useState<timer.site.SiteInfo[]>([])
     const cateSupported = computed(() => selected?.value?.filter(supportCategory) || [])
     const [showCateChange, openCateChange, closeCateChange] = useSwitch(false)
     const [batchCate, setBatchCate] = useState<number>()
@@ -96,6 +98,8 @@ export default defineComponent(() => {
     return () => <ContentContainer v-slots={{
         filter: () => (
             <SiteManageFilter
+                defaultValue={filterOption.value}
+                onChange={setFilterOption}
                 onCreate={() => modify.value?.add?.()}
                 onBatchChangeCate={handleChangeCate}
                 onBatchDelete={handleBatchDelete}
@@ -103,16 +107,22 @@ export default defineComponent(() => {
             />
         ),
         content: () => <>
-            <Flex ref={loadingTarget} column width="100%" height="100%" gap={23}>
+            <Flex id="site-manage-table-wrapper" column width="100%" height="100%" gap={23}>
                 <Flex flex={1} height={0}>
-                    <SiteManageTable />
+                    <SiteManageTable
+                        data={pagination.value?.list}
+                        onSelectionChange={setSelected}
+                        onRowDelete={refresh}
+                        onRowModify={refresh}
+                        onAliasGenerated={refresh}
+                    />
                 </Flex>
                 <Flex justify="center">
                     <Pagination
                         disabled={loading.value}
-                        defaultValue={page}
+                        defaultValue={page.value}
                         total={pagination.value?.total || 0}
-                        onChange={val => { page.num = val.num, page.size = val.size }}
+                        onChange={setPage}
                     />
                 </Flex>
             </Flex>
