@@ -18,3 +18,11 @@ export async function createWhitelist(context: LaunchContext, white: string) {
     await checkBtn?.click()
     setTimeout(() => whitePage.close(), 200)
 }
+
+export async function removeAllWhitelist(context: LaunchContext) {
+    const whitePage = await context.openAppPage('/additional/whitelist')
+    await whitePage.evaluate(async () => {
+        await chrome.storage.local.remove('__timer__WHITELIST')
+    })
+    await whitePage.close()
+}
