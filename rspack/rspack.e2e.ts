@@ -10,5 +10,6 @@ const options = generateOption({
     manifest,
     mode: "production",
 })
+options.output = { ...options.output, clean: true }
 
 export default options
