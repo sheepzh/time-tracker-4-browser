@@ -5,33 +5,33 @@
  * https://opensource.org/licenses/MIT
  */
 import { t } from "@app/locale"
-import { useRequest } from "@hooks"
 import Flex from "@pages/components/Flex"
-import whitelistService from "@service/whitelist-service"
+import whitelistService from "@service/whitelist/service"
 import { ElMessage, ElMessageBox } from "element-plus"
-import { defineComponent } from "vue"
+import { defineComponent, onBeforeMount, reactive } from "vue"
 import AddButton from './AddButton'
 import WhiteItem from './WhiteItem'
 
 const _default = defineComponent(() => {
-    const { data: whitelist } = useRequest(() => whitelistService.listAll(), { defaultValue: [] })
+    const whitelist = reactive<string[]>([])
+    onBeforeMount(() => whitelistService.listAll().then(l => whitelist.push(...l)))
 
     const handleChanged = async (val: string, index: number): Promise<boolean> => {
-        const duplicate = whitelist.value?.find?.((white, i) => white === val && i !== index)
+        const duplicate = whitelist.find((white, i) => white === val && i !== index)
         if (duplicate) {
             ElMessage.warning(t(msg => msg.whitelist.duplicateMsg))
             // Reopen
             return false
         }
-        await whitelistService.remove(whitelist.value[index])
+        await whitelistService.remove(whitelist[index])
         await whitelistService.add(val)
-        whitelist.value[index] = val
+        whitelist[index] = val
         ElMessage.success(t(msg => msg.operation.successMsg))
         return true
     }
 
     const handleAdd = async (val: string): Promise<boolean> => {
-        const exists = whitelist.value?.some(item => item === val)
+        const exists = whitelist.some(item => item === val)
         if (exists) {
             ElMessage.warning(t(msg => msg.whitelist.duplicateMsg))
             return false
@@ -42,7 +42,7 @@ const _default = defineComponent(() => {
         return ElMessageBox.confirm(msg, title, { dangerouslyUseHTMLString: true })
             .then(async () => {
                 await whitelistService.add(val)
-                whitelist.value?.push(val)
+                whitelist.push(val)
                 ElMessage.success(t(msg => msg.operation.successMsg))
                 return true
             })
@@ -57,15 +57,15 @@ const _default = defineComponent(() => {
             .then(() => whitelistService.remove(whiteItem))
             .then(() => {
                 ElMessage.success(t(msg => msg.operation.successMsg))
-                const index = whitelist.value.indexOf(whiteItem)
-                index !== -1 && whitelist.value.splice(index, 1)
+                const index = whitelist.indexOf(whiteItem)
+                index !== -1 && whitelist.splice(index, 1)
             })
             .catch(() => { })
     }
 
     return () => (
         <Flex gap={10} wrap justify="space-between">
-            {whitelist.value?.map((white, index) => (
+            {whitelist.map((white, index) => (
                 <WhiteItem
                     white={white}
                     onChange={val => handleChanged(val, index)}

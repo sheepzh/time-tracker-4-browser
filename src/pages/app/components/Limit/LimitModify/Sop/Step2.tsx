@@ -9,6 +9,7 @@ import { t } from "@app/locale"
 import { Delete, WarnTriangleFilled } from "@element-plus/icons-vue"
 import { useState } from "@hooks"
 import Flex from "@pages/components/Flex"
+import { EXCLUDING_PREFIX } from '@util/constant/remain-host'
 import { cleanCond } from "@util/limit"
 import { ElButton, ElDivider, ElIcon, ElInput, ElLink, ElMessage, ElScrollbar, ElText, type ScrollbarInstance } from "element-plus"
 import { type StyleValue, defineComponent, ref } from "vue"
@@ -46,10 +47,7 @@ const _default = defineComponent(() => {
                     onKeydown={ev => (ev as KeyboardEvent)?.code === "Enter" && handleAdd()}
                     v-slots={{
                         append: () => (
-                            <ElButton
-                                onClick={handleAdd}
-                                style={{ display: 'flex' } satisfies StyleValue}
-                            >
+                            <ElButton onClick={handleAdd} style={{ display: 'flex' } satisfies StyleValue}>
                                 {t(msg => msg.button.add)}
                             </ElButton>
                         )
@@ -72,7 +70,7 @@ const _default = defineComponent(() => {
                             padding='0 20px'
                             style={{ backgroundColor: 'var(--el-fill-color)', borderRadius: 'var(--el-border-radius-large)' }}
                         >
-                            <ElText type="primary">{url}</ElText>
+                            <ElText type={url.startsWith(EXCLUDING_PREFIX) ? 'info' : 'primary'}>{url}</ElText>
                             <ElLink icon={Delete} type="danger" onClick={() => handleRemove(idx)} />
                         </Flex>
                     ))}

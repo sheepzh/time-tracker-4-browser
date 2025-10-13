@@ -1,15 +1,16 @@
 {
     "zh_CN": {
-        "addConfirmMsg": "{url} 加入白名单后，将不再统计该网站的数据",
+        "addConfirmMsg": "{url} 将被加入至白名单",
         "removeConfirmMsg": "{url} 将从白名单中移除",
         "duplicateMsg": "已存在白名单中",
         "infoAlertTitle": "你可以在这里配置网站白名单",
         "infoAlert0": "白名单内网站的上网时长和打开次数不会被统计",
         "infoAlert1": "白名单内网站的上网时间也不会被限制",
+        "infoAlert2": "您可以使用通配符 (*) 匹配多个站点，例如 *.example.com/**，并使用 + 作为前缀排除站点，例如 +need.example.com/**",
         "errorInput": "域名格式错误"
     },
     "zh_TW": {
-        "addConfirmMsg": "將 {url} 加入白名單後，將停止統計此網站的瀏覽資料",
+        "addConfirmMsg": "{url} 將會被加入白名單。",
         "removeConfirmMsg": "確定要將 {url} 從白名單移除嗎？",
         "duplicateMsg": "此網址已存在於白名單中",
         "infoAlertTitle": "網站白名單設定",
@@ -18,16 +19,17 @@
         "errorInput": "網域名稱格式錯誤"
     },
     "en": {
-        "addConfirmMsg": "{url} won't be counted after added into the whitelist any more.",
+        "addConfirmMsg": "{url} will be added to the whitelist.",
         "removeConfirmMsg": "{url} will be removed from the whitelist.",
         "duplicateMsg": "Duplicated",
         "infoAlertTitle": "You can whitelist sites on this page",
         "infoAlert0": "Whitelisted sites will not be counted",
         "infoAlert1": "Whitelisted sites will not be restricted",
+        "infoAlert2": "You can use a wildcards(*) to match multiple sites, such as *.example.com/**, and use + as a prefix to exclude sites, such as +need.example.com/**",
         "errorInput": "Invalid site URL"
     },
     "ja": {
-        "addConfirmMsg": "{url} がホワイトリストに追加されると、このWebサイトの統計はカウントされなくなります。",
+        "addConfirmMsg": "{url} がホワイトリストに追加されます。",
         "removeConfirmMsg": "{url} はホワイトリストから削除されます",
         "duplicateMsg": "繰り返される",
         "infoAlertTitle": "このページでサイトのホワイトリストを設定できます",
@@ -36,7 +38,7 @@
         "errorInput": "無効なURL"
     },
     "pt_PT": {
-        "addConfirmMsg": "{url} não será contabilizado após ser adicionado à lista de permissões.",
+        "addConfirmMsg": "{url} será adicionado à lista de permissões.",
         "removeConfirmMsg": "{url} será removido da lista de permissões.",
         "duplicateMsg": "Duplicado",
         "infoAlertTitle": "Pode adicionar sites à lista de permissões nesta página",
@@ -45,7 +47,7 @@
         "errorInput": "URL do site inválido"
     },
     "uk": {
-        "addConfirmMsg": "{url} не враховуватиметься після додавання до білого списку.",
+        "addConfirmMsg": "{url} буде додано до білого списку.",
         "removeConfirmMsg": "{url} буде вилучено з білого списку.",
         "duplicateMsg": "Дублікат",
         "infoAlertTitle": "На цій сторінці ви можете налаштувати білий список сайтів",
@@ -54,7 +56,7 @@
         "errorInput": "Неприпустима URL-адреса сайту"
     },
     "es": {
-        "addConfirmMsg": "{url} no se contará después de agregarlo a la lista blanca.",
+        "addConfirmMsg": "{url} se agregará a la lista blanca.",
         "removeConfirmMsg": "{url} será eliminado de la lista blanca.",
         "duplicateMsg": "Duplicado",
         "infoAlertTitle": "Puedes configurar una lista blanca de sitios en esta página",
@@ -63,7 +65,7 @@
         "errorInput": "URL del sitio inválida"
     },
     "de": {
-        "addConfirmMsg": "{url} wird nach dem Hinzufügen zur Whitelist nicht mehr gezählt.",
+        "addConfirmMsg": "{url} wird zur Whitelist hinzugefügt.",
         "removeConfirmMsg": "{url} wird von der Whitelist entfernt.",
         "duplicateMsg": "Dupliziert",
         "infoAlertTitle": "Sie können eine Whitelist vonseiten auf dieser Seite festlegen",
@@ -72,7 +74,7 @@
         "errorInput": "Ungültige Seiten-URL"
     },
     "fr": {
-        "addConfirmMsg": "{url} ne sera plus compté après avoir été ajouté à la liste blanche.",
+        "addConfirmMsg": "{url} sera ajouté à la liste blanche.",
         "removeConfirmMsg": "{url} sera supprimé de la liste blanche.",
         "duplicateMsg": "Doublon",
         "infoAlertTitle": "Vous pouvez ajouter des sites à la liste blanche sur cette page",
@@ -81,7 +83,7 @@
         "errorInput": "URL du site invalide"
     },
     "ru": {
-        "addConfirmMsg": "{url} больше не будет учитываться после добавления в белый список.",
+        "addConfirmMsg": "{url} будет добавлен в белый список.",
         "removeConfirmMsg": "{url} будет удален из белого списка.",
         "duplicateMsg": "Дублированный",
         "infoAlertTitle": "Вы можете добавить сайты в белый список на этой странице",
@@ -90,7 +92,7 @@
         "errorInput": "Неверный URL-адрес сайта"
     },
     "ar": {
-        "addConfirmMsg": "لن يتم احتساب {url} بعد إضافته إلى القائمة البيضاء بعد الآن.",
+        "addConfirmMsg": "سيتم إضافة {url} إلى القائمة البيضاء.",
         "removeConfirmMsg": "سيتم إزالة {url} من القائمة البيضاء.",
         "duplicateMsg": "مكررة",
         "infoAlertTitle": "يمكنك إضافة المواقع إلى القائمة البيضاء في هذه الصفحة",

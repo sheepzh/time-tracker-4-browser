@@ -7,7 +7,7 @@
 import { t } from "@app/locale"
 import { useState, useSwitch } from "@hooks"
 import { ElButton } from "element-plus"
-import { defineComponent, type StyleValue } from "vue"
+import { defineComponent, StyleValue } from "vue"
 import WhiteInput from './WhiteInput'
 
 type Props = {
@@ -31,7 +31,7 @@ const _default = defineComponent<Props>(({ onSave }) => {
             end
         />
     ) : (
-        <ElButton onClick={handleAdd} style={{ marginInlineEnd: 'auto' } satisfies StyleValue}>
+        <ElButton onClick={handleAdd} style={{ marginInlineEnd: 'auto' } satisfies StyleValue} >
             {`+ ${t(msg => msg.button.create)}`}
         </ElButton>
     )

@@ -9,10 +9,10 @@ import { listTabs, sendMsg2Tab } from "@api/chrome/tab"
 import db from "@db/limit-database"
 import optionHolder from "@service/components/option-holder"
 import weekHelper from "@service/components/week-helper"
+import whitelistHolder from "@service/whitelist/holder"
 import { sum } from "@util/array"
 import { calcTimeState, hasLimited, isEnabledAndEffective, matches } from "@util/limit"
 import { formatTimeYMD, MILL_PER_MINUTE } from "@util/time"
-import whitelistHolder from '../components/whitelist-holder'
 
 export type QueryParam = {
     filterDisabled: boolean

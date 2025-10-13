@@ -11,7 +11,7 @@ export async function createWhitelist(context: LaunchContext, white: string) {
     await input?.focus()
     await whitePage.keyboard.type(white)
     await sleep(.4)
-    const selectItem = await whitePage.waitForSelector('.el-popper .el-select-dropdown li:nth-child(2)')
+    const selectItem = await whitePage.waitForSelector('.el-popper .el-select-dropdown li:nth-child(1)')
     await selectItem?.click()
     await whitePage.click('.el-button:nth-child(3)')
     const checkBtn = await whitePage.waitForSelector('.el-overlay.is-message-box .el-button.el-button--primary')

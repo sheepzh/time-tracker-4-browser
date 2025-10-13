@@ -32,3 +32,5 @@ const reg = /^__local_(.+)__$/
 export function isRemainHost(host: string) {
     return reg.test(host)
 }
+
+export const EXCLUDING_PREFIX = '+'

@@ -8,38 +8,28 @@
 import { t } from "@app/locale"
 import { useState, useSwitch } from "@hooks"
 import limitService from "@service/limit-service"
-import { AlertProps, ElAlert, ElButton, ElDialog, ElFormItem, ElInput } from "element-plus"
+import { ElButton, ElDialog, ElFormItem, ElInput } from "element-plus"
 import { computed, defineComponent } from "vue"
+import AlertLines, { type AlertLinesProps } from '../common/AlertLines'
 import { type TestInstance } from "./context"
 
-function computeResultTitle(url: string | undefined, inputting: boolean, matched: timer.limit.Rule[]): string {
+function computeResult(url: string | undefined, inputting: boolean, matched: timer.limit.Rule[]): AlertLinesProps {
     if (!url) {
-        return t(msg => msg.limit.message.inputTestUrl)
+        return { type: 'info', title: msg => msg.limit.message.inputTestUrl }
     }
     if (inputting) {
-        return t(msg => msg.limit.message.clickTestButton, { buttonText: t(msg => msg.button.test) })
+        const title = t(msg => msg.limit.message.clickTestButton, { buttonText: t(msg => msg.button.test) })
+        return { type: 'info', title }
     }
     if (!matched?.length) {
-        return t(msg => msg.limit.message.noRuleMatched)
+        return { type: 'warning', title: msg => msg.limit.message.noRuleMatched }
     } else {
-        return t(msg => msg.limit.message.rulesMatched)
+        return {
+            type: 'success',
+            title: msg => msg.limit.message.rulesMatched,
+            lines: matched.map(m => m.name)
+        }
     }
-}
-
-function computeResultDesc(url: string | undefined, inputting: boolean, matched: timer.limit.Rule[]): string[] {
-    if (!url || inputting || !matched?.length) {
-        return []
-    }
-    return matched.map(m => m.name)
-}
-
-type _ResultType = AlertProps['type']
-
-function computeResultType(url: string | undefined, inputting: boolean, matched: timer.limit.Rule[]): _ResultType {
-    if (!url || inputting) {
-        return 'info'
-    }
-    return matched?.length ? 'success' : 'warning'
 }
 
 const _default = defineComponent((_props, ctx) => {
@@ -47,9 +37,7 @@ const _default = defineComponent((_props, ctx) => {
     const [matched, , clearMatched] = useState<timer.limit.Rule[]>([])
     const [visible, open, close] = useSwitch()
     const [urlInputting, startInput, endInput] = useSwitch(true)
-    const resultTitle = computed(() => computeResultTitle(url.value, urlInputting.value, matched.value))
-    const resultType = computed(() => computeResultType(url.value, urlInputting.value, matched.value))
-    const resultDesc = computed(() => computeResultDesc(url.value, urlInputting.value, matched.value))
+    const result = computed(() => computeResult(url.value, urlInputting.value, matched.value))
 
     const changeInput = (newVal?: string) => {
         startInput()
@@ -88,9 +76,7 @@ const _default = defineComponent((_props, ctx) => {
                     }}
                 />
             </ElFormItem>
-            <ElAlert closable={false} type={resultType.value} title={resultTitle.value}>
-                {resultDesc.value.map(desc => <li>{desc}</li>)}
-            </ElAlert>
+            <AlertLines {...result.value} />
         </ElDialog>
     )
 })

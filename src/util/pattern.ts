@@ -187,3 +187,20 @@ export function escapeRegExp(s: string): string {
     if (!s) return ''
     return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
 }
+
+export function compileAntPattern(antPattern: string): RegExp {
+    const segments = antPattern.split('/')
+    let patternStr = segments.map(seg => {
+        if (seg === "**") {
+            return ".*"
+        } else {
+            return seg.replace?.(/\*/g, "[^/]*").replace(/\./g, "\\.")
+        }
+    }).join("/")
+    // "google.com/**" => google\.com.*
+    if (patternStr.endsWith("/.*")) {
+        patternStr = patternStr.substring(0, patternStr.length - 3) + ".*"
+    }
+
+    return new RegExp("^(.+://)?" + patternStr + "/?(\\?.*)?$")
+}

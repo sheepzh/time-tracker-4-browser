@@ -21,6 +21,7 @@ const Whitelist: FunctionalComponent = () => (
                     lines={[
                         msg => msg.whitelist.infoAlert0,
                         msg => msg.whitelist.infoAlert1,
+                        msg => msg.whitelist.infoAlert2,
                     ]}
                 />
                 <WhitePanel />

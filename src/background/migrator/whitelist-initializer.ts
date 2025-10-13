@@ -1,9 +1,9 @@
-import whitelistService from "@service/whitelist-service"
+import whitelistService from "@service/whitelist/service"
 import { type Migrator } from "./common"
 
 export default class WhitelistInitializer implements Migrator {
     onInstall(): void {
-        whitelistService.add('localhost:*')
+        whitelistService.add('localhost:*/**')
     }
 
     onUpdate(version: string): void {
