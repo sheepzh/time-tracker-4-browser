@@ -6,26 +6,40 @@
  */
 
 import { t } from "@app/locale"
-import { Check, Close } from "@element-plus/icons-vue"
+import { Check, CirclePlus, Close } from "@element-plus/icons-vue"
 import { useRequest, useShadow } from "@hooks"
 import Box from "@pages/components/Box"
+import Flex from '@pages/components/Flex'
 import siteService from "@service/site-service"
-import { isRemainHost } from "@util/constant/remain-host"
+import { EXCLUDING_PREFIX, isRemainHost } from "@util/constant/remain-host"
 import { isValidHost, judgeVirtualFast } from "@util/pattern"
-import { ElButton, ElMessage, ElOption, ElSelect, ElTag } from "element-plus"
+import { ElButton, ElIcon, ElMessage, ElOption, ElSelect, ElTag } from "element-plus"
 import { defineComponent, StyleValue } from "vue"
 
-async function remoteSearch(query: string): Promise<timer.site.SiteInfo[]> {
+type SearchItem = timer.site.SiteKey & {
+    exclude?: boolean
+}
+
+async function remoteSearch(query: string): Promise<SearchItem[]> {
+    let exclude = false
+    if (query?.startsWith(EXCLUDING_PREFIX)) {
+        exclude = true
+        query = query.slice(1)
+    }
     if (!query) return []
 
-    let sites: timer.site.SiteInfo[] = await siteService.selectAll({ fuzzyQuery: query })
-    // Add local files
+    let sites: SearchItem[] = await siteService.selectAll({ fuzzyQuery: query })
     const idx = sites.findIndex(s => s.host === query)
-    const target = idx > 0
-        // Move to the first index
-        ? sites.splice(idx, 1)?.[0]
-        : { host: query, type: judgeVirtualFast(query) ? 'virtual' : 'normal' } satisfies timer.site.SiteKey
-    return [target, ...sites]
+
+    const target = idx >= 0
+        // Move found item to the front
+        ? sites.splice(idx, 1)[0]
+        // Or create a new one if not found
+        : { host: query, type: judgeVirtualFast(query) ? 'virtual' : 'normal' } satisfies SearchItem
+    const result = [target, ...sites]
+
+    result.forEach(s => s.exclude = exclude)
+    return result
 }
 
 type Props = {
@@ -42,7 +56,8 @@ const _default = defineComponent<Props>(props => {
     const handleSubmit = () => {
         const val = white.value
         if (!val) return
-        if (isRemainHost(val) || isValidHost(val) || judgeVirtualFast(val)) {
+        const host = val?.startsWith(EXCLUDING_PREFIX) ? val.substring(1) : val
+        if (isRemainHost(host) || isValidHost(host) || judgeVirtualFast(host)) {
             props.onSave?.(val)
         } else {
             ElMessage.warning(t(msg => msg.whitelist.errorInput))
@@ -67,11 +82,19 @@ const _default = defineComponent<Props>(props => {
                 loading={searching.value}
                 remoteMethod={search}
             >
-                {sites.value?.map(({ host, type }) => <ElOption value={host} label={host}>
-                    <span>{host}</span>
-                    <ElTag v-show={type === 'virtual'} size="small">
-                        {t(msg => msg.siteManage.type.virtual?.name)?.toLocaleUpperCase?.()}
-                    </ElTag>
+                {sites.value?.map(({ host, type, exclude }) => <ElOption
+                    key={`${exclude}${host}`}
+                    value={exclude ? `${EXCLUDING_PREFIX}${host}` : host}
+                >
+                    <Flex gap={2} align='center'>
+                        <ElTag v-show={exclude} size="small" type='info'>
+                            <ElIcon><CirclePlus /></ElIcon>
+                        </ElTag>
+                        <span>{host}</span>
+                        <ElTag v-show={type === 'virtual'} size="small">
+                            {t(msg => msg.siteManage.type.virtual?.name)?.toLocaleUpperCase?.()}
+                        </ElTag>
+                    </Flex>
                 </ElOption>)}
             </ElSelect>
             <ElButton icon={Close} onClick={handleCancel} />

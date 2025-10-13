@@ -1,3 +1,4 @@
+import { EXCLUDING_PREFIX } from './constant/remain-host'
 import { getWeekDay, MILL_PER_MINUTE, MILL_PER_SECOND } from "./time"
 
 export const DELAY_MILL = 5 * MILL_PER_MINUTE
@@ -18,8 +19,6 @@ const matchUrl = (cond: string, url: string): boolean => {
     return new RegExp(`^.*//${cond.split('*').join('.*')}`).test(url)
 }
 
-const WHITE_PREFIX = '+'    //Denotes an exclusion rule when used as a prefix in a condition string
-
 /**
  * checks whether the provided URL matches the rule list (cond), following the exclusion rule priority
  * @param cond
@@ -29,7 +28,7 @@ export function matches(cond: timer.limit.Item['cond'], url: string): boolean {
     let hit = false
     for (let i = cond.length - 1; i >= 0; i--) {
         const rule = cond[i]
-        if (rule.startsWith(WHITE_PREFIX)) {
+        if (rule.startsWith(EXCLUDING_PREFIX)) {
             if (matchUrl(rule.slice(1), url)) return false
         } else {
             hit = hit || matchUrl(rule, url)
@@ -44,16 +43,17 @@ export function matches(cond: timer.limit.Item['cond'], url: string): boolean {
  * @param url
  */
 export function matchCond(cond: timer.limit.Item['cond'], url: string): string[] {
-    const matchedNormalRules: string[] = [];
+    const matchedNormalRules: string[] = []
     for (let i = cond.length - 1; i >= 0; i--) {
-        const rule = cond[i];
-        if (rule.startsWith(WHITE_PREFIX)) {
-            if (matchUrl(rule.slice(1), url))   return [];  //Immediately return an empty array if an exclusion rule is hit
+        const rule = cond[i]
+        if (rule.startsWith(EXCLUDING_PREFIX)) {
+            // Immediately return an empty array if an exclusion rule is hit
+            if (matchUrl(rule.slice(1), url)) return []
         } else {
-            if (matchUrl(rule, url))    matchedNormalRules.push(rule);
+            if (matchUrl(rule, url)) matchedNormalRules.push(rule)
         }
     }
-    return matchedNormalRules;
+    return matchedNormalRules
 }
 
 export const meetLimit = (limit: number | undefined, value: number | undefined): boolean => {

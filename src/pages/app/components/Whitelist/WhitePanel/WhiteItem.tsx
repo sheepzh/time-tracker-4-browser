@@ -5,8 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-import EditableTag from "@app/components/common/EditableTag"
+import EditableTag, { type EditableTagProps } from "@app/components/common/EditableTag"
 import { useShadow, useSwitch } from "@hooks"
+import { EXCLUDING_PREFIX } from '@util/constant/remain-host'
 import { judgeVirtualFast } from "@util/pattern"
 import { computed, defineComponent } from "vue"
 import WhiteInput from "./WhiteInput"
@@ -17,9 +18,19 @@ type Props = {
     onDelete: (white: string) => void
 }
 
+function computeType(white: string): EditableTagProps['type'] {
+    if (white.startsWith(EXCLUDING_PREFIX)) {
+        return 'info'
+    } else if (judgeVirtualFast(white)) {
+        return 'warning'
+    } else {
+        return 'primary'
+    }
+}
+
 const _default = defineComponent<Props>(props => {
     const [white, , resetWhite] = useShadow(() => props.white)
-    const isVirtual = computed(() => !!white.value && judgeVirtualFast(white.value))
+    const type = computed(() => computeType(white.value))
     const [editing, openEditing, closeEditing] = useSwitch()
 
     const handleCancel = () => {
@@ -38,7 +49,7 @@ const _default = defineComponent<Props>(props => {
             text={white.value}
             onEdit={openEditing}
             onClose={() => white.value && props.onDelete(white.value)}
-            type={isVirtual.value ? 'warning' : 'primary'}
+            type={type.value}
         />
     )
 }, { props: ['white', 'onChange', 'onDelete'] })

@@ -14,6 +14,7 @@ export type WhitelistMessage = {
     infoAlertTitle: string
     infoAlert0: string
     infoAlert1: string
+    infoAlert2: string
     errorInput: string
 }
 

@@ -3,7 +3,7 @@ import Flex from "@pages/components/Flex"
 import { ElTag, type TagProps } from "element-plus"
 import { defineComponent, h, useSlots, type StyleValue } from "vue"
 
-type Props = PartialPick<TagProps, 'type'> & {
+export type EditableTagProps = PartialPick<TagProps, 'type'> & {
     text?: string
     onEdit?: () => void
     closable?: boolean
@@ -16,7 +16,7 @@ const EDIT_ICON_STYLE: StyleValue = {
     cursor: 'pointer',
 }
 
-const EditableTag = defineComponent<Props>(props => {
+const EditableTag = defineComponent<EditableTagProps>(props => {
     const { default: textSlot } = useSlots()
     return () => (
         <ElTag

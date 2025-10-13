@@ -6,7 +6,7 @@
  */
 
 import whitelistDatabase from "@db/whitelist-database"
-import { log } from "../common/logger"
+import { log } from '@src/common/logger'
 
 /**
  * Service of whitelist

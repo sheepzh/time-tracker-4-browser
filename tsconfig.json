@@ -1,7 +1,6 @@
 {
     "compilerOptions": {
-        "baseUrl": "./",
-        "module": "commonjs",
+        "module": "esnext",
         "target": "esnext",
         "lib": [
             "ES2023"
@@ -16,51 +15,52 @@
         "resolveJsonModule": true,
         "importHelpers": true,
         "skipLibCheck": true,
+        "moduleResolution": "bundler",
         "paths": {
             "@api/*": [
-                "src/api/*"
+                "./src/api/*"
             ],
             "@cs/*": [
-                "src/content-script/*"
+                "./src/content-script/*"
             ],
             "@app/*": [
-                "src/pages/app/*"
+                "./src/pages/app/*"
             ],
             "@popup/*": [
-                "src/pages/popup/*"
+                "./src/pages/popup/*"
             ],
             "@side/*": [
-                "src/pages/side/*"
+                "./src/pages/side/*"
             ],
             "@hooks/*": [
-                "src/pages/hooks/*"
+                "./src/pages/hooks/*"
             ],
             "@hooks": [
-                "src/pages/hooks/index"
+                "./src/pages/hooks/index"
             ],
             "@pages/*": [
-                "src/pages/*"
+                "./src/pages/*"
             ],
             "@db/*": [
-                "src/database/*"
+                "./src/database/*"
             ],
             "@service/*": [
-                "src/service/*"
+                "./src/service/*"
             ],
             "@util/*": [
-                "src/util/*"
+                "./src/util/*"
             ],
             "@i18n/*": [
-                "src/i18n/*"
+                "./src/i18n/*"
             ],
             "@i18n": [
-                "src/i18n/index"
+                "./src/i18n/index"
             ],
             "@src/*": [
-                "src/*"
+                "./src/*"
             ],
             "*": [
-                "types/*"
+                "./types/*"
             ]
         }
     },
