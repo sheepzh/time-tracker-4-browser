@@ -16,6 +16,6 @@ jobs:
             - name: Install dependencies
               run: npm install
             - name: Sync source
-              run: ts-node ./script/crowdin/sync-source.ts
+              run: ts-node --project ./tsconfig.node.json ./script/crowdin/sync-source.ts
             - name: Sync translations
-              run: ts-node ./script/crowdin/sync-translation.ts
+              run: ts-node --project ./tsconfig.node.json ./script/crowdin/sync-translation.ts

@@ -23,7 +23,7 @@ jobs:
             - name: Install dependencies
               run: npm install
             - name: Export translations
-              run: ts-node ./script/crowdin/export-translation.ts
+              run: ts-node --project ./tsconfig.node.json ./script/crowdin/export-translation.ts
             - name: Test typescript
               uses: icrawl/action-tsc@v1
             - name: Create Pull Request
