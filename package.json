@@ -65,7 +65,7 @@
         "url-loader": "^4.1.1"
     },
     "optionalDependencies": {
-        "web-ext": "^8.10.0"
+        "web-ext": "^9.0.0"
     },
     "dependencies": {
         "@element-plus/icons-vue": "^2.3.2",
