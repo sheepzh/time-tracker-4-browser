@@ -10,7 +10,7 @@ const _default = defineComponent<{ href?: string, icon?: Icon }>(props => {
     return () => (
         <ElLink href={href} target="_blank">
             {icon ? <div class={`i-about-icon i-about-icons-${icon}`} /> : null}
-            {!!default_ && h(default_)}
+            {default_ ? h(default_) : href ?? ''}
         </ElLink>
     )
 }, { props: ['href', 'icon'] })

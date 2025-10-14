@@ -17,7 +17,7 @@ import {
     SOURCE_CODE_PAGE,
 } from "@util/constant/url"
 import { type ComponentSize, ElCard, ElDescriptions, ElDescriptionsItem, ElDivider, ElText } from "element-plus"
-import { computed, defineComponent } from "vue"
+import { computed, defineComponent, reactive } from "vue"
 import DescLink from "./DescLink"
 import "./description.sass"
 import InstallationLink from "./InstallationLink"
@@ -32,12 +32,18 @@ const computeSize = (mediaSize: MediaSize): ComponentSize => {
     }
 }
 
-const _default = defineComponent(() => {
+const _default = defineComponent<{}>(() => {
     const feedbackUrl = FEEDBACK_QUESTIONNAIRE[locale] || GITHUB_ISSUE_ADD
     const mediaSize = useMediaSize()
     const column = computed(() => mediaSize.value <= MediaSize.md ? 1 : 2)
-    const isXs = computed(() => mediaSize.value === MediaSize.xs)
     const size = computed(() => computeSize(mediaSize.value))
+    const pages = reactive({
+        homepage: HOMEPAGE,
+        privacy: PRIVACY_PAGE,
+        sourceCode: SOURCE_CODE_PAGE,
+        changeLog: CHANGE_LOG_PAGE,
+        email: AUTHOR_EMAIL,
+    })
 
     return () => (
         <ElCard class="about-card">
@@ -54,18 +60,14 @@ const _default = defineComponent(() => {
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.about.label.website)} labelAlign="right">
                     <DescLink href={getHomepageWithLocale()}>
-                        {HOMEPAGE}
+                        {pages.homepage}
                     </DescLink>
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.about.label.privacy)} labelAlign="right">
-                    <DescLink href={PRIVACY_PAGE}>
-                        {PRIVACY_PAGE}
-                    </DescLink>
+                    <DescLink href={pages.privacy} />
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.base.sourceCode)} labelAlign="right">
-                    <DescLink href={SOURCE_CODE_PAGE} icon="github">
-                        {SOURCE_CODE_PAGE}
-                    </DescLink>
+                    <DescLink href={pages.sourceCode} icon="github" />
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.about.label.license)} labelAlign="right">
                     <DescLink href={LICENSE_PAGE}>
@@ -73,12 +75,10 @@ const _default = defineComponent(() => {
                     </DescLink>
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.base.changeLog)} labelAlign="right">
-                    <DescLink href={CHANGE_LOG_PAGE} icon="github">
-                        {CHANGE_LOG_PAGE}
-                    </DescLink>
+                    <DescLink href={pages.changeLog} icon="github" />
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.about.label.support)} labelAlign="right">
-                    {AUTHOR_EMAIL}
+                    {pages.email}
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.about.label.installation)} labelAlign="right">
                     <Flex gap={15} align="center" margin={mediaSize.value === MediaSize.xs ? '5px 0' : 10}>
