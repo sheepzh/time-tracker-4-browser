@@ -47,7 +47,7 @@
         "errorInput": "URL do site inválido"
     },
     "uk": {
-        "addConfirmMsg": "{url} буде додано до білого списку.",
+        "addConfirmMsg": "{url} не враховуватиметься після додавання до білого списку.",
         "removeConfirmMsg": "{url} буде вилучено з білого списку.",
         "duplicateMsg": "Дублікат",
         "infoAlertTitle": "На цій сторінці ви можете налаштувати білий список сайтів",
