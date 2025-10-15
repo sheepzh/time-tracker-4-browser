@@ -114,12 +114,6 @@ declare namespace timer.option {
          */
         autoPauseInterval: number
         /**
-         * Whether to collect the site name
-         *
-         * @since 0.5.0
-         */
-        collectSiteName: boolean
-        /**
          * Whether to count the local files
          * @since 0.7.0
          */

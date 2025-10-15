@@ -1,16 +1,14 @@
 import { InfoFilled } from "@element-plus/icons-vue"
 import { ElIcon, ElTooltip } from "element-plus"
-import { defineComponent, useSlots } from "vue"
+import { type FunctionalComponent } from "vue"
 
-const _default = defineComponent(() => {
-    const { default: content } = useSlots()
-    return () => content ? (
+const OptionTooltip: FunctionalComponent<{}> = (_, { slots: { default: content } }) => (
+    content ? (
         <ElTooltip v-slots={{ content }}>
-            <ElIcon size={15}>
-                <InfoFilled />
-            </ElIcon>
+            <ElIcon size={15}><InfoFilled /></ElIcon>
         </ElTooltip>
     ) : null
-})
+)
+OptionTooltip.displayName = 'OptionTooltip'
 
-export default _default
+export default OptionTooltip

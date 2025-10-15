@@ -6,19 +6,10 @@
  */
 
 import { getTab } from "@api/chrome/tab"
-import optionDatabase from "@db/option-database"
 import siteService from "@service/site-service"
 import { IS_ANDROID, IS_CHROME, IS_SAFARI } from "@util/constant/environment"
-import { defaultStatistics } from "@util/constant/option"
 import { extractHostname, isBrowserUrl, isHomepage } from "@util/pattern"
 import { extractSiteName } from "@util/site"
-
-const storage: chrome.storage.StorageArea = chrome.storage.local
-
-let collectAliasEnabled = defaultStatistics().collectSiteName
-const setCollectAliasEnabled = (opt: timer.option.AllOption) => collectAliasEnabled = opt.collectSiteName
-optionDatabase.getOption().then(setCollectAliasEnabled)
-optionDatabase.addOptionChangeListener(setCollectAliasEnabled)
 
 function isUrl(title: string) {
     return title.startsWith('https://') || title.startsWith('http://') || title.startsWith('ftp://')
@@ -45,8 +36,7 @@ async function processTabInfo(tab: ChromeTab): Promise<void> {
     IS_CHROME && /^localhost(:.+)?/.test(host) && (favIconUrl = undefined)
     const siteKey: timer.site.SiteKey = { host, type: 'normal' }
     favIconUrl && await siteService.saveIconUrl(siteKey, favIconUrl)
-    collectAliasEnabled
-        && !isBrowserUrl(url)
+    !isBrowserUrl(url)
         && isHomepage(url)
         && await collectAlias(siteKey, title)
 }

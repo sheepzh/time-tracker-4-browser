@@ -43,7 +43,6 @@ export function defaultStatistics(): StatisticsRequired {
         autoPauseTracking: false,
         // 10 minutes
         autoPauseInterval: 600,
-        collectSiteName: true,
         countLocalFiles: true,
         countTabGroup: false,
         weekStart: 'default',

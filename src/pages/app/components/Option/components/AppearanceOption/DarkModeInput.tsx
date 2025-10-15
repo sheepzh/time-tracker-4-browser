@@ -48,7 +48,10 @@ const _default = defineComponent<Props>(props => {
             onChange={val => props.onChange?.(val as timer.option.DarkMode, [props.startSecond, props.endSecond])}
         >
             {
-                ALL_MODES.map(value => <ElOption value={value} label={t(msg => msg.option.appearance.darkMode.options[value])} />)
+                ALL_MODES.map(value => <ElOption
+                    value={value}
+                    label={t(msg => value === 'default' ? msg.option.followBrowser : msg.option.appearance.darkMode.options[value])}
+                />)
             }
         </ElSelect>
         {props.modelValue === "timed" && <>

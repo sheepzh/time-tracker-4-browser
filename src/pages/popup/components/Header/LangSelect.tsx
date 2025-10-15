@@ -73,7 +73,7 @@ const LangSelect = defineComponent(() => {
                             onClick={() => saveLocale('default')}
                             style={current.value === 'default' ? SELECTED_STYLES : null}
                         >
-                            {t(optionMessages, { key: m => m.appearance.locale.default })}
+                            {t(optionMessages, { key: m => m.followBrowser })}
                         </ElDropdownItem>
                         <ElDropdownItem
                             onClick={() => createTab(CROWDIN_HOMEPAGE)}

@@ -13,6 +13,7 @@ import { ElInput, ElOption, ElSelect } from "element-plus"
 import { computed, defineComponent } from "vue"
 import { type OptionInstance } from "../../common"
 import OptionItem from "../OptionItem"
+import OptionLines from '../OptionLines'
 import OptionTooltip from "../OptionTooltip"
 import AutoInput from "./AutoInput"
 import Footer from "./Footer"
@@ -45,8 +46,8 @@ const _default = defineComponent((_, ctx) => {
 
     ctx.expose({ reset } satisfies OptionInstance)
 
-    return () => <>
-        <OptionItem label={msg => msg.option.backup.type} defaultValue={TYPE_NAMES['none']} hideDivider>
+    return () => <OptionLines>
+        <OptionItem label={msg => msg.option.backup.type} defaultValue={TYPE_NAMES['none']}>
             <ElSelect
                 modelValue={backupType.value}
                 size="small"
@@ -101,7 +102,7 @@ const _default = defineComponent((_, ctx) => {
                     onInput={val => setExtField('endpoint', val)}
                 />
             </OptionItem>
-            <OptionItem label={_ => "Vault Name {input}"}>
+            <OptionItem key="obsidian-vault" label={_ => "Vault Name {input}"}>
                 <ElInput
                     placeholder={DEFAULT_OBSIDIAN_BUCKET}
                     modelValue={ext.value?.bucket}
@@ -110,7 +111,7 @@ const _default = defineComponent((_, ctx) => {
                     onInput={val => setExtField('bucket', val)}
                 />
             </OptionItem>
-            <OptionItem label={msg => msg.option.backup.label.path} required>
+            <OptionItem key="obsidian-path" label={msg => msg.option.backup.label.path} required>
                 <ElInput
                     modelValue={ext.value?.dirPath}
                     size="small"
@@ -118,7 +119,7 @@ const _default = defineComponent((_, ctx) => {
                     onInput={val => setExtField('dirPath', val)}
                 />
             </OptionItem>
-            <OptionItem required label={_ => "Authorization {input}"}>
+            <OptionItem key="obsidian-auth" label={_ => "Authorization {input}"} required>
                 <ElInput
                     modelValue={auth.value}
                     size="small"
@@ -144,7 +145,7 @@ const _default = defineComponent((_, ctx) => {
                     onInput={val => setExtField('endpoint', val)}
                 />
             </OptionItem>
-            <OptionItem label={msg => msg.option.backup.label.path} required>
+            <OptionItem key='web-dav-path' label={msg => msg.option.backup.label.path} required>
                 <ElInput
                     modelValue={ext.value?.dirPath}
                     placeholder="/for/example"
@@ -153,7 +154,7 @@ const _default = defineComponent((_, ctx) => {
                     onInput={val => setExtField('dirPath', val)}
                 />
             </OptionItem>
-            <OptionItem label={msg => msg.option.backup.label.account} required>
+            <OptionItem key='web-dav-acc' label={msg => msg.option.backup.label.account} required>
                 <ElInput
                     modelValue={account.value}
                     size="small"
@@ -161,7 +162,7 @@ const _default = defineComponent((_, ctx) => {
                     onInput={val => account.value = val?.trim?.()}
                 />
             </OptionItem>
-            <OptionItem label={msg => msg.option.backup.label.password} required>
+            <OptionItem key='web-dav-psw' label={msg => msg.option.backup.label.password} required>
                 <ElInput
                     modelValue={password.value}
                     size="small"
@@ -180,7 +181,7 @@ const _default = defineComponent((_, ctx) => {
             />
         </OptionItem>
         {isNotNone.value && <Footer type={backupType.value} />}
-    </>
+    </OptionLines>
 })
 
 export default _default

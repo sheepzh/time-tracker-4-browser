@@ -13,6 +13,7 @@ import { defineComponent, type StyleValue } from "vue"
 import { type OptionInstance } from "../../common"
 import { useOption } from "../../useOption"
 import OptionItem from "../OptionItem"
+import OptionLines from '../OptionLines'
 import "./limit-option.sass"
 import { usePswEdit } from "./usePswEdit"
 import { useVerify } from "./useVerify"
@@ -93,9 +94,8 @@ const _default = defineComponent((_, ctx) => {
         }
     }
 
-    return () => <>
+    return () => <OptionLines>
         <OptionItem
-            hideDivider
             label={msg => msg.option.dailyLimit.reminder}
             defaultValue={t(msg => msg.option.no)}
             v-slots={{
@@ -176,7 +176,7 @@ const _default = defineComponent((_, ctx) => {
                 style={{ width: "280px" }}
             />
         </OptionItem>
-    </>
+    </OptionLines>
 })
 
 export default _default

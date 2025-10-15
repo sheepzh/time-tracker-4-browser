@@ -1,4 +1,3 @@
-import { t } from "@app/locale"
 import { defaultAccessibility } from "@util/constant/option"
 import { ElSwitch } from "element-plus"
 import { defineComponent } from "vue"
@@ -15,19 +14,11 @@ const _default = defineComponent((_, ctx) => {
     ctx.expose({
         reset: () => copy(option, defaultAccessibility())
     } satisfies OptionInstance)
-    return () => <>
-        <OptionItem
-            label={msg => msg.option.accessibility.chartDecal}
-            defaultValue={t(msg => msg.option.no)}
-            hideDivider
-            v-slots={{
-                default: () => <ElSwitch
-                    modelValue={option.chartDecal}
-                    onChange={val => option.chartDecal = val as boolean}
-                />
-            }}
-        />
-    </>
+    return () => (
+        <OptionItem label={msg => msg.option.accessibility.chartDecal} defaultValue={false}>
+            <ElSwitch modelValue={option.chartDecal} onChange={val => option.chartDecal = val as boolean} />
+        </OptionItem>
+    )
 })
 
 export default _default
