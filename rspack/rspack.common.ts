@@ -82,10 +82,8 @@ const staticOptions: Configuration = {
                             // Fix that react transform array proxy to object, and error occurs while destructing
                             iterableIsArray: true,
                         },
-                        presets: ["@babel/preset-env"],
                         plugins: [
                             "@vue/babel-plugin-jsx",
-                            "@babel/plugin-transform-modules-commonjs",
                         ],
                     },
                 }, 'ts-loader'],

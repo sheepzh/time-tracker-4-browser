@@ -85,7 +85,6 @@ const _default = defineComponent<{}>(() => {
                         <InstallationLink href={CHROME_HOMEPAGE} name="Chrome" source="chrome" />
                         <InstallationLink href={EDGE_HOMEPAGE} name="Edge" source="edge" />
                         <InstallationLink href={FIREFOX_HOMEPAGE} name="Firefox" source="firefox" />
-                        <InstallationLink href="https://kiwibrowser.com/" name="Kiwi" source="kiwi" />
                     </Flex>
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.about.label.thanks)} labelAlign="right">
