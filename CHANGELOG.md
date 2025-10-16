@@ -4,6 +4,10 @@ All notable changes to Time Tracker will be documented in this file.
 
 It is worth mentioning that the release time of each change refers to the time when the installation package is submitted to the webstore. It is about one week for Edge to moderate packages, while only 1-2 days for Chrome and Firefox.
 
+## [3.6.7] - 2025-10-16
+
+-   Supported excluding subdomains for whitelist
+
 ## [3.6.6] - 2025-10-12
 
 -   Retain the category filter of site management
