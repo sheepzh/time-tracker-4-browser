@@ -41,6 +41,7 @@
         "@types/node": "^24.7.2",
         "@types/punycode": "^2.1.4",
         "@vue/babel-plugin-jsx": "^2.0.1",
+        "axe-core": "^4.11.0",
         "babel-loader": "^10.0.0",
         "commitlint": "^20.1.0",
         "css-loader": "^7.1.2",
