@@ -9,6 +9,7 @@ import resource from './option-resource.json'
 export type OptionMessage = {
     yes: string
     no: string
+    followBrowser: string
     popup: {
         title: string
         max: string
@@ -27,7 +28,6 @@ export type OptionMessage = {
         badgeTextContent: string
         locale: {
             label: string
-            default: string
             changeConfirm: string
             reloadButton: string
         }
@@ -38,7 +38,7 @@ export type OptionMessage = {
         },
         darkMode: {
             label: string
-            options: Record<timer.option.DarkMode, string>
+            options: Omit<Record<timer.option.DarkMode, string>, 'default'>
         }
         animationDuration: string
     }
@@ -52,9 +52,6 @@ export type OptionMessage = {
         countTabGroup: string
         tabGroupInfo: string
         tabGroupsPermGrant: string
-        collectSiteName: string
-        siteNameUsage: string
-        siteName: string
         fileAccessDisabled: string
         fileAccessFirefox: string
         weekStart: string

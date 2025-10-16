@@ -18,6 +18,7 @@ import { computed, defineComponent } from "vue"
 import { type OptionInstance } from "../common"
 import { useOption } from "../useOption"
 import OptionItem from "./OptionItem"
+import OptionLines from './OptionLines'
 import OptionTag from "./OptionTag"
 import OptionTooltip from "./OptionTooltip"
 
@@ -31,7 +32,6 @@ rotate(allWeekDays, locale === 'zh_CN' ? 0 : 1, true)
 allWeekDays.forEach(weekDayInfo => weekStartOptionPairs.push(weekDayInfo))
 
 function copy(target: timer.option.StatisticsOption, source: timer.option.StatisticsOption) {
-    target.collectSiteName = source.collectSiteName
     target.countLocalFiles = source.countLocalFiles
     target.countTabGroup = source.countTabGroup
     target.weekStart = source.weekStart
@@ -90,12 +90,11 @@ const _default = defineComponent((_props, ctx) => {
         val && sendMsg2Runtime("enableTabGroup")
     }
 
-    return () => <>
+    return () => <OptionLines>
         {!IS_ANDROID && <>
             <OptionItem
                 label={msg => msg.option.statistics.autoPauseTrack}
                 defaultValue={t(msg => msg.option.no)}
-                hideDivider
                 v-slots={{
                     info: () => <OptionTooltip>{t(msg => msg.option.statistics.noActivityInfo)}</OptionTooltip>,
                     maxTime: () => <ElTimePicker
@@ -110,18 +109,6 @@ const _default = defineComponent((_props, ctx) => {
                     default: () => <ElSwitch
                         modelValue={option.autoPauseTracking}
                         onChange={val => option.autoPauseTracking = val as boolean}
-                    />
-                }}
-            />
-            <OptionItem
-                label={msg => msg.option.statistics.collectSiteName}
-                defaultValue={t(msg => msg.option.yes)}
-                v-slots={{
-                    siteName: () => <OptionTag>{t(msg => msg.option.statistics.siteName)}</OptionTag>,
-                    siteNameUsage: () => <OptionTooltip>{t(msg => msg.option.statistics.siteNameUsage)}</OptionTooltip>,
-                    default: () => <ElSwitch
-                        modelValue={option.collectSiteName}
-                        onChange={val => option.collectSiteName = val as boolean}
                     />
                 }}
             />
@@ -152,7 +139,6 @@ const _default = defineComponent((_props, ctx) => {
             />
         </>}
         <OptionItem
-            hideDivider={IS_ANDROID}
             label={msg => msg.option.statistics.weekStart}
             defaultValue={t(msg => msg.option.statistics.weekStartAsNormal)}
         >
@@ -165,7 +151,7 @@ const _default = defineComponent((_props, ctx) => {
                 {weekStartOptionPairs.map(([val, label]) => <ElOption value={val} label={label} />)}
             </ElSelect>
         </OptionItem>
-    </>
+    </OptionLines>
 })
 
 export default _default

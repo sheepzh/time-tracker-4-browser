@@ -5,18 +5,19 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { t, tWith } from "@app/locale"
+import { type I18nKey, t, tWith } from "@app/locale"
 import { ALL_LOCALES, localeSameAsBrowser } from "@i18n"
 import localeMessages from "@i18n/message/common/locale"
 import optionService from "@service/option-service"
 import { IS_ANDROID } from "@util/constant/environment"
 import { defaultAppearance } from "@util/constant/option"
 import { toggle } from "@util/dark-mode"
-import { ElColorPicker, ElMessageBox, ElOption, ElSelect, ElSlider, ElSwitch, ElTag } from "element-plus"
+import { ElColorPicker, ElMessageBox, ElOption, ElSelect, ElSlider, ElSwitch, ElTag, type TagProps } from "element-plus"
 import { computed, defineComponent, type StyleValue } from "vue"
 import { type OptionInstance } from "../../common"
 import { useOption } from "../../useOption"
 import OptionItem from "../OptionItem"
+import OptionLines from '../OptionLines'
 import OptionTag from "../OptionTag"
 import DarkModeInput from "./DarkModeInput"
 
@@ -38,6 +39,7 @@ function copy(target: timer.option.AppearanceOption, source: timer.option.Appear
 }
 
 const DEFAULT_ANIMA_DURATION = defaultAppearance().chartAnimationDuration
+const FOLLOW_BROWSER: I18nKey = msg => msg.option.followBrowser
 
 const _default = defineComponent((_props, ctx) => {
     const { option } = useOption<timer.option.AppearanceOption>({
@@ -64,7 +66,7 @@ const _default = defineComponent((_props, ctx) => {
             closeOnClickModal: false
         }).then(() => { location.reload?.() }).catch(() => {/* do nothing */ })
     }
-    const animaDurationTagType = computed<'info' | 'primary' | 'warning'>(() => {
+    const animaDurationTagType = computed<TagProps['type']>(() => {
         const val = option.chartAnimationDuration
         if (!val) return 'info'
         if (val > DEFAULT_ANIMA_DURATION) return 'warning'
@@ -72,12 +74,8 @@ const _default = defineComponent((_props, ctx) => {
     })
 
     return () => (
-        <div>
-            <OptionItem
-                label={msg => msg.option.appearance.darkMode.label}
-                defaultValue={t(msg => msg.option.appearance.darkMode.options.default)}
-                hideDivider
-            >
+        <OptionLines>
+            <OptionItem label={msg => msg.option.appearance.darkMode.label} defaultValue={FOLLOW_BROWSER}>
                 <DarkModeInput
                     modelValue={option.darkMode}
                     startSecond={option.darkModeTimeStart}
@@ -89,10 +87,7 @@ const _default = defineComponent((_props, ctx) => {
                     }}
                 />
             </OptionItem>
-            <OptionItem
-                label={msg => msg.option.appearance.locale.label}
-                defaultValue={t(msg => msg.option.appearance.locale.default)}
-            >
+            <OptionItem label={msg => msg.option.appearance.locale.label} defaultValue={FOLLOW_BROWSER}>
                 <ElSelect
                     modelValue={option.locale}
                     size="small"
@@ -102,7 +97,7 @@ const _default = defineComponent((_props, ctx) => {
                 >
                     {allLocaleOptions.map(locale => <ElOption
                         value={locale}
-                        label={locale === "default" ? t(msg => msg.option.appearance.locale.default) : localeMessages[locale].name}
+                        label={locale === "default" ? t(FOLLOW_BROWSER) : localeMessages[locale].name}
                     />)}
                 </ElSelect>
             </OptionItem>
@@ -179,7 +174,7 @@ const _default = defineComponent((_props, ctx) => {
                     {option.chartAnimationDuration}ms
                 </ElTag>
             </OptionItem>
-        </div>
+        </OptionLines>
     )
 })
 

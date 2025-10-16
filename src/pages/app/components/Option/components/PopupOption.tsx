@@ -4,7 +4,6 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { t } from "@app/locale"
 import { IS_ANDROID } from "@util/constant/environment"
 import { defaultPopup } from "@util/constant/option"
 import { ElInputNumber, ElSwitch } from "element-plus"
@@ -12,28 +11,24 @@ import { defineComponent } from "vue"
 import { type OptionInstance } from "../common"
 import { useOption } from "../useOption"
 import OptionItem from "./OptionItem"
-import OptionTag from "./OptionTag"
+import OptionLines from './OptionLines'
 
-const defaultPopOptions = defaultPopup()
+const defaultVal = defaultPopup()
 
 function copy(target: timer.option.PopupOption, source: timer.option.PopupOption) {
     target.displaySiteName = source.displaySiteName
     target.popupMax = source.popupMax
 }
 
-const _default = defineComponent((_props, ctx) => {
-    const { option } = useOption<timer.option.PopupOption>({ defaultValue: defaultPopup, copy })
+const PopupOption = defineComponent<{}>((_, ctx) => {
+    const { option } = useOption({ defaultValue: defaultPopup, copy })
 
     ctx.expose({
         reset: () => copy(option, defaultPopup())
     } satisfies OptionInstance)
 
-    return () => <>
-        <OptionItem
-            hideDivider
-            label={msg => msg.option.popup.max}
-            defaultValue={defaultPopOptions.popupMax}
-        >
+    return () => <OptionLines>
+        <OptionItem label={msg => msg.option.popup.max} defaultValue={defaultVal.popupMax}>
             <ElInputNumber
                 modelValue={option.popupMax}
                 size="small"
@@ -43,20 +38,14 @@ const _default = defineComponent((_props, ctx) => {
             />
         </OptionItem>
         {!IS_ANDROID && (
-            <OptionItem
-                label={msg => msg.option.popup.displaySiteName}
-                defaultValue={t(msg => msg.option.yes)}
-                v-slots={{
-                    siteName: () => <OptionTag>{t(msg => msg.option.statistics.siteName)}</OptionTag>
-                }}
-            >
+            <OptionItem label={msg => msg.option.popup.displaySiteName} defaultValue={true}>
                 <ElSwitch
                     modelValue={option.displaySiteName}
                     onChange={val => option.displaySiteName = val as boolean}
                 />
             </OptionItem>
         )}
-    </>
+    </OptionLines>
 })
 
-export default _default
+export default PopupOption

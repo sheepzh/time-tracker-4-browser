@@ -2,10 +2,11 @@
     "zh_CN": {
         "yes": "是",
         "no": "否",
+        "followBrowser": "跟随浏览器",
         "popup": {
             "title": "弹窗页",
             "max": "只显示前 {input} 条数据，剩下的条目合并显示",
-            "displaySiteName": "{input}  显示时是否使用 {siteName} 来代替域名"
+            "displaySiteName": "{input}  显示时是否使用网站名称来代替域名"
         },
         "appearance": {
             "title": "外观",
@@ -18,7 +19,6 @@
             "badgeTextContent": "当前网站的今日浏览时长",
             "locale": {
                 "label": "语言设置 {input}",
-                "default": "跟随浏览器",
                 "changeConfirm": "语言设置成功，请刷新页面！",
                 "reloadButton": "刷新"
             },
@@ -30,7 +30,6 @@
             "darkMode": {
                 "label": "夜间模式 {input}",
                 "options": {
-                    "default": "跟随浏览器",
                     "on": "始终开启",
                     "off": "始终关闭",
                     "timed": "定时开启"
@@ -48,9 +47,6 @@
             "tabGroupsPermGrant": "该功能需要授予相关权限",
             "localFileTime": "阅读本地文件的时间",
             "localFilesInfo": "支持 PDF、图片、txt 以及 json 等格式",
-            "collectSiteName": "{input}  访问网站主页时，是否自动收集 {siteName} {siteNameUsage}",
-            "siteName": "网站的名称",
-            "siteNameUsage": "数据只存放在本地，将代替域名用于展示，增加辨识度。当然您可以自定义每个网站的名称",
             "fileAccessDisabled": "目前不允许访问文件网址，请先在管理界面开启",
             "fileAccessFirefox": "很抱歉，该功能在 Firefox 中不支持",
             "weekStart": "每周的第一天 {input}",
@@ -141,10 +137,11 @@
     "zh_TW": {
         "yes": "是",
         "no": "否",
+        "followBrowser": "跟隨瀏覽器",
         "popup": {
             "title": "彈出視窗",
             "max": "僅顯示前 {input} 筆資料，其餘項目合併",
-            "displaySiteName": "{input} 是否使用 {siteName} 取代網域"
+            "displaySiteName": "{input} 顯示時是否使用網站名稱而非域名"
         },
         "appearance": {
             "title": "外觀設定",
@@ -157,7 +154,6 @@
             "badgeTextContent": "當前網站今日瀏覽時長",
             "locale": {
                 "label": "語言設定 {input}",
-                "default": "跟隨瀏覽器",
                 "changeConfirm": "語言設定已更新，請重新整理頁面！",
                 "reloadButton": "重新整理"
             },
@@ -169,7 +165,6 @@
             "darkMode": {
                 "label": "深色模式 {input}",
                 "options": {
-                    "default": "跟隨瀏覽器",
                     "on": "始終開啟",
                     "off": "始終關閉",
                     "timed": "定時開啟"
@@ -187,9 +182,6 @@
             "countTabGroup": "{input} 是否追蹤分頁群組的時間 {info}",
             "tabGroupInfo": "刪除分頁群組時，相關的時間追蹤數據也會一併清除。",
             "tabGroupsPermGrant": "此功能需要相關權限才能運作",
-            "collectSiteName": "{input} 造訪網站首頁時自動收集 {siteName} {siteNameUsage}",
-            "siteName": "網站名稱",
-            "siteNameUsage": "資料僅儲存於本地，將取代網域名稱提升辨識度，您可自訂各網站名稱",
             "fileAccessDisabled": "目前不允許存取檔案 URL，請至管理頁面啟用",
             "fileAccessFirefox": "抱歉，Firefox 不支援此功能",
             "weekStart": "每週起始日 {input}",
@@ -279,10 +271,11 @@
     "en": {
         "yes": "Yes",
         "no": "No",
+        "followBrowser": "Follow browser",
         "popup": {
             "title": "Popup Page",
             "max": "Show the first {input} data items",
-            "displaySiteName": "{input}  Whether to display {siteName} instead of URL"
+            "displaySiteName": "{input}  Whether to display the website name instead of URL"
         },
         "appearance": {
             "title": "Appearance",
@@ -295,7 +288,6 @@
             "badgeTextContent": "the browsing time of current website",
             "locale": {
                 "label": "Language {input}",
-                "default": "Follow browser",
                 "changeConfirm": "The language has been changed successfully, please reload this page!",
                 "reloadButton": "Reload"
             },
@@ -307,7 +299,6 @@
             "darkMode": {
                 "label": "Dark mode {input}",
                 "options": {
-                    "default": "Follow browser",
                     "on": "Always on",
                     "off": "Always off",
                     "timed": "Timed on"
@@ -316,7 +307,7 @@
             "animationDuration": "The duration of the chart's initial animation {input}"
         },
         "statistics": {
-            "title": "Statistics",
+            "title": "Tracking",
             "autoPauseTrack": "{input} Pause tracking if no activity detected {info} for {maxTime}",
             "noActivityInfo": "The mouse and keyboard are inactive and not in full screen mode",
             "countLocalFiles": "{input}  Whether to track the time when the browser reads {localFileTime} {info}",
@@ -325,9 +316,6 @@
             "countTabGroup": "{input} Whether to track the time of tab groups {info}",
             "tabGroupInfo": "When you delete a tag group, the data will also be deleted.",
             "tabGroupsPermGrant": "This feature requires relevant permissions",
-            "collectSiteName": "{input}  Whether to automatically collect {siteName} {siteNameUsage} when visiting the site homepage",
-            "siteName": "the site name",
-            "siteNameUsage": "The data is only stored locally and will be displayed instead of the URL to increase the recognition.Of course, you can also customize the name of each site.",
             "fileAccessDisabled": "Access to file URLs is currently not allowed. Please enable it on the manage page first",
             "fileAccessFirefox": "Sorry, this feature is not supported in Firefox",
             "weekStart": "The first day for each week {input}",
@@ -418,10 +406,11 @@
     "ja": {
         "yes": "はい",
         "no": "いいえ",
+        "followBrowser": "ブラウザと同じ",
         "popup": {
             "title": "ポップアップページ",
             "max": "最初の {input} 個のデータのみを表示し、残りのエントリは結合されます",
-            "displaySiteName": "{input}  ホストの代わりに {siteName} を表示するかどうか"
+            "displaySiteName": "{input}  ドメインの代わりにウェブサイト名を表示するかどうか"
         },
         "appearance": {
             "title": "外観",
@@ -434,7 +423,6 @@
             "badgeTextContent": "現在のウェブサイトの閲覧時間",
             "locale": {
                 "label": "言語設定 {input}",
-                "default": "ブラウザと同じ",
                 "changeConfirm": "言語が正常に変更されました。このページをリロードしてください。",
                 "reloadButton": "リロード"
             },
@@ -446,7 +434,6 @@
             "darkMode": {
                 "label": "ダークモード {input}",
                 "options": {
-                    "default": "ブラウザと同じ",
                     "on": "常にオン",
                     "off": "常にオフ",
                     "timed": "時限スタート"
@@ -461,9 +448,6 @@
             "countLocalFiles": "{input}  ブラウザで {localFileTime} {info} に費やされた時間をカウントするかどうか",
             "localFileTime": "ローカルファイルの読み取り",
             "localFilesInfo": "PDF、画像、txt、jsonを含む",
-            "collectSiteName": "{input} サイトのホームページにアクセスしたときに {siteName} {siteNameUsage} を自動的に収集するかどうか",
-            "siteName": "サイト名",
-            "siteNameUsage": "データはローカルにのみ存在し、認識を高めるためにホストの代わりに表示に使用されます。もちろん、各Webサイトの名前をカスタマイズできます。",
             "fileAccessDisabled": "ファイル URL へのアクセスは現在許可されていません。まず管理ページで有効にしてください。",
             "fileAccessFirefox": "申し訳ありませんが、この機能はFirefoxではサポートされていません",
             "weekStart": "週の最初の日 {input}",
@@ -553,10 +537,11 @@
     "pt_PT": {
         "yes": "Sim",
         "no": "Não",
+        "followBrowser": "Usar do navegador",
         "popup": {
             "title": "Página Pop-up",
             "max": "Mostrar os primeiros {input} itens",
-            "displaySiteName": "{input} Mostrar {siteName} em vez do URL"
+            "displaySiteName": "{input} Se deve apresentar o nome do site em vez do domínio"
         },
         "appearance": {
             "title": "Aparência",
@@ -569,7 +554,6 @@
             "badgeTextContent": "tempo de navegação no site atual",
             "locale": {
                 "label": "Idioma {input}",
-                "default": "Usar do navegador",
                 "changeConfirm": "Idioma alterado! Recarregue a página.",
                 "reloadButton": "Recarregar"
             },
@@ -581,7 +565,6 @@
             "darkMode": {
                 "label": "Modo escuro {input}",
                 "options": {
-                    "default": "Usar do navegador",
                     "on": "Sempre ativo",
                     "off": "Sempre inativo",
                     "timed": "Ativo por tempo"
@@ -596,9 +579,6 @@
             "countLocalFiles": "{input} Contar tempo a {localFileTime} {info}",
             "localFileTime": "ler ficheiros locais",
             "localFilesInfo": "Suporta PDF, imagens, txt e json.",
-            "collectSiteName": "{input} Recolher {siteName} {siteNameUsage}",
-            "siteName": "nome do site",
-            "siteNameUsage": "Dados armazenados localmente para substituir URLs. Pode personalizar nomes.",
             "fileAccessDisabled": "Acesso a URLs de ficheiro não permitido. Ative na página de gestão.",
             "fileAccessFirefox": "Não suportado no Firefox",
             "weekStart": "Primeiro dia da semana {input}",
@@ -681,10 +661,11 @@
     "uk": {
         "yes": "Так",
         "no": "Ні",
+        "followBrowser": "Як у браузері",
         "popup": {
             "title": "Вікно розширення",
             "max": "Кількість записів для показу: {input}",
-            "displaySiteName": "{input}  Показувати {siteName} замість URL-адреси"
+            "displaySiteName": "{input}  Чи відображати назву веб-сайту замість домену"
         },
         "appearance": {
             "title": "Зовнішній вигляд",
@@ -697,7 +678,6 @@
             "badgeTextContent": "час перегляду поточного вебсайту",
             "locale": {
                 "label": "Мова: {input}",
-                "default": "Як у браузері",
                 "changeConfirm": "Мову успішно змінено. Перезавантажте сторінку!",
                 "reloadButton": "Перезавантажити"
             },
@@ -709,7 +689,6 @@
             "darkMode": {
                 "label": "Темний режим: {input}",
                 "options": {
-                    "default": "Як у браузері",
                     "on": "Увімкнено",
                     "off": "Вимкнено",
                     "timed": "За розкладом"
@@ -724,9 +703,6 @@
             "countLocalFiles": "{input}  Враховувати час {localFileTime} {info} в браузері",
             "localFileTime": "перегляду локального файлу",
             "localFilesInfo": "Підтримуються файли PDF, зображення, текстові та формат json",
-            "collectSiteName": "{input}  Автоматично записувати {siteName} {siteNameUsage} під час відвідування його головної сторінки",
-            "siteName": "назву сайту",
-            "siteNameUsage": "Дані зберігаються лише локально і будуть відображатися замість URL для зручності розпізнавання. Звісно, ви також можете налаштувати назву кожного сайту.",
             "fileAccessDisabled": "Доступ до URL-адрес файлу наразі не дозволено. Спершу ввімкніть на сторінці керування",
             "fileAccessFirefox": "На жаль, ця функція не підтримується у Firefox",
             "weekStart": "Перший день тижня: {input}",
@@ -809,10 +785,11 @@
     "es": {
         "yes": "Sí",
         "no": "No",
+        "followBrowser": "Igual que el navegador",
         "popup": {
             "title": "Página emergente",
             "max": "Mostrar los primeros {input} elementos de datos",
-            "displaySiteName": "{input}  Mostrar {siteName} en lugar de la URL"
+            "displaySiteName": "{input}  Si se debe mostrar el nombre del sitio web en lugar del dominio"
         },
         "appearance": {
             "title": "Apariencia",
@@ -825,7 +802,6 @@
             "badgeTextContent": "el tiempo de navegación del sitio web actual",
             "locale": {
                 "label": "Idioma {input}",
-                "default": "Igual que el navegador",
                 "changeConfirm": "El idioma se ha cambiado con éxito, ¡por favor recarga esta página!",
                 "reloadButton": "Recargar"
             },
@@ -837,7 +813,6 @@
             "darkMode": {
                 "label": "Modo oscuro {input}",
                 "options": {
-                    "default": "Igual que el navegador",
                     "on": "Siempre encendido",
                     "off": "Siempre apagado",
                     "timed": "Cronometrado"
@@ -855,9 +830,6 @@
             "countTabGroup": "{input} Rastrear el tiempo de los grupos de pestañas {info}",
             "tabGroupInfo": "Al eliminar un grupo de pestañas, sus datos también se borrarán.",
             "tabGroupsPermGrant": "Esta función requiere permisos pertinentes",
-            "collectSiteName": "{input}  Recopilar automáticamente {siteName} {siteNameUsage} al visitar la página principal del sitio",
-            "siteName": "el nombre del sitio",
-            "siteNameUsage": "Los datos solo se almacenan localmente y se mostrarán en lugar de la URL para aumentar el reconocimiento. Por supuesto, también puedes personalizar el nombre de cada sitio.",
             "fileAccessDisabled": "Actualmente no se permite el acceso a las URL de archivos. Habilítelo primero en la página de administración",
             "fileAccessFirefox": "Lo sentimos, esta función no es compatible con Firefox",
             "weekStart": "El primer día de cada semana {input}",
@@ -947,10 +919,11 @@
     "de": {
         "yes": "Ja",
         "no": "Nein",
+        "followBrowser": "Browser verfolgen",
         "popup": {
             "title": "Popup-Seite",
             "max": "Zeige die ersten {input} Datenelemente",
-            "displaySiteName": "{input} {siteName} statt URL anzeigen"
+            "displaySiteName": "{input} Ob der Websitename anstelle der Domäne angezeigt werden soll"
         },
         "appearance": {
             "title": "Aussehen",
@@ -963,7 +936,6 @@
             "badgeTextContent": "die Besuchszeit der aktuellen Webseite",
             "locale": {
                 "label": "Sprache {input}",
-                "default": "Browser verfolgen",
                 "changeConfirm": "Die Sprache wurde erfolgreich geändert. Bitte lade diese Seite neu!",
                 "reloadButton": "Neu laden"
             },
@@ -975,7 +947,6 @@
             "darkMode": {
                 "label": "Dunkler Modus {input}",
                 "options": {
-                    "default": "Browser verfolgen",
                     "on": "Immer an",
                     "off": "Immer aus",
                     "timed": "Zeitgesteuert"
@@ -989,9 +960,6 @@
             "countLocalFiles": "{input} Zeit an {localFileTime} {info} im Browser zählen",
             "localFileTime": "eine lokale Datei lesen",
             "localFilesInfo": "Unterstützt Dateitypen, wie PDF, Bilder, .txt und .json",
-            "collectSiteName": "{input} Automatisch {siteName} {siteNameUsage} beim Besuch der Homepage loggen",
-            "siteName": "Der Name der Website",
-            "siteNameUsage": "Die Daten werden nur lokal gespeichert und anstelle der URL angezeigt, um die Erkennung zu erhöhen. Auf Wunsch lässt sich der Name jeder Seite anpassen.",
             "fileAccessDisabled": "Der Zugriff auf Datei-URLs ist derzeit nicht erlaubt. Bitte aktiviere ihn zuerst auf der Verwaltungsseite",
             "fileAccessFirefox": "Leider wird diese Funktion in Firefox nicht unterstützt",
             "weekStart": "Erster Tag der Woche {input}",
@@ -1071,10 +1039,11 @@
     "fr": {
         "yes": "Oui",
         "no": "Non",
+        "followBrowser": "Suivre le navigateur",
         "popup": {
             "title": "Page pop-up",
             "max": "Afficher les {input} premiers éléments de données",
-            "displaySiteName": "{input} S'il faut afficher {siteName} au lieu de l'URL"
+            "displaySiteName": "{input} S'il faut afficher le nom du site Web au lieu du domaine"
         },
         "appearance": {
             "title": "Apparence",
@@ -1087,7 +1056,6 @@
             "badgeTextContent": "le temps de navigation du site actuel",
             "locale": {
                 "label": "Langue {input}",
-                "default": "Suivre le navigateur",
                 "changeConfirm": "La langue a été modifiée avec succès, veuillez recharger cette page !",
                 "reloadButton": "Redémarrer"
             },
@@ -1099,7 +1067,6 @@
             "darkMode": {
                 "label": "Mode sombre {input}",
                 "options": {
-                    "default": "Suivre le navigateur",
                     "on": "Toujours On",
                     "off": "Toujours éteint",
                     "timed": "Horaire"
@@ -1117,9 +1084,6 @@
             "countTabGroup": "{input} Suivre le temps des groupes d'onglets {info}",
             "tabGroupInfo": "Lorsque vous supprimez un groupe d'onglets, les données seront également supprimées.",
             "tabGroupsPermGrant": "Cette fonctionnalité nécessite des autorisations pertinentes",
-            "collectSiteName": "{input} S'il faut collecter automatiquement {siteName} {siteNameUsage} lors de la visite de la page d'accueil du site",
-            "siteName": "le nom du site",
-            "siteNameUsage": "Les données sont uniquement stockées localement et seront affichées à la place de l'URL pour augmenter la reconnaissance. Bien entendu, vous pouvez également personnaliser le nom de chaque site.",
             "fileAccessDisabled": "L'accès aux URL des fichiers n'est actuellement pas autorisé. Veuillez d'abord l'activer dans la page de gestion.",
             "fileAccessFirefox": "Désolé, cette fonctionnalité n'est pas prise en charge dans Firefox",
             "weekStart": "Le premier jour de chaque semaine {input}",
@@ -1212,7 +1176,7 @@
         "popup": {
             "title": "Всплывающее окно",
             "max": "Показать первые {input} элементов данных",
-            "displaySiteName": "{input} Отображать ли {siteName} вместо URL"
+            "displaySiteName": "{input} Отображать ли имя веб-сайта вместо домена"
         },
         "appearance": {
             "title": "Появление",
@@ -1256,10 +1220,11 @@
     "ar": {
         "yes": "نعم",
         "no": "لا",
+        "followBrowser": "نفس وضع المتصفح",
         "popup": {
             "title": "صفحة منبثقة",
             "max": "عرض أول {input} عنصر من البيانات",
-            "displaySiteName": "{input} هل يتم عرض {siteName} بدلاً من الرابط"
+            "displaySiteName": "{input} هل سيتم عرض اسم الموقع بدلاً من النطاق"
         },
         "appearance": {
             "title": "المظهر",
@@ -1272,7 +1237,6 @@
             "badgeTextContent": "وقت التصفح للموقع الحالي",
             "locale": {
                 "label": "اللغة {input}",
-                "default": "لغة المتصفح",
                 "changeConfirm": "تم تغيير اللغة بنجاح، يرجى إعادة تحميل هذه الصفحة!",
                 "reloadButton": "إعادة التحميل"
             },
@@ -1284,7 +1248,6 @@
             "darkMode": {
                 "label": "الوضع الداكن {input}",
                 "options": {
-                    "default": "نفس وضع المتصفح",
                     "on": "تفعيل دائم",
                     "off": "إيقاف دائم",
                     "timed": "تفعيل مؤقت"
@@ -1302,9 +1265,6 @@
             "countTabGroup": "{input} هل يتم تتبع وقت مجموعات علامات التبويب {info}",
             "tabGroupInfo": "عند حذف مجموعة علامات تبويب، سيتم حذف البيانات أيضًا.",
             "tabGroupsPermGrant": "هذه الميزة تتطلب أذونات ذات صلة",
-            "collectSiteName": "{input}  هل يتم أخذ {siteName} {siteNameUsage} تلقائيًا عند زيارة الصفحة الرئيسية",
-            "siteName": "اسم الموقع الإلكتروني",
-            "siteNameUsage": "يتم تخزين البيانات محليًا فقط وسيتم عرضها بدلاً من الرابط لزيادة الوضوح. يمكنك أيضًا تخصيص اسم كل موقع.",
             "fileAccessDisabled": "الوصول إلى عناوين الملفات غير مسموح به حاليًا. يرجى تفعيل الخاصية من صفحة الإدارة أولاً",
             "fileAccessFirefox": "عذراً، هذه الميزة غير مدعومة في فايرفوكس",
             "weekStart": "اليوم الأول لكل أسبوع {input}",
