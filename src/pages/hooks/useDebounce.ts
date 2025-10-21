@@ -1,4 +1,4 @@
-import { Ref, shallowRef, type MaybeRefOrGetter } from 'vue'
+import { shallowRef, watch, type MaybeRefOrGetter, type Ref } from 'vue'
 
 type FunctionArgs = (...args: any[]) => any
 
@@ -37,7 +37,8 @@ export function useDebounceFn<T extends FunctionArgs>(
 export function useDebounce<T>(original: Ref<T>, ms?: MaybeRefOrGetter<number>): Ref<T> {
     const inner = shallowRef<T>(original.value)
 
-    useDebounceFn(() => inner.value = original.value, ms)
+    const debouncedFn = useDebounceFn((newValue: T) => inner.value = newValue, ms)
 
+    watch(original, newVal => debouncedFn(newVal))
     return inner
 }
