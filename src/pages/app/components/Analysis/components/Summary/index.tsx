@@ -7,12 +7,12 @@
 import { KanbanCard, KanbanIndicatorCell } from "@app/components/common/kanban"
 import { t } from "@app/locale"
 import { cvt2LocaleTime, periodFormatter } from "@app/util/time"
+import { css } from '@emotion/css'
 import { computed, defineComponent } from "vue"
 import { useAnalysisRows, useAnalysisTarget, useAnalysisTimeFormat } from "../../context"
-import { AnalysisTarget } from "../../types"
+import type { AnalysisTarget } from "../../types"
 import Calendar from "./Calendar"
 import TargetInfo from "./TargetInfo"
-import "./summary.sass"
 
 type Summary = {
     focus: number
@@ -38,6 +38,22 @@ const DAYS_LABEL = t(msg => msg.analysis.summary.day)
 const FOCUS_LABEL = t(msg => msg.analysis.common.focusTotal)
 const VISIT_LABEL = t(msg => msg.analysis.common.visitTotal)
 
+const CONTAINER_CLZ = css`
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(calc(min(100%, max(500px, calc(50% - .5px)))), 1fr));
+    background-color: var(--el-border-color);
+    gap: 1px;
+    & > div > div{
+        background-color: var(--el-card-bg-color);
+    }
+`
+
+const INDICATOR_AREA_CLZ = css`
+    display: grid;
+    gap: 1px;
+    grid-template-columns: repeat(auto-fill, minmax(calc(min(100%, max(300px, calc(50% - .5px)))), 1fr));
+`
+
 const _default = defineComponent(() => {
     const target = useAnalysisTarget()
     const timeFormat = useAnalysisTimeFormat()
@@ -46,8 +62,8 @@ const _default = defineComponent(() => {
 
     return () => (
         <KanbanCard title={t(msg => msg.analysis.summary.title)}>
-            <div class="analysis-summary-container">
-                <div class='indicator-area'>
+            <div class={CONTAINER_CLZ}>
+                <div class={INDICATOR_AREA_CLZ}>
                     <TargetInfo />
                     <KanbanIndicatorCell
                         mainName={FOCUS_LABEL}

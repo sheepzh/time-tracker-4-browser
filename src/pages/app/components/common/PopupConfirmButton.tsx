@@ -7,7 +7,7 @@
 
 import { t } from "@app/locale"
 import { type ButtonType, ElButton, ElPopconfirm } from "element-plus"
-import type { Component, FunctionalComponent } from "vue"
+import type { Component, CSSProperties, FunctionalComponent } from "vue"
 
 type Props = {
     confirmText?: string
@@ -15,6 +15,7 @@ type Props = {
     text?: boolean
     buttonType?: ButtonType
     buttonIcon?: Component
+    buttonStyle?: CSSProperties
     onConfirm?: () => void
 }
 
@@ -32,6 +33,7 @@ const PopupConfirmButton: FunctionalComponent<Props> = props => (
                     text={props.text}
                     type={props.buttonType}
                     icon={props.buttonIcon}
+                    style={props.buttonStyle}
                 >
                     {props.buttonText}
                 </ElButton>

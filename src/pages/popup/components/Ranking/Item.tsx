@@ -109,7 +109,6 @@ const Item = defineComponent<ItemProps>(props => {
 
     return () => (
         <ElCard
-            bodyClass="ranking-item"
             shadow="hover"
             style={{ padding: 0, height: '80px' }}
             bodyStyle={{ padding: '5px 10px', height: '100%', boxSizing: 'border-box' }}

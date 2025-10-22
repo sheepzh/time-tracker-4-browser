@@ -364,7 +364,7 @@
         "reminder": "¡Menos de {min} minutos hasta el límite de tiempo!"
     },
     "de": {
-        "filterDisabled": "Nur Aktivierte",
+        "filterDisabled": "Nur aktiviert",
         "item": {
             "name": "Regelname",
             "condition": "Eingeschränkte URL",
@@ -375,7 +375,7 @@
             "detail": "Regeldetail",
             "visitTime": "Limit pro Besuch",
             "period": "Unzulässiger Zeitraum",
-            "enabled": "Aktiviert",
+            "enabled": "Ermöglicht",
             "locked": "Gesperrt",
             "effectiveDay": "Wirksam auf",
             "delayAllowed": "Weitere 5 Minuten",
@@ -387,7 +387,7 @@
         "step": {
             "base": "Basisdaten",
             "url": "URL konfigurieren",
-            "rule": "Regel konfigurieren"
+            "rule": "Konfiguration Regel"
         },
         "button": {
             "test": "Test-URL"

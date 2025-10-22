@@ -3,7 +3,7 @@ import Alert from "./components/Alert"
 import Footer from "./components/Footer"
 import Reason from "./components/Reason"
 import { provideRule } from "./context"
-import "./style/index.sass"
+import "./style/index.css"
 
 const _default = defineComponent(() => {
     provideRule()

@@ -7,13 +7,14 @@
 
 import { t } from "@app/locale"
 import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
+import { css } from '@emotion/css'
 import { dateFormat } from "@i18n/element"
 import Flex from '@pages/components/Flex'
 import { type ElementDatePickerShortcut } from "@pages/element-ui/date"
 import { getDatePickerIconSlots } from "@pages/element-ui/rtl"
 import { isRtl } from '@util/document'
 import { MILL_PER_DAY } from '@util/time'
-import { ElButton, ElDatePicker } from "element-plus"
+import { ElButton, ElDatePicker, useNamespace } from "element-plus"
 import { computed, defineComponent, type StyleValue, toRaw, toRef } from "vue"
 
 const clearShortcut = (): ElementDatePickerShortcut => ({
@@ -79,6 +80,19 @@ const useRange = (props: Props) => {
     }
 }
 
+const useStyle = () => {
+    const pickerNs = useNamespace('picker-panel')
+    return css`
+        .${pickerNs.e('sidebar')} {
+            width: 130px !important;
+        }
+        .${pickerNs.b()} [slot="sidebar"]+.${pickerNs.e('body')},
+        .${pickerNs.e('sidebar')}+.${pickerNs.e('body')} {
+            margin-inline-start: 130px !important;
+        }
+    `
+}
+
 const DateRangeFilterItem = defineComponent<Props>(props => {
     const rtl = isRtl()
     const {
@@ -87,9 +101,9 @@ const DateRangeFilterItem = defineComponent<Props>(props => {
         shift,
         shortcuts, clearable,
     } = useRange(props)
-
+    const cls = useStyle()
     return () => (
-        <span class="filter-item">
+        <span class={cls}>
             <Flex gap={1} width="fit-content">
                 <ElButton
                     disabled={backwardDisabled.value}

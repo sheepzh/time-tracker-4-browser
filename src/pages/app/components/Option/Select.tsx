@@ -1,11 +1,32 @@
 import { t } from "@app/locale"
-import { ElCard, ElSelect } from "element-plus"
+import { css } from '@emotion/css'
+import { ElCard, ElSelect, useNamespace } from "element-plus"
 import { defineComponent, h, ref, useSlots, watch } from "vue"
 import { useRouter } from "vue-router"
 import ContentContainer from "../common/ContentContainer"
 import { CATE_LABELS, changeQuery, type OptionCategory, parseQuery } from "./common"
+import { useOptionLine } from './style'
 
 const IGNORED_CATE: OptionCategory[] = ['dailyLimit']
+
+const useStyle = () => {
+    const { lineClz, defaultClz } = useOptionLine()
+    const dividerNs = useNamespace('divider')
+    const selectNs = useNamespace('select')
+    const inputNs = useNamespace('input')
+
+    return css`
+        .${dividerNs.m('horizontal')} {
+            margin: 12px 0;
+        }
+        .${lineClz} .${selectNs.b()},.${inputNs.b()} {
+                margin-inline-start: 4px !important;
+        }
+        .${defaultClz} {
+            display: none !important;
+        }
+    `
+}
 
 const _default = defineComponent(() => {
     const tab = ref<OptionCategory>(parseQuery() || 'appearance')
@@ -13,6 +34,7 @@ const _default = defineComponent(() => {
     watch(tab, () => changeQuery(tab.value, router))
 
     const slots = useSlots()
+    const clz = useStyle()
 
     return () => (
         <ContentContainer v-slots={{
@@ -31,7 +53,7 @@ const _default = defineComponent(() => {
             ),
             default: () => {
                 const slot = slots[tab.value]
-                return !!slot && <ElCard class="option-select-card">{h(slot)}</ElCard>
+                return !!slot && <ElCard class={clz}>{h(slot)}</ElCard>
             }
         }} />
     )

@@ -1,9 +1,10 @@
 import { t } from "@cs/locale"
+import { css } from '@emotion/css'
 import { useRequest } from "@hooks/useRequest"
 import Flex from "@pages/components/Flex"
 import { matchCond, meetLimit, meetTimeLimit, period2Str } from "@util/limit"
 import { formatPeriodCommon, MILL_PER_SECOND } from "@util/time"
-import { ElDescriptions, ElDescriptionsItem, ElTag } from 'element-plus'
+import { ElDescriptions, ElDescriptionsItem, ElTag, useNamespace } from 'element-plus'
 import { computed, defineComponent } from "vue"
 import { useGlobalParam, useReason, useRule } from "../context"
 
@@ -86,8 +87,17 @@ const _default = defineComponent(() => {
 
     setInterval(refreshBrowsingTime, 1000)
 
+    const descriptionsNs = useNamespace('descriptions')
+    const reasonCls = css`
+        margin-bottom: 30px;
+        .${descriptionsNs.b()} {
+            margin: auto;
+            width: 400px;
+        }
+    `
+
     return () => (
-        <div class="reason-container">
+        <div class={reasonCls}>
             <TimeDescriptions
                 v-show={type.value === 'DAILY'}
                 time={rule.value?.time}

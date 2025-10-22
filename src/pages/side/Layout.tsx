@@ -1,8 +1,10 @@
+import { css } from '@emotion/css'
 import { useRequest } from "@hooks"
+import Flex from '@pages/components/Flex'
 import statService from "@service/stat-service"
 import { formatTime } from "@util/time"
-import { ElText } from "element-plus"
-import { defineComponent, ref, type StyleValue } from "vue"
+import { ElText, useNamespace } from "element-plus"
+import { defineComponent, ref } from "vue"
 import RowList from "./components/RowList"
 import Search from "./components/Search"
 import { t } from "./locale"
@@ -10,6 +12,16 @@ import { t } from "./locale"
 const _default = defineComponent(() => {
     const date = ref(new Date())
     const query = ref('')
+
+    const textNs = useNamespace('text')
+    const titleClz = css`
+        padding-inline-start: 5px;
+        .${textNs.b()} {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+    `
 
     const { data, refresh, loading } = useRequest(() => {
         return statService.selectSite({
@@ -20,7 +32,7 @@ const _default = defineComponent(() => {
         })
     })
 
-    return () => <div class="main">
+    return () => <Flex column height='100%'>
         <Search
             defaultQuery={query.value}
             defaultDate={date.value}
@@ -31,7 +43,7 @@ const _default = defineComponent(() => {
                 refresh()
             }}
         />
-        <div class="title">
+        <Flex class={titleClz} height={60}>
             <ElText>
                 {t(msg => msg.list.title)}
             </ElText>
@@ -39,13 +51,13 @@ const _default = defineComponent(() => {
             <ElText size="small">
                 @{formatTime(date.value, t(msg => msg.calendar.dateFormat))}
             </ElText>
-        </div>
+        </Flex>
         <RowList
             loading={loading.value}
             data={data.value ?? []}
-            style={{ flex: 1, overflow: "auto" } satisfies StyleValue}
+            style={{ flex: 1, overflow: "auto" }}
         />
-    </div>
+    </Flex>
 })
 
 export default _default

@@ -1,10 +1,10 @@
 import { t } from "@app/locale"
 import { Back, Check, Close, Right } from "@element-plus/icons-vue"
+import { css } from '@emotion/css'
 import Box from "@pages/components/Box"
 import Flex from "@pages/components/Flex"
-import { ElButton } from "element-plus"
+import { ElButton, useNamespace } from "element-plus"
 import { defineComponent, h, useSlots } from "vue"
-import "./dialog-sop.sass"
 
 export type SopStepInstance<T> = { parseData: Getter<T> }
 
@@ -22,9 +22,16 @@ type Props = {
 const DialogSop = defineComponent<Props>(props => {
     const { steps, content } = useSlots()
 
+    const stepNs = useNamespace('step')
+    const containerClz = css`
+        .${stepNs.b()} {
+            width: 200px;
+        }
+    `
+
     return () => (
         <Flex column align="center" gap={40} marginTop={25}>
-            <div class="dialog-sop-step-container">
+            <div class={containerClz}>
                 {!!steps && h(steps)}
             </div>
             <Box padding="0 20px" boxSizing="border-box" width="100%">

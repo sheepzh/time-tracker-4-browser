@@ -1,10 +1,10 @@
 import Flex from "@pages/components/Flex"
-import DurationSelect from "@popup/components/Footer/DurationSelect"
 import { useQuery } from "@popup/context"
 import { t } from "@popup/locale"
 import { ALL_DIMENSIONS } from "@util/stat"
 import { ElOption, ElSelect, ElText } from "element-plus"
 import { defineComponent } from "vue"
+import DurationSelect from './DurationSelect'
 import Menu from "./Menu"
 
 const Footer = defineComponent(() => {

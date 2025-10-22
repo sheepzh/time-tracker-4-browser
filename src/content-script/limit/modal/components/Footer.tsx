@@ -49,7 +49,7 @@ const _default = defineComponent(() => {
     const delayHandler = useDelayHandler()
 
     return () => (
-        <div class='footer-container'>
+        <div style={{ marginBottom: 60 }}>
             <ElButton
                 round
                 icon={Trend}

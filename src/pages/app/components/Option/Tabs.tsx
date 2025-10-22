@@ -1,12 +1,13 @@
 import { t } from "@app/locale"
 import { Download, Refresh, Upload } from "@element-plus/icons-vue"
 import Flex from "@pages/components/Flex"
-import { ElLink, ElMessage, ElMessageBox, ElTabPane, ElTabs, ElTooltip, TabPaneName } from "element-plus"
-import { defineComponent, h, ref, useSlots } from "vue"
+import { ElLink, ElMessage, ElMessageBox, ElTabPane, ElTabs, ElTooltip, type TabPaneName } from "element-plus"
+import { defineComponent, h, ref, StyleValue, useSlots } from "vue"
 import { useRouter } from "vue-router"
 import ContentContainer from "../common/ContentContainer"
 import { CATE_LABELS, changeQuery, type OptionCategory, parseQuery } from "./common"
 import { createFileInput, exportSettings, importSettings } from "./export-import"
+import { useTabNav } from './style'
 
 const TOOLBAR_NAME = "toolbar"
 
@@ -75,41 +76,43 @@ const Toolbar = defineComponent<TooltipProps>(props => {
 
 type Props = { onReset: (cate: OptionCategory) => Promise<void> | void }
 
-const _default = defineComponent<Props>(
-    props => {
-        const tab = ref(parseQuery() ?? 'appearance')
-        const router = useRouter()
-        const handleReset = () => props.onReset?.(tab.value)
+const _default = defineComponent<Props>(props => {
+    const tab = ref(parseQuery() ?? 'appearance')
+    const router = useRouter()
+    const handleReset = () => props.onReset?.(tab.value)
 
-        const handleBeforeLeave = (activeName: TabPaneName): Promise<boolean> => {
-            if (activeName === TOOLBAR_NAME) {
-                // do nothing, and never happen
-                return Promise.reject()
-            }
-            // Change the query of current route
-            changeQuery(activeName as OptionCategory, router)
-            return Promise.resolve(true)
+    const handleBeforeLeave = (activeName: TabPaneName): Promise<boolean> => {
+        if (activeName === TOOLBAR_NAME) {
+            // do nothing, and never happen
+            return Promise.reject()
         }
-        return () => (
-            <ContentContainer>
-                <ElTabs
-                    modelValue={tab.value}
-                    type="border-card"
-                    beforeLeave={handleBeforeLeave}
-                    class="option-tab"
-                >
-                    {Object.entries(useSlots()).filter(([key]) => key !== 'default').map(([key, slot]) => (
-                        <ElTabPane name={key} label={t(CATE_LABELS[key as OptionCategory])}>
-                            {!!slot && h(slot)}
-                        </ElTabPane>
-                    ))}
-                    <ElTabPane
-                        name={TOOLBAR_NAME}
-                        v-slots={{ label: () => <Toolbar onReset={handleReset} /> }}
-                    />
-                </ElTabs>
-            </ContentContainer>
-        )
-    }, { props: ['onReset'] })
+        // Change the query of current route
+        changeQuery(activeName as OptionCategory, router)
+        return Promise.resolve(true)
+    }
+    const { tabsClz } = useTabNav(TOOLBAR_NAME)
+
+    return () => (
+        <ContentContainer>
+            <ElTabs
+                modelValue={tab.value}
+                type="border-card"
+                beforeLeave={handleBeforeLeave}
+                class={tabsClz}
+            >
+                {Object.entries(useSlots()).filter(([key]) => key !== 'default').map(([key, slot]) => (
+                    <ElTabPane name={key} label={t(CATE_LABELS[key as OptionCategory])}>
+                        {!!slot && h(slot)}
+                    </ElTabPane>
+                ))}
+                <ElTabPane
+                    style={{ position: 'absolute', right: 0 } satisfies StyleValue}
+                    name={TOOLBAR_NAME}
+                    v-slots={{ label: () => <Toolbar onReset={handleReset} /> }}
+                />
+            </ElTabs>
+        </ContentContainer>
+    )
+}, { props: ['onReset'] })
 
 export default _default

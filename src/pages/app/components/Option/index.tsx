@@ -16,7 +16,6 @@ import LimitOption from './components/LimitOption'
 import PopupOption from "./components/PopupOption"
 import StatisticsOption from "./components/StatisticsOption"
 import Select from "./Select"
-import './style.sass'
 import Tabs from "./Tabs"
 
 const _default = defineComponent(() => {

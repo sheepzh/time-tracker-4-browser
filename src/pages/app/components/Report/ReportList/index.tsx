@@ -1,13 +1,33 @@
 import { t } from "@app/locale"
+import { css } from '@emotion/css'
 import { useScrollRequest } from "@hooks"
 import { getHost } from "@util/stat"
-import { ElCard } from "element-plus"
+import { ElCard, useNamespace } from "element-plus"
 import { defineComponent, ref } from "vue"
 import { queryPage } from "../common"
 import { useReportFilter } from "../context"
 import type { DisplayComponent } from "../types"
 import Item from "./Item"
-import "./style.sass"
+
+const useStyle = () => {
+    const cardNs = useNamespace('card')
+    const listClz = css`
+        width: 100%;
+        display: grid;
+        gap: .6em;
+        grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+        .${cardNs.e('body')} {
+            padding: 15px;
+        }
+    `
+    const scrollInfoClz = css`
+        height: 20px;
+        width: 100%;
+        text-align: center;
+        color: var(--el-text-color-regular);
+    `
+    return { listClz, scrollInfoClz }
+}
 
 const _default = defineComponent((_, ctx) => {
     const filterOption = useReportFilter()
@@ -32,14 +52,11 @@ const _default = defineComponent((_, ctx) => {
         val && newSelected.push(idx)
         return selected.value = newSelected
     }
+    const { listClz, scrollInfoClz } = useStyle()
 
-    return () => <>
-        <div class="report-list-wrapper">
-            <div
-                class="report-list"
-                v-infinite-scroll={loadMoreAsync}
-                infinite-scroll-disabled={end.value || loading.value}
-            >
+    return () => (
+        <div>
+            <div class={listClz} v-infinite-scroll={loadMoreAsync} infinite-scroll-disabled={end.value || loading.value}>
                 {data.value?.map((row, idx) => (
                     <ElCard>
                         <Item
@@ -51,11 +68,11 @@ const _default = defineComponent((_, ctx) => {
                     </ElCard>
                 ))}
             </div>
-            <p class="scroll-info" v-loading={loading.value}>
+            <p class={scrollInfoClz} v-loading={loading.value}>
                 {end.value ? t(msg => msg.report.noMore) : (loading.value ? 'Loading ...' : 'Load More')}
             </p>
         </div>
-    </>
+    )
 })
 
 export default _default

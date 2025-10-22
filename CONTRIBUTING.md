@@ -6,7 +6,7 @@ The technology stack used is:
 
 -   [rspack](https://rspack.dev) + [TypeScript](https://github.com/microsoft/TypeScript)
 -   [Vue3 (Composition API + JSX)](<https://vuejs.org/api/#:~:text=defineCustomElement()-,Composition%20API,-setup()>)
--   [sass](https://github.com/sass/sass)
+-   [Emotion](https://emotion.sh/docs/introduction)
 -   [Element Plus](https://element-plus.gitee.io/)
 -   [Echarts](https://github.com/apache/echarts)
 

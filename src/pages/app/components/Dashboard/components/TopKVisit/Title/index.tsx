@@ -5,7 +5,6 @@ import { defineComponent } from "vue"
 import type { JSX } from "vue/jsx-runtime"
 import { type TopKChartType, useTopKFilter } from "../context"
 import TitleSelect from "./TitleSelect"
-import "./title.sass"
 
 const CHART_CONFIG: { [type in TopKChartType]: JSX.Element | string } = {
     pie: (

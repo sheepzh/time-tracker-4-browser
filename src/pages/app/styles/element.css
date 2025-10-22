@@ -1,0 +1,89 @@
+/**;
+ * Copyright (c) 2022 Hengyang Zhang;
+ *;
+ * This software is released under the MIT License.;
+ * https://opensource.org/licenses/MIT;
+ */
+html[data-locale='uk']:root,
+html[data-locale='pt_PT']:root,
+html[data-locale='es']:root {
+    .el-date-range-picker {
+        width: 781px;
+
+        .el-picker-panel__sidebar {
+            width: 135px;
+        }
+
+        .el-picker-panel__body {
+            margin-inline-start: 135px;
+        }
+    }
+}
+
+html[data-locale='de']:root {
+    .el-date-range-picker {
+        width: 761px;
+
+        .el-picker-panel__sidebar {
+            width: 115px;
+
+            .el-picker-panel__body {
+                margin-inline-start: 115px;
+            }
+        }
+    }
+}
+
+html[data-locale='fr']:root,
+html[data-locale='ru']:root {
+    .el-date-range-picker {
+        width: 821px;
+
+        .el-picker-panel__sidebar {
+            width: 175px;
+        }
+
+        .el-picker-panel__body {
+            margin-inline-start: 175px;
+        }
+    }
+}
+
+/* Fix header icon not align; */
+.el-table__header {
+    tr {
+        .cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}
+
+.el-table__cell .cell {
+    .el-input {
+        height: 28px;
+    }
+
+    .el-input-group__append {
+        padding: 0 4px;
+    }
+
+    .el-input-group--append {
+        .el-input__wrapper {
+            height: 28px;
+        }
+
+        .el-input__inner {
+            padding-inline: 5px;
+        }
+    }
+
+    .el-button [class*="el-icon-"]+span {
+        margin-inline-start: 5px !important;
+    }
+}
+
+.el-vl__window.el-select-dropdown__list {
+    direction: unset !important;
+}

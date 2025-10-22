@@ -12,8 +12,9 @@ import { ElLoadingDirective } from 'element-plus'
 import 'element-plus/theme-chalk/index.css'
 import { type App, createApp } from "vue"
 import '../../common/timer'
+import "../element-ui/dark-theme.css"
 import Main from "./Layout"
-import "./style.sass"
+import "./style.css"
 
 async function main() {
     // Init theme with cache first

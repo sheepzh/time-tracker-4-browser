@@ -8,13 +8,13 @@
 import { computeRingText, RingValue, ValueFormatter } from "@app/components/Analysis/util"
 import { tN, type I18nKey } from "@app/locale"
 import { BottomRight, InfoFilled, TopRight } from "@element-plus/icons-vue"
+import { css } from '@emotion/css'
 import Box from "@pages/components/Box"
 import Flex from "@pages/components/Flex"
 import { range } from "@util/array"
 import { ElIcon, ElTooltip } from "element-plus"
 import { defineComponent, type CSSProperties, type PropType, type VNode } from "vue"
 import type { JSX } from "vue/jsx-runtime"
-import "./indicator-cell.sass"
 
 export type SubProps = {
     subTips?: I18nKey
@@ -24,18 +24,19 @@ export type SubProps = {
     valueFormatter?: ValueFormatter
 }
 
-function renderSubVal(valText: string) {
-    return <span class="kanban-indicator-cell-sub-val">{valText}</span>
-}
+const SUB_VAL_CLZ = css`
+    color: var(--el-text-color-primary);
+    margin: 0 3px;
+`
+
+const renderSubVal = (valText: string) => <span class={SUB_VAL_CLZ}>{valText}</span>
 
 function renderComparisonIcons(ring: RingValue): VNode | null {
     const [current = 0, last = 0] = ring
     if (current === last) return null
-    const clz = [
-        'icon-wrapper',
-        current > last && 'increase',
-        current < last && 'decrease',
-    ]
+    const color = current > last
+        ? 'var(--timer-chart-increase-color)'
+        : 'var(--timer-chart-decrease-color)'
     const icon = current > last ? <TopRight /> : <BottomRight />
     let count = 0
     if (current === 0 || last === 0) {
@@ -48,8 +49,19 @@ function renderComparisonIcons(ring: RingValue): VNode | null {
     }
     if (!count) return null
     const icons = range(count).map(() => <ElIcon>{icon}</ElIcon>)
-    return <div class={clz}>{icons}</div>
+    return <Flex color={color}>{icons}</Flex>
 }
+
+const SUB_CLZ = css`
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    height: 17px;
+    line-height: 17px;
+    font-size: 12px;
+    word-break: break-word;
+    color: var(--el-text-color-secondary);
+`
 
 function renderSub(props: SubProps): VNode | null {
     const { subTips, subValue, subInfo, subRing, valueFormatter } = props
@@ -84,7 +96,7 @@ function renderSub(props: SubProps): VNode | null {
             </Flex>
         )
     }
-    return <div class="kanban-indicator-cell-sub-tip">{subTipsLine}</div>
+    return <div class={SUB_CLZ}>{subTipsLine}</div>
 }
 
 const _default = defineComponent({

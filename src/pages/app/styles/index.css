@@ -1,0 +1,50 @@
+/**;
+ * Copyright (c) 2021-present Hengyang Zhang;
+ *;
+ * This software is released under the MIT License.;
+ * https://opensource.org/licenses/MIT;
+ */
+body {
+    height: 100vh;
+    margin: 0;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+h2 {
+    font-size: 27px;
+}
+
+h3 {
+    font-size: 22px;
+}
+
+p,
+a {
+    font-size: 15px;
+    line-height: 20px;
+}
+
+.el-main {
+    padding-top: 0 !important;
+    padding-inline-start: 45px !important;
+}
+
+:root {
+    --el-menu-item-height: 48px;
+    --el-menu-active-color: var(--el-menu-text-color);
+    --el-menu-bg-color: #1d222d;
+    --el-menu-text-color: #c1c6c8;
+    --el-menu-hover-bg-color: #262f3e;
+    --el-alert-description-font-size: 75% !important;
+    --timer-kanban-border: 1px var(--el-border-color) var(--el-border-style);
+    --timer-app-container-bg-color: var(--el-fill-color-blank);
+    --timer-chart-increase-color: var(--el-color-danger);
+    --timer-chart-decrease-color: var(--el-color-success-light-3);
+}
+
+html[data-theme='dark']:root {
+    /* timer */
+    --timer-app-container-bg-color: var(--el-fill-color-lighter);
+}

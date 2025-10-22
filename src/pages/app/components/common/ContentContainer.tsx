@@ -5,32 +5,33 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { css } from '@emotion/css'
 import Flex from "@pages/components/Flex"
-import { ElCard } from "element-plus"
-import { type FunctionalComponent, h, type StyleValue } from "vue"
+import { ElCard, useNamespace } from "element-plus"
+import { type FunctionalComponent, h } from "vue"
 import ContentCard from "./ContentCard"
 
-const FILTER_CONTAINER_STYLE: StyleValue = {
-    display: 'flex',
-    alignItems: 'center',
-    userSelect: 'none',
+export const FilterContainer: FunctionalComponent = (_, ctx) => {
+    const cardNs = useNamespace('card')
+    const buttonNs = useNamespace('button')
+    const clz = css`
+        user-select: none;
+        .${cardNs.e('body')} {
+            padding-bottom: 18px;
+            padding-top: 18px;
+            box-sizing: border-box;
+            width: 100%;
+            .${buttonNs.b()}+.${buttonNs.b()} {
+                margin-inline-start: 0px;
+            }
+        }
+        @media (max-width: 600px) & .${cardNs.e('body')} {
+            flex-direction: column;
+            gap: 10px;
+        }
+    `
+    return <ElCard class={clz} v-slots={ctx.slots} />
 }
-
-const FILTER_BODY_STYLE: StyleValue = {
-    paddingBottom: '18px',
-    paddingTop: '18px',
-    boxSizing: 'border-box',
-    width: '100%',
-}
-
-export const FilterContainer: FunctionalComponent = (_, ctx) => (
-    <ElCard
-        class="filter-container"
-        style={FILTER_CONTAINER_STYLE}
-        bodyStyle={FILTER_BODY_STYLE}
-        v-slots={ctx.slots}
-    />
-)
 
 const _default: FunctionalComponent<{ class?: string }> = (props, ctx) => {
     const { default: default_, filter, content } = ctx.slots

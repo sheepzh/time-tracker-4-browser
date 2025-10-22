@@ -14,7 +14,6 @@ import { type OptionInstance } from "../../common"
 import { useOption } from "../../useOption"
 import OptionItem from "../OptionItem"
 import OptionLines from '../OptionLines'
-import "./limit-option.sass"
 import { usePswEdit } from "./usePswEdit"
 import { useVerify } from "./useVerify"
 
@@ -120,12 +119,7 @@ const _default = defineComponent((_, ctx) => {
             label={msg => msg.option.dailyLimit.level.label}
             defaultValue={t(msg => msg.option.dailyLimit.level[defaultDailyLimit().limitLevel])}
         >
-            <ElSelect
-                modelValue={option.limitLevel}
-                size="small"
-                class='option-daily-limit-level-select'
-                onChange={handleLevelChange}
-            >
+            <ElSelect size="small" modelValue={option.limitLevel} onChange={handleLevelChange}>
                 {ALL_LEVEL.map(item => <ElOption value={item} label={t(msg => msg.option.dailyLimit.level[item])} />)}
             </ElSelect>
         </OptionItem>

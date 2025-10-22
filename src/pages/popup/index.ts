@@ -11,10 +11,13 @@ import optionService from "@service/option-service"
 import { toggle } from "@util/dark-mode"
 import "element-plus/theme-chalk/index.css"
 import { createApp } from "vue"
+import "../element-ui/dark-theme.css"
 import Main from "./Main"
 import { type FrameRequest, type FrameResponse } from "./message"
 import initRouter from "./router"
-import "./style/index.sass"
+import "./style/common.css"
+import "./style/dark-theme.css"
+import "./style/index.css"
 
 function send2ParentWindow(data: any): Promise<void> {
     return new Promise(resolve => {

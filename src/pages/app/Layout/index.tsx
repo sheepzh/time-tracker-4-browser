@@ -6,33 +6,52 @@
  */
 
 import { initAppContext } from "@app/context"
+import { css } from '@emotion/css'
 import { CLZ_HIDDEN_MD_AND_UP, CLZ_HIDDEN_SM_AND_DOWN } from "@pages/element-ui/style"
-import { ElAside, ElContainer, ElHeader, ElScrollbar } from "element-plus"
+import { ElAside, ElContainer, ElHeader, ElScrollbar, useNamespace } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
 import { RouterView } from "vue-router"
 import HeadNav from "./menu/Nav"
 import SideMenu from "./menu/Side"
-import "./style.sass"
 import VersionTag from "./VersionTag"
 
 const _default = defineComponent(() => {
     initAppContext()
 
+    const menuItemNs = useNamespace('menu-item')
+    const containerNs = useNamespace('container')
+    const containerClz = css`
+        height: 100%;
+        .${menuItemNs.b()}.is-active {
+            background: var(--el-color-primary);
+        }
+        .${containerNs.b()} {
+            height: 100%;
+        }
+    `
+    const headerClz = css`
+        background-color: var(--el-menu-bg-color);
+        color: var(--el-menu-text-color);
+        height: fit-content;
+    `
+    const contentClz = css`
+        width: 100%;
+        background: var(--timer-app-container-bg-color);
+        margin: auto;
+    `
+
     return () => (
-        <ElContainer class="app-layout">
-            <ElHeader class={['app-header', CLZ_HIDDEN_MD_AND_UP]}>
+        <ElContainer class={containerClz}>
+            <ElHeader class={[headerClz, CLZ_HIDDEN_MD_AND_UP]}>
                 <HeadNav />
             </ElHeader>
             <ElContainer>
-                <ElAside
-                    class={CLZ_HIDDEN_SM_AND_DOWN}
-                    style={{ width: '240px' } satisfies StyleValue}
-                >
+                <ElAside class={CLZ_HIDDEN_SM_AND_DOWN} style={{ width: '240px' } satisfies StyleValue}>
                     <ElScrollbar>
                         <SideMenu />
                     </ElScrollbar>
                 </ElAside>
-                <ElContainer class="app-container">
+                <ElContainer class={contentClz}>
                     <RouterView />
                 </ElContainer>
             </ElContainer>

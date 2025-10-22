@@ -20,7 +20,6 @@ import Indicator from "./components/Indicator"
 import MonthOnMonth from "./components/MonthOnMonth"
 import Timeline from './components/Timeline'
 import TopKVisit from "./components/TopKVisit"
-import "./dashboard.sass"
 import DashboardCard from './DashboardCard'
 
 const ROW_GUTTER = 15
@@ -51,7 +50,7 @@ const _default = defineComponent(() => {
 
     return () => (
         <ElScrollbar>
-            <ContentContainer class="dashboard-container">
+            <ContentContainer>
                 <ElRow gutter={ROW_GUTTER}>
                     {mediaSize.value <= MediaSize.md
                         ? <>

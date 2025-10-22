@@ -2,6 +2,7 @@ import { t, tN, type I18nKey } from "@app/locale"
 import Flex from "@pages/components/Flex"
 import { ElTag } from "element-plus"
 import { computed, defineComponent, h, type VNode } from "vue"
+import { useOptionLine } from '../style'
 
 type Props = {
     label: I18nKey | string
@@ -33,18 +34,20 @@ export function isOptionItem(component: VNode): boolean {
 
 const OptionItem = defineComponent<Props>((props, { slots }) => {
     const defaultText = computed(() => computedDefValText(props.defaultValue))
+    const { lineClz, labelClz, defaultClz, requiredClz } = useOptionLine()
+
     return () => {
         const param: Record<string, VNode> = {}
         Object.entries(slots).forEach(([k, slot]) => slot && (param[k === "default" ? "input" : k] = h(slot)))
         return (
             <div>
-                <Flex class="option-line" align="center" justify="space-between" gap={10}>
-                    <Flex class="option-label" align="center" gap={4}>
-                        {!!props.required && <span class="option-item-required">*</span>}
+                <Flex class={lineClz} align="center" justify="space-between" gap={10}>
+                    <Flex class={labelClz} align="center" gap={4}>
+                        {!!props.required && <span class={requiredClz}>*</span>}
                         {renderLabel(props.label, param)}
                     </Flex>
                     {defaultText.value && (
-                        <a class="option-default">
+                        <a class={defaultClz}>
                             {tN(
                                 msg => msg.option.defaultValue,
                                 { default: <ElTag size="small">{defaultText.value}</ElTag> },
@@ -52,7 +55,7 @@ const OptionItem = defineComponent<Props>((props, { slots }) => {
                         </a>
                     )}
                 </Flex>
-            </div>
+            </div >
         )
     }
 }, { props: ['label', 'required', 'defaultValue'] })

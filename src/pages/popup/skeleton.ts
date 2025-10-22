@@ -1,6 +1,7 @@
 import { init as initTheme } from "@util/dark-mode"
 import { type FrameRequest, type FrameResponse } from "./message"
-import './style/skeleton.sass'
+import './style/common.css'
+import './style/skeleton.css'
 
 function injectFrame() {
     const iframe: HTMLIFrameElement = document.createElement('iframe')

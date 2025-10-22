@@ -1,11 +1,11 @@
 import { Search } from "@element-plus/icons-vue"
+import { css } from '@emotion/css'
 import { useState } from "@hooks"
 import Flex from "@pages/components/Flex"
 import { getDatePickerIconSlots } from "@pages/element-ui/rtl"
 import { t } from "@side/locale"
-import { ElDatePicker, ElInput } from "element-plus"
+import { ElDatePicker, ElInput, useNamespace } from "element-plus"
 import { defineComponent, watch } from "vue"
-import "./search.sass"
 
 type Props = {
     defaultDate: Date
@@ -22,10 +22,28 @@ const _default = defineComponent<Props>(props => {
 
     watch(date, handleSearch)
 
+    const inputNs = useNamespace('input')
+    const datePickerCls = css`
+        width: fit-content !important;
+        margin-inline-start: 4px;
+        .${inputNs.e('wrapper')} {
+            cursor: pointer;
+            background: none !important;
+            padding: 1px 0 !important;
+            .${inputNs.e('inner')} {
+                display: none;
+            }
+            .${inputNs.e('icon')} {
+                padding: 0px 8px;
+                margin-inline-end: 0 !important;
+                height: 100%;
+            }
+        }
+    `
+
     return () => (
         <Flex>
             <ElInput
-                class="search"
                 placeholder={t(msg => msg.list.searchPlaceholder)}
                 prefixIcon={Search}
                 modelValue={query.value}
@@ -42,7 +60,7 @@ const _default = defineComponent<Props>(props => {
                 disabledDate={(date: Date) => date.getTime() > now}
                 modelValue={date.value}
                 onUpdate:modelValue={setDate}
-                class="search-calendar"
+                class={datePickerCls}
                 v-slots={getDatePickerIconSlots()}
             />
         </Flex>

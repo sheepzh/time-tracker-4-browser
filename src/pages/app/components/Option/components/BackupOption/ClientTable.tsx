@@ -8,11 +8,12 @@
 import { t } from "@app/locale"
 import { cvt2LocaleTime } from "@app/util/time"
 import { Loading, RefreshRight } from "@element-plus/icons-vue"
+import { css } from '@emotion/css'
 import { useRequest } from "@hooks"
 import { type ElTableRowScope } from "@pages/element-ui/table"
 import processor from "@service/backup/processor"
 import metaService from "@service/meta-service"
-import { ElLink, ElMessage, ElRadio, ElTable, ElTableColumn, ElTag } from "element-plus"
+import { ElLink, ElMessage, ElRadio, ElTable, ElTableColumn, ElTag, useNamespace } from "element-plus"
 import { defineComponent, ref, toRaw } from "vue"
 
 const formatTime = (value: timer.backup.Client): string => {
@@ -20,6 +21,20 @@ const formatTime = (value: timer.backup.Client): string => {
     const min = minDate ? cvt2LocaleTime(minDate) : ''
     const max = maxDate ? cvt2LocaleTime(maxDate) : ''
     return `${min} - ${max}`
+}
+
+const useTableStyle = () => {
+    const radioNs = useNamespace('radio')
+    const tagNs = useNamespace('tag')
+    return css`
+        .${radioNs.e('label')} {
+            padding: 0;
+        }
+        .${tagNs.b()} {
+            height: 20px;
+            margin-inline: 6px 0;
+        }
+    `
 }
 
 const _default = defineComponent<{ onSelect: ArgCallback<timer.backup.Client> }>(props => {
@@ -42,12 +57,14 @@ const _default = defineComponent<{ onSelect: ArgCallback<timer.backup.Client> }>
         props.onSelect?.(toRaw(row))
     }
 
+    const tableClz = useTableStyle()
+
     return () => (
         <ElTable
             data={list.value}
             border
             maxHeight="40vh"
-            class="backup-client-table"
+            class={tableClz}
             highlightCurrentRow
             onCurrent-change={(row: timer.backup.Client) => handleRowSelect(row)}
             emptyText={loading.value ? 'Loading data ...' : 'Empty data'}
