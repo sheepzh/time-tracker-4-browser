@@ -58,6 +58,8 @@ This will create output directories:
 
 #### Mobile Development (Android)
 
+> See: [Developing extensions for Firefox for Android](https://extensionworkshop.com/documentation/develop/developing-extensions-for-firefox-for-android/)
+
 For Firefox on Android development, use the helper script:
 
 ```shell
@@ -152,14 +154,6 @@ npm run test-e2e
 
 ## Code Quality
 
-### Linting
-
-The project uses ESLint for code quality. Run linting before committing:
-
-```shell
-npm run lint
-```
-
 ### Code Formatting
 
 - Use single quotes whenever possible
@@ -176,10 +170,6 @@ git config core.autocrlf false
 ### Pre-commit Hooks
 
 The project uses Husky for pre-commit hooks. These will run automatically when you commit:
-
-- Code formatting checks
-- Linting
-- Type checking
 
 ## Submitting Changes
 
@@ -209,32 +199,6 @@ Create a Pull Request to the `main` branch of this repository.
 
 - [ ] All tests pass
 - [ ] Documentation updated if needed
-
-
-
-## Mobile Development
-
-### Firefox for Android
-
-> See: [Developing extensions for Firefox for Android](https://extensionworkshop.com/documentation/develop/developing-extensions-for-firefox-for-android/)
-
-Use the helper script to debug this extension on your Android phone:
-
-```shell
-./script/android-firefox.sh
-```
-
-#### Prerequisites
-
-1. **Android Device Setup**:
-   - Enable USB debugging on your Android device
-   - Install Firefox Nightly from [Google Play](https://play.google.com/store/apps/details?id=org.mozilla.fenix)
-   - Enable "Remote debugging via USB" in Firefox Nightly settings
-
-2. **Development Tools**:
-   - Install Android Platform Tools (adb)
-   - Install web-ext: `npm install -g web-ext@latest`
-
 
 ## Project Structure
 
