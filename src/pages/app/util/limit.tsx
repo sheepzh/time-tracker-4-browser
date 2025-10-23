@@ -2,6 +2,7 @@ import { sendMsg2Runtime } from "@api/chrome/runtime"
 import { t, tN } from "@app/locale"
 import { I18nResultItem, locale } from "@i18n"
 import { getCssVariable } from "@pages/util/style"
+import optionHolder from '@service/components/option-holder'
 import verificationProcessor from "@service/limit-service/verification/processor"
 import { dateMinute2Idx, hasLimited, isEnabledAndEffective } from "@util/limit"
 import { ElMessage, ElMessageBox, type ElMessageBoxOptions, useId } from "element-plus"
@@ -16,9 +17,10 @@ export async function judgeVerificationRequired(item: timer.limit.Item): Promise
     if (item.locked) return true
     if (!isEnabledAndEffective(item)) return false
 
+    const { delayDuration } = await optionHolder.get()
     const { visitTime, periods } = item
     // Daily or weekly
-    if (hasLimited(item)) return true
+    if (hasLimited(item, delayDuration)) return true
     // Period
     if (periods?.length) {
         const idx = dateMinute2Idx(new Date())
@@ -155,6 +157,7 @@ export function processVerification(option: timer.option.LimitOption, context?: 
         title: '',
         message: <div style={{ userSelect: 'none' }}>{messageNode}</div>,
         showInput: true,
+        inputType: limitLevel === 'password' ? 'password' : undefined,
         showCancelButton: true,
         showClose: false,
         confirmButtonText: countdown ? btnText(countdown) : okBtnTxt,

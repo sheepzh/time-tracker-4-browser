@@ -13,7 +13,7 @@ describe('util/limit', () => {
     })
 
     test('matches', () => {
-        const cond = ['www.baidu.com', '*.google.com', 'github.com/sheepzh', '+github.com/sheepzh/timer','+www.bilibili.com/cheese','*.bilibili.com*']
+        const cond = ['www.baidu.com', '*.google.com', 'github.com/sheepzh', '+github.com/sheepzh/timer', '+www.bilibili.com/cheese', '*.bilibili.com*']
 
         expect(matches(cond, 'https://www.baidu.com')).toBe(true)
         expect(matches(cond, 'http://hk.google.com')).toBe(true)
@@ -26,7 +26,7 @@ describe('util/limit', () => {
     })
 
     test('matchCond', () => {
-        const cond = ['www.baidu.com', '*.google.com', 'github.com/sheepzh', 'github.com','+www.bilibili.com/cheese','*.bilibili.com*']
+        const cond = ['www.baidu.com', '*.google.com', 'github.com/sheepzh', 'github.com', '+www.bilibili.com/cheese', '*.bilibili.com*']
         expect(matchCond(cond, 'http://www.baidu.com')).toEqual(['www.baidu.com'])
         expect(matchCond(cond, 'https://github.com/sheepzh/time-tracker-for-browser')).toEqual(['github.com', 'github.com/sheepzh'])
         expect(matchCond(cond, 'https://www.github.com')).toEqual([])
@@ -46,12 +46,12 @@ describe('util/limit', () => {
     })
 
     test('meetTimeLimit', () => {
-        expect(meetTimeLimit(undefined, undefined, undefined, undefined)).toBe(false)
+        expect(meetTimeLimit(5, undefined, undefined, undefined, undefined)).toBe(false)
 
-        expect(meetTimeLimit(1, 1001, undefined, undefined)).toBe(true)
-        expect(meetTimeLimit(1, 1001, true, undefined)).toBe(true)
-        expect(meetTimeLimit(1, 1001, true, 1)).toBe(false)
-        expect(meetTimeLimit(1, (1 + 60 * 5) * 1000 + 1, true, 1)).toBe(true)
+        expect(meetTimeLimit(5, 1, 1001, undefined, undefined)).toBe(true)
+        expect(meetTimeLimit(5, 1, 1001, true, undefined)).toBe(true)
+        expect(meetTimeLimit(5, 1, 1001, true, 1)).toBe(false)
+        expect(meetTimeLimit(5, 1, (1 + 60 * 5) * 1000 + 1, true, 1)).toBe(true)
     })
 
     test('period2Str', () => {
@@ -121,19 +121,19 @@ describe('util/limit', () => {
             locked: false,
         }
 
-        expect(hasWeeklyLimited(item)).toBe(false)
+        expect(hasWeeklyLimited(item, 5)).toBe(false)
 
         item.weekly = 299
-        expect(hasWeeklyLimited(item)).toBe(false)
+        expect(hasWeeklyLimited(item, 5)).toBe(false)
 
         item.weeklyWaste = 299 * 1000 + 1
-        expect(hasWeeklyLimited(item)).toBe(true)
+        expect(hasWeeklyLimited(item, 5)).toBe(true)
 
         item.weeklyDelayCount = 1
-        expect(hasWeeklyLimited(item)).toBe(true)
+        expect(hasWeeklyLimited(item, 5)).toBe(true)
 
         item.allowDelay = true
-        expect(hasWeeklyLimited(item)).toBe(false)
+        expect(hasWeeklyLimited(item, 5)).toBe(false)
     })
 
     test('calcTimeState', () => {
@@ -158,7 +158,7 @@ describe('util/limit', () => {
         type LimitState = 'NORMAL' | 'REMINDER' | 'LIMITED'
 
         const assert = (daily: LimitState, weekly: LimitState) => {
-            const res = calcTimeState(item, duration)
+            const res = calcTimeState(5, item, duration)
             expect(res?.daily).toBe(daily)
             expect(res?.weekly).toBe(weekly)
         }
@@ -202,7 +202,7 @@ describe('util/limit', () => {
                 locked: false,
             }
             setup(item)
-            expect(hasLimited(item)).toBe(limited)
+            expect(hasLimited(item, 5)).toBe(limited)
         }
 
         assert(item => item.waste = 1000, false)

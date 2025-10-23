@@ -24,7 +24,7 @@ declare namespace timer.mq {
         | "cs.incVisitCount"
         | "cs.printTodayInfo"
         | "cs.getTodayInfo"
-        | "cs.moreMinutes"
+        | "cs.delayMinutes"
         | "cs.getLimitedRules"
         | "cs.getRelatedRules"
         | "cs.trackTime"
@@ -38,6 +38,14 @@ declare namespace timer.mq {
         | "cs.getRunSites"
         // @since 3.6.1
         | "cs.timelineEv"
+
+    /**
+     * @since 3.6.9
+     */
+    type DelayMinutesData = {
+        url: string
+        duration: number
+    }
 
     type ResCode = "success" | "fail" | "ignore"
 

@@ -135,6 +135,10 @@ declare namespace timer.option {
          */
         limitPrompt?: string
         /**
+         *  the duration of delay
+         */
+        delayDuration: number
+        /**
          * restriction level
          */
         limitLevel: limit.RestrictionLevel

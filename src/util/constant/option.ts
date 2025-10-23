@@ -53,6 +53,7 @@ type DailyLimitRequired = MakeRequired<timer.option.LimitOption, 'limitPassword'
 
 export function defaultDailyLimit(): DailyLimitRequired {
     return {
+        delayDuration: 5,
         limitLevel: 'nothing',
         limitPassword: '',
         limitVerifyDifficulty: 'easy',

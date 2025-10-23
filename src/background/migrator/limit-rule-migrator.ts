@@ -1,4 +1,4 @@
-import limitService from "@service/limit-service"
+import { removeLimitItem, selectLimitItems, updateLimitItem } from "@service/limit-service"
 import { cleanCond } from "@util/limit"
 import type { Migrator } from "./common"
 
@@ -7,7 +7,7 @@ export default class LimitRuleMigrator implements Migrator {
     }
 
     async onUpdate(_version: string): Promise<void> {
-        const rules = await limitService.select()
+        const rules = await selectLimitItems()
         if (!rules?.length) return
         const needUpdate: timer.limit.Rule[] = []
         const needRemoved: timer.limit.Rule[] = []
@@ -29,7 +29,7 @@ export default class LimitRuleMigrator implements Migrator {
             }
 
         })
-        needRemoved.length && await limitService.remove(...needRemoved)
-        needUpdate.length && await limitService.update(...needUpdate)
+        needRemoved.length && await removeLimitItem(...needRemoved)
+        needUpdate.length && await updateLimitItem(...needUpdate)
     }
 }

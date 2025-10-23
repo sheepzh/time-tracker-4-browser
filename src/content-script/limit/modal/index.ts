@@ -77,8 +77,11 @@ class ModalInstance implements MaskModal {
     url: string
     rootElement: RootElement | undefined
     body: HTMLBodyElement | undefined
-    delayHandlers: (() => void)[] = [
-        () => sendMsg2Runtime('cs.moreMinutes', this.url),
+    delayHandlers: ArgCallback<number>[] = [
+        duration => sendMsg2Runtime(
+            'cs.delayMinutes',
+            { url: this.url, duration, } satisfies timer.mq.DelayMinutesData,
+        ),
     ]
     reasons: LimitReason[] = []
     reason: Ref<LimitReason | undefined> | undefined
@@ -157,7 +160,7 @@ class ModalInstance implements MaskModal {
         this.app = createApp(Main)
         this.reason = provideReason(this.app)
         provideGlobalParam(this.app, { url: this.url })
-        provideDelayHandler(this.app, () => this.delayHandlers?.forEach(h => h?.()))
+        provideDelayHandler(this.app, duration => this.delayHandlers?.forEach(h => h?.(duration)))
         this.body && this.app.mount(this.body)
     }
 

@@ -7,7 +7,7 @@
 
 import { t } from "@app/locale"
 import { useState, useSwitch } from "@hooks"
-import limitService from "@service/limit-service"
+import { selectLimitItems } from "@service/limit-service"
 import { ElButton, ElDialog, ElFormItem, ElInput } from "element-plus"
 import { computed, defineComponent } from "vue"
 import AlertLines, { type AlertLinesProps } from '../common/AlertLines'
@@ -46,7 +46,7 @@ const _default = defineComponent((_props, ctx) => {
 
     const handleTest = async () => {
         endInput()
-        matched.value = await limitService.select({ url: url.value, filterDisabled: true })
+        matched.value = await selectLimitItems({ url: url.value, filterDisabled: true })
     }
 
     ctx.expose({

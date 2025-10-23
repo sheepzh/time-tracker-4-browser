@@ -1,6 +1,9 @@
 import { t } from "@app/locale"
 import { useDocumentVisibility, useManualRequest, useProvide, useProvider, useRequest } from "@hooks"
-import limitService from "@service/limit-service"
+import {
+    removeLimitItem, selectLimitItems,
+    updateLimitItemDelay, updateLimitItemEnabled, updateLimitItemLocked,
+} from "@service/limit-service"
 import { ElMessage, ElMessageBox, type TableInstance } from "element-plus"
 import { Reactive, reactive, ref, toRaw, watch, type Ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
@@ -45,7 +48,7 @@ export const useLimitProvider = () => {
     const filter = reactive<LimitFilterOption>({ url: initialUrl(), onlyEnabled: false })
 
     const { data: list, refresh } = useRequest(
-        () => limitService.select({ filterDisabled: filter.onlyEnabled, url: filter.url ?? '' }),
+        () => selectLimitItems({ filterDisabled: filter.onlyEnabled, url: filter.url ?? '' }),
         {
             defaultValue: [],
             deps: [() => filter.url, () => filter.onlyEnabled],
@@ -60,7 +63,7 @@ export const useLimitProvider = () => {
         await verifyCanModify(row)
         const message = t(msg => msg.limit.message.deleteConfirm, { name: row.name })
         await ElMessageBox.confirm(message, { type: "warning" })
-        await limitService.remove(row)
+        await removeLimitItem(row)
     }, {
         onSuccess() {
             ElMessage.success(t(msg => msg.operation.successMsg))
@@ -85,19 +88,19 @@ export const useLimitProvider = () => {
     }
 
     const handleBatchDelete = (list: timer.limit.Item[]) => verifyCanModify(...list)
-        .then(() => limitService.remove(...list))
+        .then(() => removeLimitItem(...list))
         .then(onBatchSuccess)
         .catch(() => { })
 
     const handleBatchEnable = (list: timer.limit.Item[]) => {
         list.forEach(item => item.enabled = true)
-        limitService.updateEnabled(...list).then(onBatchSuccess).catch(() => { })
+        updateLimitItemEnabled(...list).then(onBatchSuccess).catch(() => { })
     }
 
     const handleBatchDisable = (list: timer.limit.Item[]) => verifyCanModify(...list)
         .then(() => {
             list.forEach(item => item.enabled = false)
-            return limitService.updateEnabled(...list)
+            return updateLimitItemEnabled(...list)
         })
         .then(onBatchSuccess)
         .catch(() => { })
@@ -107,7 +110,7 @@ export const useLimitProvider = () => {
         try {
             (row.locked || !enabled) && await verifyCanModify(row)
             row.enabled = enabled
-            await limitService.updateEnabled(toRaw(row))
+            await updateLimitItemEnabled(toRaw(row))
         } catch (e) {
             console.warn(e)
         }
@@ -118,7 +121,7 @@ export const useLimitProvider = () => {
         try {
             (row.locked || delayable) && await verifyCanModify(row)
             row.allowDelay = delayable
-            await limitService.updateDelay(toRaw(row))
+            await updateLimitItemDelay(toRaw(row))
         } catch (e) {
             console.warn(e)
         }
@@ -134,7 +137,7 @@ export const useLimitProvider = () => {
                 await verifyCanModify(row)
             }
             row.locked = locked
-            await limitService.updateLocked(toRaw(row))
+            await updateLimitItemLocked(toRaw(row))
         } catch (e) {
             console.warn(e)
         }

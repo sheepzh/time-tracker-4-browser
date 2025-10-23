@@ -56,11 +56,7 @@ const _default = defineComponent((_, ctx) => {
                 {ALL_TYPES.map(type => <ElOption value={type} label={TYPE_NAMES[type]} />)}
             </ElSelect>
         </OptionItem >
-        <OptionItem
-            v-show={isNotNone.value}
-            label={_ => "{input}"}
-            defaultValue={t(msg => msg.option.no)}
-        >
+        <OptionItem v-show={isNotNone.value} label={_ => "{input}"} defaultValue={false}>
             <AutoInput
                 autoBackup={autoBackUp.value}
                 interval={autoBackUpInterval.value}
