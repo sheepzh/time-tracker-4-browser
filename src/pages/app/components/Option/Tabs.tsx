@@ -47,24 +47,12 @@ const Toolbar = defineComponent<TooltipProps>(props => {
     return () => (
         <Flex align="center" gap={10} onClick={ev => ev.stopPropagation()}>
             <ElTooltip content={t(msg => msg.option.exportButton)}>
-                <ElLink
-                    icon={Download}
-                    underline="never"
-                    onClick={handleExport}
-                />
+                <ElLink icon={Download} underline="never" onClick={handleExport} />
             </ElTooltip>
             <ElTooltip content={t(msg => msg.option.importButton)}>
-                <ElLink
-                    icon={Upload}
-                    underline="never"
-                    onClick={handleImport}
-                />
+                <ElLink icon={Upload} underline="never" onClick={handleImport} />
             </ElTooltip>
-            <ElLink
-                icon={Refresh}
-                underline="never"
-                onClick={() => props.onReset?.()}
-            >
+            <ElLink icon={Refresh} underline="never" onClick={props.onReset}>
                 {t(msg => msg.option.resetButton)}
             </ElLink>
         </Flex>
@@ -86,8 +74,10 @@ const _default = defineComponent<Props>(
                 // do nothing, and never happen
                 return Promise.reject()
             }
+            const cate = activeName as OptionCategory
+            tab.value = cate
             // Change the query of current route
-            changeQuery(activeName as OptionCategory, router)
+            changeQuery(cate, router)
             return Promise.resolve(true)
         }
         return () => (
