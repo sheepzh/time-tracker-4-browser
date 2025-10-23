@@ -7,6 +7,7 @@
 import { t } from "@app/locale"
 import { processVerification } from "@app/util/limit"
 import { Edit } from "@element-plus/icons-vue"
+import { locale } from '@i18n'
 import { defaultDailyLimit } from "@util/constant/option"
 import { ElButton, ElInput, ElInputNumber, ElMessage, ElMessageBox, ElOption, ElSelect, ElSwitch } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
@@ -17,6 +18,8 @@ import OptionLines from '../OptionLines'
 import "./limit-option.sass"
 import { usePswEdit } from "./usePswEdit"
 import { useVerify } from "./useVerify"
+
+const DEFAULT_VAL = defaultDailyLimit()
 
 const ALL_LEVEL: timer.limit.RestrictionLevel[] = [
     'nothing',
@@ -38,6 +41,7 @@ function copy(target: timer.option.LimitOption, source: timer.option.LimitOption
     target.limitVerifyDifficulty = source.limitVerifyDifficulty
     target.limitReminder = source.limitReminder
     target.limitReminderDuration = source.limitReminderDuration
+    target.delayDuration = source.delayDuration
 }
 
 function reset(target: timer.option.LimitOption) {
@@ -61,6 +65,13 @@ const confirm4Strict = async (): Promise<void> => {
     })
 }
 
+const LEVEL_SELECT_WIDTH: Messages<number> = {
+    en: 330,
+    uk: 330,
+    zh_CN: 210,
+    zh_TW: 210,
+}
+
 const _default = defineComponent((_, ctx) => {
     const { option } = useOption<timer.option.LimitOption>({ defaultValue: defaultDailyLimit, copy })
     const { verified, verify } = useVerify(option)
@@ -69,6 +80,11 @@ const _default = defineComponent((_, ctx) => {
     ctx.expose({
         reset: () => verify().then(() => reset(option)).catch(() => { })
     } satisfies OptionInstance)
+
+    const handleDurationChange = async (val: number | undefined) => {
+        if (!val) return
+        verify().then(() => option.delayDuration = val).catch(() => { })
+    }
 
     const handleLevelChange = async (val: timer.limit.RestrictionLevel) => {
         try {
@@ -96,8 +112,19 @@ const _default = defineComponent((_, ctx) => {
 
     return () => <OptionLines>
         <OptionItem
+            label={msg => msg.option.dailyLimit.delayDuration}
+            defaultValue={DEFAULT_VAL.delayDuration}
+        >
+            <ElInputNumber
+                size='small'
+                modelValue={option.delayDuration}
+                min={1} max={10}
+                onChange={handleDurationChange}
+            />
+        </OptionItem>
+        <OptionItem
             label={msg => msg.option.dailyLimit.reminder}
-            defaultValue={t(msg => msg.option.no)}
+            defaultValue={false}
             v-slots={{
                 default: () => (
                     <ElSwitch
@@ -118,12 +145,12 @@ const _default = defineComponent((_, ctx) => {
         />
         <OptionItem
             label={msg => msg.option.dailyLimit.level.label}
-            defaultValue={t(msg => msg.option.dailyLimit.level[defaultDailyLimit().limitLevel])}
+            defaultValue={msg => msg.option.dailyLimit.level[DEFAULT_VAL.limitLevel]}
         >
             <ElSelect
                 modelValue={option.limitLevel}
                 size="small"
-                class='option-daily-limit-level-select'
+                style={{ '--el-select-width': `${LEVEL_SELECT_WIDTH[locale] ?? 370}px` }}
                 onChange={handleLevelChange}
             >
                 {ALL_LEVEL.map(item => <ElOption value={item} label={t(msg => msg.option.dailyLimit.level[item])} />)}
@@ -147,7 +174,7 @@ const _default = defineComponent((_, ctx) => {
         <OptionItem
             v-show={option.limitLevel === "verification"}
             label={msg => msg.option.dailyLimit.level.verificationLabel}
-            defaultValue={t(msg => (msg.option.dailyLimit.level as any)[defaultDailyLimit().limitVerifyDifficulty])}
+            defaultValue={t(msg => (msg.option.dailyLimit.level as any)[DEFAULT_VAL.limitVerifyDifficulty])}
         >
             <ElSelect
                 modelValue={option.limitVerifyDifficulty}

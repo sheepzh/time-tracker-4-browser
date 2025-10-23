@@ -1,8 +1,6 @@
 import { EXCLUDING_PREFIX } from './constant/remain-host'
 import { getWeekDay, MILL_PER_MINUTE, MILL_PER_SECOND } from "./time"
 
-export const DELAY_MILL = 5 * MILL_PER_MINUTE
-
 export const cleanCond = (origin: string | undefined): string | undefined => {
     if (!origin) return undefined
 
@@ -61,11 +59,13 @@ export const meetLimit = (limit: number | undefined, value: number | undefined):
 }
 
 export const meetTimeLimit = (
+    delayMin: number,
     limitSec: number | undefined, wastedMill: number | undefined,
     allowDelay: boolean | undefined, delayCount: number | undefined
 ): boolean => {
+    const delayMill = MILL_PER_MINUTE * delayMin
     let realLimit = (limitSec ?? 0) * MILL_PER_SECOND
-    allowDelay && realLimit && (realLimit += DELAY_MILL * (delayCount ?? 0))
+    allowDelay && realLimit && (realLimit += delayMill * (delayCount ?? 0))
     return meetLimit(realLimit, wastedMill)
 }
 
@@ -76,7 +76,7 @@ type LimitStateResult = {
     weekly: TimeLimitState
 }
 
-export function calcTimeState(item: timer.limit.Item, reminderMills: number): LimitStateResult {
+export function calcTimeState(delayMin: number, item: timer.limit.Item, reminderMills: number): LimitStateResult {
     let res: LimitStateResult = {
         daily: "NORMAL",
         weekly: "NORMAL",
@@ -87,36 +87,36 @@ export function calcTimeState(item: timer.limit.Item, reminderMills: number): Li
         allowDelay,
     } = item || {}
     // 1. daily states
-    if (meetTimeLimit(time, waste, allowDelay, delayCount)) {
+    if (meetTimeLimit(delayMin, time, waste, allowDelay, delayCount)) {
         res.daily = 'LIMITED'
-    } else if (reminderMills && meetTimeLimit(time, waste + reminderMills, allowDelay, delayCount)) {
+    } else if (reminderMills && meetTimeLimit(delayMin, time, waste + reminderMills, allowDelay, delayCount)) {
         res.daily = 'REMINDER'
     }
 
     // 2. weekly states
-    if (meetTimeLimit(weekly, weeklyWaste, allowDelay, weeklyDelayCount)) {
+    if (meetTimeLimit(delayMin, weekly, weeklyWaste, allowDelay, weeklyDelayCount)) {
         res.weekly = 'LIMITED'
-    } else if (reminderMills && meetTimeLimit(weekly, weeklyWaste + reminderMills, allowDelay, weeklyDelayCount)) {
+    } else if (reminderMills && meetTimeLimit(delayMin, weekly, weeklyWaste + reminderMills, allowDelay, weeklyDelayCount)) {
         res.weekly = 'REMINDER'
     }
 
     return res
 }
 
-export function hasLimited(item: timer.limit.Item): boolean {
-    return hasDailyLimited(item) || hasWeeklyLimited(item)
+export function hasLimited(item: timer.limit.Item, delayMin: number): boolean {
+    return hasDailyLimited(item, delayMin) || hasWeeklyLimited(item, delayMin)
 }
 
-export function hasDailyLimited(item: timer.limit.Item): boolean {
+export function hasDailyLimited(item: timer.limit.Item, delayMin: number): boolean {
     const { time, count = 0, waste = 0, visit = 0, delayCount = 0, allowDelay = false } = item || {}
-    const timeMeet = meetTimeLimit(time, waste, allowDelay, delayCount)
+    const timeMeet = meetTimeLimit(delayMin, time, waste, allowDelay, delayCount)
     const countMeet = meetLimit(count, visit)
     return timeMeet || countMeet
 }
 
-export function hasWeeklyLimited(item: timer.limit.Item): boolean {
+export function hasWeeklyLimited(item: timer.limit.Item, delayMin: number): boolean {
     const { weekly = 0, weeklyCount = 0, weeklyWaste = 0, weeklyVisit = 0, weeklyDelayCount = 0, allowDelay = false } = item || {}
-    const timeMeet = meetTimeLimit(weekly, weeklyWaste, allowDelay, weeklyDelayCount)
+    const timeMeet = meetTimeLimit(delayMin, weekly, weeklyWaste, allowDelay, weeklyDelayCount)
     const countMeet = meetLimit(weeklyCount, weeklyVisit)
     return timeMeet || countMeet
 }

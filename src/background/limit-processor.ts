@@ -7,7 +7,7 @@
 
 import { createTabAfterCurrent, getRightOf, listTabs, resetTabUrl, sendMsg2Tab } from "@api/chrome/tab"
 import { LIMIT_ROUTE } from "@app/router/constants"
-import limitService from "@service/limit-service"
+import { moreMinutes, noticeLimitChanged } from "@service/limit-service"
 import { getAppPageUrl } from "@util/constant/url"
 import { matches } from "@util/limit"
 import { isBrowserUrl } from "@util/pattern"
@@ -50,12 +50,13 @@ function initDailyBroadcast() {
             const startOfThisDay = getStartOfDay(new Date())
             return startOfThisDay.getTime() + MILL_PER_DAY
         },
-        () => limitService.broadcastRules(),
+        () => noticeLimitChanged(),
     )
 }
 
-const processMoreMinutes = async (url: string) => {
-    const rules = await limitService.moreMinutes(url)
+const processMoreMinutes = async (data: any) => {
+    const { url, duration } = (data as timer.mq.DelayMinutesData) ?? {}
+    const rules = await moreMinutes(url, duration)
 
     const tabs = await listTabs({ status: 'complete' })
     tabs.forEach(tab => processLimitWaking(rules, tab))
@@ -82,7 +83,7 @@ export default function init(dispatcher: MessageDispatcher) {
     dispatcher
         .register<string>('openLimitPage', processOpenPage)
         // More minutes
-        .register<string>('cs.moreMinutes', processMoreMinutes)
+        .register<string>('cs.delayMinutes', processMoreMinutes)
         // Judge any tag hit the time limit per visit
         .register<timer.limit.Item, boolean>("askHitVisit", processAskHitVisit)
 }

@@ -1,6 +1,6 @@
 import { useRequest } from '@hooks/useRequest'
 import { useWindowFocus } from '@hooks/useWindowFocus'
-import limitService from "@service/limit-service"
+import { selectLimitItems } from "@service/limit-service"
 import { type App, inject, provide, type Ref, shallowRef, watch } from "vue"
 import { type LimitReason } from "../common"
 
@@ -35,7 +35,7 @@ export const provideRule = () => {
         if (!windowFocus.value) return null
         const reasonId = reason.value?.id
         if (!reasonId) return null
-        const rules = await limitService.select({ id: reasonId, filterDisabled: false })
+        const rules = await selectLimitItems({ id: reasonId, filterDisabled: false })
         return rules?.[0]
     })
 
@@ -46,8 +46,8 @@ export const provideRule = () => {
 
 export const useRule = () => inject(RULE_KEY) as Ref<timer.limit.Item | null>
 
-export const provideDelayHandler = (app: App<Element>, handlers: () => void) => {
+export const provideDelayHandler = (app: App<Element>, handlers: ArgCallback<number>) => {
     app?.provide(DELAY_HANDLER_KEY, handlers)
 }
 
-export const useDelayHandler = () => inject(DELAY_HANDLER_KEY) as () => void
+export const useDelayHandler = () => inject(DELAY_HANDLER_KEY) as ArgCallback<number>

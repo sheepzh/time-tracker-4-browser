@@ -4,22 +4,35 @@ import { judgeVerificationRequired, processVerification } from "@app/util/limit"
 import { TAG_NAME } from "@cs/limit/element"
 import { t } from "@cs/locale"
 import { Plus, Timer } from "@element-plus/icons-vue"
+import { useRequest } from '@hooks/useRequest'
 import optionHolder from "@service/components/option-holder"
+import { defaultDailyLimit } from '@util/constant/option'
 import { meetTimeLimit } from '@util/limit'
 import { ElButton } from "element-plus"
 import { computed, defineComponent } from "vue"
 import { useDelayHandler, useReason, useRule } from "../context"
 
-async function handleMore5Minutes(rule: timer.limit.Item | null, callback: () => void) {
-    let promise: Promise<void> | undefined = undefined
-    const ele = document.querySelector(TAG_NAME)?.shadowRoot?.querySelector('body')
-    if (rule && await judgeVerificationRequired(rule)) {
-        const option = await optionHolder.get()
-        promise = processVerification(option, { appendTo: ele ?? undefined })
-        promise ? promise.then(callback).catch(() => { }) : callback()
-    } else {
-        callback()
+const useDelay = () => {
+    const delayHandler = useDelayHandler()
+    const { data: delayDuration } = useRequest(
+        () => optionHolder.get().then(o => o.delayDuration),
+        { defaultValue: defaultDailyLimit().delayDuration },
+    )
+    async function handleDelay(rule: timer.limit.Item | null) {
+        let promise: Promise<void> | undefined = undefined
+        const ele = document.querySelector(TAG_NAME)?.shadowRoot?.querySelector('body')
+        const callback = () => delayHandler(delayDuration.value)
+
+        if (rule && await judgeVerificationRequired(rule)) {
+            const option = await optionHolder.get()
+            promise = processVerification(option, { appendTo: ele ?? undefined })
+            promise ? promise.then(callback).catch(() => { }) : callback()
+        } else {
+            callback()
+        }
     }
+
+    return { handleDelay, delayDuration }
 }
 
 const _default = defineComponent(() => {
@@ -46,7 +59,7 @@ const _default = defineComponent(() => {
         return meetTimeLimit(realLimit, realWaste, allowDelay, delayCount)
     })
 
-    const delayHandler = useDelayHandler()
+    const { handleDelay, delayDuration } = useDelay()
 
     return () => (
         <div class='footer-container'>
@@ -61,11 +74,10 @@ const _default = defineComponent(() => {
             <ElButton
                 v-show={showDelay.value}
                 type="primary"
-                round
-                icon={Plus}
-                onClick={() => handleMore5Minutes(rule.value, delayHandler)}
+                round icon={Plus}
+                onClick={() => handleDelay(rule.value)}
             >
-                {t(msg => msg.modal.more5Minutes)}
+                {t(msg => msg.modal.delayButton, { n: delayDuration.value })}
             </ElButton>
             <ElButton
                 round

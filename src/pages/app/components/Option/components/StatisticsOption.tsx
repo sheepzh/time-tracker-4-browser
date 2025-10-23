@@ -94,7 +94,7 @@ const _default = defineComponent((_props, ctx) => {
         {!IS_ANDROID && <>
             <OptionItem
                 label={msg => msg.option.statistics.autoPauseTrack}
-                defaultValue={t(msg => msg.option.no)}
+                defaultValue={false}
                 v-slots={{
                     info: () => <OptionTooltip>{t(msg => msg.option.statistics.noActivityInfo)}</OptionTooltip>,
                     maxTime: () => <ElTimePicker
@@ -114,7 +114,7 @@ const _default = defineComponent((_props, ctx) => {
             />
             <OptionItem
                 label={msg => msg.option.statistics.countLocalFiles}
-                defaultValue={fileAccess.value ? t(msg => msg.option.yes) : undefined}
+                defaultValue={fileAccess.value ? true : undefined}
                 v-slots={{
                     info: () => <OptionTooltip>{t(msg => msg.option.statistics.localFilesInfo)}</OptionTooltip>,
                     localFileTime: () => <OptionTag>{t(msg => msg.option.statistics.localFileTime)}</OptionTag>,
@@ -131,7 +131,7 @@ const _default = defineComponent((_props, ctx) => {
             />
             <OptionItem
                 label={msg => msg.option.statistics.countTabGroup}
-                defaultValue={t(msg => msg.option.no)}
+                defaultValue={false}
                 v-slots={{
                     info: () => <OptionTooltip>{t(msg => msg.option.statistics.tabGroupInfo)}</OptionTooltip>,
                     default: () => <ElSwitch modelValue={option.countTabGroup} onChange={val => handleTabGroupChange(!!val)} />

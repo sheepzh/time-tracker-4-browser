@@ -1,6 +1,5 @@
 import { sendMsg2Runtime } from "@api/chrome/runtime"
 import NormalTracker from "@cs/tracker/normal"
-import { DELAY_MILL } from "@util/limit"
 import { MILL_PER_SECOND } from "@util/time"
 import { type ModalContext, type Processor } from "../common"
 

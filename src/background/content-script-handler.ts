@@ -9,7 +9,7 @@ import { executeScript } from "@api/chrome/script"
 import { createTab } from "@api/chrome/tab"
 import { ANALYSIS_ROUTE, LIMIT_ROUTE } from "@app/router/constants"
 import optionHolder from "@service/components/option-holder"
-import limitService from "@service/limit-service"
+import { getLimited, getRelated } from "@service/limit-service"
 import siteService from "@service/site-service"
 import { saveTimelineEvent } from '@service/timeline-service'
 import whitelistHolder from "@service/whitelist/holder"
@@ -61,8 +61,8 @@ export default function init(dispatcher: MessageDispatcher) {
             const option = await optionHolder.get()
             return !!option.printInConsole
         })
-        .register<string, timer.limit.Item[]>('cs.getLimitedRules', url => limitService.getLimited(url))
-        .register<string, timer.limit.Item[]>('cs.getRelatedRules', url => limitService.getRelated(url))
+        .register<string, timer.limit.Item[]>('cs.getLimitedRules', url => getLimited(url))
+        .register<string, timer.limit.Item[]>('cs.getRelatedRules', url => getRelated(url))
         .register<void, void>('cs.openAnalysis', (_, sender) => handleOpenAnalysisPage(sender))
         .register<void, void>('cs.openLimit', (_, sender) => handleOpenLimitPage(sender))
         .register<void, void>('cs.onInjected', async (_, sender) => handleInjected(sender))

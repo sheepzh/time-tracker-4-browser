@@ -55,6 +55,7 @@
         "dailyLimit": {
             "prompt": "受限时显示的提示文本 {input}",
             "reminder": "{input} 在到期前 {minInput} 分钟发送提醒",
+            "delayDuration": "每次延长 {input} 分钟",
             "level": {
                 "label": "受限时如何解锁 {input}",
                 "nothing": "允许在管理页面直接解锁",
@@ -324,6 +325,7 @@
         "dailyLimit": {
             "prompt": "Prompt displayed when restricted {input}",
             "reminder": "{input} Reminder {minInput} minutes before time is up",
+            "delayDuration": "Delay {input} minutes each time",
             "level": {
                 "label": "How to unlock while restricted {input}",
                 "nothing": "Allow direct unlocking on the admin page",

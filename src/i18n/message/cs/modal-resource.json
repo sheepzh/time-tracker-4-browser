@@ -1,67 +1,67 @@
 {
     "zh_CN": {
         "defaultPrompt": "古希腊时间与浏览器之神正在阻止您访问该页面",
-        "more5Minutes": "延长5分钟",
+        "delayButton": "延长{n}分钟",
         "browsingTime": "当前浏览时长",
         "ruleDetail": "规则详情"
     },
     "en": {
         "defaultPrompt": "This page was blocked!",
-        "more5Minutes": "5 more minutes",
+        "delayButton": "{n} more minutes",
         "browsingTime": "Browsing time",
         "ruleDetail": "Rule details"
     },
     "ja": {
         "defaultPrompt": "このページはブロックされました!",
-        "more5Minutes": "5分延長",
+        "delayButton": "{n}分延長",
         "browsingTime": "閲覧時間",
         "ruleDetail": "ルール詳細"
     },
     "zh_TW": {
         "defaultPrompt": "古希臘時間與瀏覽器之神暫時封鎖此頁面",
-        "more5Minutes": "延長5分鐘",
+        "delayButton": "延長{n}分鐘",
         "browsingTime": "目前瀏覽時長",
         "ruleDetail": "規則詳情"
     },
     "pt_PT": {
         "defaultPrompt": "Esta página foi bloqueada!",
-        "more5Minutes": "Mais 5 minutos",
+        "delayButton": "Mais {n} minutos",
         "browsingTime": "Tempo de Navegação",
         "ruleDetail": "Detalhes da Regra"
     },
     "uk": {
         "defaultPrompt": "Цю сторінку заблоковано!",
-        "more5Minutes": "Ще 5 хвилин",
+        "delayButton": "Ще {n} хвилин",
         "browsingTime": "Час перегляду",
         "ruleDetail": "Подробиці правила"
     },
     "fr": {
         "defaultPrompt": "Cette page a été bloquée!",
-        "more5Minutes": "5 minutes supplémentaires",
+        "delayButton": "{n} minutes supplémentaires",
         "browsingTime": "Temps de navigation",
         "ruleDetail": "Détails des règles"
     },
     "es": {
         "defaultPrompt": "¡Esta página fue bloqueada!",
-        "more5Minutes": "5 minutos más",
+        "delayButton": "{n} minutos más",
         "browsingTime": "Tiempo de navegación",
         "ruleDetail": "Detalles de la regla"
     },
     "de": {
         "defaultPrompt": "Diese Seite wurde gesperrt!",
-        "more5Minutes": "Noch 5 Minuten",
+        "delayButton": "Noch {n} Minuten",
         "browsingTime": "Browsing-Zeit",
         "ruleDetail": "Regeldetails"
     },
     "ru": {
         "defaultPrompt": "Эта страница заблокирована!",
-        "more5Minutes": "Ещё 5 минут",
+        "delayButton": "Ещё {n} минут",
         "browsingTime": "Время просмотра",
         "ruleDetail": "Подробности правила"
     },
     "ar": {
         "defaultPrompt": "تم حظر هذه الصفحة!",
-        "more5Minutes": "5 دقائق إضافية",
+        "delayButton": "{n} دقائق إضافية",
         "browsingTime": "وقت التصفح",
         "ruleDetail": "تفاصيل القاعدة"
     }

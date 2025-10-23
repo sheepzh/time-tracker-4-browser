@@ -2,7 +2,7 @@ import { getTab, listTabs, sendMsg2Tab } from "@api/chrome/tab"
 import { getWindow } from "@api/chrome/window"
 import optionHolder from "@service/components/option-holder"
 import itemService, { type ItemIncContext } from "@service/item-service"
-import limitService from "@service/limit-service"
+import { incLimitFocus, incLimitVisit } from "@service/limit-service"
 import periodService from "@service/period-service"
 import whitelistHolder from "@service/whitelist/holder"
 import { IS_ANDROID } from "@util/constant/environment"
@@ -18,7 +18,7 @@ async function handleTime(context: ItemIncContext, timeRange: [number, number], 
     // 1. Save async
     await itemService.addFocusTime(context, focusTime)
     // 2. Process limit
-    const { limited, reminder } = await limitService.addFocusTime(host, url, focusTime)
+    const { limited, reminder } = await incLimitFocus(host, url, focusTime)
     // If time limited after this operation, send messages
     limited?.length && sendLimitedMessage(limited)
     // If need to reminder, send messages
@@ -81,7 +81,7 @@ async function sendLimitedMessage(items: timer.limit.Item[]) {
 async function handleVisit(context: ItemIncContext) {
     await itemService.increaseVisit(context)
     const { host, url } = context
-    const metLimits = await limitService.incVisit(host, url)
+    const metLimits = await incLimitVisit(host, url)
     // If time limited after this operation, send messages
     metLimits?.length && sendLimitedMessage(metLimits)
 }

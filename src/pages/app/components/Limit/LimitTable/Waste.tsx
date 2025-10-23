@@ -1,6 +1,9 @@
 import TooltipWrapper from "@app/components/common/TooltipWrapper"
 import { t } from "@app/locale"
+import { useRequest } from '@hooks/useRequest'
 import Flex from "@pages/components/Flex"
+import optionHolder from '@service/components/option-holder'
+import { defaultDailyLimit } from '@util/constant/option'
 import { meetLimit, meetTimeLimit } from "@util/limit"
 import { formatPeriodCommon } from "@util/time"
 import { ElTag } from "element-plus"
@@ -19,7 +22,11 @@ const Waste = defineComponent({
         allowDelay: Boolean,
     },
     setup(props) {
-        const timeType = computed(() => meetTimeLimit(props.time, props.waste, props.allowDelay, props.delayCount) ? 'danger' : 'info')
+        const { data: delayDuration } = useRequest(
+            () => optionHolder.get().then(o => o.delayDuration),
+            { defaultValue: defaultDailyLimit().delayDuration },
+        )
+        const timeType = computed(() => meetTimeLimit(delayDuration.value, props.time, props.waste, props.allowDelay, props.delayCount) ? 'danger' : 'info')
         const visitType = computed(() => meetLimit(props.count, props.visit) ? 'danger' : 'info')
 
         return () => (

@@ -7,7 +7,7 @@
 
 import { t } from "@app/locale"
 import { useSwitch } from "@hooks"
-import limitService from "@service/limit-service"
+import { createLimitItem, updateLimitItem } from "@service/limit-service"
 import { ElDialog, ElMessage } from "element-plus"
 import { computed, defineComponent, nextTick, ref, toRaw } from "vue"
 import { type ModifyInstance, useLimitTable } from "../context"
@@ -36,7 +36,7 @@ const _default = defineComponent((_, ctx) => {
                 // Object to array
                 periods: periods?.map(i => ([i?.[0], i?.[1]] satisfies Vector<number>)),
             } satisfies timer.limit.Rule
-            await limitService.update(saved)
+            await updateLimitItem(saved)
         } else {
             const toCreate = {
                 cond, enabled, name, time, weekly, visitTime, weekdays, count, weeklyCount,
@@ -44,7 +44,7 @@ const _default = defineComponent((_, ctx) => {
                 periods: periods?.map(i => ([i?.[0], i?.[1]] satisfies Vector<number>)),
                 allowDelay: false, locked: false,
             } satisfies MakeOptional<timer.limit.Rule, 'id'>
-            const id = await limitService.create(toCreate)
+            const id = await createLimitItem(toCreate)
             saved = { ...toCreate, id }
         }
         close()

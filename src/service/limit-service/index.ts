@@ -14,13 +14,13 @@ import { sum } from "@util/array"
 import { calcTimeState, hasLimited, isEnabledAndEffective, matches } from "@util/limit"
 import { formatTimeYMD, MILL_PER_MINUTE } from "@util/time"
 
-export type QueryParam = {
+type QueryParam = {
     filterDisabled: boolean
     id?: number
     url?: string
 }
 
-async function select(cond?: QueryParam): Promise<timer.limit.Item[]> {
+export async function selectLimitItems(cond?: QueryParam): Promise<timer.limit.Item[]> {
     const { filterDisabled, url, id } = cond || {}
     const now = new Date()
     const today = formatTimeYMD(now)
@@ -52,7 +52,7 @@ async function select(cond?: QueryParam): Promise<timer.limit.Item[]> {
 }
 
 async function selectEffective(url?: string) {
-    const enabledItems: timer.limit.Item[] = await select({ filterDisabled: true, url })
+    const enabledItems: timer.limit.Item[] = await selectLimitItems({ filterDisabled: true, url })
     return enabledItems?.filter(isEnabledAndEffective) || []
 }
 
@@ -61,7 +61,7 @@ async function selectEffective(url?: string) {
  *
  * @param item
  */
-async function noticeLimitChanged() {
+export async function noticeLimitChanged() {
     const effectiveItems = await selectEffective()
     const tabs = await listTabs()
     tabs.forEach(({ id, url }) => {
@@ -71,7 +71,7 @@ async function noticeLimitChanged() {
     })
 }
 
-async function updateEnabled(...items: timer.limit.Rule[]): Promise<void> {
+export async function updateLimitItemEnabled(...items: timer.limit.Rule[]): Promise<void> {
     if (!items?.length) return
     for (const item of items) {
         await db.updateEnabled(item.id, !!item.enabled)
@@ -79,14 +79,14 @@ async function updateEnabled(...items: timer.limit.Rule[]): Promise<void> {
     await noticeLimitChanged()
 }
 
-async function updateLocked(...items: timer.limit.Rule[]): Promise<void> {
+export async function updateLimitItemLocked(...items: timer.limit.Rule[]): Promise<void> {
     if (!items?.length) return
     for (const item of items) {
         await db.updateLocked(item.id, item.locked)
     }
 }
 
-async function updateDelay(...items: timer.limit.Rule[]) {
+export async function updateLimitItemDelay(...items: timer.limit.Rule[]) {
     if (!items?.length) return
     for (const item of items) {
         await db.updateDelay(item.id, !!item.allowDelay)
@@ -94,7 +94,7 @@ async function updateDelay(...items: timer.limit.Rule[]) {
     await noticeLimitChanged()
 }
 
-async function remove(...items: timer.limit.Rule[]): Promise<void> {
+export async function removeLimitItem(...items: timer.limit.Rule[]): Promise<void> {
     if (!items?.length) return
     for (const item of items) {
         await db.remove(item.id)
@@ -102,12 +102,13 @@ async function remove(...items: timer.limit.Rule[]): Promise<void> {
     await noticeLimitChanged()
 }
 
-async function getLimited(url: string): Promise<timer.limit.Item[]> {
-    const list: timer.limit.Item[] = await getRelated(url)
-    return list.filter(item => hasLimited(item))
+export async function getLimited(url: string): Promise<timer.limit.Item[]> {
+    const list = await getRelated(url)
+    const { delayDuration } = await optionHolder.get()
+    return list.filter(item => hasLimited(item, delayDuration))
 }
 
-async function getRelated(url: string): Promise<timer.limit.Item[]> {
+export async function getRelated(url: string): Promise<timer.limit.Item[]> {
     const effectiveItems = await selectEffective()
     return effectiveItems.filter(item => matches(item?.cond, url))
 }
@@ -124,10 +125,11 @@ type IncreaseResult = {
  * @param focusTime time, milliseconds
  * @returns the rules is limit cause of this operation
  */
-async function addFocusTime(host: string, url: string, focusTime: number): Promise<IncreaseResult> {
+export async function incLimitFocus(host: string, url: string, focusTime: number): Promise<IncreaseResult> {
     if (whitelistHolder.contains(host, url)) return {}
 
     const allEffective = await selectEffective(url)
+    const { delayDuration } = await optionHolder.get()
 
     const toUpdate: { [cond: string]: number } = {}
     const limited: timer.limit.Item[] = []
@@ -136,7 +138,7 @@ async function addFocusTime(host: string, url: string, focusTime: number): Promi
     const { limitReminder, limitReminderDuration = 0 } = await optionHolder.get()
     const durationMill = limitReminder ? limitReminderDuration * MILL_PER_MINUTE : 0
     allEffective.forEach(item => {
-        const [met, reminder] = addFocusForEach(item, focusTime, durationMill)
+        const [met, reminder] = addFocusForEach(delayDuration, item, focusTime, durationMill)
         met && limited.push(item)
         reminder && needReminder.push(item)
         toUpdate[item.id] = item.waste
@@ -152,12 +154,12 @@ async function addFocusTime(host: string, url: string, focusTime: number): Promi
     return result
 }
 
-function addFocusForEach(item: timer.limit.Item, focusTime: number, durationMill: number): [met: boolean, reminder: boolean] {
-    const before = calcTimeState(item, durationMill)
+function addFocusForEach(delayMin: number, item: timer.limit.Item, focusTime: number, durationMill: number): [met: boolean, reminder: boolean] {
+    const before = calcTimeState(delayMin, item, durationMill)
     item.waste += focusTime
     // Fast increase
     item.weeklyWaste += focusTime
-    const after = calcTimeState(item, durationMill)
+    const after = calcTimeState(delayMin, item, durationMill)
     const met = (before.daily !== 'LIMITED' && after.daily === 'LIMITED') || (before.weekly !== 'LIMITED' && after.weekly === 'LIMITED')
     const reminder = (before.daily === 'NORMAL' && after.daily === 'REMINDER') || (before.weekly === 'NORMAL' && after.weekly === 'REMINDER')
     return [met, reminder]
@@ -167,10 +169,11 @@ function addFocusForEach(item: timer.limit.Item, focusTime: number, durationMill
  * Increase visit count
  * @returns the rules is limited
  */
-async function incVisit(host: string, url: string): Promise<timer.limit.Item[]> {
+export async function incLimitVisit(host: string, url: string): Promise<timer.limit.Item[]> {
     if (whitelistHolder.contains(host, url)) return []
 
-    const allEnabled: timer.limit.Item[] = await select({ filterDisabled: true, url })
+    const allEnabled = await selectLimitItems({ filterDisabled: true, url })
+    const { delayDuration } = await optionHolder.get()
     const result: timer.limit.Item[] = []
     await db.increaseVisit(formatTimeYMD(new Date()), allEnabled.map(item => item.id))
     allEnabled.forEach(item => {
@@ -178,7 +181,7 @@ async function incVisit(host: string, url: string): Promise<timer.limit.Item[]> 
         item.visit++
         item.weeklyVisit++
 
-        hasLimited(item) && result.push(item)
+        hasLimited(item, delayDuration) && result.push(item)
     })
     return result
 }
@@ -186,9 +189,10 @@ async function incVisit(host: string, url: string): Promise<timer.limit.Item[]> 
 /**
  * @returns Rules to wake
  */
-async function moreMinutes(url: string): Promise<timer.limit.Item[]> {
-    const rules = (await select({ url: url, filterDisabled: true }))
-        .filter(item => hasLimited(item) && item.allowDelay)
+export async function moreMinutes(url: string, duration: number): Promise<timer.limit.Item[]> {
+    const { delayDuration } = await optionHolder.get()
+    const rules = (await selectLimitItems({ url: url, filterDisabled: true }))
+        .filter(item => hasLimited(item, delayDuration) && item.allowDelay)
     rules.forEach(rule => {
         rule.delayCount = (rule.delayCount ?? 0) + 1
         // Fast increase
@@ -197,10 +201,10 @@ async function moreMinutes(url: string): Promise<timer.limit.Item[]> {
 
     const date = formatTimeYMD(new Date())
     await db.updateDelayCount(date, rules)
-    return rules.filter(r => !hasLimited(r))
+    return rules.filter(r => !hasLimited(r, delayDuration))
 }
 
-async function update(...rules: timer.limit.Rule[]) {
+export async function updateLimitItem(...rules: timer.limit.Rule[]) {
     if (!rules?.length) return
     for (const rule of rules) {
         await db.save(rule, true)
@@ -208,26 +212,8 @@ async function update(...rules: timer.limit.Rule[]) {
     await noticeLimitChanged()
 }
 
-async function create(rule: MakeOptional<timer.limit.Rule, 'id'>): Promise<number> {
+export async function createLimitItem(rule: MakeOptional<timer.limit.Rule, 'id'>): Promise<number> {
     const id = await db.save(rule, false)
     await noticeLimitChanged()
     return id
 }
-
-class LimitService {
-    moreMinutes = moreMinutes
-    getLimited = getLimited
-    getRelated = getRelated
-    updateEnabled = updateEnabled
-    updateDelay = updateDelay
-    updateLocked = updateLocked
-    select = select
-    remove = remove
-    update = update
-    create = create
-    broadcastRules = noticeLimitChanged
-    addFocusTime = addFocusTime
-    incVisit = incVisit
-}
-
-export default new LimitService()
