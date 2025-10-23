@@ -10,7 +10,6 @@
         "dev:safari": "rspack --config=rspack/rspack.dev.safari.ts --watch",
         "dev:e2e": "rspack --config=rspack/rspack.e2e.ts",
         "analyze": "rspack --config=rspack/rspack.analyze.ts",
-        "android-firefox": "web-ext run -t firefox-android --firefox-apk org.mozilla.fenix -s dist_dev_firefox --adb-device ",
         "build": "rspack --config=rspack/rspack.prod.ts",
         "build:firefox": "rspack --config=rspack/rspack.prod.firefox.ts",
         "build:safari": "rspack --config=rspack/rspack.prod.safari.ts",
@@ -60,9 +59,6 @@
         "ts-node": "^10.9.2",
         "tsconfig-paths": "^4.2.0",
         "typescript": "5.9.3"
-    },
-    "optionalDependencies": {
-        "web-ext": "^9.0.0"
     },
     "dependencies": {
         "@element-plus/icons-vue": "^2.3.2",
