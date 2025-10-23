@@ -5,9 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 import { t } from "@app/locale"
-import Flex from "@pages/components/Flex"
 import whitelistService from "@service/whitelist/service"
-import { ElMessage, ElMessageBox } from "element-plus"
+import { ElMessage, ElMessageBox, ElSpace } from "element-plus"
 import { defineComponent, onBeforeMount, reactive } from "vue"
 import AddButton from './AddButton'
 import WhiteItem from './WhiteItem'
@@ -64,7 +63,7 @@ const _default = defineComponent(() => {
     }
 
     return () => (
-        <Flex gap={10} wrap justify="space-between">
+        <ElSpace size="small">
             {whitelist.map((white, index) => (
                 <WhiteItem
                     white={white}
@@ -73,7 +72,7 @@ const _default = defineComponent(() => {
                 />
             ))}
             <AddButton onSave={handleAdd} />
-        </Flex>
+        </ElSpace>
     )
 })
 

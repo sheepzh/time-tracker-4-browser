@@ -8,8 +8,7 @@
 import { t } from "@app/locale"
 import mergeRuleDatabase from "@db/merge-rule-database"
 import { useManualRequest, useRequest } from "@hooks"
-import Flex from "@pages/components/Flex"
-import { ElMessage, ElMessageBox } from "element-plus"
+import { ElMessage, ElMessageBox, ElSpace } from "element-plus"
 import { defineComponent, ref } from "vue"
 import AddButton from './components/AddButton'
 import Item, { type ItemInstance } from './components/Item'
@@ -70,7 +69,7 @@ const _default = defineComponent(() => {
     }
 
     return () => (
-        <Flex gap={10} wrap justify="space-between">
+        <ElSpace size="small">
             {items.value?.map((item, idx) =>
                 <Item
                     ref={() => itemRefs.value[idx]}
@@ -81,7 +80,7 @@ const _default = defineComponent(() => {
                 />
             )}
             <AddButton onSave={handleAdd} />
-        </Flex>
+        </ElSpace>
     )
 })
 

@@ -7,6 +7,7 @@
 import { t } from "@app/locale"
 import { processVerification } from "@app/util/limit"
 import { Edit } from "@element-plus/icons-vue"
+import { locale } from '@i18n'
 import { defaultDailyLimit } from "@util/constant/option"
 import { ElButton, ElInput, ElInputNumber, ElMessage, ElMessageBox, ElOption, ElSelect, ElSwitch } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
@@ -59,6 +60,13 @@ const confirm4Strict = async (): Promise<void> => {
         confirmButtonText: t(msg => msg.button.confirm),
         cancelButtonText: t(msg => msg.button.cancel),
     })
+}
+
+const LEVEL_SELECT_WIDTH: Messages<number> = {
+    en: 330,
+    uk: 330,
+    zh_CN: 210,
+    zh_TW: 210,
 }
 
 const _default = defineComponent((_, ctx) => {
@@ -118,12 +126,12 @@ const _default = defineComponent((_, ctx) => {
         />
         <OptionItem
             label={msg => msg.option.dailyLimit.level.label}
-            defaultValue={t(msg => msg.option.dailyLimit.level[defaultDailyLimit().limitLevel])}
+            defaultValue={msg => msg.option.dailyLimit.level[defaultDailyLimit().limitLevel]}
         >
             <ElSelect
                 modelValue={option.limitLevel}
                 size="small"
-                class='option-daily-limit-level-select'
+                style={{ '--el-select-width': `${LEVEL_SELECT_WIDTH[locale] ?? 370}px` }}
                 onChange={handleLevelChange}
             >
                 {ALL_LEVEL.map(item => <ElOption value={item} label={t(msg => msg.option.dailyLimit.level[item])} />)}

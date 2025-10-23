@@ -9,8 +9,7 @@ import { getMembers } from "@api/crowdin"
 import { t } from "@app/locale"
 import { useRequest } from "@hooks"
 import Box from "@pages/components/Box"
-import Flex from "@pages/components/Flex"
-import { ElDivider } from "element-plus"
+import { ElDivider, ElSpace } from "element-plus"
 import { defineComponent } from "vue"
 
 const _default = defineComponent(() => {
@@ -21,10 +20,7 @@ const _default = defineComponent(() => {
     return () => (
         <Box marginTop={10}>
             <ElDivider>{t(msg => msg.helpUs.contributors)}</ElDivider>
-            <Flex
-                wrap gap={15} justify="space-around"
-                marginInline="auto" paddingBlock={5}
-            >
+            <ElSpace wrap>
                 {list.value?.map(({ avatarUrl, username }, idx, arr) => (
                     <a
                         href={`https://crowdin.com/profile/${username}`}
@@ -39,7 +35,7 @@ const _default = defineComponent(() => {
                         />
                     </a>
                 ))}
-            </Flex>
+            </ElSpace>
         </Box>
     )
 })
