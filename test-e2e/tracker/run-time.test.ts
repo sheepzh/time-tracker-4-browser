@@ -14,7 +14,6 @@ async function clickRunTimeChange(siteHost: string): Promise<void> {
         const runTimeSwitch = document.querySelector<HTMLDivElement>('table > tbody > tr > td.el-table_1_column_7 .el-switch')
         runTimeSwitch?.click()
     })
-    await sleep(.2)
 }
 
 describe('Run time tracking', () => {
