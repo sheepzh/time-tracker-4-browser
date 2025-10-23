@@ -8,7 +8,7 @@
 import { t } from "@app/locale"
 import { UploadFilled } from "@element-plus/icons-vue"
 import { useRequest } from "@hooks"
-import statService from "@service/stat-service"
+import { canReadRemote } from '@service/stat-service/remote'
 import { ElButton, ElIcon, ElTooltip } from "element-plus"
 import { computed, defineComponent } from "vue"
 import { useReportFilter } from "../context"
@@ -17,7 +17,7 @@ import { ICON_BTN_STYLE } from "./common"
 const _default = defineComponent(() => {
     const filter = useReportFilter()
     const content = computed(() => t(msg => msg.report.remoteReading[filter.readRemote ? 'on' : 'off']))
-    const { data: visible } = useRequest(() => statService.canReadRemote(), { defaultValue: false })
+    const { data: visible } = useRequest(() => canReadRemote(), { defaultValue: false })
 
     return () => (
         <ElTooltip trigger="hover" placement="bottom-start" effect="dark" content={content.value}>

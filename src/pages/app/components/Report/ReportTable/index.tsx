@@ -13,7 +13,7 @@ import { Histogram } from "@element-plus/icons-vue"
 import { useDocumentVisibility, useManualRequest, useRequest, useState } from "@hooks"
 import Flex from "@pages/components/Flex"
 import siteService from "@service/site-service"
-import statService, { type SiteQuery } from "@service/stat-service"
+import { selectCate, selectGroup, selectSite, type SiteQuery } from "@service/stat-service"
 import { sum } from "@util/array"
 import { isRtl } from "@util/document"
 import { siteEqual } from "@util/site"
@@ -75,15 +75,15 @@ const _default = defineComponent((_, ctx) => {
         const { siteMerge, dateRange: date, query, readRemote: inclusiveRemote, cateIds } = filter
         let rows: timer.stat.Row[] = []
         if (siteMerge === 'group') {
-            rows = await statService.selectGroup({ date, query })
+            rows = await selectGroup({ date, query })
         } else if (siteMerge === 'cate') {
-            rows = await statService.selectCate({ date, query, cateIds, inclusiveRemote })
+            rows = await selectCate({ date, query, cateIds, inclusiveRemote })
         } else {
             const param: SiteQuery = {
                 date, query, cateIds, inclusiveRemote,
                 mergeHost: siteMerge === 'domain',
             }
-            rows = await statService.selectSite(param)
+            rows = await selectSite(param)
         }
         const visit = sum(rows.map(e => e.time))
         const focus = sum(rows.map(e => e.focus))

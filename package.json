@@ -38,7 +38,7 @@
         "@types/chrome": "0.1.24",
         "@types/decompress": "^4.2.7",
         "@types/jest": "^30.0.0",
-        "@types/node": "^24.7.2",
+        "@types/node": "^24.9.1",
         "@types/punycode": "^2.1.4",
         "@vue/babel-plugin-jsx": "^2.0.1",
         "babel-loader": "^10.0.0",
@@ -53,7 +53,7 @@
         "postcss": "^8.5.6",
         "postcss-loader": "^8.2.0",
         "postcss-rtlcss": "^5.7.1",
-        "puppeteer": "^24.25.0",
+        "puppeteer": "^24.26.0",
         "sass": "^1.93.2",
         "sass-loader": "^16.0.5",
         "ts-loader": "^9.5.4",
@@ -68,11 +68,11 @@
         "@element-plus/icons-vue": "^2.3.2",
         "countup.js": "^2.9.0",
         "echarts": "^6.0.0",
-        "element-plus": "2.11.4",
+        "element-plus": "2.11.5",
         "js-base64": "^3.7.8",
         "punycode": "^2.3.1",
         "vue": "^3.5.22",
-        "vue-router": "^4.6.2"
+        "vue-router": "^4.6.3"
     },
     "engines": {
         "node": ">=20"

@@ -1,7 +1,7 @@
 import type { ReportQueryParam } from "@app/components/Report/types"
 import { REPORT_ROUTE } from "@app/router/constants"
 import weekHelper from "@service/components/week-helper"
-import statService from "@service/stat-service"
+import { selectCate, selectGroup, selectSite } from '@service/stat-service'
 import { isRemainHost } from "@util/constant/remain-host"
 import { getAppPageUrl } from "@util/constant/url"
 import { isSite } from "@util/stat"
@@ -30,11 +30,11 @@ export const queryRows = async (param: PopupQuery): Promise<[rows: timer.stat.Ro
     const sortDirection: timer.common.SortDirection = 'DESC'
     let rows: timer.stat.Row[]
     if (mergeMethod === 'cate') {
-        rows = await statService.selectCate({ date, mergeDate: true, sortKey, sortDirection })
+        rows = await selectCate({ date, mergeDate: true, sortKey, sortDirection })
     } else if (mergeMethod === 'group') {
-        rows = await statService.selectGroup({ date, mergeDate: true, sortKey, sortDirection })
+        rows = await selectGroup({ date, mergeDate: true, sortKey, sortDirection })
     } else {
-        rows = await statService.selectSite({
+        rows = await selectSite({
             date, mergeDate: true,
             mergeHost: mergeMethod === 'domain',
             sortKey, sortDirection,

@@ -3,7 +3,7 @@ import { t } from "@app/locale"
 import { useDebounce, useRequest, useState } from "@hooks"
 import Flex from "@pages/components/Flex"
 import siteService from "@service/site-service"
-import statService from "@service/stat-service"
+import { listHosts } from "@service/stat-service"
 import { identifySiteKey, parseSiteKeyFromIdentity, SiteMap } from "@util/site"
 import { ElSelectV2, ElTag, useNamespace } from "element-plus"
 import type { OptionType } from "element-plus/es/components/select-v2/src/select.types"
@@ -64,7 +64,7 @@ const fetchItems = async (categories: timer.site.Cate[]): Promise<[siteItems: Ta
     const siteSet = new SiteMap<timer.site.SiteInfo>()
 
     // 2.1 sites from hosts
-    const hosts = await statService.listHosts()
+    const hosts = await listHosts()
     collectHosts(hosts, siteSet)
 
     // 2.2 query sites from sites

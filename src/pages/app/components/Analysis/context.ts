@@ -6,7 +6,7 @@
  */
 
 import { useLocalStorage, useProvide, useProvider, useRequest } from "@hooks"
-import statService from "@service/stat-service"
+import { selectCate, selectSite } from "@service/stat-service"
 import { ref, watch, type Ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import type { AnalysisTarget } from "./types"
@@ -36,10 +36,10 @@ async function queryRows(target: AnalysisTarget | undefined): Promise<(timer.sta
     if (!key) return []
 
     if (type === 'cate') {
-        return statService.selectCate({ cateIds: [key], sortKey: 'date' })
+        return selectCate({ cateIds: [key], sortKey: 'date' })
     } else if (type === 'site') {
         const { host, type: siteType } = key ?? {}
-        return statService.selectSite({ host, mergeHost: siteType === 'merged', sortKey: 'date' })
+        return selectSite({ host, mergeHost: siteType === 'merged', sortKey: 'date' })
     } else {
         // Not supported yet
         return []

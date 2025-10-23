@@ -11,7 +11,7 @@ import periodDatabase from "@db/period-database"
 import { Sunrise } from "@element-plus/icons-vue"
 import { useRequest, useXsState } from "@hooks"
 import Flex from "@pages/components/Flex"
-import statService from "@service/stat-service"
+import { selectSite } from "@service/stat-service"
 import { calcMostPeriodOf2Hours } from "@util/period"
 import { getStartOfDay, MILL_PER_DAY, MILL_PER_MINUTE } from "@util/time"
 import { ElIcon } from "element-plus"
@@ -34,7 +34,7 @@ function calculateInstallDays(installTime: Date, now: Date): number {
 }
 
 async function query(): Promise<_Value> {
-    const allData = await statService.selectSite()
+    const allData = await selectSite()
     const hostSet = new Set<string>()
     let visits = 0
     let browsingTime = 0
