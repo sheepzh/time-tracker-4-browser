@@ -1,5 +1,5 @@
 import { useRequest } from "@hooks"
-import statService from "@service/stat-service"
+import { selectSite } from "@service/stat-service"
 import { formatTime } from "@util/time"
 import { ElText } from "element-plus"
 import { defineComponent, ref, type StyleValue } from "vue"
@@ -11,14 +11,12 @@ const _default = defineComponent(() => {
     const date = ref(new Date())
     const query = ref('')
 
-    const { data, refresh, loading } = useRequest(() => {
-        return statService.selectSite({
-            date: date.value ?? new Date(),
-            query: query.value,
-            sortKey: 'focus',
-            sortDirection: 'DESC',
-        })
-    })
+    const { data, refresh, loading } = useRequest(() => selectSite({
+        date: date.value ?? new Date(),
+        query: query.value,
+        sortKey: 'focus',
+        sortDirection: 'DESC',
+    }))
 
     return () => <div class="main">
         <Search

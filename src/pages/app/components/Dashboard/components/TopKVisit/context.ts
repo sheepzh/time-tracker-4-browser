@@ -1,5 +1,5 @@
 import { useLocalStorage, useProvide, useProvider, useRequest } from "@hooks"
-import statService, { SiteQuery } from "@service/stat-service"
+import { selectSitePage, type SiteQuery } from "@service/stat-service"
 import { MILL_PER_DAY } from "@util/time"
 import { reactive, toRaw, watch, type Reactive, type Ref } from "vue"
 
@@ -42,7 +42,7 @@ export const initProvider = () => {
             mergeDate: true,
         }
         const SIZE = filter.topK
-        const top = (await statService.selectSitePage(query, { num: 1, size: SIZE })).list
+        const top = (await selectSitePage(query, { num: 1, size: SIZE })).list
         const data: BizOption[] = top.map(({ time, siteKey, alias }) => ({
             name: alias ?? siteKey?.host ?? '',
             host: siteKey?.host ?? '',

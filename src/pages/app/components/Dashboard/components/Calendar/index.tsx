@@ -13,7 +13,7 @@ import { useRequest } from "@hooks"
 import { useEcharts } from "@hooks/useEcharts"
 import Flex from "@pages/components/Flex"
 import weekHelper from "@service/components/week-helper"
-import statService from "@service/stat-service"
+import { selectSite } from '@service/stat-service'
 import { groupBy, sum } from "@util/array"
 import { getAppPageUrl } from "@util/constant/url"
 import { formatTimeYMD, MILL_PER_DAY, MILL_PER_HOUR } from "@util/time"
@@ -40,7 +40,7 @@ const fetchData = async (): Promise<Result> => {
     const endTime = new Date()
     const yearAgo = new Date(endTime.getTime() - MILL_PER_DAY * 365)
     const [startTime] = await weekHelper.getWeekDate(yearAgo)
-    const items = await statService.selectSite({ date: [startTime, endTime], sortKey: 'date' })
+    const items = await selectSite({ date: [startTime, endTime], sortKey: 'date' })
     const value = groupBy(
         items,
         i => i.date,

@@ -88,6 +88,14 @@ const DateRangeFilterItem = defineComponent<Props>(props => {
         shortcuts, clearable,
     } = useRange(props)
 
+    const handleUpdate = (value: [Date, Date] | undefined) => {
+        if (value?.[0].getTime() === 0 && value[1].getTime() === 0) {
+            // clear shortcuts
+            value = undefined
+        }
+        props.onChange?.(value)
+    }
+
     return () => (
         <span class="filter-item">
             <Flex gap={1} width="fit-content">
@@ -113,7 +121,7 @@ const DateRangeFilterItem = defineComponent<Props>(props => {
                     rangeSeparator="-"
                     disabledDate={props.disabledDate}
                     shortcuts={shortcuts.value}
-                    onUpdate:modelValue={newVal => props.onChange?.(toRaw(newVal) ?? undefined)}
+                    onUpdate:modelValue={newVal => handleUpdate(toRaw(newVal))}
                     startPlaceholder={props.startPlaceholder}
                     endPlaceholder={props.endPlaceholder}
                     clearable={clearable.value}

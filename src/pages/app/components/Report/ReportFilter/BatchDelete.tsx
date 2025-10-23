@@ -2,7 +2,7 @@ import { getGroup } from "@api/chrome/tabGroups"
 import { type I18nKey, t } from "@app/locale"
 import statDatabase from "@db/stat-database"
 import { DeleteFilled } from "@element-plus/icons-vue"
-import statService from "@service/stat-service"
+import { batchDelete, countGroupByIds, countSiteByHosts } from "@service/stat-service"
 import { isGroup, isNormalSite, isSite } from "@util/stat"
 import { formatTime } from "@util/time"
 import { ElButton, ElMessage, ElMessageBox } from "element-plus"
@@ -30,8 +30,8 @@ async function computeBatchDeleteMsg(selected: timer.stat.Row[], mergeDate: bool
     let count2Delete = selected.length ?? 0
     if (mergeDate) {
         // All the items
-        const siteCount = hosts.length ? await statService.countSiteByHosts(hosts, dateRange) : 0
-        const groupCount = groupIds.length ? await statService.countGroupByIds(groupIds, dateRange) : 0
+        const siteCount = hosts.length ? await countSiteByHosts(hosts, dateRange) : 0
+        const groupCount = groupIds.length ? await countGroupByIds(groupIds, dateRange) : 0
         count2Delete = siteCount + groupCount
     }
     const i18nParam: Record<string, string | number | undefined> = {
@@ -111,7 +111,7 @@ async function deleteBatch(selected: timer.stat.Row[], mergeDate: boolean, dateR
         }
     } else {
         // If not merge date, batch delete
-        await statService.batchDelete(selected)
+        await batchDelete(selected)
     }
 }
 

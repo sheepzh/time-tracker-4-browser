@@ -1,6 +1,9 @@
 import { t } from "@app/locale"
 import statDatabase from "@db/stat-database"
-import statService, { type CateQuery, type GroupQuery, type SiteQuery } from "@service/stat-service"
+import {
+    selectCate, selectCatePage, selectGroup, selectGroupPage, selectSite, selectSitePage,
+    type CateQuery, type GroupQuery, type SiteQuery,
+} from "@service/stat-service"
 import { getGroupName, isGroup, isSite } from "@util/stat"
 import { formatTime } from "@util/time"
 import type { ReportFilterOption, ReportSort } from "./types"
@@ -106,21 +109,21 @@ const cvt2CateQuery = (
 export const queryPage = (filter: ReportFilterOption, sort: ReportSort, page: timer.common.PageQuery): Promise<timer.common.PageResult<timer.stat.Row>> => {
     const { siteMerge } = filter
     if (siteMerge === 'group') {
-        return statService.selectGroupPage(cvt2GroupQuery(filter, sort), page)
+        return selectGroupPage(cvt2GroupQuery(filter, sort), page)
     } else if (siteMerge === 'cate') {
-        return statService.selectCatePage(cvt2CateQuery(filter, sort), page)
+        return selectCatePage(cvt2CateQuery(filter, sort), page)
     } else {
-        return statService.selectSitePage(cvt2SiteQuery(filter, sort), page)
+        return selectSitePage(cvt2SiteQuery(filter, sort), page)
     }
 }
 
 export const queryAll = (filter: ReportFilterOption, sort: ReportSort): Promise<timer.stat.Row[]> => {
     const { siteMerge } = filter
     if (siteMerge === 'group') {
-        return statService.selectGroup(cvt2GroupQuery(filter, sort))
+        return selectGroup(cvt2GroupQuery(filter, sort))
     } else if (siteMerge === 'cate') {
-        return statService.selectCate(cvt2CateQuery(filter, sort))
+        return selectCate(cvt2CateQuery(filter, sort))
     } else {
-        return statService.selectSite(cvt2SiteQuery(filter, sort))
+        return selectSite(cvt2SiteQuery(filter, sort))
     }
 }
