@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { useCategories } from "@app/context"
+import { useCategory } from "@app/context"
 import { t } from "@app/locale"
 import { useRequest } from "@hooks"
 import Flex from "@pages/components/Flex"
@@ -51,8 +51,8 @@ const SiteInfo = defineComponent<{ value: timer.site.SiteKey }>(props => {
 
 const CateInfo = defineComponent<{ value: number }>(props => {
     const cateId = toRef(props, 'value')
-    const { categories } = useCategories()
-    const cate = computed(() => categories.value?.find(c => c.id === cateId.value))
+    const cateInst = useCategory()
+    const cate = computed(() => cateInst.all.find(c => c.id === cateId.value))
 
     return () => (
         <Flex width="100%" gap={5} column align="center">

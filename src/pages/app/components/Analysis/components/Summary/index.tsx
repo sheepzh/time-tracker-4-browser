@@ -45,7 +45,7 @@ const _default = defineComponent(() => {
     const summary = computed(() => computeSummary(target.value, rows.value))
 
     return () => (
-        <KanbanCard title={t(msg => msg.analysis.summary.title)}>
+        <KanbanCard title={msg => msg.analysis.summary.title}>
             <div class="analysis-summary-container">
                 <div class='indicator-area'>
                     <TargetInfo />

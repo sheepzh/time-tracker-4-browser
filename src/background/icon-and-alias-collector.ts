@@ -36,7 +36,8 @@ async function processTabInfo(tab: ChromeTab): Promise<void> {
     IS_CHROME && /^localhost(:.+)?/.test(host) && (favIconUrl = undefined)
     const siteKey: timer.site.SiteKey = { host, type: 'normal' }
     favIconUrl && await siteService.saveIconUrl(siteKey, favIconUrl)
-    !isBrowserUrl(url)
+    !IS_ANDROID
+        && !isBrowserUrl(url)
         && isHomepage(url)
         && await collectAlias(siteKey, title)
 }

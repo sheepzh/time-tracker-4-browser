@@ -1,5 +1,5 @@
 import { type CSSProperties, defineComponent, h, useSlots } from "vue"
-import { ALL_BASE_PROPS, type BaseProps, cvt2BaseStyle } from "./common"
+import { ALL_BASE_PROPS, type BaseProps, cvt2BaseStyle, cvtPxScale } from "./common"
 
 const cvtFlexWrap = (wrap: boolean | CSSProperties['flexWrap']): CSSProperties['flexWrap'] => {
     if (typeof wrap === 'string') return wrap
@@ -14,6 +14,7 @@ type Props = {
     align?: CSSProperties['alignItems']
     justify?: CSSProperties['justifyContent']
     gap?: string | number
+    columnGap?: string | number
     wrap?: CSSProperties['flexWrap'] | boolean
 } & BaseProps
 
@@ -32,13 +33,14 @@ const Flex = defineComponent<Props>(props => {
                 alignItems: props.align,
                 justifyContent: props.justify,
                 flexWrap: cvtFlexWrap(props.wrap),
-                gap: typeof props.gap === 'number' ? `${props.gap}px` : props.gap,
+                columnGap: cvtPxScale(props.columnGap),
+                gap: cvtPxScale(props.gap),
                 ...cvt2BaseStyle(props),
             }}
         >
             {defaultSlots && h(defaultSlots)}
         </div>
     )
-}, { props: [...ALL_BASE_PROPS, 'direction', 'column', 'flex', 'align', 'justify', 'gap', 'wrap'] })
+}, { props: [...ALL_BASE_PROPS, 'direction', 'column', 'flex', 'align', 'justify', 'gap', 'columnGap', 'wrap'] })
 
 export default Flex

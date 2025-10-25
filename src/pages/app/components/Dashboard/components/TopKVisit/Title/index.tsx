@@ -1,4 +1,5 @@
 import { tN } from "@app/locale"
+import { useXsState } from '@hooks/useMediaSize'
 import Flex from "@pages/components/Flex"
 import { ElIcon, ElRadioButton, ElRadioGroup } from "element-plus"
 import { defineComponent } from "vue"
@@ -34,16 +35,18 @@ const CHART_CONFIG: { [type in TopKChartType]: JSX.Element | string } = {
 
 const Title = defineComponent(() => {
     const filter = useTopKFilter()
+    const isXs = useXsState()
 
     return () => (
         <Flex align="center" justify="space-between">
-            <Flex align="center">
+            <Flex align="center" wrap columnGap={3}>
                 {tN(msg => msg.dashboard.topK.title, {
                     k: <TitleSelect field="topK" values={[6, 8, 10, 12]} />,
                     day: <TitleSelect field="dayNum" values={[7, 30, 90, 180]} />,
                 })}
             </Flex>
             <ElRadioGroup
+                v-show={!isXs.value}
                 size="small"
                 modelValue={filter.topKChartType}
                 onChange={val => filter.topKChartType = val as TopKChartType}

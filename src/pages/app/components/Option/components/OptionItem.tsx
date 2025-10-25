@@ -39,7 +39,7 @@ const OptionItem = defineComponent<Props>((props, { slots }) => {
         return (
             <div>
                 <Flex class="option-line" align="center" justify="space-between" gap={10}>
-                    <Flex class="option-label" align="center" gap={4}>
+                    <Flex class="option-label" align="center" gap={4} wrap>
                         {!!props.required && <span class="option-item-required">*</span>}
                         {renderLabel(props.label, param)}
                     </Flex>

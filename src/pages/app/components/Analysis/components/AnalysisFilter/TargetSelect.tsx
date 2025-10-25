@@ -1,4 +1,4 @@
-import { useCategories } from "@app/context"
+import { useCategory } from "@app/context"
 import { t } from "@app/locale"
 import { useDebounce, useRequest, useState } from "@hooks"
 import Flex from "@pages/components/Flex"
@@ -103,7 +103,7 @@ const SiteOption = defineComponent<{ value: timer.site.SiteInfo }>(props => {
 }, { props: ['value'] })
 
 const TargetSelect = defineComponent(() => {
-    const { categories } = useCategories()
+    const cate = useCategory()
 
     const target = useAnalysisTarget()
     const selectKey = computed({
@@ -112,8 +112,8 @@ const TargetSelect = defineComponent(() => {
     })
 
     const { data: allItems } = useRequest(
-        () => fetchItems(categories.value),
-        { deps: categories },
+        () => fetchItems(cate.all),
+        { defaultValue: [[], []], deps: [() => cate.all] },
     )
 
     const [query, setQuery] = useState('')
@@ -121,22 +121,22 @@ const TargetSelect = defineComponent(() => {
 
     const options = computed(() => {
         const q = debouncedQuery.value?.trim?.()
-        let [cateItems, siteItems] = allItems.value || []
+        let [cateItems, siteItems] = allItems.value
         if (q) {
-            siteItems = siteItems?.filter(item => {
+            siteItems = siteItems.filter(item => {
                 const { host, alias } = (item.key as timer.site.SiteInfo) || {}
                 return host?.includes?.(q) || alias?.includes?.(q)
             })
-            cateItems = cateItems?.filter(item => item.label?.includes?.(q))
+            cateItems = cateItems.filter(item => item.label?.includes?.(q))
         }
 
         let res: OptionType[] = []
-        cateItems?.length && res.push({
+        cate.enabled && cateItems.length && res.push({
             value: 'cate',
             label: t(msg => msg.analysis.target.cate),
             options: cateItems.map(item => ({ value: cvtTarget2Key(item), label: item.label, data: item })),
         })
-        siteItems?.length && res.push({
+        siteItems.length && res.push({
             value: 'site',
             label: t(msg => msg.analysis.target.site),
             options: siteItems.map(item => ({ value: cvtTarget2Key(item), label: item.label, data: item })),

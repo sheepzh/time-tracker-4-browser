@@ -7,7 +7,6 @@
 
 import { GRID_CELL_STYLE, GRID_WRAPPER_STYLE } from "@app/components/common/grid"
 import { KanbanCard } from "@app/components/common/kanban"
-import { t } from "@app/locale"
 import { useXsState } from "@hooks"
 import Flex from "@pages/components/Flex"
 import { computed, defineComponent, type StyleValue } from "vue"
@@ -27,7 +26,7 @@ const _default = defineComponent(() => {
         height: isXs.value ? '200px' : undefined,
     } satisfies StyleValue))
     return () => (
-        <KanbanCard title={t(msg => msg.habit.site.title)}>
+        <KanbanCard title={msg => msg.habit.site.title}>
             <Flex gap={1} column={isXs.value} style={GRID_WRAPPER_STYLE}>
                 <Summary />
                 <Flex flex={isXs.value ? undefined : 4} style={topKStyle.value}>

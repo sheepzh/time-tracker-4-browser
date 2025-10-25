@@ -5,7 +5,7 @@ import {
     type CateQuery, type GroupQuery, type SiteQuery,
 } from "@service/stat-service"
 import { getGroupName, isGroup, isSite } from "@util/stat"
-import { formatTime } from "@util/time"
+import { formatTime, getBirthday } from "@util/time"
 import type { ReportFilterOption, ReportSort } from "./types"
 
 /**
@@ -18,15 +18,15 @@ function computeSingleConfirmText(url: string, date: string): string {
     return t(msg => msg.item.operation.deleteConfirmMsg, { url, date })
 }
 
-function computeRangeConfirmText(url: string, dateRange: [Date, Date] | undefined): string {
-    const hasDateRange = dateRange?.length === 2 && (dateRange[0] || dateRange[1])
-    if (!hasDateRange) {
+function computeRangeConfirmText(url: string, dateRange: [Date?, Date?]): string {
+    let [startDate, endDate] = dateRange
+    if (!startDate && !endDate) {
         // Delete all
         return t(msg => msg.item.operation.deleteConfirmMsgAll, { url })
     }
     const dateFormat = t(msg => msg.calendar.dateFormat)
-    const startDate = dateRange[0]
-    const endDate = dateRange[1]
+    startDate = startDate ?? getBirthday()
+    endDate = endDate ?? new Date()
     const start = formatTime(startDate, dateFormat)
     const end = formatTime(endDate, dateFormat)
     return start === end

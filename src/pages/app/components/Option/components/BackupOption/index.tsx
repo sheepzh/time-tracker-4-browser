@@ -34,6 +34,8 @@ const TYPE_NAMES: { [t in timer.backup.Type]: string } = {
     web_dav: 'WebDAV'
 }
 
+const LONG_INPUT_WIDTH = 'min(400px, calc(100vw - 80px))'
+
 const _default = defineComponent((_, ctx) => {
     const {
         backupType, clientName, reset,
@@ -81,7 +83,7 @@ const _default = defineComponent((_, ctx) => {
                     size="small"
                     type="password"
                     showPassword
-                    style={{ width: "400px" }}
+                    style={{ width: LONG_INPUT_WIDTH }}
                     onInput={val => auth.value = val?.trim?.() || ''}
                 />
             </OptionItem>
@@ -98,7 +100,7 @@ const _default = defineComponent((_, ctx) => {
                     placeholder={DEFAULT_OBSIDIAN_ENDPOINT}
                     modelValue={ext.value?.endpoint}
                     size="small"
-                    style={{ width: "400px" }}
+                    style={{ width: LONG_INPUT_WIDTH }}
                     onInput={val => setExtField('endpoint', val)}
                 />
             </OptionItem>
@@ -115,7 +117,7 @@ const _default = defineComponent((_, ctx) => {
                 <ElInput
                     modelValue={ext.value?.dirPath}
                     size="small"
-                    style={{ width: "400px" }}
+                    style={{ width: LONG_INPUT_WIDTH }}
                     onInput={val => setExtField('dirPath', val)}
                 />
             </OptionItem>
@@ -125,7 +127,7 @@ const _default = defineComponent((_, ctx) => {
                     size="small"
                     type="password"
                     showPassword
-                    style={{ width: "400px" }}
+                    style={{ width: LONG_INPUT_WIDTH }}
                     onInput={val => auth.value = val?.trim?.() || ''}
                 />
             </OptionItem>
@@ -141,7 +143,7 @@ const _default = defineComponent((_, ctx) => {
                     modelValue={ext.value?.endpoint}
                     placeholder="https://for.example.com:443"
                     size="small"
-                    style={{ width: "400px" }}
+                    style={{ width: LONG_INPUT_WIDTH }}
                     onInput={val => setExtField('endpoint', val)}
                 />
             </OptionItem>
@@ -150,7 +152,7 @@ const _default = defineComponent((_, ctx) => {
                     modelValue={ext.value?.dirPath}
                     placeholder="/for/example"
                     size="small"
-                    style={{ width: "400px" }}
+                    style={{ width: LONG_INPUT_WIDTH }}
                     onInput={val => setExtField('dirPath', val)}
                 />
             </OptionItem>

@@ -18,7 +18,7 @@ const _default = defineComponent(() => {
     const isXs = useXsState()
 
     return () => <ContentContainer v-slots={{
-        filter: () => <ReportFilter hideCateFilter={isXs.value} />,
+        filter: () => <ReportFilter />,
         default: () => isXs.value ? <ReportList ref={comp} /> : <ReportTable ref={comp} />
     }} />
 })

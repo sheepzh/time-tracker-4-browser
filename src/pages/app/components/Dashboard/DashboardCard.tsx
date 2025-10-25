@@ -5,22 +5,29 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { cvtPxScale } from '@pages/components/common'
 import { ElCard, ElCol } from "element-plus"
-import type { FunctionalComponent, StyleValue } from "vue"
+import type { CSSProperties, FunctionalComponent, StyleValue } from "vue"
 
-type Props = {
+export type DashboardCardProps = {
     span: number
-    height?: number
+    height?: CSSProperties['height']
+    bodyHeight?: CSSProperties['height']
 }
 
-const DashboardCard: FunctionalComponent<Props> = ({ span, height }, ctx) => (
+const DashboardCard: FunctionalComponent<DashboardCardProps> = ({ span, height, bodyHeight }, ctx) => (
     <ElCol span={span}>
         <ElCard
             style={{
-                height: height === undefined ? '320px' : `${height}px`,
+                height: cvtPxScale(height ?? 320),
                 marginBlockEnd: '15px',
             } satisfies StyleValue}
-            bodyStyle={{ padding: '20px', width: '100%', height: '100%', boxSizing: 'border-box' }}
+            bodyStyle={{
+                padding: '20px',
+                width: '100%',
+                height: cvtPxScale(bodyHeight ?? '100%'),
+                boxSizing: 'border-box',
+            }}
             v-slots={ctx.slots}
         />
     </ElCol>

@@ -5,7 +5,7 @@ import { useRouter } from "vue-router"
 import ContentContainer from "../common/ContentContainer"
 import { CATE_LABELS, changeQuery, type OptionCategory, parseQuery } from "./common"
 
-const IGNORED_CATE: OptionCategory[] = ['dailyLimit']
+const IGNORED_CATE: OptionCategory[] = ['dailyLimit', 'popup']
 
 const _default = defineComponent(() => {
     const tab = ref<OptionCategory>(parseQuery() || 'appearance')
@@ -31,7 +31,10 @@ const _default = defineComponent(() => {
             ),
             default: () => {
                 const slot = slots[tab.value]
-                return !!slot && <ElCard class="option-select-card">{h(slot)}</ElCard>
+                return !!slot && <ElCard
+                    class="option-select-card"
+                    style={{ "--el-card-padding": '20px 10px' }}
+                >{h(slot)}</ElCard>
             }
         }} />
     )

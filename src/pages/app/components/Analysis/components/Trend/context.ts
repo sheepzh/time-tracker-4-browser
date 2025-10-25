@@ -15,7 +15,7 @@ import type { DimensionEntry } from "../../util"
 import type { DimensionData } from "./Dimension"
 
 type Context = {
-    dateRange: Ref<[Date, Date]>
+    dateRange: Ref<[Date?, Date?]>
     rangeLength: Ref<number>
 }
 
