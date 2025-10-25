@@ -12,6 +12,8 @@ export type HeaderMessage = {
     updateVersionInfo: string
     updateVersionInfo4Firefox: string
     rate: string
+    showSiteName: string
+    showTopN: string
 }
 
 const headerMessages = resource satisfies Messages<HeaderMessage>

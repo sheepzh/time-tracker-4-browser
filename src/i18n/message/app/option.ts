@@ -10,11 +10,6 @@ export type OptionMessage = {
     yes: string
     no: string
     followBrowser: string
-    popup: {
-        title: string
-        max: string
-        displaySiteName: string
-    }
     appearance: {
         title: string
         // whitelist

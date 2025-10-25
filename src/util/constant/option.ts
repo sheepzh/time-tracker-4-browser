@@ -5,17 +5,6 @@
  * https://opensource.org/licenses/MIT
  */
 
-export function defaultPopup(): timer.option.PopupOption {
-    // Use template
-    return {
-        popupMax: 10,
-        /**
-         * Change the default value to 'true' since v0.5.4
-         */
-        displaySiteName: true,
-    }
-}
-
 type AppearanceRequired = MakeRequired<timer.option.AppearanceOption, 'darkModeTimeStart' | 'darkModeTimeEnd'>
 
 export function defaultAppearance(): AppearanceRequired {
@@ -80,12 +69,11 @@ export function defaultAccessibility(): timer.option.AccessibilityOption {
 }
 
 export type DefaultOption =
-    & timer.option.PopupOption & AppearanceRequired & StatisticsRequired & DailyLimitRequired
+    & AppearanceRequired & StatisticsRequired & DailyLimitRequired
     & timer.option.BackupOption & timer.option.AccessibilityOption
 
 export function defaultOption(): DefaultOption {
     return {
-        ...defaultPopup(),
         ...defaultAppearance(),
         ...defaultStatistics(),
         ...defaultBackup(),

@@ -1,10 +1,11 @@
 import { t } from "@i18n"
 import calendarMessages from "@i18n/message/common/calendar"
+import { type PopupDuration } from '@popup/context'
 import { type CascaderNode, type CascaderOption, ElCascader, ExpandTrigger } from "element-plus"
 import { computed, type CSSProperties, defineComponent, type PropType } from "vue"
 import "./style.sass"
 
-export const rangeLabel = (duration: timer.option.PopupDuration, n?: string | number): string => {
+export const rangeLabel = (duration: PopupDuration, n?: string | number): string => {
     return t(calendarMessages, {
         key: msg => msg.range[duration],
         param: n ? { n } : undefined,
@@ -13,13 +14,13 @@ export const rangeLabel = (duration: timer.option.PopupDuration, n?: string | nu
 
 const BUILTIN_DAY_NUM = [7, 30, 90, 180, 365]
 
-const cvt2Opt = (value: timer.option.PopupDuration, n?: string | number): CascaderOption => ({
+const cvt2Opt = (value: PopupDuration, n?: string | number): CascaderOption => ({
     value, label: rangeLabel(value, n),
 })
 
 const options = (reverse?: boolean): CascaderOption[] => {
     const result: CascaderOption[] = [
-        ...(['today', 'thisWeek', 'thisMonth', 'yesterday'] satisfies timer.option.PopupDuration[]).map(cvt2Opt),
+        ...(['today', 'thisWeek', 'thisMonth', 'yesterday'] satisfies PopupDuration[]).map(cvt2Opt),
         {
             ...cvt2Opt('lastDays', 'X'),
             children: [
@@ -34,7 +35,7 @@ const options = (reverse?: boolean): CascaderOption[] => {
     return reverse ? result.reverse() : result
 }
 
-export type DurationValue = [timer.option.PopupDuration, number?]
+export type DurationValue = [PopupDuration, number?]
 
 const DurationSelect = defineComponent({
     props: {
@@ -56,7 +57,7 @@ const DurationSelect = defineComponent({
         return () => (
             <ElCascader
                 modelValue={casVal.value}
-                onChange={val => ctx.emit('change', val as [timer.option.PopupDuration, number?])}
+                onChange={val => ctx.emit('change', val as [PopupDuration, number?])}
                 options={options(props.reverse)}
                 props={{ expandTrigger: props.expandTrigger }}
                 show-all-levels={false}

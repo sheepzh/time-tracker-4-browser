@@ -4,33 +4,6 @@
  * @since 0.3.0
  */
 declare namespace timer.option {
-    type PopupDuration =
-        | "today" | "yesterday" | "thisWeek" | "thisMonth"
-        | "lastDays"
-        | "allTime"
-    /**
-     * Options used for the popup page
-     */
-    type PopupOption = {
-        /**
-         * The max count of today's data to display on popup page
-         */
-        popupMax: number
-        /**
-         * Replace the host name with site name which is detected automatically from the title of site homepages,
-         * or modified manually by the user
-         *
-         * @since 0.5.0
-         */
-        displaySiteName: boolean
-        /**
-         * Merge method
-         *
-         * @since 3.0.0
-         */
-        defaultMergeMethod?: timer.stat.MergeMethod
-    }
-
     /**
      * @since 1.2.5
      */
@@ -205,7 +178,7 @@ declare namespace timer.option {
         chartDecal: boolean
     }
 
-    type AllOption = PopupOption
+    type AllOption =
         & AppearanceOption
         & StatisticsOption
         & LimitOption

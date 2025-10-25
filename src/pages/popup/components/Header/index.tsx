@@ -13,8 +13,7 @@ import Github from "./Github"
 import Logo from "./Logo"
 import Option from "./Option"
 
-const Header = defineComponent(() => {
-
+const Header = defineComponent<{}>(() => {
     const handleAllFuncClick = () => {
         const appPageUrl = getAppPageUrl()
         if (IS_ANDROID) {
@@ -25,7 +24,7 @@ const Header = defineComponent(() => {
     }
 
     return () => (
-        <Flex justify="space-between" style={{ padding: '0 10px', color: 'var(--el-text-color-primary)' }}>
+        <Flex justify="space-between" padding='0 10px' color='text-primary'>
             <Logo />
             <Flex gap={10}>
                 <Flex gap={10}>
