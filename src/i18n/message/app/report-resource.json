@@ -104,6 +104,7 @@
     },
     "uk": {
         "exportFileName": "My_Browsing_Time",
+        "total": "Всього відвідувань: {visit} разів, загальна тривалість: {focus}",
         "batchDelete": {
             "noSelectedMsg": "Спершу виберіть рядок, який ви хочете видалити",
             "confirmMsg": "{count} записів для сайтів, як-от {example}, за {date} будуть видалені!",
