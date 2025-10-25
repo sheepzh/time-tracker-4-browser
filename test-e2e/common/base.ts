@@ -54,16 +54,19 @@ class LaunchContextWrapper implements LaunchContext {
 
 export async function launchBrowser(dirPath?: string): Promise<LaunchContext> {
     dirPath = dirPath ?? E2E_OUTPUT_PATH
+    const args = [
+        `--disable-extensions-except=${dirPath}`,
+        `--load-extension=${dirPath}`,
+        '--start-maximized',
+        '--no-sandbox',
+    ]
+    // Test with large screen
+    USE_HEADLESS_PUPPETEER && args.push('--window-size=1880,1000')
 
     const browser = await launch({
         defaultViewport: null,
         headless: USE_HEADLESS_PUPPETEER,
-        args: [
-            `--disable-extensions-except=${dirPath}`,
-            `--load-extension=${dirPath}`,
-            '--start-maximized',
-            '--no-sandbox',
-        ],
+        args,
     })
     const serviceWorker = await browser.waitForTarget(target => target.type() === 'service_worker')
     const url = serviceWorker.url()

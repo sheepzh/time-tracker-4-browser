@@ -1,4 +1,4 @@
-import { useCategories } from "@app/context"
+import { useCategory } from "@app/context"
 import { t } from "@app/locale"
 import { Check, Close, Plus } from "@element-plus/icons-vue"
 import { useManualRequest, useState, useSwitch } from "@hooks"
@@ -9,7 +9,7 @@ import { ElButton, ElForm, ElFormItem, ElInput, ElMessage } from "element-plus"
 import { defineComponent, nextTick, ref } from "vue"
 
 const SelectFooter = defineComponent(() => {
-    const { refreshCategories } = useCategories()
+    const cate = useCategory()
     const [editing, openEditing, closeEditing] = useSwitch(false)
     const [name, setName] = useState<string>()
 
@@ -17,7 +17,7 @@ const SelectFooter = defineComponent(() => {
         (name: string) => cateService.add(name),
         {
             onSuccess() {
-                refreshCategories?.()
+                cate.refresh()
                 closeEditing()
                 setName()
             }

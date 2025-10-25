@@ -1,4 +1,4 @@
-import { useCategories } from "@app/context"
+import { useCategory } from "@app/context"
 import { t } from "@app/locale"
 import { Check, Close, Delete, Edit } from "@element-plus/icons-vue"
 import { useManualRequest, useRequest, useState, useSwitch } from "@hooks"
@@ -10,7 +10,7 @@ import { ElButton, ElInput, ElMessage, ElMessageBox } from "element-plus"
 import { defineComponent, nextTick, ref } from "vue"
 
 const OptionItem = defineComponent<{ value: timer.site.Cate }>(props => {
-    const { refreshCategories } = useCategories()
+    const cate = useCategory()
 
     const [editing, openEditing, closeEditing] = useSwitch(false)
     const [editingName, setEditingName] = useState(props.value.name)
@@ -18,7 +18,7 @@ const OptionItem = defineComponent<{ value: timer.site.Cate }>(props => {
 
     const { refresh: saveCate } = useManualRequest((name: string) => cateService.saveName(props.value.id, name), {
         onSuccess: () => {
-            refreshCategories()
+            cate.refresh()
             closeEditing()
         }
     })
@@ -30,7 +30,7 @@ const OptionItem = defineComponent<{ value: timer.site.Cate }>(props => {
 
     const { refresh: removeCate } = useManualRequest(() => cateService.remove(props.value.id), {
         onSuccess: () => {
-            refreshCategories()
+            cate.refresh()
             ElMessage.success(t(msg => msg.operation.successMsg))
         }
     })

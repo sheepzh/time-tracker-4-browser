@@ -6,7 +6,7 @@
  */
 import ButtonFilterItem from "@app/components/common/filter/ButtonFilterItem"
 import InputFilterItem from "@app/components/common/filter/InputFilterItem"
-import { useCategories } from "@app/context"
+import { useCategory } from "@app/context"
 import { t } from "@app/locale"
 import { Connection, Delete, Grid, Plus } from "@element-plus/icons-vue"
 import Flex from "@pages/components/Flex"
@@ -25,7 +25,7 @@ const _default = defineComponent<{
     onBatchDisassociate: NoArgCallback
     onBatchDelete: NoArgCallback
 }>(props => {
-    const { categories } = useCategories()
+    const cate = useCategory()
     const filter = useSiteManageFilter()
 
     const cateDisabled = computed(() => {
@@ -34,8 +34,8 @@ const _default = defineComponent<{
     })
     watch(cateDisabled, () => cateDisabled.value && (filter.cateIds = []))
 
-    watch(categories, () => {
-        const allCateIds = categories.value?.map(c => c.id) || []
+    watch(cate.all, () => {
+        const allCateIds = cate.all.map(c => c.id)
         const newVal = filter.cateIds?.filter(cid => allCateIds.includes(cid))
         // If selected category is deleted, then reset the value
         newVal?.length !== filter.cateIds?.length && (filter.cateIds = newVal)

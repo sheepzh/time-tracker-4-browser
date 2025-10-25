@@ -4,8 +4,9 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import { useLayout } from '@app/context'
 import packageInfo from "@src/package"
-import type { FunctionalComponent, StyleValue } from "vue"
+import { defineComponent, type StyleValue } from "vue"
 
 const STYLE: StyleValue = {
     position: 'fixed',
@@ -17,12 +18,15 @@ const STYLE: StyleValue = {
     fontSize: '8px',
 }
 
-const VersionTag: FunctionalComponent = () => (
-    <div class="hidden-md-and-down" style={STYLE}>
-        <p style={{ fontSize: "10px" }}>
-            {`v${packageInfo.version}`}
-        </p>
-    </div>
-)
+const VersionTag = defineComponent<{}>(() => {
+    const layout = useLayout()
+    return () => (
+        <div v-show={layout.value === 'sidebar'} style={STYLE}>
+            <p style={{ fontSize: "10px" }}>
+                {`v${packageInfo.version}`}
+            </p>
+        </div>
+    )
+})
 
 export default VersionTag

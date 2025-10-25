@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { useCategories } from "@app/context"
+import { useCategory } from "@app/context"
 import { Download } from "@element-plus/icons-vue"
 import { useTabGroups } from "@hooks/useTabGroups"
 import { ElButton, ElDropdown, ElDropdownItem, ElDropdownMenu, ElIcon } from "element-plus"
@@ -21,14 +21,14 @@ type FileFormat = typeof ALL_FILE_FORMATS[number]
 const DownloadFile = defineComponent(() => {
     const filter = useReportFilter()
     const sort = useReportSort()
-    const { categories } = useCategories()
+    const cate = useCategory()
     const { groupMap } = useTabGroups()
 
     const handleDownload = async (format: FileFormat) => {
         const rows = await queryAll(filter, sort.value)
         const param: ExportParam = {
             rows, filter,
-            categories: categories.value,
+            categories: cate.all,
             groupMap: groupMap.value,
         }
         format === 'json' && exportJson(param)

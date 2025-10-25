@@ -5,7 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { CLZ_HIDDEN_XS_ONLY } from "@pages/element-ui/style"
+import { I18nKey, t } from '@app/locale'
+import { useXsState } from '@hooks/useMediaSize'
 import { ElCard } from "element-plus"
 import { defineComponent, h, useSlots, type StyleValue } from "vue"
 
@@ -18,14 +19,15 @@ const TITLE_STYLE: StyleValue = {
     zIndex: 1000,
 }
 
-const _default = defineComponent<{ title: string }>(props => {
+const _default = defineComponent<{ title: I18nKey }>(props => {
     const { default: default_, filter } = useSlots()
+    const isXs = useXsState()
+
     return () => (
         <ElCard bodyStyle={{ position: 'relative' }}>
-            <div style={TITLE_STYLE}>{props.title}</div>
-            {!!filter && (
+            <div style={TITLE_STYLE}>{t(props.title)}</div>
+            {!!filter && !isXs.value && (
                 <div
-                    class={CLZ_HIDDEN_XS_ONLY}
                     style={{
                         paddingTop: '10px', paddingBottom: '14px',
                         borderBottom: '1px var(--el-border-color) var(--el-border-style)',

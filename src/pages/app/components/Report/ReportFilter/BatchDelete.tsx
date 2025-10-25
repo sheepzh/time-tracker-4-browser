@@ -4,13 +4,13 @@ import statDatabase from "@db/stat-database"
 import { DeleteFilled } from "@element-plus/icons-vue"
 import { batchDelete, countGroupByIds, countSiteByHosts } from "@service/stat-service"
 import { isGroup, isNormalSite, isSite } from "@util/stat"
-import { formatTime } from "@util/time"
+import { formatTime, getBirthday } from "@util/time"
 import { ElButton, ElMessage, ElMessageBox } from "element-plus"
 import { computed, defineComponent } from "vue"
 import { useReportComponent, useReportFilter } from "../context"
 import type { DisplayComponent, ReportFilterOption } from "../types"
 
-async function computeBatchDeleteMsg(selected: timer.stat.Row[], mergeDate: boolean, dateRange: [Date, Date] | undefined): Promise<string> {
+async function computeBatchDeleteMsg(selected: timer.stat.Row[], mergeDate: boolean, dateRange: [Date?, Date?]): Promise<string> {
     const hosts: string[] = []
     const groupIds: number[] = []
     selected.forEach(row => {
@@ -48,14 +48,14 @@ async function computeBatchDeleteMsg(selected: timer.stat.Row[], mergeDate: bool
     }
 
     let key: I18nKey | undefined = undefined
-    const hasDateRange = dateRange?.length === 2 && (dateRange[0] || dateRange[1])
-    if (!hasDateRange) {
+    let [startDate, endDate] = dateRange
+    if (!startDate && !endDate) {
         // Delete all
         key = msg => msg.report.batchDelete.confirmMsgAll
     } else {
         const dateFormat = t(msg => msg.calendar.dateFormat)
-        const startDate = dateRange[0]
-        const endDate = dateRange[1]
+        startDate = startDate ?? getBirthday()
+        endDate = endDate ?? new Date()
         const start = formatTime(startDate, dateFormat)
         const end = formatTime(endDate, dateFormat)
         if (start === end) {
@@ -75,7 +75,7 @@ async function computeBatchDeleteMsg(selected: timer.stat.Row[], mergeDate: bool
 async function handleBatchDelete(displayComp: DisplayComponent | undefined, filter: ReportFilterOption) {
     if (!displayComp) return
 
-    const selected: timer.stat.Row[] = displayComp?.getSelected?.() || []
+    const selected = displayComp?.getSelected?.() ?? []
     if (!selected?.length) {
         ElMessage.info(t(msg => msg.report.batchDelete.noSelectedMsg))
         return
@@ -101,7 +101,7 @@ async function handleBatchDelete(displayComp: DisplayComponent | undefined, filt
     })
 }
 
-async function deleteBatch(selected: timer.stat.Row[], mergeDate: boolean, dateRange: [Date, Date] | undefined) {
+async function deleteBatch(selected: timer.stat.Row[], mergeDate: boolean, dateRange: [Date?, Date?]) {
     if (mergeDate) {
         // Delete according to the date range
         const [start, end] = dateRange ?? []

@@ -12,7 +12,7 @@ import Flex from "@pages/components/Flex"
 import metaService from "@service/meta-service"
 import { REVIEW_PAGE } from "@util/constant/url"
 import { ElRow, ElScrollbar } from "element-plus"
-import { defineComponent, FunctionalComponent } from "vue"
+import { computed, defineComponent, FunctionalComponent } from "vue"
 import { useRouter } from "vue-router"
 import ContentContainer from "../common/ContentContainer"
 import Calendar from "./components/Calendar"
@@ -21,7 +21,7 @@ import MonthOnMonth from "./components/MonthOnMonth"
 import Timeline from './components/Timeline'
 import TopKVisit from "./components/TopKVisit"
 import "./dashboard.sass"
-import DashboardCard from './DashboardCard'
+import DashboardCard, { type DashboardCardProps } from './DashboardCard'
 
 const ROW_GUTTER = 15
 
@@ -49,13 +49,19 @@ const _default = defineComponent(() => {
     const mediaSize = useMediaSize()
     const isXs = useXsState()
 
+    const indicatorCardProps = computed<DashboardCardProps>(() => isXs.value ? {
+        span: 24,
+        height: 'fit-content',
+        bodyHeight: 'fit-content',
+    } : { span: 8 })
+
     return () => (
         <ElScrollbar>
             <ContentContainer class="dashboard-container">
                 <ElRow gutter={ROW_GUTTER}>
                     {mediaSize.value <= MediaSize.md
                         ? <>
-                            <DashboardCard span={isXs.value ? 24 : 8}>
+                            <DashboardCard {...indicatorCardProps.value}>
                                 <Indicator />
                             </DashboardCard>
                             <DashboardCard span={isXs.value ? 24 : 16}>

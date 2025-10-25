@@ -1,4 +1,4 @@
-import { useCategories } from '@app/context'
+import { useCategory } from '@app/context'
 import { t } from '@app/locale'
 import mergeRuleDatabase from '@db/merge-rule-database'
 import siteDatabase from '@db/site-database'
@@ -8,7 +8,7 @@ import CustomizedHostMergeRuler from '@service/components/host-merge-ruler'
 import { toMap } from '@util/array'
 import { CATE_NOT_SET_ID } from '@util/site'
 import { formatTime, getAllDatesBetween, getStartOfDay, MILL_PER_DAY } from '@util/time'
-import { onMounted, Ref, ref, watch } from 'vue'
+import { type Ref, ref, watch } from 'vue'
 
 export type Activity = {
     date: string
@@ -127,19 +127,15 @@ async function handleMerge(
 export const useMerge = (ticks: Ref<timer.timeline.Tick[]>) => {
     const dates = genLatestDates()
     const merge = ref<MergeMethod>('none')
-    const { cateNameMap } = useCategories()
+    const cate = useCategory()
     const setMerge = (val: unknown) => isMergeMethod(val) && (merge.value = val)
 
     const [activities, setActivities] = useState<Activity[]>([])
 
-    const refreshActivities = async () => {
-        const newVal = await handleMerge(ticks.value, merge.value, cateNameMap.value, new Set(dates))
+    watch([ticks, merge, cate], async () => {
+        const newVal = await handleMerge(ticks.value, merge.value, cate.nameMap, new Set(dates))
         setActivities(newVal)
-    }
-
-    watch([ticks, merge, cateNameMap], refreshActivities)
-
-    onMounted(refreshActivities)
+    }, { immediate: true })
 
     return { merge, setMerge, activities, dates }
 }

@@ -7,7 +7,6 @@
 
 import { GRID_CELL_STYLE } from "@app/components/common/grid"
 import { KanbanCard } from "@app/components/common/kanban"
-import { t } from "@app/locale"
 import { useXsState } from "@hooks"
 import Flex from "@pages/components/Flex"
 import { defineComponent } from "vue"
@@ -23,10 +22,7 @@ const _default = defineComponent(() => {
     const isXs = useXsState()
 
     return () => (
-        <KanbanCard
-            title={t(msg => msg.habit.period.title)}
-            v-slots={{ filter: () => <Filter /> }}
-        >
+        <KanbanCard title={msg => msg.habit.period.title} v-slots={{ filter: () => <Filter /> }}>
             <Flex
                 gap={1}
                 column={isXs.value}

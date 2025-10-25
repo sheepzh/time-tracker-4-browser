@@ -29,7 +29,7 @@ export const ALL_BASE_PROPS: (keyof BaseProps)[] = [
     'onClick',
 ]
 
-const cvtPxScale = (val: number | string | undefined): string | undefined => typeof val === 'number' ? `${val}px` : val
+export const cvtPxScale = (val: number | string | undefined): string | undefined => typeof val === 'number' ? `${val}px` : val
 
 const cvtColor = (color: BaseProps['color']): CSSProperties['color'] => {
     if (color === 'text-primary') return 'var(--el-text-color-primary)'

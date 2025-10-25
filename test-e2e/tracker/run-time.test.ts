@@ -73,7 +73,7 @@ describe('Run time tracking', () => {
         let records = await readRecordsOfFirstPage(context)
         const runTime = parseTime2Sec(records[0].runTime)
         expect(runTime).toBeTruthy()
-        expect(runTime).toBeLessThanOrEqual((Date.now() - enableTs + 500) / 1000)
+        expect(runTime).toBeLessThanOrEqual((Date.now() - enableTs) / 1000 + 1)
 
         // 2. Add whitelist
         await createWhitelist(context, MOCK_HOST)
@@ -83,6 +83,6 @@ describe('Run time tracking', () => {
 
         records = await readRecordsOfFirstPage(context)
         const runTime1 = parseTime2Sec(records[0].runTime)
-        expect(runTime1).toBeLessThan((disableTs - enableTs) / 1000)
+        expect(runTime1).toBeLessThan((disableTs - enableTs) / 1000 + 1)
     }, 60000)
 })

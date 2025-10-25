@@ -1,5 +1,5 @@
 import CategoryEditable from "@app/components/common/category/CategoryEditable"
-import { useCategories } from "@app/context"
+import { useCategory } from "@app/context"
 import { t } from "@app/locale"
 import Flex from "@pages/components/Flex"
 import { type ElTableRowScope } from "@pages/element-ui/table"
@@ -46,8 +46,8 @@ type Props = {
 }
 
 const CateColumn = defineComponent<Props>(props => {
-    const { categories } = useCategories()
-    return () => (
+    const cate = useCategory()
+    return () => cate.enabled ? (
         <ElTableColumn label={t(msg => msg.siteManage.column.cate)} minWidth={140}>
             {({ row }: ElTableRowScope<timer.stat.Row>) => {
                 if (!row || isGroup(row)) return
@@ -55,11 +55,11 @@ const CateColumn = defineComponent<Props>(props => {
                 const cateId = getRelatedCateId(row)
                 return (
                     <Flex key={`${identifyStatKey(row)}_${cateId}`} justify="center">
-                        {isCate(row) && renderMerged(row.cateKey, categories.value, mergedRows ?? [])}
+                        {isCate(row) && renderMerged(row.cateKey, cate.all, mergedRows ?? [])}
                         {isSite(row) && (
                             <CategoryEditable
                                 siteKey={row.siteKey}
-                                cateId={cateId}
+                                modelValue={cateId}
                                 onChange={newCateId => props.onChange(row.siteKey, newCateId)}
                             />
                         )}
@@ -67,7 +67,7 @@ const CateColumn = defineComponent<Props>(props => {
                 )
             }}
         </ElTableColumn>
-    )
+    ) : null
 }, { props: ['onChange'] })
 
 export default CateColumn

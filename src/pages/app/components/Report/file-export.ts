@@ -30,18 +30,16 @@ type ExportInfo = {
  * Compute the name of downloaded file
  */
 function computeFileName(filterParam: ReportFilterOption): string {
-    let baseName = t(msg => msg.report.exportFileName)
-    const { dateRange, siteMerge, mergeDate, timeFormat } = filterParam
-    if (dateRange && dateRange.length === 2) {
-        const start = dateRange[0]
-        const end = dateRange[1]
-        baseName += '_' + formatTimeYMD(start)
-        baseName += '_' + formatTimeYMD(end)
-    }
-    mergeDate && (baseName += '_' + t(msg => msg.shared.merge.mergeMethod.date))
-    siteMerge && (baseName += '_' + t(msg => msg.shared.merge.mergeMethod[siteMerge]))
-    timeFormat && (baseName += '_' + t(msg => msg.timeFormat[timeFormat]))
-    return baseName
+    const { dateRange: [ds, de], siteMerge, mergeDate, timeFormat } = filterParam
+    const parts = [
+        t(msg => msg.report.exportFileName),
+        ds && formatTimeYMD(ds),
+        de && formatTimeYMD(de),
+        mergeDate && t(msg => msg.shared.merge.mergeMethod.date),
+        siteMerge && t(msg => msg.shared.merge.mergeMethod[siteMerge]),
+        timeFormat && t(msg => msg.timeFormat[timeFormat]),
+    ]
+    return parts.filter(p => !!p).join('_')
 }
 
 const generateJsonData = ({ rows, categories, groupMap }: ExportParam): ExportInfo[] => rows.map(row => ({

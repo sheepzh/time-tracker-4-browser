@@ -36,7 +36,7 @@ export type ReportQueryParam = {
 
 export type ReportFilterOption = {
     query: string | undefined
-    dateRange: [Date, Date] | undefined
+    dateRange: [Date?, Date?]
     mergeDate: boolean
     siteMerge?: timer.stat.MergeMethod & ('cate' | 'domain' | 'group')
     cateIds?: number[]

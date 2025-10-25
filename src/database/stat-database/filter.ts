@@ -73,18 +73,14 @@ function filterByCond(result: _FilterResult, condition: _StatCondition): boolean
 }
 
 
-function processDateCondition(cond: _StatCondition, paramDate?: Date | [Date, Date?]) {
+function processDateCondition(cond: _StatCondition, paramDate?: Date | [Date?, Date?]) {
     if (!paramDate) return
 
     if (paramDate instanceof Date) {
         cond.useExactDate = true
         cond.exactDateStr = formatTimeYMD(paramDate as Date)
     } else {
-        let startDate: Date | undefined = undefined
-        let endDate: Date | undefined = undefined
-        const dateArr = paramDate as [Date, Date]
-        dateArr && dateArr.length >= 2 && (endDate = dateArr[1])
-        dateArr && dateArr.length >= 1 && (startDate = dateArr[0])
+        const [startDate, endDate] = paramDate
         cond.useExactDate = false
         startDate && (cond.startDateStr = formatTimeYMD(startDate))
         endDate && (cond.endDateStr = formatTimeYMD(endDate))

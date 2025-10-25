@@ -88,11 +88,7 @@ const _default = defineComponent<{}>(() => {
                 minWidth={140}
                 align="center"
                 v-slots={({ row }: ElTableRowScope<timer.site.SiteInfo>) => (
-                    <Category
-                        siteKey={row}
-                        cateId={row?.cate}
-                        onChange={cateId => row.cate = cateId}
-                    />
+                    <Category siteKey={row} modelValue={row?.cate} onChange={val => row.cate = val} />
                 )}
             />
             <ElTableColumn

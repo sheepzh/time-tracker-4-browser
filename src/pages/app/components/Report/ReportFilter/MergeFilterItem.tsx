@@ -1,3 +1,4 @@
+import { useCategory } from '@app/context'
 import { t } from "@app/locale"
 import { Calendar, Collection, Link, Menu } from "@element-plus/icons-vue"
 import Flex from "@pages/components/Flex"
@@ -18,8 +19,9 @@ const METHOD_ICONS: Record<timer.stat.MergeMethod, JSX.Element> = {
 
 const METHODS = IS_ANDROID ? ALL_MERGE_METHODS.filter(m => m !== 'group') : ALL_MERGE_METHODS
 
-const MergeFilterItem = defineComponent<{ hideCate?: boolean }>(props => {
+const MergeFilterItem = defineComponent<{}>(() => {
     const filter = useReportFilter()
+    const cate = useCategory()
     const mergeMethod = computed({
         get: () => {
             const { mergeDate, siteMerge } = filter
@@ -48,7 +50,7 @@ const MergeFilterItem = defineComponent<{ hideCate?: boolean }>(props => {
                 modelValue={mergeMethod.value}
                 onChange={val => mergeMethod.value = val as timer.stat.MergeMethod[]}
             >
-                {METHODS.filter(m => m !== 'cate' || !props.hideCate).map(method => (
+                {METHODS.filter(m => m !== 'cate' || cate.enabled).map(method => (
                     <ElCheckboxButton value={method}>
                         <ElTooltip content={t(msg => msg.shared.merge.mergeMethod[method])} offset={20} placement="top">
                             <span style={{ margin: '-6px' } satisfies StyleValue}>

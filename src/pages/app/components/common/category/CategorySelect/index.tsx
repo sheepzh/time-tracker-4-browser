@@ -1,4 +1,4 @@
-import { useCategories } from "@app/context"
+import { useCategory } from "@app/context"
 import { CATE_NOT_SET_ID } from '@util/site'
 import { ElOption, ElSelect, type SelectInstance } from "element-plus"
 import { defineComponent, ref } from "vue"
@@ -19,7 +19,7 @@ type Props = {
 }
 
 const CategorySelect = defineComponent<Props>((props, ctx) => {
-    const { categories } = useCategories()
+    const cate = useCategory()
 
     const selectRef = ref<SelectInstance>()
     ctx.expose({
@@ -39,7 +39,7 @@ const CategorySelect = defineComponent<Props>((props, ctx) => {
             emptyValues={[CATE_NOT_SET_ID, undefined]}
             v-slots={{ footer: () => <SelectFooter /> }}
         >
-            {categories.value?.map(c => (
+            {cate.all.map(c => (
                 <ElOption value={c?.id} label={c?.name}>
                     <OptionItem value={c} />
                 </ElOption>

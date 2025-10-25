@@ -19,7 +19,7 @@ export type StatCondition = {
      * Date
      * {y}{m}{d}
      */
-    date?: Date | [Date, Date?]
+    date?: Date | [Date?, Date?]
     /**
      * Focus range, milliseconds
      *

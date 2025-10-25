@@ -37,7 +37,7 @@ const _default = defineComponent(() => {
                 clearable={false}
                 modelValue={filter.dateRange}
                 shortcuts={SHORTCUTS}
-                onChange={val => val && (filter.dateRange = val)}
+                onChange={([s, e]) => s && e && (filter.dateRange = [s, e])}
                 disabledDate={d => d.getTime() < Date.now() - MILL_PER_DAY * 366}
             />
             <TimeFormatFilterItem

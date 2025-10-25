@@ -33,12 +33,7 @@ const dateShortcuts: ElementDatePickerShortcut[] = [
     datePickerShortcut(t(msg => msg.calendar.range.lastDays, { n: 60 }), 60),
 ]
 
-type Props = {
-    hideCateFilter: boolean,
-}
-
-const _default = defineComponent<Props>(props => {
-    const { hideCateFilter } = props
+const _default = defineComponent<{}>(() => {
     const filter = useReportFilter()
 
     return () => (
@@ -65,7 +60,7 @@ const _default = defineComponent<Props>(props => {
                     modelValue={filter.timeFormat}
                     onChange={val => filter.timeFormat = val}
                 />
-                <MergeFilterItem hideCate={hideCateFilter} />
+                <MergeFilterItem />
             </Flex>
             <Flex gap={4}>
                 <BatchDelete />

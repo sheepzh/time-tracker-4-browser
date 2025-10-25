@@ -25,10 +25,7 @@ const _default = defineComponent(() => {
     const isXs = useXsState()
 
     return () => (
-        <KanbanCard
-            title={t(msg => msg.analysis.trend.title)}
-            v-slots={{ filter: () => <Filter /> }}
-        >
+        <KanbanCard title={msg => msg.analysis.trend.title} v-slots={{ filter: () => <Filter /> }}>
             <Flex gap={1} column={isXs.value} style={GRID_WRAPPER_STYLE}>
                 <Total
                     activeDay={[indicators.value?.activeDay, previousIndicators.value?.activeDay]}
