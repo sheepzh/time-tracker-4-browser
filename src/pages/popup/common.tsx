@@ -6,13 +6,13 @@ import { isRemainHost } from "@util/constant/remain-host"
 import { getAppPageUrl } from "@util/constant/url"
 import { isSite } from "@util/stat"
 import { getMonthTime, MILL_PER_DAY } from "@util/time"
-import { type PopupQuery } from "./context"
+import { type PopupDuration, type PopupQuery } from "./context"
 
 type DateRange = Date | [Date, Date] | undefined
 
 type DateRangeCalculator = (now: Date, num?: number) => Awaitable<DateRange>
 
-const DATE_RANGE_CALCULATORS: { [duration in timer.option.PopupDuration]: DateRangeCalculator } = {
+const DATE_RANGE_CALCULATORS: { [duration in PopupDuration]: DateRangeCalculator } = {
     today: now => now,
     yesterday: now => new Date(now.getTime() - MILL_PER_DAY),
     thisWeek: async now => {

@@ -13,7 +13,6 @@ import AccessibilityOption from "./components/AccessibilityOption"
 import AppearanceOption from "./components/AppearanceOption"
 import BackupOption from './components/BackupOption'
 import LimitOption from './components/LimitOption'
-import PopupOption from "./components/PopupOption"
 import StatisticsOption from "./components/StatisticsOption"
 import Select from "./Select"
 import './style.sass'
@@ -23,7 +22,6 @@ const _default = defineComponent(() => {
     const paneRefMap: Record<OptionCategory, Ref<OptionInstance | undefined>> = {
         appearance: ref(),
         statistics: ref(),
-        popup: ref(),
         backup: ref(),
         dailyLimit: ref(),
         accessibility: ref(),
@@ -34,7 +32,6 @@ const _default = defineComponent(() => {
     const slots: Record<OptionCategory, () => JSX.Element> = {
         appearance: () => <AppearanceOption ref={paneRefMap.appearance} />,
         statistics: () => <StatisticsOption ref={paneRefMap.statistics} />,
-        popup: () => <PopupOption ref={paneRefMap.popup} />,
         dailyLimit: () => <LimitOption ref={paneRefMap.dailyLimit} />,
         accessibility: () => <AccessibilityOption ref={paneRefMap.accessibility} />,
         backup: () => <BackupOption ref={paneRefMap.backup} />,

@@ -1,5 +1,5 @@
 import { useRequest } from "@hooks/useRequest"
-import { useQuery } from "@popup/context"
+import { useOption, useQuery } from "@popup/context"
 import { ElCol, ElRow, ElScrollbar } from "element-plus"
 import { defineComponent } from "vue"
 import Item from "./Item"
@@ -7,7 +7,8 @@ import { doQuery } from "./query"
 
 const Ranking = defineComponent(() => {
     const query = useQuery()
-    const { data: result } = useRequest(() => doQuery(query), { deps: () => ({ ...query }) })
+    const option = useOption()
+    const { data: result } = useRequest(() => doQuery(query, option), { deps: () => ({ ...query, ...option }) })
 
     return () => (
         <ElScrollbar noresize style={{ width: '100%' }}>

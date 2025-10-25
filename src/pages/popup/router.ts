@@ -1,13 +1,12 @@
 import { type App } from "vue"
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from "vue-router"
 
-const ROUTE_PERCENTAGE = 'percentage'
+export const ROUTE_PERCENTAGE = 'percentage'
 const ROUTE_RANKING = 'ranking'
 
 export const POPUP_ROUTES = [ROUTE_PERCENTAGE, ROUTE_RANKING]
 
 export type PopupRoute = typeof POPUP_ROUTES[number]
-
 
 const routes: RouteRecordRaw[] = [
     {

@@ -1,8 +1,7 @@
 import { listAllGroups } from "@api/chrome/tabGroups"
 import { queryRows, } from "@popup/common"
-import { type PopupQuery } from "@popup/context"
+import type { PopupOption, PopupQuery } from "@popup/context"
 import { t } from "@popup/locale"
-import optionHolder from "@service/components/option-holder"
 import { getDayLength } from "@util/time"
 
 export type PercentageResult = {
@@ -45,9 +44,8 @@ const findDateRange = (rows: timer.stat.Row[]): [string, string] | undefined => 
     return minDate && maxDate ? [minDate, maxDate] : undefined
 }
 
-export const doQuery = async (query: PopupQuery): Promise<PercentageResult> => {
-    const option = await optionHolder.get()
-    const itemCount = option.popupMax
+export const doQuery = async (query: PopupQuery, option: PopupOption): Promise<PercentageResult> => {
+    const { topN: itemCount, showName: displaySiteName } = option
     const [rows, date] = await queryRows(query)
     const groups = await listAllGroups()
 
@@ -55,7 +53,7 @@ export const doQuery = async (query: PopupQuery): Promise<PercentageResult> => {
         query, rows,
         date, dataDate: findDateRange(rows),
         dateLength: date instanceof Array ? getDayLength(date[0], date[1] ?? new Date()) : 1,
-        displaySiteName: option.displaySiteName,
+        displaySiteName,
         chartTitle: t(msg => msg.content.percentage.title[query?.duration], { n: query?.durationNum }),
         itemCount,
         groups,

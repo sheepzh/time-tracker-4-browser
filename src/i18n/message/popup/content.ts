@@ -5,11 +5,12 @@
  * https://opensource.org/licenses/MIT
  */
 
+import type { PopupDuration } from '@popup/context'
 import resource from './content-resource.json'
 
 export type ContentMessage = {
     percentage: {
-        title: { [key in timer.option.PopupDuration]: string }
+        title: { [key in PopupDuration]: string }
         saveAsImageTitle: string
         averageTime: string
         averageCount: string

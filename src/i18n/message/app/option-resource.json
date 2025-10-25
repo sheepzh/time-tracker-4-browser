@@ -3,11 +3,6 @@
         "yes": "是",
         "no": "否",
         "followBrowser": "跟随浏览器",
-        "popup": {
-            "title": "弹窗页",
-            "max": "只显示前 {input} 条数据，剩下的条目合并显示",
-            "displaySiteName": "{input}  显示时是否使用网站名称来代替域名"
-        },
         "appearance": {
             "title": "外观",
             "displayWhitelist": "{input}  是否在 {contextMenu} 里，显示 {whitelist} 相关功能",
@@ -138,11 +133,6 @@
         "yes": "是",
         "no": "否",
         "followBrowser": "跟隨瀏覽器",
-        "popup": {
-            "title": "彈出視窗",
-            "max": "僅顯示前 {input} 筆資料，其餘項目合併",
-            "displaySiteName": "{input} 顯示時是否使用網站名稱而非域名"
-        },
         "appearance": {
             "title": "外觀設定",
             "displayWhitelist": "{input} 是否在 {contextMenu} 顯示 {whitelist} 功能",
@@ -272,11 +262,6 @@
         "yes": "Yes",
         "no": "No",
         "followBrowser": "Follow browser",
-        "popup": {
-            "title": "Popup Page",
-            "max": "Show the first {input} data items",
-            "displaySiteName": "{input}  Whether to display the website name instead of URL"
-        },
         "appearance": {
             "title": "Appearance",
             "displayWhitelist": "{input}  Whether to display {whitelist} in {contextMenu}",
@@ -407,11 +392,6 @@
         "yes": "はい",
         "no": "いいえ",
         "followBrowser": "ブラウザと同じ",
-        "popup": {
-            "title": "ポップアップページ",
-            "max": "最初の {input} 個のデータのみを表示し、残りのエントリは結合されます",
-            "displaySiteName": "{input}  ドメインの代わりにウェブサイト名を表示するかどうか"
-        },
         "appearance": {
             "title": "外観",
             "displayWhitelist": "{input}  {contextMenu} に {whitelist} を表示するかどうか",
@@ -538,11 +518,6 @@
         "yes": "Sim",
         "no": "Não",
         "followBrowser": "Usar do navegador",
-        "popup": {
-            "title": "Página Pop-up",
-            "max": "Mostrar os primeiros {input} itens",
-            "displaySiteName": "{input} Se deve apresentar o nome do site em vez do domínio"
-        },
         "appearance": {
             "title": "Aparência",
             "displayWhitelist": "{input} Mostrar {whitelist} no {contextMenu}",
@@ -662,11 +637,6 @@
         "yes": "Так",
         "no": "Ні",
         "followBrowser": "Як у браузері",
-        "popup": {
-            "title": "Вікно розширення",
-            "max": "Кількість записів для показу: {input}",
-            "displaySiteName": "{input}  Чи відображати назву веб-сайту замість домену"
-        },
         "appearance": {
             "title": "Зовнішній вигляд",
             "displayWhitelist": "{input}  Показувати {whitelist} в {contextMenu}",
@@ -796,11 +766,6 @@
         "yes": "Sí",
         "no": "No",
         "followBrowser": "Igual que el navegador",
-        "popup": {
-            "title": "Página emergente",
-            "max": "Mostrar los primeros {input} elementos de datos",
-            "displaySiteName": "{input}  Si se debe mostrar el nombre del sitio web en lugar del dominio"
-        },
         "appearance": {
             "title": "Apariencia",
             "displayWhitelist": "{input}  Mostrar {whitelist} en {contextMenu}",
@@ -930,11 +895,6 @@
         "yes": "Ja",
         "no": "Nein",
         "followBrowser": "Browser verfolgen",
-        "popup": {
-            "title": "Popup-Seite",
-            "max": "Zeige die ersten {input} Datenelemente",
-            "displaySiteName": "{input} Ob der Websitename anstelle der Domäne angezeigt werden soll"
-        },
         "appearance": {
             "title": "Aussehen",
             "displayWhitelist": "{input} {whitelist} in {contextMenu} anzeigen",
@@ -1050,11 +1010,6 @@
         "yes": "Oui",
         "no": "Non",
         "followBrowser": "Suivre le navigateur",
-        "popup": {
-            "title": "Page pop-up",
-            "max": "Afficher les {input} premiers éléments de données",
-            "displaySiteName": "{input} S'il faut afficher le nom du site Web au lieu du domaine"
-        },
         "appearance": {
             "title": "Apparence",
             "displayWhitelist": "{input} S'il faut afficher là {whitelist} dans {contextMenu}",
@@ -1183,11 +1138,6 @@
     "ru": {
         "yes": "Да",
         "no": "Нет",
-        "popup": {
-            "title": "Всплывающее окно",
-            "max": "Показать первые {input} элементов данных",
-            "displaySiteName": "{input} Отображать ли имя веб-сайта вместо домена"
-        },
         "appearance": {
             "title": "Появление",
             "displayWhitelist": "{input} Отображать ли {whitelist} в {contextMenu}",
@@ -1231,11 +1181,6 @@
         "yes": "نعم",
         "no": "لا",
         "followBrowser": "نفس وضع المتصفح",
-        "popup": {
-            "title": "صفحة منبثقة",
-            "max": "عرض أول {input} عنصر من البيانات",
-            "displaySiteName": "{input} هل سيتم عرض اسم الموقع بدلاً من النطاق"
-        },
         "appearance": {
             "title": "المظهر",
             "displayWhitelist": "{input} هل يتم عرض {whitelist} في {contextMenu}",

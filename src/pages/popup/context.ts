@@ -7,11 +7,21 @@ import { CATE_NOT_SET_ID } from "@util/site"
 import { reactive, type Reactive, ref, type Ref, toRaw, watch } from "vue"
 import { t } from "./locale"
 
+export type PopupDuration =
+    | "today" | "yesterday" | "thisWeek" | "thisMonth"
+    | "lastDays"
+    | "allTime"
+
 export type PopupQuery = {
     mergeMethod: Exclude<timer.stat.MergeMethod, 'date'> | undefined
-    duration: timer.option.PopupDuration
+    duration: PopupDuration
     durationNum?: number
     dimension: Exclude<timer.core.Dimension, 'run'>
+}
+
+export type PopupOption = {
+    showName: boolean
+    topN: number
 }
 
 type PopupContextValue = {
@@ -19,6 +29,7 @@ type PopupContextValue = {
     darkMode: Ref<boolean>
     setDarkMode: (val: boolean) => void
     query: Reactive<PopupQuery>
+    option: Reactive<PopupOption>
     cateNameMap: Ref<Record<number, string>>
 }
 
@@ -45,7 +56,8 @@ export const initPopupContext = (): Ref<number> => {
     }, { defaultValue: {} })
 
     const query = initQuery()
-    useProvide<PopupContextValue>(NAMESPACE, { reload, darkMode, setDarkMode, query, cateNameMap })
+    const option = initOption()
+    useProvide<PopupContextValue>(NAMESPACE, { reload, darkMode, setDarkMode, query, option, cateNameMap })
 
     return appKey
 }
@@ -63,10 +75,24 @@ const initQuery = () => {
     return query
 }
 
+const initOption = () => {
+    const [optionCache, setOptionCache] = useLocalStorage<PopupOption>('popup-option', {
+        showName: true,
+        topN: 10,
+    })
+
+    const option = reactive(optionCache)
+    watch(option, () => setOptionCache(toRaw(option)), { deep: true })
+
+    return option
+}
+
 export const usePopupContext = () => useProvider<PopupContextValue, 'reload' | 'darkMode' | 'setDarkMode' | 'cateNameMap'>(
     NAMESPACE, 'reload', 'darkMode', 'setDarkMode', 'cateNameMap'
 )
 
 export const useQuery = () => useProvider<PopupContextValue, 'query'>(NAMESPACE, 'query').query
+
+export const useOption = () => useProvider<PopupContextValue, 'option'>(NAMESPACE, 'option').option
 
 export const useCateNameMap = () => useProvider<PopupContextValue, 'cateNameMap'>(NAMESPACE, 'cateNameMap')?.cateNameMap

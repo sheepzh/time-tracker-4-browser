@@ -3,13 +3,17 @@
         "updateVersion": "Update",
         "updateVersionInfo": "Latest version: {version}",
         "updateVersionInfo4Firefox": "Please update to {version} via about:addons",
-        "rate": "Rate Us"
+        "rate": "Rate Us",
+        "showSiteName": "Display site name",
+        "showTopN": "Display top {n}"
     },
     "zh_CN": {
         "updateVersion": "可更新",
         "updateVersionInfo": "最新版本：{version}",
         "updateVersionInfo4Firefox": "请前往 about:addons 更新至 {version}",
-        "rate": "评分"
+        "rate": "评分",
+        "showSiteName": "显示网站名称",
+        "showTopN": "显示前 {n} 名"
     },
     "zh_TW": {
         "updateVersion": "可更新",
