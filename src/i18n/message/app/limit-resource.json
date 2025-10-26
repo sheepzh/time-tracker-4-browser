@@ -31,7 +31,7 @@
             "option": "全局设置"
         },
         "message": {
-            "noUrl": "未配置限制网址",
+            "noUrl": "未添加任何限制网址",
             "noRule": "未填写任何规则",
             "deleteConfirm": "是否要删除规则 [{name}]？",
             "lockConfirm": "锁定后，即使未触发此规则，所有操作也需要验证",
@@ -138,7 +138,7 @@
             "test": "Test URL"
         },
         "message": {
-            "noUrl": "No restriction URLs configured",
+            "noUrl": "No URL added",
             "noRule": "No rules filled in",
             "deleteConfirm": "Do you want to delete the rule [{name}]?",
             "lockConfirm": "If locked, all operations will require verification even if the rule is not triggered.",

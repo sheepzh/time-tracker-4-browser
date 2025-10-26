@@ -2,7 +2,7 @@ import { t } from "@app/locale"
 import { useProvide, useProvider } from "@hooks"
 import { range } from "@util/array"
 import { ElMessage } from "element-plus"
-import { type Reactive, reactive, ref, toRaw } from "vue"
+import { type Reactive, reactive, type Ref, ref, toRaw } from "vue"
 
 type Step = 0 | 1 | 2
 
@@ -10,6 +10,7 @@ type SopData = Required<Omit<timer.limit.Rule, 'id'>>
 
 type Context = {
     data: Reactive<SopData>
+    urlMiss: Ref<boolean>
 }
 
 const createInitial = (): SopData => ({
@@ -36,6 +37,7 @@ const NAMESPACE = 'limit_sop_model'
 export const initSop = ({ onSave }: Options) => {
     const step = ref<Step>(0)
     const data = reactive<SopData>(createInitial())
+    const urlMiss = ref(false)
 
     const validator: Record<Step, () => Promise<boolean>> = {
         0: async () => {
@@ -53,8 +55,10 @@ export const initSop = ({ onSave }: Options) => {
         1: async () => {
             if (!data.cond?.length) {
                 ElMessage.error(t(msg => msg.limit.message.noUrl))
+                urlMiss.value = true
                 return false
             }
+            urlMiss.value = false
             return true
         },
         2: async () => {
@@ -85,7 +89,7 @@ export const initSop = ({ onSave }: Options) => {
         }
     }
 
-    useProvide<Context>(NAMESPACE, { data })
+    useProvide<Context>(NAMESPACE, { data, urlMiss })
 
     return {
         step, reset, handleNext
@@ -93,3 +97,5 @@ export const initSop = ({ onSave }: Options) => {
 }
 
 export const useSopData = () => useProvider<Context, 'data'>(NAMESPACE, 'data').data
+
+export const useUrlMiss = () => useProvider<Context, 'urlMiss'>(NAMESPACE, 'urlMiss').urlMiss

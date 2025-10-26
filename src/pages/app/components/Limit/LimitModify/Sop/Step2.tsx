@@ -11,22 +11,35 @@ import { useState } from "@hooks"
 import Flex from "@pages/components/Flex"
 import { EXCLUDING_PREFIX } from '@util/constant/remain-host'
 import { cleanCond } from "@util/limit"
-import { ElButton, ElDivider, ElIcon, ElInput, ElLink, ElMessage, ElScrollbar, ElText, type ScrollbarInstance } from "element-plus"
-import { type StyleValue, defineComponent, ref } from "vue"
-import { useSopData } from "./context"
+import {
+    ElButton, ElDivider, ElIcon, ElInput, ElLink, ElMessage, ElScrollbar, ElText,
+    type InputInstance, type ScrollbarInstance,
+} from "element-plus"
+import { type StyleValue, defineComponent, ref, watch } from "vue"
+import { useSopData, useUrlMiss } from "./context"
 
 const _default = defineComponent(() => {
     const data = useSopData()
+    const urlMiss = useUrlMiss()
     const scrollbar = ref<ScrollbarInstance>()
+
+    const inputEl = ref<InputInstance>()
+    watch(urlMiss, v => v && inputEl.value?.focus())
+    const warnAndFocus = (msg: string) => {
+        ElMessage.warning(msg)
+        inputEl.value?.focus()
+    }
 
     const handleAdd = () => {
         let url: string | undefined = inputting.value?.trim?.()?.toLowerCase?.()
-        if (!url) return ElMessage.warning('URL is blank')
+        if (!url) return warnAndFocus('URL is blank')
         url = cleanCond(url)
-        if (!url) return ElMessage.warning('URL is invalid')
+        if (!url) return warnAndFocus('URL is invalid')
         const urls = data.cond
-        if (urls.includes(url)) return ElMessage.warning('Duplicated URL')
+        if (urls.includes(url)) return warnAndFocus('Duplicated URL')
         urls.unshift(url)
+
+        urlMiss.value = false
         scrollbar.value?.scrollTo(0)
 
         clearInputting()
@@ -40,19 +53,18 @@ const _default = defineComponent(() => {
         <Flex column width="100%">
             <Flex width="100%" column gap={5}>
                 <ElInput
+                    ref={inputEl}
                     modelValue={inputting.value}
                     onInput={setInputting}
                     clearable
                     onClear={clearInputting}
                     onKeydown={ev => (ev as KeyboardEvent)?.code === "Enter" && handleAdd()}
-                    v-slots={{
-                        append: () => (
-                            <ElButton onClick={handleAdd} style={{ display: 'flex' } satisfies StyleValue}>
-                                {t(msg => msg.button.add)}
-                            </ElButton>
-                        )
-                    }}
+                    // change the color of append button
+                    style={{ '--el-color-info': `var(--el-color-${urlMiss.value ? 'danger' : 'primary'}` }}
                     placeholder="www.demo.com, *.demo.com, demo.com/blog/*, demo.com/**, +www.demo.com/blog/list"
+                    v-slots={{
+                        append: () => <ElButton onClick={handleAdd}>{t(msg => msg.button.add)}</ElButton>
+                    }}
                 />
                 <ElText style={{ textAlign: 'start', width: '100%', paddingInlineStart: '10px' } satisfies StyleValue}>
                     {t(msg => msg.limit.wildcardTip)}

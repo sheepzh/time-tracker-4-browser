@@ -21,45 +21,41 @@ export type SopInstance = {
     reset: (rule?: timer.limit.Rule) => void
 }
 
-const _default = defineComponent({
-    props: {
-        condDisabled: Boolean,
-    },
-    emits: {
-        cancel: () => true,
-        save: (_rule: MakeOptional<timer.limit.Rule, 'id'>) => true,
-    },
-    setup(_, ctx) {
-        const { reset, step, handleNext } = initSop({ onSave: data => ctx.emit('save', data) })
-        const last = computed(() => step.value === 2)
-        const first = computed(() => step.value === 0)
-        ctx.expose({ reset } satisfies SopInstance)
+type Props = {
+    onCancel?: NoArgCallback
+    onSave?: ArgCallback<MakeOptional<timer.limit.Rule, 'id'>>
+}
 
-        return () => (
-            <DialogSop
-                last={last.value}
-                first={first.value}
-                onBack={() => step.value--}
-                onCancel={() => ctx.emit('cancel')}
-                onNext={handleNext}
-                onFinish={handleNext}
-                v-slots={{
-                    steps: () => (
-                        <ElSteps space={200} finishStatus="success" active={step.value} alignCenter>
-                            <ElStep title={t(msg => msg.limit.step.base)} />
-                            <ElStep title={t(msg => msg.limit.step.url)} />
-                            <ElStep title={t(msg => msg.limit.step.rule)} />
-                        </ElSteps>
-                    ),
-                    content: () => <>
-                        <Step1 v-show={step.value === 0} />
-                        <Step2 v-show={step.value === 1} />
-                        <Step3 v-show={step.value === 2} />
-                    </>
-                }}
-            />
-        )
-    }
-})
+const _default = defineComponent<Props>(({ onSave, onCancel }, ctx) => {
+    const { reset, step, handleNext } = initSop({ onSave })
+    const last = computed(() => step.value === 2)
+    const first = computed(() => step.value === 0)
+    ctx.expose({ reset } satisfies SopInstance)
+
+    return () => (
+        <DialogSop
+            last={last.value}
+            first={first.value}
+            onBack={() => step.value--}
+            onCancel={onCancel}
+            onNext={handleNext}
+            onFinish={handleNext}
+            v-slots={{
+                steps: () => (
+                    <ElSteps space={200} finishStatus="success" active={step.value} alignCenter>
+                        <ElStep title={t(msg => msg.limit.step.base)} />
+                        <ElStep title={t(msg => msg.limit.step.url)} />
+                        <ElStep title={t(msg => msg.limit.step.rule)} />
+                    </ElSteps>
+                ),
+                content: () => <>
+                    <Step1 v-show={step.value === 0} />
+                    <Step2 v-show={step.value === 1} />
+                    <Step3 v-show={step.value === 2} />
+                </>
+            }}
+        />
+    )
+}, { props: ['onCancel', 'onSave'] })
 
 export default _default
