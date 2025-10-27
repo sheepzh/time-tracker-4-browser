@@ -1,14 +1,14 @@
 import { onInstalled } from "@api/chrome/runtime"
 import { executeScript } from "@api/chrome/script"
 import { createTabAfterCurrent, listTabs } from "@api/chrome/tab"
-import metaService from "@service/meta-service"
+import { updateInstallTime } from "@service/meta-service"
 import { IS_E2E, IS_FROM_STORE } from "@util/constant/environment"
 import { getGuidePageUrl } from "@util/constant/url"
 import { isBrowserUrl } from "@util/pattern"
 import UninstallListener from './uninstall-listener'
 
 async function onFirstInstall() {
-    metaService.updateInstallTime(new Date())
+    updateInstallTime(new Date())
     !IS_E2E && createTabAfterCurrent(getGuidePageUrl())
 }
 

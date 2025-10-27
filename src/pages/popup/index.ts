@@ -6,7 +6,7 @@
  */
 
 import { initLocale } from "@i18n"
-import metaService from "@service/meta-service"
+import { increasePopup } from "@service/meta-service"
 import optionService from "@service/option-service"
 import { toggle } from "@util/dark-mode"
 import "element-plus/theme-chalk/index.css"
@@ -50,7 +50,7 @@ async function main() {
     initRouter(app)
     app.mount(el)
 
-    metaService.increasePopup()
+    increasePopup()
 }
 
 main()

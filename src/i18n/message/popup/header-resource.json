@@ -1,74 +1,41 @@
 {
     "en": {
-        "updateVersion": "Update",
-        "updateVersionInfo": "Latest version: {version}",
-        "updateVersionInfo4Firefox": "Please update to {version} via about:addons",
         "rate": "Rate Us",
         "showSiteName": "Display site name",
         "showTopN": "Display top {n}"
     },
     "zh_CN": {
-        "updateVersion": "可更新",
-        "updateVersionInfo": "最新版本：{version}",
-        "updateVersionInfo4Firefox": "请前往 about:addons 更新至 {version}",
         "rate": "评分",
         "showSiteName": "显示网站名称",
         "showTopN": "显示前 {n} 名"
     },
     "zh_TW": {
-        "updateVersion": "可更新",
-        "updateVersionInfo": "最新版本：{version}",
-        "updateVersionInfo4Firefox": "請前往 about:addons 更新至 {version}",
         "rate": "評分",
         "showSiteName": "顯示網站名稱",
         "showTopN": "顯示前{n}个"
     },
     "ja": {
-        "updateVersion": "更新可能",
-        "updateVersionInfo": "最新バージョン: {version}",
-        "updateVersionInfo4Firefox": "about:addons で {version} に更新してください",
         "rate": "評価する"
     },
     "pt_PT": {
-        "updateVersion": "Atualizar",
-        "updateVersionInfo": "Versão mais recente: {version}",
-        "updateVersionInfo4Firefox": "Atualize para {version} através do about:addons",
         "rate": "Avaliar"
     },
     "uk": {
-        "updateVersion": "Оновити",
-        "updateVersionInfo": "Найновіша версія: {version}",
-        "updateVersionInfo4Firefox": "Оновіться до {version} через about:addons",
         "rate": "Оцінити"
     },
     "es": {
-        "updateVersion": "Actualizar",
-        "updateVersionInfo": "Última versión: {version}",
-        "updateVersionInfo4Firefox": "Actualice a {version} en about:addons",
         "rate": "Calificar"
     },
     "de": {
-        "updateVersion": "Aktualisierbar",
-        "updateVersionInfo": "Neueste Version: {version}",
-        "updateVersionInfo4Firefox": "Bitte aktualisieren Sie auf {version} über about:addons",
         "rate": "Bewerten"
     },
     "fr": {
-        "updateVersion": "MAJ",
-        "updateVersionInfo": "Dernière version: {version}",
-        "updateVersionInfo4Firefox": "Veuillez mettre à jour vers {version} via about:addons",
         "rate": "Noter"
     },
     "ru": {
-        "updateVersion": "Обновить",
-        "updateVersionInfo": "Последняя версия: {version}",
-        "updateVersionInfo4Firefox": "Обновитесь до {version} через about:addons",
         "rate": "Оценить"
     },
     "ar": {
-        "updateVersion": "تحديث متاح",
-        "updateVersionInfo": "أحدث إصدار: {version}",
-        "updateVersionInfo4Firefox": "الرجاء التحديث إلى {version} عبر about:addons",
         "rate": "قيمنا"
     }
 }

@@ -11,7 +11,7 @@ import { Loading, RefreshRight } from "@element-plus/icons-vue"
 import { useRequest } from "@hooks"
 import { type ElTableRowScope } from "@pages/element-ui/table"
 import processor from "@service/backup/processor"
-import metaService from "@service/meta-service"
+import { getCid } from "@service/meta-service"
 import { ElLink, ElMessage, ElRadio, ElTable, ElTableColumn, ElTag } from "element-plus"
 import { defineComponent, ref, toRaw } from "vue"
 
@@ -34,7 +34,7 @@ const _default = defineComponent<{ onSelect: ArgCallback<timer.backup.Client> }>
         onError: e => ElMessage.error(typeof e === 'string' ? e : (e as Error).message || 'Unknown error...')
     })
 
-    const { data: localCid } = useRequest(() => metaService.getCid())
+    const { data: localCid } = useRequest(getCid)
 
     const selectedCid = ref<string>()
     const handleRowSelect = (row: timer.backup.Client) => {

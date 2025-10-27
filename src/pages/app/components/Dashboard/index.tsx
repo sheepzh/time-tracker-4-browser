@@ -9,7 +9,7 @@ import { t } from "@app/locale"
 import { MediaSize, useManualRequest, useMediaSize, useRequest, useXsState } from "@hooks"
 import { isTranslatingLocale, locale } from "@i18n"
 import Flex from "@pages/components/Flex"
-import metaService from "@service/meta-service"
+import { recommendRate, saveFlag } from "@service/meta-service"
 import { REVIEW_PAGE } from "@util/constant/url"
 import { ElRow, ElScrollbar } from "element-plus"
 import { computed, defineComponent, FunctionalComponent } from "vue"
@@ -43,8 +43,8 @@ const _default = defineComponent(() => {
     const jump2Help = () => router.push({ path: "/other/help" })
     const isNotEnOrZhCn = locale !== "en" && locale !== "zh_CN"
     const showHelp = isTranslatingLocale() || isNotEnOrZhCn
-    const { data: showRate, refresh } = useRequest(metaService.recommendRate)
-    const { refresh: handleRate } = useManualRequest(() => metaService.saveFlag("rateOpen"), { onSuccess: refresh })
+    const { data: showRate, refresh } = useRequest(recommendRate)
+    const { refresh: handleRate } = useManualRequest(() => saveFlag("rateOpen"), { onSuccess: refresh })
 
     const mediaSize = useMediaSize()
     const isXs = useXsState()
