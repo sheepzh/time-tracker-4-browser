@@ -1,3 +1,4 @@
+import { useSiteMerge } from '@hooks/useSiteMerge'
 import Flex from "@pages/components/Flex"
 import DurationSelect from "@popup/components/Footer/DurationSelect"
 import { useQuery } from "@popup/context"
@@ -9,6 +10,9 @@ import Menu from "./Menu"
 
 const Footer = defineComponent(() => {
     const query = useQuery()
+    const { mergeItems } = useSiteMerge({
+        onGroupDisabled: () => query.mergeMethod === 'group' && (query.mergeMethod = undefined)
+    })
 
     return () => (
         <Flex justify="space-between" width="100%">
@@ -26,7 +30,7 @@ const Footer = defineComponent(() => {
                         style={{ width: '90px' }}
                     >
                         <ElOption value='' label={t(msg => msg.shared.merge.mergeMethod.notMerge)} />
-                        {(['domain', 'cate', 'group'] satisfies timer.stat.MergeMethod[]).map(method => (
+                        {mergeItems.value.map(method => (
                             <ElOption value={method} label={t(msg => msg.shared.merge.mergeMethod[method])} />
                         ))}
                     </ElSelect>
