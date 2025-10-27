@@ -19,7 +19,9 @@
         "updateVersion": "可更新",
         "updateVersionInfo": "最新版本：{version}",
         "updateVersionInfo4Firefox": "請前往 about:addons 更新至 {version}",
-        "rate": "評分"
+        "rate": "評分",
+        "showSiteName": "顯示網站名稱",
+        "showTopN": "顯示前{n}个"
     },
     "ja": {
         "updateVersion": "更新可能",
