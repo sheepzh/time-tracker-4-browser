@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getRuntimeId, getUrl, getVersion } from "@api/chrome/runtime"
+import { getUrl, getVersion } from "@api/chrome/runtime"
 import { locale } from "@i18n"
-import { BROWSER_MAJOR_VERSION, BROWSER_NAME, IS_CHROME, IS_EDGE } from "./environment"
+import { BROWSER_MAJOR_VERSION, BROWSER_NAME } from "./environment"
 
 export const FIREFOX_HOMEPAGE = 'https://addons.mozilla.org/firefox/addon/besttimetracker'
 export const CHROME_HOMEPAGE = 'https://chromewebstore.google.com/detail/time-tracker/dkdhhcbjijekmneelocdllcldcpmekmm'
@@ -65,21 +65,6 @@ export const UNINSTALL_QUESTIONNAIRE: { [locale in timer.RequiredLocale]: string
     ja: 'https://docs.google.com/forms/d/e/1FAIpQLSdsB3onZuleNf6j7KJJLbcote647WV6yeUr-9m7Db5QXakfpg/viewform?usp=sf_link',
     en: UNINSTALL_QUESTIONNAIRE_EN,
 }
-
-/**
- * The page of extension detail
- * @since 0.1.8
- */
-let updatePage = SOURCE_CODE_PAGE
-
-if (IS_CHROME) {
-    updatePage = `chrome://extensions/?id=${getRuntimeId()}`
-} else if (IS_EDGE) {
-    // on the management page with developing-mode open
-    updatePage = 'edge://extensions'
-}
-
-export const UPDATE_PAGE = updatePage
 
 /**
  * @since 0.2.2

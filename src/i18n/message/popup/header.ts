@@ -8,9 +8,6 @@
 import resource from './header-resource.json'
 
 export type HeaderMessage = {
-    updateVersion: string
-    updateVersionInfo: string
-    updateVersionInfo4Firefox: string
     rate: string
     showSiteName: string
     showTopN: string

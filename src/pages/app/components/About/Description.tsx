@@ -2,7 +2,7 @@ import { t } from "@app/locale"
 import { MediaSize, useMediaSize } from "@hooks"
 import { locale } from "@i18n"
 import Flex from "@pages/components/Flex"
-import metaService from "@service/meta-service"
+import { saveFlag } from "@service/meta-service"
 import packageInfo, { AUTHOR_EMAIL } from "@src/package"
 import {
     CHANGE_LOG_PAGE,
@@ -105,7 +105,7 @@ const _default = defineComponent<{}>(() => {
                     <ElText size="large">
                         🌟&ensp;
                         {t(msg => msg.about.text.greet)}&ensp;
-                        <a href={REVIEW_PAGE || CHROME_HOMEPAGE} target="_blank" onClick={() => metaService.saveFlag("rateOpen")}>
+                        <a href={REVIEW_PAGE || CHROME_HOMEPAGE} target="_blank" onClick={() => saveFlag("rateOpen")}>
                             {t(msg => msg.about.text.rate)}
                         </a>
                     </ElText>

@@ -10,7 +10,7 @@ import { Operation, UploadFilled } from "@element-plus/icons-vue"
 import { useManualRequest, useRequest, useState } from "@hooks"
 import Flex from "@pages/components/Flex"
 import processor from "@service/backup/processor"
-import metaService from "@service/meta-service"
+import { getLastBackUp } from "@service/meta-service"
 import { formatTime } from "@util/time"
 import { ElButton, ElDivider, ElLoading, ElMessage, ElText } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
@@ -36,10 +36,10 @@ const TIME_FORMAT = t(msg => msg.calendar.timeFormat)
 const _default = defineComponent<{ type: timer.backup.Type }>(props => {
     const [lastTime, setLastTime] = useState<number>()
 
-    useRequest(async () => {
-        const type = props.type
-        return type && (await metaService.getLastBackUp(type))?.ts
-    }, { deps: () => props.type, onSuccess: setLastTime })
+    useRequest(() => getLastBackUp(props.type).then(d => d?.ts), {
+        deps: () => props.type,
+        onSuccess: setLastTime,
+    })
 
     const { refresh: handleBackup } = useManualRequest(() => processor.syncData(), {
         loadingText: "Doing backup....",

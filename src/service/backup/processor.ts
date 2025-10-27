@@ -8,7 +8,7 @@
 import syncDb from "@db/backup-database"
 import optionHolder from "@service/components/option-holder"
 import itemService from "@service/item-service"
-import metaService from "@service/meta-service"
+import { getCid, updateBackUpTime, updateCid } from "@service/meta-service"
 import { formatTimeYMD, getBirthday } from "@util/time"
 import GistCoordinator from "./gist/coordinator"
 import ObsidianCoordinator from "./obsidian/coordinator"
@@ -91,10 +91,10 @@ function generateCid() {
  * Get client id or generate it lazily
  */
 async function lazyGetCid(): Promise<string> {
-    let cid = await metaService.getCid()
+    let cid = await getCid()
     if (!cid) {
         cid = generateCid()
-        await metaService.updateCid(cid)
+        await updateCid(cid)
     }
     return cid
 }
@@ -176,7 +176,7 @@ class Processor {
             await coordinator.updateClients(context, clients)
             // Update time
             const now = Date.now()
-            metaService.updateBackUpTime(type, now)
+            updateBackUpTime(type, now)
             return success(now)
         } catch (e) {
             console.error("Error to sync data", e)

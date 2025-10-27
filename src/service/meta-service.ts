@@ -10,13 +10,13 @@ import { REVIEW_PAGE } from "@util/constant/url"
 import { getDayLength } from "@util/time"
 
 async function getInstallTime() {
-    const meta: timer.ExtensionMeta = await db.getMeta()
-    return meta && meta.installTime ? new Date(meta.installTime) : undefined
+    const meta = await db.getMeta()
+    return meta.installTime ? new Date(meta.installTime) : undefined
 }
 
-async function updateInstallTime(installTime: Date) {
-    const meta: timer.ExtensionMeta = await db.getMeta()
-    if (meta?.installTime) {
+export async function updateInstallTime(installTime: Date) {
+    const meta = await db.getMeta()
+    if (meta.installTime) {
         // Must not rewrite
         return
     }
@@ -24,30 +24,34 @@ async function updateInstallTime(installTime: Date) {
     await db.update(meta)
 }
 
-function increaseApp(routePath: string): void {
-    db.getMeta().then(meta => {
-        const appCounter = meta.appCounter || {}
-        appCounter[routePath] = (appCounter[routePath] || 0) + 1
-        meta.appCounter = appCounter
-        db.update(meta)
-    })
+export async function increaseApp(routePath: string) {
+    const meta = await db.getMeta()
+    const appCounter = meta.appCounter || {}
+    appCounter[routePath] = (appCounter[routePath] || 0) + 1
+    meta.appCounter = appCounter
+    await db.update(meta)
 }
 
-function increasePopup(): void {
-    db.getMeta().then(meta => {
-        const popupCounter = meta.popupCounter || {}
-        popupCounter._total = (popupCounter._total || 0) + 1
-        meta.popupCounter = popupCounter
-        db.update(meta)
-    })
+export async function increasePopup() {
+    const meta = await db.getMeta()
+    const popupCounter = meta.popupCounter || {}
+    popupCounter._total = (popupCounter._total || 0) + 1
+    meta.popupCounter = popupCounter
+    await db.update(meta)
 }
 
-async function getCid(): Promise<string | undefined> {
-    const meta: timer.ExtensionMeta = await db.getMeta()
-    return meta?.cid
+/**
+ * @since 1.2.0
+ */
+export async function getCid(): Promise<string | undefined> {
+    const meta = await db.getMeta()
+    return meta.cid
 }
 
-async function updateCid(newCid: string) {
+/**
+ * @since 1.2.0
+ */
+export async function updateCid(newCid: string) {
     const meta = await db.getMeta()
     if (meta.cid) {
         return
@@ -56,7 +60,10 @@ async function updateCid(newCid: string) {
     await db.update(meta)
 }
 
-async function updateBackUpTime(type: timer.backup.Type, time: number) {
+/**
+ * @since 1.4.7
+ */
+export async function updateBackUpTime(type: timer.backup.Type, time: number) {
     const meta = await db.getMeta()
     if (!meta.backup) {
         meta.backup = {}
@@ -65,12 +72,18 @@ async function updateBackUpTime(type: timer.backup.Type, time: number) {
     await db.update(meta)
 }
 
-async function getLastBackUp(type: timer.backup.Type): Promise<{ ts: number, msg?: string } | undefined> {
+/**
+ * @since 1.4.7
+ */
+export async function getLastBackUp(type: timer.backup.Type): Promise<{ ts: number, msg?: string } | undefined> {
     const meta = await db.getMeta()
-    return meta?.backup?.[type]
+    return meta.backup?.[type]
 }
 
-async function saveFlag(flag: timer.ExtensionMetaFlag) {
+/**
+ * @since 2.2.0
+ */
+export async function saveFlag(flag: timer.ExtensionMetaFlag) {
     if (!flag) return
     const meta = await db.getMeta()
     if (!meta.flag) meta.flag = {}
@@ -81,46 +94,17 @@ async function saveFlag(flag: timer.ExtensionMetaFlag) {
 async function getFlag(flag: timer.ExtensionMetaFlag) {
     if (!flag) return false
     const meta = await db.getMeta()
-    return !!meta?.flag?.[flag]
+    return !!meta.flag?.[flag]
 }
 
 const INSTALL_DAY_MIN_LIMIT = 14
 
-class MetaService {
-    getInstallTime = getInstallTime
-    updateInstallTime = updateInstallTime
-    /**
-     * @since 1.2.0
-     */
-    getCid = getCid
-    /**
-     * @since 1.2.0
-     */
-    updateCid = updateCid
-    increaseApp = increaseApp
-    increasePopup = increasePopup
-    /**
-     * @since 1.4.7
-     */
-    updateBackUpTime = updateBackUpTime
-    /**
-     * @since 1.4.7
-     */
-    getLastBackUp = getLastBackUp
-    /**
-     * @since 2.2.0
-     */
-    saveFlag = saveFlag
-
-    async recommendRate(): Promise<boolean> {
-        if (!REVIEW_PAGE) return false
-        const installTime = await getInstallTime()
-        if (!installTime) return false
-        const installedDays = getDayLength(installTime, new Date())
-        if (installedDays < INSTALL_DAY_MIN_LIMIT) return false
-        const rateOpen = await getFlag("rateOpen")
-        return !rateOpen
-    }
+export async function recommendRate(): Promise<boolean> {
+    if (!REVIEW_PAGE) return false
+    const installTime = await getInstallTime()
+    if (!installTime) return false
+    const installedDays = getDayLength(installTime, new Date())
+    if (installedDays < INSTALL_DAY_MIN_LIMIT) return false
+    const rateOpen = await getFlag("rateOpen")
+    return !rateOpen
 }
-
-export default new MetaService()

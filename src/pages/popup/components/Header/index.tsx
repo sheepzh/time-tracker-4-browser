@@ -8,10 +8,10 @@ import { getAppPageUrl } from "@util/constant/url"
 import { ElLink } from "element-plus"
 import { defineComponent } from "vue"
 import DarkSwitch from "./DarkSwitch"
-import Extra from "./Extra"
 import Github from "./Github"
 import Logo from "./Logo"
 import Option from "./Option"
+import RateUs from './RateUs'
 
 const Header = defineComponent<{}>(() => {
     const handleAllFuncClick = () => {
@@ -28,7 +28,7 @@ const Header = defineComponent<{}>(() => {
             <Logo />
             <Flex gap={10}>
                 <Flex gap={10}>
-                    <Extra />
+                    <RateUs />
                     <ElLink
                         underline="never"
                         onClick={handleAllFuncClick}
