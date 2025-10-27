@@ -11,11 +11,12 @@
     },
     "zh_TW": {
         "addConfirmMsg": "{url} 將會被加入白名單。",
-        "removeConfirmMsg": "確定要將 {url} 從白名單移除嗎？",
+        "removeConfirmMsg": "{url} 將會被白名單移除。",
         "duplicateMsg": "此網址已存在於白名單中",
         "infoAlertTitle": "網站白名單設定",
         "infoAlert0": "白名單內的網站將不會記錄瀏覽時長與造訪次數",
         "infoAlert1": "白名單內的網站不受時間限制功能影響",
+        "infoAlert2": "您可以使用通配符(*)來匹配多個網站，例如*.example.com/​​**，並使用+作為前綴來排除網站，例如+need.example.com/​**",
         "errorInput": "網域名稱格式錯誤"
     },
     "en": {
