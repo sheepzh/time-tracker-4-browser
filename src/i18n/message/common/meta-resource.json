@@ -2,27 +2,27 @@
     "zh_CN": {
         "name": "网费很贵",
         "marketName": "网费很贵 - 上网时间统计",
-        "description": "追踪时间，分析习惯，改善行为，提高效率"
+        "description": "追踪网页时间，分析浏览习惯，防止网站沉迷，提高工作效率"
     },
     "zh_TW": {
         "name": "網費很貴",
         "marketName": "網費很貴 - 上網時間統計",
-        "description": "追蹤時間，分析習慣，改善行為，提高效率"
+        "description": "追蹤上網時間，分析瀏覽習慣，避免沉迷網站，提升工作效率"
     },
     "ja": {
-        "name": "Web時間統計",
-        "marketName": "Web時間統計",
-        "description": "統計、分析、改善、効率向上"
+        "name": "タイムトラッカー",
+        "marketName": "タイムトラッカー - Web習慣ビルダー",
+        "description": "時間を追跡し、あなたの習慣を分析して、中毒性の高いサイトをブロック"
     },
     "en": {
-        "name": "Time Tracker for Browser",
-        "marketName": "Time Tracker for Browser - Web Habit Builder",
-        "description": "Track, analyze, control, then improve efficiency"
+        "name": "Time Tracker",
+        "marketName": "Time Tracker - Web Habit Builder",
+        "description": "Track time, analyze your habits and block addictive sites"
     },
     "pt_PT": {
-        "name": "Monitor de Tempo para Navegador",
-        "marketName": "Monitor de Tempo para Navegador - Criador de Hábitos Web",
-        "description": "Monitorize, analise, controle e melhore a eficiência"
+        "name": "Rastreador de Tempo",
+        "marketName": "Rastreador de Tempo - Construtor de Hábitos na Web",
+        "description": "Acompanhe o tempo, analise seus hábitos e bloqueie sites viciantes"
     },
     "uk": {
         "name": "Веб-трекер часу",
@@ -46,8 +46,8 @@
     },
     "ru": {
         "name": "Трекер времени",
-        "marketName": "Трекер времени",
-        "description": "Отслеживайте, анализируйте, контролируйте, а затем повышайте эффективность"
+        "marketName": "Трекер времени — Формирование веб-привычек",
+        "description": "Отслеживайте время, анализируйте свои привычки и блокируйте вызывающие зависимость сайты"
     },
     "ar": {
         "name": "متتبع الوقت",
