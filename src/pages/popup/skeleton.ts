@@ -1,6 +1,6 @@
 import { init as initTheme } from "@util/dark-mode"
 import { type FrameRequest, type FrameResponse } from "./message"
-import './style/skeleton.sass'
+import { injectSkeletonCss } from './style/skeleton'
 
 function injectFrame() {
     const iframe: HTMLIFrameElement = document.createElement('iframe')
@@ -24,6 +24,7 @@ function injectFrame() {
 async function main() {
     // Calculate the latest mode
     initTheme()
+    injectSkeletonCss()
     // Resize after init theme
     document.body.style.width = '766px'
     document.body.style.height = '596px'
