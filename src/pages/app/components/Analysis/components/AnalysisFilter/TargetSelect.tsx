@@ -11,7 +11,6 @@ import { computed, defineComponent, type FunctionalComponent, onMounted, ref, ty
 import { useAnalysisTarget } from "../../context"
 import type { AnalysisTarget } from "../../types"
 import { labelOfHostInfo } from "../../util"
-import "./select-v2.fix.sass"
 
 const SITE_PREFIX = 'S'
 const CATE_PREFIX = 'C'

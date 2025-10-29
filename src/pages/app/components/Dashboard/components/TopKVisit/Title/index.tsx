@@ -1,12 +1,12 @@
 import { tN } from "@app/locale"
+import { css } from '@emotion/css'
 import { useXsState } from '@hooks/useMediaSize'
 import Flex from "@pages/components/Flex"
-import { ElIcon, ElRadioButton, ElRadioGroup } from "element-plus"
+import { ElIcon, ElRadioButton, ElRadioGroup, useNamespace } from "element-plus"
 import { defineComponent } from "vue"
 import type { JSX } from "vue/jsx-runtime"
 import { type TopKChartType, useTopKFilter } from "../context"
 import TitleSelect from "./TitleSelect"
-import "./title.sass"
 
 const CHART_CONFIG: { [type in TopKChartType]: JSX.Element | string } = {
     pie: (
@@ -33,9 +33,19 @@ const CHART_CONFIG: { [type in TopKChartType]: JSX.Element | string } = {
     ),
 }
 
+const useRadioStyle = () => {
+    const radioNs = useNamespace('radio')
+    return css`
+        & .${radioNs.be('button', 'inner')} {
+            padding: 3px 5px;
+        }
+    `
+}
+
 const Title = defineComponent(() => {
     const filter = useTopKFilter()
     const isXs = useXsState()
+    const radioCls = useRadioStyle()
 
     return () => (
         <Flex align="center" justify="space-between">
@@ -52,7 +62,7 @@ const Title = defineComponent(() => {
                 onChange={val => filter.topKChartType = val as TopKChartType}
             >
                 {Object.entries(CHART_CONFIG).map(([k, v]) => (
-                    <ElRadioButton value={k}>
+                    <ElRadioButton value={k} class={radioCls}>
                         <ElIcon size={15}>{v}</ElIcon>
                     </ElRadioButton>
                 ))}

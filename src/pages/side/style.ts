@@ -1,7 +1,3 @@
-/**
- * Auto-generated from SASS file
- */
-
 import { injectGlobal } from '@emotion/css'
 import { injectElementPlusDarkTheme } from '@pages/element-ui/dark-theme'
 

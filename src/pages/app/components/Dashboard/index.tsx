@@ -20,7 +20,6 @@ import Indicator from "./components/Indicator"
 import MonthOnMonth from "./components/MonthOnMonth"
 import Timeline from './components/Timeline'
 import TopKVisit from "./components/TopKVisit"
-import "./dashboard.sass"
 import DashboardCard, { type DashboardCardProps } from './DashboardCard'
 
 const ROW_GUTTER = 15
