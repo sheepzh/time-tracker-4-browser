@@ -150,23 +150,32 @@ function convertSassToEmotion(sassContent: string): string {
             .join('')
 
         // Convert the content (SASS nesting to CSS)
-        const cssContent = convertSassIndentationToCSS(content.split('\n'))
+        let cssContent = convertSassIndentationToCSS(content.split('\n'))
 
-            // Build the css() call
-            // If the selector starts with a class, create a scoped class
-            if (finalSelector.startsWith('.')) {
-                // For class selectors, output just the content (the class name becomes the emotion class)
-                convertedSelectors.push(`export const ${varName} = css\`
+        // If the selector starts with a class, remove the first level of indentation
+        if (finalSelector.startsWith('.')) {
+            // Remove 4 spaces from the beginning of each line (first nesting level)
+            cssContent = cssContent
+                .split('\n')
+                .map(line => line.replace(/^    /, ''))
+                .join('\n')
+        }
+
+        // Build the css() call
+        // If the selector starts with a class, create a scoped class
+        if (finalSelector.startsWith('.')) {
+            // For class selectors, output just the content (the class name becomes the emotion class)
+            convertedSelectors.push(`export const ${varName} = css\`
 ${cssContent}
 \``)
-            } else {
-                // For other selectors (html, body, etc.), include the selector
-                convertedSelectors.push(`export const ${varName} = css\`
+        } else {
+            // For other selectors (html, body, etc.), include the selector
+            convertedSelectors.push(`export const ${varName} = css\`
     ${finalSelector} {
 ${cssContent}
     }
 \``)
-            }
+        }
     })
 
     return `/**
