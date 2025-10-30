@@ -27,7 +27,9 @@
         "rate": "Calificar"
     },
     "de": {
-        "rate": "Bewerten"
+        "rate": "Bewerten",
+        "showSiteName": "Seitenname anzeigen",
+        "showTopN": "Top {n} anzeigen"
     },
     "fr": {
         "rate": "Noter"

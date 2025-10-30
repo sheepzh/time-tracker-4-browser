@@ -336,7 +336,7 @@
         "msg": {
             "hostExistWarn": "{host} existiert",
             "existedTag": "EXISTIERT",
-            "noSelected": "Kein Standort ausgewählt",
+            "noSelected": "Keine Website ausgewählt",
             "noSupported": "Die ausgewählten Sites können keine Kategorien festlegen",
             "disassociatedMsg": "Möchten Sie die Kategorien aller ausgewählten Sites löschen?",
             "batchDeleteMsg": "Möchten Sie alle ausgewählten Sites löschen?"
