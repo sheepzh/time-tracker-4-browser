@@ -930,6 +930,7 @@
             "countLocalFiles": "{input} Zeit an {localFileTime} {info} im Browser zählen",
             "localFileTime": "eine lokale Datei lesen",
             "localFilesInfo": "Unterstützt Dateitypen, wie PDF, Bilder, .txt und .json",
+            "tabGroupInfo": "Wenn Sie eine Tag-Gruppe löschen, werden auch die Daten gelöscht.",
             "fileAccessDisabled": "Der Zugriff auf Datei-URLs ist derzeit nicht erlaubt. Bitte aktiviere ihn zuerst auf der Verwaltungsseite",
             "fileAccessFirefox": "Leider wird diese Funktion in Firefox nicht unterstützt",
             "weekStart": "Erster Tag der Woche {input}",
@@ -951,7 +952,8 @@
                 },
                 "strict": "Entsperren trotzdem nicht zulassen",
                 "strictTitle": "Operation bestätigen",
-                "strictContent": "Wenn Sie diese Option wählen, wenn eine Site Tageslimit auslöst, Sie dürfen die Blockierung nur bis zum nächsten Tag manuell entsperren. Wenn Regeln nicht richtig eingerichtet sind, können sie sehr gut Ihre Routinen behindern!"
+                "strictContent": "Wenn Sie diese Option wählen, wenn eine Site Tageslimit auslöst, Sie dürfen die Blockierung nur bis zum nächsten Tag manuell entsperren. Wenn Regeln nicht richtig eingerichtet sind, können sie sehr gut Ihre Routinen behindern!",
+                "pswFormLabel": "Passwort"
             }
         },
         "backup": {
@@ -1004,6 +1006,10 @@
         },
         "resetButton": "Zurücksetzen",
         "resetSuccess": "Auf Standardwerte zurückgesetzt!",
+        "exportButton": "Einstellungen exportieren",
+        "importButton": "Einstellungen importieren",
+        "exportSuccess": "Einstellungen erfolgreich exportiert",
+        "importSuccess": "Einstellungen erfolgreich importiert",
         "defaultValue": "Standard: {default}"
     },
     "fr": {
