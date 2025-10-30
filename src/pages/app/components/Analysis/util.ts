@@ -41,7 +41,7 @@ export function computeRingText(ring: RingValue, formatter?: ValueFormatter): st
         // return undefined if both are undefined
         return ''
     }
-    const delta = (current || 0) - (last || 0)
+    const delta = (current ?? 0) - (last ?? 0)
     let result = formatter ? formatter(delta) : delta?.toString()
     delta >= 0 && (result = '+' + result)
     return result
