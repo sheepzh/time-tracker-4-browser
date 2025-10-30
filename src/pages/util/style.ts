@@ -6,6 +6,14 @@
  */
 import { camelize, type CSSProperties } from "vue"
 
+type Variant = "primary" | "success" | "warning" | "info" | "danger"
+
+type ColorUsage = 'fill'
+
+export const colorVariant = (variant: Variant) => `--el-color-${variant}`
+
+export const colorUsage = (usage: ColorUsage) => `--el-${usage}-color`
+
 export const getStyle = (
     element: HTMLElement,
     styleName: keyof CSSProperties
@@ -46,5 +54,5 @@ export function getSecondaryTextColor(): string | undefined {
 }
 
 export function getInfoColor(): string | undefined {
-    return getCssVariable("--el-color-info")
+    return getCssVariable(colorVariant('info'))
 }
