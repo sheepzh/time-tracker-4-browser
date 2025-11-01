@@ -216,7 +216,7 @@
             "step2": "Daten bestätigen",
             "dataSource": "Datenquelle",
             "file": "Datendatei",
-            "selectFileBtn": "Wählen",
+            "selectFileBtn": "Auswählen",
             "conflictType": "Konfliktlösung",
             "conflictTip": "Was tun, wenn importierte Daten mit lokalen Daten in Konflikt geraten",
             "overwrite": "Überschreiben",

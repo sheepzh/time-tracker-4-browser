@@ -109,6 +109,7 @@
                 "date": "Datum",
                 "domain": "URL",
                 "cate": "Kategorie",
+                "group": "Tab-Gruppe",
                 "notMerge": "Nicht zusammenführen"
             }
         },

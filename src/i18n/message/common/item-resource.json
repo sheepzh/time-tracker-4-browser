@@ -126,6 +126,7 @@
     "de": {
         "date": "Datum",
         "host": "Webseite",
+        "group": "Tab-Gruppe",
         "focus": "Dauer",
         "time": "Besuche",
         "operation": {

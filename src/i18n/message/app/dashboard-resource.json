@@ -169,6 +169,10 @@
         },
         "monthOnMonth": {
             "title": "Monatlicher Trend der Browsing-Zeit"
+        },
+        "timeline": {
+            "title": "Zeitleiste der letzten {n} Tage",
+            "focusScore": "Fokussierung"
         }
     },
     "fr": {

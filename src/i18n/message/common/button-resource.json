@@ -157,6 +157,7 @@
     },
     "de": {
         "create": "Neu",
+        "add": "Hinzufügen",
         "delete": "Löschen",
         "batchDelete": "Stapelverarbeitung löschen",
         "modify": "Bearbeiten",
@@ -172,6 +173,7 @@
         "operation": "Aktionen",
         "configuration": "Einstellungen",
         "clear": "Leeren",
+        "enable": "Aktivieren",
         "batchEnable": "Stapelaktivierung",
         "batchDisable": "Stapeldeaktivierung"
     },

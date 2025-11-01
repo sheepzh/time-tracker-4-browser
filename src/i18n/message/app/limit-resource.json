@@ -394,7 +394,7 @@
             "rule": "Regel konfigurieren"
         },
         "button": {
-            "test": "Test-URL"
+            "test": "URL testen"
         },
         "message": {
             "noUrl": "Nicht ausgefüllte eingeschränkte URL",

@@ -217,6 +217,10 @@
         }
     },
     "de": {
+        "target": {
+            "site": "Webseite",
+            "cate": "Kategorie"
+        },
         "common": {
             "focusTotal": "Gesamte Browsingzeit",
             "visitTotal": "Gesamtbesuche",

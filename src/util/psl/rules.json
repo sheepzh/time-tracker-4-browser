@@ -263,6 +263,7 @@
             },
             "clerk": 1,
             "clerkstage": 1,
+            "cloudflare": 1,
             "convex": 1,
             "csb": {
                 "c": {
@@ -367,6 +368,7 @@
             },
             "vercel": 1,
             "wal": 1,
+            "wasmer": 1,
             "wdh": 1,
             "web": 1,
             "windsurf": 1,
@@ -1199,8 +1201,22 @@
     "bcn": 1,
     "bd": {
         "c": {
-            "*": 1
-        }
+            "ac": 1,
+            "ai": 1,
+            "co": 1,
+            "com": 1,
+            "edu": 1,
+            "gov": 1,
+            "id": 1,
+            "info": 1,
+            "it": 1,
+            "mil": 1,
+            "net": 1,
+            "org": 1,
+            "sch": 1,
+            "tv": 1
+        },
+        "l": 1
     },
     "be": {
         "c": {
@@ -3785,6 +3801,8 @@
             "builtwithdark": 1,
             "cafjs": 1,
             "canva-apps": 1,
+            "canva-hosted-embed": 1,
+            "canvacode": 1,
             "cdn77-storage": 1,
             "cechire": 1,
             "cf-ipfs": 1,
@@ -3938,6 +3956,7 @@
             "est-le-patron": 1,
             "est-mon-blogueur": 1,
             "eu": 1,
+            "eu1-plenit": 1,
             "evennode": {
                 "c": {
                     "eu-1": 1,
@@ -4123,8 +4142,6 @@
                     "demo": 1
                 }
             },
-            "jote-dr-lt1": 1,
-            "jote-rd-lt1": 1,
             "joyent": {
                 "c": {
                     "cns": {
@@ -4137,6 +4154,7 @@
             "jpn": 1,
             "kasserver": 1,
             "kozow": 1,
+            "la1-plenit": 1,
             "ladesk": 1,
             "likes-pie": 1,
             "likescandy": 1,
@@ -4422,6 +4440,7 @@
             "unusualperson": 1,
             "upsunapp": 1,
             "us": 1,
+            "us1-plenit": 1,
             "vipsinaapp": 1,
             "vultrobjects": {
                 "c": {
@@ -4798,6 +4817,7 @@
         "c": {
             "12chars": 1,
             "barsy": 1,
+            "bearblog": 1,
             "botdash": 1,
             "crm": {
                 "c": {
@@ -5041,7 +5061,6 @@
     "drive": 1,
     "dtv": 1,
     "dubai": 1,
-    "dunlop": 1,
     "dupont": 1,
     "durban": 1,
     "dvag": 1,
@@ -5247,6 +5266,7 @@
         "c": {
             "barsy": 1,
             "cloudns": 1,
+            "directwp": 1,
             "diskstation": 1,
             "dogado": {
                 "c": {
@@ -6111,6 +6131,7 @@
                     "id": 1
                 }
             },
+            "gitbook": 1,
             "github": 1,
             "gitlab": 1,
             "gov": 1,
@@ -11221,7 +11242,8 @@
                     "*": 1
                 }
             },
-            "service": 1
+            "service": 1,
+            "website": 1
         },
         "l": 1
     },
@@ -11513,6 +11535,7 @@
             "plesk": 1,
             "prvcy": 1,
             "rocky": 1,
+            "statichost": 1,
             "translated": 1
         },
         "l": 1
@@ -12248,6 +12271,7 @@
                     "*": 1
                 }
             },
+            "needle": 1,
             "onporter": 1,
             "ravendb": 1,
             "repl": 1,
@@ -13815,6 +13839,7 @@
             "firm": 1,
             "gob": 1,
             "gov": 1,
+            "ia": 1,
             "info": 1,
             "int": 1,
             "mil": 1,
@@ -14254,6 +14279,7 @@
     "xyz": {
         "c": {
             "botdash": 1,
+            "caffeine": 1,
             "telebit": {
                 "c": {
                     "*": 1
