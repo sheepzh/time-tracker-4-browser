@@ -1,19 +1,24 @@
 import {
-    createGist,
-    type FileForm,
-    findTarget,
-    getJsonFileContent,
-    type GistForm,
-    updateGist
+    createGist, findTarget, getJsonFileContent, updateGist,
+    type FileForm, type GistForm,
 } from "@api/gist"
-import { type EChartsType, init } from "echarts"
+import {
+    init,
+    type ComposeOption, type EChartsType, type GridComponentOption, type LineSeriesOption, type TitleComponentOption,
+} from "echarts"
 import { writeFileSync } from "fs"
-import { exit } from "process"
+import { exit } from 'process'
 import { filenameOf, getExistGist, validateTokenFromEnv } from "./common"
+
+type EcOption = ComposeOption<
+    | LineSeriesOption
+    | TitleComponentOption
+    | GridComponentOption
+>
 
 const ALL_BROWSERS: Browser[] = ['firefox', 'edge', 'chrome']
 
-const POINT_COUNT = 200
+const POINT_COUNT = 500
 
 type OriginData = {
     [browser in Browser]: UserCount
@@ -127,7 +132,7 @@ function render2Svg(chartData: ChartData): string {
     const totalUserCount = Object.values(yAxises)
         .map(v => v[v.length - 1] || 0)
         .reduce((a, b) => a + b)
-    chart.setOption({
+    const option: EcOption = {
         title: {
             text: 'Total Active User Count',
             subtext: `${xAxis[0]} to ${xAxis[xAxis.length - 1]}  |  currently ${totalUserCount} `
@@ -139,23 +144,30 @@ function render2Svg(chartData: ChartData): string {
             bottom: '8%',
             containLabel: true
         },
-        xAxis: [{
-            type: 'category',
-            boundaryGap: false,
-            data: xAxis
-        }],
-        yAxis: [
-            { type: 'value' }
-        ],
+        xAxis: { type: 'time' },
+        yAxis: {
+            type: 'value',
+            minInterval: 100,
+            axisLabel: {
+                formatter(value) {
+                    const text = value.toString()
+                    const textLen = text.length
+                    return textLen < 4 ? text : text.substring(0, textLen - 3) + 'K'
+                },
+            },
+        },
         series: ALL_BROWSERS.map(b => ({
             name: b,
             type: 'line',
             stack: 'Total',
             // Fill the area
             areaStyle: {},
-            data: yAxises[b]
+            lineStyle: { width: 0 },
+            showSymbol: false,
+            data: yAxises[b].map((val, idx) => [xAxis[idx], val]),
         }))
-    })
+    }
+    chart.setOption(option)
     return chart.renderToSVGString()
 }
 
