@@ -3,8 +3,8 @@ import { Back, Check, Close, Right } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
 import Box from "@pages/components/Box"
 import Flex from "@pages/components/Flex"
-import { ElButton, useNamespace } from "element-plus"
-import { defineComponent, h, useSlots } from "vue"
+import { type ButtonProps, ElButton, useNamespace } from "element-plus"
+import { computed, defineComponent, h, useSlots } from "vue"
 
 export type SopStepInstance<T> = { parseData: Getter<T> }
 
@@ -13,10 +13,17 @@ export type SopInstance = { init: NoArgCallback }
 const FLAGS = ['first', 'last', 'nextLoading', 'finishLoading'] as const
 const EMITS = ['onBack', 'onNext', 'onCancel', 'onFinish'] as const
 
+type FinishBtn = {
+    text?: string
+    type?: ButtonProps['type']
+}
+
 type Props = {
     [F in typeof FLAGS[number]]?: boolean
 } & {
     [C in typeof EMITS[number]]?: NoArgCallback
+} & {
+    finishBtn?: FinishBtn['text'] | FinishBtn
 }
 
 const DialogSop = defineComponent<Props>(props => {
@@ -26,6 +33,13 @@ const DialogSop = defineComponent<Props>(props => {
             width: 200px;
         }
     `
+
+    const finishBtn = computed<FinishBtn>(() => {
+        const prop = props.finishBtn
+        if (!prop) return {}
+        if (typeof prop === 'string') return { text: prop }
+        return prop
+    })
 
     return () => (
         <Flex column align="center" gap={40} marginTop={25}>
@@ -47,8 +61,12 @@ const DialogSop = defineComponent<Props>(props => {
                         </ElButton>
                     )}{
                         props.last ? (
-                            <ElButton type='success' icon={Check} onClick={props.onFinish} loading={props.finishLoading}>
-                                {t(msg => msg.button.save)}
+                            <ElButton
+                                icon={Check}
+                                type={finishBtn.value.type ?? 'success'}
+                                onClick={props.onFinish} loading={props.finishLoading}
+                            >
+                                {finishBtn.value.text ?? t(msg => msg.button.save)}
                             </ElButton>
                         ) : (
                             <ElButton type="primary" icon={Right} onClick={props.onNext} loading={props.nextLoading}>
@@ -60,6 +78,6 @@ const DialogSop = defineComponent<Props>(props => {
             </Flex>
         </Flex>
     )
-}, { props: [...FLAGS, ...EMITS] })
+}, { props: [...FLAGS, ...EMITS, 'finishBtn'] })
 
 export default DialogSop

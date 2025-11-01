@@ -82,12 +82,13 @@ const _default = defineComponent<Props>((props, ctx) => {
             onCancel={props.onCancel}
             onBack={init}
             onFinish={handleDownload}
+            finishBtn={t(msg => msg.option.backup.download.btn)}
             finishLoading={downloading.value}
             v-slots={{
                 steps: () => (
                     <ElSteps finishStatus="success" active={step.value} alignCenter>
                         <ElStep title={t(msg => msg.option.backup.clientTable.selectTip)} />
-                        <ElStep title={t(msg => msg.option.backup.download.step2)} />
+                        <ElStep title={t(msg => msg.option.backup.confirmStep)} />
                     </ElSteps>
                 ),
                 content: () => step.value === 0
