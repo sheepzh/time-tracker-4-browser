@@ -21,7 +21,7 @@ jobs:
             - name: Install dependencies
               run: npm install
             - name: Update psl
-              run: ts-node ./script/psl.ts
+              run: ts-node -P tsconfig.node.json ./script/psl.ts
             - name: Create Pull Request
               uses: peter-evans/create-pull-request@v7
               with:
