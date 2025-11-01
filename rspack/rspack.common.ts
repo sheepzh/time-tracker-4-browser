@@ -84,6 +84,7 @@ const staticOptions: Configuration = {
                         },
                         plugins: [
                             "@vue/babel-plugin-jsx",
+                            "@emotion/babel-plugin",
                         ],
                     },
                 }, 'ts-loader'],

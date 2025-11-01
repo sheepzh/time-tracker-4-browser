@@ -7,13 +7,13 @@
 
 import { t } from "@app/locale"
 import { Check, Close, Plus } from "@element-plus/icons-vue"
+import { css } from '@emotion/css'
 import { useState, useSwitch } from "@hooks"
 import Flex from "@pages/components/Flex"
 import { dateMinute2Idx, period2Str } from "@util/limit"
 import { MILL_PER_HOUR } from "@util/time"
-import { ElButton, ElTag, ElTimePicker } from "element-plus"
-import { type PropType, type StyleValue, defineComponent } from "vue"
-import './period-input.sass'
+import { ElButton, ElTag, ElTimePicker, useNamespace } from "element-plus"
+import { type StyleValue, defineComponent } from "vue"
 
 const BUTTON_STYLE: StyleValue = {
     padding: '8px',
@@ -74,79 +74,91 @@ const rangeInitial = (): [Date, Date] => {
     return [now, new Date(now.getTime() + MILL_PER_HOUR)]
 }
 
-const _default = defineComponent({
-    props: {
-        modelValue: Array as PropType<timer.limit.Period[]>
-    },
-    emits: {
-        change: (_periods: timer.limit.Period[]) => true,
-    },
-    setup(props, ctx) {
-        const [editing, openEditing, closeEditing] = useSwitch(false)
-        const [editingRange, setEditingRange] = useState(rangeInitial())
+const usePickerStyle = () => {
+    const rangeNs = useNamespace('range')
+    return css`
+        width: 120px !important;
+        padding: 0 5px !important;
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
 
-        const handleEdit = () => {
-            openEditing()
-            setEditingRange(rangeInitial())
+        & .${rangeNs.e('close-icon')} {
+            width: 0px;
         }
 
-        const handleSave = () => {
-            const val = range2Period(editingRange.value)
-            const oldPeriods = props.modelValue?.map(p => ([p?.[0], p?.[1]] satisfies Vector<number>)) || []
-            insertPeriods(oldPeriods, val)
-            ctx.emit('change', oldPeriods)
-            closeEditing()
+        & .${rangeNs.b('input')} {
+            height: 28px;
         }
+    `
+}
 
-        const handleDelete = (idx: number) => {
-            const newPeriods = props.modelValue?.filter((_, i) => i !== idx)
-                ?.map(p => ([p?.[0], p?.[1]] satisfies Vector<number>)) || []
-            ctx.emit('change', newPeriods)
-        }
+const PeriodInput = defineComponent<ModelValue<timer.limit.Period[]>>(props => {
+    const [editing, openEditing, closeEditing] = useSwitch(false)
+    const [editingRange, setEditingRange] = useState(rangeInitial())
 
-        return () => (
-            <Flex gap={5}>
-                {props.modelValue?.map((p, idx) =>
-                    <ElTag
-                        size="large"
-                        closable
-                        onClose={() => handleDelete(idx)}
-                    >
-                        {period2Str(p)}
-                    </ElTag>
-                )}
-                <div v-show={editing.value}>
-                    <ElTimePicker
-                        class='limit-period-input-time-picker'
-                        modelValue={editingRange.value}
-                        onUpdate:modelValue={setEditingRange}
-                        isRange
-                        rangeSeparator="-"
-                        format="HH:mm"
-                        clearable={false}
-                    />
-                    <ElButton
-                        icon={Close}
-                        onClick={closeEditing}
-                        style={{ ...BUTTON_STYLE, borderRadius: 0 } satisfies StyleValue}
-                    />
-                    <ElButton
-                        icon={Check}
-                        onClick={handleSave}
-                        style={{ ...BUTTON_STYLE, marginInlineStart: 0 } satisfies StyleValue}
-                    />
-                </div>
-                <ElButton
-                    v-show={!editing.value}
-                    icon={Plus}
-                    onClick={handleEdit}
-                    style={BUTTON_STYLE}
-                >
-                    {t(msg => msg.button.create)}
-                </ElButton>
-            </Flex>
-        )
+    const handleEdit = () => {
+        openEditing()
+        setEditingRange(rangeInitial())
     }
-})
 
-export default _default
+    const handleSave = () => {
+        const val = range2Period(editingRange.value)
+        const oldPeriods = props.modelValue?.map(p => ([p?.[0], p?.[1]] satisfies Vector<number>)) || []
+        insertPeriods(oldPeriods, val)
+        props.onChange?.(oldPeriods)
+        closeEditing()
+    }
+
+    const handleDelete = (idx: number) => {
+        const newPeriods = props.modelValue?.filter((_, i) => i !== idx)
+            ?.map(p => ([p?.[0], p?.[1]] satisfies Vector<number>)) || []
+        props.onChange?.(newPeriods)
+    }
+
+    const pickerCls = usePickerStyle()
+
+    return () => (
+        <Flex gap={5}>
+            {props.modelValue?.map((p, idx) =>
+                <ElTag
+                    size="large"
+                    closable
+                    onClose={() => handleDelete(idx)}
+                >
+                    {period2Str(p)}
+                </ElTag>
+            )}
+            <div v-show={editing.value}>
+                <ElTimePicker
+                    class={pickerCls}
+                    modelValue={editingRange.value}
+                    onUpdate:modelValue={setEditingRange}
+                    isRange
+                    rangeSeparator="-"
+                    format="HH:mm"
+                    clearable={false}
+                />
+                <ElButton
+                    icon={Close}
+                    onClick={closeEditing}
+                    style={{ ...BUTTON_STYLE, borderRadius: 0 } satisfies StyleValue}
+                />
+                <ElButton
+                    icon={Check}
+                    onClick={handleSave}
+                    style={{ ...BUTTON_STYLE, marginInlineStart: 0 } satisfies StyleValue}
+                />
+            </div>
+            <ElButton
+                v-show={!editing.value}
+                icon={Plus}
+                onClick={handleEdit}
+                style={BUTTON_STYLE}
+            >
+                {t(msg => msg.button.create)}
+            </ElButton>
+        </Flex>
+    )
+}, { props: ['modelValue', 'onChange'] })
+
+export default PeriodInput

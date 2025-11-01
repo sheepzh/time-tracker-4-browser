@@ -99,7 +99,6 @@ export type OptionMessage = {
         }
         download: {
             btn: string
-            step2: string
             willDownload: string
             confirmTip: string
         }
@@ -107,6 +106,7 @@ export type OptionMessage = {
             btn: string
             confirmTip: string
         }
+        confirmStep: string
         lastTimeTip: string
         auto: {
             label: string

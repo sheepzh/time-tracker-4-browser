@@ -32,16 +32,13 @@ export type RingValue = [
  * @param formatter formatter
  * @returns text or '-'
  */
-export function computeRingText(ring: RingValue, formatter?: ValueFormatter): string {
-    if (!ring) {
-        return ''
-    }
+export function computeRingText(ring: RingValue, formatter?: ValueFormatter): string | undefined {
     const [current, last] = ring
     if (current === undefined && last === undefined) {
         // return undefined if both are undefined
-        return ''
+        return undefined
     }
-    const delta = (current || 0) - (last || 0)
+    const delta = (current ?? 0) - (last ?? 0)
     let result = formatter ? formatter(delta) : delta?.toString()
     delta >= 0 && (result = '+' + result)
     return result

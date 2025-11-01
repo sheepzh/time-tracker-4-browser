@@ -7,12 +7,13 @@
 import { KanbanCard, KanbanIndicatorCell } from "@app/components/common/kanban"
 import { t } from "@app/locale"
 import { cvt2LocaleTime, periodFormatter } from "@app/util/time"
+import { css } from '@emotion/css'
+import Grid from '@pages/components/Grid'
 import { computed, defineComponent } from "vue"
 import { useAnalysisRows, useAnalysisTarget, useAnalysisTimeFormat } from "../../context"
 import { AnalysisTarget } from "../../types"
 import Calendar from "./Calendar"
 import TargetInfo from "./TargetInfo"
-import "./summary.sass"
 
 type Summary = {
     focus: number
@@ -43,11 +44,21 @@ const _default = defineComponent(() => {
     const timeFormat = useAnalysisTimeFormat()
     const rows = useAnalysisRows()
     const summary = computed(() => computeSummary(target.value, rows.value))
+    const containerCls = css`
+        & > div > div {
+            background-color: var(--el-card-bg-color);
+        }
+    `
 
     return () => (
         <KanbanCard title={msg => msg.analysis.summary.title}>
-            <div class="analysis-summary-container">
-                <div class='indicator-area'>
+            <Grid
+                class={containerCls}
+                gap={1}
+                bgColor='var(--el-border-color)'
+                templateColumns='repeat(auto-fill, minmax(calc(min(100%, max(500px, calc(50% - .5px)))), 1fr))'
+            >
+                <Grid gap={1} templateColumns='repeat(auto-fill, minmax(calc(min(100%, max(300px, calc(50% - .5px)))), 1fr))'>
                     <TargetInfo />
                     <KanbanIndicatorCell
                         mainName={FOCUS_LABEL}
@@ -60,11 +71,11 @@ const _default = defineComponent(() => {
                         subValue={summary.value?.firstDay ? `@${cvt2LocaleTime(summary.value?.firstDay)}` : ''}
                     />
                     <KanbanIndicatorCell mainName={VISIT_LABEL} mainValue={summary.value?.visit?.toString?.() || '-'} />
-                </div>
+                </Grid>
                 <div>
                     <Calendar />
                 </div>
-            </div>
+            </Grid>
         </KanbanCard>
     )
 })

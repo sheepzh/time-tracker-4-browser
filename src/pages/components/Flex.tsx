@@ -8,6 +8,7 @@ const cvtFlexWrap = (wrap: boolean | CSSProperties['flexWrap']): CSSProperties['
 }
 
 type Props = {
+    as?: keyof HTMLElementTagNameMap
     direction?: CSSProperties['flexDirection']
     column?: boolean
     flex?: number
@@ -16,13 +17,16 @@ type Props = {
     gap?: string | number
     columnGap?: string | number
     wrap?: CSSProperties['flexWrap'] | boolean
+    href?: string
+    target?: HTMLAnchorElement['target']
 } & BaseProps
 
 const Flex = defineComponent<Props>(props => {
     const { default: defaultSlots } = useSlots()
+    const Comp = props.as ?? 'div'
 
     return () => (
-        <div
+        <Comp
             id={props.id}
             class={props.class}
             onClick={props.onClick}
@@ -37,10 +41,12 @@ const Flex = defineComponent<Props>(props => {
                 gap: cvtPxScale(props.gap),
                 ...cvt2BaseStyle(props),
             }}
+            href={props.href}
+            target={props.target}
         >
             {defaultSlots && h(defaultSlots)}
-        </div>
+        </Comp>
     )
-}, { props: [...ALL_BASE_PROPS, 'direction', 'column', 'flex', 'align', 'justify', 'gap', 'columnGap', 'wrap'] })
+}, { props: [...ALL_BASE_PROPS, 'direction', 'column', 'flex', 'align', 'justify', 'gap', 'columnGap', 'wrap', 'as'] })
 
 export default Flex

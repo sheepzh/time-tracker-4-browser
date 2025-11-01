@@ -7,16 +7,36 @@
 import { t } from "@app/locale"
 import { processVerification } from "@app/util/limit"
 import { Edit } from "@element-plus/icons-vue"
+import { css } from '@emotion/css'
+import { locale } from '@i18n'
 import { defaultDailyLimit } from "@util/constant/option"
-import { ElButton, ElInput, ElInputNumber, ElMessage, ElMessageBox, ElOption, ElSelect, ElSwitch } from "element-plus"
+import { ElButton, ElInput, ElInputNumber, ElMessage, ElMessageBox, ElOption, ElSelect, ElSwitch, useNamespace } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
 import { type OptionInstance } from "../../common"
 import { useOption } from "../../useOption"
 import OptionItem from "../OptionItem"
 import OptionLines from '../OptionLines'
-import "./limit-option.sass"
 import { usePswEdit } from "./usePswEdit"
 import { useVerify } from "./useVerify"
+
+const useLevelSelectStyle = () => {
+    const selectNs = useNamespace('select')
+    const localWidth: Partial<Record<timer.Locale, number>> = {
+        en: 330,
+        uk: 330,
+        zh_CN: 210,
+        zh_TW: 210,
+    }
+    const width = localWidth[locale] ?? 370
+
+    const cls = css`
+        & .${selectNs.e('wrapper')} {
+            width: 100% !important;
+        }
+    `
+
+    return { width, cls }
+}
 
 const ALL_LEVEL: timer.limit.RestrictionLevel[] = [
     'nothing',
@@ -94,6 +114,8 @@ const _default = defineComponent((_, ctx) => {
         }
     }
 
+    const levelSelectStyle = useLevelSelectStyle()
+
     return () => <OptionLines>
         <OptionItem
             label={msg => msg.option.dailyLimit.reminder}
@@ -123,7 +145,8 @@ const _default = defineComponent((_, ctx) => {
             <ElSelect
                 modelValue={option.limitLevel}
                 size="small"
-                class='option-daily-limit-level-select'
+                class={levelSelectStyle.cls}
+                style={{ width: `${levelSelectStyle.width}px` }}
                 onChange={handleLevelChange}
             >
                 {ALL_LEVEL.map(item => <ElOption value={item} label={t(msg => msg.option.dailyLimit.level[item])} />)}

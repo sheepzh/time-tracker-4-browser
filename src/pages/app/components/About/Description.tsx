@@ -1,4 +1,5 @@
 import { t } from "@app/locale"
+import { css } from '@emotion/css'
 import { MediaSize, useMediaSize } from "@hooks"
 import { locale } from "@i18n"
 import Flex from "@pages/components/Flex"
@@ -16,11 +17,59 @@ import {
     REVIEW_PAGE,
     SOURCE_CODE_PAGE,
 } from "@util/constant/url"
-import { type ComponentSize, ElCard, ElDescriptions, ElDescriptionsItem, ElDivider, ElText } from "element-plus"
+import { type ComponentSize, ElCard, ElDescriptions, ElDescriptionsItem, ElDivider, ElText, useNamespace } from "element-plus"
 import { computed, defineComponent, reactive } from "vue"
 import DescLink from "./DescLink"
-import "./description.sass"
+import { Chrome, Echarts, Edge, ElementPlus, Firefox, GitHub, Vue } from './Icon'
 import InstallationLink from "./InstallationLink"
+
+const useStyle = () => {
+    const textNs = useNamespace('text')
+    const descriptionsNs = useNamespace('descriptions')
+
+    const textContainer = css`
+        padding: 20px 40px;
+        flex-direction: row;
+
+        & > div {
+            flex: 1;
+            text-align: center;
+            padding: 0 40px;
+            line-height: 1.75rem;
+
+            & .${textNs.b()} {
+                a {
+                    color: unset;
+                    font-size: inherit;
+                    line-height: inherit;
+                }
+
+                a:visited {
+                    color: unset;
+                }
+            }
+        }
+
+        html[data-media-size='xs'] & {
+            flex-direction: column;
+            padding-inline: 0;
+            gap: 40px;
+
+            > div {
+                padding: 0;
+            }
+        }
+    `
+
+    const descriptionsCls = css`
+        html[data-media-size='xs'] & {
+            .${descriptionsNs.e('content')}  {
+                word-break: break-all;
+            }
+        }
+    `
+    return [textContainer, descriptionsCls]
+}
 
 const computeSize = (mediaSize: MediaSize): ComponentSize => {
     if (mediaSize <= MediaSize.sm) {
@@ -45,13 +94,11 @@ const _default = defineComponent<{}>(() => {
         email: AUTHOR_EMAIL,
     })
 
+    const [textContainerCls, descriptionsCls] = useStyle()
+
     return () => (
-        <ElCard class="about-card">
-            <ElDescriptions
-                size={size.value}
-                column={column.value}
-                border
-            >
+        <ElCard>
+            <ElDescriptions class={descriptionsCls} border size={size.value} column={column.value}>
                 <ElDescriptionsItem label={t(msg => msg.about.label.name)} labelAlign="right">
                     {t(msg => msg.meta.marketName)}
                 </ElDescriptionsItem>
@@ -67,7 +114,7 @@ const _default = defineComponent<{}>(() => {
                     <DescLink href={pages.privacy} />
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.base.sourceCode)} labelAlign="right">
-                    <DescLink href={pages.sourceCode} icon="github" />
+                    <DescLink href={pages.sourceCode} icon={<GitHub />} />
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.about.label.license)} labelAlign="right">
                     <DescLink href={LICENSE_PAGE}>
@@ -75,32 +122,38 @@ const _default = defineComponent<{}>(() => {
                     </DescLink>
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.base.changeLog)} labelAlign="right">
-                    <DescLink href={pages.changeLog} icon="github" />
+                    <DescLink href={pages.changeLog} icon={<GitHub />} />
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.about.label.support)} labelAlign="right">
                     {pages.email}
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.about.label.installation)} labelAlign="right">
                     <Flex gap={15} align="center" margin={mediaSize.value === MediaSize.xs ? '5px 0' : 10}>
-                        <InstallationLink href={CHROME_HOMEPAGE} name="Chrome" source="chrome" />
-                        <InstallationLink href={EDGE_HOMEPAGE} name="Edge" source="edge" />
-                        <InstallationLink href={FIREFOX_HOMEPAGE} name="Firefox" source="firefox" />
+                        <InstallationLink href={CHROME_HOMEPAGE} name="Chrome">
+                            <Chrome />
+                        </InstallationLink>
+                        <InstallationLink href={EDGE_HOMEPAGE} name="Edge">
+                            <Edge />
+                        </InstallationLink>
+                        <InstallationLink href={FIREFOX_HOMEPAGE} name="Firefox">
+                            <Firefox />
+                        </InstallationLink>
                     </Flex>
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.about.label.thanks)} labelAlign="right">
                     <div>
-                        <DescLink href="https://vuejs.org/" icon="vue">VueJS</DescLink>
+                        <DescLink href="https://vuejs.org/" icon={<Vue />}>VueJS</DescLink>
                     </div>
                     <div>
-                        <DescLink href="https://echarts.apache.org/" icon="echarts">Echarts</DescLink>
+                        <DescLink href="https://echarts.apache.org/" icon={<Echarts />}>Echarts</DescLink>
                     </div>
                     <div>
-                        <DescLink href="https://element-plus.org/" icon="element-plus">Element Plus</DescLink>
+                        <DescLink href="https://element-plus.org/" icon={<ElementPlus />}>Element Plus</DescLink>
                     </div>
                 </ElDescriptionsItem>
             </ElDescriptions>
             <ElDivider />
-            <div class="text-container">
+            <Flex class={textContainerCls}>
                 <div>
                     <ElText size="large">
                         🌟&ensp;
@@ -118,7 +171,7 @@ const _default = defineComponent<{}>(() => {
                         </a>
                     </ElText>
                 </div>
-            </div>
+            </Flex>
         </ElCard>
     )
 })

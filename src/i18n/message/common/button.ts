@@ -27,6 +27,8 @@ export type ButtonMessage = {
     enable: string
     batchEnable: string
     batchDisable: string
+    collapse: string
+    expand: string
 }
 
 const _default: Messages<ButtonMessage> = resource
