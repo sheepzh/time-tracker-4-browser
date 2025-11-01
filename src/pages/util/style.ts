@@ -8,11 +8,15 @@ import { camelize, type CSSProperties } from "vue"
 
 type Variant = "primary" | "success" | "warning" | "info" | "danger"
 
+type TextVariant = "primary" | "regular" | "secondary"
+
 type ColorUsage = 'fill'
 
 export const colorVariant = (variant: Variant) => `--el-color-${variant}`
 
 export const colorUsage = (usage: ColorUsage) => `--el-${usage}-color`
+
+export const textColor = (variant: TextVariant) => `--el-text-color-${variant}`
 
 export const getStyle = (
     element: HTMLElement,
@@ -42,15 +46,15 @@ export function getCssVariable(varName: string, eleOrSelector?: HTMLElement | st
 }
 
 export function getPrimaryTextColor(): string | undefined {
-    return getCssVariable("--el-text-color-primary")
+    return getCssVariable(textColor("primary"))
 }
 
 export function getRegularTextColor(): string | undefined {
-    return getCssVariable("--el-text-color-regular")
+    return getCssVariable(textColor("regular"))
 }
 
 export function getSecondaryTextColor(): string | undefined {
-    return getCssVariable("--el-text-color-secondary")
+    return getCssVariable(textColor("secondary"))
 }
 
 export function getInfoColor(): string | undefined {

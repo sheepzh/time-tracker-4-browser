@@ -8,11 +8,6 @@
 import { onBeforeMount, ref, type Ref, watch } from "vue"
 import { useState } from "."
 
-type Result<T> = {
-    data: Ref<T | undefined>
-    setter: (val: T) => void
-}
-
 const getInitialValue = <T>(key: string, defaultValue?: T): T | undefined => {
     if (!key) return defaultValue
     const exist = localStorage.getItem(key)
@@ -44,7 +39,7 @@ export function useCached<T>(
     key: string | undefined,
     defaultValue?: T,
     defaultFirst?: boolean,
-): Result<T> {
+) {
     if (!key) {
         const [data, setter] = useState(defaultValue)
         return { data, setter }

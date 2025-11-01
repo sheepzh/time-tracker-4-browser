@@ -19,7 +19,9 @@
         "clear": "Clear",
         "enable": "Enable",
         "batchEnable": "Batch Enable",
-        "batchDisable": "Batch Disable"
+        "batchDisable": "Batch Disable",
+        "collapse": "Collapse",
+        "expand": "Expand"
     },
     "zh_CN": {
         "create": "新建",
@@ -41,7 +43,9 @@
         "clear": "清除",
         "enable": "启用",
         "batchEnable": "批量启用",
-        "batchDisable": "批量禁用"
+        "batchDisable": "批量禁用",
+        "collapse": "折叠",
+        "expand": "展开"
     },
     "zh_TW": {
         "create": "新增",
