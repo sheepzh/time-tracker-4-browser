@@ -4,35 +4,23 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { type ButtonType, ElButton } from "element-plus"
-import { type Component, defineComponent, type PropType } from "vue"
-import { type JSX } from "vue/jsx-runtime"
+import { type I18nKey, t } from '@app/locale'
+import { type ButtonProps, ElButton } from "element-plus"
+import { defineComponent } from "vue"
 
-const _default = defineComponent({
-    props: {
-        type: String as PropType<ButtonType>,
-        text: String,
-        icon: Object as PropType<JSX.Element | Component>,
-        right: {
-            type: Boolean,
-            default: true
-        }
-    },
-    emits: {
-        click: () => true
-    },
-    setup(props, ctx) {
-        return () => (
-            <ElButton
-                class='filter-item'
-                type={props.type}
-                icon={props.icon}
-                onClick={() => ctx.emit("click")}
-            >
-                {props.text}
-            </ElButton>
-        )
-    }
-})
+type Props = {
+    icon: ButtonProps['icon']
+    text: I18nKey
+    type?: ButtonProps['type']
+    onClick?: NoArgCallback
+}
 
-export default _default
+const ButtonFilterItem = defineComponent<Props>(props => {
+    return () => (
+        <ElButton type={props.type ?? 'primary'} icon={props.icon} onClick={props.onClick}>
+            {t(props.text)}
+        </ElButton>
+    )
+}, { props: ['icon', 'onClick', 'text', 'type'] })
+
+export default ButtonFilterItem

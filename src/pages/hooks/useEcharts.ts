@@ -5,13 +5,14 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { useWindowSize } from "@hooks/useWindowSize"
 import optionHolder from "@service/components/option-holder"
 import { processAnimation, processAria, processRtl } from "@util/echarts"
 import { type AriaComponentOption, type ComposeOption } from "echarts"
 import { type ECharts, init } from "echarts/core"
 import { ElLoading } from "element-plus"
 import { type Ref, isRef, onMounted, ref, watch } from "vue"
+import { useElementSize } from './useElementSize'
+import { useWindowSize } from "./useWindowSize"
 
 type BaseEchartsOption = ComposeOption<AriaComponentOption>
 
@@ -112,8 +113,9 @@ export const useEcharts = <BizOption, EchartsOption, EW extends EchartsWrapper<B
         isRef(fetch) && watch(fetch, refresh)
     })
 
-    const { width, height } = useWindowSize()
-    watch([width, height], () => wrapperInstance?.resize?.())
+    const { width: winW, height: winH } = useWindowSize()
+    const { width: elW, height: elH } = useElementSize(elRef, { debounce: 50 })
+    watch([winW, winH, elW, elH], () => wrapperInstance?.resize?.())
 
     return {
         refresh,

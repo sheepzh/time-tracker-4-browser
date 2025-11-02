@@ -95,7 +95,6 @@
             "operation": "备份数据",
             "download": {
                 "btn": "下载数据",
-                "step2": "确认数据",
                 "willDownload": "待下载数据",
                 "confirmTip": "将下载来自【{clientName}】的 {size} 条数据"
             },
@@ -103,6 +102,7 @@
                 "btn": "清除数据",
                 "confirmTip": "将删除【{clientName}】所追踪的 {hostCount} 个站点的 {rowCount} 条数据！"
             },
+            "confirmStep": "确认数据",
             "clientTable": {
                 "selectTip": "选择客户端",
                 "dataRange": "已备份数据区间",
@@ -223,7 +223,6 @@
             "operation": "備份資料",
             "download": {
                 "btn": "下載",
-                "step2": "確認資料",
                 "willDownload": "待下載資料",
                 "confirmTip": "將從【{clientName}】下載 {size} 筆資料"
             },
@@ -231,6 +230,7 @@
                 "btn": "刪除資料",
                 "confirmTip": "將刪除【{clientName}】追蹤的 {hostCount} 個網站共 {rowCount} 筆資料！"
             },
+            "confirmStep": "確認資料",
             "clientTable": {
                 "selectTip": "選擇用戶端",
                 "dataRange": "資料範圍",
@@ -353,7 +353,6 @@
             "operation": "Backup",
             "download": {
                 "btn": "Download",
-                "step2": "Confirm data",
                 "willDownload": "To be downloaded",
                 "confirmTip": "{size} pieces of data from [{clientName}] will be downloaded"
             },
@@ -361,6 +360,7 @@
                 "btn": "Clear",
                 "confirmTip": "{rowCount} pieces of data for {hostCount} sites tracked by [{clientName}] will be deleted!"
             },
+            "confirmStep": "Confirm data",
             "clientTable": {
                 "selectTip": "Select client",
                 "dataRange": "Range of data",
@@ -479,7 +479,6 @@
             "operation": "バックアップ",
             "download": {
                 "btn": "ダウンロード",
-                "step2": "データを確認",
                 "willDownload": "ダウンロードするデータ",
                 "confirmTip": "[{clientName}] から {size} 個のデータがダウンロードされます"
             },
@@ -487,6 +486,7 @@
                 "btn": "削除",
                 "confirmTip": "[{clientName}] によって追跡されている {hostCount} サイトの {rowCount} 個のデータが削除されます。"
             },
+            "confirmStep": "データを確認",
             "clientTable": {
                 "selectTip": "クライアントの選択",
                 "dataRange": "データ範囲",
@@ -605,7 +605,6 @@
             "operation": "Cópia",
             "download": {
                 "btn": "Transferir",
-                "step2": "Confirmar dados",
                 "willDownload": "Dados a transferir",
                 "confirmTip": "{size} dados de [{clientName}] serão transferidos"
             },
@@ -613,6 +612,7 @@
                 "btn": "Limpar",
                 "confirmTip": "{rowCount} dados de {hostCount} sites de [{clientName}] serão eliminados!"
             },
+            "confirmStep": "Confirmar dados",
             "clientTable": {
                 "selectTip": "Selecionar cliente",
                 "dataRange": "Intervalo de dados",
@@ -727,7 +727,6 @@
             "operation": "Зробити резервну копію",
             "download": {
                 "btn": "Завантажити",
-                "step2": "Підтвердження даних",
                 "willDownload": "До завантаження",
                 "confirmTip": "Буде завантажено {size} елементів даних із [{clientName}]"
             },
@@ -735,6 +734,7 @@
                 "btn": "Очистити",
                 "confirmTip": "Буде видалено {rowCount} елементів даних для {hostCount} сайтів, записаних у [{clientName}]!"
             },
+            "confirmStep": "Підтвердження даних",
             "clientTable": {
                 "selectTip": "Вибір клієнта",
                 "dataRange": "Діапазон даних",
@@ -856,7 +856,6 @@
             "operation": "Copia de seguridad",
             "download": {
                 "btn": "Descargar",
-                "step2": "Confirmar datos",
                 "willDownload": "Para ser descargado",
                 "confirmTip": "Se descargarán {size} piezas de datos de [{clientName}]"
             },
@@ -864,6 +863,7 @@
                 "btn": "Limpiar",
                 "confirmTip": "¡Se eliminarán {rowCount} piezas de datos para {hostCount} sitios rastreados por [{clientName}]!"
             },
+            "confirmStep": "Confirmar datos",
             "clientTable": {
                 "selectTip": "Seleccionar cliente",
                 "dataRange": "Rango de datos",
@@ -980,7 +980,6 @@
             "operation": "Backup",
             "download": {
                 "btn": "Herunterladen",
-                "step2": "Daten bestätigen",
                 "willDownload": "Zum Herunterladen",
                 "confirmTip": "Lädt {size} Datenstücke von [{clientName}] herunter"
             },
@@ -988,6 +987,7 @@
                 "btn": "Löschen",
                 "confirmTip": "{rowCount} Datenelemente für {hostCount} Websites, die von [{clientName}] verfolgt werden, werden gelöscht!"
             },
+            "confirmStep": "Daten bestätigen",
             "clientTable": {
                 "selectTip": "Wählen Sie ein Terminal aus",
                 "dataRange": "Datenreichweite",
@@ -1106,7 +1106,6 @@
             "operation": "Sauvegarder",
             "download": {
                 "btn": "Télécharger",
-                "step2": "Confirmer les données",
                 "willDownload": "À télécharger",
                 "confirmTip": "{size} éléments de données de [{clientName}] seront téléchargés"
             },
@@ -1114,6 +1113,7 @@
                 "btn": "Effacer",
                 "confirmTip": "Les données {rowCount} pour les sites {hostCount} suivis par [{clientName}] seront supprimées !"
             },
+            "confirmStep": "Confirmer les données",
             "clientTable": {
                 "selectTip": "Sélectionnez le client",
                 "dataRange": "Plage de données",
@@ -1277,7 +1277,6 @@
             "operation": "إنشاء نسخة إحتياطية",
             "download": {
                 "btn": "تحميل",
-                "step2": "تأكيد البيانات",
                 "willDownload": "ليتم تحميله",
                 "confirmTip": "سيتم تنزيل {size} من البيانات من [{clientName}]"
             },
@@ -1285,6 +1284,7 @@
                 "btn": "مسح",
                 "confirmTip": "سيتم حذف {rowCount} من البيانات لـ {hostCount} موقعًا التي يتتبعها [{clientName}]!"
             },
+            "confirmStep": "تأكيد البيانات",
             "clientTable": {
                 "selectTip": "اختر عميلاً",
                 "dataRange": "مجال البيانات",

@@ -64,19 +64,17 @@ const _default = defineComponent(() => {
             <Flex gap={10}>
                 <DropdownButton items={batchItems} />
                 <ButtonFilterItem
-                    text={t(msg => msg.limit.button.test)}
-                    type="primary"
+                    text={msg => msg.limit.button.test}
                     icon={Operation}
                     onClick={test}
                 />
                 <ButtonFilterItem
-                    text={t(msg => msg.base.option)}
+                    text={msg => msg.base.option}
                     icon={SetUp}
-                    type="primary"
                     onClick={() => createTabAfterCurrent(optionPageUrl)}
                 />
                 <ButtonFilterItem
-                    text={t(msg => msg.button.create)}
+                    text={msg => msg.button.create}
                     type="success"
                     icon={Plus}
                     onClick={create}

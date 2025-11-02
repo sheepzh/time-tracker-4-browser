@@ -15,7 +15,6 @@ import BackupOption from './components/BackupOption'
 import LimitOption from './components/LimitOption'
 import StatisticsOption from "./components/StatisticsOption"
 import Select from "./Select"
-import './style.sass'
 import Tabs from "./Tabs"
 
 const _default = defineComponent(() => {

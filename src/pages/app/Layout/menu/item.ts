@@ -39,7 +39,7 @@ export type MenuGroup = Omit<MenuItem, 'href' | 'route'> & {
 /**
  * Menu items
  */
-export const MENUS: MenuGroup[] = [{
+export const MENU_GROUPS: MenuGroup[] = [{
     title: msg => msg.menu.data,
     index: 'data',
     icon: Histogram,
@@ -120,4 +120,4 @@ export const MENUS: MenuGroup[] = [{
     }]
 }]
 
-export const NAV_MENUS: MenuItem[] = MENUS.flatMap(g => g.children || []).filter(m => m.mobile)
+export const NAV_MENUS: MenuItem[] = MENU_GROUPS.flatMap(g => g.children || []).filter(m => m.mobile)

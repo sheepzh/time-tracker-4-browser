@@ -14,7 +14,7 @@ import { createApp } from "vue"
 import Main from "./Main"
 import { type FrameRequest, type FrameResponse } from "./message"
 import initRouter from "./router"
-import "./style/index.sass"
+import { injectGlobalCss } from "./style"
 
 function send2ParentWindow(data: any): Promise<void> {
     return new Promise(resolve => {
@@ -37,6 +37,7 @@ function send2ParentWindow(data: any): Promise<void> {
 
 async function main() {
     await initLocale()
+    injectGlobalCss()
 
     const isDarkMode = await optionService.isDarkMode()
     toggle(isDarkMode)

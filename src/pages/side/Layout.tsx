@@ -1,4 +1,5 @@
 import { useRequest } from "@hooks"
+import Flex from '@pages/components/Flex'
 import { selectSite } from "@service/stat-service"
 import { formatTime } from "@util/time"
 import { ElText } from "element-plus"
@@ -7,7 +8,7 @@ import RowList from "./components/RowList"
 import Search from "./components/Search"
 import { t } from "./locale"
 
-const _default = defineComponent(() => {
+const _default = defineComponent<{}>(() => {
     const date = ref(new Date())
     const query = ref('')
 
@@ -18,7 +19,7 @@ const _default = defineComponent(() => {
         sortDirection: 'DESC',
     }))
 
-    return () => <div class="main">
+    return () => <Flex column height='100%'>
         <Search
             defaultQuery={query.value}
             defaultDate={date.value}
@@ -29,7 +30,7 @@ const _default = defineComponent(() => {
                 refresh()
             }}
         />
-        <div class="title">
+        <Flex height={60} style={{ paddingInlineStart: '5px' }}>
             <ElText>
                 {t(msg => msg.list.title)}
             </ElText>
@@ -37,13 +38,13 @@ const _default = defineComponent(() => {
             <ElText size="small">
                 @{formatTime(date.value, t(msg => msg.calendar.dateFormat))}
             </ElText>
-        </div>
+        </Flex>
         <RowList
             loading={loading.value}
             data={data.value ?? []}
             style={{ flex: 1, overflow: "auto" } satisfies StyleValue}
         />
-    </div>
+    </Flex>
 })
 
 export default _default

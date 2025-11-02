@@ -18,7 +18,6 @@ import OptionTooltip from "../OptionTooltip"
 import AutoInput from "./AutoInput"
 import Footer from "./Footer"
 import { useOptionState } from "./state"
-import "./style.sass"
 
 const ALL_TYPES: timer.backup.Type[] = [
     'none',

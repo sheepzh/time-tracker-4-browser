@@ -7,6 +7,7 @@
 
 import { t } from "@app/locale"
 import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
+import { css } from '@emotion/css'
 import { useXsState } from '@hooks/useMediaSize'
 import { dateFormat } from "@i18n/element"
 import Flex from '@pages/components/Flex'
@@ -14,9 +15,8 @@ import { type ElementDatePickerShortcut } from "@pages/element-ui/date"
 import { getDatePickerIconSlots } from "@pages/element-ui/rtl"
 import { isRtl } from '@util/document'
 import { MILL_PER_DAY } from '@util/time'
-import { DatePickerProps, ElButton, ElDatePicker, ElText } from "element-plus"
+import { type DatePickerProps, ElButton, ElDatePicker, ElText, useNamespace } from "element-plus"
 import { computed, defineComponent, type FunctionalComponent, type StyleValue, toRaw, toRef } from "vue"
-import "./date-range-filter-item.sass"
 
 const clearShortcut = (): ElementDatePickerShortcut => ({
     text: t(msg => msg.button.clear),
@@ -37,6 +37,21 @@ const ALL_PROPS: (keyof Props)[] = ["clearable", "disabledDate", "endPlaceholder
 
 const ARROW_BTN_STYLE: StyleValue = {
     padding: '8px 1px',
+}
+
+const usePopperStyle = () => {
+    const pickerPanelNs = useNamespace('picker-panel')
+    return css`
+        & {
+            .${pickerPanelNs.e('sidebar')} {
+                width: 130px !important;
+            }
+            .${pickerPanelNs.b()} [slot="sidebar"] + .${pickerPanelNs.e('body')},
+            .${pickerPanelNs.e('sidebar')} + .${pickerPanelNs.e('body')} {
+                margin-inline-start: 130px !important
+            }
+        }
+    `
 }
 
 const useRange = (props: Props) => {
@@ -138,6 +153,7 @@ const DefaultRange = defineComponent<Props>(props => {
                     "--el-date-editor-width": "240px",
                     "--el-border-radius-base": 0,
                 } satisfies StyleValue}
+                popperClass={usePopperStyle()}
                 v-slots={getDatePickerIconSlots()}
             />
             <ElButton
@@ -163,17 +179,27 @@ type XsDatePickerProps =
     & ModelValue<Date | undefined>
     & Partial<Pick<DatePickerProps, 'placeholder' | 'disabledDate' | 'clearable'>>
 
-const XsDatePicker: FunctionalComponent<XsDatePickerProps> = props => (
-    <ElDatePicker
-        class='xs-date-picker'
-        modelValue={props.modelValue}
-        onUpdate:modelValue={val => props.onChange?.(val)}
-        placeholder={props.placeholder}
-        disabledDate={props.disabledDate}
-        clearable={props.clearable}
-        format={dateFormat()}
-    />
-)
+const XsDatePicker: FunctionalComponent<XsDatePickerProps> = props => {
+    const inputNs = useNamespace('input')
+    const cls = css`
+        --el-date-editor-width: 120px;
+
+        & .${inputNs.e('prefix')} {
+            display: none;
+        }
+    `
+    return (
+        <ElDatePicker
+            class={cls}
+            modelValue={props.modelValue}
+            onUpdate:modelValue={val => props.onChange?.(val)}
+            placeholder={props.placeholder}
+            disabledDate={props.disabledDate}
+            clearable={props.clearable}
+            format={dateFormat()}
+        />
+    )
+}
 
 const XsRange = defineComponent<Props>(props => {
     const handleChange = (start: Date | undefined, end: Date | undefined) => {
@@ -205,11 +231,7 @@ const XsRange = defineComponent<Props>(props => {
 
 const DateRangeFilterItem = defineComponent<Props>(props => {
     const isXs = useXsState()
-    return () => (
-        <span class="filter-item">
-            {isXs.value ? <XsRange {...props} /> : <DefaultRange {...props} />}
-        </span>
-    )
+    return () => isXs.value ? <XsRange {...props} /> : <DefaultRange {...props} />
 }, { props: ALL_PROPS })
 
 export default DateRangeFilterItem

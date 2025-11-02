@@ -4,8 +4,12 @@ import Flex from "@pages/components/Flex"
 import { matchCond, meetLimit, meetTimeLimit, period2Str } from "@util/limit"
 import { formatPeriodCommon, MILL_PER_SECOND } from "@util/time"
 import { ElDescriptions, ElDescriptionsItem, ElTag } from 'element-plus'
-import { computed, defineComponent } from "vue"
+import { computed, defineComponent, type StyleValue } from "vue"
 import { useGlobalParam, useReason, useRule } from "../context"
+
+const DESCRIPTIONS_STYLE: StyleValue = {
+    width: '400px',
+}
 
 const renderBaseItems = (rule: timer.limit.Rule | null, url: string) => <>
     <ElDescriptionsItem label={t(msg => msg.limit.item.name)} labelAlign="right">
@@ -36,7 +40,7 @@ const TimeDescriptions = defineComponent({
         const visitLimited = computed(() => meetLimit(props.count ?? 0, props.visit ?? 0))
 
         return () => (
-            <ElDescriptions border column={1} labelWidth={130}>
+            <ElDescriptions border column={1} labelWidth={130} style={DESCRIPTIONS_STYLE}>
                 {renderBaseItems(rule.value, url)}
                 <ElDescriptionsItem label={props.ruleLabel} labelAlign="right">
                     <Flex gap={5} width={200}>
@@ -67,7 +71,7 @@ const TimeDescriptions = defineComponent({
                 >
                     {reason.value?.delayCount ?? 0}
                 </ElDescriptionsItem>
-            </ElDescriptions>
+            </ElDescriptions >
         )
     },
 })
@@ -87,7 +91,7 @@ const _default = defineComponent(() => {
     setInterval(refreshBrowsingTime, 1000)
 
     return () => (
-        <div class="reason-container">
+        <Flex justify='center' marginBottom={30}>
             <TimeDescriptions
                 v-show={type.value === 'DAILY'}
                 time={rule.value?.time}
@@ -106,7 +110,7 @@ const _default = defineComponent(() => {
                 ruleLabel={t(msg => msg.limit.item.weekly)}
                 dataLabel={t(msg => msg.calendar.range.thisWeek)}
             />
-            <ElDescriptions border column={1} v-show={type.value === 'VISIT'}>
+            <ElDescriptions v-show={type.value === 'VISIT'} border column={1} style={DESCRIPTIONS_STYLE}>
                 {renderBaseItems(rule.value, url)}
                 <ElDescriptionsItem label={t(msg => msg.limit.item.visitTime)} labelAlign="right">
                     {formatPeriodCommon((rule.value?.visitTime ?? 0) * MILL_PER_SECOND) || '-'}
@@ -120,19 +124,18 @@ const _default = defineComponent(() => {
                     {reason.value?.delayCount ?? 0}
                 </ElDescriptionsItem>
             </ElDescriptions>
-            <ElDescriptions border column={1} v-show={type.value === 'PERIOD'}>
+            <ElDescriptions v-show={type.value === 'PERIOD'} border column={1} style={DESCRIPTIONS_STYLE}>
                 {renderBaseItems(rule.value, url)}
                 <ElDescriptionsItem label={t(msg => msg.limit.item.period)} labelAlign="right">
-                    {
-                        rule.value?.periods?.length
-                            ? <div>
-                                {rule.value?.periods.map(p => <span style={{ display: "block" }}>{period2Str(p)}</span>)}
-                            </div>
-                            : '-'
+                    {rule.value?.periods?.length
+                        ? <div>
+                            {rule.value.periods.map(p => <span style={{ display: "block" }}>{period2Str(p)}</span>)}
+                        </div>
+                        : '-'
                     }
                 </ElDescriptionsItem>
             </ElDescriptions>
-        </div>
+        </Flex>
     )
 })
 
