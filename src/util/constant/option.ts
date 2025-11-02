@@ -9,7 +9,7 @@ type AppearanceRequired = MakeRequired<timer.option.AppearanceOption, 'darkModeT
 
 export function defaultAppearance(): AppearanceRequired {
     return {
-        displayWhitelistMenu: true,
+        displayWhitelistMenu: false,
         // Change false to true @since 0.8.4
         displayBadgeText: true,
         locale: "default",

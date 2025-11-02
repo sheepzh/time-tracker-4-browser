@@ -1,11 +1,45 @@
 import { Search } from "@element-plus/icons-vue"
+import { css } from '@emotion/css'
 import { useState } from "@hooks"
 import Flex from "@pages/components/Flex"
 import { getDatePickerIconSlots } from "@pages/element-ui/rtl"
 import { t } from "@side/locale"
-import { ElDatePicker, ElInput } from "element-plus"
+import { ElDatePicker, ElInput, useNamespace } from "element-plus"
 import { defineComponent, watch } from "vue"
-import "./search.sass"
+
+const useCalendarStyle = () => {
+    const inputNs = useNamespace('input')
+
+    const triggerCls = css`
+        width: fit-content !important;
+
+        & .${inputNs.e('wrapper')} {
+            cursor: pointer;
+            background: none !important;
+            padding: 1px 0 !important;
+
+            & .${inputNs.e('inner')} {
+                display: none;
+            }
+
+            & .${inputNs.e('icon')} {
+                width: fit-content;
+                padding: 0px 8px;
+                margin-inline-end: 0 !important;
+                height: 100%;
+            }
+        }
+    `
+
+    const dateTableNs = useNamespace('date-table')
+    const popoverCls = css`
+        & .${dateTableNs.be('cell', 'text')} {
+            text-align: center;
+        }
+    `
+
+    return [triggerCls, popoverCls]
+}
 
 type Props = {
     defaultDate: Date
@@ -22,10 +56,11 @@ const _default = defineComponent<Props>(props => {
 
     watch(date, handleSearch)
 
+    const [calendarCls, popoverCls] = useCalendarStyle()
+
     return () => (
-        <Flex>
+        <Flex gap={4}>
             <ElInput
-                class="search"
                 placeholder={t(msg => msg.list.searchPlaceholder)}
                 prefixIcon={Search}
                 modelValue={query.value}
@@ -42,7 +77,8 @@ const _default = defineComponent<Props>(props => {
                 disabledDate={(date: Date) => date.getTime() > now}
                 modelValue={date.value}
                 onUpdate:modelValue={setDate}
-                class="search-calendar"
+                class={calendarCls}
+                popperClass={popoverCls}
                 v-slots={getDatePickerIconSlots()}
             />
         </Flex>

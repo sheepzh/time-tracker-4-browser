@@ -84,6 +84,7 @@ const staticOptions: Configuration = {
                         },
                         plugins: [
                             "@vue/babel-plugin-jsx",
+                            "@emotion/babel-plugin",
                         ],
                     },
                 }, 'ts-loader'],
@@ -91,16 +92,13 @@ const staticOptions: Configuration = {
                 test: /\.css$/,
                 use: [CssExtractRspackPlugin.loader, 'css-loader', POSTCSS_LOADER_CONF],
             }, {
-                test: /\.s[ac]ss$/,
-                use: [CssExtractRspackPlugin.loader, 'css-loader', POSTCSS_LOADER_CONF, 'sass-loader']
-            }, {
                 test: /\.(jpg|jpeg|png|woff|woff2|eot|ttf|svg)$/,
                 type: 'asset/resource'
             }
         ]
     },
     resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.css', '.scss', '.sass'],
+        extensions: ['.ts', '.tsx', '.js', '.css'],
         tsConfig: join(__dirname, '..', 'tsconfig.json'),
     },
     optimization: {

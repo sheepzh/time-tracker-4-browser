@@ -45,12 +45,13 @@ const _default = defineComponent<Props>((props, ctx) => {
             nextLoading={readingClient.value}
             onBack={() => step.value = 0}
             onFinish={handleClear}
+            finishBtn={{ text: t(msg => msg.option.backup.clear.btn), type: 'danger' }}
             finishLoading={deleting.value}
             v-slots={{
                 steps: () => (
                     <ElSteps space={200} finishStatus="success" active={step.value} alignCenter>
                         <ElStep title={t(msg => msg.option.backup.clientTable.selectTip)} />
-                        <ElStep title={t(msg => msg.option.backup.download.step2)} />
+                        <ElStep title={t(msg => msg.option.backup.confirmStep)} />
                     </ElSteps>
                 ),
                 content: () => step.value === 0 ? <Step1 ref={step1} /> : <Step2 data={data.value} />

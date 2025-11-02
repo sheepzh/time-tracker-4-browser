@@ -20,9 +20,9 @@ export type DimensionData = {
 }
 
 type Props = {
-    maxLabel?: string
+    maxLabel: string
     maxValue?: number
-    averageLabel?: string
+    averageLabel: string
     maxDate?: string
     average?: RingValue
     data?: DimensionData

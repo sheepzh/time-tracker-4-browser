@@ -2,7 +2,7 @@ import { createTabAfterCurrent } from "@api/chrome/tab"
 import { type I18nKey, t } from "@app/locale"
 import { type Ref } from "vue"
 import { type Router } from "vue-router"
-import { type MenuItem, MENUS } from "./item"
+import { type MenuItem, MENU_GROUPS } from "./item"
 
 function openMenu(route: string, title: I18nKey, router: Router) {
     const currentPath = router.currentRoute.value?.path
@@ -27,7 +27,7 @@ export function handleClick(menuItem: MenuItem, router: Router, currentActive?: 
 export async function initTitle(router: Router) {
     await router.isReady()
     const currentPath = router.currentRoute.value.path
-    for (const group of MENUS) {
+    for (const group of MENU_GROUPS) {
         for (const { route, title } of group.children) {
             const docTitle = route === currentPath && t(title)
             if (docTitle) {

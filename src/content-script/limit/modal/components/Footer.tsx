@@ -4,6 +4,7 @@ import { judgeVerificationRequired, processVerification } from "@app/util/limit"
 import { TAG_NAME } from "@cs/limit/element"
 import { t } from "@cs/locale"
 import { Plus, Timer } from "@element-plus/icons-vue"
+import Flex from '@pages/components/Flex'
 import optionHolder from "@service/components/option-holder"
 import { meetTimeLimit } from '@util/limit'
 import { ElButton } from "element-plus"
@@ -49,7 +50,7 @@ const _default = defineComponent(() => {
     const delayHandler = useDelayHandler()
 
     return () => (
-        <div class='footer-container'>
+        <Flex gap={10} marginBottom={60} justify='center'>
             <ElButton
                 round
                 icon={Trend}
@@ -74,7 +75,7 @@ const _default = defineComponent(() => {
             >
                 {t(msg => msg.modal.ruleDetail)}
             </ElButton>
-        </div>
+        </Flex>
     )
 })
 

@@ -1,12 +1,13 @@
+import { css } from '@emotion/css'
 import { useSwitch } from '@hooks/useSwitch'
 import Flex from '@pages/components/Flex'
 import { useOption } from '@popup/context'
 import { t, tN } from '@popup/locale'
 import { ROUTE_PERCENTAGE } from '@popup/router'
-import { ElCheckbox, ElIcon, ElInputNumber, ElPopover, ElText } from "element-plus"
+import { ElCheckbox, ElIcon, ElInputNumber, ElPopover, ElText, useNamespace } from "element-plus"
 import { computed, defineComponent, type StyleValue } from "vue"
 import { useRoute } from 'vue-router'
-import "./option.sass"
+// import "./option.sass"
 
 const reference = () => (
     <ElIcon size="large" style={{ cursor: 'pointer' } satisfies StyleValue}>
@@ -33,6 +34,16 @@ const Option = defineComponent(() => {
 
     const [visible, , close] = useSwitch()
 
+    const inputNs = useNamespace('input')
+
+    const topNInput = css`
+        width: 70px;
+
+        & .${inputNs.e('wrapper')} {
+            padding-inline-start: 5px !important;
+        }
+    `
+
     return () => (
         <ElPopover
             visible={visible.value}
@@ -52,7 +63,7 @@ const Option = defineComponent(() => {
                     <ElText size='small'>
                         {tN(msg => msg.header.showTopN, {
                             n: <ElInputNumber
-                                class='top-n-input'
+                                class={topNInput}
                                 size="small" controlsPosition='right'
                                 step={5} min={5} max={100}
                                 modelValue={option.topN}

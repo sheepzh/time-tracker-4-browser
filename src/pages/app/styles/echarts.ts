@@ -1,0 +1,26 @@
+import { injectGlobal } from '@emotion/css'
+
+export const injectEchartsCss = () => {
+    injectGlobal`
+        :root {
+            --echarts-series-color-1: #00C5C9;
+            --echarts-series-color-2: #F72585;
+            --echarts-series-color-3: #FFD600;
+            --echarts-series-color-4: #3A0CA3;
+
+            --echarts-step-color-1: #4361EE;
+            --echarts-step-color-2: var(--echarts-series-color-2);
+
+            --echarts-compare-color-1: var(--echarts-series-color-2);
+            --echarts-compare-color-2: #7209B7;
+
+            --echarts-increase-color: #00FF29;
+            --echarts-decrease-color: #E80054;
+            --echarts-pie-border-color: #ffffff;
+        }
+
+        html[data-theme='dark']:root {
+            --echarts-pie-border-color: var(--el-border-color-light);
+        }
+    `
+}

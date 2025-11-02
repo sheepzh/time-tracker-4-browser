@@ -8,12 +8,23 @@
 import { t } from "@app/locale"
 import { cvt2LocaleTime } from "@app/util/time"
 import { Loading, RefreshRight } from "@element-plus/icons-vue"
+import { css } from '@emotion/css'
 import { useRequest } from "@hooks"
 import { type ElTableRowScope } from "@pages/element-ui/table"
 import processor from "@service/backup/processor"
 import { getCid } from "@service/meta-service"
-import { ElLink, ElMessage, ElRadio, ElTable, ElTableColumn, ElTag } from "element-plus"
-import { defineComponent, ref, toRaw } from "vue"
+import { ElLink, ElMessage, ElRadio, ElTable, ElTableColumn, ElTag, useNamespace } from "element-plus"
+import { defineComponent, ref, StyleValue, toRaw } from "vue"
+
+const useStyle = () => {
+    const radioNs = useNamespace('radio')
+    const radioCls = css`
+        & .${radioNs.e('label')} {
+            padding: 0;
+        }
+    `
+    return { radioCls }
+}
 
 const formatTime = (value: timer.backup.Client): string => {
     const { minDate, maxDate } = value || {}
@@ -41,6 +52,7 @@ const _default = defineComponent<{ onSelect: ArgCallback<timer.backup.Client> }>
         selectedCid.value = row.id
         props.onSelect?.(toRaw(row))
     }
+    const { radioCls } = useStyle()
 
     return () => (
         <ElTable
@@ -66,6 +78,7 @@ const _default = defineComponent<{ onSelect: ArgCallback<timer.backup.Client> }>
                     ),
                     default: ({ row }: ElTableRowScope<timer.backup.Client>) => (
                         <ElRadio
+                            class={radioCls}
                             value={row.id}
                             modelValue={selectedCid.value}
                             onChange={() => handleRowSelect(row)}
@@ -87,7 +100,11 @@ const _default = defineComponent<{ onSelect: ArgCallback<timer.backup.Client> }>
             >
                 {({ row: client }: ElTableRowScope<timer.backup.Client>) => <>
                     {client.name || '-'}
-                    <ElTag v-show={localCid.value === client?.id} size="small" type="danger">
+                    <ElTag
+                        v-show={localCid.value === client?.id}
+                        size="small" type="danger"
+                        style={{ height: '20px', marginInline: '6px 0' } satisfies StyleValue}
+                    >
                         {t(msg => msg.option.backup.clientTable.current)}
                     </ElTag>
                 </>}

@@ -1,0 +1,21 @@
+import { injectGlobal } from '@emotion/css'
+
+export const injectDarkTheme = () => injectGlobal`
+    html[data-theme='dark'] {
+        --el-bg-color-overlay: #1d1e1f;
+        --el-fill-color-darker: #424243;
+        --el-fill-color-light: #262727;
+        --el-fill-color-lighter: #1D1D1D;
+        --el-text-color-primary: #E5EAF3;
+        --el-text-color-regular: #CFD3DC;
+        --el-text-color-secondary: #A3A6AD;
+        --el-text-color-placeholder: #8D9095;
+        --el-border-color-darker: #636466;
+        --el-border-color-dark: #58585B;
+        --el-border-color: #4C4D4F;
+        --el-border-color-light: #414243;
+        --el-border-color-lighter: #363637;
+        --el-border-color-extra-light: #2B2B2C;
+        --el-fill-color-blank: var(--el-fill-color-darker);
+    }
+`
