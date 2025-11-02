@@ -158,6 +158,7 @@ const calcDataZoomDefaultRange = (activities: Activity[]): [start: number | unde
 
 class Wrapper extends EchartsWrapper<BizData, EcOption> {
     protected replaceSeries: boolean = true
+    protected isSizeSensitize: boolean = true
 
     protected async generateOption(bizData: BizData): Promise<EcOption> {
         const { dates, activities, merge } = bizData

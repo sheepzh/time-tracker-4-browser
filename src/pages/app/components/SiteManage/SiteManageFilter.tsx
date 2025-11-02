@@ -59,8 +59,8 @@ const _default = defineComponent<{
     }]
 
     return () => (
-        <Flex gap={10} justify="space-between">
-            <Flex gap={10}>
+        <Flex gap={10} justify="space-between" wrap>
+            <Flex gap={10} wrap>
                 <InputFilterItem
                     placeholder={`${t(msg => msg.item.host)} / ${t(msg => msg.siteManage.column.alias)}`}
                     onSearch={val => filter.query = val}
@@ -81,7 +81,7 @@ const _default = defineComponent<{
             <Flex gap={10}>
                 <DropdownButton items={items} />
                 <ButtonFilterItem
-                    text={t(msg => msg.button.create)}
+                    text={msg => msg.button.create}
                     icon={Plus}
                     type="success"
                     onClick={props.onCreate}
@@ -89,6 +89,6 @@ const _default = defineComponent<{
             </Flex>
         </Flex>
     )
-})
+}, { props: ['onBatchChangeCate', 'onBatchDelete', 'onBatchDisassociate', 'onCreate'] })
 
 export default _default

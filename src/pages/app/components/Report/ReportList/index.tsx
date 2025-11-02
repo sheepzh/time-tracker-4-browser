@@ -1,15 +1,38 @@
 import { t } from "@app/locale"
+import { css } from '@emotion/css'
 import { useScrollRequest } from "@hooks"
 import { getHost } from "@util/stat"
-import { ElCard } from "element-plus"
+import { ElCard, useNamespace } from "element-plus"
 import { defineComponent, ref } from "vue"
 import { queryPage } from "../common"
 import { useReportFilter } from "../context"
 import type { DisplayComponent } from "../types"
 import Item from "./Item"
-import "./style.sass"
 
-const _default = defineComponent((_, ctx) => {
+const useStyle = () => {
+    const cardNs = useNamespace('card')
+    const listCls = css`
+        width: 100%;
+        display: grid;
+        gap: .6em;
+        grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+
+        & .${cardNs.e('body')} {
+            padding: 15px;
+        }
+    `
+
+    const infoCls = css`
+        height: 20px;
+        width: 100%;
+        text-align: center;
+        color: var(--el-text-color-regular);
+    `
+
+    return [listCls, infoCls]
+}
+
+const _default = defineComponent<{}>((_, ctx) => {
     const filterOption = useReportFilter()
     const { data, loading, loadMoreAsync, end, reset } = useScrollRequest(async (num, size) => {
         const pagination = await queryPage(
@@ -32,11 +55,12 @@ const _default = defineComponent((_, ctx) => {
         val && newSelected.push(idx)
         return selected.value = newSelected
     }
+    const [listCls, infoCls] = useStyle()
 
-    return () => <>
-        <div class="report-list-wrapper">
+    return () => (
+        <div>
             <div
-                class="report-list"
+                class={listCls}
                 v-infinite-scroll={loadMoreAsync}
                 infinite-scroll-disabled={end.value || loading.value}
             >
@@ -51,11 +75,11 @@ const _default = defineComponent((_, ctx) => {
                     </ElCard>
                 ))}
             </div>
-            <p class="scroll-info" v-loading={loading.value}>
+            <p v-loading={loading.value} class={infoCls}>
                 {end.value ? t(msg => msg.report.noMore) : (loading.value ? 'Loading ...' : 'Load More')}
             </p>
         </div>
-    </>
+    )
 })
 
 export default _default

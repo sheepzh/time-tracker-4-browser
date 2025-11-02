@@ -5,29 +5,33 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { css } from '@emotion/css'
 import Flex from "@pages/components/Flex"
-import { ElCard } from "element-plus"
+import { ElCard, useNamespace } from "element-plus"
 import { type FunctionalComponent, h, type StyleValue } from "vue"
 import ContentCard from "./ContentCard"
-
-const FILTER_CONTAINER_STYLE: StyleValue = {
-    display: 'flex',
-    alignItems: 'center',
-    userSelect: 'none',
-}
 
 const FILTER_BODY_STYLE: StyleValue = {
     paddingBottom: '18px',
     paddingTop: '18px',
     boxSizing: 'border-box',
     width: '100%',
+    userSelect: 'none',
+}
+
+const useContainerStyle = () => {
+    const btnNs = useNamespace('button')
+    return css`
+        & .${btnNs.b()}+.${btnNs.b()} {
+            margin-inline-start: 0px;
+        }
+    `
 }
 
 export const FilterContainer: FunctionalComponent = (_, ctx) => (
     <ElCard
-        class="filter-container"
-        style={FILTER_CONTAINER_STYLE}
         bodyStyle={FILTER_BODY_STYLE}
+        bodyClass={useContainerStyle()}
         v-slots={ctx.slots}
     />
 )

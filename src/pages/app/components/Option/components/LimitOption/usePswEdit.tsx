@@ -1,6 +1,7 @@
 import { t } from "@app/locale"
+import { css } from '@emotion/css'
 import { useState } from "@hooks"
-import { ElForm, ElFormItem, ElInput, ElMessage, ElMessageBox } from "element-plus"
+import { ElForm, ElFormItem, ElInput, ElMessage, ElMessageBox, useNamespace } from "element-plus"
 
 type Options = {
     reset: () => string | undefined
@@ -11,6 +12,20 @@ export const usePswEdit = (options: Options) => {
 
     const [psw, setPsw] = useState(reset?.())
     const [confirmPsw, setConfirmPsw, resetConfirmPsw] = useState('')
+
+    const messageBoxNs = useNamespace('message-box')
+    const customClass = css`
+        & .${messageBoxNs.e('container')} {
+            padding: 15px 10px;
+
+            .${messageBoxNs.e('status')} {
+                display: none;
+            }
+            .${messageBoxNs.e('message')} {
+                flex: 1;
+            }
+        }
+    `
 
     const modifyPsw = async (): Promise<string | undefined> => {
         setPsw('')
@@ -28,7 +43,7 @@ export const usePswEdit = (options: Options) => {
                     </ElFormItem>
                 </ElForm>
             ),
-            customClass: 'option-daily-limit-psw-box',
+            customClass,
             confirmButtonText: t(msg => msg.button.confirm),
             showCancelButton: true,
             cancelButtonText: t(msg => msg.button.cancel),

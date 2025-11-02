@@ -4,6 +4,7 @@ import type { FunctionalComponent, StyleValue } from 'vue'
 
 const STYLE: StyleValue = {
     padding: "15px 25px",
+    lineHeight: "20px",
 }
 
 export type AlertLinesProps = {

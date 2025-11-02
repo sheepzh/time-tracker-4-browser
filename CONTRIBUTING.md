@@ -6,7 +6,7 @@ The technology stack used is:
 
 -   [rspack](https://rspack.dev) + [TypeScript](https://github.com/microsoft/TypeScript)
 -   [Vue3 (Composition API + JSX)](<https://vuejs.org/api/#:~:text=defineCustomElement()-,Composition%20API,-setup()>)
--   [sass](https://github.com/sass/sass)
+-   [emotion](https://github.com/emotion-js/emotion)
 -   [Element Plus](https://element-plus.gitee.io/)
 -   [Echarts](https://github.com/apache/echarts)
 
@@ -44,7 +44,7 @@ Create a new branch for your changes
 # Chrome/Edge development
 npm run dev
 
-# Firefox development  
+# Firefox development
 npm run dev:firefox
 
 # Safari development
@@ -53,7 +53,7 @@ npm run dev:safari
 
 This will create output directories:
 - `dist_dev` - Chrome/Edge extension
-- `dist_dev_firefox` - Firefox extension  
+- `dist_dev_firefox` - Firefox extension
 - `dist_dev_safari` - Safari extension
 
 #### Mobile Development (Android)

@@ -10,15 +10,15 @@ import { initLocale } from "@i18n"
 import { initElementLocale } from "@i18n/element"
 import optionService from "@service/option-service"
 import { init as initTheme, toggle } from "@util/dark-mode"
-import 'element-plus/theme-chalk/index.css'
 import { createApp, type App } from "vue"
 import '../../common/timer'
 import { initEcharts } from "./echarts"
 import Main from "./Layout"
 import installRouter from "./router"
-import './styles/index.sass'
+import { injectAppCss } from './styles/index'
 
 async function main() {
+    injectAppCss()
     // Init theme with cache first
     initTheme()
     listenMediaSizeChange()
