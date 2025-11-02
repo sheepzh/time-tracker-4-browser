@@ -19,24 +19,55 @@ export function isNoneWindowId(windowId: number) {
     return !windowId || windowId === chrome.windows.WINDOW_ID_NONE
 }
 
-export async function getFocusedNormalWindow(): Promise<chrome.windows.Window | undefined> {
-    if (IS_ANDROID) {
-        return
+/**
+ * Reduce invoking to improve memory leak of Firefox
+ *
+ * @see https://github.com/sheepzh/time-tracker-4-browser/issues/599
+ */
+class FocusedWindowCtx {
+    last?: number | undefined
+    listened: boolean = false
+    windowsTypes: `${chrome.windows.WindowType}`[]
+
+    constructor(windowTypes: `${chrome.windows.WindowType}`[]) {
+        this.windowsTypes = windowTypes
     }
-    return new Promise(resolve => chrome.windows.getLastFocused(
-        // Only find normal window
-        { windowTypes: ['normal'] },
-        window => {
-            const { focused, id } = window
-            handleError('getFocusedNormalWindow')
-            if (!focused || !id || isNoneWindowId(id)) {
-                resolve(undefined)
-            } else {
-                resolve(window)
-            }
+
+    async apply(): Promise<number | undefined> {
+        if (IS_ANDROID) {
+            return undefined
         }
-    ))
+        if (this.last) {
+            return isNoneWindowId(this.last) ? undefined : this.last
+        }
+        // init
+        this.last = await this.getInner()
+        if (!this.listened) {
+            chrome.windows.onFocusChanged.addListener(wid => this.last = wid, { windowTypes: this.windowsTypes })
+            this.listened = true
+        }
+        return this.last
+    }
+
+    private getInner(): Promise<number | undefined> {
+        return new Promise(resolve => chrome.windows.getLastFocused(
+            // Only find normal window
+            { windowTypes: ['normal'] },
+            window => {
+                handleError('getFocusedNormalWindow')
+                const { focused, id } = window
+                if (!focused || !id || isNoneWindowId(id)) {
+                    resolve(undefined)
+                } else {
+                    resolve(id)
+                }
+            }
+        ))
+    }
 }
+const context = new FocusedWindowCtx(['normal'])
+
+export const getFocusedNormalWindowId = () => context.apply()
 
 export async function getWindow(id: number): Promise<chrome.windows.Window | undefined> {
     if (IS_ANDROID) {
