@@ -7,18 +7,12 @@
 
 import periodDatabase from "@db/period-database"
 import { after, compare, getDateString } from "@util/period"
-import { calculate } from "./components/period-calculator"
 
 export type PeriodQueryParam = {
     /**
      * Required
      */
     periodRange: timer.period.KeyRange
-}
-
-function add(timestamp: number, milliseconds: number): Promise<void> {
-    const results = calculate(timestamp, milliseconds)
-    return periodDatabase.accumulate(results)
 }
 
 function dateStrBetween(startDate: timer.period.Key, endDate: timer.period.Key): string[] {
@@ -44,10 +38,8 @@ async function batchDeleteBetween(param: PeriodQueryParam): Promise<void> {
 }
 
 class PeriodService {
-    add = add
     listBetween = listBetween
     batchDeleteBetween = batchDeleteBetween
-    listAll = () => periodDatabase.getAll()
 }
 
 export default new PeriodService()

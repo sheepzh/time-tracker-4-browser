@@ -81,8 +81,10 @@ export function listTabs(query?: chrome.tabs.QueryInfo): Promise<ChromeTab[]> {
 export function sendMsg2Tab<T = any, R = any>(tabId: number, code: timer.mq.ReqCode, data?: T): Promise<R> {
     const request: timer.mq.Request<T> = { code, data }
     return new Promise((resolve, reject) => {
+        const timeout = setTimeout(() => reject('sendMsg2Tab timeout'), 2000)
         chrome.tabs.sendMessage<timer.mq.Request<T>, timer.mq.Response>(tabId, request, response => {
             const sendError = handleError('sendMsg2Tab')
+            clearTimeout(timeout)
             const resCode = response?.code
             resCode === 'success' && resolve(response.data)
             reject(new Error(response?.msg ?? sendError ?? 'Unknown error'))

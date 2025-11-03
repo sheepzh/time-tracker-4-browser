@@ -63,6 +63,8 @@ class AlarmManager {
 
     /**
      * Set a alarm to do sth with interval
+     *
+     * @param interval mills
      */
     setInterval(outerName: string, interval: number, handler: _Handler): void {
         if (!interval || !handler) {
