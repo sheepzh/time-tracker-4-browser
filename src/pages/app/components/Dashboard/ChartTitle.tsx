@@ -1,11 +1,12 @@
+import Box from '@pages/components/Box'
 import { defineComponent, h, useSlots } from "vue"
 
 const _default = defineComponent<{ text?: string }>(props => {
     const { default: textSlot } = useSlots()
     return () => (
-        <div style={{ color: 'var(--el-text-color-primary)', fontWeight: 700, fontSize: '120%' }}>
+        <Box fontSize={15} fontWeight={700} color='text-primary'>
             {textSlot ? h(textSlot) : <span>{props.text ?? ''}</span>}
-        </div>
+        </Box>
     )
 }, { props: ['text'] })
 
