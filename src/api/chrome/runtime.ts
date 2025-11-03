@@ -8,21 +8,33 @@ export function getRuntimeName(): string {
     return chrome.runtime.getManifest().name
 }
 
-export function sendMsg2Runtime<T = any, R = any>(code: timer.mq.ReqCode, data?: T): Promise<R | undefined> {
-    // Fix proxy data failed to serialized in Firefox
-    if (data !== undefined) {
-        data = JSON.parse(JSON.stringify(data))
+/**
+ * Fix proxy data failed to serialized in Firefox
+ */
+function cloneData<T = any>(data: T | undefined): T | undefined {
+    if (data === undefined) return undefined
+    try {
+        return JSON.parse(JSON.stringify(data))
+    } catch (cloneError) {
+        console.warn("Failed clone data", cloneError)
+        return data
     }
-    const request: timer.mq.Request<T> = { code, data }
+}
+
+export function sendMsg2Runtime<T = any, R = any>(code: timer.mq.ReqCode, data?: T): Promise<R | undefined> {
+    const request: timer.mq.Request<T> = { code, data: cloneData(data) }
     return new Promise((resolve, reject) => {
+        const timeout = setTimeout(() => reject(new Error('Message timeout: no response from runtime')), 10_000)
         try {
             chrome.runtime.sendMessage(request, (response: timer.mq.Response<R>) => {
+                clearTimeout(timeout)
                 handleError('sendMsg2Runtime')
                 const resCode = response?.code
                 resCode === 'fail' && reject(new Error(response?.msg || 'Unknown error'))
                 resCode === 'success' && resolve(response.data)
             })
         } catch (e) {
+            clearTimeout(timeout)
             reject('Failed to send message: ' + (e as Error)?.message || 'Unknown error')
         }
     })

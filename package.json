@@ -39,7 +39,7 @@
         "@types/chrome": "0.1.27",
         "@types/decompress": "^4.2.7",
         "@types/jest": "^30.0.0",
-        "@types/node": "^24.9.2",
+        "@types/node": "^24.10.0",
         "@types/punycode": "^2.1.4",
         "@vue/babel-plugin-jsx": "^2.0.1",
         "babel-loader": "^10.0.0",

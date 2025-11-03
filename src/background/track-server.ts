@@ -3,7 +3,7 @@ import { getWindow } from "@api/chrome/window"
 import optionHolder from "@service/components/option-holder"
 import itemService, { type ItemIncContext } from "@service/item-service"
 import limitService from "@service/limit-service"
-import periodService from "@service/period-service"
+import periodThrottler from '@service/throttler/period-throttler'
 import whitelistHolder from "@service/whitelist/holder"
 import { IS_ANDROID } from "@util/constant/environment"
 import { extractHostname } from "@util/pattern"
@@ -24,7 +24,7 @@ async function handleTime(context: ItemIncContext, timeRange: [number, number], 
     // If need to reminder, send messages
     reminder?.items?.length && tabId && sendMsg2Tab(tabId, 'limitReminder', reminder)
     // 3. Add period time
-    await periodService.add(start, focusTime)
+    periodThrottler.add(start, focusTime)
     return focusTime
 }
 

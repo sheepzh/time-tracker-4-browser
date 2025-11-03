@@ -1,5 +1,22 @@
 import timelineDatabase from '@db/timeline-database'
 import { extractHostname } from '@util/pattern'
+import { FirefoxThrottler } from './firefox-throttler'
+
+class TimelineThrottler extends FirefoxThrottler<timer.timeline.Tick> {
+    public saveEvent(ev: timer.timeline.Event) {
+        const { start, end, url } = ev
+        const { host } = extractHostname(url)
+        if (!host) return
+
+        const durations = split2Durations(start, end)
+        const ticks: timer.timeline.Tick[] = durations.map(([start, duration]) => ({ start, duration, host }))
+        this.save(ticks)
+    }
+
+    protected doStore(data: timer.timeline.Tick[]): void {
+        timelineDatabase.batchSave(data)
+    }
+}
 
 const split2Durations = (start: number, end: number): [start: number, duration: number][] => {
     const result: [start: number, duration: number][] = []
@@ -25,12 +42,6 @@ const split2Durations = (start: number, end: number): [start: number, duration: 
     return result
 }
 
-export async function saveTimelineEvent(ev: timer.timeline.Event): Promise<void> {
-    const { start, end, url } = ev
-    const { host } = extractHostname(url)
-    if (!host) return
+const timelineThrottler = new TimelineThrottler()
 
-    const durations = split2Durations(start, end)
-    const ticks: timer.timeline.Tick[] = durations.map(([start, duration]) => ({ start, duration, host }))
-    await timelineDatabase.batchSave(ticks)
-}
+export default timelineThrottler

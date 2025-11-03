@@ -32,21 +32,24 @@ class RunTimeTracker {
             .catch(() => this.host = undefined)
     }
 
-    private collect() {
+    private async collect() {
         const now = Date.now()
         const lastTime = this.start
 
-        const event: timer.core.Event = {
-            start: lastTime,
-            end: now,
-            url: this.url,
-            ignoreTabCheck: false,
-            host: this.host,
+        try {
+            if (this.host) {
+                const event: timer.core.Event = {
+                    start: lastTime,
+                    end: now,
+                    url: this.url,
+                    ignoreTabCheck: false,
+                    host: this.host,
+                }
+                await sendMsg2Runtime('cs.trackRunTime', event)
+            }
+            this.start = now
+        } catch {
         }
-
-        sendMsg2Runtime('cs.trackRunTime', event)
-            .then(() => this.start = now)
-            .catch(() => { })
     }
 }
 

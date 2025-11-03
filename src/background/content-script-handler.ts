@@ -11,7 +11,7 @@ import { ANALYSIS_ROUTE, LIMIT_ROUTE } from "@app/router/constants"
 import optionHolder from "@service/components/option-holder"
 import limitService from "@service/limit-service"
 import siteService from "@service/site-service"
-import { saveTimelineEvent } from '@service/timeline-service'
+import timelineThrottler from '@service/throttler/timeline-throttler'
 import whitelistHolder from "@service/whitelist/holder"
 import { getAppPageUrl } from "@util/constant/url"
 import { extractFileHost, extractHostname } from "@util/pattern"
@@ -74,5 +74,5 @@ export default function init(dispatcher: MessageDispatcher) {
             const exist = await siteService.get(site)
             return exist?.run ? site : null
         })
-        .register<timer.timeline.Event, void>('cs.timelineEv', ev => saveTimelineEvent(ev))
+        .register<timer.timeline.Event, void>('cs.timelineEv', ev => timelineThrottler.saveEvent(ev))
 }
