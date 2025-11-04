@@ -369,6 +369,7 @@
     },
     "de": {
         "filterDisabled": "Nur Aktivierte",
+        "wildcardTip": "Sie können Platzhalter verwenden, um Subdomains oder Unterseiten zuzuordnen, und \"+\" als Präfix verwenden, um Unterseiten auszuschließen!",
         "item": {
             "name": "Regelname",
             "condition": "Eingeschränkte URL",

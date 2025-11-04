@@ -302,6 +302,7 @@
     },
     "de": {
         "deleteConfirmMsg": "{host} wird gelöscht",
+        "genAliasConfirmMsg": "Sollen die Namen der Seite automatisch in Batches vervollständigt werden?",
         "column": {
             "type": "Website-Typ",
             "alias": "Site-Name",

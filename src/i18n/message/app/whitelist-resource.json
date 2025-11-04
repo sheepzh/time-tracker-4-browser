@@ -73,6 +73,7 @@
         "infoAlertTitle": "Sie können eine Whitelist vonseiten auf dieser Seite festlegen",
         "infoAlert0": "Websites auf der Whitelist werden nicht gezählt",
         "infoAlert1": "Websites auf der Whitelist werden nicht eingeschränkt",
+        "infoAlert2": "Sie können einen Platzhalter (*) verwenden, um mehrere Websites wie *.example.com/** zusammenzufassen, und + als Präfix verwenden, um Webseiten wie +need.example.com/** auszuschließen",
         "errorInput": "Ungültige Seiten-URL"
     },
     "fr": {
