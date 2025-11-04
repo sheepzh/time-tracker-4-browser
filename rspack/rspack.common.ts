@@ -172,6 +172,7 @@ const generateOption = ({ outputPath, manifest, mode }: Option) => {
     const config: Configuration = {
         ...staticOptions,
         output: {
+            ...staticOptions.output,
             path: outputPath,
             filename: '[name].js',
         },

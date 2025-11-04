@@ -1,5 +1,6 @@
 import { sendMsg2Runtime } from "@api/chrome/runtime"
 import { t, tN } from "@app/locale"
+import { useCountDown } from '@hooks/useCount'
 import { I18nResultItem, locale } from "@i18n"
 import { getCssVariable } from "@pages/util/style"
 import verificationProcessor from "@service/limit-service/verification/processor"
@@ -80,24 +81,6 @@ const AnswerCanvas = defineComponent(((props: { text: string }) => {
     )
 }), { props: ['text'] })
 
-const useCountdown = (option: { countdown: number, onComplete: NoArgCallback, onTick: ArgCallback<number> }): NoArgCallback => {
-    const { countdown, onComplete, onTick } = option
-
-    const start = Date.now()
-    let left = countdown * 1000
-
-    const timer = setInterval(() => {
-        left = Math.max(start + countdown * 1000 - Date.now(), 0)
-        onTick(left)
-        if (!left) {
-            onComplete()
-            clearInterval(timer)
-        }
-    }, 100)
-
-    return () => clearInterval(timer)
-}
-
 /**
  * NOT TO return Promise.resolve()
  *
@@ -162,7 +145,7 @@ export function processVerification(option: timer.option.LimitOption, context?: 
         buttonSize: "small",
     })
 
-    let cleanCountdown = countdown ? useCountdown({
+    let cleanCountdown = countdown ? useCountDown({
         countdown,
         onComplete: () => {
             const btn = (appendTo ?? document).querySelector(`.${okBtnClz}`)
@@ -173,7 +156,7 @@ export function processVerification(option: timer.option.LimitOption, context?: 
         onTick: (val: number) => {
             const btnSpan = (appendTo ?? document).querySelector(`.${okBtnClz} span`)
             if (!btnSpan) return
-            btnSpan.innerHTML = btnText(Math.floor(val / 1000))
+            btnSpan.textContent = btnText(Math.floor(val / 1000))
         },
     }) : undefined
 

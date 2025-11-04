@@ -9,5 +9,9 @@ import { IS_MV3 } from "@util/constant/environment"
 
 export default function initSidePanel() {
     if (!IS_MV3) return
-    chrome.sidePanel?.setOptions?.({ path: "/static/side.html" })
+    const sidePanel = chrome.sidePanel
+    // sidePanel not supported for Firefox
+    // Avoid `chrome.sidePanel.setOptions` to skip web-ext lint
+    if (!sidePanel?.setOptions) return
+    sidePanel.setOptions({ path: "/static/side.html" })
 }

@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getNumberSeparator } from "@i18n"
-import { CountUp } from "countup.js"
-import { defineComponent, onMounted, ref, watch } from "vue"
+import { useCountUp } from '@hooks/useCount'
+import { tNum } from '@i18n'
+import { computed, defineComponent, toRef } from "vue"
 
 type Props = {
     value: number
@@ -16,29 +16,15 @@ type Props = {
 }
 
 const NumberGrow = defineComponent<Props>(props => {
-    const el = ref<HTMLElement>()
-    const countUp = ref<CountUp>()
-
-    onMounted(() => {
-        const countEl = el.value
-        if (!countEl) return
-        countUp.value = new CountUp(countEl, props.value, {
-            startVal: 0,
-            duration: props.duration || 1.5,
-            separator: getNumberSeparator(),
-        })
-        if (countUp.value.error) {
-            console.warn(countUp.value.error)
-        }
-        countUp.value.start()
-    })
-
-    watch(() => props.value, newVal => countUp.value?.update(newVal))
-
+    const value = toRef(props, 'value')
+    const { current } = useCountUp({ value, duration: props.duration })
+    const text = computed(() => tNum(current.value))
     return () => <a
-        ref={el}
-        style={{ textDecoration: 'underline', fontSize: props.fontSize ? `${props.fontSize}px` : undefined }}
-    />
+        style={{
+            textDecoration: 'underline',
+            fontSize: props.fontSize ? `${props.fontSize}px` : undefined,
+        }}
+    >{text.value}</a>
 }, { props: ['value', 'duration', 'fontSize'] })
 
 

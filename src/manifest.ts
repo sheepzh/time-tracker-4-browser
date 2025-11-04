@@ -25,9 +25,9 @@ const _default: chrome.runtime.ManifestV3 = {
     homepage_url: homepage,
     manifest_version: 3,
     icons: {
-        16: "static/images/icon.png",
-        48: "static/images/icon.png",
-        128: "static/images/icon.png",
+        16: "static/images/icon-16.png",
+        48: "static/images/icon-48.png",
+        128: "static/images/icon-128.png",
     },
     background: {
         service_worker: 'background.js'

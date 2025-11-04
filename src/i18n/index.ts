@@ -200,13 +200,7 @@ export const tN = <MessageType, Node>(messages: Messages<MessageType>, props: No
     return resultArr
 }
 
-export const getNumberSeparator = () => {
-    try {
-        const jsLocale = locale?.substring(0, 2)
-        const str = (1000).toLocaleString(jsLocale)
-        if (str.length === 4) return ''
-        return str.substring(1, 2)
-    } catch {
-        return ''
-    }
+export const tNum = (val: number) => {
+    const jsLocale = locale?.substring(0, 2)
+    return val.toLocaleString(jsLocale)
 }

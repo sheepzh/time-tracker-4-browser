@@ -30,6 +30,10 @@ declare namespace chrome {
             browser_specific_settings?: {
                 gecko?: {
                     id?: string
+                    data_collection_permissions?: {
+                        required?: DataCollectionPermission[]
+                        optional?: DataCollectionPermission[]
+                    }
                 }
             }
             // see https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/sidebar_action
@@ -38,6 +42,7 @@ declare namespace chrome {
                 open_at_install?: boolean
             }
         }
+        type DataCollectionPermission = 'none'
     }
 }
 

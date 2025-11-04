@@ -24,9 +24,9 @@ const _default: chrome.runtime.ManifestFirefox = {
     homepage_url: homepage,
     manifest_version: 2,
     icons: {
-        16: "static/images/icon.png",
-        48: "static/images/icon.png",
-        128: "static/images/icon.png",
+        16: "static/images/icon-16.png",
+        48: "static/images/icon-48.png",
+        128: "static/images/icon-128.png",
     },
     background: {
         scripts: ['background.js'],
@@ -55,7 +55,15 @@ const _default: chrome.runtime.ManifestFirefox = {
     ],
     browser_action: {
         default_popup: "static/popup_skeleton.html",
-        default_icon: "static/images/icon.png",
+        default_icon: "static/images/icon-128.png",
+    },
+    browser_specific_settings: {
+        gecko: {
+            id: '{a8cf72f7-09b7-4cd4-9aaa-7a023bf09916}',
+            data_collection_permissions: {
+                required: ['none'],
+            },
+        },
     },
     sidebar_action: {
         default_icon: "static/images/icon.png",
