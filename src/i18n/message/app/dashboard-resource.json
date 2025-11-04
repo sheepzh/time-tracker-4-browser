@@ -172,7 +172,10 @@
         },
         "timeline": {
             "title": "Zeitleiste der letzten {n} Tage",
-            "focusScore": "Fokussierung"
+            "busyScore": "Geschäftigkeit",
+            "busyScoreDesc": "Verwandt mit der gesamten Browsingzeit und der Anzahl der Webseiten pro Stunde. Siehe Quellcode für Berechnungsformel",
+            "focusScore": "Fokussierung",
+            "focusScoreDesc": "Verwandt mit der anhaltenden Browsingzeit auf derselben Webseite. Siehe Quellcode für Berechnungsformel"
         }
     },
     "fr": {

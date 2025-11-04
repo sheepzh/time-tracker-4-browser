@@ -175,7 +175,9 @@
         "clear": "Leeren",
         "enable": "Aktivieren",
         "batchEnable": "Stapelaktivierung",
-        "batchDisable": "Stapeldeaktivierung"
+        "batchDisable": "Stapeldeaktivierung",
+        "collapse": "Schließen",
+        "expand": "Aufklappen"
     },
     "fr": {
         "create": "Nouveau",

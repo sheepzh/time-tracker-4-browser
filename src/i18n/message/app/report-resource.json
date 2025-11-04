@@ -146,6 +146,7 @@
     },
     "de": {
         "exportFileName": "Timer_Daten",
+        "total": "Besuche Gesamt: {visit}, Gesamtdauer: {focus}",
         "batchDelete": {
             "noSelectedMsg": "Bitte wählen Sie die Zeile aus, die Sie zuerst in der Tabelle löschen möchten",
             "confirmMsg": "{count} Einträge für Sites wie {example} auf {date} werden gelöscht!",
@@ -161,7 +162,8 @@
                 "value": "Wert",
                 "percentage": "Prozentsatz"
             }
-        }
+        },
+        "noMore": "Nicht mehr"
     },
     "fr": {
         "exportFileName": "Mon_heure_de_navigation",

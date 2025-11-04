@@ -921,7 +921,8 @@
                     "off": "Immer aus",
                     "timed": "Zeitgesteuert"
                 }
-            }
+            },
+            "animationDuration": "Die Dauer der ersten Animation des Diagramms {input}"
         },
         "statistics": {
             "title": "Statistik",
@@ -930,7 +931,9 @@
             "countLocalFiles": "{input} Zeit an {localFileTime} {info} im Browser zählen",
             "localFileTime": "eine lokale Datei lesen",
             "localFilesInfo": "Unterstützt Dateitypen, wie PDF, Bilder, .txt und .json",
+            "countTabGroup": "{input} Ob die Zeit der Tab-Gruppen {info} verfolgt werden soll",
             "tabGroupInfo": "Wenn Sie eine Tag-Gruppe löschen, werden auch die Daten gelöscht.",
+            "tabGroupsPermGrant": "Dieses Feature benötigt entsprechende Berechtigungen",
             "fileAccessDisabled": "Der Zugriff auf Datei-URLs ist derzeit nicht erlaubt. Bitte aktiviere ihn zuerst auf der Verwaltungsseite",
             "fileAccessFirefox": "Leider wird diese Funktion in Firefox nicht unterstützt",
             "weekStart": "Erster Tag der Woche {input}",
@@ -938,6 +941,7 @@
         },
         "dailyLimit": {
             "prompt": "Eingabeaufforderung wird angezeigt, wenn eingeschränkt {input}",
+            "reminder": "{input} Erinnerung {minInput} Minuten bevor die Zeit abgelaufen ist",
             "level": {
                 "label": "Wie man bei eingeschränktem {input} entsperrt",
                 "nothing": "Erlaube das direkte Entsperren auf der Admin-Seite",
@@ -953,7 +957,8 @@
                 "strict": "Entsperren trotzdem nicht zulassen",
                 "strictTitle": "Operation bestätigen",
                 "strictContent": "Wenn Sie diese Option wählen, wenn eine Site Tageslimit auslöst, Sie dürfen die Blockierung nur bis zum nächsten Tag manuell entsperren. Wenn Regeln nicht richtig eingerichtet sind, können sie sehr gut Ihre Routinen behindern!",
-                "pswFormLabel": "Passwort"
+                "pswFormLabel": "Passwort",
+                "pswFormAgain": "Erneut eingeben"
             }
         },
         "backup": {
@@ -1010,6 +1015,9 @@
         "importButton": "Einstellungen importieren",
         "exportSuccess": "Einstellungen erfolgreich exportiert",
         "importSuccess": "Einstellungen erfolgreich importiert",
+        "importError": "Import fehlgeschlagen: Ungültige Konfigurationsdatei",
+        "importConfirm": "Einstellungen erfolgreich importiert. Bitte laden Sie die Seite neu, um die Änderungen zu übernehmen!",
+        "reloadButton": "Neu laden",
         "defaultValue": "Standard: {default}"
     },
     "fr": {
