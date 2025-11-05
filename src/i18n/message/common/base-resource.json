@@ -86,5 +86,13 @@
         "option": "الإعدادات",
         "sourceCode": "الكود المصدري",
         "changeLog": "ملاحظات الإصدار"
+    },
+    "tr": {
+        "sidebar": "Kenar Çubuğu",
+        "allFunction": "Tüm Özellikler",
+        "guidePage": "Kullanım Kılavuzu",
+        "option": "Seçenekler",
+        "sourceCode": "Kaynak Kodu",
+        "changeLog": "Sürüm Notları"
     }
 }

@@ -229,5 +229,26 @@
         "ranking": {
             "includingCount": "بما في ذلك {siteCount} موقعاً"
         }
+    },
+    "tr": {
+        "percentage": {
+            "title": {
+                "today": "Bugünkü Veriler",
+                "yesterday": "Dünkü Veriler",
+                "thisWeek": "Bu Haftaki Veriler",
+                "thisMonth": "Bu Ayki Veriler",
+                "lastDays": "Son {n} günün verileri",
+                "allTime": "Tüm Veriler"
+            },
+            "saveAsImageTitle": "Grafiği İndir",
+            "averageCount": "Günde ortalama {value} kez",
+            "averageTime": "Günde ortalama {value}",
+            "totalTime": "Toplam Zaman {totalTime}",
+            "totalCount": "Toplam {totalCount} kez",
+            "otherLabel": "Diğer {count} site"
+        },
+        "ranking": {
+            "includingCount": "{siteCount} site dahil"
+        }
     }
 }

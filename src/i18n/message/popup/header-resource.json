@@ -39,5 +39,10 @@
     },
     "ar": {
         "rate": "قيمنا"
+    },
+    "tr": {
+        "rate": "Bizi Değerlendirin",
+        "showSiteName": "Site adını göster",
+        "showTopN": "En iyi {n} göster"
     }
 }

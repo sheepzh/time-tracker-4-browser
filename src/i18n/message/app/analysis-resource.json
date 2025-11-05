@@ -335,5 +335,36 @@
             "focusTitle": "اتجاهات وقت التصفح",
             "visitTitle": "زيارة الاتجاهات"
         }
+    },
+    "tr": {
+        "target": {
+            "site": "Web Sitesi",
+            "cate": "Kategori"
+        },
+        "common": {
+            "focusTotal": "Toplam gezinme süresi",
+            "visitTotal": "Toplam Ziyaretler",
+            "merged": "Birleştirilmiş",
+            "virtual": "Sanal",
+            "hostPlaceholder": "Site veya kategoriyi seçin",
+            "emptyDesc": "Seçilen öğe yok"
+        },
+        "summary": {
+            "title": "Özet",
+            "day": "Toplam aktif gün",
+            "firstDay": "İlk ziyaret {value}",
+            "calendarTitle": "Son Haftalarda Gerçekleştirilen Aktiviteler"
+        },
+        "trend": {
+            "title": "Eğilimler",
+            "activeDay": "Aktif Günler",
+            "totalDay": "Periyot günleri",
+            "maxFocus": "Günlük maksimum gezinme süresi",
+            "averageFocus": "Günlük ortalama gezinme süresi",
+            "maxVisit": "Günlük maksimum ziyaret sayısı",
+            "averageVisit": "Günlük ortalama ziyaret sayısı",
+            "focusTitle": "Gezinme Zamanı Eğilimleri",
+            "visitTitle": "Ziyaret Eğilimleri"
+        }
     }
 }

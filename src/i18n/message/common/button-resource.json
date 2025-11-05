@@ -242,5 +242,29 @@
         "enable": "تفعيل",
         "batchEnable": "تمكين جماعي",
         "batchDisable": "تعطيل جماعي"
+    },
+    "tr": {
+        "create": "Yeni",
+        "add": "Ekle",
+        "delete": "Sil",
+        "batchDelete": "Toplu Sil",
+        "modify": "Düzenle",
+        "save": "Kaydet",
+        "test": "Test",
+        "paste": "Yapıştır",
+        "confirm": "Onayla",
+        "cancel": "İptal Et",
+        "previous": "Geri",
+        "next": "İleri",
+        "okey": "Tamam",
+        "dont": "Hayır",
+        "operation": "Eylemler",
+        "configuration": "Ayarlar",
+        "clear": "Temizle",
+        "enable": "Etkinleştir",
+        "batchEnable": "Toplu Etkinleştirme",
+        "batchDisable": "Toplu Devre Dışı Bırakma",
+        "collapse": "Daralt",
+        "expand": "Genişlet"
     }
 }

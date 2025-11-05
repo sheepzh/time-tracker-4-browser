@@ -1319,5 +1319,134 @@
         "importConfirm": "تم استيراد الإعدادات بنجاح، يرجى إعادة تحميل الصفحة لتطبيق التغييرات!",
         "reloadButton": "إعادة التحميل",
         "defaultValue": "الوضع الإفتراضي: {default}"
+    },
+    "tr": {
+        "yes": "Evet",
+        "no": "Hayır",
+        "followBrowser": "Tarayıcıyı takip et",
+        "appearance": {
+            "title": "Görünüm",
+            "displayWhitelist": "{input}  {contextMenu} içinde {whitelist} gösterilip gösterilmeyeceğini seçin",
+            "whitelistItem": "beyaz liste ile ilgili kısayollar",
+            "contextMenu": "içerik menüsü",
+            "displayBadgeText": "{input}  {timeInfo} öğesini {icon} içinde gösterip göstermemeyi seçin",
+            "badgeBgColor": "Simge üzerindeki metnin arka plan rengi {input}",
+            "icon": "uzantı simgesi",
+            "badgeTextContent": "mevcut web sitesinin gezinme süresi",
+            "locale": {
+                "label": "Dil {input}",
+                "changeConfirm": "Dil başarıyla değiştirildi, lütfen bu sayfayı yeniden yükleyin!",
+                "reloadButton": "Yeniden yükle"
+            },
+            "printInConsole": {
+                "label": "{input}  {console} içinde {info} yazdırılıp yazdırılmayacağını seçin",
+                "console": "konsol",
+                "info": "bugün mevcut web sitesinin ziyaret sayısı"
+            },
+            "darkMode": {
+                "label": "Karanlık mod {input}",
+                "options": {
+                    "on": "Her zaman açık",
+                    "off": "Her zaman kapalı",
+                    "timed": "Zamanlanmış"
+                }
+            },
+            "animationDuration": "Grafiğin ilk animasyonunun süresi {input}"
+        },
+        "statistics": {
+            "title": "İzleme",
+            "autoPauseTrack": "{input} {maxTime} süresince herhangi bir etkinlik algılanmazsa izlemeyi duraklat {info}",
+            "noActivityInfo": "Fare ve klavye etkin değil ve tam ekran modunda değil",
+            "countLocalFiles": "{input}  Tarayıcının {localFileTime} {info} dosyasını okuduğu zamanı izlemek isteyip istemediğinizi seçin",
+            "localFileTime": "yerel dosyalar",
+            "localFilesInfo": "PDF, resim, txt ve json gibi dosya türlerini destekler.",
+            "countTabGroup": "{input} Sekme gruplarının zamanını takip etmek isteyip istemediğinizi seçin {info}",
+            "tabGroupInfo": "Bir etiket grubunu sildiğinizde, veriler de silinir.",
+            "tabGroupsPermGrant": "Bu özellik ilgili izinleri gerektirir",
+            "fileAccessDisabled": "Dosya URL'lerine erişim şu anda izin verilmiyor. Lütfen önce yönetim sayfasında bunu etkinleştirin",
+            "fileAccessFirefox": "Üzgünüz, bu özellik Firefox'ta desteklenmiyor",
+            "weekStart": "Her haftanın ilk günü {input}",
+            "weekStartAsNormal": "Normal"
+        },
+        "dailyLimit": {
+            "prompt": "Kısıtlı olduğunda gösterilecek uyarı {input}",
+            "reminder": "{input} Süre dolmadan {minInput} dakika önce hatırlatma",
+            "level": {
+                "label": "Kısıtlıyken kilit nasıl açılsın {input}",
+                "nothing": "Yönetici sayfasında doğrudan kilit açmaya izin ver",
+                "password": "Kilidi açmak için şifre girilmelidir",
+                "verification": "Kilidi açmak için doğrulama kodunu girmeniz gerekir",
+                "passwordLabel": "Kilidi açmak için şifre {input}",
+                "verificationLabel": "Doğrulama kodunun zorluğu {input}",
+                "verificationDifficulty": {
+                    "easy": "Kolay",
+                    "hard": "Zor",
+                    "disgusting": "İğrenç"
+                },
+                "strict": "Her halükarda kilidin açılmasına izin verme",
+                "strictTitle": "İşlemi onayla",
+                "strictContent": "Bu seçeneği seçtiğinizde, bir site günlük sınırı tetiklediğinde, ertesi güne kadar beklemek dışında manuel olarak engellemeyi kaldırmanız mümkün olmayacaktır. Kurallar doğru şekilde ayarlanmazsa, günlük rutinlerinizi büyük ölçüde engelleyebilirler!",
+                "pswFormLabel": "Şifre",
+                "pswFormAgain": "Yeniden girin"
+            }
+        },
+        "backup": {
+            "title": "Veri Yedekleme",
+            "type": "Uzaktan yedekleme tipi {input}",
+            "client": "Uygulama adı {input}",
+            "meta": {
+                "none": {
+                    "label": "Her zaman kapalı"
+                },
+                "gist": {
+                    "authInfo": "Gist iznine sahip bir token gereklidir"
+                },
+                "obsidian_local_rest_api": {
+                    "endpointInfo": "Uzantı sayfaları için CORS yapılandırılamadığından yalnızca HTTP kullanılabilir"
+                }
+            },
+            "label": {
+                "endpoint": "Uç nokta adresi {info} {input}",
+                "path": "Dizin yolu {input}",
+                "account": "Kullanıcı Adı {input}",
+                "password": "Şifre {input}"
+            },
+            "operation": "Yedekleme",
+            "download": {
+                "btn": "İndir",
+                "willDownload": "İndirilecek",
+                "confirmTip": "[{clientName}] {size} adet veri indirilecektir"
+            },
+            "clear": {
+                "btn": "Temizle",
+                "confirmTip": "[{clientName}] tarafından izlenen {hostCount} siteye ait {rowCount} adet veri silinecek!"
+            },
+            "confirmStep": "Verileri onaylayın",
+            "clientTable": {
+                "selectTip": "Uygulama seç",
+                "dataRange": "Veri aralığı",
+                "notSelected": "Uygulama seçilmedi",
+                "current": "Şimdiki"
+            },
+            "lastTimeTip": "Son yedekleme zamanı: {lastTime}",
+            "auto": {
+                "label": "Otomatik yedeklemeyi etkinleştirip etkinleştirmemeyi seçin",
+                "interval": "ve her {input} dakikada bir çalıştırın"
+            }
+        },
+        "accessibility": {
+            "title": "Erişilebilirlik",
+            "chartDecal": "{input} Grafik çıkartmasını gösterip göstermemeyi seçin"
+        },
+        "resetButton": "Sıfırla",
+        "resetSuccess": "Varsayılan ayarlara sıfırlama işlemi başarıyla tamamlandı!",
+        "exportButton": "Ayarları Dışa Aktar",
+        "importButton": "Ayarları İçe Aktar",
+        "exportSuccess": "Ayarlar başarıyla dışa aktarıldı",
+        "importSuccess": "Ayarlar başarıyla içe aktarıldı",
+        "importError": "İçe aktarma başarısız: Geçersiz ayar dosyası",
+        "importConfirm": "Ayarlar başarıyla içe aktarıldı, değişiklikleri uygulamak için lütfen sayfayı yeniden yükleyin!",
+        "reloadButton": "Yeniden yükle",
+        "defaultValue": "Varsayılan: {default}"
     }
 }

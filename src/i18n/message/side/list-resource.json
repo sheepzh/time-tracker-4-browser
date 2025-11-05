@@ -42,5 +42,9 @@
     "ar": {
         "searchPlaceholder": "أدخل النطاق أو الرابط",
         "title": "تحليل التصفح"
+    },
+    "tr": {
+        "searchPlaceholder": "Alan adı veya URL giriniz",
+        "title": "Gezinme Analizi"
     }
 }

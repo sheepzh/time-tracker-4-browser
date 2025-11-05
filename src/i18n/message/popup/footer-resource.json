@@ -58,5 +58,11 @@
             "percentage": "التوزيع",
             "ranking": "الترتيب"
         }
+    },
+    "tr": {
+        "route": {
+            "percentage": "Dağılım",
+            "ranking": "Sıralama"
+        }
     }
 }

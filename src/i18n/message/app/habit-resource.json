@@ -416,5 +416,43 @@
                 "siteCount": "عدد المواقع"
             }
         }
+    },
+    "tr": {
+        "common": {
+            "focusAverage": "Günde ortalama {value}"
+        },
+        "period": {
+            "title": "Zaman dilimleri alışkanlığı",
+            "busiest": "Günün en yoğun saati",
+            "idle": "En uzun bekleme süresi",
+            "chartType": {
+                "average": "Günlük ortalama",
+                "trend": "Eğilim",
+                "stack": "Yığın"
+            },
+            "sizes": {
+                "fifteen": "15 dakikada bir",
+                "halfHour": "Yarım saat başına",
+                "hour": "Saat başına",
+                "twoHour": "İki saat başına"
+            }
+        },
+        "site": {
+            "title": "Web sitelerinin alışkanlığı",
+            "histogramTitle": "En çok ziyaret edilen {n} site",
+            "exclusiveToday": "Bugünün verileri ortalamaya dahil edilmemiştir",
+            "countTotal": "Toplam ziyaret/site sayısı",
+            "siteAverage": "Günde ortalama {value} web sitesi ziyaret ettin",
+            "distribution": {
+                "title": "Günlük ortalama sıklık dağılımı",
+                "aveTime": "Günlük ortalama gezinme süresi",
+                "aveVisit": "Günlük ortalama ziyaret sayısı",
+                "tooltip": "Toplam {value} site"
+            },
+            "trend": {
+                "title": "Günlük eğilim",
+                "siteCount": "Web sitesi sayısı"
+            }
+        }
     }
 }

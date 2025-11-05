@@ -64,5 +64,11 @@
         "more5Minutes": "5 دقائق إضافية",
         "browsingTime": "وقت التصفح",
         "ruleDetail": "تفاصيل القاعدة"
+    },
+    "tr": {
+        "defaultPrompt": "Bu sayfa engellendi!",
+        "more5Minutes": "5 dakika daha",
+        "browsingTime": "Gezinme süresi",
+        "ruleDetail": "Kural Detayları"
     }
 }

@@ -42,5 +42,9 @@
     "ar": {
         "consoleLog": "اليوم فتحت {host} {time} مرة, أنفقت {focus} أثناء تصفحها.",
         "closeAlert": "يمكنك تعطيل هذه الإشعارات في إعدادات [{appName}]"
+    },
+    "tr": {
+        "consoleLog": "Bugün {host} {time} saat(ler) açtınız ve {focus} saniye boyunca göz attınız.",
+        "closeAlert": "Bu bildirimleri [{appName}] ayarlarından devre dışı bırakabilirsiniz!"
     }
 }

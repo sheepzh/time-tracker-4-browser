@@ -569,5 +569,58 @@
             "confession": "الوقت سريع الزوال"
         },
         "reminder": "أقل من {min} دقيقة على انتهاء الوقت المحدد!"
+    },
+    "tr": {
+        "filterDisabled": "Yalnızca etkinleştirilmiş",
+        "wildcardTip": "Alt alan adlarını veya alt sayfaları eşleştirmek için joker karakterler kullanabilir ve alt sayfaları hariç tutmak için “+” ön ekini kullanabilirsiniz!",
+        "item": {
+            "name": "Kural adı",
+            "condition": "Kısıtlanmış URL",
+            "daily": "Günlük limit",
+            "weekly": "Haftalık limit",
+            "weekStartInfo": "Her haftanın ilk günü {weekStart}, bu değeri istatistik seçeneklerinden değiştirebilirsiniz",
+            "delayCount": "Gecikme sayısı",
+            "detail": "Kural detayı",
+            "visitTime": "Ziyaret başına zaman sınırı",
+            "period": "Engellenen periyotlar",
+            "enabled": "Etkinleştirildi",
+            "locked": "Kilitli",
+            "effectiveDay": "Geçerli Olduğu Gün(ler)",
+            "delayAllowed": "Ertelenebilir",
+            "delayAllowedInfo": "Zaman aşımı olursa, 5 dakikalık geçici bir gecikmeye izin verin",
+            "visits": "ziyaretler",
+            "or": "yada",
+            "notEffective": "Geçerli değil"
+        },
+        "step": {
+            "base": "Temel bilgiler",
+            "url": "Yapılandırma URL'si",
+            "rule": "Yapılandırma kuralı"
+        },
+        "button": {
+            "test": "Test URL"
+        },
+        "message": {
+            "noUrl": "URL eklenemedi",
+            "noRule": "Hiçbir kural girilmemiş",
+            "deleteConfirm": "{name} kuralını silmek istiyor musunuz?",
+            "lockConfirm": "Kilitliyse, kural tetiklenmemiş olsa bile tüm işlemler doğrulama gerektirecektir.",
+            "inputTestUrl": "Lütfen önce test edilecek URL bağlantısını girin",
+            "clickTestButton": "Giriş yaptıktan sonra, lütfen düğmeye tıklayın ({buttonText})",
+            "noRuleMatched": "URL hiçbir kurala uymuyor",
+            "rulesMatched": "URL aşağıdaki kurallara uygundur:",
+            "timeout": "Zaman doldu!"
+        },
+        "verification": {
+            "inputTip": "Kural tetiklendi veya kilitlendi. Devam etmek için lütfen {second} saniye içinde sorunun cevabını giriniz: {prompt}",
+            "inputTip2": "Kural tetiklendi veya kilitlendi. Devam etmek için lütfen {second} saniye içinde olduğu gibi girin: {answer}",
+            "pswInputTip": "Kural tetiklendi veya kilitlendi. Devam etmek için lütfen şifrenizi girin",
+            "strictTip": "Tetiklendiğinde, serbest bırakılmadan önce hiçbir işlem yapılmasına izin verilmez!",
+            "incorrectPsw": "Hatalı şifre",
+            "incorrectAnswer": "Hatalı cevap",
+            "pi": "π sayısının ondalık kısmının {startIndex} ile {endIndex} arasındaki {digitCount} basamağı girin",
+            "confession": "Zaman akıp gidiyor"
+        },
+        "reminder": "Zaman sınırı dolmasına {min} dakikadan az kaldı!"
     }
 }

@@ -234,5 +234,30 @@
         "monthOnMonth": {
             "title": "اتجاه وقت التصفح من شهر إلى شهر"
         }
+    },
+    "tr": {
+        "heatMap": {
+            "title0": "Geçen yıldan {hour} saat daha fazla gezindiniz",
+            "title1": "Geçen yıl 1 saatten daha az gezindiniz"
+        },
+        "topK": {
+            "title": "Son {day} günde en çok ziyaret ettiğin {k} site"
+        },
+        "indicator": {
+            "installedDays": "{number} gündür kurulu",
+            "visitCount": "{site} web sitelerini {visit} kez ziyaret ettin",
+            "browsingTime": "{minute} dakikadan fazla göz attın",
+            "mostUse": "{start} ile {end} arası favori gezinti saatlerin"
+        },
+        "monthOnMonth": {
+            "title": "Aylık gezinme süresi eğilimin"
+        },
+        "timeline": {
+            "title": "Son {n} günün zaman çizelgesi",
+            "busyScore": "Yoğunluk",
+            "busyScoreDesc": "Toplam gezinme süresi ve saat başına ziyaret edilen web sitesi sayısı ile ilgilidir. Hesaplama formülü için kaynak koduna bakın",
+            "focusScore": "Odaklanma",
+            "focusScoreDesc": "Aynı web sitesinde sürekli gezinme toplam süresi ile ilgilidir. Hesaplama formülü için kaynak koduna bakın"
+        }
     }
 }

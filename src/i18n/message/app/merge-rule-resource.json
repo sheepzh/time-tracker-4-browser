@@ -207,5 +207,24 @@
             "blank": "لا دمج",
             "level": "الحفاظ على المستوى {level}"
         }
+    },
+    "tr": {
+        "removeConfirmMsg": "{origin} özelleştirilmiş birleştirme kurallarından kaldırılacaktır.",
+        "originPlaceholder": "Orijinal site",
+        "mergedPlaceholder": "Birleştirildi",
+        "errorOrigin": "Orijinal sitenin formatı geçersiz.",
+        "duplicateMsg": "Kural zaten mevcut: {origin}",
+        "addConfirmMsg": "{origin} için özelleştirilmiş birleştirme kuralları ayarlanacaktır",
+        "infoAlertTitle": "bu sayfadaki siteleri sayarken birleştirme kuralları",
+        "infoAlert0": "[Yeni] düğmesine tıklayın, kaynak sitenin ve birleştirme sitesinin giriş kutuları görüntülenecektir, kuralı doldurun ve kaydedin",
+        "infoAlert1": "Orijinal site, birleştirme sırasında bu kuralla eşleşecek siteleri belirlemek için www.baidu.com, *.baidu.com, *.google.com.* gibi belirli bir site veya düzenli ifade ile doldurulabilir",
+        "infoAlert2": "Birleştirilen site, belirli bir site, bir sayı veya boşluk ile doldurulabilir",
+        "infoAlert3": "Bir sayı, birleştirilen sitenin seviyesini ifade eder. Örneğin, ‘*.*.edu.cn >>> 3’ kuralı varsa, ‘www.hust.edu.cn’ sitesi ‘hust.edu.cn’ sitesiyle birleştirilir",
+        "infoAlert4": "Boşluk, orijinal sitenin birleştirilmeyeceği anlamına gelir",
+        "infoAlert5": "Eşleşen kural yoksa, varsayılan olarak {psl} öncesindeki seviyeye geçilir",
+        "tagResult": {
+            "blank": "Birleştirilemez",
+            "level": "Seviyeyi {level} koruyun"
+        }
     }
 }

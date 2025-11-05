@@ -53,5 +53,10 @@
         "add2Whitelist": "أضف {host} إلى القائمة البيضاء",
         "removeFromWhitelist": "إزالة {host} من القائمة البيضاء",
         "feedbackPage": "مشكلات"
+    },
+    "tr": {
+        "add2Whitelist": "{host} adresini beyaz listeye ekle",
+        "removeFromWhitelist": "{host} adresini beyaz listeden çıkart",
+        "feedbackPage": "Sorunlar"
     }
 }

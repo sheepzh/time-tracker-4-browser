@@ -160,5 +160,20 @@
         "cate": {
             "notSet": "غير مضبوط"
         }
+    },
+    "tr": {
+        "merge": {
+            "mergeBy": "Birleştirme biçimi",
+            "mergeMethod": {
+                "date": "Tarih",
+                "domain": "URL",
+                "cate": "Kategori",
+                "group": "Sekme Grubu",
+                "notMerge": "Birleştirilemez"
+            }
+        },
+        "cate": {
+            "notSet": "Ayarlanmadı"
+        }
     }
 }
