@@ -1,17 +1,7 @@
 declare namespace timer {
-    /**
-     * The source locale
-     *
-     * @since 1.4.0
-     */
-    type SourceLocale = 'en'
-    /**
-     * The locale must be translated with code
-     *
-     * @since 1.5.3
-     */
-    type RequiredLocale = SourceLocale | 'zh_CN'
+    type RequiredLocale = 'en'
     type OptionalLocale =
+        | 'zh_CN'
         | 'ja'
         // @since 0.9.0
         | 'zh_TW'

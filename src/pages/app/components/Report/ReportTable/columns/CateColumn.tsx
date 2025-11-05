@@ -2,10 +2,9 @@ import CategoryEditable from "@app/components/common/category/CategoryEditable"
 import { useCategory } from "@app/context"
 import { t } from "@app/locale"
 import Flex from "@pages/components/Flex"
-import { type ElTableRowScope } from "@pages/element-ui/table"
 import { CATE_NOT_SET_ID, SiteMap } from "@util/site"
 import { getRelatedCateId, identifyStatKey, isCate, isGroup, isSite } from "@util/stat"
-import { Effect, ElTableColumn, ElText, ElTooltip } from "element-plus"
+import { Effect, ElTableColumn, ElText, ElTooltip, type RenderRowData } from "element-plus"
 import { defineComponent } from "vue"
 import TooltipSiteList from "./TooltipSiteList"
 
@@ -49,7 +48,7 @@ const CateColumn = defineComponent<Props>(props => {
     const cate = useCategory()
     return () => cate.enabled ? (
         <ElTableColumn label={t(msg => msg.siteManage.column.cate)} minWidth={140}>
-            {({ row }: ElTableRowScope<timer.stat.Row>) => {
+            {({ row }: RenderRowData<timer.stat.Row>) => {
                 if (!row || isGroup(row)) return
                 const { mergedRows } = row
                 const cateId = getRelatedCateId(row)

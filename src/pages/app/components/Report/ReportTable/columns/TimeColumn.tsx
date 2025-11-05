@@ -8,9 +8,8 @@
 import TooltipWrapper from "@app/components/common/TooltipWrapper"
 import { t } from "@app/locale"
 import { periodFormatter } from "@app/util/time"
-import { type ElTableRowScope } from "@pages/element-ui/table"
 import { getComposition } from "@util/stat"
-import { Effect, ElTableColumn } from "element-plus"
+import { Effect, ElTableColumn, type RenderRowData } from "element-plus"
 import { defineComponent } from "vue"
 import CompositionTable from '../../CompositionTable'
 import { useReportFilter } from "../../context"
@@ -31,7 +30,7 @@ const TimeColumn = defineComponent<Props>(props => {
             align="center"
             sortable="custom"
         >
-            {({ row }: ElTableRowScope<timer.stat.Row>) => (
+            {({ row }: RenderRowData<timer.stat.Row>) => (
                 <TooltipWrapper
                     usePopover={filter.readRemote}
                     placement="top"

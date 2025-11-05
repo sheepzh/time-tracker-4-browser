@@ -22,7 +22,6 @@ const HelpUs: FunctionalComponent = () => (
                         msg => msg.helpUs.alert.l1,
                         msg => msg.helpUs.alert.l2,
                         msg => msg.helpUs.alert.l3,
-                        msg => msg.helpUs.alert.l4,
                     ]}
                 />
                 <Box marginBlock={30}>

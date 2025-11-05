@@ -7,24 +7,17 @@
 
 import DateRangeFilterItem from '@app/components/common/filter/DateRangeFilterItem'
 import { t } from "@app/locale"
-import { type ElementDatePickerShortcut } from "@pages/element-ui/date"
 import { daysAgo } from "@util/time"
+import type { Shortcut } from "element-plus/es/components/date-picker-panel/src/composables/use-shortcut"
 import { defineComponent } from "vue"
 import { useAnalysisTrendDateRange } from "./context"
 
-function datePickerShortcut(agoOfStart?: number, agoOfEnd?: number): ElementDatePickerShortcut {
-    return {
-        text: t(msg => msg.calendar.range.lastDays, { n: agoOfStart }),
-        value: daysAgo((agoOfStart ?? 0) - 1 || 0, agoOfEnd || 0),
-    }
-}
+const shortcut = (agoOfStart: number) => ({
+    text: t(msg => msg.calendar.range.lastDays, { n: agoOfStart }),
+    value: daysAgo(agoOfStart - 1, 0),
+} satisfies Shortcut)
 
-const SHORTCUTS = [
-    datePickerShortcut(7),
-    datePickerShortcut(15),
-    datePickerShortcut(30),
-    datePickerShortcut(90),
-]
+const SHORTCUTS = [7, 15, 30, 90].map(shortcut)
 
 const _default = defineComponent(() => {
     const dateRange = useAnalysisTrendDateRange()
