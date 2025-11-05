@@ -19,6 +19,8 @@ declare namespace timer {
         | 'ru'
         // @since 2.5.0
         | 'ar'
+        // @since 3.7.3
+        | 'tr'
 
     /**
      * @since 0.8.0
@@ -39,7 +41,6 @@ declare namespace timer {
         | 'da'
         | 'hr'
         | 'id'
-        | 'tr'
         | 'cs'
         | 'ro'
         | 'nl'

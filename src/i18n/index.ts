@@ -49,7 +49,6 @@ const translationChrome2I18n: { [key: string]: timer.TranslatingLocale } = {
     da: 'da',
     hr: 'hr',
     id: 'id',
-    tr: 'tr',
     cs: 'cs',
     ro: 'ro',
     nl: 'nl',

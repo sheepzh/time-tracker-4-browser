@@ -53,5 +53,10 @@
         "name": "متتبع الوقت",
         "marketName": "متتبع الوقت - منشئ عادات الويب",
         "description": "تتبع وتحليل ومراقبة ثم تحسين الكفاءة"
+    },
+    "tr": {
+        "name": "Zaman Takipçisi",
+        "marketName": "Zaman Takipçisi – Alışkanlık Oluşturucu ve Site Engelleyici",
+        "description": "Zamanınızı takip edin, alışkanlıklarınızı analiz edin, bağımlılık yapan siteleri engelleyin."
     }
 }

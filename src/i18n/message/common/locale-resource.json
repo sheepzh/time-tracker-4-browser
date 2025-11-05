@@ -43,6 +43,10 @@
         "name": "عربي",
         "comma": " "
     },
+    "tr": {
+        "name": "Türkçe",
+        "comma": ","
+    },
     "pl": {
         "name": "Polski"
     },
@@ -66,9 +70,6 @@
     },
     "id": {
         "name": "bahasa Indonesia"
-    },
-    "tr": {
-        "name": "Türkçe"
     },
     "cs": {
         "name": "čeština"
