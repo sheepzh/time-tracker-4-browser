@@ -7,9 +7,8 @@
 import PopupConfirmButton from "@app/components/common/PopupConfirmButton"
 import { t } from "@app/locale"
 import { Delete } from "@element-plus/icons-vue"
-import { type ElTableRowScope } from "@pages/element-ui/table"
 import siteService from "@service/site-service"
-import { ElTableColumn } from "element-plus"
+import { ElTableColumn, type RenderRowData } from "element-plus"
 import { defineComponent } from "vue"
 import { useSiteManageTable } from '../../useSiteManage'
 
@@ -22,7 +21,7 @@ const OperationColumn = defineComponent<{}>(() => {
             label={t(msg => msg.button.operation)}
             align="center"
             v-slots={
-                ({ row }: ElTableRowScope<timer.site.SiteInfo>) => (
+                ({ row }: RenderRowData<timer.site.SiteInfo>) => (
                     <PopupConfirmButton
                         buttonIcon={Delete}
                         buttonType="danger"

@@ -12,8 +12,8 @@ const UNCOMMON_WORDS = '龘靐齉齾爩鱻麤龗灪吁龖厵滟爨癵籱饢驫�
 const LENGTH = UNCOMMON_WORDS.length
 
 class UncommonChinese implements VerificationGenerator {
-    supports(context: VerificationContext): boolean {
-        return context.difficulty === 'disgusting' && context.locale === 'zh_CN'
+    supports({ difficulty, locale }: VerificationContext): boolean {
+        return difficulty === 'disgusting' && (locale === 'zh_CN' || locale === 'zh_TW')
     }
 
     generate(_: VerificationContext): VerificationPair {

@@ -7,10 +7,9 @@
 import ColumnHeader from "@app/components/common/ColumnHeader"
 import { t } from "@app/locale"
 import { useLocalStorage, useRequest, useState } from "@hooks"
-import { type ElTableRowScope } from "@pages/element-ui/table"
 import weekHelper from "@service/components/week-helper"
 import { isEffective } from "@util/limit"
-import { ElSwitch, ElTable, ElTableColumn, ElTag, type Sort } from "element-plus"
+import { ElSwitch, ElTable, ElTableColumn, ElTag, type RenderRowData, type Sort } from "element-plus"
 import { defineComponent, watch } from "vue"
 import { useLimitTable } from "../context"
 import LimitOperationColumn from "./column/LimitOperationColumn"
@@ -79,7 +78,7 @@ const _default = defineComponent(() => {
                 minWidth={200}
                 align="center"
             >
-                {({ row }: ElTableRowScope<timer.limit.Item>) => <RuleContent value={row} />}
+                {({ row }: RenderRowData<timer.limit.Item>) => <RuleContent value={row} />}
             </ElTableColumn>
             <ElTableColumn
                 prop='effectiveDays'
@@ -89,7 +88,7 @@ const _default = defineComponent(() => {
                 sortable
                 sortMethod={sortByEffectiveDays}
             >
-                {({ row: { weekdays } }: ElTableRowScope<timer.limit.Item>) => <Weekday value={weekdays} />}
+                {({ row: { weekdays } }: RenderRowData<timer.limit.Item>) => <Weekday value={weekdays} />}
             </ElTableColumn>
             <ElTableColumn
                 prop={DEFAULT_SORT_COL}
@@ -99,7 +98,7 @@ const _default = defineComponent(() => {
                 minWidth={90}
                 align="center"
             >
-                {({ row }: ElTableRowScope<timer.limit.Item>) => isEffective(row.weekdays) ? (
+                {({ row }: RenderRowData<timer.limit.Item>) => isEffective(row.weekdays) ? (
                     <Waste
                         waste={row.waste}
                         time={row.time}
@@ -131,7 +130,7 @@ const _default = defineComponent(() => {
                         weeklyWaste, weekly,
                         weeklyVisit, weeklyCount,
                         weeklyDelayCount, allowDelay,
-                    } }: ElTableRowScope<timer.limit.Item>) => (
+                    } }: RenderRowData<timer.limit.Item>) => (
                         <Waste
                             time={weekly}
                             waste={weeklyWaste}
@@ -150,7 +149,7 @@ const _default = defineComponent(() => {
                     align="center"
                     fixed="right"
                 >
-                    {({ row }: ElTableRowScope<timer.limit.Item>) => (
+                    {({ row }: RenderRowData<timer.limit.Item>) => (
                         <ElSwitch size="small" modelValue={row.enabled} onChange={v => changeEnabled(row, !!v)} />
                     )}
                 </ElTableColumn>
@@ -160,7 +159,7 @@ const _default = defineComponent(() => {
                     align="center"
                     fixed="right"
                 >
-                    {({ row }: ElTableRowScope<timer.limit.Item>) => (
+                    {({ row }: RenderRowData<timer.limit.Item>) => (
                         <ElSwitch size="small" modelValue={row.allowDelay} onChange={v => changeDelay(row, !!v)} />
                     )}
                 </ElTableColumn>
@@ -170,7 +169,7 @@ const _default = defineComponent(() => {
                     align="center"
                     fixed="right"
                 >
-                    {({ row }: ElTableRowScope<timer.limit.Item>) => (
+                    {({ row }: RenderRowData<timer.limit.Item>) => (
                         <ElSwitch size="small" modelValue={row.locked} onChange={v => changeLocked(row, !!v)} />
                     )}
                 </ElTableColumn>

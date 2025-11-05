@@ -9,8 +9,8 @@ import DateRangeFilterItem from "@app/components/common/filter/DateRangeFilterIt
 import TimeFormatFilterItem from "@app/components/common/filter/TimeFormatFilterItem"
 import { t } from "@app/locale"
 import Flex from "@pages/components/Flex"
-import { type ElementDatePickerShortcut } from "@pages/element-ui/date"
 import { daysAgo, MILL_PER_DAY } from "@util/time"
+import type { Shortcut } from "element-plus/es/components/date-picker-panel/src/composables/use-shortcut"
 import { defineComponent } from "vue"
 import { useHabitFilter } from "./context"
 
@@ -26,7 +26,7 @@ const shortcutProps: ShortCutProp[] = [
     [t(msg => msg.calendar.range.lastDays, { n: 365 }), 365],
 ]
 
-const SHORTCUTS: ElementDatePickerShortcut[] = shortcutProps.map(([text, agoOfStart]) => ({ text, value: daysAgo(agoOfStart, 0) }))
+const SHORTCUTS: Shortcut[] = shortcutProps.map(([text, agoOfStart]) => ({ text, value: daysAgo(agoOfStart, 0) }))
 
 const _default = defineComponent(() => {
     const filter = useHabitFilter()

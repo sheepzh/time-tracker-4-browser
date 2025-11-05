@@ -52,9 +52,10 @@ npm run dev:safari
 ```
 
 This will create output directories:
-- `dist_dev` - Chrome/Edge extension
-- `dist_dev_firefox` - Firefox extension
-- `dist_dev_safari` - Safari extension
+
+-   `dist_dev` - Chrome/Edge extension
+-   `dist_dev_firefox` - Firefox extension
+-   `dist_dev_safari` - Safari extension
 
 #### Mobile Development (Android)
 
@@ -67,10 +68,11 @@ For Firefox on Android development, use the helper script:
 ```
 
 This script will:
-- Check prerequisites (web-ext, adb)
-- Detect connected Android devices
-- Build the extension automatically
-- Install and run on Firefox for Android
+
+-   Check prerequisites (web-ext, adb)
+-   Detect connected Android devices
+-   Build the extension automatically
+-   Install and run on Firefox for Android
 
 #### Production Builds
 
@@ -86,17 +88,20 @@ npm run build:safari
 ### 5. Testing Your Extension
 
 #### Chrome/Edge
+
 1. Open `chrome://extensions/` or `edge://extensions/`
 2. Enable "Developer mode"
 3. Click "Load unpacked" and select the `dist_dev` folder
 
 #### Firefox
+
 1. Open `about:debugging`
 2. Click "This Firefox"
 3. Click "Load Temporary Add-on"
 4. Select the `manifest.json` file from `dist_dev_firefox` folder
 
 #### Firefox for Android
+
 Use the provided script which handles the entire process automatically.
 
 ## Testing
@@ -156,10 +161,10 @@ npm run test-e2e
 
 ### Code Formatting
 
-- Use single quotes whenever possible
-- Keep code concise while being grammatically correct
-- No semicolons at the end of lines
-- Use LF (`\n`) line endings
+-   Use single quotes whenever possible
+-   Keep code concise while being grammatically correct
+-   No semicolons at the end of lines
+-   Use LF (`\n`) line endings
 
 For Windows users:
 
@@ -183,13 +188,15 @@ git commit -m "fix: fix bug description"
 ```
 
 Use conventional commit messages:
-- `feat:` for new features
-- `fix:` for bug fixes
-- `docs:` for documentation changes
-- `style:` for formatting changes
-- `refactor:` for code refactoring
-- `test:` for adding tests
-- `chore:` for maintenance tasks
+
+-   `feat:` for new features
+-   `fix:` for bug fixes
+-   `docs:` for documentation changes
+-   `style:` for formatting changes
+-   `refactor:` for code refactoring
+-   `test:` for adding tests
+-   `chore:` for maintenance tasks
+-   `i18n:` for internationalization
 
 ### 2. Push and Create PR
 
@@ -197,8 +204,8 @@ Create a Pull Request to the `main` branch of this repository.
 
 ### 3. PR Requirements
 
-- [ ] All tests pass
-- [ ] Documentation updated if needed
+-   [ ] All tests pass
+-   [ ] Documentation updated if needed
 
 ## Project Structure
 
@@ -237,11 +244,11 @@ time-tracker-4-browser/
 
 ### Key Files
 
-- **`src/manifest.ts`** - Chrome/Edge extension manifest (Manifest V3)
-- **`src/manifest-firefox.ts`** - Firefox extension manifest (Manifest V2)
-- **`src/background/`** - Service Worker and background scripts
-- **`src/content-script/`** - Scripts injected into web pages
-- **`src/pages/`** - Extension UI (popup, side panel, options)
+-   **`src/manifest.ts`** - Chrome/Edge extension manifest (Manifest V3)
+-   **`src/manifest-firefox.ts`** - Firefox extension manifest (Manifest V2)
+-   **`src/background/`** - Service Worker and background scripts
+-   **`src/content-script/`** - Scripts injected into web pages
+-   **`src/pages/`** - Extension UI (popup, side panel, options)
 
 ## Code format
 
@@ -263,19 +270,19 @@ Except for certain professional terms, the text of the user interface can be in 
 ### How to add entries
 
 1. Add new fields in the definition file `xxx.ts`
-2. Then <u>add the corresponding text of this field in English (en) and Simplified Chinese (zh_CN)</u> in the corresponding resource file `xxx-resource.json`
-3. Call `t(msg=>msg...)` in the code to get the text content
+2. Then <u>add the corresponding text of this field in English (en)</u> in the corresponding resource file `xxx-resource.json`
+3. Call `t(msg => msg...)` in the code to get the text content, which can make full use of TypeScript to inspect translated texts.
 
 ### How to integrate with Crowdin
 
-Crowdin is a collaborative translation platform that allows native speakers to help translate multilingual content. The project's integration with Crowdin is divided into two steps
+Crowdin is a collaborative translation platform that allows native speakers to help translate multilingual content. The project's integration with Crowdin is divided into two steps. <u>Collaborators usually need't to perform these steps.</u>
 
 1. Upload English text and other language text in code
 
 ```
 # Upload original English text
 ts-node ./script/crowdin/sync-source.ts
-# Upload texts in other languages ​​in local code (excluding Simplified Chinese)
+# Upload texts in other languages ​​in local code
 ts-node ./script/crowdin/sync-translation.ts
 ```
 
@@ -286,5 +293,3 @@ Because the above two scripts rely on the Crowdin access secret in the environme
 ```
 ts-node ./script/crowdin/export-translation.ts
 ```
-
-You can also directly execute [Action](https://github.com/sheepzh/timer/actions/workflows/crowdin-export.yml).

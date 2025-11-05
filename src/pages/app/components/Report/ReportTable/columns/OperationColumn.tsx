@@ -12,11 +12,10 @@ import { Delete, Open, Plus, Stopwatch } from "@element-plus/icons-vue"
 import { useRequest } from "@hooks"
 import { useTabGroups } from "@hooks/useTabGroups"
 import { locale } from "@i18n"
-import { type ElTableRowScope } from "@pages/element-ui/table"
 import whitelistService from "@service/whitelist/service"
 import { CATE_NOT_SET_ID } from "@util/site"
 import { isCate, isGroup, isNormalSite, isSite } from "@util/stat"
-import { ElButton, ElMessage, ElTableColumn } from "element-plus"
+import { ElButton, ElMessage, ElTableColumn, type RenderRowData } from "element-plus"
 import { computed, defineComponent } from "vue"
 import { useRouter } from "vue-router"
 import { computeDeleteConfirmMsg, handleDelete } from "../../common"
@@ -83,7 +82,7 @@ const _default = defineComponent<Props>(({ onDelete }) => {
             label={t(msg => msg.button.operation)}
             align="center"
         >
-            {({ row }: ElTableRowScope<timer.stat.Row>) => <>
+            {({ row }: RenderRowData<timer.stat.Row>) => <>
                 {/* Analysis */}
                 {analysisVisible(row) && (
                     <ElButton

@@ -6,10 +6,10 @@
  */
 import { t, tN } from "@app/locale"
 import { dateFormat as elDateFormat } from "@i18n/element"
-import { type ElementDatePickerShortcut } from "@pages/element-ui/date"
 import { getDatePickerIconSlots } from "@pages/element-ui/rtl"
 import { formatTime, getBirthday, MILL_PER_DAY } from "@util/time"
 import { ElDatePicker } from "element-plus"
+import type { Shortcut } from "element-plus/es/components/date-picker-panel/src/composables/use-shortcut"
 import { defineComponent, type PropType, type StyleValue } from "vue"
 
 const _default = defineComponent({
@@ -24,7 +24,7 @@ const _default = defineComponent({
         const daysBefore = (days: number) => new Date(new Date().getTime() - days * MILL_PER_DAY)
 
         const birthday = getBirthday()
-        const pickerShortcuts: ElementDatePickerShortcut[] = [
+        const pickerShortcuts: Shortcut[] = [
             {
                 text: t(msg => msg.calendar.range.tillYesterday),
                 value: [birthday, daysBefore(1)],

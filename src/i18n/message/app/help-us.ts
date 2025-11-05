@@ -11,7 +11,6 @@ type _AlertLine =
     | 'l1'
     | 'l2'
     | 'l3'
-    | 'l4'
 
 export type HelpUsMessage = {
     title: string

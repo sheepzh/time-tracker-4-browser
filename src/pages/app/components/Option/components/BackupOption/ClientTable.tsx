@@ -10,10 +10,12 @@ import { cvt2LocaleTime } from "@app/util/time"
 import { Loading, RefreshRight } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
 import { useRequest } from "@hooks"
-import { type ElTableRowScope } from "@pages/element-ui/table"
 import processor from "@service/backup/processor"
 import { getCid } from "@service/meta-service"
-import { ElLink, ElMessage, ElRadio, ElTable, ElTableColumn, ElTag, useNamespace } from "element-plus"
+import {
+    ElLink, ElMessage, ElRadio, ElTable, ElTableColumn, ElTag, useNamespace,
+    type RenderRowData,
+} from "element-plus"
 import { defineComponent, ref, StyleValue, toRaw } from "vue"
 
 const useStyle = () => {
@@ -76,7 +78,7 @@ const _default = defineComponent<{ onSelect: ArgCallback<timer.backup.Client> }>
                             underline="never"
                         />
                     ),
-                    default: ({ row }: ElTableRowScope<timer.backup.Client>) => (
+                    default: ({ row }: RenderRowData<timer.backup.Client>) => (
                         <ElRadio
                             class={radioCls}
                             value={row.id}
@@ -98,7 +100,7 @@ const _default = defineComponent<{ onSelect: ArgCallback<timer.backup.Client> }>
                 align="center"
                 headerAlign="center"
             >
-                {({ row: client }: ElTableRowScope<timer.backup.Client>) => <>
+                {({ row: client }: RenderRowData<timer.backup.Client>) => <>
                     {client.name || '-'}
                     <ElTag
                         v-show={localCid.value === client?.id}

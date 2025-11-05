@@ -9,10 +9,9 @@ import HostAlert from "@app/components/common/HostAlert"
 import TooltipWrapper from "@app/components/common/TooltipWrapper"
 import { t } from "@app/locale"
 import Flex from "@pages/components/Flex"
-import { type ElTableRowScope } from "@pages/element-ui/table"
 import { identifySiteKey } from "@util/site"
 import { isGroup, isSite } from "@util/stat"
-import { Effect, ElTableColumn } from "element-plus"
+import { Effect, ElTableColumn, type RenderRowData } from "element-plus"
 import { defineComponent } from "vue"
 import { useReportFilter } from "../../context"
 import type { ReportSort } from "../../types"
@@ -28,7 +27,7 @@ const _default = defineComponent(() => {
             sortable="custom"
             align="center"
         >
-            {({ row }: ElTableRowScope<timer.stat.Row>) => (
+            {({ row }: RenderRowData<timer.stat.Row>) => (
                 <Flex key={isSite(row) ? identifySiteKey(row.siteKey) : ''} justify="center">
                     <TooltipWrapper
                         usePopover={filter?.siteMerge === 'domain'}
