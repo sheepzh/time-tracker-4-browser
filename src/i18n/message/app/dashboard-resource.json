@@ -194,6 +194,9 @@
         },
         "monthOnMonth": {
             "title": "Tendance mensuelle du temps de navigation"
+        },
+        "timeline": {
+            "focusScoreDesc": "Lié à la durée totale de la navigation continue sur le même site. Voir le code source pour la formule de calcul"
         }
     },
     "ru": {
