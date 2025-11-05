@@ -458,5 +458,48 @@
             "disassociatedMsg": "هل تريد إخلاء فئات جميع المواقع المحددة؟",
             "batchDeleteMsg": "هل تريد حذف جميع المواقع المحددة؟"
         }
+    },
+    "tr": {
+        "deleteConfirmMsg": "{host} silinecektir",
+        "genAliasConfirmMsg": "Site adlarını toplu olarak otomatik olarak tamamlayacak mısınız?",
+        "column": {
+            "type": "Site Türü",
+            "alias": "Site Adı",
+            "cate": "Site Kategorisi",
+            "icon": "İkon"
+        },
+        "type": {
+            "normal": {
+                "name": "normal",
+                "info": "alan adına göre istatistikler"
+            },
+            "merged": {
+                "name": "birleştirildi",
+                "info": "birden fazla ilgili alan adının istatistiklerini birleştirir ve birleştirme kuralları özelleştirilebilir"
+            },
+            "virtual": {
+                "name": "sanal",
+                "info": "Ant Pattern formatındaki herhangi bir URL'yi saymak için, sağ üst köşeye özel bir site ekleyebilirsiniz"
+            }
+        },
+        "cate": {
+            "name": "Adı",
+            "relatedMsg": "Bu kategori {siteCount} siteyle ilişkilendirilmiştir ve silinemez",
+            "removeConfirm": "Kategoriyi silmek için onaylayın: {category}?",
+            "batchChange": "Kategorileri değiştir",
+            "batchDisassociate": "Kategorileri ayır"
+        },
+        "form": {
+            "emptyAlias": "Lütfen site adını girin",
+            "emptyHost": "Lütfen site URL'sini girin"
+        },
+        "msg": {
+            "hostExistWarn": "{host} zaten mevcut",
+            "existedTag": "MEVCUT",
+            "noSelected": "Seçilmiş site yok",
+            "noSupported": "Seçilen siteler için kategori ayarlanamıyor",
+            "disassociatedMsg": "Seçilen tüm sitelerin kategorilerini temizlemek ister misiniz?",
+            "batchDeleteMsg": "Seçili tüm siteleri silmek istiyor musunuz?"
+        }
     }
 }

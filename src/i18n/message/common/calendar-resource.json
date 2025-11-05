@@ -251,5 +251,28 @@
             "tillDaysAgo": "حتى منذ {n} يوم",
             "allTime": "كل الفترة"
         }
+    },
+    "tr": {
+        "weekDays": "Pzt|Salı|Çar|Per|Cum|Cts|Paz",
+        "months": "Oca|Şub|Mar|Nis|May|Haz|Tem|Ağu|Eyl|Eki|Kas|Ara",
+        "dateFormat": "{d}/{m}/{y}",
+        "monthDateFormat": "{d}/{m}",
+        "timeFormat": "{d}/{m}/{y} {h}:{i}:{s}",
+        "simpleTimeFormat": "{d}/{m} {h}:{i}",
+        "label": {
+            "startDate": "Başlangıç ​​tarihi",
+            "endDate": "Bitiş tarihi"
+        },
+        "range": {
+            "today": "Bugün",
+            "yesterday": "Dün",
+            "everyday": "Her gün",
+            "thisWeek": "Bu hafta",
+            "thisMonth": "Bu ay",
+            "lastDays": "Son {n} gün",
+            "tillYesterday": "Dün boyunca",
+            "tillDaysAgo": "{n} gün önce",
+            "allTime": "Tüm zamanlar"
+        }
     }
 }

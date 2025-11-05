@@ -86,5 +86,13 @@
             "pic": "الصور",
             "txt": "نص"
         }
+    },
+    "tr": {
+        "localFile": {
+            "json": "JSON",
+            "pdf": "PDF",
+            "pic": "Resimler",
+            "txt": "Metin"
+        }
     }
 }

@@ -64,5 +64,11 @@
         "hour": "عرض في ساعات",
         "minute": "عرض في دقائق",
         "second": "العرض بالثواني"
+    },
+    "tr": {
+        "default": "Varsayılan tarih formatı",
+        "hour": "Saat cinsinden göster",
+        "minute": "Dakika cinsinden göster",
+        "second": "Saniye cinsinden göster"
     }
 }

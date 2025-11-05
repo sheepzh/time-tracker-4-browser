@@ -185,5 +185,22 @@
             "rate": "قيِّمها بـ 5 نجوم لتساعد الآخرين على معرفتها~~",
             "feedback": "أيضًا، نرحب بتقديم ملاحظاتك وطلبات المميزات الجديدة !!"
         }
+    },
+    "tr": {
+        "label": {
+            "name": "Proje Adı",
+            "version": "Versiyon",
+            "website": "Web Sitesi",
+            "installation": "Kurulabilecek Platformlar",
+            "thanks": "Kullanılan Teknolojiler",
+            "privacy": "Gizlilik Politikası",
+            "license": "Lisans",
+            "support": "Destek"
+        },
+        "text": {
+            "greet": "Bu uzantıyı beğendiniz mi?",
+            "rate": "Bizi desteklemek için 5 yıldız verin!",
+            "feedback": "Fikirleriniz bizi daha iyi yapıyor!"
+        }
     }
 }

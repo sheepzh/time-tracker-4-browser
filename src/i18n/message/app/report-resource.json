@@ -226,5 +226,26 @@
             }
         },
         "noMore": "لا مزيد"
+    },
+    "tr": {
+        "exportFileName": "Gezinti_Zamanım",
+        "total": "Toplam ziyaret sayısı: {visit} kez, toplam süre: {focus}",
+        "batchDelete": {
+            "noSelectedMsg": "Lütfen önce tabloda silmek istediğiniz satırı seçin",
+            "confirmMsg": "{date} tarihine ait [{example}] gibi {count} kayıt silinecektir!",
+            "confirmMsgAll": "[{example}] gibi {count} kayıt silinecek!",
+            "confirmMsgRange": "{start} ile {end} arasında [{example}] gibi {count} kayıt silinecek!"
+        },
+        "remoteReading": {
+            "on": "Uzaktan yedeklenen verileri okuma",
+            "off": "Uzaktan yedeklenen verileri okumak için tıklayın",
+            "table": {
+                "client": "Uygulama adı",
+                "localData": "Yerel Veri",
+                "value": "Değeri",
+                "percentage": "Yüzdesi"
+            }
+        },
+        "noMore": "Daha Fazla Veri Yok"
     }
 }

@@ -317,5 +317,34 @@
         "deleteConfirm": "تم تصفية إجمالي {count} من السجلات. هل تريد حذفها جميعًا؟",
         "migrationAlert": "نقل البيانات بين المتصفحات باستخدام الاستيراد والتصدير",
         "importError": "ملحق الملف خاطئ"
+    },
+    "tr": {
+        "totalMemoryAlert": "Tarayıcı, her uzantı için yerel verileri depolamak üzere {size} MB alan sağlar",
+        "totalMemoryAlert1": "Tarayıcı tarafından izin verilen maksimum depolama alanı belirlenemiyor",
+        "usedMemoryAlert": "Şu anda {size} MB kullanılıyor",
+        "operationAlert": "Depolama alanını azaltmak için önemsiz verileri silebilirsiniz",
+        "filterItems": "Verileri filtrele",
+        "filterFocus": "Günün gezinme süresi {start} saniye ile {end} saniye arasındadır",
+        "filterTime": "Günün ziyaret sayısı {start} ile {end} arasındadır",
+        "filterDate": "{picker} arasında kaydedildi",
+        "importOther": {
+            "step1": "Verileri seçin",
+            "step2": "Verileri onaylayın",
+            "dataSource": "Veri kaynağı",
+            "file": "Veri dosyası",
+            "selectFileBtn": "Seçin",
+            "conflictType": "Çakışma çözümü",
+            "conflictTip": "İçe aktarılan veriler yerel verilerle çakışırsa ne yapmalı",
+            "overwrite": "Üzerine yaz",
+            "accumulate": "Biriktir",
+            "imported": "İçe aktarılan",
+            "local": "Lokal",
+            "fileNotSelected": "Dosya seçilmedi",
+            "conflictNotSelected": "Çakışma çözümü seçilmedi"
+        },
+        "paramError": "Parametre yanlış, lütfen kontrol edin!",
+        "deleteConfirm": "Toplam {count} kayıt filtrelenmiştir. Hepsini silmek istiyor musunuz?",
+        "migrationAlert": "İçe aktarma ve dışa aktarma özelliğini kullanarak tarayıcılar arasında verinizi aktarın",
+        "importError": "Yanlış dosya uzantısı"
     }
 }

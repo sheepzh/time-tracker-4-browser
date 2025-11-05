@@ -102,5 +102,15 @@
         "infoAlert0": "لن يتم احتساب المواقع المدرجة في القائمة البيضاء",
         "infoAlert1": "لن يتم تقييد المواقع المدرجة في القائمة البيضاء",
         "errorInput": "عنوان الموقع غير صالح"
+    },
+    "tr": {
+        "addConfirmMsg": "{url} beyaz listeye eklenecektir.",
+        "removeConfirmMsg": "{url} beyaz listeden kaldırılacaktır.",
+        "duplicateMsg": "Yinelenen",
+        "infoAlertTitle": "Bu sayfada siteleri beyaz listeye ekleyebilirsiniz",
+        "infoAlert0": "Beyaz listeye alınan siteler sayılmayacaktır",
+        "infoAlert1": "Beyaz listeye alınan siteler kısıtlanmayacaktır",
+        "infoAlert2": "Birden fazla siteyi eşleştirmek için joker karakterler (*) kullanabilirsiniz, örneğin *.example.com/**, ve siteleri hariç tutmak için + ön ekini kullanabilirsiniz, örneğin +need.example.com/**",
+        "errorInput": "Geçersiz site URL'si"
     }
 }

@@ -192,5 +192,23 @@
             "importWholeData": "استيراد",
             "importOtherData": "استيراد من إضافات أخرى"
         }
+    },
+    "tr": {
+        "date": "Tarih",
+        "host": "Alan adı",
+        "group": "Sekme Grubu",
+        "focus": "Süre",
+        "run": "Çalışma Süresi",
+        "time": "Ziyaretler",
+        "operation": {
+            "add2Whitelist": "Beyaz Liste",
+            "analysis": "Analiz et",
+            "deleteConfirmMsgAll": "[{url}] adresine ait tüm ziyaret kayıtları silinecektir",
+            "deleteConfirmMsgRange": "{start} ile {end} arasındaki [{url}] ziyaret kayıtları silinecektir",
+            "deleteConfirmMsg": "{date} tarihindeki [{url}] için ziyaret kaydı silinecektir",
+            "exportWholeData": "Dışa Aktar",
+            "importWholeData": "İçe aktar",
+            "importOtherData": "Uzantılardan içe aktar"
+        }
     }
 }

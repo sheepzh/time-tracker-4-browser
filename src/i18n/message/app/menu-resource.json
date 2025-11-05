@@ -185,5 +185,22 @@
         "other": "مميزات اخزي",
         "helpUs": "ساعدني في التَّرْجَمَةً",
         "about": "حول"
+    },
+    "tr": {
+        "dashboard": "Kontrol Paneli",
+        "data": "Verilerim",
+        "dataReport": "Kayıtlı Veriler",
+        "siteAnalysis": "Site Analizi",
+        "dataClear": "Depolama",
+        "behavior": "Kullanıcı Davranışları",
+        "habit": "Alışkanlıklar",
+        "limit": "Zaman Sınırı",
+        "additional": "Ek Özellikler",
+        "siteManage": "Site Yönetimi",
+        "whitelist": "Beyaz Liste",
+        "mergeRule": "Birleştirme Kuralları",
+        "other": "Diğer Özellikler",
+        "helpUs": "Çeviriye yardım et",
+        "about": "Hakkımızda"
     }
 }

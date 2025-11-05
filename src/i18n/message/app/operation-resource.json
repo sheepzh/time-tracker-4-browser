@@ -42,5 +42,9 @@
     "ar": {
         "confirmTitle": "تأكيد",
         "successMsg": "بنجاح!"
+    },
+    "tr": {
+        "confirmTitle": "Doğrulama",
+        "successMsg": "Başarılı oldu!"
     }
 }

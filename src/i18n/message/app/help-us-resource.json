@@ -119,5 +119,16 @@
         "button": "الذهاب إلى Crowdin",
         "loading": "التحقق من تقدم الترجمة...",
         "contributors": "قائمة المساهمين"
+    },
+    "tr": {
+        "title": "Uzantının yerelleştirme çevirilerini iyileştirmeye yardımcı olmaktan çekinmeyin!",
+        "alert": {
+            "l1": "Daha iyi bir kullanıcı deneyimi sunmak amacıyla, çeviri görevlerini Crowdin üzerinde barındırıyorum.",
+            "l2": "Bu eklentiyi sizin için faydalı buluyorsanız ve çevirisini geliştirmek istiyorsanız, Crowdin'deki proje ana sayfasına gitmek için aşağıdaki butona tıklayabilirsiniz.",
+            "l3": "Bir dilin çeviri ilerlemesi %50'ye ulaştığında, bu eklentide ilgili dili desteklemeyi değerlendireceğim."
+        },
+        "button": "Crowdin'e git",
+        "loading": "Çevirinin ilerleyişi kontrol ediliyor...",
+        "contributors": "Katkıda Bulunanlar"
     }
 }
