@@ -37,11 +37,11 @@
             "autoPauseTrack": "{input} 如果 {maxTime} 内未检测到任何活动 {info}，则暂停统计",
             "noActivityInfo": "鼠标和键盘处于非活动状态，并且未处于全屏模式",
             "countLocalFiles": "{input}  是否统计使用浏览器 {localFileTime} {info}",
+            "localFileTime": "阅读本地文件的时间",
+            "localFilesInfo": "支持 PDF、图片、txt 以及 json 等格式",
             "countTabGroup": "{input} 是否统计标签组的时间 {info}",
             "tabGroupInfo": "删除标签组后，数据也会被删除",
             "tabGroupsPermGrant": "该功能需要授予相关权限",
-            "localFileTime": "阅读本地文件的时间",
-            "localFilesInfo": "支持 PDF、图片、txt 以及 json 等格式",
             "fileAccessDisabled": "目前不允许访问文件网址，请先在管理界面开启",
             "fileAccessFirefox": "很抱歉，该功能在 Firefox 中不支持",
             "weekStart": "每周的第一天 {input}",
@@ -82,8 +82,7 @@
                 },
                 "obsidian_local_rest_api": {
                     "endpointInfo": "因为无法为浏览器插件配置跨域，所以只能使用 HTTP 协议"
-                },
-                "web_dav": {}
+                }
             },
             "label": {
                 "endpoint": "服务地址 {info} {input}",
@@ -91,7 +90,6 @@
                 "account": "账号 {input}",
                 "password": "密码 {input}"
             },
-            "lastTimeTip": "上次备份时间: {lastTime}",
             "operation": "备份数据",
             "download": {
                 "btn": "下载数据",
@@ -109,6 +107,7 @@
                 "notSelected": "未选择客户端",
                 "current": "当前"
             },
+            "lastTimeTip": "上次备份时间: {lastTime}",
             "auto": {
                 "label": "是否开启自动备份",
                 "interval": "每 {input} 分钟备份一次"
