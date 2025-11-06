@@ -10,8 +10,8 @@
                 "allTime": "全部数据"
             },
             "saveAsImageTitle": "保存",
-            "averageTime": "平均每天 {value}",
             "averageCount": "平均每天 {value} 次",
+            "averageTime": "平均每天 {value}",
             "totalTime": "共 {totalTime}",
             "totalCount": "共 {totalCount} 次",
             "otherLabel": "其他{count}个网站"

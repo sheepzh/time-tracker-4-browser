@@ -27,15 +27,13 @@
             "rule": "设置规则"
         },
         "button": {
-            "test": "网址测试",
-            "option": "全局设置"
+            "test": "网址测试"
         },
         "message": {
             "noUrl": "未添加任何限制网址",
             "noRule": "未填写任何规则",
             "deleteConfirm": "是否要删除规则 [{name}]？",
             "lockConfirm": "锁定后，即使未触发此规则，所有操作也需要验证",
-            "noPermissionFirefox": "请先在插件管理页[about:addons]开启该插件的粘贴板权限",
             "inputTestUrl": "请先输入需要测试的网址链接",
             "clickTestButton": "输入完成后请点击【{buttonText}】按钮",
             "noRuleMatched": "该网址未命中任何规则",
