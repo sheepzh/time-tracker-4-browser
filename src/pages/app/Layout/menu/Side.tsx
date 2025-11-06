@@ -58,7 +58,7 @@ const useStyle = () => {
 
 const renderItem = (item: MenuItem, router: Router, curr: Ref<string | undefined>) => (
     <ElMenuItem
-        index={item.index ?? item.route}
+        index={item.index ?? item.route ?? item.href}
         onClick={() => handleClick(item, router, curr)}
         v-slots={{
             default: () => <ElIcon size={18}>{h(item.icon)}</ElIcon>,

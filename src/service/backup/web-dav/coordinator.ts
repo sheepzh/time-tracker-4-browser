@@ -1,5 +1,5 @@
 import {
-    deleteDir, judgeDirExist, makeDir, readFile, writeFile,
+    deleteDir, judgeDirExist, makeDirs, readFile, writeFile,
     type WebDAVAuth, type WebDAVContext,
 } from "@api/web-dav"
 import DateIterator from "@util/date-iterator"
@@ -84,10 +84,7 @@ export default class WebDAVCoordinator implements timer.backup.Coordinator<never
 
     private async checkClientDirExist(davContext: WebDAVContext, dirPath: string, cid: string) {
         const clientDirPath = `${dirPath}${cid}`
-        const clientExist = await judgeDirExist(davContext, clientDirPath)
-        if (!clientExist) {
-            await makeDir(davContext, clientDirPath)
-        }
+        await makeDirs(davContext, clientDirPath)
         return clientDirPath
     }
 
@@ -111,9 +108,10 @@ export default class WebDAVCoordinator implements timer.backup.Coordinator<never
         const davContext: WebDAVContext = { endpoint, auth: davAuth }
         const webDavPath = processDir(dirPath)
         try {
+            await makeDirs(davContext, webDavPath)
             const exist = await judgeDirExist(davContext, webDavPath)
             if (!exist) {
-                return "Directory not found"
+                return "Failed to create directory"
             }
         } catch (e) {
             return (e as Error)?.message ?? e?.toString?.() ?? 'Unknown error'

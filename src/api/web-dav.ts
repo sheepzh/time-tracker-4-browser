@@ -3,7 +3,7 @@
  *
  * Testing with server implemented by https://github.com/svtslv/webdav-cli
  */
-import { encode } from 'js-base64'
+import { encode } from '@util/base64'
 import { fetchDelete, fetchGet } from './http'
 
 // Only support password for now
@@ -49,12 +49,23 @@ export async function judgeDirExist(context: WebDAVContext, dirPath: string): Pr
     }
 }
 
-export async function makeDir(context: WebDAVContext, dirPath: string) {
+export async function makeDirs(context: WebDAVContext, dirPath: string) {
+    const normalizedPath = dirPath.startsWith('/') ? dirPath.slice(1) : dirPath
+    const pathSegments = normalizedPath.split('/').filter(segment => segment.length > 0)
+
     const { auth, endpoint } = context || {}
-    const url = `${endpoint}/${dirPath}`
-    const headers = authHeaders(auth)
-    const response = await fetch(url, { method: 'MKCOL', headers })
-    handleWriteResponse(response)
+
+    for (let i = 0; i < pathSegments.length; i++) {
+        const currentPath = pathSegments.slice(0, i + 1).join('/')
+
+        const exists = await judgeDirExist(context, currentPath)
+        if (!exists) {
+            const url = `${endpoint}/${currentPath}`
+            const headers = authHeaders(auth)
+            const response = await fetch(url, { method: 'MKCOL', headers })
+            handleWriteResponse(response)
+        }
+    }
 }
 
 export async function deleteDir(context: WebDAVContext, dirPath: string) {
