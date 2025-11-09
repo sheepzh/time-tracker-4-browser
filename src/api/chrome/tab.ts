@@ -107,3 +107,10 @@ export function onTabUpdated(handler: TabHandler<ChromeTabChangeInfo>): void {
         handler(tabId, changeInfo, tab)
     })
 }
+
+export function onTabRemoved(handler: (tabId: number) => void): void {
+    chrome.tabs.onRemoved.addListener((tabId: number) => {
+        handleError("tabRemoved")
+        handler(tabId)
+    })
+}
