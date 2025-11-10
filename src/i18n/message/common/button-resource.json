@@ -147,13 +147,15 @@
         "previous": "Anterior",
         "next": "Siguiente",
         "okey": "OK",
-        "dont": "¡NO!",
+        "dont": "No",
         "operation": "Acciones",
         "configuration": "Configuración",
         "clear": "Limpiar",
         "enable": "Activar",
         "batchEnable": "Habilitar en Lote",
-        "batchDisable": "Deshabilitar en Lote"
+        "batchDisable": "Deshabilitar en Lote",
+        "collapse": "Colapsar",
+        "expand": "Expandir"
     },
     "de": {
         "create": "Neu",
