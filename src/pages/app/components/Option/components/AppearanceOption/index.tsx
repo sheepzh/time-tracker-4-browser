@@ -16,9 +16,9 @@ import { ElColorPicker, ElMessageBox, ElOption, ElSelect, ElSlider, ElSwitch, El
 import { computed, defineComponent, type StyleValue } from "vue"
 import { type OptionInstance } from "../../common"
 import { useOption } from "../../useOption"
-import OptionItem from "../OptionItem"
+import OptionItem from '../OptionItem'
 import OptionLines from '../OptionLines'
-import OptionTag from "../OptionTag"
+import OptionTag from '../OptionTag'
 import DarkModeInput from "./DarkModeInput"
 
 const SORTED_LOCALES: timer.Locale[] = ALL_LOCALES

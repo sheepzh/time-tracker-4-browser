@@ -32,10 +32,10 @@
             },
             "animationDuration": "图表初始动画的时长 {input}"
         },
-        "statistics": {
+        "tracking": {
             "title": "统计",
             "autoPauseTrack": "{input} 如果 {maxTime} 内未检测到任何活动 {info}，则暂停统计",
-            "noActivityInfo": "鼠标和键盘处于非活动状态，并且未处于全屏模式",
+            "noActivityInfo": "鼠标和键盘处于非活动状态，并且未处于全屏模式，也没有声音播放",
             "countLocalFiles": "{input}  是否统计使用浏览器 {localFileTime} {info}",
             "localFileTime": "阅读本地文件的时间",
             "localFilesInfo": "支持 PDF、图片、txt 以及 json 等格式",
@@ -47,7 +47,7 @@
             "weekStart": "每周的第一天 {input}",
             "weekStartAsNormal": "按照惯例"
         },
-        "dailyLimit": {
+        "limit": {
             "prompt": "受限时显示的提示文本 {input}",
             "reminder": "{input} 在到期前 {minInput} 分钟发送提醒",
             "level": {
@@ -161,10 +161,9 @@
             },
             "animationDuration": "圖表動畫持續時間 {input}"
         },
-        "statistics": {
+        "tracking": {
             "title": "統計設定",
             "autoPauseTrack": "{input} 若 {maxTime} 內無活動 {info} 則暫停追蹤",
-            "noActivityInfo": "滑鼠與鍵盤無動作且非全螢幕模式時",
             "countLocalFiles": "{input} 是否統計瀏覽器 {localFileTime} {info}",
             "localFileTime": "讀取本機檔案時間",
             "localFilesInfo": "支援 PDF、圖片、txt 及 json 等格式",
@@ -176,7 +175,7 @@
             "weekStart": "每週起始日 {input}",
             "weekStartAsNormal": "依慣例"
         },
-        "dailyLimit": {
+        "limit": {
             "prompt": "限制時顯示提示文字 {input}",
             "reminder": "{input} 時間結束前 {minInput} 分鐘提醒",
             "level": {
@@ -290,10 +289,10 @@
             },
             "animationDuration": "The duration of the chart's initial animation {input}"
         },
-        "statistics": {
+        "tracking": {
             "title": "Tracking",
             "autoPauseTrack": "{input} Pause tracking if no activity detected {info} for {maxTime}",
-            "noActivityInfo": "The mouse and keyboard are inactive and not in full screen mode",
+            "noActivityInfo": "The mouse and keyboard are inactive, not in full-screen mode, and there is no sound playing",
             "countLocalFiles": "{input}  Whether to track the time when the browser reads {localFileTime} {info}",
             "localFileTime": "local files",
             "localFilesInfo": "Supports files of types such as PDF, image, txt and json.",
@@ -305,7 +304,7 @@
             "weekStart": "The first day for each week {input}",
             "weekStartAsNormal": "As Normal"
         },
-        "dailyLimit": {
+        "limit": {
             "prompt": "Prompt displayed when restricted {input}",
             "reminder": "{input} Reminder {minInput} minutes before time is up",
             "level": {
@@ -420,10 +419,9 @@
             },
             "animationDuration": "チャートの初期アニメーションの持続時間 {input}"
         },
-        "statistics": {
+        "tracking": {
             "title": "統計",
             "autoPauseTrack": "{input} アクティビティが検出されなかった場合、{info} {maxTime} の追跡を一時停止します",
-            "noActivityInfo": "マウスとキーボードが非アクティブで、全画面モードになっていません",
             "countLocalFiles": "{input}  ブラウザで {localFileTime} {info} に費やされた時間をカウントするかどうか",
             "localFileTime": "ローカルファイルの読み取り",
             "localFilesInfo": "PDF、画像、txt、jsonを含む",
@@ -432,7 +430,7 @@
             "weekStart": "週の最初の日 {input}",
             "weekStartAsNormal": "いつものように"
         },
-        "dailyLimit": {
+        "limit": {
             "prompt": "制限時に表示されるプロンプト {input}",
             "reminder": "{input} 時間切れの {minInput} 分前にリマインダーを送信します",
             "level": {
@@ -546,10 +544,9 @@
             },
             "animationDuration": "Duração da animação inicial {input}"
         },
-        "statistics": {
+        "tracking": {
             "title": "Estatísticas",
             "autoPauseTrack": "{input} Pausar sem atividade {info} por {maxTime}",
-            "noActivityInfo": "Sem atividade do rato/teclado e não em ecrã completo",
             "countLocalFiles": "{input} Contar tempo a {localFileTime} {info}",
             "localFileTime": "ler ficheiros locais",
             "localFilesInfo": "Suporta PDF, imagens, txt e json.",
@@ -558,7 +555,7 @@
             "weekStart": "Primeiro dia da semana {input}",
             "weekStartAsNormal": "Normal"
         },
-        "dailyLimit": {
+        "limit": {
             "prompt": "Aviso quando restrito {input}",
             "reminder": "{input} Aviso {minInput} minutos antes",
             "level": {
@@ -665,10 +662,9 @@
             },
             "animationDuration": "Тривалість початкової анімації діаграми {input}"
         },
-        "statistics": {
+        "tracking": {
             "title": "Статистика",
             "autoPauseTrack": "{input} Призупинити відстеження, якщо не виявлено активності протягом {maxTime} {info}",
-            "noActivityInfo": "Миша та клавіатура неактивні та не в повноекранному режимі",
             "countLocalFiles": "{input}  Враховувати час {localFileTime} в браузері {info}",
             "localFileTime": "перегляду локального файлу",
             "localFilesInfo": "Підтримуються файли PDF, зображення, текстові та формат json",
@@ -680,7 +676,7 @@
             "weekStart": "Перший день тижня: {input}",
             "weekStartAsNormal": "Типово"
         },
-        "dailyLimit": {
+        "limit": {
             "prompt": "Запит, який відображається під час обмеження {input}",
             "reminder": "{input} Нагадування за {minInput} хвилин до закінчення часу",
             "level": {
@@ -794,10 +790,9 @@
             },
             "animationDuration": "Duración de la animación inicial del gráfico {input}"
         },
-        "statistics": {
+        "tracking": {
             "title": "Estadísticas",
             "autoPauseTrack": "{input} Pausar el seguimiento si no se detecta actividad {info} durante {maxTime}",
-            "noActivityInfo": "El mousse y el teclado están inactivos y no en modo de pantalla completa",
             "countLocalFiles": "{input}  Contar el tiempo para {localFileTime} {info} en el navegador",
             "localFileTime": "leer un archivo local",
             "localFilesInfo": "Soporta archivos de tipos como PDF, imagen, TXT y JSON",
@@ -809,7 +804,7 @@
             "weekStart": "El primer día de cada semana {input}",
             "weekStartAsNormal": "Como normalmente"
         },
-        "dailyLimit": {
+        "limit": {
             "prompt": "Punto mostrado cuando está restringido {input}",
             "reminder": "{input} Recordatorio {minInput} minutos antes de que se acabe el tiempo",
             "level": {
@@ -923,10 +918,9 @@
             },
             "animationDuration": "Die Dauer der ersten Animation des Diagramms {input}"
         },
-        "statistics": {
+        "tracking": {
             "title": "Statistik",
             "autoPauseTrack": "{input} Tracking pausieren, wenn {maxTime} keine Aktivität erkannt wird {info}",
-            "noActivityInfo": "Die Maus und die Tastatur sind inaktiv und nicht im Vollbildmodus",
             "countLocalFiles": "{input} Zeit an {localFileTime} {info} im Browser zählen",
             "localFileTime": "eine lokale Datei lesen",
             "localFilesInfo": "Unterstützt Dateitypen, wie PDF, Bilder, .txt und .json",
@@ -938,7 +932,7 @@
             "weekStart": "Erster Tag der Woche {input}",
             "weekStartAsNormal": "Wie normal"
         },
-        "dailyLimit": {
+        "limit": {
             "prompt": "Eingabeaufforderung wird angezeigt, wenn eingeschränkt {input}",
             "reminder": "{input} Erinnerung {minInput} Minuten bevor die Zeit abgelaufen ist",
             "level": {
@@ -1052,10 +1046,9 @@
             },
             "animationDuration": "La durée de l'animation initiale du graphique {input}"
         },
-        "statistics": {
+        "tracking": {
             "title": "Statistiques",
             "autoPauseTrack": "{input} Pause de suivi si aucune activité n'a détecté {info} pour {maxTime}",
-            "noActivityInfo": "La souris et le clavier sont inactifs et non en mode plein écran",
             "countLocalFiles": "{input} S'il faut compter le temps jusqu'à {localFileTime} {info} dans le navigateur",
             "localFileTime": "lire un fichier local",
             "localFilesInfo": "Prend en charge les fichiers de types tels que PDF, image, txt et json.",
@@ -1067,7 +1060,7 @@
             "weekStart": "Le premier jour de chaque semaine {input}",
             "weekStartAsNormal": "Comme d'habitude"
         },
-        "dailyLimit": {
+        "limit": {
             "prompt": "Invite affichée en cas de restriction {input}",
             "reminder": "{input} Rappel {minInput} minutes avant la fin du temps",
             "level": {
@@ -1175,7 +1168,7 @@
             },
             "animationDuration": "Длительность начальной анимации графика {input}"
         },
-        "statistics": {
+        "tracking": {
             "title": "Статистика",
             "localFilesInfo": "Поддержка типов файлов, таких как PDF, изображения, txt и json."
         },
@@ -1223,10 +1216,9 @@
             },
             "animationDuration": "مدة تحريك الرسوم البيانية {input}"
         },
-        "statistics": {
+        "tracking": {
             "title": "الإحصائيات",
             "autoPauseTrack": "{input} إيقاف تتبع الوقت إذا لم يكن هناك تفاعل {info} لمدة {maxTime}",
-            "noActivityInfo": "الفأرة ولوحة المفاتيح غير نشطة والشاشة ليست في وضع ملء الشاشة",
             "countLocalFiles": "{input}  هل يتم حساب الوقت عند فتح {localFileTime} في المتصفح {info}",
             "localFileTime": "الملفات المحلية",
             "localFilesInfo": "يدعم ملفات مثل PDF، الصور، txt و json.",
@@ -1238,7 +1230,7 @@
             "weekStart": "اليوم الأول لكل أسبوع {input}",
             "weekStartAsNormal": "بشكل عادي"
         },
-        "dailyLimit": {
+        "limit": {
             "prompt": "رسالة التنبيه عند التقييد {input}",
             "reminder": "{input} تذكير {minInput} دقائق قبل انتهاء الوقت",
             "level": {
@@ -1352,10 +1344,9 @@
             },
             "animationDuration": "Grafiğin ilk animasyonunun süresi {input}"
         },
-        "statistics": {
+        "tracking": {
             "title": "İzleme",
             "autoPauseTrack": "{input} {maxTime} süresince herhangi bir etkinlik algılanmazsa izlemeyi duraklat {info}",
-            "noActivityInfo": "Fare ve klavye etkin değil ve tam ekran modunda değil",
             "countLocalFiles": "{input}  Tarayıcının {localFileTime} {info} dosyasını okuduğu zamanı izlemek isteyip istemediğinizi seçin",
             "localFileTime": "yerel dosyalar",
             "localFilesInfo": "PDF, resim, txt ve json gibi dosya türlerini destekler.",
@@ -1367,7 +1358,7 @@
             "weekStart": "Her haftanın ilk günü {input}",
             "weekStartAsNormal": "Normal"
         },
-        "dailyLimit": {
+        "limit": {
             "prompt": "Kısıtlı olduğunda gösterilecek uyarı {input}",
             "reminder": "{input} Süre dolmadan {minInput} dakika önce hatırlatma",
             "level": {

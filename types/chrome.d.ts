@@ -3,8 +3,8 @@
  */
 // chrome.tabs
 declare type ChromeTab = chrome.tabs.Tab
-declare type ChromeTabActiveInfo = chrome.tabs.TabActiveInfo
-declare type ChromeTabChangeInfo = chrome.tabs.TabChangeInfo
+declare type ChromeTabActiveInfo = chrome.tabs.OnActivatedInfo
+declare type ChromeTabUpdatedInfo = chrome.tabs.OnUpdatedInfo
 // chrome.windows
 declare type ChromeWindow = chrome.windows.Window
 // chrome.contextMenus

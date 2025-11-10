@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { sendMsg2Runtime } from "@api/chrome/runtime"
+import { trySendMsg2Runtime } from "@api/chrome/runtime"
 import { initLocale } from "@i18n"
 import processLimit from "./limit"
 import printInfo from "./printer"
@@ -39,18 +39,6 @@ function getOrSetFlag(): boolean {
     return !!pre
 }
 
-/**
- * Wrap for hooks, after the extension reloaded or upgraded, the context of current content script will be invalid
- * And sending messages to the runtime will be failed
- */
-async function trySendMsg2Runtime<Req, Res>(code: timer.mq.ReqCode, data?: Req): Promise<Res | undefined> {
-    try {
-        return await sendMsg2Runtime(code, data)
-    } catch {
-        // ignored
-    }
-}
-
 async function main() {
     // Execute in every injections
     const normalTracker = new NormalTracker({
@@ -66,18 +54,18 @@ async function main() {
     if (getOrSetFlag()) return
     if (!host) return
 
-    const isWhitelist = await sendMsg2Runtime('cs.isInWhitelist', { host, url })
+    const isWhitelist = await trySendMsg2Runtime('cs.isInWhitelist', { host, url })
     if (isWhitelist) return
 
     await initLocale()
-    const needPrintInfo = await sendMsg2Runtime('cs.printTodayInfo')
+    const needPrintInfo = await trySendMsg2Runtime('cs.printTodayInfo')
     !!needPrintInfo && printInfo(host)
     await processLimit(url)
 
     processTimeline()
 
     // Increase visit count at the end
-    await sendMsg2Runtime('cs.incVisitCount', { host, url })
+    await trySendMsg2Runtime('cs.incVisitCount', { host, url })
 }
 
 main()

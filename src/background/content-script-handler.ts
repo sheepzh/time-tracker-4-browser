@@ -74,5 +74,6 @@ export default function init(dispatcher: MessageDispatcher) {
             const exist = await siteService.get(site)
             return exist?.run ? site : null
         })
+        .register<void, boolean>('cs.getAudible', async (_, sender) => !!sender.tab?.audible)
         .register<timer.timeline.Event, void>('cs.timelineEv', ev => timelineThrottler.saveEvent(ev))
 }

@@ -1,7 +1,10 @@
+import { onRuntimeMessage, trySendMsg2Runtime } from '@api/chrome/runtime'
 import optionHolder from "@service/components/option-holder"
 
 export default class IdleDetector {
     fullScreen: boolean = false
+    // default to true, try not to affect tracking
+    audible: boolean = true
 
     autoPauseTracking: boolean = false
     // By milliseconds
@@ -25,7 +28,8 @@ export default class IdleDetector {
     }
 
     isIdle() {
-        return this.lastActiveTime + this.autoPauseInterval <= Date.now() && !this.fullScreen
+        if (this.fullScreen || this.audible) return false
+        return this.lastActiveTime + this.autoPauseInterval <= Date.now()
     }
 
     private async init() {
@@ -60,9 +64,17 @@ export default class IdleDetector {
             this.fullScreen = !!document?.fullscreenElement
             handleActive()
         })
+
+        trySendMsg2Runtime('cs.getAudible').then(val => this.audible = !!val)
+        onRuntimeMessage(async req => {
+            const { code, data } = req
+            if (code !== 'syncAudible' || typeof data !== 'boolean') return { code: 'ignore' }
+            this.audible = !!data
+            return { code: 'success' }
+        })
     }
 
-    private processOption(option: timer.option.StatisticsOption) {
+    private processOption(option: timer.option.TrackingOption) {
         this.autoPauseTracking = !!option?.autoPauseTracking
         this.autoPauseInterval = option?.autoPauseInterval * 1000
     }

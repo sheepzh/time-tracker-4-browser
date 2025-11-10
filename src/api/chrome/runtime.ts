@@ -40,6 +40,18 @@ export function sendMsg2Runtime<T = any, R = any>(code: timer.mq.ReqCode, data?:
     })
 }
 
+/**
+ * Wrap for hooks, after the extension reloaded or upgraded, the context of current content script will be invalid
+ * And sending messages to the runtime will be failed
+ */
+export async function trySendMsg2Runtime<Req, Res>(code: timer.mq.ReqCode, data?: Req): Promise<Res | undefined> {
+    try {
+        return await sendMsg2Runtime(code, data)
+    } catch {
+        // ignored
+    }
+}
+
 export function onRuntimeMessage<T = any, R = any>(handler: ChromeMessageHandler<T, R>): void {
     // Be careful!!!
     // Can't use await/async in callback parameter

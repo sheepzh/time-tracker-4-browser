@@ -92,25 +92,31 @@ export function sendMsg2Tab<T = any, R = any>(tabId: number, code: timer.mq.ReqC
     })
 }
 
-type TabHandler<Event> = (tabId: number, ev: Event, tab?: ChromeTab) => void
+export async function trySendMsg2Tab<T = any, R = any>(
+    tabId: number,
+    code: timer.mq.ReqCode,
+    data?: T
+): Promise<R | undefined> {
+    try {
+        return await sendMsg2Tab<T, R>(tabId, code, data)
+    } catch (e) {
+        console.warn(`Errored to send message to tab: tabId=${tabId}, code=${code}, data=${JSON.stringify(data)}`, e)
+        return Promise.resolve(undefined)
+    }
+}
 
-export function onTabActivated(handler: TabHandler<ChromeTabActiveInfo>): void {
-    chrome.tabs.onActivated.addListener((activeInfo: chrome.tabs.OnActivatedInfo) => {
+type TabHandler<Event> = (tabId: number, ev: Event, tab: ChromeTab) => void
+
+export function onTabActivated(handler: (tabId: number, info: ChromeTabActiveInfo) => void): void {
+    chrome.tabs.onActivated.addListener(activeInfo => {
         handleError("tabActivated")
-        handler(activeInfo?.tabId, activeInfo)
+        handler(activeInfo.tabId, activeInfo)
     })
 }
 
-export function onTabUpdated(handler: TabHandler<ChromeTabChangeInfo>): void {
-    chrome.tabs.onUpdated.addListener((tabId: number, changeInfo: ChromeTabChangeInfo, tab: ChromeTab) => {
+export function onTabUpdated(handler: TabHandler<ChromeTabUpdatedInfo>): void {
+    chrome.tabs.onUpdated.addListener((tabId: number, changeInfo: ChromeTabUpdatedInfo, tab: ChromeTab) => {
         handleError("tabUpdated")
         handler(tabId, changeInfo, tab)
-    })
-}
-
-export function onTabRemoved(handler: (tabId: number) => void): void {
-    chrome.tabs.onRemoved.addListener((tabId: number) => {
-        handleError("tabRemoved")
-        handler(tabId)
     })
 }
