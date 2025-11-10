@@ -37,7 +37,7 @@ export type OptionMessage = {
         }
         animationDuration: string
     }
-    statistics: {
+    tracking: {
         title: string
         autoPauseTrack: string
         noActivityInfo: string
@@ -52,7 +52,7 @@ export type OptionMessage = {
         weekStart: string
         weekStartAsNormal: string
     }
-    dailyLimit: {
+    limit: {
         prompt: string
         reminder: string
         level: {

@@ -5,7 +5,7 @@ import { useRouter } from "vue-router"
 import ContentContainer from "../common/ContentContainer"
 import { CATE_LABELS, changeQuery, type OptionCategory, parseQuery } from "./common"
 
-const IGNORED_CATE: OptionCategory[] = ['dailyLimit']
+const IGNORED_CATE: OptionCategory[] = ['limit']
 
 const _default = defineComponent(() => {
     const tab = ref<OptionCategory>(parseQuery() || 'appearance')

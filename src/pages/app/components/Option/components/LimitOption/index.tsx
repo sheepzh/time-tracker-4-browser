@@ -9,7 +9,7 @@ import { processVerification } from "@app/util/limit"
 import { Edit } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
 import { locale } from '@i18n'
-import { defaultDailyLimit } from "@util/constant/option"
+import { defaultLimit } from "@util/constant/option"
 import { ElButton, ElInput, ElInputNumber, ElMessage, ElMessageBox, ElOption, ElSelect, ElSwitch, useNamespace } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
 import { type OptionInstance } from "../../common"
@@ -61,7 +61,9 @@ function copy(target: timer.option.LimitOption, source: timer.option.LimitOption
 }
 
 function reset(target: timer.option.LimitOption) {
-    const defaultValue: MakeOptional<timer.option.LimitOption, 'limitPassword' | 'limitVerifyDifficulty' | 'limitReminderDuration'> = defaultDailyLimit()
+    const defaultValue: MakeOptional<
+        timer.option.LimitOption, 'limitPassword' | 'limitVerifyDifficulty' | 'limitReminderDuration'
+    > = defaultLimit()
     // Not to reset limitPassword
     delete defaultValue.limitPassword
     // Not to reset difficulty
@@ -72,8 +74,8 @@ function reset(target: timer.option.LimitOption) {
 }
 
 const confirm4Strict = async (): Promise<void> => {
-    const title = t(msg => msg.option.dailyLimit.level.strictTitle)
-    const content = t(msg => msg.option.dailyLimit.level.strictContent)
+    const title = t(msg => msg.option.limit.level.strictTitle)
+    const content = t(msg => msg.option.limit.level.strictContent)
     await ElMessageBox.confirm(content, title, {
         type: "warning",
         confirmButtonText: t(msg => msg.button.confirm),
@@ -82,7 +84,7 @@ const confirm4Strict = async (): Promise<void> => {
 }
 
 const _default = defineComponent((_, ctx) => {
-    const { option } = useOption<timer.option.LimitOption>({ defaultValue: defaultDailyLimit, copy })
+    const { option } = useOption<timer.option.LimitOption>({ defaultValue: defaultLimit, copy })
     const { verified, verify } = useVerify(option)
     const { modifyPsw } = usePswEdit({ reset: () => option.limitPassword })
 
@@ -118,7 +120,7 @@ const _default = defineComponent((_, ctx) => {
 
     return () => <OptionLines>
         <OptionItem
-            label={msg => msg.option.dailyLimit.reminder}
+            label={msg => msg.option.limit.reminder}
             defaultValue={t(msg => msg.option.no)}
             v-slots={{
                 default: () => (
@@ -139,8 +141,8 @@ const _default = defineComponent((_, ctx) => {
             }}
         />
         <OptionItem
-            label={msg => msg.option.dailyLimit.level.label}
-            defaultValue={t(msg => msg.option.dailyLimit.level[defaultDailyLimit().limitLevel])}
+            label={msg => msg.option.limit.level.label}
+            defaultValue={t(msg => msg.option.limit.level[defaultLimit().limitLevel])}
         >
             <ElSelect
                 modelValue={option.limitLevel}
@@ -149,12 +151,12 @@ const _default = defineComponent((_, ctx) => {
                 style={{ width: `${levelSelectStyle.width}px` }}
                 onChange={handleLevelChange}
             >
-                {ALL_LEVEL.map(item => <ElOption value={item} label={t(msg => msg.option.dailyLimit.level[item])} />)}
+                {ALL_LEVEL.map(item => <ElOption value={item} label={t(msg => msg.option.limit.level[item])} />)}
             </ElSelect>
         </OptionItem>
         <OptionItem
             v-show={option.limitLevel === "password"}
-            label={msg => msg.option.dailyLimit.level.passwordLabel}
+            label={msg => msg.option.limit.level.passwordLabel}
         >
             <ElInput
                 modelValue={option.limitPassword}
@@ -169,8 +171,8 @@ const _default = defineComponent((_, ctx) => {
         </OptionItem>
         <OptionItem
             v-show={option.limitLevel === "verification"}
-            label={msg => msg.option.dailyLimit.level.verificationLabel}
-            defaultValue={t(msg => (msg.option.dailyLimit.level as any)[defaultDailyLimit().limitVerifyDifficulty])}
+            label={msg => msg.option.limit.level.verificationLabel}
+            defaultValue={t(msg => (msg.option.limit.level as any)[defaultLimit().limitVerifyDifficulty])}
         >
             <ElSelect
                 modelValue={option.limitVerifyDifficulty}
@@ -180,7 +182,7 @@ const _default = defineComponent((_, ctx) => {
                     .catch(console.warn)
                 }
             >
-                {ALL_DIFF.map(item => <ElOption value={item} label={t(msg => msg.option.dailyLimit.level.verificationDifficulty[item])} />)}
+                {ALL_DIFF.map(item => <ElOption value={item} label={t(msg => msg.option.limit.level.verificationDifficulty[item])} />)}
             </ElSelect>
             <ElButton
                 size="small"
@@ -190,7 +192,7 @@ const _default = defineComponent((_, ctx) => {
                 {t(msg => msg.button.test)}
             </ElButton>
         </OptionItem>
-        <OptionItem label={msg => msg.option.dailyLimit.prompt}>
+        <OptionItem label={msg => msg.option.limit.prompt}>
             <ElInput
                 modelValue={option.limitPrompt}
                 size="small"

@@ -32,13 +32,13 @@ export const usePswEdit = (options: Options) => {
         resetConfirmPsw()
 
         const action = await ElMessageBox({
-            title: t(msg => msg.option.dailyLimit.level.passwordLabel, { input: '' }),
+            title: t(msg => msg.option.limit.level.passwordLabel, { input: '' }),
             message: (
                 <ElForm labelWidth={120} labelPosition="left">
-                    <ElFormItem required label={t(msg => msg.option.dailyLimit.level.pswFormLabel)}>
+                    <ElFormItem required label={t(msg => msg.option.limit.level.pswFormLabel)}>
                         <ElInput modelValue={psw.value} onInput={setPsw} />
                     </ElFormItem>
-                    <ElFormItem required label={t(msg => msg.option.dailyLimit.level.pswFormAgain)}>
+                    <ElFormItem required label={t(msg => msg.option.limit.level.pswFormAgain)}>
                         <ElInput modelValue={confirmPsw.value} onInput={setConfirmPsw} />
                     </ElFormItem>
                 </ElForm>

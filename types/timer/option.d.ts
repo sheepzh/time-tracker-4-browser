@@ -73,7 +73,7 @@ declare namespace timer.option {
         chartAnimationDuration: number
     }
 
-    type StatisticsOption = {
+    type TrackingOption = {
         /**
          * Whether to pause tracking if no activity detected
          *
@@ -180,7 +180,7 @@ declare namespace timer.option {
 
     type AllOption =
         & AppearanceOption
-        & StatisticsOption
+        & TrackingOption
         & LimitOption
         & AccessibilityOption
         & BackupOption

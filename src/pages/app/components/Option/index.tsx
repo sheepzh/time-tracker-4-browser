@@ -13,16 +13,16 @@ import AccessibilityOption from "./components/AccessibilityOption"
 import AppearanceOption from "./components/AppearanceOption"
 import BackupOption from './components/BackupOption'
 import LimitOption from './components/LimitOption'
-import StatisticsOption from "./components/StatisticsOption"
+import TrackingOption from "./components/TrackingOption"
 import Select from "./Select"
 import Tabs from "./Tabs"
 
 const _default = defineComponent(() => {
     const paneRefMap: Record<OptionCategory, Ref<OptionInstance | undefined>> = {
         appearance: ref(),
-        statistics: ref(),
+        tracking: ref(),
         backup: ref(),
-        dailyLimit: ref(),
+        limit: ref(),
         accessibility: ref(),
     }
 
@@ -30,8 +30,8 @@ const _default = defineComponent(() => {
 
     const slots: Record<OptionCategory, () => JSX.Element> = {
         appearance: () => <AppearanceOption ref={paneRefMap.appearance} />,
-        statistics: () => <StatisticsOption ref={paneRefMap.statistics} />,
-        dailyLimit: () => <LimitOption ref={paneRefMap.dailyLimit} />,
+        tracking: () => <TrackingOption ref={paneRefMap.tracking} />,
+        limit: () => <LimitOption ref={paneRefMap.limit} />,
         accessibility: () => <AccessibilityOption ref={paneRefMap.accessibility} />,
         backup: () => <BackupOption ref={paneRefMap.backup} />,
     }

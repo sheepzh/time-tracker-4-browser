@@ -11,7 +11,7 @@ import { useRequest } from "@hooks"
 import { locale } from "@i18n"
 import { rotate } from "@util/array"
 import { IS_ANDROID, IS_FIREFOX } from "@util/constant/environment"
-import { defaultStatistics } from "@util/constant/option"
+import { defaultTracking } from "@util/constant/option"
 import { MILL_PER_SECOND } from "@util/time"
 import { ElMessage, ElMessageBox, ElOption, ElSelect, ElSwitch, ElTimePicker, ElTooltip } from "element-plus"
 import { computed, defineComponent } from "vue"
@@ -19,11 +19,11 @@ import { type OptionInstance } from "../common"
 import { useOption } from "../useOption"
 import OptionItem from "./OptionItem"
 import OptionLines from './OptionLines'
-import OptionTag from "./OptionTag"
-import OptionTooltip from "./OptionTooltip"
+import OptionTag from './OptionTag'
+import OptionTooltip from './OptionTooltip'
 
 const weekStartOptionPairs: [[timer.option.WeekStartOption, string]] = [
-    ['default', t(msg => msg.option.statistics.weekStartAsNormal)]
+    ['default', t(msg => msg.option.tracking.weekStartAsNormal)]
 ]
 const allWeekDays = t(msg => msg.calendar.weekDays)
     .split('|')
@@ -31,7 +31,7 @@ const allWeekDays = t(msg => msg.calendar.weekDays)
 rotate(allWeekDays, locale === 'zh_CN' ? 0 : 1, true)
 allWeekDays.forEach(weekDayInfo => weekStartOptionPairs.push(weekDayInfo))
 
-function copy(target: timer.option.StatisticsOption, source: timer.option.StatisticsOption) {
+function copy(target: timer.option.TrackingOption, source: timer.option.TrackingOption) {
     target.countLocalFiles = source.countLocalFiles
     target.countTabGroup = source.countTabGroup
     target.weekStart = source.weekStart
@@ -40,12 +40,12 @@ function copy(target: timer.option.StatisticsOption, source: timer.option.Statis
 }
 
 const _default = defineComponent((_props, ctx) => {
-    const { option } = useOption({ defaultValue: defaultStatistics, copy })
+    const { option } = useOption({ defaultValue: defaultTracking, copy })
     const { data: fileAccess } = useRequest(isAllowedFileSchemeAccess)
     ctx.expose({
         reset: () => {
             const oldInterval = option.autoPauseInterval
-            copy(option, defaultStatistics())
+            copy(option, defaultTracking())
             option.autoPauseInterval = oldInterval
         }
     } satisfies OptionInstance)
@@ -76,7 +76,7 @@ const _default = defineComponent((_props, ctx) => {
     const handleTabGroupChange = async (val: boolean) => {
         if (val && !await hasPerm("tabGroups")) {
             try {
-                const granted = await ElMessageBox.confirm(t(msg => msg.option.statistics.tabGroupsPermGrant), { type: 'primary' })
+                const granted = await ElMessageBox.confirm(t(msg => msg.option.tracking.tabGroupsPermGrant), { type: 'primary' })
                     .then(() => requestPerm("tabGroups"))
                 if (!granted) {
                     ElMessage.error("Grant permission failed")
@@ -93,10 +93,10 @@ const _default = defineComponent((_props, ctx) => {
     return () => <OptionLines>
         {!IS_ANDROID && <>
             <OptionItem
-                label={msg => msg.option.statistics.autoPauseTrack}
+                label={msg => msg.option.tracking.autoPauseTrack}
                 defaultValue={t(msg => msg.option.no)}
                 v-slots={{
-                    info: () => <OptionTooltip>{t(msg => msg.option.statistics.noActivityInfo)}</OptionTooltip>,
+                    info: () => <OptionTooltip>{t(msg => msg.option.tracking.noActivityInfo)}</OptionTooltip>,
                     maxTime: () => <ElTimePicker
                         size="small"
                         clearable={false}
@@ -113,34 +113,34 @@ const _default = defineComponent((_props, ctx) => {
                 }}
             />
             <OptionItem
-                label={msg => msg.option.statistics.countLocalFiles}
+                label={msg => msg.option.tracking.countLocalFiles}
                 defaultValue={fileAccess.value ? t(msg => msg.option.yes) : undefined}
                 v-slots={{
-                    info: () => <OptionTooltip>{t(msg => msg.option.statistics.localFilesInfo)}</OptionTooltip>,
-                    localFileTime: () => <OptionTag>{t(msg => msg.option.statistics.localFileTime)}</OptionTag>,
+                    info: () => <OptionTooltip>{t(msg => msg.option.tracking.localFilesInfo)}</OptionTooltip>,
+                    localFileTime: () => <OptionTag>{t(msg => msg.option.tracking.localFileTime)}</OptionTag>,
                     default: () => fileAccess.value
                         ? <ElSwitch modelValue={option.countLocalFiles} onChange={val => option.countLocalFiles = val as boolean} />
                         : <ElTooltip
                             placement="top"
                             v-slots={{
-                                content: () => IS_FIREFOX ? t(msg => msg.option.statistics.fileAccessFirefox) : t(msg => msg.option.statistics.fileAccessDisabled),
+                                content: () => IS_FIREFOX ? t(msg => msg.option.tracking.fileAccessFirefox) : t(msg => msg.option.tracking.fileAccessDisabled),
                                 default: () => <ElSwitch modelValue={false} disabled />,
                             }}
                         />,
                 }}
             />
             <OptionItem
-                label={msg => msg.option.statistics.countTabGroup}
+                label={msg => msg.option.tracking.countTabGroup}
                 defaultValue={t(msg => msg.option.no)}
                 v-slots={{
-                    info: () => <OptionTooltip>{t(msg => msg.option.statistics.tabGroupInfo)}</OptionTooltip>,
+                    info: () => <OptionTooltip>{t(msg => msg.option.tracking.tabGroupInfo)}</OptionTooltip>,
                     default: () => <ElSwitch modelValue={option.countTabGroup} onChange={val => handleTabGroupChange(!!val)} />
                 }}
             />
         </>}
         <OptionItem
-            label={msg => msg.option.statistics.weekStart}
-            defaultValue={t(msg => msg.option.statistics.weekStartAsNormal)}
+            label={msg => msg.option.tracking.weekStart}
+            defaultValue={t(msg => msg.option.tracking.weekStartAsNormal)}
         >
             <ElSelect
                 modelValue={option.weekStart}

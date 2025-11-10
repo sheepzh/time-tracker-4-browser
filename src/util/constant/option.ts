@@ -25,9 +25,9 @@ export function defaultAppearance(): AppearanceRequired {
     }
 }
 
-type StatisticsRequired = MakeRequired<timer.option.StatisticsOption, 'weekStart'>
+type TrackingRequired = MakeRequired<timer.option.TrackingOption, 'weekStart'>
 
-export function defaultStatistics(): StatisticsRequired {
+export function defaultTracking(): TrackingRequired {
     return {
         autoPauseTracking: false,
         // 10 minutes
@@ -38,9 +38,9 @@ export function defaultStatistics(): StatisticsRequired {
     }
 }
 
-type DailyLimitRequired = MakeRequired<timer.option.LimitOption, 'limitPassword' | 'limitVerifyDifficulty' | 'limitReminderDuration'>
+type LimitRequired = MakeRequired<timer.option.LimitOption, 'limitPassword' | 'limitVerifyDifficulty' | 'limitReminderDuration'>
 
-export function defaultDailyLimit(): DailyLimitRequired {
+export function defaultLimit(): LimitRequired {
     return {
         limitLevel: 'nothing',
         limitPassword: '',
@@ -69,15 +69,15 @@ export function defaultAccessibility(): timer.option.AccessibilityOption {
 }
 
 export type DefaultOption =
-    & AppearanceRequired & StatisticsRequired & DailyLimitRequired
+    & AppearanceRequired & TrackingRequired & LimitRequired
     & timer.option.BackupOption & timer.option.AccessibilityOption
 
 export function defaultOption(): DefaultOption {
     return {
         ...defaultAppearance(),
-        ...defaultStatistics(),
+        ...defaultTracking(),
         ...defaultBackup(),
-        ...defaultDailyLimit(),
+        ...defaultLimit(),
         ...defaultAccessibility(),
     }
 }

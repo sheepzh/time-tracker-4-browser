@@ -113,7 +113,7 @@
             "condition": "Restricted URL",
             "daily": "Daily limit",
             "weekly": "Weekly limit",
-            "weekStartInfo": "The first day of each week is {weekStart}, you can change this value in the statistics options",
+            "weekStartInfo": "The first day of each week is {weekStart}, you can change this value in the tracking options",
             "delayCount": "Delay count",
             "detail": "Rule detail",
             "visitTime": "Time limit per visit",

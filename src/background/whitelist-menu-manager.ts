@@ -60,10 +60,10 @@ const handleListChange = (newWhitelist: string[]) => {
     updateContextMenuInner(currentActiveId)
 }
 
-const handleTabUpdated = (tabId: number, changeInfo: ChromeTabChangeInfo, tab?: ChromeTab) => {
+const handleTabUpdated = (tabId: number, updatedInfo: ChromeTabUpdatedInfo, tab?: ChromeTab) => {
     // Current active tab updated
     tabId === currentActiveId
-        && changeInfo.status === 'loading'
+        && updatedInfo.status === 'loading'
         && updateContextMenuInner(tab)
 }
 

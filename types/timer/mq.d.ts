@@ -18,6 +18,8 @@ declare namespace timer.mq {
         | 'siteRunChange'
         // @since 3.5.0
         | "enableTabGroup"
+        // @since 3.7.3
+        | "syncAudible"
         // Request by content script
         // @since 1.3.0
         | "cs.isInWhitelist"
@@ -38,6 +40,8 @@ declare namespace timer.mq {
         | "cs.getRunSites"
         // @since 3.6.1
         | "cs.timelineEv"
+        // @since 3.7.3
+        | "cs.getAudible"
 
     type ResCode = "success" | "fail" | "ignore"
 

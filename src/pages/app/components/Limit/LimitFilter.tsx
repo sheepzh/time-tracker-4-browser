@@ -18,7 +18,7 @@ import { defineComponent } from "vue"
 import DropdownButton, { type DropdownButtonItem } from "../common/DropdownButton"
 import { useLimitAction, useLimitBatch, useLimitFilter } from "./context"
 
-const optionPageUrl = getAppPageUrl(OPTION_ROUTE, { i: 'dailyLimit' })
+const optionPageUrl = getAppPageUrl(OPTION_ROUTE, { i: 'limit' })
 
 type BatchOpt = 'delete' | 'enable' | 'disable'
 
