@@ -85,7 +85,9 @@ audioTabListener
 
         badgeTextManager.updateFocus({ url, tabId })
     })
-    .listen(() => activeTabId)
+
+// Make this async since listen() is now async
+audioTabListener.listen(() => activeTabId)
 
 handleInstall()
 

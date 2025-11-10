@@ -11,8 +11,8 @@ type AudioState = {
     host: string
     url: string
     tabId: number
-    lastCheckTime: number  // Track when we last checked/updated
-    isCurrentlyActive: boolean  // Current active state
+    lastCheckTime: number
+    isCurrentlyActive: boolean
 }
 
 type AudioEventParam = {
@@ -24,9 +24,13 @@ type AudioEventParam = {
 
 type AudioEventHandler = (params: AudioEventParam) => void
 
+const STORAGE_KEY = 'audioPlayingTabsState'
+const PERSIST_INTERVAL_MS = 5000  // Save state every 5 seconds
+
 export default class AudioTabListener {
     private listeners: AudioEventHandler[] = []
     private audioPlayingTabs: Map<number, AudioState> = new Map()
+    private persistenceInterval: number | null = null
 
     register(handler: AudioEventHandler): AudioTabListener {
         this.listeners.push(handler)
@@ -97,7 +101,52 @@ export default class AudioTabListener {
         }
     }
 
-    listen(getActiveTabId: () => number | null) {
+    private async restoreState() {
+        try {
+            const result = await chrome.storage.local.get(STORAGE_KEY)
+            const stateArray = result[STORAGE_KEY]
+            if (stateArray && Array.isArray(stateArray)) {
+                this.audioPlayingTabs = new Map(stateArray)
+            }
+        } catch (e) {
+            // Ignore errors - state will start fresh
+            console.warn('Failed to restore audio tracking state:', e)
+        }
+    }
+
+    private async saveState() {
+        // Don't save if no tabs are playing audio
+        if (this.audioPlayingTabs.size === 0) return
+
+        try {
+            const stateArray = Array.from(this.audioPlayingTabs.entries())
+            await chrome.storage.local.set({ [STORAGE_KEY]: stateArray })
+        } catch (e) {
+            // Ignore errors - will retry on next interval
+            console.warn('Failed to save audio tracking state:', e)
+        }
+    }
+
+    private startPersistence() {
+        // Persist state periodically to survive service worker restarts (Chrome/Edge)
+        this.persistenceInterval = setInterval(() => {
+            this.saveState()
+        }, PERSIST_INTERVAL_MS) as unknown as number
+    }
+
+    private stopPersistence() {
+        if (this.persistenceInterval !== null) {
+            clearInterval(this.persistenceInterval)
+            this.persistenceInterval = null
+        }
+    }
+
+    async listen(getActiveTabId: () => number | null) {
+        // Restore state on startup (handles Chrome service worker restarts)
+        await this.restoreState()
+
+        // Start periodic persistence
+        this.startPersistence()
 
         onTabUpdated((tabId, changeInfo, tab) => {
             if (changeInfo.audible !== undefined) {
@@ -116,9 +165,7 @@ export default class AudioTabListener {
         })
     }
 
-    // Call this when active tab changes
     onActiveTabChanged(newActiveTabId: number | null) {
-        // Check all currently playing audio tabs
         this.audioPlayingTabs.forEach((state, tabId) => {
             const isNowActive = tabId === newActiveTabId
             this.handleTabActivationChange(tabId, isNowActive)
