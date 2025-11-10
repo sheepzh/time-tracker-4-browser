@@ -8,9 +8,12 @@
 import { listTabs } from "@api/chrome/tab"
 import { isNoneWindowId, onNormalWindowFocusChanged } from "@api/chrome/window"
 import optionHolder from "@service/components/option-holder"
+import itemService from "@service/item-service"
+import whitelistHolder from "@service/whitelist/holder"
 import { isBrowserUrl } from "@util/pattern"
 import { openLog } from "../common/logger"
 import ActiveTabListener from "./active-tab-listener"
+import AudioTabListener from "./audio-tab-listener"
 import BackupScheduler from "./backup-scheduler"
 import badgeTextManager from "./badge-manager"
 import initBrowserAction from "./browser-action-manager"
@@ -59,10 +62,32 @@ initWhitelistMenuManager()
 // Badge manager
 badgeTextManager.init(messageDispatcher)
 
+// Track the currently active tab
+let activeTabId: number | null = null
+const audioTabListener = new AudioTabListener()
+
 // Listen to tab active changed
 new ActiveTabListener()
-    .register(({ url, tabId }) => badgeTextManager.updateFocus({ url, tabId }))
+    .register(({ url, tabId }) => {
+        activeTabId = tabId
+        audioTabListener.onActiveTabChanged(tabId)
+        badgeTextManager.updateFocus({ url, tabId })
+    })
     .listen()
+
+// Listen to audio playback in background tabs
+audioTabListener
+    .register(async ({ host, url, duration, tabId }) => {
+        if (whitelistHolder.contains(host, url)) return
+
+        const focusTimeMs = duration * 1000
+        await itemService.addFocusTime({ host, url }, focusTimeMs)
+
+        badgeTextManager.updateFocus({ url, tabId })
+    })
+
+// Make this async since listen() is now async
+audioTabListener.listen(() => activeTabId)
 
 handleInstall()
 
@@ -76,6 +101,8 @@ onNormalWindowFocusChanged(async windowId => {
     tabs.forEach(tab => {
         const { url, id: tabId } = tab
         if (!url || isBrowserUrl(url) || !tabId) return
+        activeTabId = tabId
+        audioTabListener.onActiveTabChanged(tabId)
         badgeTextManager.updateFocus({ url, tabId })
     })
 })
