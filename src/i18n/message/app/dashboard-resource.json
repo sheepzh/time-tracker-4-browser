@@ -151,6 +151,13 @@
         },
         "monthOnMonth": {
             "title": "Tendencia mes a mes del tiempo de navegación"
+        },
+        "timeline": {
+            "title": "Línea de tiempo de los últimos {n} días",
+            "busyScore": "Ocupación",
+            "busyScoreDesc": "Relacionado con el tiempo total de navegación y el número de sitios web por hora. Vea el código fuente para la fórmula usada",
+            "focusScore": "Enfoque",
+            "focusScoreDesc": "Relacionado con el tiempo total de navegación continua en la misma página web. Vea el código fuente para la fórmula de cálculo"
         }
     },
     "de": {

@@ -64,6 +64,7 @@
         "infoAlertTitle": "Puedes configurar una lista blanca de sitios en esta página",
         "infoAlert0": "Los sitios en la lista blanca no serán contados",
         "infoAlert1": "Los sitios en la lista blanca no serán restringidos",
+        "infoAlert2": "Puedes usar un comodín (*) para coincidir varios sitios a la vez: *.ejemplo.com/**, y usar + como prefijo para excluir sitios, como +meme.ejemplo.com/**",
         "errorInput": "URL del sitio inválida"
     },
     "de": {

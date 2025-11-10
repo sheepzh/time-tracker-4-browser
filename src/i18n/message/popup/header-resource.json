@@ -24,7 +24,9 @@
         "rate": "Оцінити"
     },
     "es": {
-        "rate": "Calificar"
+        "rate": "Calificar",
+        "showSiteName": "Mostrar nombre del sitio",
+        "showTopN": "Mostrar primeros {n}"
     },
     "de": {
         "rate": "Bewerten",
