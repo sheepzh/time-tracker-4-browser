@@ -266,5 +266,30 @@
             "focusScore": "Odaklanma",
             "focusScoreDesc": "Aynı web sitesinde sürekli gezinme toplam süresi ile ilgilidir. Hesaplama formülü için kaynak koduna bakın"
         }
+    },
+    "pl": {
+        "heatMap": {
+            "title0": "Przeglądano przez {hour} godzin w zeszłym roku",
+            "title1": "Przeglądano mniej niż 1 godzinę w ubiegłym roku"
+        },
+        "topK": {
+            "title": "TOP {k} najczęściej odwiedzanych stron w ostatnich {day} dniach"
+        },
+        "indicator": {
+            "installedDays": "Zainstalowane przez {number} dni",
+            "visitCount": "Odwiedzono {site} różnych stron, łącznie {visit} razy",
+            "browsingTime": "Przeglądano przez {minute} minut",
+            "mostUse": "Najchętniej przeglądano w godzinach od {start} do {end}"
+        },
+        "monthOnMonth": {
+            "title": "Miesięczny trend czasu przeglądania"
+        },
+        "timeline": {
+            "title": "Oś czasu ostatnich {n} dni",
+            "busyScore": "Aktywność",
+            "busyScoreDesc": "Powiązana z całkowitym czasem przeglądania i liczbą stron odwiedzonych na godzinę. Wzór znajduje się w kodzie źródłowym",
+            "focusScore": "Skupienie",
+            "focusScoreDesc": "Powiązane z całkowitym czasem ciągłego przebywania na tej samej stronie. Wzór znajduje się w kodzie źródłowym"
+        }
     }
 }

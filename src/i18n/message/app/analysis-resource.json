@@ -366,5 +366,36 @@
             "focusTitle": "Gezinme Zamanı Eğilimleri",
             "visitTitle": "Ziyaret Eğilimleri"
         }
+    },
+    "pl": {
+        "target": {
+            "site": "Strona",
+            "cate": "Kategoria"
+        },
+        "common": {
+            "focusTotal": "Całkowity czas przeglądania",
+            "visitTotal": "Łącznie wizyt",
+            "merged": "Złączone",
+            "virtual": "Wirtualne",
+            "hostPlaceholder": "Wyszukaj stronę do analizy",
+            "emptyDesc": "Nie wybrano strony"
+        },
+        "summary": {
+            "title": "Podsumowanie",
+            "day": "Całkowita liczba dni aktywnych",
+            "firstDay": "Pierwsza wizyta {value}",
+            "calendarTitle": "Aktywność w ostatnich tygodniach"
+        },
+        "trend": {
+            "title": "Trendy",
+            "activeDay": "Aktywnych dni",
+            "totalDay": "Okres dni",
+            "maxFocus": "Maksymalny dzienny czas przeglądania",
+            "averageFocus": "Średni dzienny czas przeglądania",
+            "maxVisit": "Maksymalna dzienna ilość wizyt",
+            "averageVisit": "Średnia dzienna ilość wizyt",
+            "focusTitle": "Trendy czasu przeglądania",
+            "visitTitle": "Trendy wizyt"
+        }
     }
 }

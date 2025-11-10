@@ -202,5 +202,22 @@
         "other": "Diğer Özellikler",
         "helpUs": "Çeviriye yardım et",
         "about": "Hakkımızda"
+    },
+    "pl": {
+        "dashboard": "Panel",
+        "data": "Moje dane",
+        "dataReport": "Wpisy",
+        "siteAnalysis": "Analiza strony",
+        "dataClear": "Pamięć",
+        "behavior": "Zachowanie użytkownika",
+        "habit": "Nawyki",
+        "limit": "Limit czasu",
+        "additional": "Dodatkowe funkcje",
+        "siteManage": "Zarządzanie stronami",
+        "whitelist": "Whitelista",
+        "mergeRule": "Reguły łączenia stron",
+        "other": "Pozostałe funkcje",
+        "helpUs": "Pomóż w tłumaczeniu",
+        "about": "O rozszerzeniu"
     }
 }

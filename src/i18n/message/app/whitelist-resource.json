@@ -113,5 +113,13 @@
         "infoAlert1": "Beyaz listeye alınan siteler kısıtlanmayacaktır",
         "infoAlert2": "Birden fazla siteyi eşleştirmek için joker karakterler (*) kullanabilirsiniz, örneğin *.example.com/**, ve siteleri hariç tutmak için + ön ekini kullanabilirsiniz, örneğin +need.example.com/**",
         "errorInput": "Geçersiz site URL'si"
+    },
+    "pl": {
+        "addConfirmMsg": "{url} zostanie dodany do whitelisty.",
+        "removeConfirmMsg": "{url} zostanie usunięty z whitelisty.",
+        "infoAlertTitle": "Na tej stronie możesz dodawać strony do whitelisty",
+        "infoAlert0": "Strony znajdujące się na whiteliście nie będą liczone",
+        "infoAlert1": "Strony znajdujące się na whiteliście nie będą limitowane",
+        "errorInput": "Niepoprawny URL strony"
     }
 }

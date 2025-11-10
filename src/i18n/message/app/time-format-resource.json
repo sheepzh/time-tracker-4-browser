@@ -70,5 +70,11 @@
         "hour": "Saat cinsinden göster",
         "minute": "Dakika cinsinden göster",
         "second": "Saniye cinsinden göster"
+    },
+    "pl": {
+        "default": "Domyślny format czasu",
+        "hour": "Wyświetl w godzinach",
+        "minute": "Wyświetl w minutach",
+        "second": "Wyświetl w sekundach"
     }
 }

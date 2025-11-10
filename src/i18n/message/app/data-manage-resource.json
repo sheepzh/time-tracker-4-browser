@@ -346,5 +346,31 @@
         "deleteConfirm": "Toplam {count} kayıt filtrelenmiştir. Hepsini silmek istiyor musunuz?",
         "migrationAlert": "İçe aktarma ve dışa aktarma özelliğini kullanarak tarayıcılar arasında verinizi aktarın",
         "importError": "Yanlış dosya uzantısı"
+    },
+    "pl": {
+        "totalMemoryAlert": "Przeglądarka udostępnia {size} MB do przechowywania lokalnych danych dla każdego rozszerzenia",
+        "totalMemoryAlert1": "Nie można określić maksymalnej ilości pamięci udostępnianej przez przeglądarkę",
+        "usedMemoryAlert": "{size} MB jest obecnie używanych",
+        "operationAlert": "Możesz usunąć te nieważne dane, aby zmniejszyć zużycie pamięci",
+        "filterItems": "Filtruj dane",
+        "filterFocus": "Czas przeglądania w ciągu dnia wynosi od {start} do {end} sekund",
+        "filterTime": "Liczba odwiedzin w ciągu dnia wynosi od {start} do {end}",
+        "filterDate": "Zebrane pomiędzy {picker}",
+        "importOther": {
+            "step1": "Wybierz dane",
+            "step2": "Potwierdź dane",
+            "dataSource": "Źródło danych",
+            "file": "Plik danych",
+            "selectFileBtn": "Wybierz",
+            "conflictTip": "Co zrobić, jeśli importowane dane są sprzeczne z lokalnymi danymi",
+            "overwrite": "Nadpisz",
+            "imported": "Zaimportowano",
+            "local": "Lokalne",
+            "fileNotSelected": "Nie wybrano pliku"
+        },
+        "paramError": "Sprawdź poprawność parametrów!",
+        "deleteConfirm": "Wyfiltrowano w sumie {count} wpisów. Czy chcesz je usunąć?",
+        "migrationAlert": "Przenieś dane między przeglądarkami za pomocą importu i eksportu",
+        "importError": "Błędne rozszerzenie pliku"
     }
 }

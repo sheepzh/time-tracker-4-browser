@@ -501,5 +501,14 @@
             "disassociatedMsg": "Seçilen tüm sitelerin kategorilerini temizlemek ister misiniz?",
             "batchDeleteMsg": "Seçili tüm siteleri silmek istiyor musunuz?"
         }
+    },
+    "pl": {
+        "column": {
+            "alias": "Nazwa strony",
+            "icon": "Ikona"
+        },
+        "form": {
+            "emptyHost": "Wprowadź adres URL witryny"
+        }
     }
 }

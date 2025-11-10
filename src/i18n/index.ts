@@ -25,6 +25,7 @@ export const defaultLocale: timer.Locale = "zh_CN"
 
 // Standardize the locale code according to the Chrome locale code
 const chrome2I18n: { [key: string]: timer.Locale } = {
+    'zh': 'zh_CN',
     'zh-CN': "zh_CN",
     'zh-TW': "zh_TW",
     'en': 'en',
@@ -38,11 +39,14 @@ const chrome2I18n: { [key: string]: timer.Locale } = {
     'fr': 'fr',
     'fr-CA': 'fr',
     'fr-CH': 'fr',
+    'ar': 'ar',
+    'ru': 'ru',
+    'tr': 'tr',
+    'pl': 'pl',
 }
 
 const translationChrome2I18n: { [key: string]: timer.TranslatingLocale } = {
     ko: 'ko',
-    pl: 'pl',
     it: 'it',
     sv: 'sv',
     fi: 'fi',
@@ -69,7 +73,8 @@ export function chromeLocale2ExtensionLocale(chromeLocale: string): timer.Locale
     if (!chromeLocale) {
         return defaultLocale
     }
-    return chrome2I18n[chromeLocale] || FEEDBACK_LOCALE
+    const code2 = chromeLocale.substring(0, 2)
+    return chrome2I18n[chromeLocale] ?? chrome2I18n[code2] ?? FEEDBACK_LOCALE
 }
 
 /**
@@ -169,7 +174,6 @@ const findParamAndReplace = <Node,>(resultArr: I18nResultItem<Node>[], [key, val
     const temp: I18nResultItem<Node>[] = []
     resultArr.forEach((item) => {
         if (typeof item === 'string' && item.includes(paramPlacement)) {
-            // 将 string 替换成具体的 VNode
             let splits: I18nResultItem<Node>[] = (item as string).split(paramPlacement)
             splits = splits.reduce<I18nResultItem<Node>[]>((left, right) => left.length ? left.concat(value, right) : left.concat(right), [])
             temp.push(...splits)

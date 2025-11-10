@@ -46,5 +46,9 @@
     "tr": {
         "confirmTitle": "Doğrulama",
         "successMsg": "Başarılı oldu!"
+    },
+    "pl": {
+        "confirmTitle": "Potwierdzenie",
+        "successMsg": "Pomyślnie!"
     }
 }

@@ -58,5 +58,10 @@
         "name": "Zaman Takipçisi",
         "marketName": "Zaman Takipçisi – Alışkanlık Oluşturucu ve Site Engelleyici",
         "description": "Zamanınızı takip edin, alışkanlıklarınızı analiz edin, bağımlılık yapan siteleri engelleyin."
+    },
+    "pl": {
+        "name": "Zegar Czasu",
+        "marketName": "Zegar Czasu - Kreator Nawyków Internetowych",
+        "description": "Śledź czas, analizuj swoje nawyki i blokuj uzależniające strony"
     }
 }

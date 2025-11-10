@@ -18,7 +18,11 @@ export type ItemSet = {
     [path: string]: string
 }
 
-export const ALL_CROWDIN_LANGUAGES = ['zh-CN', 'zh-TW', 'ja', 'pt-PT', 'uk', 'es-ES', 'de', 'fr', 'ru', 'ar', 'tr'] as const
+export const ALL_CROWDIN_LANGUAGES = [
+    'zh-CN', 'zh-TW', 'ja',
+    'pt-PT', 'uk', 'es-ES', 'de', 'fr', 'ru', 'pl',
+    'ar', 'tr',
+] as const
 
 /**
  * The language code of crowdin
@@ -29,20 +33,22 @@ export type CrowdinLanguage = typeof ALL_CROWDIN_LANGUAGES[number]
 
 export const SOURCE_LOCALE: timer.RequiredLocale = 'en'
 
-// Not include en and zh_CN
-export const ALL_TRANS_LOCALES: timer.OptionalLocale[] = [
-    'zh_CN',
-    'ja',
-    'zh_TW',
-    'pt_PT',
-    'uk',
-    'es',
-    'de',
-    'fr',
-    'ru',
-    'ar',
-    'tr',
-]
+const OPTIONAL_PLACEHOLDER: Record<timer.OptionalLocale, 0> = {
+    ja: 0,
+    uk: 0,
+    de: 0,
+    fr: 0,
+    ru: 0,
+    pl: 0,
+    ar: 0,
+    tr: 0,
+    zh_CN: 0,
+    zh_TW: 0,
+    pt_PT: 0,
+    es: 0
+}
+
+export const ALL_TRANS_LOCALES = Object.keys(OPTIONAL_PLACEHOLDER) as timer.OptionalLocale[]
 
 const CROWDIN_I18N_MAP: Record<CrowdinLanguage, timer.OptionalLocale> = {
     "zh-CN": 'zh_CN',
@@ -56,6 +62,7 @@ const CROWDIN_I18N_MAP: Record<CrowdinLanguage, timer.OptionalLocale> = {
     ru: 'ru',
     ar: 'ar',
     tr: 'tr',
+    pl: 'pl',
 }
 
 const I18N_CROWDIN_MAP: Record<timer.OptionalLocale, CrowdinLanguage> = {
@@ -70,6 +77,7 @@ const I18N_CROWDIN_MAP: Record<timer.OptionalLocale, CrowdinLanguage> = {
     ru: 'ru',
     ar: 'ar',
     tr: 'tr',
+    pl: 'pl',
 }
 
 export const crowdinLangOf = (locale: timer.OptionalLocale): CrowdinLanguage => I18N_CROWDIN_MAP[locale]

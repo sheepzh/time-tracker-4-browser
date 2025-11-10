@@ -620,5 +620,47 @@
             "confession": "Zaman akıp gidiyor"
         },
         "reminder": "Zaman sınırı dolmasına {min} dakikadan az kaldı!"
+    },
+    "pl": {
+        "filterDisabled": "Tylko aktywne",
+        "wildcardTip": "Możesz używać symbolu \"*\", aby dopasowywać subdomeny lub podstrony, a także użyć znaku „+” jako prefiksu, aby wykluczyć podstrony!",
+        "item": {
+            "name": "Nazwa zasady",
+            "condition": "Limitowany URL",
+            "daily": "Dzienny limit",
+            "weekly": "Limit tygodniowy",
+            "detail": "Szczegóły zasady",
+            "visitTime": "Limit czasu na wizytę",
+            "period": "Godziny blokowania",
+            "enabled": "Aktywne",
+            "locked": "Zablokowany",
+            "effectiveDay": "Aktywna w",
+            "delayAllowed": "Możliwe do przedłużenia",
+            "delayAllowedInfo": "Jeżeli limit zostanie osiągnięty, pozwól na przedłużenie go o 5 minut",
+            "visits": "wizyt",
+            "or": "lub"
+        },
+        "step": {
+            "base": "Podstawowe informacje"
+        },
+        "button": {
+            "test": "Przetestuj URL"
+        },
+        "message": {
+            "noUrl": "Nie dodano URL",
+            "noRule": "Nie wpisano żadnych reguł",
+            "deleteConfirm": "Na pewno chcesz usunąć regułę [{name}]?",
+            "inputTestUrl": "Wpisz URL do przetestowania",
+            "clickTestButton": "Po wpisaniu kliknij przycisk ({buttonText})",
+            "noRuleMatched": "Podany URL nie aktywuje żadnej reguły",
+            "rulesMatched": "Podany URL aktywuje następujące reguły:",
+            "timeout": "Czas minął! XD"
+        },
+        "verification": {
+            "inputTip": "Reguła została aktywowana lub zablokowana. Aby kontynuować, odpowiedz na podane pytanie w {second} sekund: {prompt}",
+            "incorrectPsw": "Nieprawidłowe hasło",
+            "incorrectAnswer": "Niepoprawna odpowiedź"
+        },
+        "reminder": "Mniej niż {min} minut do osiągnięcia limitu!"
     }
 }

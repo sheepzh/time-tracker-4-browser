@@ -1438,5 +1438,84 @@
         "importConfirm": "Ayarlar başarıyla içe aktarıldı, değişiklikleri uygulamak için lütfen sayfayı yeniden yükleyin!",
         "reloadButton": "Yeniden yükle",
         "defaultValue": "Varsayılan: {default}"
+    },
+    "pl": {
+        "yes": "Tak",
+        "no": "Nie",
+        "appearance": {
+            "title": "Wygląd",
+            "displayWhitelist": "{input} Wyświetlanie {whitelist} w {contextMenu}",
+            "whitelistItem": "skrótów związanych z whitelistą",
+            "contextMenu": "menu kontekstowym",
+            "displayBadgeText": "{input} Wyświetlanie {timeInfo} na {icon}",
+            "icon": "ikonie rozszerzenia",
+            "badgeTextContent": "czasu przeglądania bieżącej strony",
+            "locale": {
+                "label": "Język {input}",
+                "changeConfirm": "Język został zmieniony pomyślnie, proszę odświeżyć tę stronę!",
+                "reloadButton": "Przeładuj"
+            },
+            "printInConsole": {
+                "label": "{input} Wyświetlanie {info} w {console}",
+                "console": "konsoli",
+                "info": "liczby dzisiejszych wizyt na bieżącej stronie"
+            },
+            "darkMode": {
+                "label": "Tryb ciemny {input}",
+                "options": {
+                    "on": "Zawsze włączone",
+                    "off": "Zawsze wyłączone",
+                    "timed": "Czas na"
+                }
+            },
+            "animationDuration": "Długość trwania początkowej animacji wykresu {input}"
+        },
+        "backup": {
+            "title": "Kopia zapasowa danych",
+            "client": "Nazwa klienta {input}",
+            "meta": {
+                "none": {
+                    "label": "Zawsze wyłączone"
+                }
+            },
+            "label": {
+                "endpoint": "Adres punktu końcowego {info} {input}",
+                "account": "Nazwa użytkownika {input}",
+                "password": "Hasło {input}"
+            },
+            "operation": "Kopia zapasowa",
+            "download": {
+                "btn": "Pobierz",
+                "willDownload": "Do pobrania"
+            },
+            "clear": {
+                "btn": "Wyczyść"
+            },
+            "confirmStep": "Potwierdź dane",
+            "clientTable": {
+                "selectTip": "Wybierz klienta",
+                "dataRange": "Zakres danych",
+                "notSelected": "Nie wybrano klienta",
+                "current": "Aktualny"
+            },
+            "lastTimeTip": "Ostatnia kopia zapasowa: {lastTime}",
+            "auto": {
+                "label": "Automatyczne kopie zapasowe",
+                "interval": "co {input} minut"
+            }
+        },
+        "accessibility": {
+            "title": "Ułatwienia dostępu"
+        },
+        "resetButton": "Reset",
+        "resetSuccess": "Pomyślnie przywrócono ustawienia domyślne!",
+        "exportButton": "Eksportuj ustawienia",
+        "importButton": "Importuj ustawienia",
+        "exportSuccess": "Ustawienia wyeksportowane pomyślnie",
+        "importSuccess": "Ustawienia zaimportowane pomyślnie",
+        "importError": "Import nie powiódł się: Nieprawidłowy plik ustawień",
+        "importConfirm": "Ustawienia zaimportowane pomyślnie, proszę odświeżyć stronę aby zastosować zmiany!",
+        "reloadButton": "Odśwież",
+        "defaultValue": "Domyślnie: {default}"
     }
 }

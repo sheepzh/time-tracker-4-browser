@@ -202,5 +202,22 @@
             "rate": "Bizi desteklemek için 5 yıldız verin!",
             "feedback": "Fikirleriniz bizi daha iyi yapıyor!"
         }
+    },
+    "pl": {
+        "label": {
+            "name": "Nazwa",
+            "version": "Obecna wersja",
+            "website": "Oficjalna strona",
+            "installation": "Strona instalacji",
+            "thanks": "Podziękowania",
+            "privacy": "Polityka prywatności",
+            "license": "Licencja Open-source",
+            "support": "Wsparcie techniczne"
+        },
+        "text": {
+            "greet": "Lubisz to rozszerzenie?",
+            "rate": "Oceń 5 gwiazdek, aby pomóc innym dowiedzieć się o tym~~",
+            "feedback": "Zapraszamy do przesłania opinii i próśb o funkcje !!"
+        }
     }
 }

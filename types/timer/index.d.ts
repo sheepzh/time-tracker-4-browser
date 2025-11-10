@@ -21,6 +21,8 @@ declare namespace timer {
         | 'ar'
         // @since 3.7.3
         | 'tr'
+        // @since 3.7.3
+        | 'pl'
 
     /**
      * @since 0.8.0

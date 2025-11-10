@@ -130,5 +130,16 @@
         "button": "Crowdin'e git",
         "loading": "Çevirinin ilerleyişi kontrol ediliyor...",
         "contributors": "Katkıda Bulunanlar"
+    },
+    "pl": {
+        "title": "Możesz pomóc w ulepszaniu tłumaczeń tego rozszerzenia!",
+        "alert": {
+            "l1": "Ze względu na umiejętności językowe autora, rozszerzenie domyślnie obsługuje jedynie język chiński uproszczony i angielski, natomiast pozostałe języki są albo nieobsługiwane, albo przetłumaczone maszynowo.",
+            "l2": "W celu zapewnienia lepszego doświadczenia użytkownikom hostuję pliki pliki do przetłumaczenia na platformie Crowdin. Crowdin to system zarządzania tłumaczeniami, który jest darmowy dla projektów open source.",
+            "l3": "Jeżeli uważasz, że to rozszerzenie jest dla Ciebie przydatne i chciałbyś poprawić jego tłumaczenie, kliknij przycisk poniżej, aby przejść do strony głównej projektu na Crowdin."
+        },
+        "button": "Przejdź do Crowdin",
+        "loading": "Sprawdzanie postępu tłumaczenia...",
+        "contributors": "Lista współtwórców"
     }
 }

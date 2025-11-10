@@ -226,5 +226,8 @@
             "blank": "Birleştirilemez",
             "level": "Seviyeyi {level} koruyun"
         }
+    },
+    "pl": {
+        "originPlaceholder": "Oryginalna strona"
     }
 }

@@ -454,5 +454,37 @@
                 "siteCount": "Web sitesi sayısı"
             }
         }
+    },
+    "pl": {
+        "common": {
+            "focusAverage": "Średnio {value} dziennie"
+        },
+        "period": {
+            "busiest": "Najbardziej aktywny czas dnia",
+            "idle": "Najdłuższy czas bezczynności",
+            "chartType": {
+                "average": "Średnia dzienna",
+                "trend": "Trend"
+            },
+            "sizes": {
+                "fifteen": "Co 15 minut",
+                "halfHour": "Co pół godziny",
+                "hour": "Co godzinę",
+                "twoHour": "Co dwie godziny"
+            }
+        },
+        "site": {
+            "histogramTitle": "TOP {n} najczęściej odwiedzanych",
+            "exclusiveToday": "Dzisiejsze dane nie są uwzględniane w średniej",
+            "countTotal": "Całkowita liczba wizyt/stron",
+            "distribution": {
+                "aveTime": "Średni dzienny czas przeglądania",
+                "aveVisit": "Średnia dzienna liczba odwiedzin"
+            },
+            "trend": {
+                "title": "Dzienne trendy",
+                "siteCount": "Liczba stron"
+            }
+        }
     }
 }

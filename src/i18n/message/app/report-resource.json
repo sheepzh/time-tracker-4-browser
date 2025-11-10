@@ -247,5 +247,13 @@
             }
         },
         "noMore": "Daha Fazla Veri Yok"
+    },
+    "pl": {
+        "exportFileName": "My_Browsing_Time",
+        "remoteReading": {
+            "table": {
+                "client": "Nazwa klienta"
+            }
+        }
     }
 }

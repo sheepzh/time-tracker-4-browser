@@ -46,5 +46,8 @@
     "tr": {
         "consoleLog": "Bugün {host} {time} saat(ler) açtınız ve {focus} saniye boyunca göz attınız.",
         "closeAlert": "Bu bildirimleri [{appName}] ayarlarından devre dışı bırakabilirsiniz!"
+    },
+    "pl": {
+        "closeAlert": "Możesz wyłączyć te powiadomienia w ustawieniach [{appName}]!"
     }
 }

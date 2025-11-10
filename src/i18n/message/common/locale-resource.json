@@ -48,7 +48,8 @@
         "comma": ","
     },
     "pl": {
-        "name": "Polski"
+        "name": "Polski",
+        "comma": ","
     },
     "ko": {
         "name": "한국인"

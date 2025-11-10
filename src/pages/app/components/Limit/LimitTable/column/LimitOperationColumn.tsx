@@ -25,6 +25,7 @@ const LOCALE_WIDTH: { [locale in timer.Locale]: number } = {
     ru: 240,
     ar: 220,
     tr: 220,
+    pl: 220,
 }
 
 const _default = defineComponent<{}>(() => {
