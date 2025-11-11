@@ -8,10 +8,10 @@
 import { t } from "@app/locale"
 import db, { type StatCondition } from "@db/stat-database"
 import { MILL_PER_DAY, MILL_PER_SECOND } from "@util/time"
-import { ElAlert, ElCard, ElMessage, ElMessageBox } from "element-plus"
+import { ElCard, ElMessage, ElMessageBox } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
-import { alertProps } from "../common"
 import { useDataMemory } from "../context"
+import DataManageAlert from '../DataManageAlert'
 import ClearFilter from "./ClearFilter"
 
 type FilterOption = {
@@ -102,7 +102,7 @@ const _default = defineComponent(() => {
 
     return () => (
         <ElCard style={{ width: '100%' } satisfies StyleValue}>
-            <ElAlert {...alertProps} title={t(msg => msg.dataManage.operationAlert)} />
+            <DataManageAlert text={msg => msg.dataManage.operationAlert} />
             <ClearFilter onDelete={(date, focus, time) => handleClick({ date, focus, time })} />
         </ElCard>
     )

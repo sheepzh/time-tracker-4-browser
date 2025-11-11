@@ -61,7 +61,8 @@ export const MENU_GROUPS: MenuGroup[] = [{
     }, {
         title: msg => msg.menu.dataClear,
         route: '/data/manage',
-        icon: Database
+        icon: Database,
+        mobile: true,
     }]
 }, {
     title: msg => msg.menu.behavior,

@@ -7,10 +7,10 @@
 
 import { t } from "@app/locale"
 import Flex from "@pages/components/Flex"
-import { ElAlert, ElCard, ElProgress } from "element-plus"
+import { ElCard, ElProgress } from "element-plus"
 import { computed, defineComponent, type StyleValue } from "vue"
-import { alertProps } from "./common"
 import { useDataMemory } from "./context"
+import DataManageAlert from './DataManageAlert'
 
 const byte2Mb = (size: number) => Math.round((size || 0) / 1024.0 / 1024.0 * 1000) / 1000
 
@@ -44,15 +44,13 @@ const _default = defineComponent(() => {
             bodyStyle={{ height: '100%', boxSizing: 'border-box' }}
         >
             <Flex column height='100%' align="center">
-                <ElAlert
-                    {...alertProps}
+                <DataManageAlert
                     type={totalMb.value ? "info" : "warning"}
-                    title={totalTitle(totalMb.value)}
+                    text={totalTitle(totalMb.value)}
                 />
                 <Flex flex={1} height={0}>
                     <ElProgress
-                        width={260}
-                        strokeWidth={30}
+                        strokeWidth={10}
                         percentage={percentage.value}
                         type="circle"
                         color={color.value}
