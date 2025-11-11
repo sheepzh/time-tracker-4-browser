@@ -38,9 +38,9 @@ test('format', () => {
     }
     expect(formatPeriod(86400 * 1000, msg)).toEqual('1天0时0分0秒')
     expect(formatPeriod(3666 * 1000, msg)).toEqual('1时1分6秒')
-    expect(formatPeriodCommon(86400 * 1000)).toEqual('1 d 0 h 0 m 0 s')
-    expect(formatPeriodCommon(3666 * 1000)).toEqual('1 h 1 m 6 s')
-    expect(formatPeriodCommon(1)).toEqual('0 s')
+    expect(formatPeriodCommon(86400 * 1000)).toEqual('1d 0h 0m 0s')
+    expect(formatPeriodCommon(3666 * 1000)).toEqual('1h 1m 6s')
+    expect(formatPeriodCommon(1)).toEqual('0s')
 })
 
 test('days ago', () => {

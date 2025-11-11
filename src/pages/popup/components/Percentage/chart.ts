@@ -73,12 +73,34 @@ function formatTotalStr(rows: timer.stat.Row[], type: timer.core.Dimension | und
 }
 
 function calculateSubTitleText(result: PercentageResult): string {
-    let { date, dataDate, rows, query: { dimension } = {} } = result
+    let { date, dataDate, rows, query: { dimension, duration } = {}, dateLength } = result
     const dateStr = dataDate ? formatDateStr(date, dataDate) : ''
     const totalStr = formatTotalStr(rows, dimension)
-    let parts = [totalStr, dateStr].filter(str => !!str)
+
+    // Calculate average per day
+    let averageStr = ''
+    // Don't show averages for single-day durations (today/yesterday)
+    const isSingleDay = duration === 'today' || duration === 'yesterday'
+
+    if (dateLength && dateLength > 0 && !isSingleDay) {  // Changed: removed dimension check
+        if (dimension === 'focus') {
+            // Average time per day
+            const total = sum(rows.map(r => r?.focus ?? 0))
+            const averagePerDay = total / dateLength
+            const averageTime = formatPeriodCommon(averagePerDay)
+            averageStr = '(' + t(msg => msg.content.percentage.averageTime, { value: averageTime }) + ')'
+        } else if (dimension === 'time') {
+            // Average visits per day
+            const totalCount = sum(rows.map(r => r.time ?? 0))
+            const averagePerDay = totalCount / dateLength
+            const averageCount = averagePerDay.toFixed(1)
+            averageStr = '(' + t(msg => msg.content.percentage.averageCount, { value: averageCount }) + ')'
+        }
+    }
+
+    let parts = [totalStr, dateStr, averageStr].filter(str => !!str)
     isRtl() && (parts = parts.reverse())
-    return parts.join(' @ ')
+    return parts.join(' ')
 }
 
 export function generateTitleOption(result: PercentageResult, suffix?: string): TitleComponentOption {
@@ -265,13 +287,11 @@ export function formatTooltip({ query, dateLength }: PercentageResult, params: T
     const format = (Array.isArray(params) ? params[0] : params)
     const { name, value, percent, data } = format ?? {}
     const { row } = data as PieSeriesItemOption
-    const { dimension } = query
+    const { dimension, duration } = query
     const itemValue = typeof value === 'number' ? value as number : 0
-
     let valueLine = dimension === 'time' ? itemValue : formatPeriodCommon(itemValue)
     // Display percent only when query focus time
     dimension === 'focus' && (valueLine += ` (${percent}%)`)
-
     let nameLine = name
     let averageLine: string | undefined = undefined
     if (!isOther(row)) {
@@ -279,11 +299,13 @@ export function formatTooltip({ query, dateLength }: PercentageResult, params: T
             const { siteKey: { host } } = row
             nameLine = generateSiteLabel(host, name)
         }
-        if (dateLength && dateLength > 1) {
+        // Don't show averages for single-day durations (today/yesterday)
+        const isSingleDay = duration === 'today' || duration === 'yesterday'
+
+        if (dateLength && dateLength > 1 && !isSingleDay) {  // Changed: simplified condition
             averageLine = calculateAverageText(dimension, itemValue / dateLength)
         }
     }
-
     return [nameLine, valueLine, averageLine].filter(l => !!l).join('<br />')
 }
 

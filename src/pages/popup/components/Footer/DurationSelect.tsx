@@ -20,7 +20,7 @@ const cvt2Opt = (value: PopupDuration, n?: string | number): CascaderOption => (
 
 const options = (reverse?: boolean): CascaderOption[] => {
     const result: CascaderOption[] = [
-        ...(['today', 'thisWeek', 'thisMonth', 'yesterday'] satisfies PopupDuration[]).map(cvt2Opt),
+        ...(['today', 'yesterday', 'thisWeek', 'thisMonth'] satisfies PopupDuration[]).map(cvt2Opt),
         {
             ...cvt2Opt('lastDays', 'X'),
             children: [
