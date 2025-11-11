@@ -49,10 +49,20 @@ export const doQuery = async (query: PopupQuery, option: PopupOption): Promise<P
     const [rows, date] = await queryRows(query)
     const groups = await listAllGroups()
 
+    const dataDate = findDateRange(rows)
+
+    // Count actual unique days with data
+    const allDatesSet = new Set<string>()
+    rows?.forEach(row => {
+        const dates = findAllDates(row)
+        dates.forEach(d => allDatesSet.add(d))
+    })
+    const dateLength = allDatesSet.size > 0 ? allDatesSet.size : (date instanceof Array ? getDayLength(date[0], date[1] ?? new Date()) : 1)
+
     return {
         query, rows,
-        date, dataDate: findDateRange(rows),
-        dateLength: date instanceof Array ? getDayLength(date[0], date[1] ?? new Date()) : 1,
+        date, dataDate,
+        dateLength,
         displaySiteName,
         chartTitle: t(msg => msg.content.percentage.title[query?.duration], { n: query?.durationNum }),
         itemCount,
