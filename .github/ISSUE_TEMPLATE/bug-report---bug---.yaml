@@ -1,0 +1,60 @@
+name: Bug report
+title: "[BUG] "
+labels: bug
+description: Create a report to help us improve
+body:
+    - type: markdown
+      attributes:
+          value: |
+              Create a report to help us improve
+    - type: input
+      id: version
+      validations:
+          required: true
+      attributes:
+          label: Version
+          description: Which version of the extension/addon are you using?
+          placeholder: ex. v1.0.0
+    - type: dropdown
+      id: os
+      validations:
+          required: true
+      attributes:
+          label: OS
+          description: Which operating system are you using? (Mac/Linux/Win)
+          options:
+              - Win
+              - Mac
+              - Linux
+              - Android
+              - Other
+          default: 0
+    - type: dropdown
+      id: browser
+      validations:
+          required: true
+      attributes:
+          label: Browser
+          description: Which browser are you using? (Chrome/Firefox/Edge/Other)
+          options:
+              - Chrome
+              - Firefox
+              - Edge
+              - Other
+          default: 0
+    - type: input
+      id: browser_version
+      validations:
+          required: false
+      attributes:
+          label: Browser Version
+          description: Which version of the browser? (Optional)
+          placeholder: ex. 91.0.4472.124
+    - type: textarea
+      id: description
+      validations:
+          required: true
+      attributes:
+          label: Bug Description
+          description: Please describe the bug in detail.
+          placeholder: "Steps to reproduce the behavior, and what you expected to happen."
