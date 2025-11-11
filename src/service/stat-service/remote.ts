@@ -34,7 +34,7 @@ export async function processRemote(origin: timer.stat.SiteRow[], param?: StatCo
 
     // 1. query remote
     let start: Date | undefined = undefined, end: Date | undefined = undefined
-    if (date instanceof Array) {
+    if (Array.isArray(date)) {
         [start, end] = date
     } else {
         start = date

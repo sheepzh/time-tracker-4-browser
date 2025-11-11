@@ -50,7 +50,7 @@ function formatDateStr(date: Date | [Date, Date?] | undefined, dataDate: [string
         date = dataDate?.map(parseTime) as [Date, Date]
     }
     if (!date) return ''
-    if (!(date instanceof Array)) {
+    if (!Array.isArray(date)) {
         // Single day
         return formatTime(date, format)
     }

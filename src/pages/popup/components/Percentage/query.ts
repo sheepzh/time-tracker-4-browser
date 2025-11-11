@@ -57,7 +57,8 @@ export const doQuery = async (query: PopupQuery, option: PopupOption): Promise<P
         const dates = findAllDates(row)
         dates.forEach(d => allDatesSet.add(d))
     })
-    const dateLength = allDatesSet.size > 0 ? allDatesSet.size : (date instanceof Array ? getDayLength(date[0], date[1] ?? new Date()) : 1)
+    const dateLength = allDatesSet.size > 0 ? allDatesSet.size
+        : (Array.isArray(date) ? getDayLength(date[0], date[1] ?? new Date()) : 1)
 
     return {
         query, rows,
