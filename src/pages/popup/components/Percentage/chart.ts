@@ -93,7 +93,7 @@ function calculateSubTitleText(result: PercentageResult): string {
             // Average visits per day
             const totalCount = sum(rows.map(r => r.time ?? 0))
             const averagePerDay = totalCount / dateLength
-            const averageCount = averagePerDay % 1 === 0 ? averagePerDay.toFixed(0) : averagePerDay.toFixed(1)
+            const averageCount = averagePerDay.toFixed(1)
             averageStr = '(' + t(msg => msg.content.percentage.averageCount, { value: averageCount }) + ')'
         }
     }
@@ -275,8 +275,7 @@ function calculateAverageText(type: timer.core.Dimension, averageValue: number):
     if (type === 'focus') {
         return t(msg => msg.content.percentage.averageTime, { value: formatPeriodCommon(parseInt(averageValue.toFixed(0))) })
     } else if (type === 'time') {
-        const formattedValue = averageValue % 1 === 0 ? averageValue.toFixed(0) : averageValue.toFixed(1)
-        return t(msg => msg.content.percentage.averageCount, { value: formattedValue })
+        return t(msg => msg.content.percentage.averageCount, { value: averageValue.toFixed(1) })
     }
     return undefined
 }
