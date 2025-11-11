@@ -105,7 +105,7 @@ export function formatPeriod(milliseconds: number, message: Record<'dayMsg' | 'h
  */
 export function formatPeriodCommon(milliseconds: number): string {
     const defaultMessage = isRtl() ? {
-        dayMsg: 's{second} m{minute} h{hour} d',
+        dayMsg: 's{second} m{minute} h{hour} d{day}',
         hourMsg: 's{second} m{minute} h{hour}',
         minuteMsg: 's{second} m{minute}',
         secondMsg: 's{second}',
