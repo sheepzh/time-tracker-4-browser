@@ -464,7 +464,8 @@
             "idle": "Najdłuższy czas bezczynności",
             "chartType": {
                 "average": "Średnia dzienna",
-                "trend": "Trend"
+                "trend": "Trend",
+                "stack": "Stos"
             },
             "sizes": {
                 "fifteen": "Co 15 minut",
@@ -474,12 +475,16 @@
             }
         },
         "site": {
+            "title": "Nawyk stron internetowych",
             "histogramTitle": "TOP {n} najczęściej odwiedzanych",
             "exclusiveToday": "Dzisiejsze dane nie są uwzględniane w średniej",
             "countTotal": "Całkowita liczba wizyt/stron",
+            "siteAverage": "Średnia liczba odwiedzin na stronach {value} dziennie",
             "distribution": {
+                "title": "Dzienny średni rozkład częstotliwości",
                 "aveTime": "Średni dzienny czas przeglądania",
-                "aveVisit": "Średnia dzienna liczba odwiedzin"
+                "aveVisit": "Średnia dzienna liczba odwiedzin",
+                "tooltip": "Łącznie {value} stron"
             },
             "trend": {
                 "title": "Dzienne trendy",
