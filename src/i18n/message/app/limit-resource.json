@@ -629,6 +629,8 @@
             "condition": "Limitowany URL",
             "daily": "Dzienny limit",
             "weekly": "Limit tygodniowy",
+            "weekStartInfo": "Pierwszym dniem każdego tygodnia jest {weekStart}, możesz zmienić tę wartość w opcjach śledzenia",
+            "delayCount": "Licznik opóźnień",
             "detail": "Szczegóły zasady",
             "visitTime": "Limit czasu na wizytę",
             "period": "Godziny blokowania",
@@ -638,10 +640,13 @@
             "delayAllowed": "Możliwe do przedłużenia",
             "delayAllowedInfo": "Jeżeli limit zostanie osiągnięty, pozwól na przedłużenie go o 5 minut",
             "visits": "wizyt",
-            "or": "lub"
+            "or": "lub",
+            "notEffective": "Nieskuteczny"
         },
         "step": {
-            "base": "Podstawowe informacje"
+            "base": "Podstawowe informacje",
+            "url": "URL konfiguracji",
+            "rule": "Reguła konfiguracji"
         },
         "button": {
             "test": "Przetestuj URL"
@@ -650,6 +655,7 @@
             "noUrl": "Nie dodano URL",
             "noRule": "Nie wpisano żadnych reguł",
             "deleteConfirm": "Na pewno chcesz usunąć regułę [{name}]?",
+            "lockConfirm": "Jeśli zablokowane, wszystkie operacje będą wymagały weryfikacji, nawet jeśli reguła nie zostanie uruchomiona.",
             "inputTestUrl": "Wpisz URL do przetestowania",
             "clickTestButton": "Po wpisaniu kliknij przycisk ({buttonText})",
             "noRuleMatched": "Podany URL nie aktywuje żadnej reguły",
@@ -658,8 +664,13 @@
         },
         "verification": {
             "inputTip": "Reguła została aktywowana lub zablokowana. Aby kontynuować, odpowiedz na podane pytanie w {second} sekund: {prompt}",
+            "inputTip2": "Reguła została uruchomiona lub zablokowana. Aby kontynuować, wprowadź ją w ciągu {second} sekund: {answer}",
+            "pswInputTip": "Reguła została uruchomiona lub zablokowana. Aby kontynuować, wprowadź hasło odblokowania",
+            "strictTip": "Aktywowano, żadna operacja nie jest dozwolona przed zwolnieniem!",
             "incorrectPsw": "Nieprawidłowe hasło",
-            "incorrectAnswer": "Niepoprawna odpowiedź"
+            "incorrectAnswer": "Niepoprawna odpowiedź",
+            "pi": "{digitCount} cyfr od {startIndex} do {endIndex} części dziesiętnej liczby π",
+            "confession": "Czas ucieka"
         },
         "reminder": "Mniej niż {min} minut do osiągnięcia limitu!"
     }

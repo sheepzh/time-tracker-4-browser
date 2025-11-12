@@ -362,11 +362,14 @@
             "dataSource": "Źródło danych",
             "file": "Plik danych",
             "selectFileBtn": "Wybierz",
+            "conflictType": "Rozwiązywanie konfliktów",
             "conflictTip": "Co zrobić, jeśli importowane dane są sprzeczne z lokalnymi danymi",
             "overwrite": "Nadpisz",
+            "accumulate": "Zgromadź",
             "imported": "Zaimportowano",
             "local": "Lokalne",
-            "fileNotSelected": "Nie wybrano pliku"
+            "fileNotSelected": "Nie wybrano pliku",
+            "conflictNotSelected": "Rozwiązywanie konfliktów nie zostało zaznaczone"
         },
         "paramError": "Sprawdź poprawność parametrów!",
         "deleteConfirm": "Wyfiltrowano w sumie {count} wpisów. Czy chcesz je usunąć?",
