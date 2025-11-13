@@ -1,6 +1,6 @@
 # Time Tracker for Browser
 
-[![codecov](https://codecov.io/gh/sheepzh/timer/branch/main/graph/badge.svg?token=S98QSBSKCR&style=flat-square)](https://codecov.io/gh/sheepzh/timer)
+[![codecov](https://codecov.io/gh/sheepzh/time-tracker-4-browser/branch/main/graph/badge.svg?token=S98QSBSKCR&style=flat-square)](https://codecov.io/gh/sheepzh/time-tracker-4-browser)
 [![](https://img.shields.io/badge/license-Anti%20996-blue)](https://github.com/996icu/996.ICU)
 [![Crowdin](https://badges.crowdin.net/timer-chrome-edge-firefox/localized.svg)](https://crowdin.com/project/timer-chrome-edge-firefox)
 
@@ -53,7 +53,7 @@ There are some things you can do to contribute to this software.
 
 #### 1. Submit issues
 
-You can [submit one issue](https://github.com/sheepzh/timer/issues) to us if you have some suggestions, feature requests, or feedback of bugs. And we will reply it as soon as possible.
+You can [submit one issue](https://github.com/sheepzh/time-tracker-4-browser/issues) to us if you have some suggestions, feature requests, or feedback of bugs. And we will reply it as soon as possible.
 
 #### 2. Participate in development
 

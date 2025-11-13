@@ -1,8 +1,8 @@
 # 网费很贵
 
-[![codecov](https://codecov.io/gh/sheepzh/timer/branch/main/graph/badge.svg?token=S98QSBSKCR&style=flat-square)](https://codecov.io/gh/sheepzh/timer)
+[![codecov](https://codecov.io/gh/sheepzh/time-tracker-4-browser/branch/main/graph/badge.svg?token=S98QSBSKCR&style=flat-square)](https://codecov.io/gh/sheepzh/time-tracker-4-browser)
 [![](https://img.shields.io/badge/license-Anti%20996-blue)](https://github.com/996icu/996.ICU)
-[![](https://img.shields.io/github/v/release/sheepzh/timer)](https://github.com/sheepzh/timer/releases)
+[![](https://img.shields.io/github/v/release/sheepzh/time-tracker-4-browser)](https://github.com/sheepzh/time-tracker-4-browser/releases)
 
 \[ 简体中文 | [English](./README.md) \]
 
@@ -54,7 +54,7 @@
 
 #### 提交 Issue
 
-如果您有一些好的想法，或者 bug 反馈，可以新建一条 [issue](https://github.com/sheepzh/timer/issues) 。作者会在第一时间进行回复。
+如果您有一些好的想法，或者 bug 反馈，可以新建一条 [issue](https://github.com/sheepzh/time-tracker-4-browser/issues) 。作者会在第一时间进行回复。
 
 #### 参与开发
 

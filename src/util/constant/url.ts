@@ -16,17 +16,17 @@ export const EDGE_HOMEPAGE = 'https://microsoftedge.microsoft.com/addons/detail/
 /**
  * @since 0.4.0
  */
-export const SOURCE_CODE_PAGE = 'https://github.com/sheepzh/timer'
+export const SOURCE_CODE_PAGE = 'https://github.com/sheepzh/time-tracker-4-browser'
 
 /**
  * @since 1.9.4
  */
-export const CHANGE_LOG_PAGE = 'https://github.com/sheepzh/timer/blob/main/CHANGELOG.md'
+export const CHANGE_LOG_PAGE = 'https://github.com/sheepzh/time-tracker-4-browser/blob/main/CHANGELOG.md'
 
 /**
  * @since 0.0.6
  */
-export const GITHUB_ISSUE_ADD = 'https://github.com/sheepzh/timer/issues/new/choose'
+export const GITHUB_ISSUE_ADD = 'https://github.com/sheepzh/time-tracker-4-browser/issues/new/choose'
 
 /**
  * Feedback powered by www.wjx.cn
@@ -44,7 +44,7 @@ export const TU_CAO_PAGE = `https://support.qq.com/products/402895?os=${BROWSER_
 
 export const PRIVACY_PAGE = 'https://www.wfhg.cc/en/privacy.html'
 
-export const LICENSE_PAGE = 'https://github.com/sheepzh/timer/blob/main/LICENSE'
+export const LICENSE_PAGE = 'https://github.com/sheepzh/time-tracker-4-browser/blob/main/LICENSE'
 
 /**
  * @since 0.9.6

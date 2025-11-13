@@ -286,7 +286,7 @@ ts-node ./script/crowdin/sync-source.ts
 ts-node ./script/crowdin/sync-translation.ts
 ```
 
-Because the above two scripts rely on the Crowdin access secret in the environment variable, I integrated them into Github's [Action](https://github.com/sheepzh/timer/actions/workflows/crowdin-sync.yml)
+Because the above two scripts rely on the Crowdin access secret in the environment variable, I integrated them into Github's [Action](https://github.com/sheepzh/time-tracker-4-browser/actions/workflows/crowdin-sync.yml)
 
 2. Export translations from Crowdin
 

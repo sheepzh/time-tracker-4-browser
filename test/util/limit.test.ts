@@ -13,20 +13,20 @@ describe('util/limit', () => {
     })
 
     test('matches', () => {
-        const cond = ['www.baidu.com', '*.google.com', 'github.com/sheepzh', '+github.com/sheepzh/timer','+www.bilibili.com/cheese','*.bilibili.com*']
+        const cond = ['www.baidu.com', '*.google.com', 'github.com/sheepzh', '+github.com/sheepzh/time-tracker-4-browser', '+www.bilibili.com/cheese', '*.bilibili.com*']
 
         expect(matches(cond, 'https://www.baidu.com')).toBe(true)
         expect(matches(cond, 'http://hk.google.com')).toBe(true)
         expect(matches(cond, 'http://github.com/sheepzh/poetry')).toBe(true)
-        expect(matches(cond, 'http://github.com/sheepzh/timer')).toBe(false)
-        expect(matches(cond, 'http://github.com/sheepzh/timer/test')).toBe(false)
+        expect(matches(cond, 'http://github.com/sheepzh/time-tracker-4-browser')).toBe(false)
+        expect(matches(cond, 'http://github.com/sheepzh/time-tracker-4-browser/test')).toBe(false)
         expect(matches(cond, 'http://www.bilibili.com/cheese/list')).toBe(false)
         expect(matches(cond, 'http://t.bilibili.com/')).toBe(true)
         expect(matches(cond, 'https://www.bilibili.com/video/BV3527/')).toBe(true)
     })
 
     test('matchCond', () => {
-        const cond = ['www.baidu.com', '*.google.com', 'github.com/sheepzh', 'github.com','+www.bilibili.com/cheese','*.bilibili.com*']
+        const cond = ['www.baidu.com', '*.google.com', 'github.com/sheepzh', 'github.com', '+www.bilibili.com/cheese', '*.bilibili.com*']
         expect(matchCond(cond, 'http://www.baidu.com')).toEqual(['www.baidu.com'])
         expect(matchCond(cond, 'https://github.com/sheepzh/time-tracker-for-browser')).toEqual(['github.com', 'github.com/sheepzh'])
         expect(matchCond(cond, 'https://www.github.com')).toEqual([])
