@@ -24,7 +24,10 @@ function cloneData<T = any>(data: T | undefined): T | undefined {
 export function sendMsg2Runtime<T = any, R = any>(code: timer.mq.ReqCode, data?: T): Promise<R | undefined> {
     const request: timer.mq.Request<T> = { code, data: cloneData(data) }
     return new Promise((resolve, reject) => {
-        const timeout = setTimeout(() => reject(new Error('Message timeout: no response from runtime')), 10_000)
+        const timeout = setTimeout(() => {
+            // timeout: no response from runtime
+            resolve(undefined)
+        }, 10_000)
         try {
             chrome.runtime.sendMessage(request, (response: timer.mq.Response<R>) => {
                 clearTimeout(timeout)
