@@ -30,9 +30,9 @@ type PeriodFormatOption = {
 }
 
 const UNIT_MAP: { [unit in Exclude<timer.app.TimeFormat, 'default'>]: string } = {
-    second: ' s',
-    minute: ' m',
-    hour: ' h',
+    second: 's',
+    minute: 'm',
+    hour: 'h',
 }
 
 /**

@@ -58,10 +58,7 @@ const _default = defineComponent(() => {
     const isXs = useXsState()
 
     return () => (
-        <Flex
-            flex={isXs.value ? undefined : 4}
-            column gap={1}
-        >
+        <Flex flex={isXs.value ? undefined : 4} column gap={1}>
             <KanbanIndicatorCell
                 mainName={t(msg => msg.analysis.common.focusTotal)}
                 mainValue={periodFormatter(summary.value?.focus?.total, { format: filter.timeFormat })}
@@ -74,7 +71,7 @@ const _default = defineComponent(() => {
                 mainName={t(msg => msg.habit.site.countTotal)}
                 mainValue={computeCountText(summary.value?.count)}
                 subTips={msg => msg.habit.site.siteAverage}
-                subValue={summary.value?.count?.siteAverage?.toFixed(0) || '-'}
+                subValue={summary.value?.count?.siteAverage?.toFixed(1) ?? '-'}
                 subInfo={summary.value?.exclusiveToday4Average ? t(msg => msg.habit.site.exclusiveToday) : undefined}
                 containerStyle={GRID_CELL_STYLE}
             />
