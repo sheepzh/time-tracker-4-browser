@@ -9,7 +9,7 @@ import { t } from "@app/locale"
 import { useLocalStorage, useRequest, useState } from "@hooks"
 import weekHelper from "@service/components/week-helper"
 import { isEffective } from "@util/limit"
-import { ElSwitch, ElTable, ElTableColumn, ElTag, type RenderRowData, type Sort } from "element-plus"
+import { ElEmpty, ElSwitch, ElTable, ElTableColumn, ElTag, type RenderRowData, type Sort } from "element-plus"
 import { defineComponent, watch } from "vue"
 import { useLimitTable } from "../context"
 import LimitOperationColumn from "./column/LimitOperationColumn"
@@ -35,7 +35,7 @@ const _default = defineComponent(() => {
     })
 
     const {
-        list, table,
+        list, table, empty,
         changeEnabled, changeDelay, changeLocked
     } = useLimitTable()
 
@@ -46,7 +46,7 @@ const _default = defineComponent(() => {
     const [sort, setSort] = useState(cachedSort)
     watch(sort, () => setCachedSort(sort.value))
 
-    return () => (
+    return () => empty.value ? <ElEmpty /> : (
         <ElTable
             ref={table}
             border fit highlightCurrentRow

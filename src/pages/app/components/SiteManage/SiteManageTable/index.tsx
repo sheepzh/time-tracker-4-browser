@@ -7,7 +7,7 @@
 import HostAlert from "@app/components/common/HostAlert"
 import { t } from "@app/locale"
 import Flex from "@pages/components/Flex"
-import siteService from "@service/site-service"
+import { removeIconUrl, saveSiteRunState } from '@service/site-service'
 import { ElSwitch, ElTable, ElTableColumn, type RenderRowData } from "element-plus"
 import { defineComponent } from "vue"
 import Category from "../../common/category/CategoryEditable"
@@ -20,13 +20,13 @@ const _default = defineComponent<{}>(() => {
     const { setSelected, refresh, pagination } = useSiteManageTable()
 
     const handleIconError = async (row: timer.site.SiteInfo) => {
-        await siteService.removeIconUrl(row)
+        await removeIconUrl(row)
         row.iconUrl = undefined
     }
 
     const handleRunChange = async (val: boolean, row: timer.site.SiteInfo) => {
         // Save
-        await siteService.saveRun(row, val)
+        await saveSiteRunState(row, val)
         row.run = val
         refresh()
     }

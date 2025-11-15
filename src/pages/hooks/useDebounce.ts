@@ -1,4 +1,5 @@
 import { shallowRef, watch, type MaybeRefOrGetter, type Ref } from 'vue'
+import { useState } from './useState'
 
 type FunctionArgs = (...args: any[]) => any
 
@@ -41,4 +42,12 @@ export function useDebounce<T>(original: Ref<T>, ms?: MaybeRefOrGetter<number>):
 
     watch(original, newVal => debouncedFn(newVal))
     return inner
+}
+
+export function useDebounceState<T>(defaultValue: T, ms?: MaybeRefOrGetter<number>): [Ref<T>, ArgCallback<T>] {
+    const [inner, setInner] = useState<T>(defaultValue)
+
+    const debouncedSet = useDebounceFn(setInner, ms)
+
+    return [inner, debouncedSet]
 }

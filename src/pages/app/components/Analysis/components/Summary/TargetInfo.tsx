@@ -9,7 +9,7 @@ import { useCategory } from "@app/context"
 import { t } from "@app/locale"
 import { useRequest } from "@hooks"
 import Flex from "@pages/components/Flex"
-import siteService from "@service/site-service"
+import { getSite } from '@service/site-service'
 import { ElTag } from "element-plus"
 import { computed, defineComponent, type StyleValue, toRef } from "vue"
 import { useAnalysisTarget } from "../../context"
@@ -35,7 +35,7 @@ const SUBTITLE_STYLE: StyleValue = {
 
 const SiteInfo = defineComponent<{ value: timer.site.SiteKey }>(props => {
     const key = toRef(props, 'value')
-    const { data: site } = useRequest(() => key.value ? siteService.get(key.value) : undefined, { deps: key })
+    const { data: site } = useRequest(() => key.value ? getSite(key.value) : undefined, { deps: key })
     const iconUrl = computed(() => site.value?.iconUrl)
     const title = computed(() => site.value?.alias ?? labelOfHostInfo(site.value))
     const subtitle = computed(() => site.value?.alias ? labelOfHostInfo(site.value) : undefined)

@@ -9,7 +9,7 @@ import Editable from "@app/components/common/Editable"
 import { t } from "@app/locale"
 import { MagicStick } from "@element-plus/icons-vue"
 import Flex from "@pages/components/Flex"
-import siteService from "@service/site-service"
+import { batchGetSites, batchSaveAliasNoRewrite, removeAlias, saveAlias } from "@service/site-service"
 import { getSuffix as getPslSuffix } from "@util/psl"
 import { identifySiteKey, SiteMap } from "@util/site"
 import { ElIcon, ElMessage, ElPopconfirm, ElTableColumn, ElText } from "element-plus"
@@ -46,9 +46,9 @@ const AliasColumn = defineComponent<{}>(() => {
         newAlias = newAlias?.trim?.()
         row.alias = newAlias
         if (newAlias) {
-            await siteService.saveAlias(row, newAlias)
+            await saveAlias(row, newAlias)
         } else {
-            await siteService.removeAlias(row)
+            await removeAlias(row)
         }
         refresh()
     }
@@ -59,12 +59,12 @@ const AliasColumn = defineComponent<{}>(() => {
             return ElMessage.info("No data")
         }
         const toSave = new SiteMap<string>()
-        const items = await siteService.batchSelect(data)
+        const items = await batchGetSites(data)
         items.filter(i => !i.alias).forEach(site => {
             const newAlias = genInitialAlias(site)
             newAlias && toSave.put(site, newAlias)
         })
-        await siteService.batchSaveAliasNoRewrite(toSave)
+        await batchSaveAliasNoRewrite(toSave)
         refresh()
         ElMessage.success(t(msg => msg.operation.successMsg))
     }

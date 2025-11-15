@@ -12,7 +12,7 @@ import { periodFormatter } from "@app/util/time"
 import { Histogram } from "@element-plus/icons-vue"
 import { useDocumentVisibility, useManualRequest, useRequest, useState } from "@hooks"
 import Flex from "@pages/components/Flex"
-import siteService from "@service/site-service"
+import { removeAlias, saveAlias } from '@service/site-service'
 import { selectCate, selectGroup, selectSite, type SiteQuery } from "@service/stat-service"
 import { sum } from "@util/array"
 import { isRtl } from "@util/document"
@@ -34,9 +34,9 @@ import VisitColumn from "./columns/VisitColumn"
 async function handleAliasChange(key: timer.site.SiteKey, newAlias: string | undefined, data: timer.stat.Row[]) {
     newAlias = newAlias?.trim?.()
     if (!newAlias) {
-        await siteService.removeAlias(key)
+        await removeAlias(key)
     } else {
-        await siteService.saveAlias(key, newAlias)
+        await saveAlias(key, newAlias)
     }
     data?.filter(isSite)
         ?.filter(item => siteEqual(item.siteKey, key))
