@@ -13,14 +13,14 @@ import { slicePageResult } from "./components/page-info"
 
 export type SiteQueryParam = SiteCondition
 
-async function removeAlias(key: timer.site.SiteKey) {
+export async function removeAlias(key: timer.site.SiteKey) {
     const exist = await siteDatabase.get(key)
     if (!exist) return
     delete exist.alias
     await siteDatabase.save(exist)
 }
 
-async function saveAlias(key: timer.site.SiteKey, alias: string, noRewrite?: boolean) {
+export async function saveAlias(key: timer.site.SiteKey, alias: string, noRewrite?: boolean) {
     const exist = await siteDatabase.get(key)
     let toUpdate: timer.site.SiteInfo
     if (exist) {
@@ -34,7 +34,7 @@ async function saveAlias(key: timer.site.SiteKey, alias: string, noRewrite?: boo
     await siteDatabase.save(toUpdate)
 }
 
-async function batchSaveAliasNoRewrite(siteMap: SiteMap<string>): Promise<void> {
+export async function batchSaveAliasNoRewrite(siteMap: SiteMap<string>): Promise<void> {
     if (!siteMap?.count?.()) return
     const allSites = await siteDatabase.getBatch(siteMap.keys())
     const existMap = new SiteMap<timer.site.SiteInfo>()
@@ -49,14 +49,14 @@ async function batchSaveAliasNoRewrite(siteMap: SiteMap<string>): Promise<void> 
     await siteDatabase.save(...toSave)
 }
 
-async function removeIconUrl(key: timer.site.SiteKey) {
+export async function removeIconUrl(key: timer.site.SiteKey) {
     const exist = await siteDatabase.get(key)
     if (!exist) return
     delete exist.iconUrl
     await siteDatabase.save(exist)
 }
 
-async function saveIconUrl(key: timer.site.SiteKey, iconUrl: string) {
+export async function saveIconUrl(key: timer.site.SiteKey, iconUrl: string) {
     const exist = await siteDatabase.get(key)
     let toUpdate: timer.site.SiteInfo
     if (exist) {
@@ -68,7 +68,7 @@ async function saveIconUrl(key: timer.site.SiteKey, iconUrl: string) {
     await siteDatabase.save(toUpdate)
 }
 
-async function saveRun(key: timer.site.SiteKey, run: boolean) {
+export async function saveSiteRunState(key: timer.site.SiteKey, run: boolean) {
     const exist = await siteDatabase.get(key)
     if (!exist) return
     exist.run = run
@@ -82,76 +82,57 @@ async function saveRun(key: timer.site.SiteKey, run: boolean) {
     }
 }
 
-class SiteService {
-    async add(siteInfo: timer.site.SiteInfo): Promise<void> {
-        if (await siteDatabase.exist(siteInfo)) {
-            return
-        }
-        if (!supportCategory(siteInfo)) siteInfo.cate = undefined
-        await siteDatabase.save(siteInfo)
+export async function addSite(siteInfo: timer.site.SiteInfo): Promise<void> {
+    if (await siteDatabase.exist(siteInfo)) {
+        return
     }
-
-    async selectByPage(param?: SiteQueryParam, page?: timer.common.PageQuery): Promise<timer.common.PageResult<timer.site.SiteInfo>> {
-        const origin: timer.site.SiteInfo[] = await siteDatabase.select(param)
-        const result: timer.common.PageResult<timer.site.SiteInfo> = slicePageResult(origin, page)
-        return result
-    }
-
-    selectAll(param?: SiteQueryParam): Promise<timer.site.SiteInfo[]> {
-        return siteDatabase.select(param)
-    }
-
-    async batchSelect(keys: timer.site.SiteKey[]): Promise<timer.site.SiteInfo[]> {
-        return siteDatabase.getBatch(keys)
-    }
-
-    async remove(...sites: timer.site.SiteKey[]): Promise<void> {
-        await siteDatabase.remove(...sites)
-    }
-
-    saveAlias = saveAlias
-    batchSaveAliasNoRewrite = batchSaveAliasNoRewrite
-    removeAlias = removeAlias
-    saveIconUrl = saveIconUrl
-    removeIconUrl = removeIconUrl
-    saveRun = saveRun
-
-    async saveCate(key: timer.site.SiteKey, cateId: number | undefined): Promise<void> {
-        if (!supportCategory(key)) return
-
-        const exist = await siteDatabase.get(key)
-        await siteDatabase.save({ ...exist || key, cate: cateId })
-    }
-
-    async batchSaveCate(cateId: number | undefined, keys: timer.site.SiteKey[]): Promise<void> {
-        keys = keys?.filter(supportCategory)
-        if (!keys?.length) return
-
-        const allSites = await siteDatabase.getBatch(keys)
-        const siteMap = toMap(allSites, identifySiteKey)
-
-        const toSave = keys.map(k => {
-            const s = siteMap[identifySiteKey(k)]
-            return ({ ...s || k, cate: cateId })
-        })
-        await siteDatabase.save(...toSave)
-    }
-
-    exist(host: timer.site.SiteKey): Promise<boolean> {
-        return siteDatabase.exist(host)
-    }
-
-    existBatch(hosts: timer.site.SiteKey[]): Promise<timer.site.SiteKey[]> {
-        return siteDatabase.existBatch(hosts)
-    }
-
-    /**
-     * @since 0.9.0
-     */
-    async get(siteKey: timer.site.SiteKey): Promise<timer.site.SiteInfo | undefined> {
-        const info = await siteDatabase.get(siteKey)
-        return info ?? siteKey
-    }
+    if (!supportCategory(siteInfo)) siteInfo.cate = undefined
+    await siteDatabase.save(siteInfo)
 }
 
-export default new SiteService()
+export async function selectSitePage(param?: SiteQueryParam, page?: timer.common.PageQuery): Promise<timer.common.PageResult<timer.site.SiteInfo>> {
+    const origin: timer.site.SiteInfo[] = await siteDatabase.select(param)
+    const result: timer.common.PageResult<timer.site.SiteInfo> = slicePageResult(origin, page)
+    return result
+}
+
+export function selectAllSites(param?: SiteQueryParam): Promise<timer.site.SiteInfo[]> {
+    return siteDatabase.select(param)
+}
+
+export function batchGetSites(keys: timer.site.SiteKey[]): Promise<timer.site.SiteInfo[]> {
+    return siteDatabase.getBatch(keys)
+}
+
+export function removeSites(...sites: timer.site.SiteKey[]): Promise<void> {
+    return siteDatabase.remove(...sites)
+}
+
+export async function saveSiteCate(key: timer.site.SiteKey, cateId: number | undefined): Promise<void> {
+    if (!supportCategory(key)) return
+
+    const exist = await siteDatabase.get(key)
+    await siteDatabase.save({ ...exist || key, cate: cateId })
+}
+
+export async function batchSaveSiteCate(cateId: number | undefined, keys: timer.site.SiteKey[]): Promise<void> {
+    keys = keys?.filter(supportCategory)
+    if (!keys?.length) return
+
+    const allSites = await siteDatabase.getBatch(keys)
+    const siteMap = toMap(allSites, identifySiteKey)
+
+    const toSave = keys.map(k => {
+        const s = siteMap[identifySiteKey(k)]
+        return ({ ...s || k, cate: cateId })
+    })
+    await siteDatabase.save(...toSave)
+}
+
+/**
+* @since 0.9.0
+*/
+export async function getSite(siteKey: timer.site.SiteKey): Promise<timer.site.SiteInfo> {
+    const info = await siteDatabase.get(siteKey)
+    return info ?? siteKey
+}

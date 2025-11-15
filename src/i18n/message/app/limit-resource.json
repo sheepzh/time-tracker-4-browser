@@ -108,6 +108,7 @@
     "en": {
         "filterDisabled": "Only enabled",
         "wildcardTip": "You can use wildcards to match subdomains or subpages, and use \"+\" as a prefix to exclude subpages!",
+        "emptyTips": "Click here to create one rule!",
         "item": {
             "name": "Rule name",
             "condition": "Restricted URL",

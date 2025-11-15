@@ -4,8 +4,8 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import siteDatabase from '@db/site-database'
 import { useManualRequest } from "@hooks"
-import siteService from "@service/site-service"
 import { listHosts } from "@service/stat-service"
 import { MERGED_HOST, ALL_HOSTS as REMAIN_HOSTS } from "@util/constant/remain-host"
 import { isValidVirtualHost, judgeVirtualFast } from "@util/pattern"
@@ -41,7 +41,7 @@ async function handleRemoteSearch(query: string): Promise<_OptionInfo[]> {
     REMAIN_HOSTS.filter(h => h.includes(query)).forEach(remain => allAlias.push({ host: remain, type: 'normal' }))
     MERGED_HOST.includes(query) && allAlias.push({ host: MERGED_HOST, type: 'merged' })
     const existedAliasSet = new Set()
-    const existedKeys = await siteService.existBatch(allAlias)
+    const existedKeys = await siteDatabase.existBatch(allAlias)
     existedKeys.forEach(key => existedAliasSet.add(cvt2OptionValue(key)))
     const existedOptions: _OptionInfo[] = []
     const notExistedOptions: _OptionInfo[] = []
