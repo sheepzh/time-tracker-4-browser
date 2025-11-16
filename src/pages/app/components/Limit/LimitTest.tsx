@@ -6,23 +6,21 @@
  */
 
 import { t } from "@app/locale"
-import { useState, useSwitch } from "@hooks"
+import { useDebounce, useRequest, useState, useSwitch } from "@hooks"
+import Flex from '@pages/components/Flex'
 import limitService from "@service/limit-service"
-import { ElButton, ElDialog, ElFormItem, ElInput } from "element-plus"
-import { computed, defineComponent } from "vue"
+import { ElDialog, ElInput } from "element-plus"
+import { defineComponent } from "vue"
 import AlertLines, { type AlertLinesProps } from '../common/AlertLines'
 import { type TestInstance } from "./context"
 
-function computeResult(url: string | undefined, inputting: boolean, matched: timer.limit.Rule[]): AlertLinesProps {
+async function fetchResult(url: string | undefined): Promise<AlertLinesProps> {
     if (!url) {
-        return { type: 'info', title: msg => msg.limit.message.inputTestUrl }
+        return { type: 'warning', title: msg => msg.limit.message.inputTestUrl }
     }
-    if (inputting) {
-        const title = t(msg => msg.limit.message.clickTestButton, { buttonText: t(msg => msg.button.test) })
-        return { type: 'info', title }
-    }
+    const matched = await limitService.select({ url, filterDisabled: true })
     if (!matched?.length) {
-        return { type: 'warning', title: msg => msg.limit.message.noRuleMatched }
+        return { type: 'info', title: msg => msg.limit.message.noRuleMatched }
     } else {
         return {
             type: 'success',
@@ -33,50 +31,33 @@ function computeResult(url: string | undefined, inputting: boolean, matched: tim
 }
 
 const _default = defineComponent((_props, ctx) => {
-    const [url, , clearUrl] = useState<string>()
-    const [matched, , clearMatched] = useState<timer.limit.Rule[]>([])
+    const [url, setUrl, clearUrl] = useState<string>()
+    const debouncedUrl = useDebounce(url)
     const [visible, open, close] = useSwitch()
-    const [urlInputting, startInput, endInput] = useSwitch(true)
-    const result = computed(() => computeResult(url.value, urlInputting.value, matched.value))
-
-    const changeInput = (newVal?: string) => {
-        startInput()
-        url.value = newVal?.trim()
-    }
-
-    const handleTest = async () => {
-        endInput()
-        matched.value = await limitService.select({ url: url.value, filterDisabled: true })
-    }
+    const { data: result } = useRequest(() => fetchResult(debouncedUrl.value), { deps: debouncedUrl })
 
     ctx.expose({
         show: () => {
             clearUrl()
             open()
-            startInput()
-            clearMatched()
         }
     } satisfies TestInstance)
+
     return () => (
         <ElDialog
-            title={t(msg => msg.button.test)}
+            title={t(msg => msg.limit.button.test)}
             modelValue={visible.value}
             closeOnClickModal={false}
             onClose={close}
         >
-            <ElFormItem labelWidth={120} label={t(msg => msg.limit.button.test)}>
+            <Flex gap={18} column>
                 <ElInput
-                    modelValue={url.value}
-                    clearable
-                    onClear={() => changeInput()}
-                    onKeydown={ev => (ev as KeyboardEvent).key === "Enter" && handleTest()}
-                    onInput={changeInput}
-                    v-slots={{
-                        append: () => <ElButton onClick={handleTest}>{t(msg => msg.button.test)}</ElButton>
-                    }}
+                    modelValue={url.value} onInput={setUrl}
+                    clearable onClear={clearUrl}
+                    placeholder='e.g. https://www.github.com/sheepzh/time-tracker-4-browser'
                 />
-            </ElFormItem>
-            <AlertLines {...result.value} />
+                {result.value && <AlertLines {...result.value} />}
+            </Flex>
         </ElDialog>
     )
 })

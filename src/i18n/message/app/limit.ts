@@ -10,6 +10,7 @@ import resource from './limit-resource.json'
 export type LimitMessage = {
     filterDisabled: string
     wildcardTip: string
+    emptyTips: string
     step: {
         base: string
         url: string
@@ -43,7 +44,6 @@ export type LimitMessage = {
         deleteConfirm: string
         lockConfirm: string
         inputTestUrl: string
-        clickTestButton: string
         noRuleMatched: string
         rulesMatched: string
         timeout: string

@@ -5,9 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 import { t } from "@app/locale"
+import siteDatabase from '@db/site-database'
 import { Check } from "@element-plus/icons-vue"
 import { useSwitch } from "@hooks"
-import siteService from "@service/site-service"
+import { addSite } from "@service/site-service"
 import { supportCategory } from "@util/site"
 import { ElButton, ElDialog, ElForm, ElFormItem, ElInput, ElMessage, type FormInstance, type FormItemRule } from "element-plus"
 import { computed, defineComponent, reactive, ref } from "vue"
@@ -50,7 +51,7 @@ function validateForm(form: FormInstance | undefined): Promise<boolean> {
 }
 
 async function handleAdd(siteInfo: timer.site.SiteInfo): Promise<boolean> {
-    const existed = await siteService.exist(siteInfo)
+    const existed = await siteDatabase.exist(siteInfo)
     if (existed) {
         ElMessage({
             type: 'warning',
@@ -59,7 +60,7 @@ async function handleAdd(siteInfo: timer.site.SiteInfo): Promise<boolean> {
             duration: 1600
         })
     } else {
-        await siteService.add(siteInfo)
+        await addSite(siteInfo)
     }
     return !existed
 }

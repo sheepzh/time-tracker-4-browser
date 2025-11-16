@@ -1,5 +1,5 @@
 import cateService from "@service/cate-service"
-import siteService from "@service/site-service"
+import { batchSaveSiteCate } from "@service/site-service"
 import { Migrator } from "./common"
 
 type InitialCate = {
@@ -34,7 +34,7 @@ async function initItem(item: InitialCate) {
     const cate = await cateService.add(name)
     const cateId = cate.id
     const siteKeys = hosts.map(host => ({ host, type: 'normal' } satisfies timer.site.SiteKey))
-    await siteService.batchSaveCate(cateId, siteKeys)
+    await batchSaveSiteCate(cateId, siteKeys)
 }
 
 export default class CateInitializer implements Migrator {

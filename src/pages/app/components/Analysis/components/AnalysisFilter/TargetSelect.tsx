@@ -1,8 +1,8 @@
 import { useCategory } from "@app/context"
 import { t } from "@app/locale"
-import { useDebounce, useRequest, useState } from "@hooks"
+import { useDebounceState, useRequest } from "@hooks"
 import Flex from "@pages/components/Flex"
-import siteService from "@service/site-service"
+import { selectAllSites } from "@service/site-service"
 import { listHosts } from "@service/stat-service"
 import { identifySiteKey, parseSiteKeyFromIdentity, SiteMap } from "@util/site"
 import { ElSelectV2, ElTag, useNamespace } from "element-plus"
@@ -67,7 +67,7 @@ const fetchItems = async (categories: timer.site.Cate[]): Promise<[siteItems: Ta
     collectHosts(hosts, siteSet)
 
     // 2.2 query sites from sites
-    const sites = await siteService.selectAll()
+    const sites = await selectAllSites()
     sites?.forEach(site => siteSet.put(site, site))
 
     const siteItems = siteSet?.map((_, site) => site)
@@ -115,11 +115,9 @@ const TargetSelect = defineComponent(() => {
         { defaultValue: [[], []], deps: [() => cate.all] },
     )
 
-    const [query, setQuery] = useState('')
-    const debouncedQuery = useDebounce(query, 50)
-
+    const [query, setQuery] = useDebounceState('', 50)
     const options = computed(() => {
-        const q = debouncedQuery.value?.trim?.()
+        const q = query.value?.trim?.()
         let [cateItems, siteItems] = allItems.value
         if (q) {
             siteItems = siteItems.filter(item => {

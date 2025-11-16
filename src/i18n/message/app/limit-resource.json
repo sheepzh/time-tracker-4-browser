@@ -35,7 +35,6 @@
             "deleteConfirm": "是否要删除规则 [{name}]？",
             "lockConfirm": "锁定后，即使未触发此规则，所有操作也需要验证",
             "inputTestUrl": "请先输入需要测试的网址链接",
-            "clickTestButton": "输入完成后请点击【{buttonText}】按钮",
             "noRuleMatched": "该网址未命中任何规则",
             "rulesMatched": "该网址命中以下规则：",
             "timeout": "倒计时已结束 XD"
@@ -88,7 +87,6 @@
             "deleteConfirm": "確定要刪除規則「{name}」嗎？",
             "lockConfirm": "如果鎖定，所有操作都需要驗證，即使規則未觸發也一樣。",
             "inputTestUrl": "請輸入要測試的網址",
-            "clickTestButton": "輸入完成後請點擊【{buttonText}】按鈕",
             "noRuleMatched": "此網址未符合任何規則",
             "rulesMatched": "此網址符合以下規則：",
             "timeout": "時間到啦！XDDD"
@@ -108,6 +106,7 @@
     "en": {
         "filterDisabled": "Only enabled",
         "wildcardTip": "You can use wildcards to match subdomains or subpages, and use \"+\" as a prefix to exclude subpages!",
+        "emptyTips": "Click here to create one rule!",
         "item": {
             "name": "Rule name",
             "condition": "Restricted URL",
@@ -141,7 +140,6 @@
             "deleteConfirm": "Do you want to delete the rule [{name}]?",
             "lockConfirm": "If locked, all operations will require verification even if the rule is not triggered.",
             "inputTestUrl": "Please enter the URL link to be tested first",
-            "clickTestButton": "After inputting, please click the button ({buttonText})",
             "noRuleMatched": "The URL does not hit any rules",
             "rulesMatched": "The URL hits the following rules:",
             "timeout": "Time is up! XD"
@@ -192,7 +190,6 @@
             "noRule": "ルールが記入されていません",
             "deleteConfirm": "ルール [{name}] を削除しますか?",
             "inputTestUrl": "最初にテストする URL リンクを入力してください",
-            "clickTestButton": "入力後、ボタン({buttonText})をクリックしてください",
             "noRuleMatched": "URL がどのルールとも一致しません",
             "rulesMatched": "URL は次のルールに一致します。"
         },
@@ -244,7 +241,6 @@
             "deleteConfirm": "Eliminar a regra [{name}]?",
             "lockConfirm": "Se bloqueado, exigirá verificação mesmo sem ser acionado",
             "inputTestUrl": "Introduza primeiro o URL a testar",
-            "clickTestButton": "Clique no botão ({buttonText}) após introduzir",
             "noRuleMatched": "O URL não corresponde a nenhuma regra",
             "rulesMatched": "O URL corresponde às seguintes regras:",
             "timeout": "Tempo esgotado! XD"
@@ -297,7 +293,6 @@
             "deleteConfirm": "Ви дійсно хочете видалити правило {cond}?",
             "lockConfirm": "Якщо заблоковано, всі операції потребують перевірки, навіть якщо правило не спрацьовує.",
             "inputTestUrl": "Спочатку введіть URL-адресу посилання для перевірки",
-            "clickTestButton": "Після введення натисніть кнопку ({buttonText})",
             "noRuleMatched": "URL не відповідає жодному правилу",
             "rulesMatched": "URL-адреса отримує такі правила:",
             "timeout": "Час вийшов! XD"
@@ -348,7 +343,6 @@
             "deleteConfirm": "¿Deseas eliminar la regla de {cond}?",
             "lockConfirm": "Si está bloqueado, todas las operaciones requerirán verificación incluso si no se activa la regla.",
             "inputTestUrl": "Por favor, introduce primero el enlace URL a ser probado",
-            "clickTestButton": "Después de ingresarla, haz clic en el botón ({buttonText})",
             "noRuleMatched": "La URL no sigue ninguna regla",
             "rulesMatched": "La URL sigue las siguientes reglas:",
             "timeout": "¡Tiempo se acabó! XD"
@@ -401,7 +395,6 @@
             "deleteConfirm": "Möchten Sie die Regel [{name}] löschen?",
             "lockConfirm": "Wenn gesperrt, müssen alle Operationen geprüft werden, auch wenn die Regel nicht ausgelöst wird.",
             "inputTestUrl": "Bitte geben Sie zunächst den zu testenden URL-Link ein",
-            "clickTestButton": "Klicken Sie nach der Eingabe bitte auf die Schaltfläche ({buttonText}).",
             "noRuleMatched": "Die URL entspricht keinen Regeln",
             "rulesMatched": "Die URL erfüllt die folgenden Regeln:",
             "timeout": "Zeit ist abgelaufen! XD"
@@ -454,7 +447,6 @@
             "deleteConfirm": "Voulez-vous supprimer la règle [{name}]?",
             "lockConfirm": "Si verrouillé, toutes les opérations nécessiteront une vérification, même si la règle n'est pas activée.",
             "inputTestUrl": "Veuillez entrer le lien URL à tester en premier",
-            "clickTestButton": "Après l'entrée, cliquez sur le bouton ({buttonText})",
             "noRuleMatched": "L'URL ne correspond à aucune règle",
             "rulesMatched": "L'URL atteint les règles suivantes :",
             "timeout": "Temps écoulé ! XD"
@@ -500,7 +492,6 @@
             "noRule": "Нет заполненных правил",
             "deleteConfirm": "Вы хотите удалить правило [{name}]?",
             "inputTestUrl": "Пожалуйста, введите ссылку для тестирования",
-            "clickTestButton": "После ввода информации, пожалуйста, нажмите кнопку ({buttonText})",
             "noRuleMatched": "URL не содержит правил",
             "rulesMatched": "URL попадает в следующие правила:"
         },
@@ -551,7 +542,6 @@
             "deleteConfirm": "هل تريد حذف القاعدة [{name}]؟",
             "lockConfirm": "إذا تم القَفل، فإن جميع العمليات ستتطلب التحقق حتى وإن لم يتم تفعيل القاعدة.",
             "inputTestUrl": "الرجاء إدخال رابط URL ليتم اختباره أولاً",
-            "clickTestButton": "بعد الإدخال، الرجاء الضغط على الزر ({buttonText})",
             "noRuleMatched": "عنوان URL لا يصطدم بأي قواعد",
             "rulesMatched": "يتوافق عنوان URL مع القواعد التالية:",
             "timeout": "انتهى الوقت! XD"
@@ -604,7 +594,6 @@
             "deleteConfirm": "{name} kuralını silmek istiyor musunuz?",
             "lockConfirm": "Kilitliyse, kural tetiklenmemiş olsa bile tüm işlemler doğrulama gerektirecektir.",
             "inputTestUrl": "Lütfen önce test edilecek URL bağlantısını girin",
-            "clickTestButton": "Giriş yaptıktan sonra, lütfen düğmeye tıklayın ({buttonText})",
             "noRuleMatched": "URL hiçbir kurala uymuyor",
             "rulesMatched": "URL aşağıdaki kurallara uygundur:",
             "timeout": "Zaman doldu!"
@@ -657,7 +646,6 @@
             "deleteConfirm": "Na pewno chcesz usunąć regułę [{name}]?",
             "lockConfirm": "Jeśli zablokowane, wszystkie operacje będą wymagały weryfikacji, nawet jeśli reguła nie zostanie uruchomiona.",
             "inputTestUrl": "Wpisz URL do przetestowania",
-            "clickTestButton": "Po wpisaniu kliknij przycisk ({buttonText})",
             "noRuleMatched": "Podany URL nie aktywuje żadnej reguły",
             "rulesMatched": "Podany URL aktywuje następujące reguły:",
             "timeout": "Czas minął! XD"

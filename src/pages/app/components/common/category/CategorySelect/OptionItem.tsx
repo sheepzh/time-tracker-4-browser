@@ -4,7 +4,7 @@ import { Check, Close, Delete, Edit } from "@element-plus/icons-vue"
 import { useManualRequest, useRequest, useState, useSwitch } from "@hooks"
 import Flex from "@pages/components/Flex"
 import cateService from "@service/cate-service"
-import siteService from "@service/site-service"
+import { selectAllSites } from '@service/site-service'
 import { stopPropagationAfter } from "@util/document"
 import { ElButton, ElInput, ElMessage, ElMessageBox } from "element-plus"
 import { defineComponent, nextTick, ref } from "vue"
@@ -34,7 +34,7 @@ const OptionItem = defineComponent<{ value: timer.site.Cate }>(props => {
             ElMessage.success(t(msg => msg.operation.successMsg))
         }
     })
-    const { data: relatedSites, loading: queryingSites } = useRequest(() => siteService.selectAll({ cateIds: props.value?.id }))
+    const { data: relatedSites, loading: queryingSites } = useRequest(() => selectAllSites({ cateIds: props.value?.id }))
 
     const onRemoveClick = (e: MouseEvent) => {
         e.stopPropagation()

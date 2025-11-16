@@ -2,7 +2,7 @@ import { t } from "@app/locale"
 import { useDocumentVisibility, useManualRequest, useProvide, useProvider, useRequest } from "@hooks"
 import limitService from "@service/limit-service"
 import { ElMessage, ElMessageBox, type TableInstance } from "element-plus"
-import { Reactive, reactive, ref, toRaw, watch, type Ref } from "vue"
+import { computed, Reactive, reactive, ref, toRaw, watch, type Ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { verifyCanModify } from "./common"
 import type { LimitFilterOption } from "./types"
@@ -30,6 +30,7 @@ type Context = {
     modify: (item: timer.limit.Item) => void
     create: () => void
     test: () => void
+    empty: Ref<boolean>
 }
 
 const NAMESPACE = 'limit'
@@ -44,7 +45,7 @@ const initialUrl = () => {
 export const useLimitProvider = () => {
     const filter = reactive<LimitFilterOption>({ url: initialUrl(), onlyEnabled: false })
 
-    const { data: list, refresh } = useRequest(
+    const { data: list, refresh, loading } = useRequest(
         () => limitService.select({ filterDisabled: filter.onlyEnabled, url: filter.url ?? '' }),
         {
             defaultValue: [],
@@ -140,17 +141,17 @@ export const useLimitProvider = () => {
         }
     }
 
-
     const modifyInst = ref<ModifyInstance>()
     const testInst = ref<TestInstance>()
     const modify = (row: timer.limit.Item) => modifyInst.value?.modify?.(toRaw(row))
     const create = () => modifyInst.value?.create?.()
     const test = () => testInst.value?.show?.()
+    const empty = computed(() => !loading.value && !list.value.length)
 
     useProvide<Context>(NAMESPACE, {
         table,
         filter,
-        list, refresh,
+        list, empty, refresh,
         deleteRow,
         batchDelete: () => selectedAndThen(handleBatchDelete),
         batchEnable: () => selectedAndThen(handleBatchEnable),
@@ -172,4 +173,4 @@ export const useLimitBatch = () => useProvider<Context, 'batchDelete' | 'batchEn
     NAMESPACE, 'batchDelete', 'batchDisable', 'batchEnable'
 )
 
-export const useLimitAction = () => useProvider<Context, 'test' | 'modify' | 'create'>(NAMESPACE, 'modify', 'test', 'create')
+export const useLimitAction = () => useProvider<Context, 'test' | 'modify' | 'create' | 'empty'>(NAMESPACE, 'modify', 'test', 'create', 'empty')

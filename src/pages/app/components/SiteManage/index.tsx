@@ -9,7 +9,7 @@ import { t } from "@app/locale"
 import { Check, Close, WarnTriangleFilled } from "@element-plus/icons-vue"
 import { useState, useSwitch } from "@hooks"
 import Flex from "@pages/components/Flex"
-import siteService from "@service/site-service"
+import { batchSaveSiteCate, removeSites } from "@service/site-service"
 import { supportCategory } from "@util/site"
 import { ElButton, ElDialog, ElForm, ElFormItem, ElMessage, ElMessageBox } from "element-plus"
 import { computed, defineComponent, markRaw, ref, type VNode } from "vue"
@@ -49,7 +49,7 @@ export default defineComponent(() => {
         if (!cateId) {
             return ElMessage.warning("Category not selected")
         }
-        await siteService.batchSaveCate(cateId, cateSupported.value)
+        await batchSaveSiteCate(cateId, cateSupported.value)
         ElMessage.success(t(msg => msg.operation.successMsg))
         closeCateChange()
         refresh()
@@ -68,7 +68,7 @@ export default defineComponent(() => {
             }
         ).then(async () => {
             const need2Clear = cateSupported.value?.filter(s => s.cate)
-            need2Clear?.length && await siteService.batchSaveCate(undefined, need2Clear)
+            need2Clear?.length && await batchSaveSiteCate(undefined, need2Clear)
             ElMessage.success(t(msg => msg.operation.successMsg))
             refresh()
         }).catch(() => { })
@@ -87,7 +87,7 @@ export default defineComponent(() => {
                 icon: markRaw(WarnTriangleFilled),
             }
         ).then(async () => {
-            await siteService.remove(...(selected.value ?? []))
+            await removeSites(...(selected.value ?? []))
             ElMessage.success(t(msg => msg.operation.successMsg))
             refresh()
         }).catch(() => { })
