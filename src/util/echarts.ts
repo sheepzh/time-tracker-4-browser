@@ -1,14 +1,15 @@
-import {
-    type AriaComponentOption,
-    type BarSeriesOption,
-    type ComposeOption,
-    type GridComponentOption,
-    type LegendComponentOption,
-    type LineSeriesOption,
-    type PieSeriesOption,
-    type ScatterSeriesOption,
-    type ToolboxComponentOption,
-    type VisualMapComponentOption,
+import type {
+    AriaComponentOption,
+    BarSeriesOption,
+    ComposeOption,
+    GridComponentOption,
+    LegendComponentOption,
+    LineSeriesOption,
+    PieSeriesOption,
+    ScatterSeriesOption,
+    TitleComponentOption,
+    ToolboxComponentOption,
+    VisualMapComponentOption,
 } from "echarts"
 import { isRtl } from "./document"
 
@@ -66,9 +67,36 @@ const generateAriaOption = (chartDecal: boolean): AriaComponentOption => {
 type SupportedSeriesOption = PieSeriesOption | LineSeriesOption | BarSeriesOption | ScatterSeriesOption
 
 type GlobalEcOption = ComposeOption<
-    | GridComponentOption | LegendComponentOption | ToolboxComponentOption | VisualMapComponentOption
+    | TitleComponentOption | GridComponentOption | LegendComponentOption | ToolboxComponentOption | VisualMapComponentOption
     | SupportedSeriesOption
 >
+
+export const processFont = (toProcess: unknown, elFont: string) => {
+    const options = toProcess as GlobalEcOption
+    const { series, title, legend } = options
+    processArrayLike(title, t => {
+        t.textStyle = {
+            ...t.textStyle,
+            fontFamily: t.textStyle?.fontFamily ?? elFont,
+        }
+        t.subtextStyle = {
+            ...t.subtextStyle,
+            fontFamily: t.subtextStyle?.fontFamily ?? elFont,
+        }
+    })
+    processArrayLike(series, s => {
+        s.label = {
+            ...s.label,
+            fontFamily: s.label?.fontFamily ?? elFont,
+        }
+    })
+    processArrayLike(legend, l => {
+        l.textStyle = {
+            ...l.textStyle,
+            fontFamily: l.textStyle?.fontFamily ?? elFont,
+        }
+    })
+}
 
 export const processRtl = (toProcess: unknown) => {
     if (!isRtl() || !toProcess) return

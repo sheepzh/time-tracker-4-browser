@@ -6,15 +6,19 @@
  * https://opensource.org/licenses/MIT
  */
 import optionHolder from "@service/components/option-holder"
-import { processAnimation, processAria, processRtl } from "@util/echarts"
-import { type AriaComponentOption, type ComposeOption } from "echarts"
+import { processAnimation, processAria, processFont, processRtl } from "@util/echarts"
+import { type AriaComponentOption, type ComposeOption, SeriesOption, TitleComponentOption } from "echarts"
 import { type ECharts, init } from "echarts/core"
 import { ElLoading } from "element-plus"
 import { type Ref, isRef, onMounted, ref, watch } from "vue"
 import { useElementSize } from './useElementSize'
 import { useWindowSize } from "./useWindowSize"
 
-type BaseEchartsOption = ComposeOption<AriaComponentOption>
+type BaseEchartsOption = ComposeOption<
+    | AriaComponentOption
+    | TitleComponentOption
+    | SeriesOption
+>
 
 export abstract class EchartsWrapper<BizOption, EchartsOption> {
     public instance: ECharts | undefined
@@ -27,9 +31,15 @@ export abstract class EchartsWrapper<BizOption, EchartsOption> {
      */
     protected replaceSeries: boolean = false
     private lastBizOption: BizOption | undefined
+    /**
+     * Fix the font family
+     * @see https://github.com/sheepzh/time-tracker-4-browser/issues/623
+     */
+    private textFontFamily: string | undefined
 
     init(container: HTMLDivElement) {
         this.instance = init(container)
+        this.textFontFamily = getComputedStyle(container).fontFamily
     }
 
     async render(biz: BizOption) {
@@ -40,7 +50,7 @@ export abstract class EchartsWrapper<BizOption, EchartsOption> {
 
     private async innerRender() {
         const biz = this.lastBizOption
-        const option = biz && await this.generateOption(biz) as (EchartsOption & BaseEchartsOption)
+        const option = biz && await this.generateOption(biz)
         if (!option) return
 
         await this.postChartOption(option)
@@ -54,6 +64,7 @@ export abstract class EchartsWrapper<BizOption, EchartsOption> {
         processAnimation(option, chartAnimationDuration)
         processAria(option, chartDecal)
         processRtl(option)
+        this.textFontFamily && processFont(option, this.textFontFamily)
     }
 
     async resize() {
@@ -66,7 +77,7 @@ export abstract class EchartsWrapper<BizOption, EchartsOption> {
         return this.instance!.getDom()
     }
 
-    protected abstract generateOption(biz: BizOption): Promise<EchartsOption> | EchartsOption
+    protected abstract generateOption(biz: BizOption): Awaitable<EchartsOption>
 
     protected getDomWidth(): number {
         return this.getDom()?.clientWidth ?? 0
