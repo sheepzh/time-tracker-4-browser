@@ -7,7 +7,7 @@
 
 import mergeRuleDatabase from "@db/merge-rule-database"
 import { t2Chrome } from "@i18n/chrome/t"
-import siteService from "@service/site-service"
+import { saveAlias } from '@service/site-service'
 import { JSON_HOST, LOCAL_HOST_PATTERN, MERGED_HOST, PDF_HOST, PIC_HOST, TXT_HOST } from "@util/constant/remain-host"
 import { type Migrator } from "./common"
 
@@ -27,19 +27,19 @@ export default class LocalFileInitializer implements Migrator {
             merged: MERGED_HOST,
         }).then(() => console.log('Local file merge rules initialized'))
         // Add site name
-        siteService.saveAlias(
+        saveAlias(
             { host: PDF_HOST, type: 'normal' },
             t2Chrome(msg => msg.initial.localFile.pdf),
         )
-        siteService.saveAlias(
+        saveAlias(
             { host: JSON_HOST, type: 'normal' },
             t2Chrome(msg => msg.initial.localFile.json),
         )
-        siteService.saveAlias(
+        saveAlias(
             { host: PIC_HOST, type: 'normal' },
             t2Chrome(msg => msg.initial.localFile.pic),
         )
-        siteService.saveAlias(
+        saveAlias(
             { host: TXT_HOST, type: 'normal' },
             t2Chrome(msg => msg.initial.localFile.txt),
         )

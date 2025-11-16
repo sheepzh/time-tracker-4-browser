@@ -6,7 +6,7 @@
  */
 
 import { getTab } from "@api/chrome/tab"
-import siteService from "@service/site-service"
+import { saveAlias, saveIconUrl } from "@service/site-service"
 import { IS_ANDROID, IS_CHROME, IS_SAFARI } from "@util/constant/environment"
 import { extractHostname, isBrowserUrl, isHomepage } from "@util/pattern"
 import { extractSiteName } from "@util/site"
@@ -19,7 +19,7 @@ async function collectAlias(key: timer.site.SiteKey, tabTitle: string) {
     if (!tabTitle) return
     if (isUrl(tabTitle)) return
     const siteName = extractSiteName(tabTitle, key.host)
-    siteName && await siteService.saveAlias(key, siteName, true)
+    siteName && await saveAlias(key, siteName, true)
 }
 
 /**
@@ -35,7 +35,7 @@ async function processTabInfo(tab: ChromeTab): Promise<void> {
     // localhost hosts with Chrome use cache, so keep the favIcon url undefined
     IS_CHROME && /^localhost(:.+)?/.test(host) && (favIconUrl = undefined)
     const siteKey: timer.site.SiteKey = { host, type: 'normal' }
-    favIconUrl && await siteService.saveIconUrl(siteKey, favIconUrl)
+    favIconUrl && await saveIconUrl(siteKey, favIconUrl)
     !IS_ANDROID
         && !isBrowserUrl(url)
         && isHomepage(url)

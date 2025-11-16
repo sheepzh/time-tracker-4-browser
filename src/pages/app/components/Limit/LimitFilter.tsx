@@ -11,10 +11,11 @@ import InputFilterItem from "@app/components/common/filter/InputFilterItem"
 import SwitchFilterItem from "@app/components/common/filter/SwitchFilterItem"
 import { t } from "@app/locale"
 import { OPTION_ROUTE } from "@app/router/constants"
-import { Delete, Open, Operation, Plus, SetUp, TurnOff } from "@element-plus/icons-vue"
+import { Delete, Open, Operation, Plus, SetUp, TurnOff, WarningFilled } from "@element-plus/icons-vue"
 import Flex from "@pages/components/Flex"
 import { getAppPageUrl } from "@util/constant/url"
-import { defineComponent } from "vue"
+import { ElIcon, ElText, ElTooltip } from 'element-plus'
+import { defineComponent, ref, Ref, watch } from "vue"
 import DropdownButton, { type DropdownButtonItem } from "../common/DropdownButton"
 import { useLimitAction, useLimitBatch, useLimitFilter } from "./context"
 
@@ -22,8 +23,22 @@ const optionPageUrl = getAppPageUrl(OPTION_ROUTE, { i: 'limit' })
 
 type BatchOpt = 'delete' | 'enable' | 'disable'
 
+const useCreateTip = (empty: Ref<boolean>) => {
+    const tipVisible = ref(false)
+    let initialized = false
+    watch(empty, emptyVal => {
+        if (initialized || !emptyVal) return
+        tipVisible.value = true
+        initialized = true
+        setTimeout(closeTip, 10000)
+    })
+    const closeTip = () => tipVisible.value = false
+    return { tipVisible, closeTip }
+}
+
 const _default = defineComponent(() => {
-    const { create, test } = useLimitAction()
+    const { create, test, empty } = useLimitAction()
+    const { tipVisible, closeTip } = useCreateTip(empty)
     const filter = useLimitFilter()
     const { batchDelete, batchDisable, batchEnable } = useLimitBatch()
 
@@ -45,6 +60,11 @@ const _default = defineComponent(() => {
             onClick: batchDisable,
         },
     ]
+
+    const handleCreateClick = () => {
+        closeTip()
+        create()
+    }
 
     return () => (
         <Flex justify="space-between" gap={10}>
@@ -73,11 +93,27 @@ const _default = defineComponent(() => {
                     icon={SetUp}
                     onClick={() => createTabAfterCurrent(optionPageUrl)}
                 />
-                <ButtonFilterItem
-                    text={msg => msg.button.create}
-                    type="success"
-                    icon={Plus}
-                    onClick={create}
+                <ElTooltip
+                    visible={tipVisible.value}
+                    // Only close visible
+                    onUpdate:visible={val => !val && closeTip()}
+                    placement='bottom'
+                    effect='light'
+                    content={t(msg => msg.limit.emptyTips)}
+                    v-slots={{
+                        content: () => (<Flex gap={4} align='center'>
+                            <ElText type='primary'><ElIcon><WarningFilled /></ElIcon></ElText>
+                            <ElText >{t(msg => msg.limit.emptyTips)}</ElText>
+                        </Flex>),
+                        default: () => (
+                            <ButtonFilterItem
+                                text={msg => msg.button.create}
+                                type="success"
+                                icon={Plus}
+                                onClick={handleCreateClick}
+                            />
+                        )
+                    }}
                 />
             </Flex>
         </Flex>

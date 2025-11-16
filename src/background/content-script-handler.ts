@@ -10,7 +10,7 @@ import { createTab } from "@api/chrome/tab"
 import { ANALYSIS_ROUTE, LIMIT_ROUTE } from "@app/router/constants"
 import optionHolder from "@service/components/option-holder"
 import limitService from "@service/limit-service"
-import siteService from "@service/site-service"
+import { getSite } from "@service/site-service"
 import timelineThrottler from '@service/throttler/timeline-throttler'
 import whitelistHolder from "@service/whitelist/holder"
 import { getAppPageUrl } from "@util/constant/url"
@@ -71,7 +71,7 @@ export default function init(dispatcher: MessageDispatcher) {
             const { host } = extractHostname(url) || {}
             if (!host) return null
             const site: timer.site.SiteKey = { host, type: 'normal' }
-            const exist = await siteService.get(site)
+            const exist = await getSite(site)
             return exist?.run ? site : null
         })
         .register<void, boolean>('cs.getAudible', async (_, sender) => !!sender.tab?.audible)

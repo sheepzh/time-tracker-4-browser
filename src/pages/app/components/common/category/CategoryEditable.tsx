@@ -2,7 +2,7 @@ import { useCategory } from "@app/context"
 import { Edit } from "@element-plus/icons-vue"
 import { useManualRequest, useSwitch } from "@hooks"
 import Flex from "@pages/components/Flex"
-import siteService from "@service/site-service"
+import { saveSiteCate } from '@service/site-service'
 import { supportCategory } from "@util/site"
 import { ElIcon, ElTag } from "element-plus"
 import { computed, defineComponent, nextTick, ref } from "vue"
@@ -23,9 +23,9 @@ const CategoryEditable = defineComponent<Props>(props => {
         return categories.find(c => c.id == id)
     })
 
-    const { refresh: saveSiteCate } = useManualRequest(async (cateId: number | string | undefined) => {
+    const { refresh: doSave } = useManualRequest(async (cateId: number | string | undefined) => {
         const realCateId = typeof cateId === 'string' ? parseInt(cateId) : cateId
-        await siteService.saveCate(props.siteKey, realCateId)
+        await saveSiteCate(props.siteKey, realCateId)
         return realCateId
     }, {
         onSuccess(realCateId) {
@@ -49,7 +49,7 @@ const CategoryEditable = defineComponent<Props>(props => {
                     size="small"
                     width="100px"
                     modelValue={props.modelValue}
-                    onChange={saveSiteCate}
+                    onChange={doSave}
                     onVisibleChange={visible => !visible && closeEditing()}
                 />
                 :
@@ -58,7 +58,7 @@ const CategoryEditable = defineComponent<Props>(props => {
                         <ElTag
                             size="small"
                             closable
-                            onClose={() => saveSiteCate(undefined)}
+                            onClose={() => doSave(undefined)}
                         >
                             {current.value.name}
                         </ElTag>

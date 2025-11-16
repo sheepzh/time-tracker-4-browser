@@ -1,5 +1,8 @@
-import { RequestOption, useLocalStorage, useProvide, useProvider, useRequest, useState } from '@hooks'
-import siteService, { type SiteQueryParam } from '@service/site-service'
+import {
+    type RequestOption,
+    useLocalStorage, useProvide, useProvider, useRequest, useState
+} from '@hooks'
+import { selectSitePage, type SiteQueryParam } from '@service/site-service'
 import { type Reactive, reactive, type ShallowRef, watch } from 'vue'
 
 type FilterOption = {
@@ -34,7 +37,7 @@ export const initSiteManage = (loadingTarget: RequestOption<unknown, unknown[]>[
     const { data: pagination, refresh, loading } = useRequest(() => {
         const { query: fuzzyQuery, cateIds, types } = filter
         const param: SiteQueryParam = { fuzzyQuery, cateIds, types }
-        return siteService.selectByPage(param, page)
+        return selectSitePage(param, page)
     }, { loadingTarget, deps: [() => filter, () => page] })
 
     useProvide<Context>(NAMESPACE, { pagination, filter, selected, setSelected, refresh })

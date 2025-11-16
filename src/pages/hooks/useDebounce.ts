@@ -1,8 +1,9 @@
 import { shallowRef, watch, type MaybeRefOrGetter, type Ref } from 'vue'
+import { useState } from './useState'
 
 type FunctionArgs = (...args: any[]) => any
 
-const DEFAULT_TIMEOUT = 200
+const DEFAULT_TIMEOUT = 100
 
 export function useDebounceFn<T extends FunctionArgs>(
     fn: T,
@@ -10,25 +11,24 @@ export function useDebounceFn<T extends FunctionArgs>(
 ): T {
     let timeoutId: ReturnType<typeof setTimeout> | undefined
 
-    const resolveValue = (value: MaybeRefOrGetter<number>): number => {
-        if (typeof value === 'function') {
-            return value()
-        } else if (value && typeof value === 'object' && 'value' in value) {
-            return value.value
+    const resolveDelay = (ms: MaybeRefOrGetter<number> | undefined): number => {
+        if (typeof ms === 'function') {
+            return ms()
+        } else if (typeof ms === 'object' && 'value' in ms) {
+            return ms.value
+        } else if (typeof ms === 'number') {
+            return ms
+        } else {
+            return DEFAULT_TIMEOUT
         }
-        return value
     }
 
     const debounced = ((...args: Parameters<T>) => {
-        if (timeoutId) {
-            clearTimeout(timeoutId)
-        }
-
-        const delay = ms !== undefined ? resolveValue(ms) : DEFAULT_TIMEOUT
+        timeoutId && clearTimeout(timeoutId)
 
         timeoutId = setTimeout(() => {
             fn(...args)
-        }, delay)
+        }, resolveDelay(ms))
     }) as T
 
     return debounced
@@ -41,4 +41,12 @@ export function useDebounce<T>(original: Ref<T>, ms?: MaybeRefOrGetter<number>):
 
     watch(original, newVal => debouncedFn(newVal))
     return inner
+}
+
+export function useDebounceState<T>(defaultValue: T, ms?: MaybeRefOrGetter<number>): [Ref<T>, ArgCallback<T>] {
+    const [inner, setInner] = useState<T>(defaultValue)
+
+    const debouncedSet = useDebounceFn(setInner, ms)
+
+    return [inner, debouncedSet]
 }

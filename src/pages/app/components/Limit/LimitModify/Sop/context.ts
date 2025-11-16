@@ -14,7 +14,7 @@ type Context = {
 }
 
 const createInitial = (): SopData => ({
-    name: '',
+    name: `RULE-${new String(new Date().getTime() % 10000).padStart(4, '0')}`,
     time: 3600,
     weekly: 0,
     cond: [],

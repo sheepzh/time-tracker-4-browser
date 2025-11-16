@@ -8,14 +8,18 @@ export async function createLimitRule(rule: timer.limit.Rule, page: Page) {
     await page.waitForSelector('.el-dialog .el-input input')
     const nameInput = await page.$('.el-dialog .el-input input')
     await nameInput!.focus()
+    await nameInput?.click({ count: 3 })
+    await sleep(.1)
     page.keyboard.type(rule.name)
     await new Promise(resolve => setTimeout(resolve, 400))
     await page.click('.el-dialog .el-button.el-button--primary')
     // 2. Fill the condition
-    const configInput = await page.$('.el-dialog .el-input.el-input-group input')
+    const configInput = await page.$('.el-dialog #site-input')
     for (const url of rule.cond || []) {
         await configInput!.focus()
         await page.keyboard.type(url)
+        await sleep(.1)
+        await page.keyboard.press('ArrowDown')
         await sleep(.1)
         await page.keyboard.press('Enter')
     }

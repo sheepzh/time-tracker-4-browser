@@ -67,7 +67,7 @@ const onChanged = {
     addListener: jest.fn(),
     removeListener: jest.fn(),
     hasListener: jest.fn()
-} as unknown as chrome.storage.StorageChangedEvent
+} as unknown as typeof chrome.storage.onChanged
 
 export const mockStorage = () => {
     global.chrome = {
