@@ -195,7 +195,7 @@
         },
         "indicator": {
             "installedDays": "Installé depuis {number} jours",
-            "visitCount": "Visité {site} sites Web {visit} fois",
+            "visitCount": "{site} sites visités {visit} fois",
             "browsingTime": "Parcouru pendant {minute} minutes",
             "mostUse": "Navigation favorite entre {start} et {end}"
         },
@@ -203,7 +203,11 @@
             "title": "Tendance mensuelle du temps de navigation"
         },
         "timeline": {
-            "focusScoreDesc": "Lié à la durée totale de la navigation continue sur le même site. Voir le code source pour la formule de calcul"
+            "title": "Chronologie des derniers {n} jours",
+            "busyScore": "Niveau d'occupation",
+            "busyScoreDesc": "En rapport avec le temps total de navigation et le nombre de sites visités par heure. Voir le code source pour la formule du calcul",
+            "focusScore": "Niveau de concentration",
+            "focusScoreDesc": "Lié à la durée totale de la navigation continue sur le même site. Voir le code source pour la formule du calcul"
         }
     },
     "ru": {
