@@ -1,5 +1,12 @@
-import { type Config } from "@jest/types"
-import { compilerOptions } from './tsconfig.json'
+import { readFileSync } from 'fs'
+import type { Config } from "jest"
+import { dirname, join } from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+const tsconfig = JSON.parse(readFileSync(join(__dirname, 'tsconfig.json'), 'utf-8'))
+const { compilerOptions } = tsconfig
 
 const { paths } = compilerOptions
 
@@ -13,7 +20,7 @@ Object.entries(paths).forEach(([alias, sourceArr]) => {
     if (!aliasMatch) {
         return
     }
-    if (sourceArr.length !== 1) {
+    if (!Array.isArray(sourceArr) || sourceArr.length !== 1) {
         return
     }
     const sourceMath = sourceArr[0]?.match(sourcePattern)
@@ -30,7 +37,7 @@ Object.entries(paths).forEach(([alias, sourceArr]) => {
 console.log("The moduleNameMapper parsed from tsconfig.json: ")
 console.log(moduleNameMapper)
 
-const config: Config.InitialOptions = {
+const config: Config = {
     moduleNameMapper,
     roots: [
         "<rootDir>/test",

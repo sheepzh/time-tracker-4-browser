@@ -38,7 +38,6 @@
         "@swc/jest": "^0.2.39",
         "@types/chrome": "0.1.29",
         "@types/decompress": "^4.2.7",
-        "@types/jest": "^30.0.0",
         "@types/node": "^24.10.1",
         "@types/punycode": "^2.1.4",
         "@vue/babel-plugin-jsx": "^2.0.1",

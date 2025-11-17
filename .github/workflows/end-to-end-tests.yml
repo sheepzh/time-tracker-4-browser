@@ -1,5 +1,5 @@
 name: End-to-end tests CI
-on: [pull_request]
+on: [pull_request, workflow_dispatch]
 jobs:
     test:
         runs-on: ubuntu-latest
@@ -8,20 +8,13 @@ jobs:
             - name: Test using Node.js
               uses: actions/setup-node@v1
               with:
-                  node-version: "v20.11.0"
+                  node-version: "v22"
             - name: Install dependencies
               run: npm install
-            - name: Install http-server
-              run: npm install -g http-server pm2
-            - name: Build e2e outputs
-              run: npm run dev:e2e
-            - name: Build production outputs
-              run: npm run build
-
-            - name: Start up mock server
-              run: |
-                  pm2 start 'http-server ./test-e2e/example -p 12345'
-                  pm2 start 'http-server ./test-e2e/example -p 12346'
+            - name: Setup e2e environment
+              run: bash script/setup-e2e.sh --all
+            - name: Start test servers
+              run: bash script/setup-e2e.sh --start-servers
 
             - name: Run tests
               env:

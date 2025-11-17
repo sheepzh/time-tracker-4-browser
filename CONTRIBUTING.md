@@ -85,7 +85,7 @@ npm run build:firefox
 npm run build:safari
 ```
 
-### 5. Testing Your Extension
+### 5. Debugging
 
 #### Chrome/Edge
 
@@ -126,23 +126,24 @@ This will generate coverage reports in the `coverage/` directory.
 
 #### Setup E2E Testing
 
-1. Build the test environment:
+Use the provided setup script to initialize the e2e testing environment:
 
 ```shell
-npm run dev:e2e
-npm run build
+# Initialize e2e environment (install dependencies and build outputs)
+bash script/setup-e2e.sh --init --build
+
+# Start test servers
+bash script/setup-e2e.sh --start-servers
 ```
 
-2. Start test servers:
+The setup script will:
 
-```shell
-npm install -g http-server pm2
+-   Install/upgrade global dependencies (`http-server`, `pm2`)
+-   Download browser for Puppeteer (if needed)
+-   Build e2e test output (`dist_e2e/`)
+-   Start test servers on ports 12345 and 12346
 
-pm2 start 'http-server ./test-e2e/example -p 12345'
-pm2 start 'http-server ./test-e2e/example -p 12346'
-```
-
-3. Run E2E tests:
+#### Run E2E Tests
 
 ```shell
 npm run test-e2e
@@ -155,6 +156,35 @@ For headless Puppeteer testing:
 ```bash
 export USE_HEADLESS_PUPPETEER=true
 npm run test-e2e
+```
+
+#### Stop Test Servers
+
+After testing, stop the servers:
+
+```shell
+pm2 stop all && pm2 delete all
+```
+
+#### Setup Script Options
+
+The `setup-e2e.sh` script supports multiple options:
+
+```shell
+# Show help
+bash script/setup-e2e.sh --help
+
+# Initialize only (install dependencies)
+bash script/setup-e2e.sh --init
+
+# Build e2e output only
+bash script/setup-e2e.sh --build
+
+# Initialize and build
+bash script/setup-e2e.sh --init --build
+
+# Run all steps (init + build + build production)
+bash script/setup-e2e.sh --all
 ```
 
 ## Code Quality
@@ -234,7 +264,8 @@ time-tracker-4-browser/
 ├── types/                                 # TypeScript declarations
 ├── rspack/                                # Build configuration
 ├── script/                                # Build and utility scripts
-│   └── android-firefox.sh                 # Android development helper
+│   ├── android-firefox.sh                 # Android development helper
+│   └── setup-e2e.sh                       # E2E test environment setup
 ├── public/                                # Static assets
 ├── doc/                                   # Documentation
 ├── dist_dev/                              # Chrome/Edge dev build
