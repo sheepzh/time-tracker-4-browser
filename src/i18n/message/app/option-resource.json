@@ -1049,6 +1049,7 @@
         "tracking": {
             "title": "Statistiques",
             "autoPauseTrack": "{input} Pause de suivi si aucune activité n'a détecté {info} pour {maxTime}",
+            "noActivityInfo": "La souris et le clavier sont inactifs, pas en plein écran, et il n'y a pas de son joué",
             "countLocalFiles": "{input} S'il faut compter le temps jusqu'à {localFileTime} {info} dans le navigateur",
             "localFileTime": "lire un fichier local",
             "localFilesInfo": "Prend en charge les fichiers de types tels que PDF, image, txt et json.",

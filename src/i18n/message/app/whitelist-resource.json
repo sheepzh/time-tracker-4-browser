@@ -84,6 +84,7 @@
         "infoAlertTitle": "Vous pouvez ajouter des sites à la liste blanche sur cette page",
         "infoAlert0": "Les sites sur liste blanche ne seront pas comptés",
         "infoAlert1": "Les sites sur liste blanche ne seront pas restreints",
+        "infoAlert2": "Vous pouvez utiliser un signe générique(*) pour cibler plusieurs sites, comme *.example.com/**, et utiliser + comme un préfixe pour exclure des sites, comme +need.example.com/**",
         "errorInput": "URL du site invalide"
     },
     "ru": {
