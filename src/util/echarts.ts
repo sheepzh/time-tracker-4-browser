@@ -11,6 +11,7 @@ import type {
     ToolboxComponentOption,
     VisualMapComponentOption,
 } from "echarts"
+import type { AxisBaseOption } from 'echarts/types/src/coord/axisCommonTypes.js'
 import { isRtl } from "./document"
 
 export const processAria = (option: ComposeOption<AriaComponentOption>, chartDecal: boolean) => {
@@ -73,7 +74,7 @@ type GlobalEcOption = ComposeOption<
 
 export const processFont = (toProcess: unknown, elFont: string) => {
     const options = toProcess as GlobalEcOption
-    const { series, title, legend } = options
+    const { series, title, legend, xAxis, yAxis } = options
     processArrayLike(title, t => {
         t.textStyle = {
             ...t.textStyle,
@@ -96,6 +97,15 @@ export const processFont = (toProcess: unknown, elFont: string) => {
             fontFamily: l.textStyle?.fontFamily ?? elFont,
         }
     })
+    processArrayLike(xAxis, a => processAxisFont(a, elFont))
+    processArrayLike(yAxis, a => processAxisFont(a, elFont))
+}
+
+const processAxisFont = (a: AxisBaseOption, elFont: string) => {
+    a.axisLabel = {
+        ...a.axisLabel,
+        fontFamily: a.axisLabel?.fontFamily ?? elFont,
+    }
 }
 
 export const processRtl = (toProcess: unknown) => {
