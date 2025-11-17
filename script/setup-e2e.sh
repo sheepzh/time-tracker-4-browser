@@ -64,7 +64,7 @@ check_command() {
 check_node_version() {
     if ! check_command node; then
         log_error "Node.js is not installed"
-        log_info "Please install Node.js >= 20 from https://nodejs.org/"
+        log_info "Please install Node.js >= 22 from https://nodejs.org/"
         exit 1
     fi
 
@@ -75,8 +75,8 @@ check_node_version() {
 
     log_info "Current Node.js version: $node_version"
 
-    if [ "$major_version" -lt 20 ]; then
-        log_error "Node.js version must be >= 20"
+    if [ "$major_version" -lt 22 ]; then
+        log_error "Node.js version must be >= 22"
         log_info "Current version: $node_version"
         log_info "Please upgrade Node.js from https://nodejs.org/"
         exit 1

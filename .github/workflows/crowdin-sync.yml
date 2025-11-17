@@ -10,7 +10,7 @@ jobs:
             - name: Test using Node.js
               uses: actions/setup-node@v1
               with:
-                  node-version: "v20.11.0"
+                  node-version: "v22"
             - name: Install ts-node
               run: npm i -g ts-node
             - name: Install dependencies

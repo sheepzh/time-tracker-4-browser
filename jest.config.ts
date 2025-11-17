@@ -1,12 +1,9 @@
 import { readFileSync } from 'fs'
 import type { Config } from "jest"
-import { dirname, join } from 'path'
-import { fileURLToPath } from 'url'
+import { join } from 'path'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
-const tsconfig = JSON.parse(readFileSync(join(__dirname, 'tsconfig.json'), 'utf-8'))
-const { compilerOptions } = tsconfig
+const tsconfig = JSON.parse(readFileSync(join(process.cwd(), 'tsconfig.json'), 'utf-8'))
+const { compilerOptions } = tsconfig as { compilerOptions: { paths: { [key: string]: string[] } } }
 
 const { paths } = compilerOptions
 

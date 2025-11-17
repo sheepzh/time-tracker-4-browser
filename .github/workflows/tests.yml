@@ -8,7 +8,7 @@ jobs:
             - name: Test using Node.js
               uses: actions/setup-node@v1
               with:
-                  node-version: "v20.11.0"
+                  node-version: "v22"
             - run: npm install
             - run: npm run test-c
             - name: Tests ✅
