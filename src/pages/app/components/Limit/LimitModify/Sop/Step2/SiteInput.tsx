@@ -30,7 +30,6 @@ const fetchAllHosts = async () => {
 const useUrlSelect = () => {
     const { data: allHosts } = useRequest(fetchAllHosts)
     const [input, onFilter] = useDebounceState('', 50)
-    const selectEl = ref<SelectV2Instance>()
     const inputUrl = computed(() => {
         const inputVal = input.value
         return inputVal ? cleanCond(inputVal) : undefined

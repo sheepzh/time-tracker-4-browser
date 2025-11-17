@@ -4,7 +4,7 @@ import DurationSelect from "@popup/components/Footer/DurationSelect"
 import { useQuery } from "@popup/context"
 import { t } from "@popup/locale"
 import { ALL_DIMENSIONS } from "@util/stat"
-import { ElOption, ElSelect, ElText } from "element-plus"
+import { ElSelect, ElText } from "element-plus"
 import { defineComponent } from "vue"
 import Menu from "./Menu"
 
@@ -28,12 +28,11 @@ const Footer = defineComponent(() => {
                         placeholder={t(msg => msg.shared.merge.mergeMethod.notMerge)}
                         popperOptions={{ placement: 'top' }}
                         style={{ width: '90px' }}
-                    >
-                        <ElOption value='' label={t(msg => msg.shared.merge.mergeMethod.notMerge)} />
-                        {mergeItems.value.map(method => (
-                            <ElOption value={method} label={t(msg => msg.shared.merge.mergeMethod[method])} />
-                        ))}
-                    </ElSelect>
+                        options={[
+                            { value: '', label: t(msg => msg.shared.merge.mergeMethod.notMerge) },
+                            ...mergeItems.value.map(value => ({ value, label: t(msg => msg.shared.merge.mergeMethod[value]) })),
+                        ]}
+                    />
                 </Flex>
                 <DurationSelect
                     reverse
@@ -48,9 +47,8 @@ const Footer = defineComponent(() => {
                     onChange={v => query.dimension = v}
                     popperOptions={{ placement: 'top' }}
                     style={{ width: '120px' }}
-                >
-                    {ALL_DIMENSIONS.map(item => <ElOption value={item} label={t(msg => msg.item[item])} />)}
-                </ElSelect>
+                    options={ALL_DIMENSIONS.map(value => ({ value, label: t(msg => msg.item[value]) }))}
+                />
             </Flex>
         </Flex >
     )

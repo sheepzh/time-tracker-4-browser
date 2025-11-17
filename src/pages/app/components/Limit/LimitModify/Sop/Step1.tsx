@@ -1,5 +1,5 @@
 import { t } from "@app/locale"
-import { ElCol, ElForm, ElFormItem, ElInput, ElOption, ElRow, ElSelect, ElSwitch } from "element-plus"
+import { ElCol, ElForm, ElFormItem, ElInput, ElRow, ElSelect, ElSwitch } from "element-plus"
 import { defineComponent } from "vue"
 import { useSopData } from "./context"
 
@@ -31,9 +31,8 @@ const _default = defineComponent(() => {
                             modelValue={data.weekdays}
                             onChange={v => data.weekdays = v}
                             placeholder=""
-                        >
-                            {t(msg => msg.calendar.weekDays).split('|').map((weekDay, idx) => <ElOption value={idx} label={weekDay} />)}
-                        </ElSelect>
+                            options={t(msg => msg.calendar.weekDays).split('|').map((label, idx) => ({ value: idx, label }))}
+                        />
                     </ElFormItem>
                 </ElCol>
             </ElRow>

@@ -76,6 +76,9 @@ function calculateSubTitleText(result: PercentageResult): string {
     let { date, dataDate, rows, query: { dimension, duration } = {}, dateLength } = result
     const dateStr = dataDate ? formatDateStr(date, dataDate) : ''
     const totalStr = formatTotalStr(rows, dimension)
+    let firstLineParts = [totalStr, dateStr].filter(s => !!s)
+    isRtl() && (firstLineParts = firstLineParts.reverse())
+    const firstLine = firstLineParts.join(' ')
 
     // Calculate average per day
     let averageStr = ''
@@ -88,29 +91,27 @@ function calculateSubTitleText(result: PercentageResult): string {
             const total = sum(rows.map(r => r?.focus ?? 0))
             const averagePerDay = total / dateLength
             const averageTime = formatPeriodCommon(averagePerDay)
-            averageStr = '(' + t(msg => msg.content.percentage.averageTime, { value: averageTime }) + ')'
+            averageStr = t(msg => msg.content.percentage.averageTime, { value: averageTime })
         } else if (dimension === 'time') {
             // Average visits per day
             const totalCount = sum(rows.map(r => r.time ?? 0))
             const averagePerDay = totalCount / dateLength
             const averageCount = averagePerDay.toFixed(1)
-            averageStr = '(' + t(msg => msg.content.percentage.averageCount, { value: averageCount }) + ')'
+            averageStr = t(msg => msg.content.percentage.averageCount, { value: averageCount })
         }
     }
 
-    let parts = [totalStr, dateStr, averageStr].filter(str => !!str)
-    isRtl() && (parts = parts.reverse())
-    return parts.join(' ')
+    return [firstLine, averageStr].filter(s => !!s).join('\n')
 }
 
 export function generateTitleOption(result: PercentageResult, suffix?: string): TitleComponentOption {
     return {
         text: [result?.chartTitle, suffix].filter(v => !!v).join(' - '),
         subtext: calculateSubTitleText(result),
-        left: 'center',
         textStyle: { color: getPrimaryTextColor() },
-        subtextStyle: { color: getSecondaryTextColor() },
-        top: 15,
+        subtextStyle: { color: getSecondaryTextColor(), lineHeight: 15, fontSize: 12 },
+        left: 'center',
+        top: 14,
     }
 }
 
