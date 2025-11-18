@@ -1348,6 +1348,7 @@
         "tracking": {
             "title": "İzleme",
             "autoPauseTrack": "{input} {maxTime} süresince herhangi bir etkinlik algılanmazsa izlemeyi duraklat {info}",
+            "noActivityInfo": "Fare ve klavye etkin değil, tam ekran modunda değil ve ses çalınmıyor",
             "countLocalFiles": "{input}  Tarayıcının {localFileTime} {info} dosyasını okuduğu zamanı izlemek isteyip istemediğinizi seçin",
             "localFileTime": "yerel dosyalar",
             "localFilesInfo": "PDF, resim, txt ve json gibi dosya türlerini destekler.",

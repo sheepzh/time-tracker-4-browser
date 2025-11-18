@@ -561,6 +561,7 @@
     "tr": {
         "filterDisabled": "Yalnızca etkinleştirilmiş",
         "wildcardTip": "Alt alan adlarını veya alt sayfaları eşleştirmek için joker karakterler kullanabilir ve alt sayfaları hariç tutmak için “+” ön ekini kullanabilirsiniz!",
+        "emptyTips": "Bir kural oluşturmak için burayı tıklayın!",
         "item": {
             "name": "Kural adı",
             "condition": "Kısıtlanmış URL",
