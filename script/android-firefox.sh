@@ -21,29 +21,10 @@ cleanup() {
 # Set trap to cleanup on exit
 trap cleanup EXIT
 
-# Color definitions
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-# No Color
-NC='\033[0m'
-
-log_info() {
-    echo -e "${BLUE}[ INFO]${NC} $1" >&4
-}
-
-log_success() {
-    echo -e "${GREEN}[ SUCC]${NC} $1" >&4
-}
-
-log_warning() {
-    echo -e "${YELLOW}[ WARN]${NC} $1" >&4
-}
-
-log_error() {
-    echo -e "${RED}[ERROR]${NC} $1" >&4
-}
+# Source logging functions
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+LOG_FD=4
+source "${SCRIPT_DIR}/lib/log.sh"
 
 # Check if command exists
 check_command() {
@@ -163,23 +144,19 @@ check_firefox_nightly() {
 build_and_run_extension() {
     local device_id="$1"
     local extension_dir="dist_dev_firefox"
-    
     # Clear existing extension directory
     if [ -d "$extension_dir" ]; then
         log_info "Clearing existing extension directory..."
         rm -rf "$extension_dir"
     fi
-    
     # Start npm run dev:firefox in background
     log_info "Starting npm run dev:firefox in background..."
     npm run dev:firefox > /dev/null 2>&1 &
     NPM_PID=$!
-    
     # Wait for manifest.json to be created
     local max_wait=60
     local wait_count=0
     log_info "Waiting for building finished..."
-    
     while [ ! -f "$extension_dir/manifest.json" ] && [ $wait_count -lt $max_wait ]; do
         sleep 1
         wait_count=$((wait_count + 1))
@@ -187,19 +164,19 @@ build_and_run_extension() {
             log_info "Still waiting for building finished... ($wait_count/$max_wait)"
         fi
     done
-    
+
     if [ ! -f "$extension_dir/manifest.json" ]; then
         log_error "Building not finished yet after ${max_wait}s"
         cleanup
         exit 1
     fi
-    
+
     log_success "Extension built successfully, manifest.json found"
     log_info "Background build process PID: $NPM_PID"
 
     log_info "Starting extension development server..."
     log_info "Command: web-ext run -t firefox-android --firefox-apk org.mozilla.fenix -s $extension_dir --adb-device $device_id --verbose"
-    
+
     if web-ext run \
         -t firefox-android \
         --firefox-apk org.mozilla.fenix \
