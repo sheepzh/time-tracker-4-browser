@@ -24,3 +24,8 @@ body {
 html[data-theme=dark] body {
     background-color: var(--el-fill-color-dark);
 }
+
+/* Fix message-box buttons */
+.el-message-box__btns {
+    gap: 12px;
+}
