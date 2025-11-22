@@ -33,6 +33,7 @@ class LaunchContextWrapper implements LaunchContext {
     async openAppPage(route: string): Promise<Page> {
         const page = await this.browser.newPage()
         await page.goto(`chrome-extension://${this.extensionId}/static/app.html#${route}`)
+        await page.waitForNetworkIdle()
         return page
     }
 

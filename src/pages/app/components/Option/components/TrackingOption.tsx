@@ -22,6 +22,8 @@ import OptionLines from './OptionLines'
 import OptionTag from './OptionTag'
 import OptionTooltip from './OptionTooltip'
 
+const DEFAULT_VALUE = defaultTracking()
+
 const weekStartOptionPairs: [[timer.option.WeekStartOption, string]] = [
     ['default', t(msg => msg.option.tracking.weekStartAsNormal)]
 ]
@@ -94,7 +96,7 @@ const _default = defineComponent((_props, ctx) => {
         {!IS_ANDROID && <>
             <OptionItem
                 label={msg => msg.option.tracking.autoPauseTrack}
-                defaultValue={t(msg => msg.option.no)}
+                defaultValue={DEFAULT_VALUE.autoPauseTracking}
                 v-slots={{
                     info: () => <OptionTooltip>{t(msg => msg.option.tracking.noActivityInfo)}</OptionTooltip>,
                     maxTime: () => <ElTimePicker
@@ -114,16 +116,16 @@ const _default = defineComponent((_props, ctx) => {
             />
             <OptionItem
                 label={msg => msg.option.tracking.countLocalFiles}
-                defaultValue={fileAccess.value ? t(msg => msg.option.yes) : undefined}
+                defaultValue={DEFAULT_VALUE.countLocalFiles}
                 v-slots={{
                     info: () => <OptionTooltip>{t(msg => msg.option.tracking.localFilesInfo)}</OptionTooltip>,
                     localFileTime: () => <OptionTag>{t(msg => msg.option.tracking.localFileTime)}</OptionTag>,
-                    default: () => fileAccess.value
-                        ? <ElSwitch modelValue={option.countLocalFiles} onChange={val => option.countLocalFiles = val as boolean} />
+                    default: () => fileAccess.value || IS_FIREFOX
+                        ? <ElSwitch modelValue={option.countLocalFiles} onChange={val => option.countLocalFiles = !!val} />
                         : <ElTooltip
                             placement="top"
                             v-slots={{
-                                content: () => IS_FIREFOX ? t(msg => msg.option.tracking.fileAccessFirefox) : t(msg => msg.option.tracking.fileAccessDisabled),
+                                content: () => t(msg => msg.option.tracking.fileAccessDisabled),
                                 default: () => <ElSwitch modelValue={false} disabled />,
                             }}
                         />,
@@ -140,7 +142,7 @@ const _default = defineComponent((_props, ctx) => {
         </>}
         <OptionItem
             label={msg => msg.option.tracking.weekStart}
-            defaultValue={t(msg => msg.option.tracking.weekStartAsNormal)}
+            defaultValue={msg => msg.option.tracking.weekStartAsNormal}
         >
             <ElSelect
                 modelValue={option.weekStart}

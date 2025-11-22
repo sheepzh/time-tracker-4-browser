@@ -32,7 +32,7 @@ export function defaultTracking(): TrackingRequired {
         autoPauseTracking: false,
         // 10 minutes
         autoPauseInterval: 600,
-        countLocalFiles: true,
+        countLocalFiles: false,
         countTabGroup: false,
         weekStart: 'default',
     }

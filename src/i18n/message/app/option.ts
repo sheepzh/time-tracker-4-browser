@@ -48,7 +48,6 @@ export type OptionMessage = {
         tabGroupInfo: string
         tabGroupsPermGrant: string
         fileAccessDisabled: string
-        fileAccessFirefox: string
         weekStart: string
         weekStartAsNormal: string
     }

@@ -7,9 +7,7 @@ import periodThrottler from '@service/throttler/period-throttler'
 import whitelistHolder from "@service/whitelist/holder"
 import { IS_ANDROID } from "@util/constant/environment"
 import { extractHostname } from "@util/pattern"
-import { formatTimeYMD, getStartOfDay, MILL_PER_DAY } from "@util/time"
-import badgeManager from "./badge-manager"
-import MessageDispatcher from "./message-dispatcher"
+import badgeManager from "../badge-manager"
 
 async function handleTime(context: ItemIncContext, timeRange: [number, number], tabId: number | undefined): Promise<number> {
     const { host, url } = context
@@ -28,9 +26,9 @@ async function handleTime(context: ItemIncContext, timeRange: [number, number], 
     return focusTime
 }
 
-async function handleTrackTimeEvent(event: timer.core.Event, sender: ChromeMessageSender): Promise<void> {
+export async function handleTrackTimeEvent(event: timer.core.Event, senderTab: ChromeTab | undefined): Promise<void> {
     const { url, start, end, ignoreTabCheck } = event
-    const { id: tabId, windowId, groupId } = sender?.tab || {}
+    const { id: tabId, windowId, groupId } = senderTab ?? {}
     if (!ignoreTabCheck) {
         if (await windowNotFocused(windowId)) return
         if (await tabNotActive(tabId)) return
@@ -86,58 +84,12 @@ async function handleVisit(context: ItemIncContext) {
     metLimits?.length && sendLimitedMessage(metLimits)
 }
 
-async function handleIncVisitEvent(param: { host: string, url: string }, sender: ChromeMessageSender): Promise<void> {
-    const { host, url } = param || {}
+export async function handleIncVisitEvent(param: { host: string, url: string }, sender: ChromeMessageSender): Promise<void> {
+    const { host, url } = param
     const { groupId } = sender?.tab ?? {}
-    const { protocol } = extractHostname(url) || {}
+    const { protocol } = extractHostname(url)
     const option = await optionHolder.get()
     if (protocol === "file" && !option.countLocalFiles) return
     await handleVisit({ host, url, groupId })
 }
 
-function splitRunTime(start: number, end: number): Record<string, number> {
-    const res: Record<string, number> = {}
-    while (start < end) {
-        const startOfNextDay = getStartOfDay(start).getTime() + MILL_PER_DAY
-        const newStart = Math.min(end, startOfNextDay)
-        const runTime = newStart - start
-        runTime && (res[formatTimeYMD(start)] = runTime)
-        start = newStart
-    }
-    return res
-}
-
-const RUN_TIME_END_CACHE: { [host: string]: number } = {}
-
-async function handleTrackRunTimeEvent(event: timer.core.Event): Promise<void> {
-    const { start, end, url, host } = event || {}
-    if (!host || !start || !end) return
-    if (whitelistHolder.contains(host, url)) return
-    const realStart = Math.max(RUN_TIME_END_CACHE[host] ?? 0, start)
-    const byDate = splitRunTime(realStart, end)
-    if (!Object.keys(byDate).length) return
-    await itemService.addRunTime(host, byDate)
-    RUN_TIME_END_CACHE[host] = Math.max(end, realStart)
-}
-
-function handleTabGroupRemove(group: chrome.tabGroups.TabGroup) {
-    itemService.batchDeleteGroupById(group.id)
-}
-
-function handleTabGroupEnabled() {
-    try {
-        chrome.tabGroups.onRemoved.removeListener(handleTabGroupRemove)
-        chrome.tabGroups.onRemoved.addListener(handleTabGroupRemove)
-    } catch (e) {
-        console.warn('failed to handle event: enableTabGroup', e)
-    }
-}
-
-export default function initTrackServer(messageDispatcher: MessageDispatcher) {
-    messageDispatcher
-        .register<timer.core.Event, void>('cs.trackTime', handleTrackTimeEvent)
-        .register<timer.core.Event, void>('cs.trackRunTime', handleTrackRunTimeEvent)
-        .register<{ host: string, url: string }, void>('cs.incVisitCount', handleIncVisitEvent)
-        .register<string, timer.core.Result>('cs.getTodayInfo', host => itemService.getResult(host, new Date()))
-        .register<void, void>('enableTabGroup', handleTabGroupEnabled)
-}
