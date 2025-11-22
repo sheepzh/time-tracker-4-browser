@@ -1,4 +1,4 @@
-import { IS_ANDROID } from "@util/constant/environment"
+import { IS_ANDROID, IS_FIREFOX } from "@util/constant/environment"
 import { handleError } from "./common"
 
 export function listAllWindows(): Promise<chrome.windows.Window[]> {
@@ -43,7 +43,11 @@ class FocusedWindowCtx {
         // init
         this.last = await this.getInner()
         if (!this.listened) {
-            chrome.windows.onFocusChanged.addListener(wid => this.last = wid, { windowTypes: this.windowsTypes })
+            // filter argument is not supported for Firefox
+            // @see https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/windows/onFocusChanged#addlistener_syntax
+            IS_FIREFOX
+                ? chrome.windows.onFocusChanged.addListener(wid => this.last = wid)
+                : chrome.windows.onFocusChanged.addListener(wid => this.last = wid, { windowTypes: this.windowsTypes })
             this.listened = true
         }
         return this.last

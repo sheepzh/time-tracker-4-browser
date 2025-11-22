@@ -140,17 +140,18 @@ export function extractHostname(url: string): HostInfo {
     return { host, protocol }
 }
 
+const FILE_PREFIX = "file://"
+
+export function isFileUrl(url: string): boolean {
+    return url.startsWith(FILE_PREFIX)
+}
+
 /**
  * @since 0.7.0
  */
 export function extractFileHost(url: string): string | undefined {
-    url = url?.trim?.()
-    if (!url) {
-        return
-    }
-    if (!url.startsWith("file://")) {
-        return
-    }
+    if (!isFileUrl(url)) return
+
     const dotIdx = url.lastIndexOf(".")
     if (dotIdx < 0) {
         return

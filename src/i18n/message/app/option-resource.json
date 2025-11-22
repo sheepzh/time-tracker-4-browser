@@ -43,7 +43,6 @@
             "tabGroupInfo": "删除标签组后，数据也会被删除",
             "tabGroupsPermGrant": "该功能需要授予相关权限",
             "fileAccessDisabled": "目前不允许访问文件网址，请先在管理界面开启",
-            "fileAccessFirefox": "很抱歉，该功能在 Firefox 中不支持",
             "weekStart": "每周的第一天 {input}",
             "weekStartAsNormal": "按照惯例"
         },
@@ -171,7 +170,6 @@
             "tabGroupInfo": "刪除分頁群組時，相關的時間追蹤數據也會一併清除。",
             "tabGroupsPermGrant": "此功能需要相關權限才能運作",
             "fileAccessDisabled": "目前不允許存取檔案 URL，請至管理頁面啟用",
-            "fileAccessFirefox": "抱歉，Firefox 不支援此功能",
             "weekStart": "每週起始日 {input}",
             "weekStartAsNormal": "依慣例"
         },
@@ -300,7 +298,6 @@
             "tabGroupInfo": "When you delete a tag group, the data will also be deleted.",
             "tabGroupsPermGrant": "This feature requires relevant permissions",
             "fileAccessDisabled": "Access to file URLs is currently not allowed. Please enable it on the manage page first",
-            "fileAccessFirefox": "Sorry, this feature is not supported in Firefox",
             "weekStart": "The first day for each week {input}",
             "weekStartAsNormal": "As Normal"
         },
@@ -426,7 +423,6 @@
             "localFileTime": "ローカルファイルの読み取り",
             "localFilesInfo": "PDF、画像、txt、jsonを含む",
             "fileAccessDisabled": "ファイル URL へのアクセスは現在許可されていません。まず管理ページで有効にしてください。",
-            "fileAccessFirefox": "申し訳ありませんが、この機能はFirefoxではサポートされていません",
             "weekStart": "週の最初の日 {input}",
             "weekStartAsNormal": "いつものように"
         },
@@ -551,7 +547,6 @@
             "localFileTime": "ler ficheiros locais",
             "localFilesInfo": "Suporta PDF, imagens, txt e json.",
             "fileAccessDisabled": "Acesso a URLs de ficheiro não permitido. Ative na página de gestão.",
-            "fileAccessFirefox": "Não suportado no Firefox",
             "weekStart": "Primeiro dia da semana {input}",
             "weekStartAsNormal": "Normal"
         },
@@ -672,7 +667,6 @@
             "tabGroupInfo": "Якщо видалити групу вкладок, дані також видаляться.",
             "tabGroupsPermGrant": "Ця функція потребує відповідних дозволів",
             "fileAccessDisabled": "Доступ до URL-адрес файлу наразі не дозволено. Спершу ввімкніть на сторінці керування",
-            "fileAccessFirefox": "На жаль, ця функція не підтримується у Firefox",
             "weekStart": "Перший день тижня: {input}",
             "weekStartAsNormal": "Типово"
         },
@@ -800,7 +794,6 @@
             "tabGroupInfo": "Al eliminar un grupo de pestañas, sus datos también se borrarán.",
             "tabGroupsPermGrant": "Esta función requiere permisos pertinentes",
             "fileAccessDisabled": "Actualmente no se permite el acceso a las URL de archivos. Habilítelo primero en la página de administración",
-            "fileAccessFirefox": "Lo sentimos, esta función no es compatible con Firefox",
             "weekStart": "El primer día de cada semana {input}",
             "weekStartAsNormal": "Como normalmente"
         },
@@ -928,7 +921,6 @@
             "tabGroupInfo": "Wenn Sie eine Tag-Gruppe löschen, werden auch die Daten gelöscht.",
             "tabGroupsPermGrant": "Dieses Feature benötigt entsprechende Berechtigungen",
             "fileAccessDisabled": "Der Zugriff auf Datei-URLs ist derzeit nicht erlaubt. Bitte aktiviere ihn zuerst auf der Verwaltungsseite",
-            "fileAccessFirefox": "Leider wird diese Funktion in Firefox nicht unterstützt",
             "weekStart": "Erster Tag der Woche {input}",
             "weekStartAsNormal": "Wie normal"
         },
@@ -1057,7 +1049,6 @@
             "tabGroupInfo": "Lorsque vous supprimez un groupe d'onglets, les données seront également supprimées.",
             "tabGroupsPermGrant": "Cette fonctionnalité nécessite des autorisations pertinentes",
             "fileAccessDisabled": "L'accès aux URL des fichiers n'est actuellement pas autorisé. Veuillez d'abord l'activer dans la page de gestion.",
-            "fileAccessFirefox": "Désolé, cette fonctionnalité n'est pas prise en charge dans Firefox",
             "weekStart": "Le premier jour de chaque semaine {input}",
             "weekStartAsNormal": "Comme d'habitude"
         },
@@ -1227,7 +1218,6 @@
             "tabGroupInfo": "عند حذف مجموعة علامات تبويب، سيتم حذف البيانات أيضًا.",
             "tabGroupsPermGrant": "هذه الميزة تتطلب أذونات ذات صلة",
             "fileAccessDisabled": "الوصول إلى عناوين الملفات غير مسموح به حاليًا. يرجى تفعيل الخاصية من صفحة الإدارة أولاً",
-            "fileAccessFirefox": "عذراً، هذه الميزة غير مدعومة في فايرفوكس",
             "weekStart": "اليوم الأول لكل أسبوع {input}",
             "weekStartAsNormal": "بشكل عادي"
         },
@@ -1356,7 +1346,6 @@
             "tabGroupInfo": "Bir etiket grubunu sildiğinizde, veriler de silinir.",
             "tabGroupsPermGrant": "Bu özellik ilgili izinleri gerektirir",
             "fileAccessDisabled": "Dosya URL'lerine erişim şu anda izin verilmiyor. Lütfen önce yönetim sayfasında bunu etkinleştirin",
-            "fileAccessFirefox": "Üzgünüz, bu özellik Firefox'ta desteklenmiyor",
             "weekStart": "Her haftanın ilk günü {input}",
             "weekStartAsNormal": "Normal"
         },
