@@ -150,6 +150,7 @@ export function isFileUrl(url: string): boolean {
  * @since 0.7.0
  */
 export function extractFileHost(url: string): string | undefined {
+    url = url.trim()
     if (!isFileUrl(url)) return
 
     const dotIdx = url.lastIndexOf(".")
