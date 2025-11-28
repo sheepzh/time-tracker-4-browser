@@ -4,6 +4,13 @@ All notable changes to Time Tracker will be documented in this file.
 
 It is worth mentioning that the release time of each change refers to the time when the installation package is submitted to the webstore. It is about one week for Firefox to moderate packages, while only 1-2 days for Chrome and Edge.
 
+## [3.7.5] - 2025-11-28
+
+-   Supported tracking files for Firefox in background script
+-   All charts use system fonts
+-   Optimized the interaction for modifying restriction rules
+-   Fixed some bugs
+
 ## [3.7.4] - 2025-11-15
 
 -   Improved the time display on popup page
