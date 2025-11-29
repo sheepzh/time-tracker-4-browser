@@ -94,20 +94,27 @@
     },
     "pt_PT": {
         "heatMap": {
-            "title0": "Navegou {hour}h no último ano",
-            "title1": "Navegou <1h no último ano"
+            "title0": "Navegou por {hour} no último ano",
+            "title1": "Navegou menos que 1 hora no último ano"
         },
         "topK": {
-            "title": "TOP {k} mais visitados em {day} dias"
+            "title": "TOP {k} mais visitados nos últimos {day} dias"
         },
         "indicator": {
             "installedDays": "Instalado há {number} dias",
-            "visitCount": "{visit} visitas a {site} sites",
-            "browsingTime": "Navegou {minute} min",
-            "mostUse": "Prefere navegar entre {start}h-{end}h"
+            "visitCount": "Visitou sites {site} {visit} vezes",
+            "browsingTime": "Navegou mais de {minute} minutos",
+            "mostUse": "Prefere navegar entre {start} h às {end} h"
         },
         "monthOnMonth": {
             "title": "Tendência mensal de tempo de navegação"
+        },
+        "timeline": {
+            "title": "Linha do tempo dos últimos {n} dias",
+            "busyScore": "Ocupado",
+            "busyScoreDesc": "Relacionado ao tempo de navegação total e o número de sites visitados por hora. Veja código-fonte para a fórmula",
+            "focusScore": "Focado",
+            "focusScoreDesc": "Relacionado a contagem do tempo contínuo total navegado no mesmo site. Veja o código-fonte para a fórmula do cálculo"
         }
     },
     "uk": {

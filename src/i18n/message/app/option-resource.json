@@ -613,7 +613,7 @@
             "lastTimeTip": "Última cópia: {lastTime}",
             "auto": {
                 "label": "Cópia automática",
-                "interval": "executar a cada {input} minutos"
+                "interval": "e executar a cada {input} minutos"
             }
         },
         "accessibility": {
@@ -622,6 +622,13 @@
         },
         "resetButton": "Repor",
         "resetSuccess": "Reposição concluída!",
+        "exportButton": "Exportar configurações",
+        "importButton": "Importar configurações",
+        "exportSuccess": "Configurações exportadas com sucesso",
+        "importSuccess": "\n",
+        "importError": "Falha na Importação: Documento de configurações inválido",
+        "importConfirm": "Configurações importadas com sucesso, recarregue a página para aplicar às mudanças!",
+        "reloadButton": "Recarregar",
         "defaultValue": "Predefinido: {default}"
     },
     "uk": {
