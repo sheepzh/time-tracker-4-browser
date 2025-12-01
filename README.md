@@ -63,7 +63,7 @@ See the [Development Guide](./CONTRIBUTING.md)
 
 #### 3. Perfect translation
 
-In addition to Simplified Chinese, the other localized languages of this software all rely on machine translation. You can also submit translation suggestions on [Crowdin](https://crowdin.com/project/timer-chrome-edge-firefox).
+Most of the software's localization relies on machine translation. You can also submit translation suggestions on [Crowdin](https://crowdin.com/project/timer-chrome-edge-firefox).
 
 #### 4. Rate 5 stars
 
