@@ -299,6 +299,7 @@
             },
             "flutterflow": 1,
             "framer": 1,
+            "gadget": 1,
             "github": 1,
             "hackclub": 1,
             "hasura": 1,
@@ -313,7 +314,7 @@
             "luyani": 1,
             "medusajs": 1,
             "messerli": 1,
-            "netfy": 1,
+            "mocha": 1,
             "netlify": 1,
             "ngrok": 1,
             "ngrok-free": 1,
@@ -369,7 +370,6 @@
             "vercel": 1,
             "wal": 1,
             "wasmer": 1,
-            "wdh": 1,
             "web": 1,
             "windsurf": 1,
             "wnext": 1,
@@ -545,8 +545,7 @@
             "hrsn": {
                 "c": {
                     "vps": 1
-                },
-                "l": 1
+                }
             },
             "id": 1,
             "net": 1,
@@ -587,6 +586,7 @@
                                     "*": 1
                                 }
                             },
+                            "lambda-url": 1,
                             "transfer-webapp": 1
                         }
                     },
@@ -597,6 +597,7 @@
                                     "*": 1
                                 }
                             },
+                            "lambda-url": 1,
                             "transfer-webapp": 1
                         }
                     },
@@ -607,6 +608,7 @@
                                     "*": 1
                                 }
                             },
+                            "lambda-url": 1,
                             "transfer-webapp": 1
                         }
                     },
@@ -617,6 +619,7 @@
                                     "*": 1
                                 }
                             },
+                            "lambda-url": 1,
                             "transfer-webapp": 1
                         }
                     },
@@ -627,6 +630,7 @@
                                     "*": 1
                                 }
                             },
+                            "lambda-url": 1,
                             "transfer-webapp": 1
                         }
                     },
@@ -637,6 +641,7 @@
                                     "*": 1
                                 }
                             },
+                            "lambda-url": 1,
                             "transfer-webapp": 1
                         }
                     },
@@ -657,6 +662,7 @@
                                     "*": 1
                                 }
                             },
+                            "lambda-url": 1,
                             "transfer-webapp": 1
                         }
                     },
@@ -667,6 +673,7 @@
                                     "*": 1
                                 }
                             },
+                            "lambda-url": 1,
                             "transfer-webapp": 1
                         }
                     },
@@ -677,6 +684,7 @@
                                     "*": 1
                                 }
                             },
+                            "lambda-url": 1,
                             "transfer-webapp": 1
                         }
                     },
@@ -707,6 +715,7 @@
                                     "*": 1
                                 }
                             },
+                            "lambda-url": 1,
                             "transfer-webapp": 1
                         }
                     },
@@ -727,6 +736,7 @@
                                     "*": 1
                                 }
                             },
+                            "lambda-url": 1,
                             "transfer-webapp": 1
                         }
                     },
@@ -747,6 +757,7 @@
                                     "*": 1
                                 }
                             },
+                            "lambda-url": 1,
                             "transfer-webapp": 1
                         }
                     },
@@ -757,6 +768,7 @@
                                     "*": 1
                                 }
                             },
+                            "lambda-url": 1,
                             "transfer-webapp": 1
                         }
                     },
@@ -777,6 +789,7 @@
                                     "*": 1
                                 }
                             },
+                            "lambda-url": 1,
                             "transfer-webapp": 1
                         }
                     },
@@ -787,6 +800,7 @@
                                     "*": 1
                                 }
                             },
+                            "lambda-url": 1,
                             "transfer-webapp": 1
                         }
                     },
@@ -797,6 +811,7 @@
                                     "*": 1
                                 }
                             },
+                            "lambda-url": 1,
                             "transfer-webapp": 1
                         }
                     },
@@ -827,6 +842,7 @@
                                     "*": 1
                                 }
                             },
+                            "lambda-url": 1,
                             "transfer-webapp": 1
                         }
                     },
@@ -837,6 +853,7 @@
                                     "*": 1
                                 }
                             },
+                            "lambda-url": 1,
                             "transfer-webapp": 1
                         }
                     },
@@ -847,6 +864,7 @@
                                     "*": 1
                                 }
                             },
+                            "lambda-url": 1,
                             "transfer-webapp": 1
                         }
                     },
@@ -857,6 +875,7 @@
                                     "*": 1
                                 }
                             },
+                            "lambda-url": 1,
                             "transfer-webapp": 1
                         }
                     },
@@ -879,6 +898,7 @@
                                     "*": 1
                                 }
                             },
+                            "lambda-url": 1,
                             "transfer-webapp": 1
                         }
                     },
@@ -889,6 +909,7 @@
                                     "*": 1
                                 }
                             },
+                            "lambda-url": 1,
                             "transfer-webapp": 1
                         }
                     }
@@ -2004,6 +2025,7 @@
             "convex": 1,
             "diadem": 1,
             "elementor": 1,
+            "emergent": 1,
             "encoway": {
                 "c": {
                     "eu": 1
@@ -2248,6 +2270,11 @@
                                     "emrnotebooks-prod": 1,
                                     "emrstudio-prod": 1,
                                     "execute-api": 1,
+                                    "rds": {
+                                        "c": {
+                                            "*": 1
+                                        }
+                                    },
                                     "s3": 1,
                                     "s3-accesspoint": 1,
                                     "s3-deprecated": 1,
@@ -2267,6 +2294,11 @@
                                     "emrnotebooks-prod": 1,
                                     "emrstudio-prod": 1,
                                     "execute-api": 1,
+                                    "rds": {
+                                        "c": {
+                                            "*": 1
+                                        }
+                                    },
                                     "s3": 1,
                                     "s3-accesspoint": 1,
                                     "s3-object-lambda": 1,
@@ -2431,6 +2463,7 @@
                 },
                 "l": 1
             },
+            "umso": 1,
             "xmit": {
                 "c": {
                     "*": 1
@@ -2571,6 +2604,11 @@
                                 }
                             },
                             "ap-southeast-5": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "ap-southeast-7": {
                                 "c": {
                                     "*": 1
                                 }
@@ -3323,6 +3361,180 @@
                             "s3-website": 1
                         }
                     },
+                    "rds": {
+                        "c": {
+                            "af-south-1": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "ap-east-1": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "ap-east-2": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "ap-northeast-1": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "ap-northeast-2": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "ap-northeast-3": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "ap-south-1": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "ap-south-2": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "ap-southeast-1": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "ap-southeast-2": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "ap-southeast-3": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "ap-southeast-4": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "ap-southeast-5": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "ap-southeast-6": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "ap-southeast-7": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "ca-central-1": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "ca-west-1": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "eu-central-1": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "eu-central-2": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "eu-west-1": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "eu-west-2": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "eu-west-3": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "il-central-1": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "me-central-1": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "me-south-1": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "mx-central-1": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "sa-east-1": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "us-east-1": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "us-east-2": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "us-gov-east-1": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "us-gov-west-1": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "us-northeast-1": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "us-west-1": {
+                                "c": {
+                                    "*": 1
+                                }
+                            },
+                            "us-west-2": {
+                                "c": {
+                                    "*": 1
+                                }
+                            }
+                        }
+                    },
                     "s3": 1,
                     "s3-1": 1,
                     "s3-ap-east-1": 1,
@@ -3780,6 +3992,11 @@
                 "l": 1
             },
             "atmeta": 1,
+            "auiusercontent": {
+                "c": {
+                    "*": 1
+                }
+            },
             "authgear-staging": 1,
             "authgearapps": 1,
             "awsapprunner": {
@@ -3931,14 +4148,18 @@
                     "ap-southeast-1": 1,
                     "ap-southeast-2": 1,
                     "ap-southeast-3": 1,
+                    "ap-southeast-5": 1,
+                    "ap-southeast-7": 1,
                     "ca-central-1": 1,
                     "eu-central-1": 1,
                     "eu-north-1": 1,
                     "eu-south-1": 1,
+                    "eu-south-2": 1,
                     "eu-west-1": 1,
                     "eu-west-2": 1,
                     "eu-west-3": 1,
                     "il-central-1": 1,
+                    "me-central-1": 1,
                     "me-south-1": 1,
                     "sa-east-1": 1,
                     "us-east-1": 1,
@@ -4204,6 +4425,7 @@
             },
             "mex": 1,
             "miniserver": 1,
+            "mochausercontent": 1,
             "modelscape": 1,
             "mwcloudnonprod": 1,
             "myactivedirectory": 1,
@@ -4488,6 +4710,7 @@
                 },
                 "l": 1
             },
+            "xtooldevice": 1,
             "yolasite": 1,
             "za": 1
         },
@@ -4819,6 +5042,16 @@
             "barsy": 1,
             "bearblog": 1,
             "botdash": 1,
+            "brave": {
+                "c": {
+                    "s": {
+                        "c": {
+                            "*": 1
+                        }
+                    }
+                },
+                "l": 1
+            },
             "crm": {
                 "c": {
                     "d": {
@@ -4884,6 +5117,7 @@
                 }
             },
             "githubpreview": 1,
+            "grebedoc": 1,
             "hrsn": 1,
             "inbrowser": {
                 "c": {
@@ -4926,6 +5160,7 @@
                 "l": 1
             },
             "mediatech": 1,
+            "mocha-sandbox": 1,
             "modx": 1,
             "myaddr": 1,
             "ngrok": 1,
@@ -5278,6 +5513,7 @@
                     "*": 1
                 }
             },
+            "prvw": 1,
             "spdns": 1,
             "transurl": {
                 "c": {
@@ -5376,7 +5612,9 @@
             "ac": 1,
             "biz": 1,
             "com": 1,
+            "edu": 1,
             "gov": 1,
+            "id": 1,
             "info": 1,
             "mil": 1,
             "name": 1,
@@ -5536,6 +5774,16 @@
                     "daemon": 1
                 },
                 "l": 1
+            },
+            "ply": {
+                "c": {
+                    "at": {
+                        "c": {
+                            "*": 1
+                        }
+                    },
+                    "d6": 1
+                }
             },
             "stackit": 1
         },
@@ -5788,8 +6036,10 @@
             "bolt": 1,
             "cloudaccess": 1,
             "easypanel": 1,
+            "emergent": 1,
             "fastvps": 1,
             "freesite": 1,
+            "gadget": 1,
             "half": 1,
             "iserv": 1,
             "jele": 1,
@@ -5910,6 +6160,7 @@
             "ponpes": 1,
             "sch": 1,
             "web": 1,
+            "xn--9tfky": 1,
             "zone": 1
         },
         "l": 1
@@ -5973,6 +6224,7 @@
             "ac": 1,
             "ai": 1,
             "am": 1,
+            "bank": 1,
             "barsy": 1,
             "bihar": 1,
             "biz": 1,
@@ -5988,6 +6240,7 @@
             "dr": 1,
             "edu": 1,
             "er": 1,
+            "fin": 1,
             "firm": 1,
             "gen": 1,
             "gov": 1,
@@ -9269,6 +9522,7 @@
                     "*": 1
                 }
             },
+            "joinmc": 1,
             "myfritz": 1,
             "mypep": 1,
             "nftstorage": {
@@ -9756,7 +10010,8 @@
                 "c": {
                     "forgot": 1
                 }
-            }
+            },
+            "ispmanager": 1
         },
         "l": 1
     },
@@ -9889,6 +10144,7 @@
             "dattolocal": 1,
             "ddns": 1,
             "ddns-ip": 1,
+            "de5": 1,
             "debian": 1,
             "definima": 1,
             "deno": 1,
@@ -10107,9 +10363,16 @@
                 },
                 "l": 1
             },
+            "tunnelmole": 1,
             "twmail": 1,
             "uk": 1,
             "uni5": 1,
+            "usgovcloudapi": {
+                "c": {
+                    "servicebus": 1
+                }
+            },
+            "usgovcloudapp": 1,
             "vpndns": 1,
             "vps-host": {
                 "c": {
@@ -10345,7 +10608,6 @@
             "bievat": 1,
             "bindal": 1,
             "birkenes": 1,
-            "bjarkoy": 1,
             "bjerkreim": 1,
             "bjugn": 1,
             "bodo": 1,
@@ -10640,7 +10902,6 @@
             "mosjoen": 1,
             "moskenes": 1,
             "moss": 1,
-            "mosvik": 1,
             "mr": {
                 "c": {
                     "gs": 1
@@ -10987,7 +11248,6 @@
             "xn--bhccavuotna-k7a": 1,
             "xn--bidr-5nac": 1,
             "xn--bievt-0qa": 1,
-            "xn--bjarky-fya": 1,
             "xn--bjddar-pta": 1,
             "xn--blt-elab": 1,
             "xn--bmlo-gra": 1,
@@ -11247,12 +11507,7 @@
         },
         "l": 1
     },
-    "ong": {
-        "c": {
-            "obl": 1
-        },
-        "l": 1
-    },
+    "ong": 1,
     "onion": 1,
     "onl": 1,
     "online": {
@@ -11905,7 +12160,22 @@
     "play": 1,
     "playstation": 1,
     "plumbing": 1,
-    "plus": 1,
+    "plus": {
+        "c": {
+            "playit": {
+                "c": {
+                    "at": {
+                        "c": {
+                            "*": 1
+                        }
+                    },
+                    "with": 1
+                },
+                "l": 1
+            }
+        },
+        "l": 1
+    },
     "pm": {
         "c": {
             "name": 1,
@@ -12529,11 +12799,13 @@
                     "*": 1
                 }
             },
+            "co": 1,
             "convex": 1,
             "cpanel": 1,
             "cyon": 1,
             "fastvps": 1,
             "figma": 1,
+            "figma-gov": 1,
             "heyflow": 1,
             "jele": 1,
             "jouwweb": 1,
@@ -13343,6 +13615,8 @@
                 },
                 "l": 1
             },
+            "azure-api": 1,
+            "azurewebsites": 1,
             "ca": {
                 "c": {
                     "cc": 1,
