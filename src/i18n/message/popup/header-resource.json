@@ -15,7 +15,9 @@
         "showTopN": "顯示前{n}个"
     },
     "ja": {
-        "rate": "評価する"
+        "rate": "評価する",
+        "showSiteName": "サイト名を表示",
+        "showTopN": "トップ {n} を表示"
     },
     "pt_PT": {
         "rate": "Avaliar"
@@ -37,7 +39,9 @@
         "rate": "Noter"
     },
     "ru": {
-        "rate": "Оценить"
+        "rate": "Оценить",
+        "showSiteName": "Отобразить имя сайта",
+        "showTopN": "Отображать заголовок {n}"
     },
     "ar": {
         "rate": "قيمنا"

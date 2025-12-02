@@ -84,6 +84,7 @@
     },
     "pt_PT": {
         "exportFileName": "Meu_Tempo_de_Navegação",
+        "total": "Visitas Totais: {visit} vezes, total duração: {focus}",
         "batchDelete": {
             "noSelectedMsg": "Por favor, selecione a linha que deseja excluir na tabela primeiro",
             "confirmMsg": "{count} registros de sites como {example} em {date} serão excluídos!",

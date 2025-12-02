@@ -65,6 +65,7 @@
                 "date": "Data",
                 "domain": "URL",
                 "cate": "Categoria",
+                "group": "Grupo de Separadores",
                 "notMerge": "Não Agrupar"
             }
         },
@@ -139,6 +140,7 @@
                 "date": "Дата",
                 "domain": "URL",
                 "cate": "Категория",
+                "group": "Группа вкладок",
                 "notMerge": "Не объединять"
             }
         },

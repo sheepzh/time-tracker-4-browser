@@ -1171,15 +1171,36 @@
             "title": "Статистика",
             "localFilesInfo": "Поддержка типов файлов, таких как PDF, изображения, txt и json."
         },
+        "limit": {
+            "level": {
+                "verificationDifficulty": {
+                    "easy": "Лёгкий",
+                    "hard": "Сложный"
+                }
+            }
+        },
         "backup": {
             "title": "Резервное копирование данных",
+            "label": {
+                "account": "Имя пользователя {input}",
+                "password": "Пароль {input}"
+            },
             "operation": "Резервное копирование",
             "download": {
                 "btn": "Скачать"
+            },
+            "confirmStep": "Подтвердить данные",
+            "clientTable": {
+                "selectTip": "Выбрать клиент",
+                "notSelected": "Клиент не выбран",
+                "current": "Текущий"
             }
         },
         "resetButton": "Сброс",
         "resetSuccess": "Сброс к настройкам по умолчанию выполнен успешно!",
+        "exportButton": "Экспорт настроек",
+        "importButton": "Импорт настроек",
+        "reloadButton": "Обновить",
         "defaultValue": "По умолчанию: {default}"
     },
     "ar": {
