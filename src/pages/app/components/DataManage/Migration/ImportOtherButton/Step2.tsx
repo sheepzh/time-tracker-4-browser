@@ -8,37 +8,25 @@
 import { type SopStepInstance } from "@app/components/common/DialogSop"
 import CompareTable from "@app/components/common/imported/CompareTable"
 import ResolutionRadio from "@app/components/common/imported/ResolutionRadio"
-import { t } from "@app/locale"
 import { useState } from "@hooks"
 import Flex from "@pages/components/Flex"
-import { defineComponent, type PropType } from "vue"
+import { defineComponent } from "vue"
 
-const _default = defineComponent({
-    props: {
-        data: {
-            type: Object as PropType<timer.imported.Data>,
-            required: true,
-        },
-    },
-    setup(props, ctx) {
-        const [resolution, setResolution] = useState<timer.imported.ConflictResolution>()
+const _default = defineComponent<{ data: timer.imported.Data }>((props, ctx) => {
+    const [resolution, setResolution] = useState<timer.imported.ConflictResolution>()
 
-        ctx.expose({
-            parseData: () => resolution.value
-        } satisfies SopStepInstance<timer.imported.ConflictResolution | undefined>)
+    ctx.expose({
+        parseData: () => resolution.value
+    } satisfies SopStepInstance<timer.imported.ConflictResolution | undefined>)
 
-        return () => (
-            <Flex column width="100%" gap={20}>
-                <CompareTable
-                    data={props.data}
-                    comparedColName={t(msg => msg.dataManage.importOther.imported)}
-                />
-                <Flex width="100%" justify="center">
-                    <ResolutionRadio modelValue={resolution.value} onChange={setResolution} />
-                </Flex>
+    return () => (
+        <Flex column width="100%" gap={20}>
+            <CompareTable data={props.data} comparedCol={msg => msg.dataManage.importOther.imported} />
+            <Flex width="100%" justify="center">
+                <ResolutionRadio modelValue={resolution.value} onChange={setResolution} />
             </Flex>
-        )
-    }
-})
+        </Flex>
+    )
+}, { props: ['data'] })
 
 export default _default

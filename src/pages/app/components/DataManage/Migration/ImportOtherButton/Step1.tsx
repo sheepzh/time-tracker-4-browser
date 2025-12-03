@@ -10,7 +10,7 @@ import { t } from "@app/locale"
 import { Document } from "@element-plus/icons-vue"
 import { useState } from "@hooks"
 import Flex from "@pages/components/Flex"
-import { ElButton, ElForm, ElFormItem, ElOption, ElSelect } from "element-plus"
+import { ElButton, ElForm, ElFormItem, ElSelect } from "element-plus"
 import { defineComponent, ref } from "vue"
 import { type OtherExtension, parseFile } from "./processor"
 
@@ -22,13 +22,13 @@ const OTHER_NAMES: { [ext in OtherExtension]: string } = {
 
 const OTHER_FILE_FORMAT: { [ext in OtherExtension]: string } = {
     webtime_tracker: '.csv,.json',
-    web_activity_time_tracker: '.csv',
+    web_activity_time_tracker: '.csv,.json',
     history_trends_unlimited: '.tsv',
 }
 
 const ALL_TYPES: OtherExtension[] = Object.keys(OTHER_NAMES) as OtherExtension[]
 
-const _default = defineComponent((_, ctx) => {
+const _default = defineComponent<{}>((_, ctx) => {
     const [type, setType] = useState<OtherExtension>('webtime_tracker')
     const [selectedFile, setSelectedFile] = useState<File>()
     const fileInput = ref<HTMLInputElement>()
@@ -48,11 +48,10 @@ const _default = defineComponent((_, ctx) => {
     return () => (
         <ElForm labelWidth={100} labelPosition="left" style={{ width: '500px' }}>
             <ElFormItem label={t(msg => msg.dataManage.importOther.dataSource)} required>
-                <ElSelect modelValue={type.value} onChange={setType}>
-                    {
-                        ALL_TYPES.map(type => <ElOption value={type} label={OTHER_NAMES[type]} />)
-                    }
-                </ElSelect>
+                <ElSelect
+                    modelValue={type.value} onChange={setType}
+                    options={ALL_TYPES.map(value => ({ value, label: OTHER_NAMES[value] }))}
+                />
             </ElFormItem>
             <ElFormItem label={t(msg => msg.dataManage.importOther.file)} required>
                 <Flex gap={10}>

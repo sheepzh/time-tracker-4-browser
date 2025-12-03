@@ -31,7 +31,7 @@ export async function parseFile(ext: OtherExtension, file: File): Promise<timer.
     let focus = false
     let time = false
     if (ext === 'web_activity_time_tracker') {
-        rows = await parseWebActivityTimeTracker(file)
+        [rows, time] = await parseWebActivityTimeTracker(file)
         focus = true
     } else if (ext === 'webtime_tracker') {
         rows = await parseWebtimeTracker(file)
@@ -44,16 +44,62 @@ export async function parseFile(ext: OtherExtension, file: File): Promise<timer.
     return { rows, focus, time }
 }
 
-async function parseWebActivityTimeTracker(file: File): Promise<timer.imported.Row[]> {
+async function parseWebActivityTimeTracker(file: File): Promise<[timer.imported.Row[], time: boolean]> {
     const text = await file.text()
-    const lines = text.split('\n').map(line => line.trim()).filter(line => !!line).splice(1)
-    const rows = lines.map(line => {
-        const [host, date, seconds] = line.split(',').map(cell => cell.trim())
-        !host || !date || (!seconds && seconds !== '0') && throwError()
-        const [year, month, day] = date.split('/')
-        !year || !month || !day && throwError()
-        const realDate = `${year}${month.length == 2 ? month : '0' + month}${day.length == 2 ? day : '0' + day}`
-        return { host, date: realDate, focus: parseInt(seconds) * MILL_PER_SECOND, time: 0 } satisfies timer.imported.Row
+    if (isCsvFile(file)) {
+        const lines = text.split('\n').map(line => line.trim()).filter(line => !!line).splice(1)
+        const rows = lines.map(line => {
+            const [host, date, seconds] = line.split(',').map(cell => cell.trim())
+            !host || !date || (!seconds && seconds !== '0') && throwError()
+            const [year, month, day] = date.split('/')
+            !year || !month || !day && throwError()
+            const realDate = `${year}${month.length == 2 ? month : '0' + month}${day.length == 2 ? day : '0' + day}`
+            return { host, date: realDate, focus: parseInt(seconds) * MILL_PER_SECOND, time: 0 } satisfies timer.imported.Row
+        })
+        return [rows, false]
+    } else if (isJsonFile(file)) {
+        return [parseWattJsonFile(text), true]
+    } else {
+        throw new Error("Invalid file format")
+    }
+}
+
+type WattJsonItem = {
+    url?: string
+    favicon?: string
+    summaryTime?: number
+    counter?: number
+    days?: {
+        // new Date().toLocaleDateString("en-US") => "7/22/2023"
+        // @see https://github.com/Stigmatoz/web-activity-time-tracker/blob/master/src/utils/date.ts#L6
+        date?: string
+        // seconds
+        summary?: number
+        // visit count
+        counter?: number
+    }[]
+}
+
+const parseWattJsonFile = (fileContent: string) => {
+    const rows: timer.imported.Row[] = []
+    const data = JSON.parse(fileContent) as WattJsonItem[]
+    data.forEach(({ url: host, days }) => {
+        if (!host) throw new Error("Invalid item without url")
+        if (!days) throw new Error("Invalid item without days")
+        days.forEach(({ date, summary, counter: time }) => {
+            if (!date) throw new Error("Invalid day without date")
+            if (!summary && !time) throw new Error("Invalid day without summary and counter")
+            const [month, day, year] = date.split('/')
+            if (!year || !month || !day) throw new Error("Invalid date format: " + date)
+            const dateObj = new Date(parseInt(year), parseInt(month) - 1, parseInt(day))
+            const realDate = formatTimeYMD(dateObj)
+            rows.push({
+                host,
+                date: realDate,
+                focus: (summary ?? 0) * MILL_PER_SECOND,
+                time: time ?? 0,
+            })
+        })
     })
     return rows
 }
