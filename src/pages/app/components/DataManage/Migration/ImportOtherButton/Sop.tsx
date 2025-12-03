@@ -15,63 +15,59 @@ import { defineComponent, ref } from "vue"
 import Step1 from "./Step1"
 import Step2 from "./Step2"
 
-const _default = defineComponent({
-    emits: {
-        cancel: () => true,
-        import: () => true,
-    },
-    setup(_, ctx) {
-        const step = ref<0 | 1>(0)
-        const step1 = ref<SopStepInstance<timer.imported.Data>>()
-        const step2 = ref<SopStepInstance<timer.imported.ConflictResolution>>()
+type Props = {
+    onCancel: NoArgCallback
+    onImport: NoArgCallback
+}
 
-        const { data, refresh: handleNext, loading: parsing } = useManualRequest(() => step1.value!.parseData(), {
-            defaultValue: { rows: [] },
-            onSuccess: () => step.value = 1,
-            onError: e => ElMessage.error((e as Error)?.message ?? 'Unknown Error')
-        })
+const _default = defineComponent<Props>((props) => {
+    const step = ref<0 | 1>(0)
+    const step1 = ref<SopStepInstance<timer.imported.Data>>()
+    const step2 = ref<SopStepInstance<timer.imported.ConflictResolution>>()
 
-        const { loading: importing, refresh: doImport } = useManualRequest(
-            async () => {
-                const resolution = await step2.value?.parseData?.()
-                if (!resolution) throw new Error(t(msg => msg.dataManage.importOther.conflictNotSelected))
-                await processImportedData(data.value, resolution)
-            },
-            {
-                onSuccess: () => {
-                    ElMessage.success(t(msg => msg.operation.successMsg))
-                    ctx.emit('import')
-                },
-                onError: e => ElMessage.warning((e as Error)?.message ?? 'Unknown error'),
-            }
-        )
+    const { data, refresh: handleNext, loading: parsing } = useManualRequest(() => step1.value!.parseData(), {
+        defaultValue: { rows: [] },
+        onSuccess: () => step.value = 1,
+        onError: e => ElMessage.error((e as Error)?.message ?? 'Unknown Error')
+    })
 
-        return () => (
-            <DialogSop
-                first={step.value === 0}
-                last={step.value === 1}
-                onCancel={() => ctx.emit('cancel')}
-                onBack={() => step.value = 0}
-                onNext={handleNext}
-                onFinish={doImport}
-                nextLoading={parsing.value}
-                finishLoading={importing.value}
-                v-slots={{
-                    steps: () => (
-                        <ElSteps space={200} finishStatus="success" active={step.value} alignCenter>
-                            <ElStep title={t(msg => msg.dataManage.importOther.step1)} />
-                            <ElStep title={t(msg => msg.dataManage.importOther.step2)} />
-                        </ElSteps>
-                    ),
-                    content: () => (
-                        <Flex width="100%" justify="center">
-                            {step.value === 0 ? <Step1 ref={step1} /> : <Step2 ref={step2} data={data.value} />}
-                        </Flex>
-                    ),
-                }}
-            />
-        )
-    }
-})
+    const { loading: importing, refresh: doImport } = useManualRequest(async () => {
+        const resolution = await step2.value?.parseData?.()
+        if (!resolution) throw new Error(t(msg => msg.dataManage.importOther.conflictNotSelected))
+        await processImportedData(data.value, resolution)
+    }, {
+        onSuccess: () => {
+            ElMessage.success(t(msg => msg.operation.successMsg))
+            props.onImport?.()
+        },
+        onError: e => ElMessage.warning((e as Error)?.message ?? 'Unknown error'),
+    })
+
+    return () => (
+        <DialogSop
+            first={step.value === 0}
+            last={step.value === 1}
+            onCancel={props.onCancel}
+            onBack={() => step.value = 0}
+            onNext={handleNext}
+            onFinish={doImport}
+            nextLoading={parsing.value}
+            finishLoading={importing.value}
+            v-slots={{
+                steps: () => (
+                    <ElSteps space={200} finishStatus="success" active={step.value} alignCenter>
+                        <ElStep title={t(msg => msg.dataManage.importOther.step1)} />
+                        <ElStep title={t(msg => msg.dataManage.importOther.step2)} />
+                    </ElSteps>
+                ),
+                content: () => (
+                    <Flex width="100%" justify="center">
+                        {step.value === 0 ? <Step1 ref={step1} /> : <Step2 ref={step2} data={data.value} />}
+                    </Flex>
+                ),
+            }}
+        />
+    )
+}, { props: ['onCancel', 'onImport'] })
 
 export default _default

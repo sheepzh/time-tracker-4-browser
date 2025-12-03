@@ -6,7 +6,7 @@
  */
 
 import HostAlert from "@app/components/common/HostAlert"
-import { t } from "@app/locale"
+import { type I18nKey, t } from "@app/locale"
 import { cvt2LocaleTime, periodFormatter } from "@app/util/time"
 import { useState } from "@hooks"
 import Box from "@pages/components/Box"
@@ -34,11 +34,11 @@ function computeList(sort: SortInfo, originRows: timer.imported.Row[]): timer.im
     return originRows.sort(comparator)
 }
 
-const focusCol = (comparedColName: string): Column[] => [
+const focusCol = (comparedCol: I18nKey): Column[] => [
     {
         width: 150,
         align: 'center',
-        title: comparedColName,
+        title: t(comparedCol),
         cellRenderer: ({ rowData }) => <span>{periodFormatter((rowData as timer.imported.Row).focus)}</span>,
     }, {
         width: 150,
@@ -48,11 +48,11 @@ const focusCol = (comparedColName: string): Column[] => [
     }
 ]
 
-const timeCol = (comparedColName: string): Column[] => [
+const timeCol = (comparedCol: I18nKey): Column[] => [
     {
         width: 150,
         align: 'center',
-        title: comparedColName,
+        title: t(comparedCol),
         cellRenderer: ({ rowData }) => <span>{(rowData as timer.imported.Row).time ?? 0}</span>,
     }, {
         width: 150,
@@ -64,7 +64,7 @@ const timeCol = (comparedColName: string): Column[] => [
 
 type Props = {
     data: timer.imported.Data
-    comparedColName: string
+    comparedCol: I18nKey
 }
 
 const BASE_COLUMNS: Column[] = [
@@ -99,8 +99,8 @@ const _default = defineComponent<Props>((props) => {
     const columns = computed(() => {
         const value = [...BASE_COLUMNS]
         const { focus, time } = data.value
-        focus && value.push(...focusCol(props.comparedColName))
-        time && value.push(...timeCol(props.comparedColName))
+        focus && value.push(...focusCol(props.comparedCol))
+        time && value.push(...timeCol(props.comparedCol))
         return value
     })
 
@@ -120,6 +120,6 @@ const _default = defineComponent<Props>((props) => {
             } />
         </Box>
     )
-}, { props: ['data', 'comparedColName'] })
+}, { props: ['data', 'comparedCol'] })
 
 export default _default

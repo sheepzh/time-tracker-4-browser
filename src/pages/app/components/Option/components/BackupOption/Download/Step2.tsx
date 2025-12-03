@@ -34,7 +34,7 @@ const _default = defineComponent<Props>((props, ctx) => {
                     })
                 }
             </ElAlert>
-            <CompareTable data={props.data} comparedColName={t(msg => msg.option.backup.download.willDownload)} />
+            <CompareTable data={props.data} comparedCol={msg => msg.option.backup.download.willDownload} />
             <Flex justify="center">
                 <ResolutionRadio modelValue={resolution.value} onChange={setResolution} />
             </Flex>
