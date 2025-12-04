@@ -2,6 +2,7 @@
     "zh_CN": {
         "filterDisabled": "过滤无效规则",
         "wildcardTip": "您可以使用通配符来匹配子域名或子页面，使用\"+\"作为前缀来排除子页面！",
+        "emptyTips": "点击这里创建一条规则！",
         "item": {
             "name": "规则名称",
             "condition": "限制网址",
