@@ -109,7 +109,9 @@
         "clear": "Limpar",
         "enable": "Ativar",
         "batchEnable": "Ativar em Lote",
-        "batchDisable": "Desativar em Lote"
+        "batchDisable": "Desativar em Lote",
+        "collapse": "Colapsar",
+        "expand": "Expandir"
     },
     "uk": {
         "create": "Новий",

@@ -546,6 +546,7 @@
             "countLocalFiles": "{input} Contar tempo a {localFileTime} {info}",
             "localFileTime": "ler ficheiros locais",
             "localFilesInfo": "Suporta PDF, imagens, txt e json.",
+            "tabGroupsPermGrant": "Esta funcionalidade precisa de permissões relevantes",
             "fileAccessDisabled": "Acesso a URLs de ficheiro não permitido. Ative na página de gestão.",
             "weekStart": "Primeiro dia da semana {input}",
             "weekStartAsNormal": "Normal"
@@ -625,7 +626,7 @@
         "exportButton": "Exportar configurações",
         "importButton": "Importar configurações",
         "exportSuccess": "Configurações exportadas com sucesso",
-        "importSuccess": "\n",
+        "importSuccess": "Configurações importadas com sucesso\n",
         "importError": "Falha na Importação: Documento de configurações inválido",
         "importConfirm": "Configurações importadas com sucesso, recarregue a página para aplicar às mudanças!",
         "reloadButton": "Recarregar",

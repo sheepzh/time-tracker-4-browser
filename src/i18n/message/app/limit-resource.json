@@ -209,6 +209,7 @@
     "pt_PT": {
         "filterDisabled": "Apenas ativos",
         "wildcardTip": "Pode usar wildcards para corresponder a subdomínios ou subpáginas, e usar o \"+\" como prefixo para excluir subpáginas!",
+        "emptyTips": "Clica aqui para criar uma regra!",
         "item": {
             "name": "Nome da regra",
             "condition": "URL restrito",

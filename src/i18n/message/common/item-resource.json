@@ -73,6 +73,7 @@
     "pt_PT": {
         "date": "Data",
         "host": "Domínio",
+        "group": "Grupo de Separadores",
         "focus": "Duração",
         "run": "Tempo de Execução",
         "time": "Visitas",
