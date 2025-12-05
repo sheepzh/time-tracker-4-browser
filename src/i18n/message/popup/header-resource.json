@@ -20,7 +20,8 @@
         "showTopN": "トップ {n} を表示"
     },
     "pt_PT": {
-        "rate": "Avaliar"
+        "rate": "Avaliar",
+        "showSiteName": "Mostrar nome do site"
     },
     "uk": {
         "rate": "Оцінити"
