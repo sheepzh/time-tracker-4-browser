@@ -12,6 +12,7 @@ type Context = {
 
 async function convertContext(tabId: number): Promise<Context | null> {
     const tab = await getTab(tabId)
+    if (!tab) return null
     const { active, url } = tab
     if (!active || !url) return null
     const fileHost = extractFileHost(url)

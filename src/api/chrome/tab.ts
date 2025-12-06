@@ -7,7 +7,10 @@
 
 import { handleError } from "./common"
 
-export function getTab(id: number): Promise<ChromeTab> {
+export function getTab(id: number): Promise<ChromeTab | undefined> {
+    if (id < 0) {
+        return Promise.resolve(undefined)
+    }
     return new Promise(resolve => chrome.tabs.get(id, tab => {
         handleError("getTab")
         resolve(tab)
