@@ -2,10 +2,12 @@ import { Search } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
 import { useState } from "@hooks"
 import Flex from "@pages/components/Flex"
-import { getDatePickerIconSlots } from "@pages/element-ui/rtl"
+import { getDatePickerIconSlots } from '@pages/element-ui/rtl'
 import { t } from "@side/locale"
-import { ElDatePicker, ElInput, useNamespace } from "element-plus"
-import { defineComponent, watch } from "vue"
+import { type DateCell, ElDatePicker, ElInput, useNamespace } from "element-plus"
+import { defineComponent, h } from "vue"
+import Cell from './Cell'
+import { useDatePicker } from './useDatePicker'
 
 const useCalendarStyle = () => {
     const inputNs = useNamespace('input')
@@ -48,13 +50,12 @@ type Props = {
 }
 
 const _default = defineComponent<Props>(props => {
-    const now = Date.now()
-
     const [query, setQuery] = useState(props.defaultQuery)
-    const [date, setDate] = useState(props.defaultDate)
     const handleSearch = () => props.onSearch?.(query.value.trim(), date.value)
-
-    watch(date, handleSearch)
+    const {
+        date, setDate, dataDates,
+        disabledDate, onPanelChange,
+    } = useDatePicker({ onChange: handleSearch })
 
     const [calendarCls, popoverCls] = useCalendarStyle()
 
@@ -72,15 +73,19 @@ const _default = defineComponent<Props>(props => {
                 }}
                 onKeydown={kv => (kv as KeyboardEvent).code === 'Enter' && handleSearch()}
             />
-            <ElDatePicker
-                clearable={false}
-                disabledDate={(date: Date) => date.getTime() > now}
-                modelValue={date.value}
-                onUpdate:modelValue={setDate}
-                class={calendarCls}
-                popperClass={popoverCls}
-                v-slots={getDatePickerIconSlots()}
-            />
+            {/* The events of date picker is not compatible with typescript, so use h() to workaround */}
+            {h(ElDatePicker, {
+                clearable: false,
+                disabledDate,
+                modelValue: date.value,
+                'onUpdate:modelValue': setDate,
+                class: calendarCls,
+                popperClass: popoverCls,
+                onPanelChange,
+            }, {
+                ...getDatePickerIconSlots(),
+                default: (cell: DateCell) => <Cell cell={cell} dataDates={dataDates.value} />,
+            })}
         </Flex>
     )
 }, { props: ['defaultDate', 'defaultQuery', 'onSearch'] })

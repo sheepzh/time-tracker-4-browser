@@ -33,7 +33,7 @@ const menuInitialOptions: ChromeContextMenuCreateProps = {
 async function updateContextMenuInner(param: ChromeTab | number | undefined): Promise<void> {
     if (typeof param === 'number') {
         // If number, get the tabInfo first
-        const tab: ChromeTab = await getTab(currentActiveId)
+        const tab = await getTab(currentActiveId)
         tab && await updateContextMenuInner(tab)
     } else {
         const { url } = param || {}
