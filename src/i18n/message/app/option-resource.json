@@ -1144,6 +1144,7 @@
     "ru": {
         "yes": "Да",
         "no": "Нет",
+        "followBrowser": "Как в браузере",
         "appearance": {
             "title": "Появление",
             "displayWhitelist": "{input} Отображать ли {whitelist} в {contextMenu}",
@@ -1155,22 +1156,30 @@
             "badgeTextContent": "время просмотра текущего веб-сайта",
             "locale": {
                 "label": "Язык {input}",
+                "changeConfirm": "Язык был успешно изменён, пожалуйста, перезагрузите эту страницу!",
                 "reloadButton": "Обновить"
             },
             "printInConsole": {
-                "console": "консоль"
+                "label": "{input} Отображать ли {info} в {console}",
+                "console": "консоль",
+                "info": "посещений текущего сайта за сегодня"
             },
             "darkMode": {
                 "label": "Тёмный режим {input}",
                 "options": {
-                    "on": "Всегда включен"
+                    "on": "Всегда включен",
+                    "off": "Всегда выключен",
+                    "timed": "По времени"
                 }
             },
             "animationDuration": "Длительность начальной анимации графика {input}"
         },
         "tracking": {
             "title": "Статистика",
-            "localFilesInfo": "Поддержка типов файлов, таких как PDF, изображения, txt и json."
+            "autoPauseTrack": "{input} Приостановить отслеживание, если нет активности {info} в течение {maxTime}",
+            "localFilesInfo": "Поддержка типов файлов, таких как PDF, изображения, txt и json.",
+            "countTabGroup": "{input} Отслеживать время для групп вкладок {info}",
+            "weekStartAsNormal": "Как обычно (Воскресенье)"
         },
         "limit": {
             "level": {
@@ -1197,10 +1206,18 @@
                 "current": "Текущий"
             }
         },
+        "accessibility": {
+            "title": "Специальные возможности",
+            "chartDecal": "{input} Отображать клетки на графике"
+        },
         "resetButton": "Сброс",
         "resetSuccess": "Сброс к настройкам по умолчанию выполнен успешно!",
         "exportButton": "Экспорт настроек",
         "importButton": "Импорт настроек",
+        "exportSuccess": "Настройки успешно экспортированы",
+        "importSuccess": "Настройки успешно импортированы",
+        "importError": "Не удалось импортировать: недопустимый файл настроек",
+        "importConfirm": "Настройки успешно импортированы, пожалуйста, перезагрузите страницу, чтобы применить изменения!",
         "reloadButton": "Обновить",
         "defaultValue": "По умолчанию: {default}"
     },
