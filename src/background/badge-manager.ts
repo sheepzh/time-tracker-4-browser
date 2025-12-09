@@ -7,7 +7,7 @@
 
 import { setBadgeBgColor, setBadgeText } from "@api/chrome/action"
 import { listTabs } from "@api/chrome/tab"
-import { getFocusedNormalWindowId } from "@api/chrome/window"
+import { lastFocusedNormalWinId } from "@api/chrome/window"
 import statDatabase from "@db/stat-database"
 import optionHolder from "@service/components/option-holder"
 import whitelistHolder from "@service/whitelist/holder"
@@ -46,11 +46,11 @@ function setBadgeTextOfMills(milliseconds: number | undefined, tabId: number | u
 }
 
 async function findActiveTab(): Promise<BadgeLocation | undefined> {
-    const windowId = await getFocusedNormalWindowId()
-    if (!windowId) {
+    const lastFocusWinId = await lastFocusedNormalWinId()
+    if (!lastFocusWinId) {
         return undefined
     }
-    const tabs = await listTabs({ active: true, windowId })
+    const tabs = await listTabs({ active: true, windowId: lastFocusWinId })
     // Fix #131
     // Edge will return two active tabs, including the new tab with url 'edge://newtab/', GG
     for (const { id: tabId, url } of tabs) {
@@ -75,7 +75,7 @@ interface BadgeManager {
     updateFocus(location?: BadgeLocation): void
 }
 
-class DefaultBadgeManager {
+class DefaultBadgeManager implements BadgeManager {
     pausedTabId: number | undefined
     current: BadgeLocation | undefined
     visible: boolean | undefined
