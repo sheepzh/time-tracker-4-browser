@@ -4,6 +4,12 @@ All notable changes to Time Tracker will be documented in this file.
 
 It is worth mentioning that the release time of each change refers to the time when the installation package is submitted to the webstore. It is about one week for Firefox to moderate packages, while only 1-2 days for Chrome and Edge.
 
+## [3.7.6] - 2025-12-10
+
+-   Supported tracking the time in split-screen mode for Chrome
+-   Added the mask layer for date picker on the side page
+-   Fixed bugs that caused errors when importing data from Web Activity Time Tracker
+
 ## [3.7.5] - 2025-11-28
 
 -   Supported tracking files for Firefox in background script
