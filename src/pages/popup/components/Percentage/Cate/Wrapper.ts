@@ -15,8 +15,8 @@ import {
 } from "echarts/components"
 import { type ComposeOption, type ECElementEvent } from "echarts/core"
 import {
-    formatTooltip, generateSiteSeriesOption, generateTitleOption, generateToolboxOption, handleClick, isOther,
-    type PieSeriesItemOption,
+    adaptDonutSeries, formatTooltip, generateSiteSeriesOption, generateTitleOption, generateToolboxOption,
+    handleClick, isOther, type PieSeriesItemOption,
 } from "../chart"
 import { type PercentageResult } from "../query"
 
@@ -85,7 +85,7 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
 
         if (!result) return {}
 
-        const { rows, query } = result
+        const { rows, query, donutChart } = result
         const { dimension } = query
         const selected: timer.stat.Row | undefined = this.selectedCache
             ? rows.filter(isCate).filter(r => r.cateKey === this.selectedCache)[0]
@@ -113,8 +113,8 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
         const series: PieSeriesOption[] = [{
             type: "pie",
             center: selected ? ['15%', '28%'] : ['58%', '56%'],
-            radius: selected ? '30%' : '55%',
             selectedMode: 'single',
+            selectedOffset: 5,
             startAngle: 180,
             data: rows.filter(isCate).map(row => ({
                 value: row[dimension], row,
@@ -135,6 +135,8 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
                 position: selected ? 'inner' : 'outer',
                 fontSize: selected ? 10 : undefined,
             },
+            // not display as donut chart if selected
+            ...adaptDonutSeries(donutChart, selected ? '30%' : '55%', selected ? 0.3 : undefined),
         }]
         if (selected) {
             let mergedRows = (selected?.mergedRows || []).sort((a, b) => (b[dimension] ?? 0) - (a[dimension] ?? 0))

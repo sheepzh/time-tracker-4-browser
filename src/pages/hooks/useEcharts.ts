@@ -10,7 +10,7 @@ import { processAnimation, processAria, processFont, processRtl } from "@util/ec
 import { type AriaComponentOption, type ComposeOption, SeriesOption, TitleComponentOption } from "echarts"
 import { type ECharts, init } from "echarts/core"
 import { ElLoading } from "element-plus"
-import { type Ref, isRef, onMounted, ref, watch } from "vue"
+import { type Ref, type WatchSource, isRef, onMounted, ref, watch } from "vue"
 import { useElementSize } from './useElementSize'
 import { useWindowSize } from "./useWindowSize"
 
@@ -86,7 +86,6 @@ export abstract class EchartsWrapper<BizOption, EchartsOption> {
 
 
 type WrapperResult<BizOption, EchartsOption, EW extends EchartsWrapper<BizOption, EchartsOption>> = {
-    refresh: () => Promise<void>
     elRef: Ref<HTMLDivElement | undefined>
     wrapper: EW
 }
@@ -97,7 +96,8 @@ export const useEcharts = <BizOption, EchartsOption, EW extends EchartsWrapper<B
     option?: {
         hideLoading?: boolean
         manual?: boolean
-        afterInit?: (ew: EW) => void
+        afterInit?: ArgCallback<EW>,
+        deps?: WatchSource | WatchSource[],
     }): WrapperResult<BizOption, EchartsOption, EW> => {
     const elRef = ref<HTMLDivElement>()
     const wrapperInstance = new Wrapper()
@@ -105,7 +105,8 @@ export const useEcharts = <BizOption, EchartsOption, EW extends EchartsWrapper<B
         hideLoading = false,
         manual = false,
         afterInit,
-    } = option || {}
+        deps,
+    } = option ?? {}
 
     let refresh = async () => {
         const loading = hideLoading ? null : ElLoading.service({ target: elRef.value })
@@ -124,13 +125,11 @@ export const useEcharts = <BizOption, EchartsOption, EW extends EchartsWrapper<B
         isRef(fetch) && watch(fetch, refresh)
     })
 
+    deps && watch(deps, refresh)
+
     const { width: winW, height: winH } = useWindowSize()
     const { width: elW, height: elH } = useElementSize(elRef, { debounce: 50 })
     watch([winW, winH, elW, elH], () => wrapperInstance?.resize?.())
 
-    return {
-        refresh,
-        elRef,
-        wrapper: wrapperInstance,
-    }
+    return { elRef, wrapper: wrapperInstance }
 }

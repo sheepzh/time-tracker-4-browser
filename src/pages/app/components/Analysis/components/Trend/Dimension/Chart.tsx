@@ -7,7 +7,7 @@
 
 import { type DimensionEntry, type ValueFormatter } from "@app/components/Analysis/util"
 import { useEcharts } from "@hooks/useEcharts"
-import { defineComponent, watch } from "vue"
+import { defineComponent } from "vue"
 import Wrapper from "./Wrapper"
 
 type Props = {
@@ -18,14 +18,15 @@ type Props = {
 }
 
 const _default = defineComponent<Props>(props => {
-    const { elRef, refresh } = useEcharts(Wrapper, () => ({
+    const { elRef } = useEcharts(Wrapper, () => ({
         entries: props.data,
         preEntries: props.previous,
         title: props.title,
         valueFormatter: props.valueFormatter,
-    }))
+    }), {
+        deps: [() => props.data, () => props.valueFormatter],
+    })
 
-    watch([() => props.data, () => props.valueFormatter], refresh)
     return () => <div ref={elRef} style={{ width: '100%', height: '100%' }} />
 }, { props: ['data', 'previous', 'title', 'valueFormatter'] })
 
