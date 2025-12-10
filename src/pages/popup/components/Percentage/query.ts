@@ -15,6 +15,7 @@ export type PercentageResult = {
     itemCount: number
     dateLength: number
     groups: chrome.tabGroups.TabGroup[]
+    donutChart: boolean
 }
 
 const findAllDates = (row: timer.stat.Row): Set<string> => {
@@ -68,5 +69,6 @@ export const doQuery = async (query: PopupQuery, option: PopupOption): Promise<P
         chartTitle: t(msg => msg.content.percentage.title[query?.duration], { n: query?.durationNum }),
         itemCount,
         groups,
+        donutChart: !!option.donutChart,
     } satisfies PercentageResult
 }

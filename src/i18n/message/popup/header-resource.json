@@ -2,7 +2,8 @@
     "en": {
         "rate": "Rate Us",
         "showSiteName": "Display site name",
-        "showTopN": "Display top {n}"
+        "showTopN": "Display top {n}",
+        "donutChart": "Displayed as donut charts"
     },
     "zh_CN": {
         "rate": "评分",

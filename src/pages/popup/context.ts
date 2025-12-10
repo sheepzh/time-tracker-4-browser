@@ -22,6 +22,7 @@ export type PopupQuery = {
 export type PopupOption = {
     showName: boolean
     topN: number
+    donutChart: boolean
 }
 
 type PopupContextValue = {
@@ -79,6 +80,7 @@ const initOption = () => {
     const [optionCache, setOptionCache] = useLocalStorage<PopupOption>('popup-option', {
         showName: true,
         topN: 10,
+        donutChart: false,
     })
 
     const option = reactive(optionCache)

@@ -7,7 +7,6 @@ import { ROUTE_PERCENTAGE } from '@popup/router'
 import { ElCheckbox, ElIcon, ElInputNumber, ElPopover, ElText, useNamespace } from "element-plus"
 import { computed, defineComponent, type StyleValue } from "vue"
 import { useRoute } from 'vue-router'
-// import "./option.sass"
 
 const reference = () => (
     <ElIcon size="large" style={{ cursor: 'pointer' } satisfies StyleValue}>
@@ -20,10 +19,14 @@ const reference = () => (
 const Option = defineComponent(() => {
     const option = useOption()
     const route = useRoute()
-    const showTopN = computed(() => !!route.path?.endsWith(ROUTE_PERCENTAGE))
+    const isPercentage = computed(() => !!route.path?.endsWith(ROUTE_PERCENTAGE))
 
     const toggleName = () => {
         option.showName = !option.showName
+        close()
+    }
+    const toggleDonutChart = () => {
+        option.donutChart = !option.donutChart
         close()
     }
     const handleSiteChange = (v: number | undefined) => {
@@ -59,7 +62,11 @@ const Option = defineComponent(() => {
                     <ElCheckbox size='small' modelValue={option.showName} />
                     <ElText size='small'>{t(msg => msg.header.showSiteName)}</ElText>
                 </Flex>
-                <Flex v-show={showTopN.value}>
+                <Flex v-show={isPercentage.value} gap={4} align='center' cursor="pointer" onClick={toggleDonutChart}>
+                    <ElCheckbox size='small' modelValue={!!option.donutChart} />
+                    <ElText size='small'>{t(msg => msg.header.donutChart)}</ElText>
+                </Flex>
+                <Flex v-show={isPercentage.value}>
                     <ElText size='small'>
                         {tN(msg => msg.header.showTopN, {
                             n: <ElInputNumber

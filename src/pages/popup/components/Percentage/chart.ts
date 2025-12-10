@@ -221,7 +221,7 @@ type CustomOption = Pick<
 >
 
 export function generateSiteSeriesOption(rows: timer.stat.Row[], result: PercentageResult, customOption: CustomOption): PieSeriesOption {
-    const { displaySiteName, query: { dimension }, itemCount, groups } = result || {}
+    const { displaySiteName, query: { dimension }, itemCount, groups, donutChart } = result
     const groupMap = toMap(groups, g => g.id)
 
     const chartRows = cvt2ChartRows(rows, dimension, itemCount)
@@ -268,7 +268,46 @@ export function generateSiteSeriesOption(rows: timer.stat.Row[], result: Percent
             },
         },
         avoidLabelOverlap: true,
-        ...customOption || {},
+        ...customOption,
+        ...adaptDonutSeries(donutChart, customOption.radius),
+    }
+}
+
+export function adaptDonutSeries(
+    donutChart: boolean,
+    radius: CustomOption['radius'],
+    donutRadiusRatio: number = 0.5,
+): Pick<PieSeriesOption, 'itemStyle' | 'padAngle' | 'radius' | 'minAngle'> {
+    return {
+        ...donutChart ? {
+            itemStyle: { borderRadius: 5 },
+            padAngle: 1,
+            minAngle: 1.5,
+        } : {
+            itemStyle: { borderRadius: 0 },
+            padAngle: 0,
+            minAngle: 0,
+        },
+        radius: calcRealRadius(donutChart, radius, donutRadiusRatio),
+    }
+}
+
+function calcRealRadius(
+    donutChart: boolean,
+    radius: CustomOption['radius'],
+    donutRadiusRatio: number = 0.5,
+): CustomOption['radius'] {
+    if (!donutChart) return radius
+    if (!radius) return radius
+    if (Array.isArray(radius)) return radius
+    if (typeof radius === 'number') return [radius * donutRadiusRatio, radius]
+    // String
+    try {
+        const percent = parseFloat(radius.replace('%', ''))
+        const inner = percent * donutRadiusRatio
+        return [`${inner}%`, radius]
+    } catch {
+        return radius
     }
 }
 

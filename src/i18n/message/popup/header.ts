@@ -8,6 +8,7 @@
 import resource from './header-resource.json'
 
 export type HeaderMessage = {
+    donutChart: string
     rate: string
     showSiteName: string
     showTopN: string
