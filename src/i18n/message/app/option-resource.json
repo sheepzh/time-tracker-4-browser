@@ -543,9 +543,12 @@
         "tracking": {
             "title": "Estatísticas",
             "autoPauseTrack": "{input} Pausar sem atividade {info} por {maxTime}",
+            "noActivityInfo": "O mouse e o teclado estão inativos, não está em modo tela cheia, e nenhum som sendo reproduzido",
             "countLocalFiles": "{input} Contar tempo a {localFileTime} {info}",
             "localFileTime": "ler ficheiros locais",
             "localFilesInfo": "Suporta PDF, imagens, txt e json.",
+            "countTabGroup": "{input} Se quiser acompanhar o tempo da aba{info}",
+            "tabGroupInfo": "Quando você excluir um grupo de tags, os dados também serão excluídos.",
             "tabGroupsPermGrant": "Esta funcionalidade precisa de permissões relevantes",
             "fileAccessDisabled": "Acesso a URLs de ficheiro não permitido. Ative na página de gestão.",
             "weekStart": "Primeiro dia da semana {input}",
