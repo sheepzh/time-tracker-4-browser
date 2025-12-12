@@ -1,5 +1,5 @@
-import { lastActivatedTabId, listTabs, sendMsg2Tab } from "@api/chrome/tab"
-import { lastFocusedNormalWinId } from "@api/chrome/window"
+import { getTab, listTabs, sendMsg2Tab } from "@api/chrome/tab"
+import { getWindow } from "@api/chrome/window"
 import optionHolder from "@service/components/option-holder"
 import itemService, { type ItemIncContext } from "@service/item-service"
 import limitService from "@service/limit-service"
@@ -7,7 +7,7 @@ import periodThrottler from '@service/throttler/period-throttler'
 import whitelistHolder from "@service/whitelist/holder"
 import { IS_ANDROID } from "@util/constant/environment"
 import { extractHostname } from "@util/pattern"
-import badgeManager from '../badge-manager'
+import badgeManager from "../badge-manager"
 
 async function handleTime(context: ItemIncContext, timeRange: [number, number], tabId: number | undefined): Promise<number> {
     const { host, url } = context
@@ -41,21 +41,26 @@ export async function handleTrackTimeEvent(event: timer.core.Event, senderTab: C
 
     await handleTime({ host, url, groupId }, [start, end], tabId)
     if (tabId) {
-        badgeManager.updateFocus({ tabId, url })
+        const winTabs = await listTabs({ active: true, windowId })
+        const firstActiveTab = winTabs?.[0]
+        // Cause there is no way to determine whether this tab is selected in screen-split mode
+        // So only show badge for first tab for screen-split mode
+        // @see #246
+        firstActiveTab?.id === tabId && badgeManager.updateFocus({ tabId, url })
     }
 }
 
 async function windowNotFocused(winId: number | undefined): Promise<boolean> {
     if (IS_ANDROID) return false
     if (!winId) return true
-    const focusedWinId = await lastFocusedNormalWinId()
-    return focusedWinId !== winId
+    const window = await getWindow(winId)
+    return !window?.focused
 }
 
 async function tabNotActive(tabId: number | undefined): Promise<boolean> {
     if (!tabId) return true
-    const lastActivated = await lastActivatedTabId()
-    return lastActivated !== tabId
+    const tab = await getTab(tabId)
+    return !tab?.active
 }
 
 async function sendLimitedMessage(items: timer.limit.Item[]) {

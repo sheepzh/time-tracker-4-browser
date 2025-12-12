@@ -71,7 +71,7 @@ class FocusedWindowCtx {
 }
 const context = new FocusedWindowCtx(['normal'])
 
-export const lastFocusedNormalWinId = () => context.apply()
+export const getFocusedNormalWindowId = () => context.apply()
 
 export async function getWindow(id: number): Promise<chrome.windows.Window | undefined> {
     if (IS_ANDROID) {

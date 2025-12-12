@@ -7,42 +7,6 @@
 
 import { handleError } from "./common"
 
-class ActivatedTabCtx {
-    lastTabId?: number
-    listened: boolean = false
-
-    async apply(): Promise<number | undefined> {
-        if (this.listened) {
-            return this.lastTabId
-        }
-
-        // init
-        chrome.tabs.onActivated.addListener(activeInfo => {
-            this.lastTabId = activeInfo.tabId
-        })
-        this.listened = true
-
-        return this.getInner()
-    }
-
-    private getInner(): Promise<number | undefined> {
-        return new Promise(resolve => chrome.tabs.query(
-            { active: true },
-            tabs => {
-                handleError('getActivatedTab')
-                const activeTab = tabs?.[0]
-                resolve(activeTab?.id)
-            }
-        ))
-    }
-}
-
-const ACTIVATED_TAB_CTX = new ActivatedTabCtx()
-
-export function lastActivatedTabId(): Promise<number | undefined> {
-    return ACTIVATED_TAB_CTX.apply()
-}
-
 export function getTab(id: number): Promise<ChromeTab | undefined> {
     if (id < 0) {
         return Promise.resolve(undefined)
