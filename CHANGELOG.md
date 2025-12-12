@@ -4,6 +4,10 @@ All notable changes to Time Tracker will be documented in this file.
 
 It is worth mentioning that the release time of each change refers to the time when the installation package is submitted to the webstore. It is about one week for Firefox to moderate packages, while only 1-2 days for Chrome and Edge.
 
+## [3.7.8] - 2025-12-13 [For Chrome]
+
+-   Same as v3.7.7
+
 ## [3.7.7] - 2025-12-13
 
 -   Reverted tracking the time in split-screen mode for Chrome, which caused tracking stopping
