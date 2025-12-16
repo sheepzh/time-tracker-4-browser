@@ -16,7 +16,7 @@ type EcOption = ComposeOption<
     | GridComponentOption
 >
 
-const ALL_BROWSERS: Browser[] = ['firefox', 'edge', 'chrome']
+const ALL_BROWSERS: Browser[] = ['firefox', 'chrome', 'edge']
 
 const POINT_COUNT = 500
 
