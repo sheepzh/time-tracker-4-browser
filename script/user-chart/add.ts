@@ -8,7 +8,7 @@ import {
 } from "@src/api/gist"
 import fs from "fs"
 import { exitWith } from "../util/process"
-import { descriptionOf, filenameOf, getExistGist, validateTokenFromEnv } from "./common"
+import { type Browser, descriptionOf, filenameOf, getExistGist, type UserCount, validateTokenFromEnv } from "./common"
 
 type AddArgv = {
     browser: Browser

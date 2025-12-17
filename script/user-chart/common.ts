@@ -1,6 +1,13 @@
 import { findTarget, type Gist } from "@api/gist"
 import { exitWith } from "../util/process"
 
+export type Browser =
+    | 'chrome'
+    | 'firefox'
+    | 'edge'
+
+export type UserCount = Record<string, number>
+
 /**
  * Validate the token from environment variables
  */

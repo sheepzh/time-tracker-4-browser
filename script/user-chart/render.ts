@@ -8,7 +8,7 @@ import {
 } from "echarts"
 import { writeFileSync } from "fs"
 import { exit } from 'process'
-import { filenameOf, getExistGist, validateTokenFromEnv } from "./common"
+import { filenameOf, getExistGist, validateTokenFromEnv, type Browser, type UserCount } from "./common"
 
 type EcOption = ComposeOption<
     | LineSeriesOption
@@ -175,10 +175,15 @@ const USER_COUNT_GIST_DESC = "User count of timer, auto-generated"
 const USER_COUNT_SVG_FILE_NAME = "user_count.svg"
 
 async function getOriginData(token: string): Promise<OriginData> {
-    const [firefox, edge, chrome]: UserCount[] = await Promise.all(
-        ALL_BROWSERS.map(b => getDataFromGist(token, b))
-    )
-    return { chrome, firefox, edge }
+    const result: OriginData = {
+        chrome: {},
+        firefox: {},
+        edge: {},
+    }
+    for (const b of ALL_BROWSERS) {
+        result[b] = await getDataFromGist(token, b)
+    }
+    return result
 }
 
 /**
