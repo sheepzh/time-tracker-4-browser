@@ -51,6 +51,7 @@
     "tr": {
         "rate": "Bizi Değerlendirin",
         "showSiteName": "Site adını göster",
-        "showTopN": "En iyi {n} göster"
+        "showTopN": "En iyi {n} göster",
+        "donutChart": "Halka grafik olarak göster"
     }
 }
