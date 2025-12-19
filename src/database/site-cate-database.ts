@@ -15,6 +15,10 @@ type Item = {
      * Name
      */
     n: string
+    /**
+     * Auto rules
+     */
+    a?: string[]
 }
 
 type Items = Record<number, Item>
@@ -49,27 +53,28 @@ class SiteCateDatabase extends BaseDatabase {
 
     async listAll(): Promise<timer.site.Cate[]> {
         const items = await this.getItems()
-        return Object.entries(items).map(([id, { n = '' } = {}]) => {
+        return Object.entries(items).map(([id, { n = '', a } = {}]) => {
             return {
                 id: parseInt(id),
                 name: n,
+                autoRules: a ?? [],
             } satisfies timer.site.Cate
         })
     }
 
-    async add(name: string): Promise<timer.site.Cate> {
+    async add(name: string, autoRules: string[]): Promise<timer.site.Cate> {
         const items = await this.getItems()
         const existId = Object.entries(items).find(([_, v]) => v.n === name)?.[0]
         if (existId) {
             // Exist already
-            return { id: parseInt(existId), name }
+            return { id: parseInt(existId), name, autoRules }
         }
 
         const id = (Object.keys(items || {}).map(k => parseInt(k)).sort().reverse()?.[0] ?? 0) + 1
-        items[id] = { n: name || items[id]?.n }
+        items[id] = { n: name || items[id]?.n, a: autoRules }
 
         await this.saveItems(items)
-        return { name, id }
+        return { name, id, autoRules }
     }
 
     async update(id: number, name: string): Promise<void> {

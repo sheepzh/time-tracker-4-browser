@@ -13,7 +13,7 @@ const CategoryFilter = defineComponent<Props>(props => {
     const cate = useCategory()
 
     const displayCategories = computed(() => [
-        { id: CATE_NOT_SET_ID, name: t(msg => msg.shared.cate.notSet) } satisfies timer.site.Cate,
+        { id: CATE_NOT_SET_ID, name: t(msg => msg.shared.cate.notSet), autoRules: [] } satisfies timer.site.Cate,
         ...cate.all,
     ])
 

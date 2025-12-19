@@ -7,7 +7,7 @@ class CateService {
     }
 
     add(name: string): Promise<timer.site.Cate> {
-        return siteCateDatabase.add(name)
+        return siteCateDatabase.add(name, [])
     }
 
     saveName(id: number, name: string): Promise<void> {
