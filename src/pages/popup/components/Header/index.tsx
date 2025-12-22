@@ -21,7 +21,7 @@ const openAppPage = async () => {
         // If there are non-highlighted app page tab, jump to it
         const tabId2Jump = tabs.find(tab => !!tab.url?.startsWith(appPageUrl) && !tab.highlighted)?.id
         if (tabId2Jump) {
-            await updateTab(tabId2Jump, { highlighted: true })
+            await updateTab(tabId2Jump, { highlighted: true, active: true })
             return
         }
     } catch (ignored) {
