@@ -30,7 +30,8 @@
                     "timed": "定时开启"
                 }
             },
-            "animationDuration": "图表初始动画的时长 {input}"
+            "animationDuration": "图表初始动画的时长 {input}",
+            "sidePanel": "{input} 是否启用侧边栏视图"
         },
         "tracking": {
             "title": "统计",
@@ -285,7 +286,8 @@
                     "timed": "Timed on"
                 }
             },
-            "animationDuration": "The duration of the chart's initial animation {input}"
+            "animationDuration": "The duration of the chart's initial animation {input}",
+            "sidePanel": "{input} Whether to enable the side panel"
         },
         "tracking": {
             "title": "Tracking",

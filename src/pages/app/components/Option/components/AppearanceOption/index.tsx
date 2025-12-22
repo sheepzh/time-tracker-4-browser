@@ -5,7 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { isSidePanelEnabled, setSidePanelEnabled, SIDE_PANEL_STATE_SUPPORTED_CONTROL } from '@api/chrome/sidePanel'
 import { type I18nKey, t, tWith } from "@app/locale"
+import { useRequest } from '@hooks/useRequest'
 import { ALL_LOCALES, localeSameAsBrowser } from "@i18n"
 import localeMessages from "@i18n/message/common/locale"
 import optionService from "@service/option-service"
@@ -39,6 +41,7 @@ function copy(target: timer.option.AppearanceOption, source: timer.option.Appear
 }
 
 const DEFAULT_ANIMA_DURATION = defaultAppearance().chartAnimationDuration
+const DEFAULT_SIDE_PANEL_ENABLED = true
 const FOLLOW_BROWSER: I18nKey = msg => msg.option.followBrowser
 
 const _default = defineComponent((_props, ctx) => {
@@ -46,9 +49,19 @@ const _default = defineComponent((_props, ctx) => {
         defaultValue: defaultAppearance, copy,
         onChange: async val => optionService.isDarkMode(val).then(toggle)
     })
+    const { data: sidePanelEnabled, refresh: refreshSidePanel } = useRequest(isSidePanelEnabled, {
+        defaultValue: DEFAULT_SIDE_PANEL_ENABLED,
+    })
+    const handleSidePanelChange = async (val: boolean) => {
+        await setSidePanelEnabled(val)
+        refreshSidePanel()
+    }
 
     ctx.expose({
-        reset: () => copy(option, defaultAppearance())
+        reset() {
+            handleSidePanelChange(DEFAULT_SIDE_PANEL_ENABLED)
+            copy(option, defaultAppearance())
+        }
     } satisfies OptionInstance)
 
     const handleLocaleChange = (newVal: timer.option.LocaleOption) => {
@@ -152,6 +165,17 @@ const _default = defineComponent((_props, ctx) => {
                     />
                 </OptionItem>
             </>}
+            {SIDE_PANEL_STATE_SUPPORTED_CONTROL && (
+                <OptionItem
+                    label={msg => msg.option.appearance.sidePanel}
+                    defaultValue={DEFAULT_SIDE_PANEL_ENABLED}
+                >
+                    <ElSwitch
+                        modelValue={sidePanelEnabled.value}
+                        onChange={v => handleSidePanelChange(!!v)}
+                    />
+                </OptionItem>
+            )}
             <OptionItem
                 label={msg => msg.option.appearance.animationDuration}
                 defaultValue={`${DEFAULT_ANIMA_DURATION}ms`}

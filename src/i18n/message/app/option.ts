@@ -36,6 +36,7 @@ export type OptionMessage = {
             options: Omit<Record<timer.option.DarkMode, string>, 'default'>
         }
         animationDuration: string
+        sidePanel: string
     }
     tracking: {
         title: string
