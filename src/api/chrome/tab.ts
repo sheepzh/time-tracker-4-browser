@@ -5,6 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { IS_MV3 } from '@util/constant/environment'
 import { handleError } from "./common"
 
 export function getTab(id: number): Promise<ChromeTab | undefined> {
@@ -121,5 +122,17 @@ export function onTabUpdated(handler: TabHandler<ChromeTabUpdatedInfo>): void {
     chrome.tabs.onUpdated.addListener((tabId: number, changeInfo: ChromeTabUpdatedInfo, tab: ChromeTab) => {
         handleError("tabUpdated")
         handler(tabId, changeInfo, tab)
+    })
+}
+
+export function updateTab(tabId: number, updateProperties: chrome.tabs.UpdateProperties): Promise<ChromeTab | undefined> {
+    if (IS_MV3) {
+        return chrome.tabs.update(tabId, updateProperties)
+    }
+    return new Promise((resolve) => {
+        chrome.tabs.update(tabId, updateProperties, (tab) => {
+            handleError("updateTab")
+            resolve(tab)
+        })
     })
 }
