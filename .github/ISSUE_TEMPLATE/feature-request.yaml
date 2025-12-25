@@ -1,7 +1,7 @@
 name: Feature Request
 title: "[FEAT] "
 labels: feature
-about: Suggest an idea for this project
+description: Suggest an idea for this project
 body:
     - type: markdown
       attributes:
