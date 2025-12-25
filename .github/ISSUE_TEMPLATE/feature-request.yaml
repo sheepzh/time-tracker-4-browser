@@ -1,5 +1,5 @@
 name: Feature Request
-title: "[FEAT] "
+title: "[FEATURE] "
 labels: feature
 description: Suggest an idea for this project
 body:
@@ -14,7 +14,7 @@ body:
       attributes:
           label: Browser
           multiple: true
-          description: Which browser are you using? (Chrome/Firefox/Edge/Other)
+          description: Which browsers are you using? (Chrome/Firefox/Edge/Other)
           options:
               - Chrome
               - Firefox
