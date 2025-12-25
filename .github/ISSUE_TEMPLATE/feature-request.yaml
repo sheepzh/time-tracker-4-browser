@@ -1,0 +1,45 @@
+name: Feature Request
+title: "[FEAT] "
+labels: feature
+about: Suggest an idea for this project
+body:
+    - type: markdown
+      attributes:
+          value: |
+              Tell us your wants~
+    - type: dropdown
+      id: browser
+      validations:
+          required: true
+      attributes:
+          label: Browser
+          multiple: true
+          description: Which browser are you using? (Chrome/Firefox/Edge/Other)
+          options:
+              - Chrome
+              - Firefox
+              - Edge
+              - Other
+          default: 0
+    - type: dropdown
+      id: os
+      validations:
+          required: false
+      attributes:
+          label: OS
+          description: Which operating system are you using? (Mac/Linux/Win, Optional)
+          options:
+              - Win
+              - Mac
+              - Linux
+              - Android
+              - Other
+          default: 0
+    - type: textarea
+      id: description
+      validations:
+          required: false
+      attributes:
+          label: Feature Description
+          description: Please describe the feature in detail.
+          placeholder: "1. What you want.\n2. Why you want it.\n3. Any additional context."
