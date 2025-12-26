@@ -1384,7 +1384,8 @@
                     "timed": "Zamanlanmış"
                 }
             },
-            "animationDuration": "Grafiğin ilk animasyonunun süresi {input}"
+            "animationDuration": "Grafiğin ilk animasyonunun süresi {input}",
+            "sidePanel": "{input} Yan panelin gösterilip gösterilmeyeceğini seçin"
         },
         "tracking": {
             "title": "İzleme",
