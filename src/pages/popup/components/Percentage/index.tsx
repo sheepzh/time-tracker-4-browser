@@ -21,7 +21,7 @@ const Percentage = defineComponent(() => {
         <ElCard
             shadow="never"
             style={{ width: '100%', height: '100%' }}
-            bodyStyle={{ height: '100%', boxSizing: 'border-box', padding: 0 }}
+            bodyStyle={{ height: '100%', boxSizing: 'border-box', padding: 0, overflow: 'hidden' }}
         >
             {query.mergeMethod === 'cate'
                 ? <Cate value={data.value} />
