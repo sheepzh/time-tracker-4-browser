@@ -4,6 +4,12 @@ All notable changes to Time Tracker will be documented in this file.
 
 It is worth mentioning that the release time of each change refers to the time when the installation package is submitted to the webstore. It is about one week for Firefox to moderate packages, while only 1-2 days for Chrome and Edge.
 
+## [3.7.11] - 2025-12-30
+
+-  Fixed an issue that allowed bypassing time-limited passwords in certain situations
+-  Fixed an issue where report tables did not refresh after category changes
+-  Removed scrollbars from pop-up charts for improved user experience
+
 ## [3.7.10] - 2025-12-23
 
 -   Fixed a bug on Firefox
