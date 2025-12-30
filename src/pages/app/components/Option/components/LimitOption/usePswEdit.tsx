@@ -36,10 +36,10 @@ export const usePswEdit = (options: Options) => {
             message: (
                 <ElForm labelWidth={120} labelPosition="left">
                     <ElFormItem required label={t(msg => msg.option.limit.level.pswFormLabel)}>
-                        <ElInput modelValue={psw.value} onInput={setPsw} />
+                        <ElInput modelValue={psw.value} onInput={setPsw} type='password' />
                     </ElFormItem>
                     <ElFormItem required label={t(msg => msg.option.limit.level.pswFormAgain)}>
-                        <ElInput modelValue={confirmPsw.value} onInput={setConfirmPsw} />
+                        <ElInput modelValue={confirmPsw.value} onInput={setConfirmPsw} type='password' />
                     </ElFormItem>
                 </ElForm>
             ),

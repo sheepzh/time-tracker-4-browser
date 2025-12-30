@@ -5,7 +5,7 @@ import { I18nResultItem, locale } from "@i18n"
 import { getCssVariable } from "@pages/util/style"
 import verificationProcessor from "@service/limit-service/verification/processor"
 import { dateMinute2Idx, hasLimited, isEnabledAndEffective } from "@util/limit"
-import { ElMessage, ElMessageBox, type ElMessageBoxOptions, useId } from "element-plus"
+import { ElMessage, ElMessageBox, type ElMessageBoxOptions, type InputType, useId } from "element-plus"
 import { defineComponent, onMounted, ref, type VNode } from "vue"
 
 /**
@@ -101,6 +101,7 @@ export function processVerification(option: timer.option.LimitOption, context?: 
             message: <div>{t(msg => msg.limit.verification.strictTip)}</div>,
         }).catch(() => { }))
     }
+    let inputType: InputType | undefined
     let answerValue: string | undefined
     let messageNode: I18nResultItem<VNode>[] | undefined | I18nResultItem<VNode>
     let incorrectMessage: string
@@ -109,6 +110,7 @@ export function processVerification(option: timer.option.LimitOption, context?: 
         answerValue = limitPassword
         messageNode = t(msg => msg.limit.verification.pswInputTip)
         incorrectMessage = t(msg => msg.limit.verification.incorrectPsw)
+        inputType = 'password'
     } else if (limitLevel === 'verification') {
         const pair = verificationProcessor.generate(limitVerifyDifficulty ?? 'easy', locale)
         const { prompt, promptParam, answer, second = 60 } = pair || {}
@@ -138,6 +140,7 @@ export function processVerification(option: timer.option.LimitOption, context?: 
         title: '',
         message: <div style={{ userSelect: 'none' }}>{messageNode}</div>,
         showInput: true,
+        inputType,
         showCancelButton: true,
         showClose: false,
         confirmButtonText: countdown ? btnText(countdown) : okBtnTxt,
