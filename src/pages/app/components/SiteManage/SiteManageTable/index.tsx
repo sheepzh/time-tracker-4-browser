@@ -10,7 +10,7 @@ import Flex from "@pages/components/Flex"
 import { removeIconUrl, saveSiteRunState } from '@service/site-service'
 import { ElSwitch, ElTable, ElTableColumn, type RenderRowData } from "element-plus"
 import { defineComponent } from "vue"
-import Category from "../../common/category/CategoryEditable"
+import CategoryEditable from "../../common/category/CategoryEditable"
 import { useSiteManageTable } from '../useSiteManage'
 import AliasColumn from "./column/AliasColumn"
 import OperationColumn from "./column/OperationColumn"
@@ -70,7 +70,7 @@ const _default = defineComponent<{}>(() => {
                 minWidth={140}
                 align="center"
                 v-slots={({ row }: RenderRowData<timer.site.SiteInfo>) => (
-                    <Category siteKey={row} modelValue={row?.cate} onChange={val => row.cate = val} />
+                    <CategoryEditable siteKey={row} modelValue={row?.cate} onChange={val => row.cate = val} />
                 )}
             />
             <ElTableColumn
