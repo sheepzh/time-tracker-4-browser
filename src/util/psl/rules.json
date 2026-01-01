@@ -312,6 +312,7 @@
             "loginline": 1,
             "lovable": 1,
             "luyani": 1,
+            "magicpatterns": 1,
             "medusajs": 1,
             "messerli": 1,
             "mocha": 1,
@@ -327,6 +328,7 @@
             "nyat": 1,
             "on-fleek": 1,
             "ondigitalocean": 1,
+            "onhercules": 1,
             "railway": {
                 "c": {
                     "up": 1
@@ -358,7 +360,7 @@
                     }
                 }
             },
-            "storipress": 1,
+            "sprites": 1,
             "streamlit": 1,
             "telebit": 1,
             "typedream": 1,
@@ -382,7 +384,86 @@
         },
         "l": 1
     },
-    "apple": 1,
+    "apple": {
+        "c": {
+            "int": {
+                "c": {
+                    "cloud": {
+                        "c": {
+                            "*": 1,
+                            "r": {
+                                "c": {
+                                    "*": 1,
+                                    "ap-north-1": {
+                                        "c": {
+                                            "*": 1
+                                        }
+                                    },
+                                    "ap-south-1": {
+                                        "c": {
+                                            "*": 1
+                                        }
+                                    },
+                                    "ap-south-2": {
+                                        "c": {
+                                            "*": 1
+                                        }
+                                    },
+                                    "eu-central-1": {
+                                        "c": {
+                                            "*": 1
+                                        }
+                                    },
+                                    "eu-north-1": {
+                                        "c": {
+                                            "*": 1
+                                        }
+                                    },
+                                    "us-central-1": {
+                                        "c": {
+                                            "*": 1
+                                        }
+                                    },
+                                    "us-central-2": {
+                                        "c": {
+                                            "*": 1
+                                        }
+                                    },
+                                    "us-east-1": {
+                                        "c": {
+                                            "*": 1
+                                        }
+                                    },
+                                    "us-east-2": {
+                                        "c": {
+                                            "*": 1
+                                        }
+                                    },
+                                    "us-west-1": {
+                                        "c": {
+                                            "*": 1
+                                        }
+                                    },
+                                    "us-west-2": {
+                                        "c": {
+                                            "*": 1
+                                        }
+                                    },
+                                    "us-west-3": {
+                                        "c": {
+                                            "*": 1
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "l": 1
+            }
+        },
+        "l": 1
+    },
     "aq": 1,
     "aquarelle": 1,
     "ar": {
@@ -1859,7 +1940,12 @@
         },
         "l": 1
     },
-    "case": 1,
+    "case": {
+        "c": {
+            "sav": 1
+        },
+        "l": 1
+    },
     "cash": 1,
     "casino": 1,
     "cat": 1,
@@ -1870,13 +1956,17 @@
     "cbre": 1,
     "cc": {
         "c": {
+            "ccwu": 1,
             "cleverapps": 1,
             "cloud-ip": 1,
             "cloudns": 1,
             "csx": 1,
+            "ec": 1,
+            "eu": 1,
             "fantasyleague": 1,
             "ftpaccess": 1,
             "game-server": 1,
+            "gu": 1,
             "myphotos": 1,
             "scrapping": 1,
             "spawn": {
@@ -1884,12 +1974,15 @@
                     "instances": 1
                 }
             },
-            "twmail": 1
+            "twmail": 1,
+            "uk": 1,
+            "us": 1
         },
         "l": 1
     },
     "cd": {
         "c": {
+            "cc": 1,
             "gov": 1
         },
         "l": 1
@@ -1982,6 +2075,7 @@
             "net": 1,
             "or": 1,
             "org": 1,
+            "us": 1,
             "xn--aroport-bya": 1
         },
         "l": 1
@@ -2017,6 +2111,7 @@
     "clothing": 1,
     "cloud": {
         "c": {
+            "antagonist": 1,
             "axarnet": {
                 "c": {
                     "es-1": 1
@@ -2448,6 +2543,20 @@
             "otap": {
                 "c": {
                     "*": 1
+                }
+            },
+            "rdpa": {
+                "c": {
+                    "clusters": {
+                        "c": {
+                            "*": 1
+                        }
+                    },
+                    "srvrless": {
+                        "c": {
+                            "*": 1
+                        }
+                    }
                 }
             },
             "repl": {
@@ -4171,6 +4280,11 @@
                 },
                 "l": 1
             },
+            "emergentagent": {
+                "c": {
+                    "preview": 1
+                }
+            },
             "encoreapi": 1,
             "est-a-la-maison": 1,
             "est-a-la-masion": 1,
@@ -4270,6 +4384,8 @@
             "hatenablog": 1,
             "hatenadiary": 1,
             "health-carereform": 1,
+            "hercules-app": 1,
+            "hercules-dev": 1,
             "herokuapp": 1,
             "hk": 1,
             "hobby-site": 1,
@@ -4410,6 +4526,7 @@
                     "*": 1
                 }
             },
+            "magicpatternsapp": 1,
             "massivegrid": {
                 "c": {
                     "paas": 1
@@ -5673,7 +5790,6 @@
             "chirurgiens-dentistes-en-france": 1,
             "com": 1,
             "dedibox": 1,
-            "en-root": 1,
             "experts-comptables": 1,
             "fbx-os": 1,
             "fbxos": 1,
@@ -6246,6 +6362,7 @@
             "gov": 1,
             "gujarat": 1,
             "ind": 1,
+            "indevs": 1,
             "info": 1,
             "int": 1,
             "internet": 1,
@@ -6503,7 +6620,6 @@
                     "client": 1
                 }
             },
-            "shw": 1,
             "stolos": {
                 "c": {
                     "*": 1
@@ -9275,6 +9391,7 @@
     "kfh": 1,
     "kg": {
         "c": {
+            "ae": 1,
             "com": 1,
             "edu": 1,
             "gov": 1,
@@ -10161,7 +10278,6 @@
             "dynu": 1,
             "dynv6": 1,
             "eating-organic": 1,
-            "edgeapp": 1,
             "edgekey": 1,
             "edgekey-staging": 1,
             "edgesuite": 1,
@@ -10420,6 +10536,7 @@
                     "*": 1
                 }
             },
+            "appwrite": 1,
             "arvo": 1,
             "azimuth": 1,
             "co": 1,
@@ -12450,7 +12567,6 @@
             "int": 1,
             "kalmykia": 1,
             "kustanai": 1,
-            "lk3": 1,
             "marine": 1,
             "mcdir": {
                 "c": {
@@ -12632,12 +12748,15 @@
     "science": 1,
     "scot": {
         "c": {
+            "co": 1,
             "gov": {
                 "c": {
                     "service": 1
                 },
                 "l": 1
-            }
+            },
+            "me": 1,
+            "org": 1
         },
         "l": 1
     },
@@ -12835,7 +12954,12 @@
         "l": 1
     },
     "sj": 1,
-    "sk": 1,
+    "sk": {
+        "c": {
+            "org": 1
+        },
+        "l": 1
+    },
     "ski": 1,
     "skin": 1,
     "sky": 1,
@@ -12927,6 +13051,11 @@
     },
     "st": {
         "c": {
+            "cn": {
+                "c": {
+                    "*": 1
+                }
+            },
             "co": 1,
             "com": 1,
             "consulado": 1,
@@ -13217,6 +13346,7 @@
             "gov": 1,
             "mil": 1,
             "net": 1,
+            "nett": 1,
             "org": 1,
             "oya": 1,
             "quickconnect": {
@@ -13932,7 +14062,6 @@
                 },
                 "l": 1
             },
-            "platterp": 1,
             "pointto": 1,
             "pr": {
                 "c": {
@@ -14059,6 +14188,7 @@
             "com": 1,
             "edu": 1,
             "gub": 1,
+            "gv": 1,
             "mil": 1,
             "net": 1,
             "org": 1
@@ -14309,7 +14439,12 @@
     "wme": 1,
     "wolterskluwer": 1,
     "woodside": 1,
-    "work": 1,
+    "work": {
+        "c": {
+            "imagine-proxy": 1
+        },
+        "l": 1
+    },
     "works": 1,
     "world": 1,
     "wow": 1,
