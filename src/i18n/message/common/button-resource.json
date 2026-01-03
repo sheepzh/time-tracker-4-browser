@@ -203,7 +203,9 @@
         "clear": "Effacer",
         "enable": "Activer",
         "batchEnable": "Activation par Lot",
-        "batchDisable": "Désactivation par Lot"
+        "batchDisable": "Désactivation par Lot",
+        "collapse": "Réduire",
+        "expand": "Développer"
     },
     "ru": {
         "create": "Создать",

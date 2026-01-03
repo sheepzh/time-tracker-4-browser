@@ -39,7 +39,10 @@
         "showTopN": "Top {n} anzeigen"
     },
     "fr": {
-        "rate": "Noter"
+        "rate": "Évaluez-nous",
+        "showSiteName": "Afficher le nom du site",
+        "showTopN": "Afficher les {n} premiers",
+        "donutChart": "Affichés sous forme de graphiques en anneau"
     },
     "ru": {
         "rate": "Оценить",
