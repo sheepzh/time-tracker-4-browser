@@ -416,6 +416,7 @@
     "fr": {
         "filterDisabled": "Activé uniquement",
         "wildcardTip": "Vous pouvez utiliser des wildcards pour correspondre à des sous-domaines ou sous-pages, et utiliser le \"+\" comme préfixe pour exclure des sous-pages !",
+        "emptyTips": "Cliquez ici pour créer une règle !",
         "item": {
             "name": "Nom de règle",
             "condition": "URL restreinte",

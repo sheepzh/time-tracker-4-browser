@@ -1044,12 +1044,13 @@
             "darkMode": {
                 "label": "Mode sombre {input}",
                 "options": {
-                    "on": "Toujours On",
+                    "on": "Toujours activé",
                     "off": "Toujours éteint",
                     "timed": "Horaire"
                 }
             },
-            "animationDuration": "La durée de l'animation initiale du graphique {input}"
+            "animationDuration": "La durée de l'animation initiale du graphique {input}",
+            "sidePanel": "{input} Autoriser l'affichage du panneau latéral"
         },
         "tracking": {
             "title": "Statistiques",
