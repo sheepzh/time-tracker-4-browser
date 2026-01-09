@@ -27,6 +27,7 @@ const DashboardCard: FunctionalComponent<DashboardCardProps> = ({ span, height, 
                 width: '100%',
                 height: cvtPxScale(bodyHeight ?? '100%'),
                 boxSizing: 'border-box',
+                overflow: 'hidden',
             }}
             v-slots={ctx.slots}
         />

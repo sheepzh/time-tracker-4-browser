@@ -14,7 +14,7 @@ import Flex from "@pages/components/Flex"
 import { selectSite } from "@service/stat-service"
 import { calcMostPeriodOf2Hours } from "@util/period"
 import { getStartOfDay, MILL_PER_DAY, MILL_PER_MINUTE } from "@util/time"
-import { ElIcon } from "element-plus"
+import { ElIcon, ElScrollbar } from "element-plus"
 import { computed, defineComponent, toRef, type VNode } from "vue"
 
 type _Value = {
@@ -102,34 +102,36 @@ const _default = defineComponent(() => {
     const most2HourParam = computed(() => computeMost2HourParam(data.value))
 
     return () => (
-        <Flex column gap={4} style={{ textAlign: isXs.value ? 'center' : undefined }}>
-            <Flex align="center" justify="center" marginBlock="0 15px">
-                <ElIcon size={45}>
-                    <Sunrise />
-                </ElIcon>
+        <ElScrollbar>
+            <Flex column gap={4} style={{ textAlign: isXs.value ? 'center' : undefined }} height='100%'>
+                <Flex align="center" justify="center" marginBlock="0 15px">
+                    <ElIcon size={45}>
+                        <Sunrise />
+                    </ElIcon>
+                </Flex>
+                <IndicatorLabel
+                    v-show={data.value?.installedDays}
+                    path={msg => msg.dashboard.indicator.installedDays}
+                    param={{ number: data.value?.installedDays || 0 }}
+                    duration={1.5}
+                />
+                <IndicatorLabel
+                    path={msg => msg.dashboard.indicator.visitCount}
+                    param={{ visit: data.value?.visits || 0, site: data.value?.sites || 0 }}
+                    duration={1.75}
+                />
+                <IndicatorLabel
+                    path={msg => msg.dashboard.indicator.browsingTime}
+                    param={{ minute: Math.floor((data.value?.browsingTime || 0) / MILL_PER_MINUTE) }}
+                    duration={2}
+                />
+                <IndicatorLabel
+                    path={msg => msg.dashboard.indicator.mostUse}
+                    param={most2HourParam.value}
+                    duration={2.25}
+                />
             </Flex>
-            <IndicatorLabel
-                v-show={data.value?.installedDays}
-                path={msg => msg.dashboard.indicator.installedDays}
-                param={{ number: data.value?.installedDays || 0 }}
-                duration={1.5}
-            />
-            <IndicatorLabel
-                path={msg => msg.dashboard.indicator.visitCount}
-                param={{ visit: data.value?.visits || 0, site: data.value?.sites || 0 }}
-                duration={1.75}
-            />
-            <IndicatorLabel
-                path={msg => msg.dashboard.indicator.browsingTime}
-                param={{ minute: Math.floor((data.value?.browsingTime || 0) / MILL_PER_MINUTE) }}
-                duration={2}
-            />
-            <IndicatorLabel
-                path={msg => msg.dashboard.indicator.mostUse}
-                param={most2HourParam.value}
-                duration={2.25}
-            />
-        </Flex>
+        </ElScrollbar>
     )
 })
 
