@@ -7,22 +7,23 @@ class TimelineCollector {
      * Bind page visibility and focus events
      */
     init(): void {
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                this.collect()
-            } else {
+        const onStateChange = () => {
+            if (!document.hidden && document.hasFocus()) {
                 this.startTracking()
+            } else {
+                this.collect()
             }
-        })
+        }
 
-        window.addEventListener('focus', () => this.startTracking())
-        window.addEventListener('blur', () => this.collect())
+        document.addEventListener('visibilitychange', onStateChange)
+        window.addEventListener('focus', onStateChange)
+        window.addEventListener('blur', onStateChange)
         window.addEventListener('beforeunload', () => this.collect())
 
         if (document.readyState === 'complete') {
-            this.startTracking()
+            onStateChange()
         } else {
-            window.addEventListener('load', () => this.startTracking())
+            window.addEventListener('load', onStateChange)
         }
     }
 
@@ -30,6 +31,8 @@ class TimelineCollector {
      * Start tracking current page
      */
     public startTracking(): void {
+        if (document.hidden || !document.hasFocus()) return
+        if (this.startTime !== null) return
         this.startTime = Date.now()
     }
 
