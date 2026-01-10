@@ -540,7 +540,8 @@
                     "timed": "Ativo por tempo"
                 }
             },
-            "animationDuration": "Duração da animação inicial {input}"
+            "animationDuration": "Duração da animação inicial {input}",
+            "sidePanel": "{input} Se ativar ou não o painel lateral"
         },
         "tracking": {
             "title": "Estatísticas",
