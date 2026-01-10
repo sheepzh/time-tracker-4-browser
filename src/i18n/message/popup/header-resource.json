@@ -23,7 +23,8 @@
     },
     "pt_PT": {
         "rate": "Avaliar",
-        "showSiteName": "Mostrar nome do site"
+        "showSiteName": "Mostrar nome do site",
+        "donutChart": "Mostrado como gráfico estilo donut"
     },
     "uk": {
         "rate": "Оцінити"

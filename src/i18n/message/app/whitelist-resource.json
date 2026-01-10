@@ -45,6 +45,7 @@
         "infoAlertTitle": "Pode adicionar sites à lista de permissões nesta página",
         "infoAlert0": "Os sites na lista de permissões não serão contabilizados",
         "infoAlert1": "Os sites na lista de permissões não serão restringidos",
+        "infoAlert2": "Podes usar wildcards(*) para corresponder a vários sites, como *.example.com/**, e usar + como prefixo para excluir sites específicos, como +need.example.com/**",
         "errorInput": "URL do site inválido"
     },
     "uk": {
