@@ -3,9 +3,11 @@ import { css } from '@emotion/css'
 import { MediaSize, useMediaSize } from "@hooks"
 import { locale } from "@i18n"
 import Flex from "@pages/components/Flex"
+import { CoffeeIcon } from '@pages/util/icon'
 import { saveFlag } from "@service/meta-service"
 import packageInfo, { AUTHOR_EMAIL } from "@src/package"
 import {
+    BUY_ME_A_COFFEE_PAGE,
     CHANGE_LOG_PAGE,
     CHROME_HOMEPAGE, EDGE_HOMEPAGE,
     FEEDBACK_QUESTIONNAIRE,
@@ -151,6 +153,11 @@ const _default = defineComponent<{}>(() => {
                         <DescLink href="https://element-plus.org/" icon={<ElementPlus />}>Element Plus</DescLink>
                     </div>
                 </ElDescriptionsItem>
+                {locale !== 'zh_CN' && (
+                    <ElDescriptionsItem label='Buy me a coffee' labelAlign="right">
+                        <DescLink icon={CoffeeIcon} href={BUY_ME_A_COFFEE_PAGE}>{BUY_ME_A_COFFEE_PAGE}</DescLink>
+                    </ElDescriptionsItem>
+                )}
             </ElDescriptions>
             <ElDivider />
             <Flex class={textContainerCls}>

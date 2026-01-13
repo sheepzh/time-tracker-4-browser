@@ -7,6 +7,7 @@ import { IS_ANDROID } from "@util/constant/environment"
 import { getAppPageUrl } from "@util/constant/url"
 import { ElLink } from "element-plus"
 import { FunctionalComponent } from "vue"
+import Coffee from './Coffee'
 import DarkSwitch from "./DarkSwitch"
 import Github from "./Github"
 import Logo from "./Logo"
@@ -32,7 +33,10 @@ const openAppPage = async () => {
 
 const Header: FunctionalComponent = () => (
     <Flex justify="space-between" padding='0 10px' color='text-primary'>
-        <Logo />
+        <Flex gap={4}>
+            <Logo />
+            <Coffee />
+        </Flex>
         <Flex gap={10}>
             <Flex gap={10}>
                 <RateUs />

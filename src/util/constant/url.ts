@@ -128,3 +128,8 @@ export const WEBSTORE_PAGE = webstorePage
  * @since 2.2.4
  */
 export const REVIEW_PAGE = reviewPage
+
+/**
+ * @since 3.7.13
+ */
+export const BUY_ME_A_COFFEE_PAGE = 'https://buymeacoffee.com/sheepysheep'
