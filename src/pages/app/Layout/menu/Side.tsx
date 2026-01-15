@@ -16,7 +16,7 @@ import { colorVariant } from '@pages/util/style'
 import { ElCollapseTransition, ElIcon, ElMenu, ElMenuItem, ElMenuItemGroup, ElScrollbar, ElText, ElTooltip, useNamespace } from "element-plus"
 import { defineComponent, h, nextTick, onMounted, type Ref, ref, type StyleValue, watch } from "vue"
 import { type Router, useRouter } from "vue-router"
-import { MENU_GROUPS, type MenuItem } from "./item"
+import { menuGroups, type MenuItem } from "./item"
 import { handleClick, initTitle } from "./route"
 import { colorMenu } from './style'
 
@@ -83,6 +83,7 @@ const _default = defineComponent(() => {
         tooltipVisible, setTooltipVisible,
     } = useCollapseState()
     const cls = useStyle()
+    const menus = menuGroups()
 
     return () => (
         <Flex
@@ -101,8 +102,8 @@ const _default = defineComponent(() => {
                     } satisfies StyleValue}
                 >
                     {collapsed.value
-                        ? MENU_GROUPS.flatMap(g => g.children).map(item => renderItem(item, router, curr))
-                        : MENU_GROUPS.map(({ children, title }) => (
+                        ? menus.flatMap(g => g.children).map(item => renderItem(item, router, curr))
+                        : menus.map(({ children, title }) => (
                             <ElMenuItemGroup title={t(title)}>
                                 {children.map(item => renderItem(item, router, curr))}
                             </ElMenuItemGroup>

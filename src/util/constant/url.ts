@@ -78,7 +78,11 @@ export function getAppPageUrl(route?: string, query?: any): string {
 }
 
 export const HOMEPAGE = "https://www.wfhg.cc"
-const HOMEPAGE_LOCALES: timer.Locale[] = ["zh_CN", "zh_TW", "en"]
+const HOMEPAGE_LOCALES: timer.Locale[] = [
+    "zh_CN", "zh_TW", "en",
+    "ja", "de", "ru",
+    "fr", "es", "pt_PT",
+]
 
 export function getHomepageWithLocale(): string {
     const homepageLocale: timer.Locale = HOMEPAGE_LOCALES.includes(locale) ? locale : "en"

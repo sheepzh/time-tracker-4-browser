@@ -14,7 +14,7 @@ import Flex from '@pages/components/Flex'
 import { ElBreadcrumb, ElBreadcrumbItem, ElIcon, ElMenu, ElMenuItem, useNamespace } from "element-plus"
 import { defineComponent, h, onBeforeMount, ref, watch } from "vue"
 import { useRouter } from "vue-router"
-import { type MenuItem, NAV_MENUS } from "./item"
+import { type MenuItem, navMenus } from "./item"
 import { handleClick, initTitle } from "./route"
 import { colorMenu } from './style'
 
@@ -42,12 +42,13 @@ const useStyle = () => {
     return { containerCls, menuWrapperCls }
 }
 
-const findTitle = (routePath: string): string => {
-    const title = NAV_MENUS.find(v => routePath === v.route)?.title
+const findTitle = (routePath: string, menus: MenuItem[]): string => {
+    const title = menus.find(v => routePath === v.route)?.title
     return title ? t(title) : ''
 }
 
 const _default = defineComponent<{}>(() => {
+    const menus = navMenus()
     const router = useRouter()
     const title = ref('')
     const [showMenu, , closeMenu, toggleMenu] = useSwitch(false)
@@ -58,7 +59,7 @@ const _default = defineComponent<{}>(() => {
 
     const syncRouter = () => {
         const route = router.currentRoute.value
-        route && (title.value = findTitle(route.path))
+        route && (title.value = findTitle(route.path, menus))
     }
 
     watch(router.currentRoute, syncRouter)
@@ -86,7 +87,7 @@ const _default = defineComponent<{}>(() => {
             </Flex>
             <div class={menuWrapperCls} v-show={showMenu.value}>
                 <ElMenu>
-                    {NAV_MENUS.map(item => (
+                    {menus.map(item => (
                         <ElMenuItem
                             index={item.index ?? item.route ?? item.href}
                             onClick={() => handleItemClick(item)}
