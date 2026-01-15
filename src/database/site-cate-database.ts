@@ -15,6 +15,10 @@ type Item = {
      * Name
      */
     n: string
+    /**
+     * Auto rules
+     */
+    a?: string[]
 }
 
 type Items = Record<number, Item>
@@ -49,41 +53,56 @@ class SiteCateDatabase extends BaseDatabase {
 
     async listAll(): Promise<timer.site.Cate[]> {
         const items = await this.getItems()
-        return Object.entries(items).map(([id, { n = '' } = {}]) => {
+        return Object.entries(items).map(([id, { n = '', a } = {}]) => {
             return {
                 id: parseInt(id),
                 name: n,
+                autoRules: a ?? [],
             } satisfies timer.site.Cate
         })
     }
 
-    async add(name: string): Promise<timer.site.Cate> {
+    async add(name: string, autoRules: string[]): Promise<timer.site.Cate> {
         const items = await this.getItems()
         const existId = Object.entries(items).find(([_, v]) => v.n === name)?.[0]
         if (existId) {
             // Exist already
-            return { id: parseInt(existId), name }
+            return { id: parseInt(existId), name, autoRules }
         }
 
         const id = (Object.keys(items || {}).map(k => parseInt(k)).sort().reverse()?.[0] ?? 0) + 1
-        items[id] = { n: name || items[id]?.n }
+        items[id] = { n: name || items[id]?.n, a: autoRules }
 
         await this.saveItems(items)
-        return { name, id }
+        return { name, id, autoRules }
     }
 
-    async update(id: number, name: string): Promise<void> {
-        if (!name) return
-
+    private async updateWithReplacer(id: number, replacer: (exist: Item) => Item): Promise<void> {
         const items = await this.getItems()
-        const existId = Object.entries(items).find(([_, v]) => v.n === name)?.[0]
+        const exist = items[id]
+        if (!exist) return
 
-        if (existId) {
+        const replaced = replacer(exist)
+
+        if (Object.entries(items).some(([vid, v]) => v.n === replaced.n && parseInt(vid) !== id)) {
+            // Name exist already
             return
         }
 
-        items[id] = { ...items[id] || {}, n: name }
+        items[id] = replaced
         await this.saveItems(items)
+    }
+
+    async updateName(id: number, name: string): Promise<void> {
+        await this.updateWithReplacer(id, exist => ({ ...exist, n: name }))
+    }
+
+    async update(cate: timer.site.Cate): Promise<void> {
+        await this.updateWithReplacer(cate.id, exist => ({
+            ...exist,
+            n: cate.name,
+            a: cate.autoRules,
+        }))
     }
 
     async importData(data: any): Promise<void> {

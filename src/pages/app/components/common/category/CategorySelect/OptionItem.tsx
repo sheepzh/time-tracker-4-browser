@@ -7,7 +7,8 @@ import cateService from "@service/cate-service"
 import { selectAllSites } from '@service/site-service'
 import { stopPropagationAfter } from "@util/document"
 import { ElButton, ElInput, ElMessage, ElMessageBox } from "element-plus"
-import { defineComponent, nextTick, ref } from "vue"
+import { defineComponent, ref } from "vue"
+import CategoryDialog from '../CategoryDialog'
 
 const OptionItem = defineComponent<{ value: timer.site.Cate }>(props => {
     const cate = useCategory()
@@ -51,10 +52,10 @@ const OptionItem = defineComponent<{ value: timer.site.Cate }>(props => {
         }).then(removeCate).catch(() => { })
     }
 
-    const onEditClick = () => {
-        setEditingName(props.value.name)
-        openEditing()
-        nextTick(() => inputRef.value?.focus?.())
+    const onEditClick = async () => {
+        const edited = await CategoryDialog.open({ cate: props.value })
+        await cateService.save(edited)
+        await cate.refresh()
     }
 
     return () => (

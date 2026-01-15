@@ -23,6 +23,7 @@ export type SiteManageMessage = {
         batchChange: string
         batchDisassociate: string
         removeConfirm: string
+        auto: string
     }
     form: {
         emptyAlias: string
