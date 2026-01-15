@@ -31,16 +31,16 @@ const CategorySelect = defineComponent<Props>((props, ctx) => {
             ref={selectRef}
             size={props.size}
             modelValue={props.modelValue}
-            onChange={val => ctx.emit('change', val)}
-            onVisible-change={visible => ctx.emit('visibleChange', visible)}
+            onChange={props.onChange}
+            onVisible-change={props.onVisibleChange}
             style={{ width: props.width || '100%' }}
             clearable={props.clearable}
-            onClear={() => ctx.emit('change', undefined)}
+            onClear={() => props.onChange?.(undefined)}
             emptyValues={[CATE_NOT_SET_ID, undefined]}
             v-slots={{ footer: () => <SelectFooter /> }}
         >
             {cate.all.map(c => (
-                <ElOption value={c?.id} label={c?.name}>
+                <ElOption value={c.id} label={c.name}>
                     <OptionItem value={c} />
                 </ElOption>
             ))}
