@@ -114,7 +114,7 @@
             "removeConfirm": "Confirm to delete category: {category}?",
             "batchChange": "Change categories",
             "batchDisassociate": "Disassociate categories",
-            "auto": "Auto-categorization"
+            "autoRules": "Auto-categorization rules"
         },
         "form": {
             "emptyAlias": "Please enter site name",

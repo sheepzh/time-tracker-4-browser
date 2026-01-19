@@ -1,6 +1,6 @@
 
 import { t } from '@app/locale'
-import { ElButton, ElDialog, ElFormItem, ElInput } from 'element-plus'
+import { ElButton, ElDialog, ElForm, ElFormItem, ElInput, ElInputTag, ElMessage } from 'element-plus'
 import { createVNode, defineComponent, reactive, ref, render } from 'vue'
 
 type Props = {
@@ -15,6 +15,14 @@ const Component = defineComponent<Props>(props => {
 
     const handleConfirm = () => {
 
+    }
+
+    const handleRulesChange = (rules: string[] | undefined = []) => {
+        if (new Set(rules).size < rules.length) {
+            ElMessage.warning('Rules contain duplicated items')
+        } else {
+            formData.autoRules = rules
+        }
     }
 
     return () => (
@@ -34,12 +42,19 @@ const Component = defineComponent<Props>(props => {
                 </>
             }}
         >
-            <ElFormItem label={t(msg => msg.siteManage.cate.name)} prop="name">
-                <ElInput v-model={formData.name} />
-            </ElFormItem>
-            <ElFormItem label={t(msg => msg.siteManage.cate.name)} prop="name">
-                <ElInput v-model={formData.name} />
-            </ElFormItem>
+            <ElForm model={formData} labelPosition='top'>
+                <ElFormItem label={t(msg => msg.siteManage.cate.name)} prop="name" required>
+                    <ElInput v-model={formData.name} />
+                </ElFormItem>
+                <ElFormItem label={t(msg => msg.siteManage.cate.autoRules)} prop="autoRules">
+                    <ElInputTag
+                        placeholder='**.google.com, *.example.com'
+                        modelValue={formData.autoRules}
+                        trigger='Space'
+                        onChange={handleRulesChange}
+                    />
+                </ElFormItem>
+            </ElForm>
         </ElDialog>
     )
 }, { props: ['cate', 'onClose', 'onSave'] })
@@ -80,8 +95,6 @@ function open(options: DialogOptions = {}): Promise<timer.site.Cate> {
         render(vnode, container)
     })
 }
-
-
 
 type CategoryDialogDef = typeof Component & {
     open: typeof open
