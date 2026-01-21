@@ -92,7 +92,10 @@ const cvt2SiteQuery = (
     { dateRange: date, mergeDate, siteMerge, query, cateIds, readRemote: inclusiveRemote }: ReportFilterOption,
     { prop, order }: ReportSort,
 ): SiteQuery => ({
-    date, mergeDate, mergeHost: siteMerge === 'domain', query, cateIds, inclusiveRemote,
+    date, mergeDate,
+    mergeHost: siteMerge === 'domain',
+    query, cateIds, inclusiveRemote,
+    virtual: true,
     sortKey: prop,
     sortDirection: cvtOrderDir(order),
 })

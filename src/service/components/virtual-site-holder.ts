@@ -17,7 +17,7 @@ class VirtualSiteHolder {
         siteDatabase.addChangeListener(oldAndNew => oldAndNew.forEach(([oldVal, newVal]) => {
             if (!newVal) {
                 // deleted
-                delete this.hostSiteRegMap[oldVal.host]
+                oldVal?.host && delete this.hostSiteRegMap[oldVal.host]
             } else {
                 this.updateRegularExp(newVal)
             }

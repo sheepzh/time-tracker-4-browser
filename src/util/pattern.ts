@@ -204,5 +204,5 @@ export function compileAntPattern(antPattern: string): RegExp {
         patternStr = patternStr.substring(0, patternStr.length - 3) + ".*"
     }
 
-    return new RegExp("^(.+://)?" + patternStr + "/?(\\?.*)?$")
+    return new RegExp("^(.+://)?" + patternStr + "/?([\\?#].*)?$")
 }

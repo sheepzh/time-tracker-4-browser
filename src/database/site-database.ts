@@ -204,17 +204,17 @@ class SiteDatabase extends BaseDatabase {
      *
      * @since 1.6.0
      */
-    addChangeListener(listener: (oldAndNew: [timer.site.SiteInfo, timer.site.SiteInfo][]) => void) {
+    addChangeListener(listener: (oldAndNew: [timer.site.SiteInfo?, timer.site.SiteInfo?][]) => void) {
         const storageListener = (
             changes: { [key: string]: chrome.storage.StorageChange },
             _areaName: chrome.storage.AreaName,
         ) => {
-            const changedSites: [timer.site.SiteInfo, timer.site.SiteInfo][] = Object.entries(changes)
+            const changedSites: [timer.site.SiteInfo?, timer.site.SiteInfo?][] = Object.entries(changes)
                 .filter(([k]) => k.startsWith(DB_KEY_PREFIX))
-                .map(([k, v]) => {
+                .map(([k, { oldValue, newValue }]) => {
                     const siteKey = cvt2SiteKey(k)
-                    const oldVal = cvt2SiteInfo(siteKey, v?.oldValue as _Entry)
-                    const newVal = cvt2SiteInfo(siteKey, v?.newValue as _Entry)
+                    const oldVal = oldValue ? cvt2SiteInfo(siteKey, oldValue as _Entry) : undefined
+                    const newVal = newValue ? cvt2SiteInfo(siteKey, newValue as _Entry) : undefined
                     return [oldVal, newVal]
                 })
             changedSites.length && listener?.(changedSites)
