@@ -5,8 +5,8 @@ import Flex from "@pages/components/Flex"
 import { saveSiteCate } from '@service/site-service'
 import { supportCategory } from "@util/site"
 import { ElIcon, ElTag } from "element-plus"
-import { computed, defineComponent, nextTick, ref } from "vue"
-import CategorySelect, { CategorySelectInstance } from "./CategorySelect"
+import { computed, defineComponent } from "vue"
+import CategorySelect from "./CategorySelect"
 
 type Props = ModelValue<number | undefined> & {
     siteKey: timer.site.SiteKey
@@ -34,18 +34,10 @@ const CategoryEditable = defineComponent<Props>(props => {
         },
     })
 
-    const handleEditClick = () => {
-        openEditing()
-        nextTick(() => selectRef.value?.openOptions?.())
-    }
-
-    const selectRef = ref<CategorySelectInstance>()
-
     return () => supportCategory(props.siteKey) ?
         <Flex width="100%" height="100%" justify="center">
             {editing.value ?
                 <CategorySelect
-                    ref={selectRef}
                     size="small"
                     width="100px"
                     modelValue={props.modelValue}
@@ -63,7 +55,7 @@ const CategoryEditable = defineComponent<Props>(props => {
                             {current.value.name}
                         </ElTag>
                     }
-                    <Flex align="center" onClick={handleEditClick}>
+                    <Flex align="center" onClick={openEditing}>
                         <ElIcon style={{ cursor: 'pointer' }}>
                             <Edit />
                         </ElIcon>
