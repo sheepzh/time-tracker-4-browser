@@ -6,37 +6,33 @@
  */
 
 import { useCached } from "@hooks"
-import { ElOption, ElSelect } from "element-plus"
-import { defineComponent, watch, type PropType } from "vue"
+import { ElSelect } from "element-plus"
+import { defineComponent, watch } from "vue"
 import { useRoute } from "vue-router"
 import { SELECT_WRAPPER_STYLE } from "./common"
 
-const _default = defineComponent({
-    props: {
-        defaultValue: String,
-        /**
-         * Whether to save the value in the localStorage with {@param historyName}
-         */
-        historyName: String,
-        options: Object as PropType<Record<string | number, string>>
-    },
-    emits: {
-        select: (_val: string | undefined) => true
-    },
-    setup(props, ctx) {
-        const cacheKey = props.historyName && `__filter_item_select_${useRoute().path}_${props.historyName}`
-        const { data, setter } = useCached(cacheKey, props.defaultValue)
-        watch(data, () => ctx.emit('select', data.value))
-        return () => (
-            <ElSelect
-                modelValue={data.value}
-                onChange={setter}
-                style={SELECT_WRAPPER_STYLE}
-            >
-                {Object.entries(props.options || {}).map(([value, label]) => <ElOption label={label} value={value} />)}
-            </ElSelect>
-        )
-    }
-})
+type Props = {
+    defaultValue?: string
+    /**
+     * Whether to save the value in the localStorage with {@param historyName}
+     */
+    historyName?: string
+    options: Record<string, string>
+    onSelect?: (val: string | undefined) => void
+}
 
-export default _default
+const SelectFilterItem = defineComponent<Props>(props => {
+    const cacheKey = props.historyName && `__filter_item_select_${useRoute().path}_${props.historyName}`
+    const { data, setter } = useCached(cacheKey, props.defaultValue)
+    watch(data, val => props.onSelect?.(val))
+    return () => (
+        <ElSelect
+            modelValue={data.value}
+            onChange={setter}
+            style={SELECT_WRAPPER_STYLE}
+            options={Object.entries(props.options).map(([value, label]) => ({ label, value }))}
+        />
+    )
+}, { props: ['defaultValue', 'historyName', 'options', 'onSelect'] })
+
+export default SelectFilterItem

@@ -14,7 +14,7 @@ import optionService from "@service/option-service"
 import { IS_ANDROID } from "@util/constant/environment"
 import { defaultAppearance } from "@util/constant/option"
 import { toggle } from "@util/dark-mode"
-import { ElColorPicker, ElMessageBox, ElOption, ElSelect, ElSlider, ElSwitch, ElTag, type TagProps } from "element-plus"
+import { ElColorPicker, ElMessageBox, ElSelect, ElSlider, ElSwitch, ElTag, type TagProps } from "element-plus"
 import { computed, defineComponent, type StyleValue } from "vue"
 import { type OptionInstance } from "../../common"
 import { useOption } from "../../useOption"
@@ -23,10 +23,16 @@ import OptionLines from '../OptionLines'
 import OptionTag from '../OptionTag'
 import DarkModeInput from "./DarkModeInput"
 
+const FOLLOW_BROWSER: I18nKey = msg => msg.option.followBrowser
+
 const SORTED_LOCALES: timer.Locale[] = ALL_LOCALES
     // Keep the locale same as this browser first position
     .sort((a, _b) => a === localeSameAsBrowser ? -1 : 0)
-const allLocaleOptions: timer.option.LocaleOption[] = ["default", ...SORTED_LOCALES]
+
+const allLocaleOptions = (["default", ...SORTED_LOCALES] satisfies timer.option.LocaleOption[]).map(locale => ({
+    value: locale,
+    label: locale === "default" ? t(FOLLOW_BROWSER) : localeMessages[locale].name
+}))
 
 function copy(target: timer.option.AppearanceOption, source: timer.option.AppearanceOption) {
     target.displayWhitelistMenu = source.displayWhitelistMenu
@@ -42,7 +48,7 @@ function copy(target: timer.option.AppearanceOption, source: timer.option.Appear
 
 const DEFAULT_ANIMA_DURATION = defaultAppearance().chartAnimationDuration
 const DEFAULT_SIDE_PANEL_ENABLED = true
-const FOLLOW_BROWSER: I18nKey = msg => msg.option.followBrowser
+
 
 const _default = defineComponent((_props, ctx) => {
     const { option } = useOption<timer.option.AppearanceOption>({
@@ -107,12 +113,8 @@ const _default = defineComponent((_props, ctx) => {
                     style={{ width: "120px" }}
                     onChange={(newVal: timer.option.LocaleOption) => handleLocaleChange(newVal)}
                     filterable
-                >
-                    {allLocaleOptions.map(locale => <ElOption
-                        value={locale}
-                        label={locale === "default" ? t(FOLLOW_BROWSER) : localeMessages[locale].name}
-                    />)}
-                </ElSelect>
+                    options={allLocaleOptions}
+                />
             </OptionItem>
             {!IS_ANDROID && <>
                 <OptionItem
