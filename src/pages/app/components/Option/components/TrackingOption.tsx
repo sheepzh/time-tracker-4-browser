@@ -13,7 +13,7 @@ import { rotate } from "@util/array"
 import { IS_ANDROID, IS_FIREFOX } from "@util/constant/environment"
 import { defaultTracking } from "@util/constant/option"
 import { MILL_PER_SECOND } from "@util/time"
-import { ElMessage, ElMessageBox, ElOption, ElSelect, ElSwitch, ElTimePicker, ElTooltip } from "element-plus"
+import { ElMessage, ElMessageBox, ElSelect, ElSwitch, ElTimePicker, ElTooltip } from "element-plus"
 import { computed, defineComponent } from "vue"
 import { type OptionInstance } from "../common"
 import { useOption } from "../useOption"
@@ -149,9 +149,8 @@ const _default = defineComponent((_props, ctx) => {
                 size="small"
                 style={{ width: '120px' }}
                 onChange={(val: timer.option.WeekStartOption) => option.weekStart = val}
-            >
-                {weekStartOptionPairs.map(([val, label]) => <ElOption value={val} label={label} />)}
-            </ElSelect>
+                options={weekStartOptionPairs.map(([value, label]) => ({ value, label }))}
+            />
         </OptionItem>
     </OptionLines>
 })

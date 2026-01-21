@@ -10,7 +10,7 @@ import { Edit } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
 import { locale } from '@i18n'
 import { defaultLimit } from "@util/constant/option"
-import { ElButton, ElInput, ElInputNumber, ElMessage, ElMessageBox, ElOption, ElSelect, ElSwitch, useNamespace } from "element-plus"
+import { ElButton, ElInput, ElInputNumber, ElMessage, ElMessageBox, ElSelect, ElSwitch, useNamespace } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
 import { type OptionInstance } from "../../common"
 import { useOption } from "../../useOption"
@@ -150,9 +150,8 @@ const _default = defineComponent((_, ctx) => {
                 class={levelSelectStyle.cls}
                 style={{ width: `${levelSelectStyle.width}px` }}
                 onChange={handleLevelChange}
-            >
-                {ALL_LEVEL.map(item => <ElOption value={item} label={t(msg => msg.option.limit.level[item])} />)}
-            </ElSelect>
+                options={ALL_LEVEL.map(value => ({ value, label: t(msg => msg.option.limit.level[value]) }))}
+            />
         </OptionItem>
         <OptionItem
             v-show={option.limitLevel === "password"}
@@ -181,9 +180,8 @@ const _default = defineComponent((_, ctx) => {
                     .then(() => option.limitVerifyDifficulty = val)
                     .catch(console.warn)
                 }
-            >
-                {ALL_DIFF.map(item => <ElOption value={item} label={t(msg => msg.option.limit.level.verificationDifficulty[item])} />)}
-            </ElSelect>
+                options={ALL_DIFF.map(value => ({ value, label: t(msg => msg.option.limit.level.verificationDifficulty[value]) }))}
+            />
             <ElButton
                 size="small"
                 style={{ height: '28px', marginInlineStart: '5px' } satisfies StyleValue}

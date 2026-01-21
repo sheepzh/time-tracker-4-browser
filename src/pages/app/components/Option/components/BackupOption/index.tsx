@@ -9,7 +9,7 @@ import {
     DEFAULT_ENDPOINT as DEFAULT_OBSIDIAN_ENDPOINT,
 } from "@api/obsidian"
 import { t } from "@app/locale"
-import { ElInput, ElOption, ElSelect } from "element-plus"
+import { ElInput, ElSelect } from "element-plus"
 import { computed, defineComponent } from "vue"
 import { type OptionInstance } from "../../common"
 import OptionItem from "../OptionItem"
@@ -53,9 +53,8 @@ const _default = defineComponent((_, ctx) => {
                 modelValue={backupType.value}
                 size="small"
                 onChange={(val: timer.backup.Type) => backupType.value = val}
-            >
-                {ALL_TYPES.map(type => <ElOption value={type} label={TYPE_NAMES[type]} />)}
-            </ElSelect>
+                options={ALL_TYPES.map(value => ({ value, label: TYPE_NAMES[value] }))}
+            />
         </OptionItem >
         <OptionItem
             v-show={isNotNone.value}
