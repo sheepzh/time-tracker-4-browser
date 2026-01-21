@@ -5,10 +5,13 @@
  * https://opensource.org/licenses/MIT
  */
 import { t } from "@app/locale"
-import { ElOption, ElSelect, ElTimePicker } from "element-plus"
+import { ElSelect, ElTimePicker } from "element-plus"
 import { computed, defineComponent, StyleValue } from "vue"
 
 const ALL_MODES: timer.option.DarkMode[] = ["default", "on", "off", "timed"]
+const labelOfMode = (mode: timer.option.DarkMode) => mode === 'default'
+    ? t(msg => msg.option.followBrowser)
+    : t(msg => msg.option.appearance.darkMode.options[mode])
 
 function computeSecondToDate(secondOfDate: number): Date {
     const now = new Date()
@@ -46,14 +49,8 @@ const _default = defineComponent<Props>(props => {
             size="small"
             style={{ width: "120px" }}
             onChange={val => props.onChange?.(val as timer.option.DarkMode, [props.startSecond, props.endSecond])}
-        >
-            {
-                ALL_MODES.map(value => <ElOption
-                    value={value}
-                    label={t(msg => value === 'default' ? msg.option.followBrowser : msg.option.appearance.darkMode.options[value])}
-                />)
-            }
-        </ElSelect>
+            options={ALL_MODES.map(value => ({ value, label: labelOfMode(value) }))}
+        />
         {props.modelValue === "timed" && <>
             <ElTimePicker
                 modelValue={start.value}

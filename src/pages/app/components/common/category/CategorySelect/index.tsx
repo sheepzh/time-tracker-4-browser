@@ -1,7 +1,7 @@
 import { useCategory } from "@app/context"
 import { CATE_NOT_SET_ID } from '@util/site'
 import { ElOption, ElSelect, type SelectInstance } from "element-plus"
-import { defineComponent, ref } from "vue"
+import { computed, defineComponent, ref } from "vue"
 import OptionItem from "./OptionItem"
 import SelectFooter from "./SelectFooter"
 
@@ -20,6 +20,7 @@ type Props = {
 
 const CategorySelect = defineComponent<Props>((props, ctx) => {
     const cate = useCategory()
+    const options = computed(() => cate.all.map(c => ({ value: c.id, label: <OptionItem value={c} /> })))
 
     const selectRef = ref<SelectInstance>()
     ctx.expose({

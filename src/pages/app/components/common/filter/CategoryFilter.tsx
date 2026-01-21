@@ -1,7 +1,7 @@
 import { useCategory } from "@app/context"
 import { t } from "@app/locale"
 import { CATE_NOT_SET_ID } from "@util/site"
-import { ElOption, ElSelect } from "element-plus"
+import { ElSelect } from "element-plus"
 import { computed, defineComponent, type StyleValue } from "vue"
 
 type Props = ModelValue<number[] | undefined> & {
@@ -12,9 +12,9 @@ type Props = ModelValue<number[] | undefined> & {
 const CategoryFilter = defineComponent<Props>(props => {
     const cate = useCategory()
 
-    const displayCategories = computed(() => [
-        { id: CATE_NOT_SET_ID, name: t(msg => msg.shared.cate.notSet) } satisfies timer.site.Cate,
-        ...cate.all,
+    const options = computed(() => [
+        { value: CATE_NOT_SET_ID, label: t(msg => msg.shared.cate.notSet) },
+        ...cate.all.map(c => ({ value: c.id, label: c.name }))
     ])
 
     return () => cate.enabled ? (
@@ -29,9 +29,8 @@ const CategoryFilter = defineComponent<Props>(props => {
             onClear={() => props.onChange?.(undefined)}
             placeholder={t(msg => msg.siteManage.column.cate)}
             style={{ width: '200px' } satisfies StyleValue}
-        >
-            {displayCategories.value?.map(cate => <ElOption value={cate.id} label={cate.name} />)}
-        </ElSelect>
+            options={options.value}
+        />
     ) : null
 }, { props: ['modelValue', 'onChange', 'disabled', 'useCache'] })
 

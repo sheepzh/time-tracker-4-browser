@@ -53,9 +53,8 @@ const TitleSelect = defineComponent<Props>(({ values, field }) => {
             onChange={val => filter[field] = val as number}
             popperOptions={{ placement: 'bottom' }}
             popperClass={popoverCls}
-        >
-            {values.map(k => <ElSelect.Option key={k} label={k} value={k} />)}
-        </ElSelect >
+            options={values.map(k => ({ label: k, value: k }))}
+        />
     )
 }, { props: ['field', "values"] })
 
