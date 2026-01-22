@@ -36,7 +36,7 @@
         "@rspack/core": "^1.7.3",
         "@swc/core": "^1.15.10",
         "@swc/jest": "^0.2.39",
-        "@types/chrome": "0.1.35",
+        "@types/chrome": "0.1.36",
         "@types/decompress": "^4.2.7",
         "@types/jest": "^30.0.0",
         "@types/node": "^25.0.9",
