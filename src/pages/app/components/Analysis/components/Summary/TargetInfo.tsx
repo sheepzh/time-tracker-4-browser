@@ -10,6 +10,7 @@ import { t } from "@app/locale"
 import { useRequest } from "@hooks"
 import Flex from "@pages/components/Flex"
 import { getSite } from '@service/site-service'
+import { CATE_NOT_SET_ID } from '@util/site'
 import { ElTag } from "element-plus"
 import { computed, defineComponent, type StyleValue, toRef } from "vue"
 import { useAnalysisTarget } from "../../context"
@@ -50,13 +51,17 @@ const SiteInfo = defineComponent<{ value: timer.site.SiteKey }>(props => {
 }, { props: ['value'] })
 
 const CateInfo = defineComponent<{ value: number }>(props => {
-    const cateId = toRef(props, 'value')
-    const cateInst = useCategory()
-    const cate = computed(() => cateInst.all.find(c => c.id === cateId.value))
+    const { all } = useCategory()
+    const cateName = computed(() => {
+        const cateId = props.value
+        return cateId === CATE_NOT_SET_ID
+            ? t(msg => msg.shared.cate.notSet)
+            : all.find(c => c.id === cateId)?.name ?? ''
+    })
 
     return () => (
         <Flex width="100%" gap={5} column align="center">
-            <h1 style={TITLE_STYLE}>{cate.value?.name}</h1>
+            <h1 style={TITLE_STYLE}>{cateName.value}</h1>
             <ElTag type='info' size="small">{t(msg => msg.analysis.target.cate)}</ElTag>
         </Flex>
     )

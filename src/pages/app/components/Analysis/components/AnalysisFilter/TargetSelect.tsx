@@ -4,7 +4,7 @@ import { useDebounceState, useRequest } from "@hooks"
 import Flex from "@pages/components/Flex"
 import { selectAllSites } from "@service/site-service"
 import { listHosts } from "@service/stat-service"
-import { identifySiteKey, parseSiteKeyFromIdentity, SiteMap } from "@util/site"
+import { CATE_NOT_SET_ID, identifySiteKey, parseSiteKeyFromIdentity, SiteMap } from "@util/site"
 import { ElSelectV2, ElTag, useNamespace } from "element-plus"
 import type { OptionType } from "element-plus/es/components/select-v2/src/select.types"
 import { computed, defineComponent, type FunctionalComponent, onMounted, ref, type StyleValue } from "vue"
@@ -111,7 +111,7 @@ const TargetSelect = defineComponent(() => {
     })
 
     const { data: allItems } = useRequest(
-        () => fetchItems(cate.all),
+        () => fetchItems([...cate.all, { id: CATE_NOT_SET_ID, name: t(msg => msg.shared.cate.notSet) }]),
         { defaultValue: [[], []], deps: [() => cate.all] },
     )
 

@@ -13,8 +13,8 @@ const CategoryFilter = defineComponent<Props>(props => {
     const cate = useCategory()
 
     const options = computed(() => [
+        ...cate.all.map(c => ({ value: c.id, label: c.name })),
         { value: CATE_NOT_SET_ID, label: t(msg => msg.shared.cate.notSet) },
-        ...cate.all.map(c => ({ value: c.id, label: c.name }))
     ])
 
     return () => cate.enabled ? (
