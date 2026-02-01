@@ -172,6 +172,7 @@
         "c": {
             "com": 1,
             "framer": 1,
+            "kiloapps": 1,
             "net": 1,
             "off": 1,
             "org": 1,
@@ -244,6 +245,7 @@
         "c": {
             "adaptable": 1,
             "aiven": 1,
+            "base44": 1,
             "beget": {
                 "c": {
                     "*": 1
@@ -265,6 +267,7 @@
             "clerkstage": 1,
             "cloudflare": 1,
             "convex": 1,
+            "corespeed": 1,
             "csb": {
                 "c": {
                     "preview": 1
@@ -315,6 +318,7 @@
             "magicpatterns": 1,
             "medusajs": 1,
             "messerli": 1,
+            "miren": 1,
             "mocha": 1,
             "netlify": 1,
             "ngrok": 1,
@@ -350,6 +354,7 @@
                     }
                 }
             },
+            "shiptoday": 1,
             "snowflake": {
                 "c": {
                     "*": 1,
@@ -360,6 +365,7 @@
                     }
                 }
             },
+            "spawnbase": 1,
             "sprites": 1,
             "streamlit": 1,
             "telebit": 1,
@@ -789,6 +795,11 @@
                             "transfer-webapp": 1
                         }
                     },
+                    "ap-southeast-7": {
+                        "c": {
+                            "transfer-webapp": 1
+                        }
+                    },
                     "ca-central-1": {
                         "c": {
                             "airflow": {
@@ -924,6 +935,11 @@
                                 }
                             },
                             "lambda-url": 1,
+                            "transfer-webapp": 1
+                        }
+                    },
+                    "mx-central-1": {
+                        "c": {
                             "transfer-webapp": 1
                         }
                     },
@@ -1816,6 +1832,7 @@
     },
     "build": {
         "c": {
+            "shiptoday": 1,
             "v0": 1,
             "windsurf": 1
         },
@@ -3797,7 +3814,8 @@
                                     "s3": 1,
                                     "s3-accesspoint": 1,
                                     "s3-accesspoint-fips": 1,
-                                    "s3-fips": 1
+                                    "s3-fips": 1,
+                                    "s3-website": 1
                                 }
                             },
                             "emrappui-prod": 1,
@@ -3819,7 +3837,8 @@
                                     "s3": 1,
                                     "s3-accesspoint": 1,
                                     "s3-accesspoint-fips": 1,
-                                    "s3-fips": 1
+                                    "s3-fips": 1,
+                                    "s3-website": 1
                                 }
                             },
                             "emrappui-prod": 1,
@@ -4118,6 +4137,7 @@
             "balena-devices": 1,
             "barsycenter": 1,
             "barsyonline": 1,
+            "base44-sandbox": 1,
             "blogdns": 1,
             "blogspot": 1,
             "blogsyte": 1,
@@ -4735,7 +4755,6 @@
             "simple-url": 1,
             "simplesite": 1,
             "sinaapp": 1,
-            "skygearapp": 1,
             "smushcdn": 1,
             "space-to-rent": 1,
             "stackhero-network": 1,
@@ -5016,6 +5035,11 @@
             "4lima": 1,
             "barsy": 1,
             "bplaced": 1,
+            "bwcloud-os-instance": {
+                "c": {
+                    "*": 1
+                }
+            },
             "co": 1,
             "com": 1,
             "community-pro": 1,
@@ -5024,7 +5048,6 @@
                     "dyn": 1
                 }
             },
-            "dd-dns": 1,
             "ddnss": {
                 "c": {
                     "dyn": 1,
@@ -5035,14 +5058,10 @@
             "diskussionsbereich": 1,
             "dnshome": 1,
             "dnsupdater": 1,
-            "dray-dns": 1,
-            "draydns": 1,
             "dyn-berlin": 1,
             "dyn-ip24": 1,
-            "dyn-vpn": 1,
             "dynamisches-dns": 1,
             "dyndns1": 1,
-            "dynvpn": 1,
             "firewall-gateway": 1,
             "frusky": {
                 "c": {
@@ -5085,12 +5104,9 @@
             "lima-city": 1,
             "logoip": 1,
             "mein-iserv": 1,
-            "mein-vigor": 1,
             "my": 1,
             "my-gateway": 1,
             "my-router": 1,
-            "my-vigor": 1,
-            "my-wan": 1,
             "myhome-server": 1,
             "myspreadshop": 1,
             "rub": 1,
@@ -5115,9 +5131,6 @@
             },
             "square7": 1,
             "svn-repos": 1,
-            "syno-ds": 1,
-            "synology-diskstation": 1,
-            "synology-ds": 1,
             "taifun-dns": 1,
             "test-iserv": 1,
             "traeumtgerade": 1,
@@ -5171,7 +5184,72 @@
             },
             "crm": {
                 "c": {
+                    "aa": {
+                        "c": {
+                            "*": 1
+                        }
+                    },
+                    "ab": {
+                        "c": {
+                            "*": 1
+                        }
+                    },
+                    "ac": {
+                        "c": {
+                            "*": 1
+                        }
+                    },
+                    "ad": {
+                        "c": {
+                            "*": 1
+                        }
+                    },
+                    "ae": {
+                        "c": {
+                            "*": 1
+                        }
+                    },
+                    "af": {
+                        "c": {
+                            "*": 1
+                        }
+                    },
+                    "ci": {
+                        "c": {
+                            "*": 1
+                        }
+                    },
                     "d": {
+                        "c": {
+                            "*": 1
+                        }
+                    },
+                    "pa": {
+                        "c": {
+                            "*": 1
+                        }
+                    },
+                    "pb": {
+                        "c": {
+                            "*": 1
+                        }
+                    },
+                    "pc": {
+                        "c": {
+                            "*": 1
+                        }
+                    },
+                    "pd": {
+                        "c": {
+                            "*": 1
+                        }
+                    },
+                    "pe": {
+                        "c": {
+                            "*": 1
+                        }
+                    },
+                    "pf": {
                         "c": {
                             "*": 1
                         }
@@ -5363,7 +5441,12 @@
     "discount": 1,
     "discover": 1,
     "dish": 1,
-    "diy": 1,
+    "diy": {
+        "c": {
+            "discourse": 1
+        },
+        "l": 1
+    },
     "dj": 1,
     "dk": {
         "c": {
@@ -5616,10 +5699,27 @@
     },
     "eu": {
         "c": {
+            "amazonwebservices": {
+                "c": {
+                    "on": {
+                        "c": {
+                            "eusc-de-east-1": {
+                                "c": {
+                                    "cognito-idp": {
+                                        "c": {
+                                            "auth": 1
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "barsy": 1,
             "cloudns": 1,
+            "deuxfleurs": 1,
             "directwp": 1,
-            "diskstation": 1,
             "dogado": {
                 "c": {
                     "jelastic": 1
@@ -6530,6 +6630,8 @@
                 "l": 1
             },
             "jele": 1,
+            "keenetic": 1,
+            "kiloapps": 1,
             "lair": {
                 "c": {
                     "apps": 1
@@ -9484,6 +9586,7 @@
             "co": 1,
             "daegu": 1,
             "daejeon": 1,
+            "eliv-api": 1,
             "eliv-cdn": 1,
             "eliv-dns": 1,
             "es": 1,
@@ -9640,6 +9743,7 @@
                 }
             },
             "joinmc": 1,
+            "keenetic": 1,
             "myfritz": 1,
             "mypep": 1,
             "nftstorage": {
@@ -10128,7 +10232,8 @@
                     "forgot": 1
                 }
             },
-            "ispmanager": 1
+            "ispmanager": 1,
+            "keenetic": 1
         },
         "l": 1
     },
@@ -10399,7 +10504,6 @@
             "no-ip": 1,
             "now-dns": 1,
             "office-on-the": 1,
-            "onavstack": 1,
             "oninferno": 1,
             "ovh": {
                 "c": {
@@ -11677,7 +11781,6 @@
             "collegefan": 1,
             "couchpotatofries": 1,
             "ddnss": 1,
-            "diskstation": 1,
             "dnsalias": 1,
             "dnsdojo": 1,
             "doesntexist": 1,
@@ -11901,14 +12004,14 @@
         "c": {
             "aem": 1,
             "codeberg": 1,
+            "deuxfleurs": 1,
             "heyflow": 1,
             "hlx": 1,
             "pdns": 1,
             "plesk": 1,
             "prvcy": 1,
             "rocky": 1,
-            "statichost": 1,
-            "translated": 1
+            "statichost": 1
         },
         "l": 1
     },
@@ -12350,6 +12453,7 @@
             "cpa": 1,
             "eng": 1,
             "jur": 1,
+            "keenetic": 1,
             "law": 1,
             "med": 1,
             "ngrok": 1,
@@ -12940,6 +13044,7 @@
                 }
             },
             "preview": 1,
+            "sol": 1,
             "sourcecraft": 1,
             "square": 1,
             "srht": 1,
@@ -12985,7 +13090,6 @@
             "edu": 1,
             "gouv": 1,
             "org": 1,
-            "perso": 1,
             "univ": 1
         },
         "l": 1
@@ -13196,7 +13300,8 @@
     "sydney": 1,
     "systems": {
         "c": {
-            "knightpoint": 1
+            "knightpoint": 1,
+            "miren": 1
         },
         "l": 1
     },
