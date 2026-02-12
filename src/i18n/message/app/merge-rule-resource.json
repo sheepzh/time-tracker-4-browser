@@ -238,6 +238,10 @@
         "infoAlert0": "Kliknij przycisk [New One], pola wprowadzania strony źródłowej oraz strony scalenia zostaną wyświetlone, wypełnij i zapisz regułę",
         "infoAlert1": "Oryginalna strona może być wypełniona konkretną stroną lub wyrażeniem regularnym, takim jak *.baidu.com, *.google.com.*, aby określić, które witryny będą odpowiadać tej regule podczas scalania",
         "infoAlert2": "Scalona witryna może być wypełniona określoną witryną, liczbą lub zostawiona pusta",
-        "infoAlert3": "Liczba oznacza poziom scalonej witryny. Na przykład istnieje reguła '*.*.edu.cn >>> 3', a następnie 'www.hust.edu.cn' zostanie połączona z 'hust.edu.cn'"
+        "infoAlert3": "Liczba oznacza poziom scalonej witryny. Na przykład istnieje reguła '*.*.edu.cn >>> 3', a następnie 'www.hust.edu.cn' zostanie połączona z 'hust.edu.cn'",
+        "infoAlert4": "Puste oznacza, że oryginalna strona nie zostanie połączona",
+        "tagResult": {
+            "blank": "Nie scalaj"
+        }
     }
 }

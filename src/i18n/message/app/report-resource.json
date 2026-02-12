@@ -253,7 +253,9 @@
         "exportFileName": "My_Browsing_Time",
         "remoteReading": {
             "table": {
-                "client": "Nazwa klienta"
+                "client": "Nazwa klienta",
+                "value": "Wartość",
+                "percentage": "Procent"
             }
         }
     }

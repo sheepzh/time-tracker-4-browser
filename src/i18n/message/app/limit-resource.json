@@ -622,6 +622,7 @@
     "pl": {
         "filterDisabled": "Tylko aktywne",
         "wildcardTip": "Możesz używać symbolu \"*\", aby dopasowywać subdomeny lub podstrony, a także użyć znaku „+” jako prefiksu, aby wykluczyć podstrony!",
+        "emptyTips": "Kliknij tutaj, aby utworzyć zasadę!",
         "item": {
             "name": "Nazwa zasady",
             "condition": "Limitowany URL",

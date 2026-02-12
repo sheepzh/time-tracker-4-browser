@@ -508,12 +508,32 @@
         }
     },
     "pl": {
+        "deleteConfirmMsg": "{host} zostanie usunięty",
         "column": {
+            "type": "Typ witryny",
             "alias": "Nazwa strony",
+            "cate": "Kategoria witryny",
             "icon": "Ikona"
         },
+        "type": {
+            "merged": {
+                "name": "scalone"
+            }
+        },
+        "cate": {
+            "name": "Nazwa",
+            "relatedMsg": "Ta kategoria została przypisana do witryn {siteCount} i nie może zostać usunięta",
+            "removeConfirm": "Potwierdzasz usunięcie kategorii: {category}?",
+            "batchChange": "Zmień kategorie"
+        },
         "form": {
+            "emptyAlias": "Wprowadź nazwę witryny",
             "emptyHost": "Wprowadź adres URL witryny"
+        },
+        "msg": {
+            "noSelected": "Nie wybrano żadnej witryny",
+            "disassociatedMsg": "Czy chcesz wyczyścić kategorie wszystkich wybranych witryn?",
+            "batchDeleteMsg": "Czy chcesz usunąć wszystkie wybrane witryny?"
         }
     }
 }
