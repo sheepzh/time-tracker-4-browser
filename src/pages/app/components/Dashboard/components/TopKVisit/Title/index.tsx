@@ -49,24 +49,26 @@ const Title = defineComponent(() => {
 
     return () => (
         <Flex align="center" justify="space-between">
-            <Flex align="center" wrap columnGap={3}>
+            <Flex align="center" wrap columnGap={3} rowGap={2}>
                 {tN(msg => msg.dashboard.topK.title, {
                     k: <TitleSelect field="topK" values={[6, 8, 10, 12]} />,
                     day: <TitleSelect field="dayNum" values={[7, 30, 90, 180]} />,
                 })}
             </Flex>
-            <ElRadioGroup
-                v-show={!isXs.value}
-                size="small"
-                modelValue={filter.topKChartType}
-                onChange={val => filter.topKChartType = val as TopKChartType}
-            >
-                {Object.entries(CHART_CONFIG).map(([k, v]) => (
-                    <ElRadioButton value={k} class={radioCls}>
-                        <ElIcon size={15}>{v}</ElIcon>
-                    </ElRadioButton>
-                ))}
-            </ElRadioGroup>
+            <Flex width={90} justify='end'>
+                <ElRadioGroup
+                    v-show={!isXs.value}
+                    size="small"
+                    modelValue={filter.topKChartType}
+                    onChange={val => filter.topKChartType = val as TopKChartType}
+                >
+                    {Object.entries(CHART_CONFIG).map(([k, v]) => (
+                        <ElRadioButton value={k} class={radioCls}>
+                            <ElIcon size={15}>{v}</ElIcon>
+                        </ElRadioButton>
+                    ))}
+                </ElRadioGroup>
+            </Flex>
         </Flex>
     )
 })

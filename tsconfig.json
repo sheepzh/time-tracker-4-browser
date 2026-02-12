@@ -3,7 +3,8 @@
         "module": "esnext",
         "target": "esnext",
         "lib": [
-            "ES2023"
+            "ES2023",
+            "DOM",
         ],
         "jsx": "preserve",
         "jsxFactory": "h",
@@ -64,9 +65,6 @@
             ]
         }
     },
-    "lib": [
-        "dom"
-    ],
     "exclude": [
         "node_modules",
         "dist"

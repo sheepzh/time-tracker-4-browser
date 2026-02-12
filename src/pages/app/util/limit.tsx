@@ -168,6 +168,7 @@ export function processVerification(option: timer.option.LimitOption, context?: 
             // Double check
             const btn = (appendTo ?? document).querySelector(`.${okBtnClz}`)
             if (!btn) return
+            if (typeof data === 'string') return
             const { value } = data
             if (value === answerValue) return resolve()
             ElMessage.error({ appendTo, message: incorrectMessage })

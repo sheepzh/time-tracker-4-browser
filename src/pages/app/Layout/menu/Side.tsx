@@ -103,10 +103,9 @@ const _default = defineComponent(() => {
                 >
                     {collapsed.value
                         ? menus.flatMap(g => g.children).map(item => renderItem(item, router, curr))
-                        : menus.map(({ children, title }) => (
-                            <ElMenuItemGroup title={t(title)}>
-                                {children.map(item => renderItem(item, router, curr))}
-                            </ElMenuItemGroup>
+                        // Not export type of ElMenuItemGroup, so use h() directly
+                        : menus.map(({ children, title }) => h(ElMenuItemGroup, { title: t(title) },
+                            () => children.map(item => renderItem(item, router, curr))
                         ))}
                 </ElMenu>
             </ElScrollbar>

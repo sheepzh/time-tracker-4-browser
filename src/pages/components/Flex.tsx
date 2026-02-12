@@ -16,6 +16,7 @@ type Props = {
     justify?: CSSProperties['justifyContent']
     gap?: string | number
     columnGap?: string | number
+    rowGap?: string | number
     wrap?: CSSProperties['flexWrap'] | boolean
     href?: string
     target?: HTMLAnchorElement['target']
@@ -38,6 +39,7 @@ const Flex = defineComponent<Props>(props => {
                 justifyContent: props.justify,
                 flexWrap: cvtFlexWrap(props.wrap),
                 columnGap: cvtPxScale(props.columnGap),
+                rowGap: cvtPxScale(props.rowGap),
                 gap: cvtPxScale(props.gap),
                 ...cvt2BaseStyle(props),
             }}
@@ -47,6 +49,6 @@ const Flex = defineComponent<Props>(props => {
             {defaultSlots && h(defaultSlots)}
         </Comp>
     )
-}, { props: [...ALL_BASE_PROPS, 'direction', 'column', 'flex', 'align', 'justify', 'gap', 'columnGap', 'wrap', 'as'] })
+}, { props: [...ALL_BASE_PROPS, 'direction', 'column', 'flex', 'align', 'justify', 'gap', 'columnGap', 'rowGap', 'wrap', 'as'] })
 
 export default Flex
