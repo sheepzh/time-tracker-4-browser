@@ -1,7 +1,7 @@
 import itemService from '@service/item-service'
 
 function handleTabGroupRemove(group: chrome.tabGroups.TabGroup) {
-    itemService.batchDeleteGroupById(group.id)
+    itemService.deleteByGroup(group.id)
 }
 
 export function handleTabGroupEnabled() {

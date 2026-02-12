@@ -100,6 +100,12 @@ declare namespace timer.option {
          * @since 2.4.1
          */
         weekStart?: WeekStartOption
+        /**
+         * Where to store the tracking data
+         *
+         * @since 4.0.0
+         */
+        storage: StorageType
     }
 
     type LimitOption = {
@@ -188,4 +194,9 @@ declare namespace timer.option {
      * @since 0.8.0
      */
     type LocaleOption = Locale | "default"
+
+    /**
+     * @since 4.0.0
+     */
+    type StorageType = 'classic' | 'indexed_db'
 }

@@ -15,7 +15,6 @@ const generateJsonPlugins: RspackPluginInstance[] = []
 
 const localeJsonFiles = Object.entries(i18nChrome)
     .map(([locale, message]) => new GenerateJsonPlugin(`_locales/${locale}/messages.json`, message))
-    .map(plugin => plugin as unknown as RspackPluginInstance)
 generateJsonPlugins.push(...localeJsonFiles)
 
 type EntryConfig = {

@@ -36,10 +36,6 @@ class BackupDatabase extends BaseDatabase {
     async updateCache(type: timer.backup.Type, newVal: unknown): Promise<void> {
         return this.storage.put(cacheKeyOf(type), newVal as Object)
     }
-
-    async importData(_data: any): Promise<void> {
-        // Do nothing
-    }
 }
 
 const backupDatabase = new BackupDatabase()

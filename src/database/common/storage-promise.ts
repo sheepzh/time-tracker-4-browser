@@ -44,7 +44,7 @@ export default class StoragePromise {
     /**
      * @since 0.5.0
      */
-    put(key: string, val: Object): Promise<void> {
+    put(key: string, val: unknown): Promise<void> {
         return this.set({ [key]: val })
     }
 

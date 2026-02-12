@@ -91,10 +91,6 @@ class TimelineDatabase extends BaseDatabase {
         })
         return result
     }
-
-    async importData(_: any): Promise<void> {
-        // do nothing
-    }
 }
 const timelineDatabase = new TimelineDatabase()
 

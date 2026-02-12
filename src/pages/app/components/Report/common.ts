@@ -55,22 +55,22 @@ export async function handleDelete(row: timer.stat.Row, filterOption: ReportFilt
     const { mergeDate, dateRange } = filterOption
     if (!mergeDate) {
         // Delete one day
-        isSite(row) && date && await statDatabase.deleteByUrlAndDate(row.siteKey.host, date)
-        isGroup(row) && date && await statDatabase.deleteByGroupAndDate(row.groupKey, date)
+        isSite(row) && date && await statDatabase.delete({ host: row.siteKey.host, date })
+        isGroup(row) && date && await statDatabase.deleteGroup([row.groupKey, date])
         return
     }
     const start = dateRange?.[0]
     const end = dateRange?.[1]
     if (!start && !end) {
         // Delete all
-        isSite(row) && await statDatabase.deleteByUrl(row.siteKey.host)
+        isSite(row) && await statDatabase.deleteByHost(row.siteKey.host)
         isGroup(row) && await statDatabase.deleteByGroup(row.groupKey)
         return
     }
 
     // Delete by range
-    isSite(row) && await statDatabase.deleteByUrlBetween(row.siteKey.host, start, end)
-    isGroup(row) && await statDatabase.deleteByGroupBetween(row.groupKey, start, end)
+    isSite(row) && await statDatabase.deleteByHost(row.siteKey.host, [start, end])
+    isGroup(row) && await statDatabase.deleteByGroup(row.groupKey, [start, end])
 }
 
 const cvtOrderDir = (order: ReportSort['order']): timer.common.SortDirection | undefined => {

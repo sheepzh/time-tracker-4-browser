@@ -179,9 +179,6 @@ async function existBatch(this: SiteDatabase, siteKeys: timer.site.SiteKey[]): P
     return Object.entries(items).map(([key]) => cvt2SiteKey(key))
 }
 
-async function importData(this: SiteDatabase, _data: any) {
-    throw new Error("Method not implemented.")
-}
 
 ////////////////////////////////////////////////////////////////////////////
 /////////////////////////                          /////////////////////////
@@ -197,7 +194,6 @@ class SiteDatabase extends BaseDatabase {
     remove = remove
     exist = exist
     existBatch = existBatch
-    importData = importData
 
     /**
      * Add listener to listen changes

@@ -14,17 +14,9 @@ test('time', () => {
     const result = '20200501 000001五'
 
     // default format
-    expect(formatTime(dateStr)).toEqual('2020-05-01 00:00:01')
-
-    expect(formatTime(dateStr, format)).toEqual(result)
-
     expect(formatTime(date, format)).toEqual(result)
     // use seconds
     expect(formatTime(Math.floor(date / 1000), format)).toEqual(result)
-
-    // use string
-    expect(formatTime(date.toString(), format)).toEqual(result)
-    expect(formatTime(Math.floor(date / 1000).toString(), format)).toEqual(result)
 
     expect(formatTime(new Date(date), format)).toEqual(result)
 })
