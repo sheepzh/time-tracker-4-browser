@@ -4,7 +4,10 @@
         "target": "esnext",
         "lib": [
             "ES2023",
-            "DOM",
+            "DOM"
+        ],
+        "types": [
+            "jest"
         ],
         "jsx": "preserve",
         "jsxFactory": "h",
