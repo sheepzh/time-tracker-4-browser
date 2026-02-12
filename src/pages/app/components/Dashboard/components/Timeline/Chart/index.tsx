@@ -7,7 +7,7 @@
 
 import ChartTitle from '@app/components/Dashboard/ChartTitle'
 import { t } from '@app/locale'
-import { TIMELINE_LIFE_CYCLE } from '@db/timeline-database'
+import { TIMELINE_LIFE_CYCLE } from '@db/timeline-database/classic'
 import { Collection, Files, Link } from '@element-plus/icons-vue'
 import { useShadow } from '@hooks'
 import { useEcharts } from "@hooks/useEcharts"

@@ -51,6 +51,7 @@ export type OptionMessage = {
         fileAccessDisabled: string
         weekStart: string
         weekStartAsNormal: string
+        storage: string
     }
     limit: {
         prompt: string

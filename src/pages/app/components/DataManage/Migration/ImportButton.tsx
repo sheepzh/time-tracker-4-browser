@@ -7,13 +7,11 @@
 
 import { t } from "@app/locale"
 import { Upload } from "@element-plus/icons-vue"
-import Immigration from "@service/components/immigration"
+import immigration from '@service/components/immigration'
 import { deserialize } from "@util/file"
 import { ElButton, ElLoading, ElMessage } from "element-plus"
 import { defineComponent, ref } from "vue"
 import { useDataMemory } from "../context"
-
-const immigration: Immigration = new Immigration()
 
 async function handleFileSelected(fileInput: HTMLInputElement | undefined, callback: () => void) {
     const files = fileInput?.files

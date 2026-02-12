@@ -7,8 +7,10 @@
 
 import BaseDatabase from "./common/base-database"
 import { WHITELIST_KEY } from "./common/constant"
+import { BrowserMigratable } from './types'
 
-class WhitelistDatabase extends BaseDatabase {
+class WhitelistDatabase extends BaseDatabase implements BrowserMigratable<'__whitelist__'> {
+    namespace: '__whitelist__' = '__whitelist__'
 
     private async update(toUpdate: string[]): Promise<void> {
         await this.setByKey(WHITELIST_KEY, toUpdate || [])
@@ -54,12 +56,17 @@ class WhitelistDatabase extends BaseDatabase {
         chrome.storage.onChanged.addListener(storageListener)
     }
 
-    async importData(data: any): Promise<void> {
-        const toMigrate = data[WHITELIST_KEY]
-        if (!Array.isArray(toMigrate)) return
-        const exist = await this.selectAll()
-        toMigrate.forEach(white => !exist.includes(white) && exist.push(white))
-        await this.update(exist)
+    async importData(data: unknown): Promise<void> {
+        // const toMigrate = data[WHITELIST_KEY]
+        // if (!Array.isArray(toMigrate)) return
+        // const exist = await this.selectAll()
+        // toMigrate.forEach(white => !exist.includes(white) && exist.push(white))
+        // await this.update(exist)
+        throw new Error('Method not implemented.')
+    }
+
+    exportData(): Promise<string[]> {
+        throw new Error('Method not implemented.')
     }
 }
 

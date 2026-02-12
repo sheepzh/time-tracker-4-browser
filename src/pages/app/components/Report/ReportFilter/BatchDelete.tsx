@@ -106,8 +106,8 @@ async function deleteBatch(selected: timer.stat.Row[], mergeDate: boolean, dateR
         // Delete according to the date range
         const [start, end] = dateRange ?? []
         for (const row of selected) {
-            isNormalSite(row) && await statDatabase.deleteByUrlBetween(row.siteKey.host, start, end)
-            isGroup(row) && await statDatabase.deleteByGroupBetween(row.groupKey, start, end)
+            isNormalSite(row) && await statDatabase.deleteByHost(row.siteKey.host, [start, end])
+            isGroup(row) && await statDatabase.deleteByGroup(row.groupKey, [start, end])
         }
     } else {
         // If not merge date, batch delete

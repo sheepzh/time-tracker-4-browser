@@ -5,63 +5,63 @@
  * https://opensource.org/licenses/MIT
  */
 
-import BaseDatabase from "@db/common/base-database"
-import StoragePromise from "@db/common/storage-promise"
 import limitDatabase from "@db/limit-database"
 import mergeRuleDatabase from "@db/merge-rule-database"
-import periodDatabase from "@db/period-database"
-import siteCateDatabase from "@db/site-cate-database"
 import statDatabase from "@db/stat-database"
+import type { BrowserMigratable, StorageMigratable } from '@db/types'
 import whitelistDatabase from "@db/whitelist-database"
 import packageInfo from "@src/package"
 
-type MetaInfo = {
-    version: string
-    ts: number
-}
-
-export type BackupData = {
-    __meta__: MetaInfo
-} & any
-
-function initDatabase(): BaseDatabase[] {
-    const result: BaseDatabase[] = [
-        statDatabase,
-        periodDatabase,
-        limitDatabase,
-        mergeRuleDatabase,
-        whitelistDatabase,
-        siteCateDatabase,
-    ]
-
-    return result
-}
-
 /**
- * Data is citizens
+ * Data export/import and storage migration
  *
  * @since 0.2.5
  */
 class Immigration {
-    private storage: StoragePromise
-    private databaseArray: BaseDatabase[]
+    private browserMigratables: BrowserMigratable<string>[]
+    private storageMigratables: StorageMigratable<unknown>[]
 
     constructor() {
-        const localStorage = chrome.storage.local
-        this.storage = new StoragePromise(localStorage)
-        this.databaseArray = initDatabase()
+        this.browserMigratables = [
+            statDatabase,
+            limitDatabase,
+            mergeRuleDatabase,
+            whitelistDatabase,
+        ]
+        this.storageMigratables = [
+            statDatabase,
+        ]
     }
 
-    async getExportingData(): Promise<BackupData> {
-        const data = await this.storage.get() as BackupData
-        const meta: MetaInfo = { version: packageInfo.version, ts: Date.now() }
-        data.__meta__ = meta
+    async exportData(): Promise<timer.backup.ExportData> {
+        const data: timer.backup.ExportData = {
+            __meta__: { version: packageInfo.version, ts: Date.now() },
+        }
+        for (const migratable of this.browserMigratables) {
+            const namespace = migratable.namespace
+            const exportData = await migratable.exportData()
+            data[namespace] = exportData
+        }
         return data
     }
 
-    async importData(data: any): Promise<void> {
-        for (const db of this.databaseArray) await db.importData(data)
+    async importData(data: unknown): Promise<void> {
+        for (const db of this.browserMigratables) await db.importData(data)
+    }
+
+    async migrateStorage(type: timer.option.StorageType): Promise<void> {
+        const dataList: unknown[] = []
+        // 1. migrate all the databases firstly
+        for (const migratable of this.storageMigratables) {
+            const data = await migratable.migrateStorage(type)
+            dataList.push(data)
+        }
+        // 2. after migration
+        for (const migratable of this.storageMigratables) {
+            const [data] = dataList.splice(0, 1)
+            await migratable.afterStorageMigrated(data)
+        }
     }
 }
 
-export default Immigration
+export default new Immigration()

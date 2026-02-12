@@ -123,4 +123,23 @@ declare namespace timer.backup {
     }
 
     type Row = core.Row & RowExtend
+
+    /**
+     * The data format for export and import
+     */
+    type ExportMeta = {
+        version: string
+        ts: number
+    }
+
+    type ExportData = {
+        __meta__: ExportMeta
+        __stat__?: timer.core.Row[]
+        __limit__?: timer.limit.Rule[]
+        __merge__?: timer.merge.Rule[]
+        __whitelist__?: string[]
+        __cate__?: timer.site.Cate[]
+        // Legacy data before v4.0.0
+        [key: string]: unknown
+    }
 }

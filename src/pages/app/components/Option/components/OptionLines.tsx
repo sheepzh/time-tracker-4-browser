@@ -50,8 +50,7 @@ const OptionLines: FunctionalComponent<{}> = (_, { slots }) => {
         children.push(child)
         beforeIsItem = thisIsItem
     }
-
-    return h('div', {}, children)
+    return <div>{children}</div>
 }
 OptionLines.displayName = 'OptionLines'
 

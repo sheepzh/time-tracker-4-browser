@@ -1,6 +1,6 @@
 import { formatTimeYMD, MILL_PER_DAY } from '@util/time'
-import BaseDatabase from './common/base-database'
-import { REMAIN_WORD_PREFIX } from './common/constant'
+import BaseDatabase from '../common/base-database'
+import { REMAIN_WORD_PREFIX } from '../common/constant'
 
 const DB_KEY = REMAIN_WORD_PREFIX + 'TL'
 
@@ -62,7 +62,8 @@ const removeOutdated = (data: TimelineData, currTime: number) => {
     keys.forEach(key => delete data[key])
 }
 
-class TimelineDatabase extends BaseDatabase {
+export default class ClassicTimelineDatabase extends BaseDatabase {
+
     private async getData(): Promise<TimelineData> {
         const data = await this.storage.getOne<TimelineData>(DB_KEY)
         return data ?? {}
@@ -72,7 +73,7 @@ class TimelineDatabase extends BaseDatabase {
         return this.setByKey(DB_KEY, data)
     }
 
-    async batchSave(ticks: timer.timeline.Tick[]) {
+    async batchSave(ticks: timer.timeline.Tick[]): Promise<void> {
         const data = await this.getData()
         ticks.forEach(tick => {
             merge(data, tick)
@@ -92,10 +93,4 @@ class TimelineDatabase extends BaseDatabase {
         return result
     }
 
-    async importData(_: any): Promise<void> {
-        // do nothing
-    }
 }
-const timelineDatabase = new TimelineDatabase()
-
-export default timelineDatabase

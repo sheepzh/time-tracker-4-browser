@@ -35,6 +35,7 @@ export function defaultTracking(): TrackingRequired {
         countLocalFiles: false,
         countTabGroup: false,
         weekStart: 'default',
+        storage: 'classic',
     }
 }
 

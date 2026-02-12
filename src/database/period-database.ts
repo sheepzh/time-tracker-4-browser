@@ -102,17 +102,6 @@ class PeriodDatabase extends BaseDatabase {
         const keys = dates.map(generateKey)
         await this.storage.remove(keys)
     }
-
-    async importData(data: any): Promise<void> {
-        if (typeof data !== "object") return
-        const items = await this.storage.get()
-        const keyReg = new RegExp(`^${KEY_PREFIX}20\\d{2}[01]\\d[0-3]\\d$`)
-        const toSave: Record<string, _Value> = {}
-        Object.entries(data)
-            .filter(([key]) => keyReg.test(key))
-            .forEach(([key, value]) => toSave[key] = migrate(items[key], value as _Value))
-        this.storage.set(toSave)
-    }
 }
 
 type _Value = { [key: string]: number }
