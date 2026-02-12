@@ -1493,6 +1493,7 @@
             "whitelistItem": "skrótów związanych z whitelistą",
             "contextMenu": "menu kontekstowym",
             "displayBadgeText": "{input} Wyświetlanie {timeInfo} na {icon}",
+            "badgeBgColor": "Kolor tła tekstu na ikonie paska rozszerzeń {input}",
             "icon": "ikonie rozszerzenia",
             "badgeTextContent": "czasu przeglądania bieżącej strony",
             "locale": {
@@ -1514,6 +1515,33 @@
                 }
             },
             "animationDuration": "Długość trwania początkowej animacji wykresu {input}"
+        },
+        "tracking": {
+            "title": "Monitorowanie",
+            "autoPauseTrack": "{input} Wstrzymaj monitorowanie, jeżeli nie wykryto aktywności {info} przez {maxTime}",
+            "localFileTime": "pliki lokalne",
+            "tabGroupInfo": "Po usunięciu grupy tagów, dane również zostaną usunięte.",
+            "tabGroupsPermGrant": "Ta funkcja wymaga odpowiednich uprawnień",
+            "weekStart": "Pierwszy dzień tygodnia {input}"
+        },
+        "limit": {
+            "reminder": "Przypomnienie {input} {minInput} minut(y) przed limitem czasu",
+            "level": {
+                "label": "Jak odblokować podczas ograniczenia {input}",
+                "password": "Musisz wprowadzić hasło, aby odblokować",
+                "verification": "Musisz wprowadzić kod weryfikacyjny, aby odblokować",
+                "passwordLabel": "Hasło odblokowujące {input}",
+                "verificationLabel": "Trudność kodu weryfikacyjnego {input}",
+                "verificationDifficulty": {
+                    "easy": "Łatwy",
+                    "hard": "Trudny",
+                    "disgusting": "Odrzucający"
+                },
+                "strict": "Nie zezwalaj na odblokowanie mimo to",
+                "strictTitle": "Potwierdzenie operacji",
+                "strictContent": "Gdy wybierzesz tę opcję, jeśli witryna osiągnie dzienny limit, nie będzie wolno jej odblokować ręcznie inaczej, niż czekając do następnego dnia. Jeśli reguły nie są poprawnie skonfigurowane, mogą one skutecznie utrudnić twoją rutynę!",
+                "pswFormAgain": "Wprowadź ponownie"
+            }
         },
         "backup": {
             "title": "Kopia zapasowa danych",

@@ -460,6 +460,7 @@
             "focusAverage": "Średnio {value} dziennie"
         },
         "period": {
+            "title": "Nawyki w określonym przedziale czasowym",
             "busiest": "Najbardziej aktywny czas dnia",
             "idle": "Najdłuższy czas bezczynności",
             "chartType": {

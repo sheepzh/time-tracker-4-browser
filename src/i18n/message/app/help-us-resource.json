@@ -134,9 +134,9 @@
     "pl": {
         "title": "Możesz pomóc w ulepszaniu tłumaczeń tego rozszerzenia!",
         "alert": {
-            "l1": "Ze względu na umiejętności językowe autora, rozszerzenie domyślnie obsługuje jedynie język chiński uproszczony i angielski, natomiast pozostałe języki są albo nieobsługiwane, albo przetłumaczone maszynowo.",
-            "l2": "W celu zapewnienia lepszego doświadczenia użytkownikom hostuję pliki pliki do przetłumaczenia na platformie Crowdin. Crowdin to system zarządzania tłumaczeniami, który jest darmowy dla projektów open source.",
-            "l3": "Jeżeli uważasz, że to rozszerzenie jest dla Ciebie przydatne i chciałbyś poprawić jego tłumaczenie, kliknij przycisk poniżej, aby przejść do strony głównej projektu na Crowdin."
+            "l1": "W celu zapewnienia lepszego doświadczenia użytkownikom hostuję pliki do przetłumaczenia na platformie Crowdin.",
+            "l2": "Jeżeli uważasz, że to rozszerzenie jest dla Ciebie przydatne i chciałbyś poprawić jego tłumaczenie, kliknij przycisk poniżej, aby przejść do strony głównej projektu na Crowdin.",
+            "l3": "Kiedy postęp w tłumaczeniu języka osiągnie 50%, rozważę poparcie go w tym rozszerzeniu."
         },
         "button": "Przejdź do Crowdin",
         "loading": "Sprawdzanie postępu tłumaczenia...",
