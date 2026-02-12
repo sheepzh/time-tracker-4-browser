@@ -1,5 +1,6 @@
 import db from "@db/merge-rule-database"
 import { mockStorage } from "../__mock__/storage"
+import { mockLegacyData } from './migratable'
 
 function of(origin: string, merged?: string | number): timer.merge.Rule {
     return { origin, merged: merged || '' }
@@ -40,7 +41,7 @@ describe('merge-rule-database.test', () => {
         await chrome.storage.local.clear()
         expect(await db.selectAll()).toEqual([])
 
-        await db.importData(data2Import)
+        await db.importData(mockLegacyData(data2Import))
         const imported: timer.merge.Rule[] = await db.selectAll()
         expect(imported).toEqual([
             { origin: "www.baidu.com", merged: 2 },

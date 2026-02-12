@@ -65,4 +65,9 @@ export interface StatDatabase {
      * Force update data with overwriting
      */
     forceUpdate(...rows: timer.core.Row[]): Promise<void>
+
+    /**
+     * Force update group data with overwriting
+     */
+    forceUpdateGroup(...rows: timer.core.Row[]): Promise<void>
 }

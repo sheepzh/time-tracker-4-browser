@@ -41,6 +41,7 @@ function filterRow(row: timer.core.Row, condition: ProcessedCondition): boolean 
  * Default implementation by `chrome.storage.local`
  */
 export class ClassicStatDatabase extends BaseDatabase implements StatDatabase {
+
     async refresh(): Promise<{ [key: string]: unknown }> {
         const result = await this.storage.get()
         const items: Record<string, timer.core.Result> = {}
@@ -186,6 +187,17 @@ export class ClassicStatDatabase extends BaseDatabase implements StatDatabase {
         return this.storage.set(toSet)
     }
 
+    forceUpdateGroup(...rows: timer.core.Row[]): Promise<void> {
+        const toSet = Object.fromEntries(rows.map(({ host, date, time, focus, run }) => {
+            const key = generateGroupKey(Number(host), date)
+            const result: timer.core.Result = { time, focus }
+            run && (result.run = run)
+            return [key, result]
+        }))
+
+        return this.storage.set(toSet)
+    }
+
     /**
      * @param host host
      * @param range [start date (inclusive), end date (inclusive)]
@@ -227,25 +239,25 @@ export class ClassicStatDatabase extends BaseDatabase implements StatDatabase {
 
         await this.storage.remove(keys)
     }
+}
 
-    /**
-     * Legacy data extract
-     *
-     * @deprecated since 4.0.0, legacy data is not supported for export, this method will be removed in future versions
-     */
-    parseImportData(data: unknown): timer.core.Row[] {
-        if (typeof data !== "object" || data === null) return []
-        const rows: timer.core.Row[] = []
-        Object.entries(data)
-            .filter(([key]) => /^20\d{2}[01]\d[0-3]\d.*/.test(key) && !key.substring(8).startsWith(GROUP_PREFIX))
-            .forEach(([key, value]) => {
-                if (typeof value !== "object") return
-                if (!isPartialResult(value)) return
-                const date = key.substring(0, 8)
-                const host = key.substring(8)
-                const row: timer.core.Row = { host, date, focus: value.focus ?? 0, time: value.time ?? 0 }
-                isNotZeroResult(row) && rows.push(row)
-            })
-        return rows
-    }
+/**
+ * Legacy data extract
+ *
+ * @deprecated since 4.0.0, legacy data is not supported for export, this method will be removed in future versions
+ */
+export function parseImportData(data: unknown): timer.core.Row[] {
+    if (typeof data !== "object" || data === null) return []
+    const rows: timer.core.Row[] = []
+    Object.entries(data)
+        .filter(([key]) => /^20\d{2}[01]\d[0-3]\d.*/.test(key) && !key.substring(8).startsWith(GROUP_PREFIX))
+        .forEach(([key, value]) => {
+            if (typeof value !== "object") return
+            if (!isPartialResult(value)) return
+            const date = key.substring(0, 8)
+            const host = key.substring(8)
+            const row: timer.core.Row = { host, date, focus: value.focus ?? 0, time: value.time ?? 0 }
+            isNotZeroResult(row) && rows.push(row)
+        })
+    return rows
 }

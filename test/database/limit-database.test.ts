@@ -1,6 +1,7 @@
 import db from "@db/limit-database"
 import { formatTimeYMD } from "@util/time"
 import { mockStorage } from "../__mock__/storage"
+import { mockLegacyData } from './migratable'
 
 describe('limit-database', () => {
     beforeAll(() => mockStorage())
@@ -103,7 +104,7 @@ describe('limit-database', () => {
         chrome.storage.local.clear()
         expect(await db.all()).toEqual([])
 
-        await db.importData(data2Import)
+        await db.importData(mockLegacyData(data2Import))
         const imported = await db.all()
 
         const cond2After = imported.find(a => a.cond?.includes("cond2"))
@@ -115,10 +116,10 @@ describe('limit-database', () => {
     test("import data2", async () => {
         const importData: Record<string, any> = {}
         // Invalid data, no error throws
-        await db.importData(importData)
+        await db.importData(mockLegacyData(importData))
         // Valid data
         importData["__timer__LIMIT"] = {}
-        await db.importData(importData)
+        await db.importData(mockLegacyData(importData))
         expect(await db.all()).toEqual([])
     })
 

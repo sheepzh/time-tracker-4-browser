@@ -6,18 +6,18 @@
  */
 
 import { extractNamespace, isExportData, isLegacyVersion } from '@db/common/migratable'
+import { StorageHolder } from '@db/common/storage-holder'
 import type { BrowserMigratable, StorageMigratable } from '@db/types'
-import optionHolder from '@service/components/option-holder'
 import { isOptionalInt } from '@util/guard'
 import { isNotZeroResult } from '@util/stat'
 import { createArrayGuard, createObjectGuard, isString } from 'typescript-guard'
-import { ClassicStatDatabase } from './classic'
+import { ClassicStatDatabase, parseImportData } from './classic'
 import { IDBStatDatabase } from './idb'
 import type { StatCondition, StatDatabase } from './types'
 
 type StateDatabaseComposite =
     & StatDatabase
-    & StorageMigratable<timer.core.Row[]>
+    & StorageMigratable<[tabs: timer.core.Row[], groups: timer.core.Row[]]>
     & BrowserMigratable<'__stat__'>
 
 // Only `date` and `host` are required for import, other fields are optional, and will be set to default if not provided
@@ -33,84 +33,75 @@ const isValidImportRow = createObjectGuard<ValidImportRow>({
 
 class StatDatabaseWrapper implements StateDatabaseComposite {
     namespace: '__stat__' = '__stat__'
-    private classic = new ClassicStatDatabase()
-    private indexedDb = new IDBStatDatabase()
-    private current: StatDatabase = this.classic
-
-    constructor() {
-        optionHolder.get().then(val => this.handleOption(val))
-        optionHolder.addChangeListener(val => this.handleOption(val))
-    }
+    private holder = new StorageHolder<StatDatabase>({
+        classic: new ClassicStatDatabase(),
+        indexed_db: new IDBStatDatabase(),
+    })
+    private current = () => this.holder.current
 
     get(host: string, date: Date | string): Promise<timer.core.Result> {
-        return this.current.get(host, date)
+        return this.current().get(host, date)
     }
 
     select(condition?: StatCondition): Promise<timer.core.Row[]> {
-        return this.current.select(condition)
+        return this.current().select(condition)
     }
 
     accumulate(host: string, date: Date | string, item: timer.core.Result): Promise<timer.core.Result> {
-        return this.current.accumulate(host, date, item)
+        return this.current().accumulate(host, date, item)
     }
 
     batchAccumulate(data: Record<string, timer.core.Result>, date: Date | string): Promise<Record<string, timer.core.Result>> {
-        return this.current.batchAccumulate(data, date)
+        return this.current().batchAccumulate(data, date)
     }
 
     accumulateGroup(groupId: number, date: Date | string, item: timer.core.Result): Promise<timer.core.Result> {
-        return this.current.accumulateGroup(groupId, date, item)
+        return this.current().accumulateGroup(groupId, date, item)
     }
 
     delete(...rows: timer.core.RowKey[]): Promise<void> {
-        return this.current.delete(...rows)
+        return this.current().delete(...rows)
     }
 
     deleteByHost(host: string, range?: [start?: Date | string, end?: Date | string]): Promise<string[]> {
-        return this.current.deleteByHost(host, range)
+        return this.current().deleteByHost(host, range)
     }
 
     selectGroup(condition?: StatCondition): Promise<timer.core.Row[]> {
-        return this.current.selectGroup(condition)
+        return this.current().selectGroup(condition)
     }
 
     deleteGroup(...rows: [groupId: number, date: string][]): Promise<void> {
-        return this.current.deleteGroup(...rows)
+        return this.current().deleteGroup(...rows)
     }
 
     deleteByGroup(groupId: number, range: [start?: Date | string, end?: Date | string]): Promise<void> {
-        return this.current.deleteByGroup(groupId, range)
+        return this.current().deleteByGroup(groupId, range)
     }
 
     forceUpdate(...rows: timer.core.Row[]): Promise<void> {
-        return this.current.forceUpdate(...rows)
+        return this.current().forceUpdate(...rows)
     }
 
-    private handleOption(option: timer.option.TrackingOption) {
-        const storage = this.judgeDb(option.storage)
-        storage && (this.current = storage)
+    forceUpdateGroup(...rows: timer.core.Row[]): Promise<void> {
+        return this.current().forceUpdateGroup(...rows)
     }
 
-    private judgeDb(type: timer.option.StorageType): StatDatabase | null {
-        if (type === 'indexed_db') {
-            return this.indexedDb
-        } else if (type = 'classic') {
-            return this.classic
-        } else {
-            return null
-        }
+
+    async migrateStorage(type: timer.option.StorageType): Promise<[timer.core.Row[], timer.core.Row[]]> {
+        const target = this.holder.get(type)
+        if (!target) return [[], []]
+        const tabs = await this.select({ virtual: true })
+        await target.forceUpdate(...tabs)
+        const groups = await this.selectGroup()
+        await target.forceUpdateGroup(...groups)
+        return [tabs, groups]
     }
 
-    async migrateStorage(type: timer.option.StorageType): Promise<timer.core.Row[]> {
-        const target = this.judgeDb(type)
-        if (!target) return []
-        const all = await this.select()
-        await target.forceUpdate(...all)
-        return all
-    }
-
-    async afterStorageMigrated(allData: timer.core.Row[]): Promise<void> {
-        await this.current.delete(...allData)
+    async afterStorageMigrated([tabs, groups]: [timer.core.Row[], timer.core.Row[]]): Promise<void> {
+        await this.current().delete(...tabs)
+        const groupKeys = groups.map(({ host, date }) => [parseInt(host), date] satisfies [number, string])
+        await this.current().deleteGroup(...groupKeys)
     }
 
     async importData(data: unknown): Promise<void> {
@@ -119,13 +110,13 @@ class StatDatabaseWrapper implements StateDatabaseComposite {
     }
 
     async exportData(): Promise<timer.core.Row[]> {
-        return this.select()
+        return this.select({ virtual: true })
     }
 
     private parseImportRows(data: unknown): timer.core.Row[] {
         if (!isExportData(data)) return []
         if (isLegacyVersion(data)) {
-            return this.classic.parseImportData(data)
+            return parseImportData(data) ?? []
         }
 
         if (!(this.namespace in data)) return []

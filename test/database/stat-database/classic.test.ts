@@ -1,5 +1,5 @@
 import type { StatCondition } from '@db/stat-database'
-import { ClassicStatDatabase } from "@db/stat-database/classic"
+import { ClassicStatDatabase, parseImportData } from "@db/stat-database/classic"
 import { resultOf } from "@util/stat"
 import { formatTimeYMD, MILL_PER_DAY } from "@util/time"
 import { mockStorage } from '../../__mock__/storage'
@@ -154,7 +154,7 @@ describe('stat-database', () => {
         chrome.storage.local.clear()
 
         data2Import.foo = "bar"
-        const data = db.parseImportData(data2Import)
+        const data = parseImportData(data2Import)
         expect(data.length).toEqual(1)
         const item = data[0]
         expect(item.date).toEqual(nowStr)
@@ -164,7 +164,7 @@ describe('stat-database', () => {
     })
 
     test("parseImportData2", async () => {
-        const data = db.parseImportData({
+        const data = parseImportData({
             // Valid
             "20210910github.com": {
                 focus: 1,

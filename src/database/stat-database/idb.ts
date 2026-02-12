@@ -365,4 +365,18 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
             }
         }, 'readwrite')
     }
+
+    forceUpdateGroup(...rows: timer.core.Row[]): Promise<void> {
+        return this.withStore(store => {
+            for (const row of rows) {
+                const { host, date, time, focus, run } = row
+                const groupId = parseInt(host)
+                if (isNaN(groupId)) {
+                    throw new Error(`Invalid group host: ${host}`)
+                }
+                const newData: StoredRow = { host, date, time, focus, run, groupId }
+                store.put(newData)
+            }
+        }, 'readwrite')
+    }
 }
