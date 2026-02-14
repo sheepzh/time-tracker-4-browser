@@ -108,6 +108,13 @@ const _default = defineComponent((_, ctx) => {
         () => filter.siteMerge,
     ], () => table.value?.doLayout?.())
 
+    const handleCateChange = (key: timer.site.SiteKey, newCateId: number | undefined) => {
+        data.value?.list
+            ?.filter(isSite)
+            ?.filter(item => siteEqual(item.siteKey, key))
+            ?.forEach(i => i.cateId = newCateId)
+    }
+
     return () => (
         <ContentCard>
             <Flex gap={23} width="100%" height="100%" column>
@@ -138,7 +145,7 @@ const _default = defineComponent((_, ctx) => {
                             />
                         </>}
                         {visible.value.group && <GroupColumn />}
-                        {visible.value.cate && <CateColumn onChange={refresh} />}
+                        {visible.value.cate && <CateColumn onChange={handleCateChange} />}
                         <TimeColumn dimension="focus" />
                         {runColVisible.value && <TimeColumn dimension="run" />}
                         <VisitColumn />
