@@ -139,7 +139,7 @@ export async function mergeMessage(
     const filePath = path.join(dirPath, filename)
     const existMessages = (await import(`@i18n/message/${dir}/${filename}`))?.default as Messages<any>
     if (!existMessages) {
-        console.error(`Failed to find local code: dir=${dir}, filename=${filename}`)
+        logError(`Failed to find local code: dir=${dir}, filename=${filename}`)
         return
     }
     const sourceItemSet = transMsg(existMessages[SOURCE_LOCALE])
@@ -155,7 +155,7 @@ export async function mergeMessage(
                 // Deleted key
                 if (!sourceText) return
                 if (!checkPlaceholder(text, sourceText)) {
-                    console.error(`Invalid placeholder: dir=${dir}, filename=${filename}, path=${path}, source=${sourceText}, translated=${text}`)
+                    logError(`Invalid placeholder: locale=${locale}, dir=${dir}, filename=${filename}, path=${path}, source=${sourceText}, translated=${text}`)
                     return
                 }
                 const pathSeg = path.split('.')
@@ -166,6 +166,10 @@ export async function mergeMessage(
 
     const newFileContent = JSON.stringify(existMessages, null, 4)
     fs.writeFileSync(filePath, newFileContent, { encoding: 'utf-8' })
+}
+
+function logError(msg: string) {
+    console.error(`[CROWDIN-ERROR] ${msg}`)
 }
 
 function checkPlaceholder(translated: string, source: string) {

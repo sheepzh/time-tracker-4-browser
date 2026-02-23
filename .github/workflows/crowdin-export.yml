@@ -14,20 +14,38 @@ jobs:
               with:
                   fetch-depth: 1
                   token: ${{secrets.GITHUB_TOKEN}}
+
             - name: Test using Node.js
-              uses: actions/setup-node@v1
+              uses: actions/setup-node@v6
               with:
-                  node-version: "v22"
-            - name: Install ts-node
-              run: npm i -g ts-node
+                  node-version: "lts/*"
+
             - name: Install dependencies
               run: npm install
+
             - name: Export translations
-              run: ts-node --project ./tsconfig.node.json ./script/crowdin/export-translation.ts
+              run: |
+                  npx ts-node --project ./tsconfig.node.json ./script/crowdin/export-translation.ts 2>&1 | tee /tmp/export-output.log
+                  exit ${PIPESTATUS[0]}
+              continue-on-error: true
+
+            - name: Check exporting logs
+              if: always()
+              run: |
+                  if grep -q -F "[CROWDIN-ERROR]" /tmp/export-output.log; then
+                    echo "::error:: Found errors in export logs"
+                    exit 1
+                  else
+                    echo "No errors found in export logs"
+                  fi
+
             - name: Test typescript
-              uses: icrawl/action-tsc@v1
+              if: success()
+              run: npx tsc --noEmit
+
             - name: Create Pull Request
-              uses: peter-evans/create-pull-request@v7
+              if: success()
+              uses: peter-evans/create-pull-request@v8
               with:
                   commit-message: "i18n(download): download translations by bot"
                   branch: crowdin-export/patch
