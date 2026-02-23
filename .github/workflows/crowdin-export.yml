@@ -15,19 +15,18 @@ jobs:
                   fetch-depth: 1
                   token: ${{secrets.GITHUB_TOKEN}}
             - name: Test using Node.js
-              uses: actions/setup-node@v1
+              uses: actions/setup-node@v6
               with:
-                  node-version: "v22"
-            - name: Install ts-node
-              run: npm i -g ts-node
+                  node-version: "lts"
             - name: Install dependencies
-              run: npm install
+              run: npm ci
             - name: Export translations
-              run: ts-node --project ./tsconfig.node.json ./script/crowdin/export-translation.ts
+              run: npx ts-node --project ./tsconfig.node.json ./script/crowdin/export-translation.ts
             - name: Test typescript
-              uses: icrawl/action-tsc@v1
+              run: npx tsc --noEmit
             - name: Create Pull Request
-              uses: peter-evans/create-pull-request@v7
+              if: success()
+              uses: peter-evans/create-pull-request@v8
               with:
                   commit-message: "i18n(download): download translations by bot"
                   branch: crowdin-export/patch
