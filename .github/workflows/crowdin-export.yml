@@ -19,7 +19,7 @@ jobs:
               with:
                   node-version: "lts/*"
             - name: Install dependencies
-              run: npm ci
+              run: npm install
             - name: Export translations
               run: npx ts-node --project ./tsconfig.node.json ./script/crowdin/export-translation.ts
             - name: Test typescript
