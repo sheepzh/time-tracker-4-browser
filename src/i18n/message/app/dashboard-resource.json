@@ -284,7 +284,7 @@
     },
     "pl": {
         "heatMap": {
-            "title0": "Przeglądano przez {hour} godzin(y) w zeszłym roku",
+            "title0": "Przeglądano przez {hour} godzin w zeszłym roku",
             "title1": "Przeglądano mniej niż 1 godzinę w ubiegłym roku"
         },
         "topK": {
