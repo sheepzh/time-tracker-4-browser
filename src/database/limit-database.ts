@@ -5,9 +5,13 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { isOptionalInt, isRecord, isVector2 } from '@util/guard'
 import { formatTimeYMD, MILL_PER_DAY } from "@util/time"
+import { createArrayGuard, createGuard, createObjectGuard, createOptionalGuard, isBoolean, isInt, isString } from 'typescript-guard'
 import BaseDatabase from "./common/base-database"
 import { REMAIN_WORD_PREFIX } from "./common/constant"
+import { extractNamespace, isExportData, isLegacyVersion } from './common/migratable'
+import type { BrowserMigratable } from './types'
 
 const KEY = REMAIN_WORD_PREFIX + 'LIMIT'
 
@@ -22,6 +26,26 @@ type DateRecords = {
 type LimitRecord = timer.limit.Rule & {
     records: DateRecords
 }
+
+type PartialRule = MakeRequired<Partial<timer.limit.Rule>, 'name' | 'cond'>
+
+const isValidRow = createObjectGuard<PartialRule>({
+    id: isOptionalInt,
+    name: isString,
+    cond: createArrayGuard(isString),
+    time: isOptionalInt,
+    count: isOptionalInt,
+    weekly: isOptionalInt,
+    weeklyCount: isOptionalInt,
+    visitTime: isOptionalInt,
+    enabled: createOptionalGuard(isBoolean),
+    locked: createOptionalGuard(isBoolean),
+    weekdays: createOptionalGuard(createArrayGuard(createGuard(val => isInt(val) && val >= 0 && val <= 6))),
+    allowDelay: createOptionalGuard(isBoolean),
+    periods: createOptionalGuard(createArrayGuard(isVector2)),
+})
+
+const isValidImportRows = createArrayGuard(isValidRow)
 
 type ItemValue = {
     /**
@@ -121,7 +145,8 @@ const cvtItem2Rec = (item: ItemValue): LimitRecord => {
 
 type Items = Record<number, ItemValue>
 
-function migrate(exist: Items, toMigrate: any) {
+function migrate(exist: Items, toMigrate: unknown) {
+    if (!isRecord(toMigrate)) return
     const idBase = Object.keys(exist).map(parseInt).sort().reverse()?.[0] ?? 0 + 1
     Object.values(toMigrate).forEach((value, idx) => {
         const id = idBase + idx
@@ -139,7 +164,8 @@ function migrate(exist: Items, toMigrate: any) {
  *
  * @since 0.2.2
  */
-class LimitDatabase extends BaseDatabase {
+class LimitDatabase extends BaseDatabase implements BrowserMigratable<'__limit__'> {
+    namespace: '__limit__' = '__limit__'
     private async getItems(): Promise<Items> {
         let items = await this.storage.getOne<Items>(KEY) || {}
         return items
@@ -259,13 +285,45 @@ class LimitDatabase extends BaseDatabase {
         await this.update(items)
     }
 
-    async importData(data: any): Promise<void> {
-        let toImport = data[KEY] as Items
-        // Not import
-        if (typeof toImport !== 'object') return
-        const exists: Items = await this.getItems()
+    async importData(data: unknown): Promise<void> {
+        if (!isExportData(data)) return
+        if (isLegacyVersion(data)) {
+            return this.importLegacyData(data)
+        }
+
+        const rows = extractNamespace(data, this.namespace, isValidImportRows) ?? []
+        for (const row of rows) {
+            const toImport: Omit<timer.limit.Rule, 'id'> = {
+                name: row.name,
+                cond: row.cond,
+                time: row.time,
+                count: row.count,
+                weekly: row.weekly,
+                weeklyCount: row.weeklyCount,
+                visitTime: row.visitTime,
+                periods: row.periods,
+                enabled: row.enabled ?? true,
+                locked: row.locked ?? false,
+                allowDelay: row.allowDelay ?? false,
+                weekdays: row.weekdays ?? [],
+            }
+            await this.save(toImport)
+        }
+    }
+
+    /**
+     * @deprecated Only for legacy data, will be removed in future version
+     */
+    private async importLegacyData(data: unknown): Promise<void> {
+        if (!isRecord(data)) return
+        let toImport = data[KEY]
+        const exists = await this.getItems()
         migrate(exists, toImport)
         this.setByKey(KEY, exists)
+    }
+
+    exportData(): Promise<timer.limit.Rule[]> {
+        return this.all()
     }
 }
 

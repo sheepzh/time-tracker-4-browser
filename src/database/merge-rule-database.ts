@@ -5,19 +5,33 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { isRecord } from '@util/guard'
+import { createArrayGuard, createObjectGuard, createRecordGuard, createUnionGuard, isInt, isString } from 'typescript-guard'
 import BaseDatabase from "./common/base-database"
 import { REMAIN_WORD_PREFIX } from "./common/constant"
+import { extractNamespace, isLegacyVersion } from './common/migratable'
+import type { BrowserMigratable } from './types'
 
 const DB_KEY = REMAIN_WORD_PREFIX + 'MERGE_RULES'
 
 type MergeRuleSet = { [key: string]: string | number }
+
+const isMergeValue = createUnionGuard(isString, isInt)
+
+const isMergeRuleSet = createRecordGuard(isMergeValue)
+
+const isMergeRule = createObjectGuard<timer.merge.Rule>({
+    origin: isString,
+    merged: isMergeValue,
+})
 
 /**
  * Rules to merge host
  *
  * @since 0.1.2
  */
-class MergeRuleDatabase extends BaseDatabase {
+class MergeRuleDatabase extends BaseDatabase implements BrowserMigratable<'__merge__'> {
+    namespace: '__merge__' = '__merge__'
 
     async refresh(): Promise<MergeRuleSet> {
         const result = await this.storage.getOne<MergeRuleSet>(DB_KEY)
@@ -50,17 +64,31 @@ class MergeRuleDatabase extends BaseDatabase {
         await this.update(set)
     }
 
-    async importData(data: any): Promise<void> {
-        const toMigrate = data?.[DB_KEY]
-        if (!toMigrate) return
+    async importData(data: unknown): Promise<void> {
+        if (isLegacyVersion(data)) {
+            return this.importLegacyData(data)
+        }
+        const rules = extractNamespace(data, this.namespace, createArrayGuard(isMergeRule)) ?? []
+        await this.add(...rules)
+    }
+
+    /**
+     * @deprecated Only for legacy version
+     */
+    private async importLegacyData(data: unknown): Promise<void> {
+        if (!isRecord(data)) return
+        const toMigrate = data[DB_KEY]
+        if (!isMergeRuleSet(toMigrate)) return
         const exist = await this.refresh()
-        const valueTypes = ['string', 'number']
-        Object.entries(toMigrate as MergeRuleSet)
-            .filter(([_key, value]) => valueTypes.includes(typeof value))
+        Object.entries(toMigrate satisfies MergeRuleSet)
             // Not rewrite
             .filter(([key]) => !exist[key])
             .forEach(([key, value]) => exist[key] = value)
-        this.update(exist)
+        await this.update(exist)
+    }
+
+    exportData(): Promise<timer.merge.Rule[]> {
+        return this.selectAll()
     }
 }
 
