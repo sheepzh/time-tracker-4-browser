@@ -29,7 +29,7 @@ type _Value = {
  * @return days used
  */
 function calculateInstallDays(installTime: Date, now: Date): number {
-    const deltaMills = getStartOfDay(now).getTime() - getStartOfDay(installTime).getTime()
+    const deltaMills = getStartOfDay(now) - getStartOfDay(installTime)
     return Math.round(deltaMills / MILL_PER_DAY)
 }
 

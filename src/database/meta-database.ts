@@ -17,21 +17,6 @@ class MetaDatabase extends BaseDatabase {
         return meta || {}
     }
 
-    async importData(data: any): Promise<void> {
-        const meta: timer.ExtensionMeta = data[META_KEY] as timer.ExtensionMeta
-        if (!meta) return
-
-        const existMeta = await this.getMeta()
-        const { popupCounter = {}, appCounter = {} } = existMeta
-        popupCounter._total = (popupCounter._total ?? 0) + (popupCounter._total ?? 0)
-        if (meta.appCounter) {
-            Object.entries(meta.appCounter).forEach(([routePath, count]) => {
-                appCounter[routePath] = (appCounter[routePath] ?? 0) + count
-            })
-        }
-        await this.update({ ...existMeta, popupCounter, appCounter })
-    }
-
     async update(existMeta: timer.ExtensionMeta): Promise<void> {
         await this.storage.put(META_KEY, existMeta)
     }

@@ -61,6 +61,7 @@
         "totalMemoryAlert": "The browser provides {size}MB to store local data for each extension",
         "totalMemoryAlert1": "Unable to determine the maximum storage available allowed by the browser",
         "usedMemoryAlert": "{size}MB is currently used",
+        "idbAlert": "Move tracking data to IndexedDB to reduce storage usage",
         "operationAlert": "You can delete those unimportant data to reduce storage usage",
         "filterItems": "Filter data",
         "filterFocus": "The browsing time of the day is between {start} seconds and {end} seconds",

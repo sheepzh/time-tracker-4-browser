@@ -5,7 +5,7 @@ import { formatTimeYMD, getStartOfDay, MILL_PER_DAY } from "@util/time"
 function splitRunTime(start: number, end: number): Record<string, number> {
     const res: Record<string, number> = {}
     while (start < end) {
-        const startOfNextDay = getStartOfDay(start).getTime() + MILL_PER_DAY
+        const startOfNextDay = getStartOfDay(start) + MILL_PER_DAY
         const newStart = Math.min(end, startOfNextDay)
         const runTime = newStart - start
         runTime && (res[formatTimeYMD(start)] = runTime)

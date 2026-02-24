@@ -5,10 +5,14 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { isStringArray } from 'typescript-guard'
 import BaseDatabase from "./common/base-database"
 import { WHITELIST_KEY } from "./common/constant"
+import { extractNamespace, isExportData, isLegacyVersion } from './common/migratable'
+import type { BrowserMigratable } from './types'
 
-class WhitelistDatabase extends BaseDatabase {
+class WhitelistDatabase extends BaseDatabase implements BrowserMigratable<'__whitelist__'> {
+    namespace: '__whitelist__' = '__whitelist__'
 
     private async update(toUpdate: string[]): Promise<void> {
         await this.setByKey(WHITELIST_KEY, toUpdate || [])
@@ -54,12 +58,28 @@ class WhitelistDatabase extends BaseDatabase {
         chrome.storage.onChanged.addListener(storageListener)
     }
 
-    async importData(data: any): Promise<void> {
-        const toMigrate = data[WHITELIST_KEY]
-        if (!Array.isArray(toMigrate)) return
+    async importData(data: unknown): Promise<void> {
+        if (!isExportData(data)) return
+        const toImport = isLegacyVersion(data)
+            ? this.parseLegacyData(data)
+            : extractNamespace(data, this.namespace, isStringArray)
+
         const exist = await this.selectAll()
-        toMigrate.forEach(white => !exist.includes(white) && exist.push(white))
+        toImport?.forEach(white => !exist.includes(white) && exist.push(white))
+
         await this.update(exist)
+    }
+
+    /**
+     * @deprecated Only for legacy data, will be removed in future version
+     */
+    private parseLegacyData(data: timer.backup.ExportData): string[] {
+        const toMigrate = data[WHITELIST_KEY]
+        return isStringArray(toMigrate) ? toMigrate : []
+    }
+
+    exportData(): Promise<string[]> {
+        return this.selectAll()
     }
 }
 

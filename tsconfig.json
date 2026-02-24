@@ -17,6 +17,10 @@
         "esModuleInterop": true,
         "sourceMap": true,
         "strict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "strictFunctionTypes": true,
+        "strictPropertyInitialization": true,
         "resolveJsonModule": true,
         "importHelpers": true,
         "skipLibCheck": true,
@@ -67,7 +71,11 @@
             "*": [
                 "./types/*"
             ]
-        }
+        },
+        "types": [
+            "jest",
+            "chrome"
+        ]
     },
     "exclude": [
         "node_modules",

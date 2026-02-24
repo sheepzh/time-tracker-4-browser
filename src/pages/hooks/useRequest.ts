@@ -30,14 +30,11 @@ const findLoadingEl = async (target: RequestOption<unknown, unknown[]>['loadingT
     if (typeof target === 'string') {
         return target
     } else if (typeof target === 'function') {
-        const res = await target?.()
-        if (res instanceof HTMLElement) {
-            return res
-        }
+        const res = await target()
+        return res instanceof HTMLElement ? res : undefined
     } else {
         return target.value
     }
-    return undefined
 }
 
 export function useRequest<P extends any[], T>(

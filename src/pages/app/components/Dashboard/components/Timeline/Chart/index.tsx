@@ -7,7 +7,6 @@
 
 import ChartTitle from '@app/components/Dashboard/ChartTitle'
 import { t } from '@app/locale'
-import { TIMELINE_LIFE_CYCLE } from '@db/timeline-database'
 import { Collection, Files, Link } from '@element-plus/icons-vue'
 import { useShadow } from '@hooks'
 import { useEcharts } from "@hooks/useEcharts"
@@ -16,6 +15,7 @@ import { type ECElementEvent, type ECharts } from "echarts/core"
 import { ElIcon, ElRadioButton, ElRadioGroup } from 'element-plus'
 import { computed, defineComponent } from "vue"
 import { type JSX } from 'vue/jsx-runtime'
+import { TIMELINE_DAY_COUNT } from '../constants'
 import Wrapper, { EcOption, type BizData } from './Wrapper'
 import { useMerge, type MergeMethod } from './useMerge'
 
@@ -77,7 +77,7 @@ const TimelineChart = defineComponent<{ data: timer.timeline.Tick[] }>(props => 
             <ChartTitle>
                 <Flex justify='space-between'>
                     <Flex align="center">
-                        {t(msg => msg.dashboard.timeline.title, { n: TIMELINE_LIFE_CYCLE })}
+                        {t(msg => msg.dashboard.timeline.title, { n: TIMELINE_DAY_COUNT })}
                     </Flex>
                     <Flex align='center'>
                         <ElRadioGroup size="small" modelValue={merge.value} onChange={setMerge}>

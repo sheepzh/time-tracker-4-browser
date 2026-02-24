@@ -16,7 +16,7 @@ const cleanPeriodData = async () => {
 export default function initDataCleaner() {
     alarmManager.setWhen(
         PERIOD_ALARM_NAME,
-        () => getStartOfDay(new Date()).getTime() + MILL_PER_DAY,
+        () => getStartOfDay(new Date()) + MILL_PER_DAY,
         cleanPeriodData,
     )
 }

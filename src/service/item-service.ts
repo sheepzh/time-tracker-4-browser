@@ -19,7 +19,7 @@ async function addFocusTime(context: ItemIncContext, focusTime: number): Promise
 
     const now = new Date()
 
-    await db.accumulateBatch(resultSet, now)
+    await db.batchAccumulate(resultSet, now)
 
     const { countTabGroup } = await optionHolder.get()
     countTabGroup && isValidGroup(groupId) && db.accumulateGroup(groupId, now, resultOf(focusTime, 0))
@@ -38,7 +38,7 @@ async function increaseVisit(context: ItemIncContext) {
 
     const now = new Date()
 
-    await db.accumulateBatch(resultSet, now)
+    await db.batchAccumulate(resultSet, now)
 
     const { countTabGroup } = await optionHolder.get()
     countTabGroup && isValidGroup(groupId) && await db.accumulateGroup(groupId, now, resultOf(0, 1))
@@ -48,8 +48,8 @@ const getResult = (host: string, date: Date | string) => db.get(host, date)
 
 const selectItems = (cond: StatCondition) => db.select(cond)
 
-async function batchDeleteGroupById(groupId: number): Promise<void> {
-    await db.batchDeleteGroup(groupId)
+async function deleteByGroup(groupId: number): Promise<void> {
+    await db.deleteByGroup(groupId)
 }
 
 export default {
@@ -58,5 +58,5 @@ export default {
     increaseVisit,
     getResult,
     selectItems,
-    batchDeleteGroupById,
+    deleteByGroup,
 }

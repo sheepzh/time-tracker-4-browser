@@ -7,8 +7,9 @@
 import { hasPerm, requestPerm } from "@api/chrome/permission"
 import { isAllowedFileSchemeAccess, sendMsg2Runtime } from "@api/chrome/runtime"
 import { t } from "@app/locale"
-import { useRequest } from "@hooks"
+import { useManualRequest, useRequest } from "@hooks"
 import { locale } from "@i18n"
+import immigration from '@service/components/immigration'
 import { rotate } from "@util/array"
 import { IS_ANDROID, IS_FIREFOX } from "@util/constant/environment"
 import { defaultTracking } from "@util/constant/option"
@@ -21,6 +22,11 @@ import OptionItem from "./OptionItem"
 import OptionLines from './OptionLines'
 import OptionTag from './OptionTag'
 import OptionTooltip from './OptionTooltip'
+
+const ALL_STORAGES: Record<timer.option.StorageType, string> = {
+    classic: 'chrome.storage.local',
+    indexed_db: 'IndexedDB',
+}
 
 const DEFAULT_VALUE = defaultTracking()
 
@@ -39,18 +45,35 @@ function copy(target: timer.option.TrackingOption, source: timer.option.Tracking
     target.weekStart = source.weekStart
     target.autoPauseTracking = source.autoPauseTracking
     target.autoPauseInterval = source.autoPauseInterval
+    target.storage = source.storage
 }
 
 const _default = defineComponent((_props, ctx) => {
     const { option } = useOption({ defaultValue: defaultTracking, copy })
     const { data: fileAccess } = useRequest(isAllowedFileSchemeAccess)
-    ctx.expose({
-        reset: () => {
-            const oldInterval = option.autoPauseInterval
-            copy(option, defaultTracking())
-            option.autoPauseInterval = oldInterval
-        }
-    } satisfies OptionInstance)
+    const reset = () => {
+        // Not to reset these fields
+        const {
+            autoPauseInterval: oldInterval,
+            storage: oldStorage,
+        } = option
+        copy(option, defaultTracking())
+        option.autoPauseInterval = oldInterval
+        option.storage = oldStorage
+    }
+    ctx.expose({ reset } satisfies OptionInstance)
+
+    const { refresh: changeStorageType, loading: storageMigrating } = useManualRequest(async (type: timer.option.StorageType) => {
+        await immigration.migrateStorage(type)
+        option.storage = type
+    }, { loadingText: 'Data migrating...' })
+
+    const handleChangeStorage = (type: timer.option.StorageType) => {
+        const msg = t(msg => msg.option.tracking.storageConfirm, { type: ALL_STORAGES[type] })
+        ElMessageBox.confirm(msg, { type: 'warning' })
+            .then(() => changeStorageType(type))
+            .catch(() => ElMessage.info('Cancelled by user'))
+    }
 
     const interval = computed<number>({
         get: _oldValue => {
@@ -150,6 +173,16 @@ const _default = defineComponent((_props, ctx) => {
                 style={{ width: '120px' }}
                 onChange={(val: timer.option.WeekStartOption) => option.weekStart = val}
                 options={weekStartOptionPairs.map(([value, label]) => ({ value, label }))}
+            />
+        </OptionItem>
+        <OptionItem label={msg => msg.option.tracking.storage}>
+            <ElSelect
+                modelValue={option.storage}
+                size="small"
+                loading={storageMigrating.value}
+                style={{ width: '160px' }}
+                onChange={val => handleChangeStorage(val)}
+                options={Object.entries(ALL_STORAGES).map(([value, label]) => ({ value, label }))}
             />
         </OptionItem>
     </OptionLines>

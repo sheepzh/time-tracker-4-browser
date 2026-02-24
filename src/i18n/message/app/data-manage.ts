@@ -11,6 +11,7 @@ export type DataManageMessage = {
     totalMemoryAlert: string
     totalMemoryAlert1: string
     usedMemoryAlert: string
+    idbAlert: string
     operationAlert: string
     filterItems: string
     filterFocus: string

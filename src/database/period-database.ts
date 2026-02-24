@@ -5,16 +5,14 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getDateString, keyOf, MAX_PERIOD_ORDER, MILL_PER_PERIOD } from "@util/period"
+import { getDateString, keyOf } from "@util/period"
 import BaseDatabase from "./common/base-database"
 import { REMAIN_WORD_PREFIX } from "./common/constant"
 
-type DailyResult = {
-    /**
-     * order => milliseconds of focus
-     */
-    [minuteOrder: number]: number
-}
+/**
+ * order => milliseconds of focus
+ */
+type DailyResult = Record<string, number>
 
 const KEY_PREFIX = REMAIN_WORD_PREFIX + 'PERIOD'
 const KEY_PREFIX_LENGTH = KEY_PREFIX.length
@@ -49,9 +47,11 @@ function db2PeriodInfos(data: { [dateKey: string]: DailyResult }): timer.period.
     }))
     return result
 }
-
 /**
  * @since v0.2.1
+ * @deprecated
+ *  Starting with v4, all timeline data will be stored in IndexedDB, and periodic results will be queried using the timeline database.
+ *  Therefore, this will be removed one year after the release of version 4 (around 2027-04-01)
  */
 class PeriodDatabase extends BaseDatabase {
 
@@ -103,35 +103,6 @@ class PeriodDatabase extends BaseDatabase {
         await this.storage.remove(keys)
     }
 
-    async importData(data: any): Promise<void> {
-        if (typeof data !== "object") return
-        const items = await this.storage.get()
-        const keyReg = new RegExp(`^${KEY_PREFIX}20\\d{2}[01]\\d[0-3]\\d$`)
-        const toSave: Record<string, _Value> = {}
-        Object.entries(data)
-            .filter(([key]) => keyReg.test(key))
-            .forEach(([key, value]) => toSave[key] = migrate(items[key], value as _Value))
-        this.storage.set(toSave)
-    }
-}
-
-type _Value = { [key: string]: number }
-
-function migrate(exist: _Value | undefined, toMigrate: _Value) {
-    const result: _Value = exist || {}
-    Object.entries(toMigrate)
-        .filter(([key]) => /^\d{1,2}$/.test(key))
-        .forEach(([key, value]) => {
-            const index = Number.parseInt(key)
-            if (index < 0 || index > MAX_PERIOD_ORDER) return
-            let mills: number = (result[key] || 0) + (typeof value === "number" ? value : parseInt(value || "0"))
-            if (isNaN(mills) || mills <= 0) return
-            if (mills > MILL_PER_PERIOD) {
-                mills = MILL_PER_PERIOD
-            }
-            result[key] = mills
-        })
-    return result
 }
 
 const periodDatabase = new PeriodDatabase()
