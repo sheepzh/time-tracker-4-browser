@@ -11,7 +11,9 @@ type IndexConfig<T = Record<string, unknown>> = {
 
 export type Index<T = Record<string, unknown>> = Key<T> | Key<T>[] | IndexConfig<T>
 
-const DB_NAME = `tt4b_${chrome.runtime.id}`
+// Lazily evaluated so it is safe to import this module in environments where
+// chrome.runtime is not yet initialised (e.g. unit-test service workers).
+const getDbName = () => `tt4b_${chrome.runtime.id}`
 
 function normalizeIndex<T = Record<string, number>>(index: Index<T>): IndexConfig<T> {
     return typeof index === 'string' || Array.isArray(index) ? { key: index } : index
@@ -75,7 +77,8 @@ export abstract class BaseIDBStorage<T = Record<string, unknown>> {
         if (this.db) return this.db
 
         const factory = typeof window === 'undefined' ? self.indexedDB : window.indexedDB
-        const checkRequest = factory.open(DB_NAME)
+        const dbName = getDbName()
+        const checkRequest = factory.open(dbName)
 
         return new Promise((resolve, reject) => {
             checkRequest.onsuccess = () => {
@@ -91,7 +94,7 @@ export abstract class BaseIDBStorage<T = Record<string, unknown>> {
                 const currentVersion = db.version
                 db.close()
 
-                const upgradeRequest = factory.open(DB_NAME, currentVersion + 1)
+                const upgradeRequest = factory.open(dbName, currentVersion + 1)
 
                 upgradeRequest.onupgradeneeded = () => {
                     const upgradeDb = upgradeRequest.result
@@ -111,6 +114,7 @@ export abstract class BaseIDBStorage<T = Record<string, unknown>> {
                 }
 
                 upgradeRequest.onerror = () => reject(upgradeRequest.error)
+                upgradeRequest.onblocked = () => reject(new Error('IndexedDB upgrade blocked. Please close other tabs using this extension and try again'))
             }
 
             checkRequest.onerror = () => reject(checkRequest.error)

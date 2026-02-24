@@ -17,7 +17,6 @@ function flattenChildren(original: VNode[]): VNode[] {
     let child: unknown | undefined
     while (child = stack.shift()) {
         if (!isVNode(child)) {
-            console.log('Found non-VNode child, ignored:', child)
             continue
         }
 

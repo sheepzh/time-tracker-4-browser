@@ -47,17 +47,16 @@ export default class IDBTimelineDatabase extends BaseIDBStorage<timer.timeline.T
 
     batchSave(ticks: timer.timeline.Tick[]): Promise<void> {
         return this.withStore(async store => {
+            const hosts = new Set(ticks.map(tick => tick.host))
             const index = this.assertIndex(store, 'host')
-            const hosts = Array.from(new Set(ticks.map(tick => tick.host)))
-            const exist = await req2Promise<timer.timeline.Tick[]>(index.getAll(hosts)) ?? []
 
-            // Group exist records by host for O(N+M) instead of O(N*M)
+            // IDBIndex.getAll() takes a single key or range, not an array of keys.
+            // Fetch existing ticks for each host individually and group them.
             const existByHost = new Map<string, timer.timeline.Tick[]>()
-            exist.forEach(item => {
-                const list = existByHost.get(item.host) ?? []
-                list.push(item)
-                existByHost.set(item.host, list)
-            })
+            for (const host of hosts) {
+                const hostTicks = await req2Promise<timer.timeline.Tick[]>(index.getAll(IDBKeyRange.only(host))) ?? []
+                if (hostTicks.length) existByHost.set(host, hostTicks)
+            }
 
             const toSave: timer.timeline.Tick[] = []
             const toDelete: timer.timeline.Tick[] = []
@@ -72,9 +71,10 @@ export default class IDBTimelineDatabase extends BaseIDBStorage<timer.timeline.T
                 const mergeTarget = existForHost.find(exist => canMerge(exist, tick))
                 if (mergeTarget) {
                     toDelete.push(mergeTarget)
-                    let { start, duration, host } = tick
-                    start = Math.min(mergeTarget.start, start)
-                    duration = Math.max(mergeTarget.start + mergeTarget.duration, start + duration) - start
+                    const { host } = tick
+                    const tickEnd = tick.start + tick.duration
+                    const start = Math.min(mergeTarget.start, tick.start)
+                    const duration = Math.max(mergeTarget.start + mergeTarget.duration, tickEnd) - start
                     toSave.push({ host, start, duration })
                 } else {
                     // No conflict and no merge, save the new tick
@@ -116,9 +116,7 @@ export default class IDBTimelineDatabase extends BaseIDBStorage<timer.timeline.T
         store: IDBObjectStore,
         cond?: TimelineCondition,
     ): { cursorReq: IDBRequest<IDBCursorWithValue | null>; coverage: IndexCoverage } {
-        // debugger
         const { host, start } = cond ?? {}
-        console.log(host, start)
         if (start) {
             return {
                 cursorReq: this.assertIndex(store, 'start').openCursor(IDBKeyRange.lowerBound(start)), coverage: { start: true }
