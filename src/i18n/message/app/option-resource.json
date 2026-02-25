@@ -45,7 +45,9 @@
             "tabGroupsPermGrant": "该功能需要授予相关权限",
             "fileAccessDisabled": "目前不允许访问文件网址，请先在管理界面开启",
             "weekStart": "每周的第一天 {input}",
-            "weekStartAsNormal": "按照惯例"
+            "weekStartAsNormal": "按照惯例",
+            "storage": "将数据存储在 {input} 中",
+            "storageConfirm": "是否要将存储类型更改为 {type}？"
         },
         "limit": {
             "prompt": "受限时显示的提示文本 {input}",

@@ -3,6 +3,7 @@
         "totalMemoryAlert": "浏览器为每个扩展提供 {size}MB 来存储本地数据",
         "totalMemoryAlert1": "无法确定浏览器允许的最大可用内存",
         "usedMemoryAlert": "当前已使用 {size}MB",
+        "idbAlert": "可以将数据移动到 IndexedDB 来减少存储空间占用",
         "operationAlert": "您可以删除那些无关紧要的数据，来减小内存空间",
         "filterItems": "数据筛选",
         "filterFocus": "当日阅览时间在 {start} 秒至 {end} 秒之间。",

@@ -6,6 +6,7 @@
         "donutChart": "Displayed as donut charts"
     },
     "zh_CN": {
+        "rating": "提交评价",
         "showSiteName": "显示网站名称",
         "showTopN": "显示前 {n} 名",
         "donutChart": "以圆环图显示"
