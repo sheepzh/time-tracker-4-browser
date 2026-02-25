@@ -24,12 +24,4 @@ export default abstract class BaseDatabase {
     protected setByKey(key: string, val: any): Promise<void> {
         return this.storage.put(key, val)
     }
-
-    /**
-     * Import data
-     *
-     * @since 0.2.5
-     * @param data backup data
-     */
-    abstract importData(data: any): Promise<void>
 }

@@ -2,10 +2,6 @@ import { ElDivider } from 'element-plus'
 import { type FunctionalComponent, h, isVNode, type VNode } from "vue"
 import { isOptionItem } from './OptionItem'
 
-function isFragment({ type, children }: VNode): boolean {
-    return typeof type === 'symbol' && Array.isArray(children)
-}
-
 function isComment({ type, children }: VNode): boolean {
     return typeof type === 'symbol' && (children === null || children === undefined)
 }
@@ -16,18 +12,20 @@ function isHidden({ dirs }: VNode): boolean {
 
 function flattenChildren(original: VNode[]): VNode[] {
     const flat: VNode[] = []
+    const stack: unknown[] = [...original]
 
-    for (const child of original) {
+    let child: unknown | undefined
+    while ((child = stack.shift()) != undefined) {
         if (!isVNode(child)) {
-            flat.push(child)
+            console.log('Found non-VNode child, ignored:', child)
             continue
         }
 
-        if (isFragment(child) && child.children) {
-            const fragmentChildren = Array.isArray(child.children)
-                ? child.children
-                : [child.children]
-            flat.push(...flattenChildren(fragmentChildren as VNode[]))
+        const { type, children } = child
+        if (typeof type === 'symbol' && Array.isArray(children)) {
+            // is Fragment, flatten it by pushing its children to stack
+            stack.unshift(...children)
+            continue
         } else {
             flat.push(child)
         }
@@ -50,8 +48,7 @@ const OptionLines: FunctionalComponent<{}> = (_, { slots }) => {
         children.push(child)
         beforeIsItem = thisIsItem
     }
-
-    return h('div', {}, children)
+    return <div>{children}</div>
 }
 OptionLines.displayName = 'OptionLines'
 

@@ -1,1 +1,0 @@
-export const GROUP_PREFIX = "_g_"

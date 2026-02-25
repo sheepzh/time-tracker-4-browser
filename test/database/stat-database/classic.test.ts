@@ -1,8 +1,10 @@
-import db, { type StatCondition } from "@db/stat-database"
+import type { StatCondition } from '@db/stat-database'
+import { ClassicStatDatabase, parseImportData } from "@db/stat-database/classic"
 import { resultOf } from "@util/stat"
 import { formatTimeYMD, MILL_PER_DAY } from "@util/time"
-import { mockStorage } from "../__mock__/storage"
+import { mockStorage } from '../../__mock__/storage'
 
+let db: ClassicStatDatabase
 const now = new Date()
 const nowStr = formatTimeYMD(now)
 const yesterday = new Date(now.getTime() - MILL_PER_DAY)
@@ -10,29 +12,32 @@ const beforeYesterday = new Date(now.getTime() - MILL_PER_DAY * 2)
 const baidu = 'www.baidu.com'
 const google = 'www.google.com.hk'
 
-describe('stat-database', () => {
-    beforeAll(mockStorage)
+describe('stat-database/classic', () => {
+    beforeAll(() => {
+        mockStorage()
+        db = new ClassicStatDatabase(chrome.storage.local)
+    })
 
     beforeEach(async () => chrome.storage.local.clear())
 
     test('1', async () => {
         await db.accumulate(baidu, nowStr, resultOf(100, 0))
         const data: timer.core.Result = await db.get(baidu, now)
-        expect(data).toEqual(resultOf(100, 0))
+        expect(data).toMatchObject(resultOf(100, 0))
     })
 
     test('2', async () => {
         await db.accumulate(baidu, nowStr, resultOf(200, 0))
         await db.accumulate(baidu, nowStr, resultOf(200, 0))
         let data = await db.get(baidu, now)
-        expect(data).toEqual(resultOf(400, 0))
+        expect(data).toEqual({ host: baidu, date: nowStr, focus: 400, time: 0 } satisfies timer.core.Row)
         await db.accumulate(baidu, nowStr, resultOf(0, 1))
         data = await db.get(baidu, now)
-        expect(data).toEqual(resultOf(400, 1))
+        expect(data).toEqual({ host: baidu, date: nowStr, focus: 400, time: 1 } satisfies timer.core.Row)
     })
 
     test('3', async () => {
-        await db.accumulateBatch(
+        await db.batchAccumulate(
             {
                 [google]: resultOf(11, 0),
                 [baidu]: resultOf(1, 0)
@@ -40,7 +45,7 @@ describe('stat-database', () => {
         )
         expect((await db.select()).length).toEqual(2)
 
-        await db.accumulateBatch(
+        await db.batchAccumulate(
             {
                 [google]: resultOf(12, 1),
                 [baidu]: resultOf(2, 1)
@@ -48,7 +53,7 @@ describe('stat-database', () => {
         )
         expect((await db.select()).length).toEqual(4)
 
-        await db.accumulateBatch(
+        await db.batchAccumulate(
             {
                 [google]: resultOf(13, 2),
                 [baidu]: resultOf(3, 2)
@@ -96,17 +101,17 @@ describe('stat-database', () => {
         await db.accumulate(baidu, formatTimeYMD(yesterday), resultOf(12, 0))
         expect((await db.select()).length).toEqual(2)
         // Delete yesterday's data
-        await db.deleteByUrlAndDate(baidu, yesterday)
+        await db.delete({ host: baidu, date: formatTimeYMD(yesterday) })
         expect((await db.select()).length).toEqual(1)
         // Delete yesterday's data again, nothing changed
-        await db.deleteByUrlAndDate(baidu, yesterday)
+        await db.delete({ host: baidu, date: formatTimeYMD(yesterday) })
         expect((await db.get(baidu, now)).focus).toEqual(10)
         // Add one again, and another
         await db.accumulate(baidu, formatTimeYMD(beforeYesterday), resultOf(1, 1))
         await db.accumulate(google, nowStr, resultOf(0, 0))
         expect((await db.select()).length).toEqual(3)
         // Delete all the baidu
-        await db.deleteByUrl(baidu)
+        await db.deleteByHost(baidu)
         const cond: StatCondition = { keys: baidu }
         // Nothing of baidu remained
         expect((await db.select(cond)).length).toEqual(0)
@@ -117,13 +122,13 @@ describe('stat-database', () => {
         // Add one item of baidu again again
         await db.accumulate(baidu, nowStr, resultOf(1, 1))
         // But delete google
-        await db.delete(list)
+        await db.delete(...list)
         // Then only one item of baidu
         expect((await db.select()).length).toEqual(1)
     })
 
     test('6', async () => {
-        await db.accumulateBatch({}, now)
+        await db.batchAccumulate({}, now)
         expect((await db.select()).length).toEqual(0)
         // Return zero instance
         const result = await db.get(baidu, now)
@@ -135,22 +140,21 @@ describe('stat-database', () => {
         await db.accumulate(baidu, nowStr, foo)
         await db.accumulate(baidu, formatTimeYMD(yesterday), foo)
         await db.accumulate(baidu, formatTimeYMD(beforeYesterday), foo)
-        await db.deleteByUrlBetween(baidu, now, now)
+        await db.delete({ host: baidu, date: formatTimeYMD(now) })
         expect((await db.select()).length).toEqual(2)
 
-        await db.deleteByUrlBetween(baidu, now, beforeYesterday) // Invalid
+        await db.deleteByHost(baidu, [now, beforeYesterday]) // Invalid
         expect((await db.select()).length).toEqual(2)
     })
 
-    test("importData", async () => {
+    test("parseImportData", async () => {
         const foo = resultOf(1, 1)
         await db.accumulate(baidu, nowStr, foo)
         const data2Import = await db.storage.get()
         chrome.storage.local.clear()
 
         data2Import.foo = "bar"
-        await db.importData(data2Import)
-        const data = await db.select({})
+        const data = parseImportData(data2Import)
         expect(data.length).toEqual(1)
         const item = data[0]
         expect(item.date).toEqual(nowStr)
@@ -159,8 +163,8 @@ describe('stat-database', () => {
         expect(item.time).toEqual(1)
     })
 
-    test("importData2", async () => {
-        await db.importData({
+    test("parseImportData2", async () => {
+        const data = parseImportData({
             // Valid
             "20210910github.com": {
                 focus: 1,
@@ -177,16 +181,6 @@ describe('stat-database', () => {
             // Ignored with zero info
             "20210914github.com": {}
         })
-        const imported = await db.select()
-        expect(imported.length).toEqual(2)
-    })
-
-    test("importData3", async () => {
-        await db.importData([])
-        expect(await db.select()).toEqual([])
-        await db.importData({ foo: "bar" })
-        expect(await db.select()).toEqual([])
-        await db.importData(false)
-        expect(await db.select()).toEqual([])
+        expect(data.length).toEqual(2)
     })
 })

@@ -9,7 +9,7 @@ import mergeRuleDatabase from "@db/merge-rule-database"
 import { t2Chrome } from "@i18n/chrome/t"
 import { saveAlias } from '@service/site-service'
 import { JSON_HOST, LOCAL_HOST_PATTERN, MERGED_HOST, PDF_HOST, PIC_HOST, TXT_HOST } from "@util/constant/remain-host"
-import { type Migrator } from "./common"
+import { type Migrator } from "./types"
 
 /**
  * Process the host of local files

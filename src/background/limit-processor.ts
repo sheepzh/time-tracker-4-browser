@@ -46,10 +46,7 @@ function initDailyBroadcast() {
     // Broadcast rules at the start of each day
     alarmManager.setWhen(
         'limit-daily-broadcast',
-        () => {
-            const startOfThisDay = getStartOfDay(new Date())
-            return startOfThisDay.getTime() + MILL_PER_DAY
-        },
+        () => getStartOfDay(new Date()) + MILL_PER_DAY,
         () => limitService.broadcastRules(),
     )
 }

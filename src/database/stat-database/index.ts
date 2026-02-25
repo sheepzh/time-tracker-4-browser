@@ -5,312 +5,142 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { escapeRegExp } from "@util/pattern"
-import { isNotZeroResult } from "@util/stat"
-import { formatTimeYMD } from "@util/time"
-import { log } from "../../common/logger"
-import BaseDatabase from "../common/base-database"
-import { REMAIN_WORD_PREFIX } from "../common/constant"
-import { GROUP_PREFIX } from "./constants"
-import { filter } from "./filter"
+import { extractNamespace, isExportData, isLegacyVersion } from '@db/common/migratable'
+import { StorageHolder } from '@db/common/storage-holder'
+import type { BrowserMigratable, StorageMigratable } from '@db/types'
+import { isOptionalInt } from '@util/guard'
+import { isNotZeroResult } from '@util/stat'
+import { createArrayGuard, createObjectGuard, isString } from 'typescript-guard'
+import { ClassicStatDatabase, parseImportData } from './classic'
+import { IDBStatDatabase } from './idb'
+import type { StatCondition, StatDatabase } from './types'
 
-export type StatCondition = {
-    /**
-     * Date
-     * {y}{m}{d}
-     */
-    date?: Date | [Date?, Date?]
-    /**
-     * Focus range, milliseconds
-     *
-     * @since 0.0.9
-     */
-    focusRange?: Vector<2>
-    /**
-     * Time range
-     *
-     * @since 0.0.9
-     */
-    timeRange?: [number, number?]
-    /**
-     * Whether to include virtual sites
-     *
-     * @since 1.6.1
-     */
-    virtual?: boolean
-    /**
-     * Host or groupId, full match
-     */
-    keys?: string[] | string
-}
+type StateDatabaseComposite =
+    & StatDatabase
+    & StorageMigratable<[tabs: timer.core.Row[], groups: timer.core.Row[]]>
+    & BrowserMigratable<'__stat__'>
 
-function increase(a: timer.core.Result, b: timer.core.Result) {
-    const res: timer.core.Result = {
-        focus: (a?.focus ?? 0) + (b?.focus ?? 0),
-        time: (a?.time ?? 0) + (b?.time ?? 0),
-    }
-    const run = (a?.run ?? 0) + (b?.run ?? 0)
-    run && (res.run = run)
-    return res
-}
+// Only `date` and `host` are required for import, other fields are optional, and will be set to default if not provided
+type ValidImportRow = MakeRequired<Partial<timer.core.Row>, 'date' | 'host'>
 
-function createZeroResult(): timer.core.Result {
-    return { focus: 0, time: 0 }
-}
+const isValidImportRow = createObjectGuard<ValidImportRow>({
+    focus: isOptionalInt,
+    time: isOptionalInt,
+    run: isOptionalInt,
+    date: isString,
+    host: isString,
+})
 
-function mergeMigration(exist: timer.core.Result | undefined, another: any) {
-    exist = exist || createZeroResult()
-    return increase(exist, { focus: another.focus ?? 0, time: another.time ?? 0, run: another.run ?? 0 })
-}
+const isValidImportRows = createArrayGuard(isValidImportRow)
 
-/**
- * Generate the key in local storage by host and date
- *
- * @param host host
- * @param date date
- */
-function generateKey(host: string, date: Date | string) {
-    const str = typeof date === 'object' ? formatTimeYMD(date as Date) : date
-    return str + host
-}
+class StatDatabaseWrapper implements StateDatabaseComposite {
+    namespace: '__stat__' = '__stat__'
+    private holder = new StorageHolder<StatDatabase>({
+        classic: new ClassicStatDatabase(),
+        indexed_db: new IDBStatDatabase(),
+    })
+    private current = () => this.holder.current
 
-const generateHostReg = (host: string): RegExp => RegExp(`^\\d{8}${escapeRegExp(host)}$`)
-
-function generateGroupKey(groupId: number, date: Date | string) {
-    const str = typeof date === 'object' ? formatTimeYMD(date as Date) : date
-    return str + GROUP_PREFIX + groupId
-}
-
-const generateGroupReg = (groupId: number): RegExp => RegExp(`^\\d{8}${escapeRegExp(`${GROUP_PREFIX}${groupId}`)}$`)
-
-function migrate(exists: { [key: string]: timer.core.Result }, data: any): Record<string, timer.core.Result> {
-    const result: Record<string, timer.core.Result> = {}
-    Object.entries(data)
-        .filter(([key]) => /^20\d{2}[01]\d[0-3]\d.*/.test(key) && !key.substring(8).startsWith(GROUP_PREFIX))
-        .forEach(([key, value]) => {
-            if (typeof value !== "object") return
-            const exist = exists[key]
-            const merged = mergeMigration(exist, value)
-            merged && isNotZeroResult(merged) && (result[key] = mergeMigration(exist, value))
-        })
-    return result
-}
-
-export class StatDatabase extends BaseDatabase {
-
-    async refresh(): Promise<{ [key: string]: unknown }> {
-        const result = await this.storage.get()
-        const items: Record<string, timer.core.Result> = {}
-        Object.entries(result)
-            .filter(([key]) => !key.startsWith(REMAIN_WORD_PREFIX))
-            .forEach(([key, value]) => items[key] = value)
-        return items
+    get(host: string, date: Date | string): Promise<timer.core.Row> {
+        return this.current().get(host, date)
     }
 
-    /**
-     * @param host host
-     * @since 0.1.3
-     */
+    select(condition?: StatCondition): Promise<timer.core.Row[]> {
+        return this.current().select(condition)
+    }
+
     accumulate(host: string, date: Date | string, item: timer.core.Result): Promise<timer.core.Result> {
-        const key = generateKey(host, date)
-        return this.accumulateInner(key, item)
+        return this.current().accumulate(host, date, item)
     }
 
-    /**
-     * @param host host
-     * @since 0.1.3
-     */
+    batchAccumulate(data: Record<string, timer.core.Result>, date: Date | string): Promise<Record<string, timer.core.Result>> {
+        return this.current().batchAccumulate(data, date)
+    }
+
     accumulateGroup(groupId: number, date: Date | string, item: timer.core.Result): Promise<timer.core.Result> {
-        const key = generateGroupKey(groupId, date)
-        return this.accumulateInner(key, item)
+        return this.current().accumulateGroup(groupId, date, item)
     }
 
-    private async accumulateInner(key: string, item: timer.core.Result): Promise<timer.core.Result> {
-        let exist = await this.storage.getOne<timer.core.Result>(key)
-        exist = increase(exist || createZeroResult(), item)
-        await this.setByKey(key, exist)
-        return exist
+    delete(...rows: timer.core.RowKey[]): Promise<void> {
+        return this.current().delete(...rows)
     }
 
-    /**
-     * Batch accumulate
-     *
-     * @param data data: {host=>waste_per_day}
-     * @param date date
-     * @since 0.1.8
-     */
-    async accumulateBatch(data: Record<string, timer.core.Result>, date: Date | string): Promise<Record<string, timer.core.Result>> {
-        const hosts = Object.keys(data)
-        if (!hosts.length) return {}
-        const dateStr = typeof date === 'string' ? date : formatTimeYMD(date)
-        const keys: { [host: string]: string } = {}
-        hosts.forEach(host => keys[host] = generateKey(host, dateStr))
-
-        const items = await this.storage.get(Object.values(keys))
-
-        const toUpdate: Record<string, timer.core.Result> = {}
-        const afterUpdated: Record<string, timer.core.Result> = {}
-        Object.entries(keys).forEach(([host, key]) => {
-            const item = data[host]
-            const exist: timer.core.Result = increase(items[key] as timer.core.Result || createZeroResult(), item)
-            toUpdate[key] = afterUpdated[host] = exist
-        })
-        await this.storage.set(toUpdate)
-        return afterUpdated
+    deleteByHost(host: string, range?: [start?: Date | string, end?: Date | string]): Promise<string[]> {
+        return this.current().deleteByHost(host, range)
     }
 
-    filter = filter
-
-    /**
-     * Select
-     *
-     * @param condition     condition
-     */
-    async select(condition?: StatCondition): Promise<timer.core.Row[]> {
-        log("select:{condition}", condition)
-        const filterResults = await this.filter(condition)
-        return filterResults.map(({ date, host, value }) => {
-            const { focus, time, run } = value
-            return { date, host, focus, time, run }
-        })
+    selectGroup(condition?: StatCondition): Promise<timer.core.Row[]> {
+        return this.current().selectGroup(condition)
     }
 
-    async selectGroup(condition?: StatCondition): Promise<timer.core.Row[]> {
-        const filterResults = await this.filter(condition, true)
-        return filterResults.map(({ date, host, value }) => {
-            const { focus, time, run } = value
-            return { date, host, focus, time, run }
-        })
+    deleteGroup(...rows: [groupId: number, date: string][]): Promise<void> {
+        return this.current().deleteGroup(...rows)
     }
 
-    /**
-     * Get by host and date
-     *
-     * @since 0.0.5
-     */
-    async get(host: string, date: Date | string): Promise<timer.core.Result> {
-        const key = generateKey(host, date)
-        const exist = await this.storage.getOne<timer.core.Result>(key)
-        return exist || createZeroResult()
+    deleteByGroup(groupId: number, range: [start?: Date | string, end?: Date | string]): Promise<void> {
+        return this.current().deleteByGroup(groupId, range)
     }
 
-    /**
-     * Delete the record
-     *
-     * @param host host
-     * @param date date
-     * @since 0.0.5
-     */
-    async deleteByUrlAndDate(host: string, date: Date | string): Promise<void> {
-        const key = generateKey(host, date)
-        return this.storage.remove(key)
+    forceUpdate(...rows: timer.core.Row[]): Promise<void> {
+        return this.current().forceUpdate(...rows)
     }
 
-    async deleteByGroupAndDate(groupId: number, date: Date | string): Promise<void> {
-        const key = generateGroupKey(groupId, date)
-        return this.storage.remove(key)
+    forceUpdateGroup(...rows: timer.core.Row[]): Promise<void> {
+        return this.current().forceUpdateGroup(...rows)
     }
 
-    /**
-     * Delete by key
-     *
-     * @param rows     site rows, the host and date mustn't be null
-     * @since 0.0.9
-     */
-    async delete(rows: timer.core.RowKey[]): Promise<void> {
-        const keys: string[] = rows.map(({ host, date }) => generateKey(host, date))
-        return this.storage.remove(keys)
+
+    async migrateStorage(type: timer.option.StorageType): Promise<[timer.core.Row[], timer.core.Row[]]> {
+        const target = this.holder.get(type)
+        if (!target) return [[], []]
+        const tabs = await this.select({ virtual: true })
+        await target.forceUpdate(...tabs)
+        const groups = await this.selectGroup()
+        await target.forceUpdateGroup(...groups)
+        return [tabs, groups]
     }
 
-    async deleteGroup(rows: [groupId: number, date: string][]): Promise<void> {
-        const keys: string[] = rows.map(([groupId, date]) => generateGroupKey(groupId, date))
-        return this.storage.remove(keys)
+    async afterStorageMigrated([tabs, groups]: [timer.core.Row[], timer.core.Row[]]): Promise<void> {
+        await this.current().delete(...tabs)
+        const groupKeys = groups.map(({ host, date }) => [parseInt(host), date] satisfies [number, string])
+        await this.current().deleteGroup(...groupKeys)
     }
 
-    async batchDeleteGroup(groupId: number): Promise<void> {
-        const keyReg = generateGroupReg(groupId)
-        const items = await this.refresh()
-        const keys: string[] = Object.keys(items).filter(key => keyReg.test(key))
-        await this.storage.remove(keys)
+    async importData(data: unknown): Promise<void> {
+        const rows = this.parseImportRows(data)
+        await this.forceUpdate(...rows)
     }
 
-    /**
-     * Force update data
-     *
-     * @since 1.4.3
-     */
-    forceUpdate({ host, date, time, focus, run }: timer.core.Row): Promise<void> {
-        const key = generateKey(host, date)
-        const result: timer.core.Result = { time, focus }
-        run && (result.run = run)
-        return this.storage.put(key, result)
+    async exportData(): Promise<timer.core.Row[]> {
+        return this.select({ virtual: true })
     }
 
-    /**
-     * @param host host
-     * @param start start date, inclusive
-     * @param end end date, inclusive
-     * @since 0.0.7
-     */
-    async deleteByUrlBetween(host: string, start?: Date, end?: Date): Promise<string[]> {
-        const startStr = start ? formatTimeYMD(start) : undefined
-        const endStr = end ? formatTimeYMD(end) : undefined
-        const dateFilter = (date: string) => (startStr ? startStr <= date : true) && (endStr ? date <= endStr : true)
-        const items = await this.refresh()
+    private parseImportRows(data: unknown): timer.core.Row[] {
+        if (!isExportData(data)) return []
+        if (isLegacyVersion(data)) {
+            return parseImportData(data) ?? []
+        }
 
-        // Key format: 20201112www.google.com
-        const keyReg = generateHostReg(host)
-        const keys: string[] = Object.keys(items)
-            .filter(key => keyReg.test(key) && dateFilter(key.substring(0, 8)))
+        if (!(this.namespace in data)) return []
 
-        await this.storage.remove(keys)
-        return keys.map(k => k.substring(0, 8))
-    }
-
-    async deleteByGroupBetween(groupId: number, start?: Date, end?: Date): Promise<void> {
-        const startStr = start ? formatTimeYMD(start) : undefined
-        const endStr = end ? formatTimeYMD(end) : undefined
-        const dateFilter = (date: string) => (startStr ? startStr <= date : true) && (endStr ? date <= endStr : true)
-        const items = await this.refresh()
-
-        const keyReg = generateGroupReg(groupId)
-        const keys: string[] = Object.keys(items).filter(key => keyReg.test(key) && dateFilter(key.substring(0, 8)))
-
-        await this.storage.remove(keys)
-    }
-
-    /**
-     * Delete the record
-     *
-     * @param host host
-     * @since 0.0.5
-     */
-    async deleteByUrl(host: string): Promise<string[]> {
-        const items = await this.refresh()
-
-        // Key format: 20201112www.google.com
-        const keyReg = generateHostReg(host)
-        const keys: string[] = Object.keys(items).filter(key => keyReg.test(key))
-        await this.storage.remove(keys)
-
-        return keys.map(k => k.substring(0, 8))
-    }
-
-    async deleteByGroup(groupId: number): Promise<void> {
-        const items = await this.refresh()
-        const keyReg = generateGroupReg(groupId)
-        const keys: string[] = Object.keys(items).filter(key => keyReg.test(key))
-        await this.storage.remove(keys)
-    }
-
-    async importData(data: any): Promise<void> {
-        if (typeof data !== "object") return
-        const items = await this.storage.get()
-        const toSave = migrate(items, data)
-        this.storage.set(toSave)
+        const nsData = extractNamespace(data, this.namespace, isValidImportRows) ?? []
+        const rows: timer.core.Row[] = []
+        for (const item of nsData) {
+            const row: timer.core.Row = {
+                host: item.host,
+                date: item.date,
+                time: item.time ?? 0,
+                focus: item.focus ?? 0,
+                run: item.run ?? 0,
+            }
+            isNotZeroResult(row) && rows.push(row)
+        }
+        return rows
     }
 }
 
-const statDatabase = new StatDatabase()
+const statDatabase: StateDatabaseComposite = new StatDatabaseWrapper()
 
 export default statDatabase
+
+export * from "./types"

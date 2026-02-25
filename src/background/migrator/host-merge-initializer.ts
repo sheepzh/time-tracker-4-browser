@@ -6,7 +6,7 @@
  */
 
 import mergeRuleDatabase from "@db/merge-rule-database"
-import { type Migrator } from "./common"
+import type { Migrator } from "./types"
 
 /**
  * v0.1.2

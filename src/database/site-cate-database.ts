@@ -19,26 +19,13 @@ type Item = {
 
 type Items = Record<number, Item>
 
-function migrate(exist: Items, toMigrate: any) {
-    let idBase = Object.keys(exist).map(parseInt).sort().reverse()?.[0] ?? 0 + 1
-    const existLabels = new Set(Object.values(exist).map(e => e.n))
-
-    Object.values(toMigrate).forEach(value => {
-        const { n } = (value as Item) || {}
-        if (!n || existLabels.has(n)) return
-
-        const id = idBase
-        idBase++
-        exist[id] = { n }
-    })
-}
-
 /**
  * Site tag
  *
  * @since 3.0.0
  */
 class SiteCateDatabase extends BaseDatabase {
+
     private async getItems(): Promise<Items> {
         return await this.storage.getOne<Items>(KEY) || {}
     }
@@ -84,15 +71,6 @@ class SiteCateDatabase extends BaseDatabase {
 
         items[id] = { ...items[id] || {}, n: name }
         await this.saveItems(items)
-    }
-
-    async importData(data: any): Promise<void> {
-        let toImport = data[KEY] as Items
-        // Not import
-        if (typeof toImport !== 'object') return
-        const exists: Items = await this.getItems()
-        migrate(exists, toImport)
-        this.setByKey(KEY, exists)
     }
 
     async delete(id: number): Promise<void> {

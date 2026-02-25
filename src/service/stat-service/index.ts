@@ -294,8 +294,8 @@ export async function batchDelete(targets: timer.stat.Row[]) {
         isNormalSite(row) && siteKeys.push({ host: row.siteKey.host, date })
         isGroup(row) && groupKeys.push([row.groupKey, date])
     })
-    await statDatabase.delete(siteKeys)
-    await statDatabase.deleteGroup(groupKeys)
+    await statDatabase.delete(...siteKeys)
+    await statDatabase.deleteGroup(...groupKeys)
 }
 
 export async function selectGroupByPage(param?: GroupQuery, page?: timer.common.PageQuery): Promise<timer.common.PageResult<timer.stat.Row>> {

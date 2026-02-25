@@ -18,22 +18,12 @@ import { isRtl } from "./document"
  *
  * Parse the time to string
  */
-export function formatTime(time: Date | string | number, cFormat?: string) {
+export function formatTime(time: Date | number, cFormat?: string) {
     const format = cFormat || '{y}-{m}-{d} {h}:{i}:{s}'
     let date: Date
     if (time instanceof Date) {
         date = time
     } else {
-        if ((typeof time === 'string')) {
-            if ((/^[0-9]+$/.test(time))) {
-                // support "1548221490638"
-                time = parseInt(time)
-            } else {
-                // support safari
-                time = time.replace(new RegExp(/-/gm), '/')
-            }
-        }
-
         if ((typeof time === 'number') && (time.toString().length === 10)) {
             time = time * 1000
         }
@@ -57,7 +47,7 @@ export function formatTime(time: Date | string | number, cFormat?: string) {
     return timeStr
 }
 
-export function formatTimeYMD(time: Date | string | number) {
+export function formatTimeYMD(time: Date | number) {
     return formatTime(time, '{y}{m}{d}')
 }
 
@@ -175,13 +165,13 @@ export function getMonthTime(target: Date): [Date, Date] {
  * Get the start time of this day
  *
  * @param target the specific time
- * @returns the start of this day
+ * @returns the start of this day, in milliseconds
  * @since 1.0.0
  */
-export function getStartOfDay(target: Date | number) {
+export function getStartOfDay(target: Date | number): number {
     const date = new Date(target)
     date.setHours(0, 0, 0, 0)
-    return date
+    return date.getTime()
 }
 
 /**
