@@ -45,6 +45,9 @@ const config: Config = {
         "^.+\\.tsx?$": "@swc/jest"
     },
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+    setupFiles: [
+        '<rootDir>/test/jest.setup.ts',
+    ],
 }
 
 export default config

@@ -41,7 +41,7 @@ class StatDatabaseWrapper implements StateDatabaseComposite {
     })
     private current = () => this.holder.current
 
-    get(host: string, date: Date | string): Promise<timer.core.Result> {
+    get(host: string, date: Date | string): Promise<timer.core.Row> {
         return this.current().get(host, date)
     }
 

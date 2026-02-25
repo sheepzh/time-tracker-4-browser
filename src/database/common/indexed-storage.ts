@@ -11,8 +11,6 @@ type IndexConfig<T = Record<string, unknown>> = {
 
 export type Index<T = Record<string, unknown>> = Key<T> | Key<T>[] | IndexConfig<T>
 
-const DB_NAME = `tt4b_${chrome.runtime.id}`
-
 function normalizeIndex<T = Record<string, number>>(index: Index<T>): IndexConfig<T> {
     return typeof index === 'string' || Array.isArray(index) ? { key: index } : index
 }
@@ -65,7 +63,29 @@ export async function iterateCursor<T = unknown>(
     })
 }
 
+export function closedRangeKey(lower: IDBValidKey | undefined, upper: IDBValidKey | undefined): IDBKeyRange | undefined {
+    if (lower !== undefined && upper !== undefined) {
+        if (lower > upper) {
+            [lower, upper] = [upper, lower]
+        }
+        return IDBKeyRange.bound(lower, upper, false, false)
+    } else if (lower !== undefined) {
+        return IDBKeyRange.lowerBound(lower, false)
+    } else if (upper !== undefined) {
+        return IDBKeyRange.upperBound(upper, false)
+    } else {
+        return undefined
+    }
+}
+
+export type IndexResult<FilterCoverage> = {
+    cursorReq: IDBRequest<IDBCursorWithValue | null>
+    coverage?: FilterCoverage
+}
+
 export abstract class BaseIDBStorage<T = Record<string, unknown>> {
+    private DB_NAME = `tt4b_${chrome.runtime.id}` as const
+
     private db: IDBDatabase | undefined
     abstract indexes: Index<T>[]
     abstract key: Key<T> | Key<T>[]
@@ -74,8 +94,8 @@ export abstract class BaseIDBStorage<T = Record<string, unknown>> {
     protected async initDb(): Promise<IDBDatabase> {
         if (this.db) return this.db
 
-        const factory = typeof window === 'undefined' ? self.indexedDB : window.indexedDB
-        const checkRequest = factory.open(DB_NAME)
+        const factory = typeof window !== 'undefined' ? window.indexedDB : globalThis.indexedDB
+        const checkRequest = factory.open(this.DB_NAME)
 
         return new Promise((resolve, reject) => {
             checkRequest.onsuccess = () => {
@@ -91,7 +111,7 @@ export abstract class BaseIDBStorage<T = Record<string, unknown>> {
                 const currentVersion = db.version
                 db.close()
 
-                const upgradeRequest = factory.open(DB_NAME, currentVersion + 1)
+                const upgradeRequest = factory.open(this.DB_NAME, currentVersion + 1)
 
                 upgradeRequest.onupgradeneeded = () => {
                     const upgradeDb = upgradeRequest.result
@@ -181,5 +201,10 @@ export abstract class BaseIDBStorage<T = Record<string, unknown>> {
             console.error(`Failed to query index: table=${this.table}`, err)
             throw err
         }
+    }
+
+    protected assertIndexCursor(store: IDBObjectStore, key: Key<T> | Key<T>[], range: IDBKeyRange): IDBRequest<IDBCursorWithValue | null> {
+        const index = this.assertIndex(store, key)
+        return index.openCursor(range)
     }
 }

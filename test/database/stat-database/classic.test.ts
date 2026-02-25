@@ -12,7 +12,7 @@ const beforeYesterday = new Date(now.getTime() - MILL_PER_DAY * 2)
 const baidu = 'www.baidu.com'
 const google = 'www.google.com.hk'
 
-describe('stat-database', () => {
+describe('stat-database/classic', () => {
     beforeAll(() => {
         mockStorage()
         db = new ClassicStatDatabase(chrome.storage.local)
@@ -23,17 +23,17 @@ describe('stat-database', () => {
     test('1', async () => {
         await db.accumulate(baidu, nowStr, resultOf(100, 0))
         const data: timer.core.Result = await db.get(baidu, now)
-        expect(data).toEqual(resultOf(100, 0))
+        expect(data).toMatchObject(resultOf(100, 0))
     })
 
     test('2', async () => {
         await db.accumulate(baidu, nowStr, resultOf(200, 0))
         await db.accumulate(baidu, nowStr, resultOf(200, 0))
         let data = await db.get(baidu, now)
-        expect(data).toEqual(resultOf(400, 0))
+        expect(data).toEqual({ host: baidu, date: nowStr, focus: 400, time: 0 } satisfies timer.core.Row)
         await db.accumulate(baidu, nowStr, resultOf(0, 1))
         data = await db.get(baidu, now)
-        expect(data).toEqual(resultOf(400, 1))
+        expect(data).toEqual({ host: baidu, date: nowStr, focus: 400, time: 1 } satisfies timer.core.Row)
     })
 
     test('3', async () => {

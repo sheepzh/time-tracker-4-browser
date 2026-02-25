@@ -30,7 +30,7 @@ export type StatCondition = {
 }
 
 export interface StatDatabase {
-    get(host: string, date: Date | string): Promise<timer.core.Result>
+    get(host: string, date: Date | string): Promise<timer.core.Row>
     select(condition?: StatCondition): Promise<timer.core.Row[]>
     /**
      * Accumulate data

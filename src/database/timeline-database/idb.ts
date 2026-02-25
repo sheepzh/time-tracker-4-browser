@@ -1,4 +1,7 @@
-import { BaseIDBStorage, iterateCursor, req2Promise, type Index, type Key, type Table } from '@db/common/indexed-storage'
+import {
+    BaseIDBStorage, iterateCursor, req2Promise,
+    type Index, type IndexResult, type Key, type Table,
+} from '@db/common/indexed-storage'
 import { MILL_PER_DAY, MILL_PER_SECOND } from '@util/time'
 import type { TimelineCondition, TimelineDatabase } from './types'
 
@@ -88,17 +91,13 @@ export default class IDBTimelineDatabase extends BaseIDBStorage<timer.timeline.T
 
     async select(cond?: TimelineCondition): Promise<timer.timeline.Tick[]> {
         const rows = await this.withStore(async store => {
-            const { cursorReq, coverage } = this.judgeIndex(store, cond)
+            const { cursorReq, coverage = {} } = this.judgeIndex(store, cond)
             const rows = await iterateCursor<timer.timeline.Tick>(cursorReq)
             const { start: cs, host: ch } = cond ?? {}
             return rows.filter(tick => {
                 const { host, start } = tick
-                if (cs && !coverage.start && start < cs) {
-                    return false
-                }
-                if (ch && !coverage.host && host !== ch) {
-                    return false
-                }
+                if (cs && !coverage.start && start < cs) return false
+                if (ch && !coverage.host && host !== ch) return false
                 return true
             })
         }, 'readonly')
@@ -112,21 +111,20 @@ export default class IDBTimelineDatabase extends BaseIDBStorage<timer.timeline.T
         return rows
     }
 
-    private judgeIndex(
-        store: IDBObjectStore,
-        cond?: TimelineCondition,
-    ): { cursorReq: IDBRequest<IDBCursorWithValue | null>; coverage: IndexCoverage } {
+    private judgeIndex(store: IDBObjectStore, cond?: TimelineCondition): IndexResult<IndexCoverage> {
         const { host, start } = cond ?? {}
-        if (!!start) {
+        if (host) {
             return {
-                cursorReq: this.assertIndex(store, 'start').openCursor(IDBKeyRange.lowerBound(start)), coverage: { start: true }
+                cursorReq: this.assertIndexCursor(store, 'host', IDBKeyRange.only(host)),
+                coverage: { host: true },
             }
-        } else if (host) {
+        } else if (start !== undefined && start > 0) {
             return {
-                cursorReq: this.assertIndex(store, 'host').openCursor(IDBKeyRange.only(host)), coverage: { host: true }
+                cursorReq: this.assertIndexCursor(store, 'start', IDBKeyRange.lowerBound(start, false)),
+                coverage: { start: true },
             }
         } else {
-            return { cursorReq: store.openCursor(), coverage: {} }
+            return { cursorReq: store.openCursor() }
         }
     }
 }

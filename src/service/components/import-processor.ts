@@ -28,7 +28,7 @@ async function processOverwrite(data: timer.imported.Data): Promise<void> {
         const exist = await statDatabase.get(host, date)
         focus && (exist.focus = row.focus || 0)
         time && (exist.time = row.time || 0)
-        await statDatabase.forceUpdate({ host, date, ...exist })
+        await statDatabase.forceUpdate({ ...exist, host, date })
     }))
 }
 

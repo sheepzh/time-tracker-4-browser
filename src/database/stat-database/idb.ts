@@ -1,5 +1,5 @@
-import { BaseIDBStorage, iterateCursor, type Key, req2Promise, type Table } from '@db/common/indexed-storage'
-import { cvtGroupId2Host, formatDateStr, increase, zeroResult } from './common'
+import { BaseIDBStorage, closedRangeKey, IndexResult, iterateCursor, type Key, req2Promise, type Table } from '@db/common/indexed-storage'
+import { cvtGroupId2Host, formatDateStr, increase, zeroRow } from './common'
 import { filterDate, filterHost, filterNumberRange, processCondition, type ProcessedCondition } from './condition'
 import type { StatCondition, StatDatabase } from './types'
 
@@ -47,7 +47,9 @@ function buildFilter(cond: ProcessedCondition, coverage: IndexCoverage): (row: S
             return false
         }
 
-        if (!coverage.host && !filterHost(row.host, cond)) {
+        // Only check virtual if host keys are not fully covered by index
+        const keys = coverage.host ? undefined : cond.keys
+        if (!filterHost(row.host, keys, cond.virtual)) {
             return false
         }
 
@@ -62,93 +64,69 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
     key: StatIndex = ['date', 'host']
     indexes: StatIndex[] = INDEXES
 
-    get(host: string, date: Date | string): Promise<timer.core.Result> {
+    get(host: string, date: Date | string): Promise<timer.core.Row> {
         return this.withStore(async store => {
             const index = super.assertIndex(store, ['date', 'host'])
             const dateStr = formatDateStr(date)
             const req = index.get([dateStr, host])
-            return await req2Promise<StoredRow>(req) ?? zeroResult()
+            return await req2Promise<StoredRow>(req) ?? zeroRow(host, dateStr)
         }, 'readonly')
     }
 
-    private judgeIndex(
-        store: IDBObjectStore,
-        cond: ProcessedCondition,
-        expectGroup: boolean
-    ): { cursorReq: IDBRequest<IDBCursorWithValue | null>; coverage: IndexCoverage } {
-        if (expectGroup) {
-            const keys = typeof cond.keys === 'string' ? [cond.keys] : cond.keys
-            const index = super.assertIndex(store, 'groupId')
+    private judgeIndex(store: IDBObjectStore, cond: ProcessedCondition, expectGroup: boolean): IndexResult<IndexCoverage> {
+        const keys = typeof cond.keys === 'string' ? [cond.keys] : cond.keys
+        const {
+            useExactDate, exactDateStr,
+            timeStart, timeEnd,
+            focusStart, focusEnd,
+            startDateStr, endDateStr,
+        } = cond
 
+        if (expectGroup) {
             if (keys?.length === 1) {
                 const groupId = parseInt(keys[0])
                 if (!isNaN(groupId)) {
                     return {
-                        cursorReq: index.openCursor(IDBKeyRange.only(groupId)),
+                        cursorReq: this.assertIndexCursor(store, 'groupId', IDBKeyRange.only(groupId)),
                         coverage: { host: true }
                     }
                 }
             }
 
             return {
-                cursorReq: index.openCursor(IDBKeyRange.lowerBound(0)),
-                coverage: {}
+                cursorReq: this.assertIndexCursor(store, 'groupId', IDBKeyRange.lowerBound(0))
             }
         }
 
-        const keys = typeof cond.keys === 'string' ? [cond.keys] : cond.keys
-
-        if (cond.useExactDate && cond.exactDateStr && keys?.length === 1) {
-            const index = super.assertIndex(store, ['date', 'host'])
-            return {
-                cursorReq: index.openCursor(IDBKeyRange.only([cond.exactDateStr, keys[0]])),
+        if (useExactDate && exactDateStr) {
+            return keys?.length === 1 ? {
+                cursorReq: this.assertIndexCursor(store, ['date', 'host'], IDBKeyRange.only([exactDateStr, keys[0]])),
                 coverage: { date: true, host: true }
+            } : {
+                cursorReq: this.assertIndexCursor(store, 'date', IDBKeyRange.only(exactDateStr)),
+                coverage: { date: true }
             }
         }
-
-        if (cond.useExactDate && cond.exactDateStr) {
-            const index = super.assertIndex(store, 'date')
+        const dateRange = closedRangeKey(startDateStr, endDateStr)
+        if (dateRange) {
             return {
-                cursorReq: index.openCursor(IDBKeyRange.only(cond.exactDateStr)),
+                cursorReq: this.assertIndexCursor(store, 'date', dateRange),
                 coverage: { date: true }
             }
         }
 
-        if (cond.startDateStr || cond.endDateStr) {
-            const index = super.assertIndex(store, 'date')
-            const range = IDBKeyRange.bound(
-                cond.startDateStr ?? '',
-                cond.endDateStr ?? '\uffff',
-                false, false,
-            )
+        const timeRange = closedRangeKey(timeStart, timeEnd)
+        if (timeRange) {
             return {
-                cursorReq: index.openCursor(range),
-                coverage: { date: true }
-            }
-        }
-
-        if (cond.timeStart !== undefined || cond.timeEnd !== undefined) {
-            const index = super.assertIndex(store, 'time')
-            const range = IDBKeyRange.bound(
-                cond.timeStart ?? 0,
-                cond.timeEnd ?? Number.MAX_SAFE_INTEGER,
-                false, false,
-            )
-            return {
-                cursorReq: index.openCursor(range),
+                cursorReq: super.assertIndexCursor(store, 'time', timeRange),
                 coverage: { time: true }
             }
         }
 
-        if (cond.focusStart !== undefined || cond.focusEnd !== undefined) {
-            const index = super.assertIndex(store, 'focus')
-            const range = IDBKeyRange.bound(
-                cond.focusStart ?? 0,
-                cond.focusEnd ?? Number.MAX_SAFE_INTEGER,
-                false, false,
-            )
+        const focusRange = closedRangeKey(focusStart, focusEnd)
+        if (focusRange) {
             return {
-                cursorReq: index.openCursor(range),
+                cursorReq: super.assertIndexCursor(store, 'focus', focusRange),
                 coverage: { focus: true }
             }
         }
@@ -161,7 +139,7 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
 
     private async selectInternal(store: IDBObjectStore, cond: ProcessedCondition, expectGroup: boolean): Promise<timer.core.Row[]> {
         const allRows: timer.core.Row[] = []
-        const { cursorReq, coverage } = this.judgeIndex(store, cond, expectGroup)
+        const { cursorReq, coverage = {} } = this.judgeIndex(store, cond, expectGroup)
         const filter = buildFilter(cond, coverage)
 
         const rows = await iterateCursor<StoredRow>(cursorReq)
@@ -176,7 +154,7 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
 
             if (expectGroup) {
                 allRows.push({
-                    host: row.groupId!.toString(),
+                    host: row.groupId?.toString() ?? '',
                     date: row.date,
                     time: row.time,
                     focus: row.focus,
@@ -212,9 +190,8 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
 
     batchAccumulate(data: Record<string, timer.core.Result>, date: Date | string): Promise<Record<string, timer.core.Row>> {
         return this.withStore(async store => {
-            const index = super.assertIndex(store, 'date')
             const dateStr = formatDateStr(date)
-            const cursorReq = index.openCursor(IDBKeyRange.only(dateStr))
+            const cursorReq = super.assertIndexCursor(store, 'date', IDBKeyRange.only(dateStr))
             const toUpdate: Record<string, timer.core.Row> = {}
 
             await iterateCursor(cursorReq, cursor => {

@@ -11,6 +11,8 @@ export const formatDateStr = (date: string | Date): string => {
 
 export const zeroResult = (): timer.core.Result => ({ focus: 0, time: 0 })
 
+export const zeroRow = (host: string, date: string): timer.core.Row => ({ host, date, focus: 0, time: 0 })
+
 export const increase = (a: timer.core.Result, b: timer.core.Result | undefined) => {
     const res: timer.core.Result = {
         focus: a.focus + (b?.focus ?? 0),

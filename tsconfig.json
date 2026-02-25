@@ -71,11 +71,7 @@
             "*": [
                 "./types/*"
             ]
-        },
-        "types": [
-            "jest",
-            "chrome"
-        ]
+        }
     },
     "exclude": [
         "node_modules",

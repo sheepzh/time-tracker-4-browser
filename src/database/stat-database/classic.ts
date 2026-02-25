@@ -29,9 +29,9 @@ const isPartialResult = createObjectGuard<Partial<timer.core.Result>>({
 
 function filterRow(row: timer.core.Row, condition: ProcessedCondition): boolean {
     const { host, date, focus, time } = row
-    const { timeStart, timeEnd, focusStart, focusEnd } = condition
+    const { timeStart, timeEnd, focusStart, focusEnd, keys, virtual } = condition
 
-    return filterHost(host, condition)
+    return filterHost(host, keys, virtual)
         && filterDate(date, condition)
         && filterNumberRange(time, [timeStart, timeEnd])
         && filterNumberRange(focus, [focusStart, focusEnd])
@@ -149,10 +149,11 @@ export class ClassicStatDatabase extends BaseDatabase implements StatDatabase {
      *
      * @since 0.0.5
      */
-    async get(host: string, date: Date | string): Promise<timer.core.Result> {
+    async get(host: string, date: Date | string): Promise<timer.core.Row> {
         const key = generateKey(host, date)
         const exist = await this.storage.getOne<timer.core.Result>(key)
-        return exist ?? zeroResult()
+        const result = exist ?? zeroResult()
+        return { host, date: formatDateStr(date), ...result }
     }
 
     /**

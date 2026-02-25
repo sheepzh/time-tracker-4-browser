@@ -13,12 +13,10 @@ export type ProcessedCondition = StatCondition & {
     focusEnd?: number
 }
 
-export function filterHost(host: string, condition: ProcessedCondition): boolean {
-    const { keys, virtual } = condition
-    const keyArr = typeof keys === 'string' ? [keys] : keys
+export function filterHost(host: string, keys: ProcessedCondition['keys'], virtual?: boolean): boolean {
     if (!virtual && judgeVirtualFast(host)) return false
-    if (keyArr?.length && !keyArr.includes(host)) return false
-    return true
+    if (keys === undefined) return true
+    return typeof keys === 'string' ? host === keys : keys.includes(host)
 }
 
 export function filterDate(
