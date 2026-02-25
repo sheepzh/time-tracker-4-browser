@@ -1,60 +1,47 @@
 {
     "en": {
-        "rate": "Rate Us",
+        "rating": "Submit rating",
         "showSiteName": "Display site name",
         "showTopN": "Display top {n}",
         "donutChart": "Displayed as donut charts"
     },
     "zh_CN": {
-        "rate": "评分",
         "showSiteName": "显示网站名称",
         "showTopN": "显示前 {n} 名",
         "donutChart": "以圆环图显示"
     },
     "zh_TW": {
-        "rate": "評分",
         "showSiteName": "顯示網站名稱",
         "showTopN": "顯示前{n}个"
     },
     "ja": {
-        "rate": "評価する",
         "showSiteName": "サイト名を表示",
         "showTopN": "トップ {n} を表示"
     },
     "pt_PT": {
-        "rate": "Avaliar",
         "showSiteName": "Mostrar nome do site",
         "donutChart": "Mostrado como gráfico estilo donut"
     },
-    "uk": {
-        "rate": "Оцінити"
-    },
+    "uk": {},
     "es": {
-        "rate": "Calificar",
         "showSiteName": "Mostrar nombre del sitio",
         "showTopN": "Mostrar primeros {n}"
     },
     "de": {
-        "rate": "Bewerten",
         "showSiteName": "Seitenname anzeigen",
         "showTopN": "Top {n} anzeigen"
     },
     "fr": {
-        "rate": "Évaluez-nous",
         "showSiteName": "Afficher le nom du site",
         "showTopN": "Afficher les {n} premiers",
         "donutChart": "Affichés sous forme de graphiques en anneau"
     },
     "ru": {
-        "rate": "Оценить",
         "showSiteName": "Отобразить имя сайта",
         "showTopN": "Отображать заголовок {n}"
     },
-    "ar": {
-        "rate": "قيمنا"
-    },
+    "ar": {},
     "tr": {
-        "rate": "Bizi Değerlendirin",
         "showSiteName": "Site adını göster",
         "showTopN": "En iyi {n} göster",
         "donutChart": "Halka grafik olarak göster"

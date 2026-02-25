@@ -8,6 +8,8 @@ import { camelize, type CSSProperties } from "vue"
 
 type Variant = "primary" | "success" | "warning" | "info" | "danger"
 
+export type ColorVariant = Variant
+
 type TextVariant = "primary" | "regular" | "secondary"
 
 type ColorUsage = 'fill'

@@ -3,7 +3,7 @@ import { css } from '@emotion/css'
 import { MediaSize, useMediaSize } from "@hooks"
 import { locale } from "@i18n"
 import Flex from "@pages/components/Flex"
-import { CoffeeIcon } from '@pages/util/icon'
+import { Coffee, GitHub } from '@pages/util/icon'
 import { saveFlag } from "@service/meta-service"
 import packageInfo, { AUTHOR_EMAIL } from "@src/package"
 import {
@@ -22,7 +22,7 @@ import {
 import { type ComponentSize, ElCard, ElDescriptions, ElDescriptionsItem, ElDivider, ElText, useNamespace } from "element-plus"
 import { computed, defineComponent, reactive } from "vue"
 import DescLink from "./DescLink"
-import { Chrome, Echarts, Edge, ElementPlus, Firefox, GitHub, Vue } from './Icon'
+import { Chrome, Echarts, Edge, ElementPlus, Firefox, Vue } from './Icon'
 import InstallationLink from "./InstallationLink"
 
 const useStyle = () => {
@@ -155,7 +155,7 @@ const _default = defineComponent<{}>(() => {
                 </ElDescriptionsItem>
                 {locale !== 'zh_CN' && (
                     <ElDescriptionsItem label='Buy me a coffee' labelAlign="right">
-                        <DescLink icon={CoffeeIcon} href={BUY_ME_A_COFFEE_PAGE}>{BUY_ME_A_COFFEE_PAGE}</DescLink>
+                        <DescLink icon={<Coffee />} href={BUY_ME_A_COFFEE_PAGE}>{BUY_ME_A_COFFEE_PAGE}</DescLink>
                     </ElDescriptionsItem>
                 )}
             </ElDescriptions>

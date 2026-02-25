@@ -137,3 +137,10 @@ export const REVIEW_PAGE = reviewPage
  * @since 3.7.13
  */
 export const BUY_ME_A_COFFEE_PAGE = 'https://buymeacoffee.com/sheepysheep'
+
+/**
+ * Only available for simplified chinese users
+ *
+ * @since 4.0.0
+ */
+export const DONATION_PAGE = 'https://github.com/sheepzh/sheepzh?tab=contributing-ov-file'
