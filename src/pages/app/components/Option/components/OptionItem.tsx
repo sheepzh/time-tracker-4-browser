@@ -100,7 +100,7 @@ const OptionItem = defineComponent<Props>((props, { slots }) => {
         return (
             <Flex class={[lineCls, isSmScreen.value && smCls]} align="center" justify="space-between" gap={10}>
                 <Flex align="center" color='text-primary' gap={4} wrap lineHeight={32}>
-                    {!!props.required && <span style={{ color: colorVariant('danger'), marginInlineEnd: 4 }}>*</span>}
+                    {!!props.required && <span style={{ color: `var(${colorVariant('danger')})`, marginInlineEnd: 4 }}>*</span>}
                     {renderLabel(props.label, param)}
                 </Flex>
                 {defaultText.value && !isSmScreen.value && (

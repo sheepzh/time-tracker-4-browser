@@ -94,7 +94,7 @@ const _default = defineComponent(() => {
             cancelButtonText: t(msg => msg.button.cancel),
             confirmButtonText: t(msg => msg.button.confirm)
         }).then(async () => {
-            await db.delete(result)
+            await db.delete(...result)
             ElMessage.success(t(msg => msg.operation.successMsg))
             refreshMemory?.()
         }).catch(() => { })

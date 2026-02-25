@@ -11,7 +11,7 @@ import { BottomRight, InfoFilled, TopRight } from "@element-plus/icons-vue"
 import { useXsState } from '@hooks/useMediaSize'
 import Box from "@pages/components/Box"
 import Flex from "@pages/components/Flex"
-import { colorVariant } from '@pages/util/style'
+import { colorVariant, getCssVariable } from '@pages/util/style'
 import { range } from "@util/array"
 import { ElIcon, ElTooltip } from "element-plus"
 import { computed, defineComponent, type CSSProperties } from "vue"
@@ -27,7 +27,8 @@ const SubVal = defineComponent<{ value: string }>(props => {
 const computeComparison = (value: RingValue) => {
     const [current = 0, last = 0] = value
     if (current === last) return false
-    const color = current > last ? colorVariant('danger') : colorVariant('success', 'light', 3)
+    const colorVar = current > last ? colorVariant('danger') : colorVariant('success', 'light', 3)
+    const color = getCssVariable(colorVar)
     const Icon = current > last ? TopRight : BottomRight
     let count = 0
     if (current === 0 || last === 0) {

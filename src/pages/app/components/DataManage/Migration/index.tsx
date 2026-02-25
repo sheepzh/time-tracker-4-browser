@@ -8,7 +8,7 @@
 import { t } from "@app/locale"
 import { Download } from "@element-plus/icons-vue"
 import Flex from "@pages/components/Flex"
-import Immigration from "@service/components/immigration"
+import immigration from '@service/components/immigration'
 import { exportJson } from "@util/file"
 import { formatTime } from "@util/time"
 import { ElButton, ElCard } from "element-plus"
@@ -17,10 +17,8 @@ import DataManageAlert from '../DataManageAlert'
 import ImportButton from "./ImportButton"
 import ImportOtherButton from "./ImportOtherButton"
 
-const immigration: Immigration = new Immigration()
-
 async function handleExport() {
-    const data = await immigration.getExportingData()
+    const data = await immigration.exportData()
     const timestamp = formatTime(new Date(), '{y}{m}{d}_{h}{i}{s}')
     exportJson(data, `timer_backup_${timestamp}`)
 }

@@ -2,13 +2,13 @@ import { useCategory } from '@app/context'
 import { t } from '@app/locale'
 import mergeRuleDatabase from '@db/merge-rule-database'
 import siteDatabase from '@db/site-database'
-import { TIMELINE_LIFE_CYCLE } from '@db/timeline-database'
 import { useState } from '@hooks'
 import CustomizedHostMergeRuler from '@service/components/host-merge-ruler'
 import { toMap } from '@util/array'
 import { CATE_NOT_SET_ID } from '@util/site'
 import { formatTime, getAllDatesBetween, getStartOfDay, MILL_PER_DAY } from '@util/time'
 import { type Ref, ref, watch } from 'vue'
+import { TIMELINE_DAY_COUNT } from '../constants'
 
 export type Activity = {
     date: string
@@ -32,14 +32,11 @@ const isMergeMethod = (val: unknown): val is MergeMethod => {
 const MONTH_DATE_FORMAT = t(msg => msg.calendar.monthDateFormat)
 const formatDate = (date: Date | number) => formatTime(date, MONTH_DATE_FORMAT)
 
-const calcOffsetOfDay = (ts: number) => {
-    const startOfDate = getStartOfDay(ts)
-    return ts - startOfDate.getTime()
-}
+const calcOffsetOfDay = (ts: number) => ts - getStartOfDay(ts)
 
 const genLatestDates = () => {
     const now = new Date()
-    const start = new Date(now.getTime() - MILL_PER_DAY * (TIMELINE_LIFE_CYCLE - 1))
+    const start = new Date(now.getTime() - MILL_PER_DAY * (TIMELINE_DAY_COUNT - 1))
     return getAllDatesBetween(start, now, formatDate)
 }
 

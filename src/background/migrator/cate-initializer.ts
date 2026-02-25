@@ -1,6 +1,6 @@
 import cateService from "@service/cate-service"
 import { batchSaveSiteCate } from "@service/site-service"
-import { Migrator } from "./common"
+import type { Migrator } from "./types"
 
 type InitialCate = {
     name: string
@@ -44,7 +44,6 @@ export default class CateInitializer implements Migrator {
         }
     }
 
-    onUpdate(version: string): void {
-        version === '3.0.1' && this.onInstall()
+    onUpdate(_version: string): void {
     }
 }

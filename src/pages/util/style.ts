@@ -67,5 +67,9 @@ export function getSecondaryTextColor(): string | undefined {
 }
 
 export function getInfoColor(): string | undefined {
-    return getCssVariable(colorVariant('info'))
+    return getColor('info')
+}
+
+export function getColor(variant: Variant): string | undefined {
+    return getCssVariable(colorVariant(variant))
 }
