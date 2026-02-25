@@ -299,7 +299,7 @@
             "localFileTime": "local files",
             "localFilesInfo": "Supports files of types such as PDF, image, txt and json.",
             "countTabGroup": "{input} Whether to track the time of tab groups {info}",
-            "tabGroupInfo": "When you delete a tag group, the data will also be deleted.",
+            "tabGroupInfo": "When you delete a tab group, the data will also be deleted.",
             "tabGroupsPermGrant": "This feature requires relevant permissions",
             "fileAccessDisabled": "Access to file URLs is currently not allowed. Please enable it on the manage page first",
             "weekStart": "The first day for each week {input}",
