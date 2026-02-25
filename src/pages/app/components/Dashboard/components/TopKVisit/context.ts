@@ -54,7 +54,7 @@ export const initProvider = () => {
         }
         return data
     }, {
-        deps: [() => filter.topK, () => filter.topKChartType, () => filter.dayNum],
+        deps: [() => filter.topK, () => filter.dayNum],
         defaultValue: []
     })
 

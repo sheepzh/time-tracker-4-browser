@@ -49,6 +49,6 @@ const Flex = defineComponent<Props>(props => {
             {defaultSlots && h(defaultSlots)}
         </Comp>
     )
-}, { props: [...ALL_BASE_PROPS, 'direction', 'column', 'flex', 'align', 'justify', 'gap', 'columnGap', 'rowGap', 'wrap', 'as'] })
+}, { props: [...ALL_BASE_PROPS, 'direction', 'column', 'flex', 'align', 'justify', 'gap', 'columnGap', 'rowGap', 'wrap', 'as', 'href', 'target'] })
 
 export default Flex
