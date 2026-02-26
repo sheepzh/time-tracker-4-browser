@@ -2,9 +2,7 @@ import { zeroResult, zeroRow } from '@db/stat-database/common'
 import { IDBStatDatabase } from '@db/stat-database/idb'
 import 'fake-indexeddb/auto'
 import { mockRuntime } from '../../__mock__/runtime'
-import { cleanupIDB } from '../idb'
 
-let db: IDBStatDatabase
 const GOOGLE = 'www.google.com'
 const GITHUB = 'www.github.com'
 const GITHUB_VIRTUAL = 'www.github.com/sheepzh/**'
@@ -12,12 +10,16 @@ const GROUP_1 = 1
 const GROUP_2 = 2
 const MAYBE_GROUP_1 = '1'
 
+let db: IDBStatDatabase
+
 describe('stat-database/idb', () => {
-    beforeAll(() => mockRuntime())
-    beforeEach(async () => {
-        await cleanupIDB()
+    beforeAll(async () => {
+        mockRuntime()
         db = new IDBStatDatabase()
+        await db.upgrade()
     })
+
+    beforeEach(() => db.clear())
 
     test('accumulate', async () => {
         await db.accumulate(GITHUB, '20240601', { focus: 10, time: 20 })

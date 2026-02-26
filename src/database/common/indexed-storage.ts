@@ -63,6 +63,21 @@ export async function iterateCursor<T = unknown>(
     })
 }
 
+type TransactionError = 'Connection' | 'StoreNotFound' | 'Unknown'
+
+const detectTransactionError = (err: unknown): TransactionError => {
+    if (!(err instanceof DOMException)) {
+        return 'Unknown'
+    }
+    if (err.name === 'InvalidStateError' || err.name === 'AbortError') {
+        return 'Connection'
+    }
+    if (err.name === 'NotFoundError') {
+        return 'StoreNotFound'
+    }
+    return 'Unknown'
+}
+
 export function closedRangeKey(lower: IDBValidKey | undefined, upper: IDBValidKey | undefined): IDBKeyRange | undefined {
     if (lower !== undefined && upper !== undefined) {
         if (lower > upper) {
@@ -87,6 +102,8 @@ export abstract class BaseIDBStorage<T = Record<string, unknown>> {
     private DB_NAME = `tt4b_${chrome.runtime.id}` as const
 
     private db: IDBDatabase | undefined
+    private static initPromises = new Map<string, Promise<IDBDatabase>>()
+
     abstract indexes: Index<T>[]
     abstract key: Key<T> | Key<T>[]
     abstract table: Table
@@ -94,46 +111,122 @@ export abstract class BaseIDBStorage<T = Record<string, unknown>> {
     protected async initDb(): Promise<IDBDatabase> {
         if (this.db) return this.db
 
+        let initPromise = BaseIDBStorage.initPromises.get(this.table)
+        if (!initPromise) {
+            initPromise = this.doInitDb()
+            BaseIDBStorage.initPromises.set(this.table, initPromise)
+        }
+
+        try {
+            this.db = await initPromise
+            this.setupDbCloseHandler(this.db)
+            return this.db
+        } catch (error) {
+            BaseIDBStorage.initPromises.delete(this.table)
+            throw error
+        }
+    }
+
+    private setupDbCloseHandler(db: IDBDatabase): void {
+        db.onclose = () => {
+            if (this.db !== db) return
+
+            this.db = undefined
+            BaseIDBStorage.initPromises.delete(this.table)
+        }
+    }
+
+    private async doInitDb(): Promise<IDBDatabase> {
         const factory = typeof window !== 'undefined' ? window.indexedDB : globalThis.indexedDB
-        const checkRequest = factory.open(this.DB_NAME)
 
-        return new Promise((resolve, reject) => {
-            checkRequest.onsuccess = () => {
-                const db = checkRequest.result
-                const storeExisted = db.objectStoreNames.contains(this.table)
-                const needUpgrade = !storeExisted || this.needUpgradeIndexes(db)
+        const checkDb = await new Promise<IDBDatabase>((resolve, reject) => {
+            const checkRequest = factory.open(this.DB_NAME)
+            checkRequest.onsuccess = () => resolve(checkRequest.result)
+            checkRequest.onerror = () => reject(checkRequest.error || new Error("Failed to open database"))
+        })
 
-                if (!needUpgrade) {
-                    this.db = db
-                    return resolve(db)
-                }
+        return checkDb
+    }
 
-                const currentVersion = db.version
-                db.close()
+    // Only used for testing, be careful when using in production
+    public async clear(): Promise<void> {
+        await this.withStore(store => store.clear(), 'readwrite')
+    }
 
-                const upgradeRequest = factory.open(this.DB_NAME, currentVersion + 1)
+    async upgrade(): Promise<void> {
+        const factory = typeof window !== 'undefined' ? window.indexedDB : globalThis.indexedDB
 
-                upgradeRequest.onupgradeneeded = () => {
+        const checkDb = await new Promise<IDBDatabase>((resolve, reject) => {
+            const checkRequest = factory.open(this.DB_NAME)
+            checkRequest.onsuccess = () => resolve(checkRequest.result)
+            checkRequest.onerror = () => reject(checkRequest.error || new Error("Failed to open database"))
+            checkRequest.onblocked = () => {
+                console.warn(`Database check blocked for "${this.table}" (DB: ${this.DB_NAME}), waiting for other connections to close`)
+            }
+        })
+
+        const storeExisted = checkDb.objectStoreNames.contains(this.table)
+        const needUpgrade = !storeExisted || this.needUpgradeIndexes(checkDb)
+
+        if (!needUpgrade) {
+            checkDb.close()
+            return
+        }
+
+        const currentVersion = checkDb.version
+        checkDb.close()
+
+        return new Promise<void>((resolve, reject) => {
+            const upgradeRequest = factory.open(this.DB_NAME, currentVersion + 1)
+
+            upgradeRequest.onupgradeneeded = () => {
+                try {
                     const upgradeDb = upgradeRequest.result
                     const transaction = upgradeRequest.transaction
-                    if (!transaction) return reject("Failed to get transaction of upgrading request")
+                    if (!transaction) {
+                        reject(new Error("Failed to get transaction of upgrading request"))
+                        return
+                    }
+
+                    transaction.onerror = () => {
+                        reject(transaction.error || new Error("Transaction failed"))
+                    }
+
+                    transaction.onabort = () => {
+                        reject(new Error("Upgrade transaction was aborted"))
+                    }
 
                     let store = upgradeDb.objectStoreNames.contains(this.table)
                         ? transaction.objectStore(this.table)
-                        : upgradeDb.createObjectStore(this.table, { keyPath: this.key })
+                        : upgradeDb.createObjectStore(this.table, { keyPath: this.key as string | string[] })
                     this.createIndexes(store)
+                } catch (error) {
+                    console.error("Failed to upgrade database in onupgradeneeded", error)
+                    upgradeRequest.transaction?.abort()
+                    reject(error instanceof Error ? error : new Error(String(error)))
                 }
-
-                upgradeRequest.onsuccess = () => {
-                    console.log("IndexedDB upgraded")
-                    this.db = upgradeRequest.result
-                    resolve(upgradeRequest.result)
-                }
-
-                upgradeRequest.onerror = () => reject(upgradeRequest.error)
             }
 
-            checkRequest.onerror = () => reject(checkRequest.error)
+            upgradeRequest.onsuccess = () => {
+                console.log(`IndexedDB upgraded for table "${this.table}"`)
+                upgradeRequest.result.close()
+                resolve()
+            }
+
+            upgradeRequest.onerror = (event) => {
+                console.error("Failed to upgrade database", event, upgradeRequest.error)
+                reject(upgradeRequest.error || new Error("Failed to upgrade database"))
+            }
+
+            upgradeRequest.onblocked = () => {
+                const blockingTables = Array.from(BaseIDBStorage.initPromises.keys())
+                    .filter(table => table !== this.table)
+                console.warn(
+                    `Database upgrade blocked for table "${this.table}" (DB: ${this.DB_NAME}), ` +
+                    `waiting for other connections to close. ` +
+                    `Other tables with active connections: ${blockingTables.length > 0 ? blockingTables.join(', ') : 'none'}`
+                )
+            }
         })
     }
 
@@ -170,27 +263,45 @@ export abstract class BaseIDBStorage<T = Record<string, unknown>> {
     }
 
     protected async withStore<T = unknown>(operation: (store: IDBObjectStore) => T | Promise<T>, mode?: IDBTransactionMode): Promise<T> {
-        const db = await this.initDb()
-        const trans = db.transaction(this.table, mode ?? 'readwrite')
-        try {
-            const store = trans.objectStore(this.table)
-            const result = await operation(store)
-            // Waiting for transaction completed
-            await new Promise<void>((resolve, reject) => {
-                trans.oncomplete = () => resolve()
-                trans.onerror = () => reject(trans.error)
-                trans.onabort = () => reject(new Error('Transaction aborted'))
-            })
-            return result
-        } catch (e) {
-            console.error("Failed to process with transaction", e)
-            if (!trans.error && trans.mode !== 'readonly') {
-                try {
-                    trans.abort()
-                } catch (ignored) { }
+        let db = await this.initDb()
+
+        for (let retryCount = 0; retryCount < 2; retryCount++) {
+            let trans: IDBTransaction | undefined
+            try {
+                trans = db.transaction(this.table, mode ?? 'readwrite')
+                const store = trans.objectStore(this.table)
+                const result = await operation(store)
+                const transaction = trans
+                await new Promise<void>((resolve, reject) => {
+                    transaction.oncomplete = () => resolve()
+                    transaction.onerror = () => reject(transaction.error)
+                    transaction.onabort = () => reject(new Error('Transaction aborted'))
+                })
+                return result
+            } catch (e) {
+                const errorType = detectTransactionError(e)
+
+                if (errorType === 'Unknown') {
+                    console.error("Failed to process with transaction", e)
+                    if (trans && !trans.error && trans.mode !== 'readonly') {
+                        try {
+                            trans.abort()
+                        } catch (ignored) { }
+                    }
+                    throw e
+                }
+
+                if (errorType === 'StoreNotFound') {
+                    this.db?.close()
+                    await this.upgrade()
+                }
+
+                this.db = undefined
+                BaseIDBStorage.initPromises.delete(this.table)
+                db = await this.initDb()
             }
-            throw e
         }
+        throw new Error("Max retries exceeded")
     }
 
     protected assertIndex(store: IDBObjectStore, key: Key<T> | Key<T>[]): IDBIndex {
