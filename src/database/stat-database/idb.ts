@@ -1,5 +1,5 @@
 import { BaseIDBStorage, closedRangeKey, IndexResult, iterateCursor, type Key, req2Promise, type Table } from '@db/common/indexed-storage'
-import { cvtGroupId2Host, formatDateStr, increase, zeroRow } from './common'
+import { cvtGroupId2Host, formatDateStr, GROUP_PREFIX, increase, zeroRow } from './common'
 import { filterDate, filterHost, filterNumberRange, processCondition, type ProcessedCondition } from './condition'
 import type { StatCondition, StatDatabase } from './types'
 
@@ -8,15 +8,7 @@ type StoredRow = timer.core.Row & {
     groupId?: number
 }
 
-function fromStoredRow(stored: StoredRow): timer.core.Row {
-    if (stored.groupId !== undefined) {
-        const { groupId, ...row } = stored
-        return { ...row, host: cvtGroupId2Host(groupId) }
-    }
-    return stored
-}
-
-const GROUP_HOST_PATTERN = /^_g_(\d+)$/
+const GROUP_HOST_PATTERN = new RegExp(`^${GROUP_PREFIX}(\\d+)$`)
 
 const INDEXES: (Key<StoredRow> | Key<StoredRow>[])[] = [
     'date', 'host', 'groupId',
@@ -144,12 +136,7 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
 
         const rows = await iterateCursor<StoredRow>(cursorReq)
         for (const row of rows) {
-            if (expectGroup) {
-                if (!isGroup(row)) continue
-            } else {
-                if (isGroup(row)) continue
-            }
-
+            if (expectGroup !== isGroup(row)) continue
             if (!filter(row)) continue
 
             if (expectGroup) {
@@ -196,9 +183,8 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
 
             await iterateCursor(cursorReq, cursor => {
                 const stored = cursor.value as StoredRow | undefined
-                if (stored && !isGroup(stored)) {
-                    toUpdate[stored.host] = fromStoredRow(stored)
-                }
+                if (!stored || isGroup(stored)) return
+                toUpdate[stored.host] = stored
             })
 
             for (const [host, result] of Object.entries(data)) {
@@ -332,15 +318,7 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
     }
 
     forceUpdate(...rows: timer.core.Row[]): Promise<void> {
-        return this.withStore(store => {
-            for (const row of rows) {
-                const { host, date, time, focus, run } = row
-                const groupMatch = host.match(GROUP_HOST_PATTERN)
-                const newData: StoredRow = { host, date, time, focus, run }
-                groupMatch && (newData.groupId = parseInt(groupMatch[1]))
-                store.put(newData)
-            }
-        }, 'readwrite')
+        return this.withStore(store => rows.forEach(row => store.put(row)), 'readwrite')
     }
 
     forceUpdateGroup(...rows: timer.core.Row[]): Promise<void> {

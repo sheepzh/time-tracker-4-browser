@@ -15,7 +15,7 @@ import badgeTextManager from "./badge-manager"
 import initBrowserAction from "./browser-action-manager"
 import initCsHandler from "./content-script-handler"
 import initDataCleaner from "./data-cleaner"
-import handleInstall from "./install-handler"
+import handleInstall from './install-handler'
 import initLimitProcessor from "./limit-processor"
 import MessageDispatcher from "./message-dispatcher"
 import VersionMigrator from "./migrator"
