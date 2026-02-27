@@ -43,6 +43,7 @@
     },
     "ar": {},
     "tr": {
+        "rating": "Değerlendirmeyi Gönder",
         "showSiteName": "Site adını göster",
         "showTopN": "En iyi {n} göster",
         "donutChart": "Halka grafik olarak göster"

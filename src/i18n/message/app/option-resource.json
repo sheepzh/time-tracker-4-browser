@@ -1405,7 +1405,9 @@
             "tabGroupsPermGrant": "Bu özellik ilgili izinleri gerektirir",
             "fileAccessDisabled": "Dosya URL'lerine erişim şu anda izin verilmiyor. Lütfen önce yönetim sayfasında bunu etkinleştirin",
             "weekStart": "Her haftanın ilk günü {input}",
-            "weekStartAsNormal": "Normal"
+            "weekStartAsNormal": "Normal",
+            "storage": "İzleme verilerini {input} içinde saklayın.",
+            "storageConfirm": "Depolama türünü {type} olarak değiştirmek ister misiniz?"
         },
         "limit": {
             "prompt": "Kısıtlı olduğunda gösterilecek uyarı {input}",

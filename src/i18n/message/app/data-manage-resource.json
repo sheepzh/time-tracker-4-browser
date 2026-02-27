@@ -324,6 +324,7 @@
         "totalMemoryAlert": "Tarayıcı, her uzantı için yerel verileri depolamak üzere {size} MB alan sağlar",
         "totalMemoryAlert1": "Tarayıcı tarafından izin verilen maksimum depolama alanı belirlenemiyor",
         "usedMemoryAlert": "Şu anda {size} MB kullanılıyor",
+        "idbAlert": "Depolama kullanımını azaltmak için verilerinizi IndexedDB'ye taşı",
         "operationAlert": "Depolama alanını azaltmak için önemsiz verileri silebilirsiniz",
         "filterItems": "Verileri filtrele",
         "filterFocus": "Günün gezinme süresi {start} saniye ile {end} saniye arasındadır",
