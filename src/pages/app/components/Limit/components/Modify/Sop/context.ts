@@ -4,7 +4,7 @@ import { range } from "@util/array"
 import { ElMessage } from "element-plus"
 import { type Reactive, reactive, type Ref, ref, toRaw } from "vue"
 
-type Step = 0 | 1 | 2
+export type Step = 0 | 1 | 2
 
 type SopData = Required<Omit<timer.limit.Rule, 'id'>>
 

@@ -5,6 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 import { type I18nKey, t } from '@app/locale'
+import { useXsState } from '@hooks/useMediaSize'
 import { type ButtonProps, ElButton } from "element-plus"
 import { defineComponent } from "vue"
 
@@ -16,11 +17,21 @@ type Props = {
 }
 
 const ButtonFilterItem = defineComponent<Props>(props => {
-    return () => (
-        <ElButton type={props.type ?? 'primary'} icon={props.icon} onClick={props.onClick}>
-            {t(props.text)}
-        </ElButton>
-    )
+    const isXs = useXsState()
+    return () => isXs.value
+        ? (
+            <ElButton
+                circle
+                size='small'
+                type={props.type ?? 'primary'}
+                icon={props.icon}
+                onClick={props.onClick}
+            />
+        ) : (
+            <ElButton type={props.type ?? 'primary'} icon={props.icon} onClick={props.onClick}>
+                {t(props.text)}
+            </ElButton>
+        )
 }, { props: ['icon', 'onClick', 'text', 'type'] })
 
 export default ButtonFilterItem

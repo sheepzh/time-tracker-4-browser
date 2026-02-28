@@ -5,24 +5,24 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { useXsState } from '@hooks'
 import { defineComponent } from "vue"
+import ContentCard from '../common/ContentCard'
 import ContentContainer from "../common/ContentContainer"
+import { Filter, List, Modify, Table, Test } from "./components"
 import { useLimitProvider } from "./context"
-import LimitFilter from "./LimitFilter"
-import LimitModify from "./LimitModify"
-import LimitTable from "./LimitTable"
-import LimitTest from "./LimitTest"
 
 const _default = defineComponent(() => {
     const { modifyInst, testInst } = useLimitProvider()
+    const isXs = useXsState()
 
     return () => (
         <ContentContainer v-slots={{
-            filter: () => <LimitFilter />,
-            content: () => <>
-                <LimitTable />
-                <LimitModify ref={modifyInst} />
-                <LimitTest ref={testInst} />
+            filter: () => <Filter />,
+            default: () => <>
+                {isXs.value ? <List /> : <ContentCard><Table /></ContentCard>}
+                <Modify ref={modifyInst} />
+                <Test ref={testInst} />
             </>
         }} />
     )

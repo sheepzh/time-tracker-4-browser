@@ -19,7 +19,8 @@ export type TestInstance = {
 type Context = {
     table: Ref<TableInstance | undefined>
     filter: Reactive<LimitFilterOption>
-    list: Ref<timer.limit.Item[]>, refresh: NoArgCallback,
+    list: Ref<timer.limit.Item[]>
+    refresh: NoArgCallback
     deleteRow: ArgCallback<timer.limit.Item>
     batchDelete: NoArgCallback
     batchEnable: NoArgCallback

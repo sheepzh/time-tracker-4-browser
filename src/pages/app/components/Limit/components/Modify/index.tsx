@@ -6,11 +6,11 @@
  */
 
 import { t } from "@app/locale"
-import { useSwitch } from "@hooks"
+import { useSwitch, useXsState } from "@hooks"
 import limitService from "@service/limit-service"
 import { ElDialog, ElMessage } from "element-plus"
 import { computed, defineComponent, nextTick, ref, toRaw } from "vue"
-import { type ModifyInstance, useLimitTable } from "../context"
+import { type ModifyInstance, useLimitTable } from "../../context"
 import Sop, { type SopInstance } from "./Sop"
 
 type Mode = "create" | "modify"
@@ -68,12 +68,15 @@ const _default = defineComponent((_, ctx) => {
         },
     } satisfies ModifyInstance)
 
+    const isXs = useXsState()
+
     return () => (
         <ElDialog
             title={title.value}
             modelValue={visible.value}
             closeOnClickModal={false}
-            width={800}
+            fullscreen={isXs.value}
+            width={isXs.value ? '100%' : 800}
             onClose={close}
         >
             <Sop ref={sop} onSave={handleSave} onCancel={close} />

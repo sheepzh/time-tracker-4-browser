@@ -8,7 +8,7 @@
 import { t } from "@app/locale"
 import { Check, Close, Plus } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
-import { useState, useSwitch } from "@hooks"
+import { useState, useSwitch, useXsState } from "@hooks"
 import Flex from "@pages/components/Flex"
 import { dateMinute2Idx, period2Str } from "@util/limit"
 import { MILL_PER_HOUR } from "@util/time"
@@ -95,6 +95,7 @@ const usePickerStyle = () => {
 const PeriodInput = defineComponent<ModelValue<timer.limit.Period[]>>(props => {
     const [editing, openEditing, closeEditing] = useSwitch(false)
     const [editingRange, setEditingRange] = useState(rangeInitial())
+    const isXs = useXsState()
 
     const handleEdit = () => {
         openEditing()
@@ -118,17 +119,19 @@ const PeriodInput = defineComponent<ModelValue<timer.limit.Period[]>>(props => {
     const pickerCls = usePickerStyle()
 
     return () => (
-        <Flex gap={5}>
-            {props.modelValue?.map((p, idx) =>
-                <ElTag
-                    size="large"
-                    closable
-                    onClose={() => handleDelete(idx)}
-                >
-                    {period2Str(p)}
-                </ElTag>
-            )}
-            <div v-show={editing.value}>
+        <Flex gap={5} column={isXs.value}>
+            <Flex gap={5} wrap>
+                {props.modelValue?.map((p, idx) =>
+                    <ElTag
+                        size={isXs.value ? 'small' : 'large'}
+                        closable
+                        onClose={() => handleDelete(idx)}
+                    >
+                        {period2Str(p)}
+                    </ElTag>
+                )}
+            </Flex>
+            <Flex v-show={editing.value} wrap={false}>
                 <ElTimePicker
                     class={pickerCls}
                     modelValue={editingRange.value}
@@ -148,15 +151,18 @@ const PeriodInput = defineComponent<ModelValue<timer.limit.Period[]>>(props => {
                     onClick={handleSave}
                     style={{ ...BUTTON_STYLE, marginInlineStart: 0 } satisfies StyleValue}
                 />
+            </Flex>
+            <div>
+                <ElButton
+                    v-show={!editing.value}
+                    icon={Plus}
+                    onClick={handleEdit}
+                    style={BUTTON_STYLE}
+                    size={isXs.value ? 'small' : undefined}
+                >
+                    {t(msg => msg.button.create)}
+                </ElButton>
             </div>
-            <ElButton
-                v-show={!editing.value}
-                icon={Plus}
-                onClick={handleEdit}
-                style={BUTTON_STYLE}
-            >
-                {t(msg => msg.button.create)}
-            </ElButton>
         </Flex>
     )
 }, { props: ['modelValue', 'onChange'] })

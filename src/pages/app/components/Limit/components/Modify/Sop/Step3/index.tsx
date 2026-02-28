@@ -6,6 +6,7 @@
  */
 
 import { t } from "@app/locale"
+import { useXsState } from '@hooks/useMediaSize'
 import Flex from "@pages/components/Flex"
 import { ElForm, ElFormItem, ElInputNumber } from "element-plus"
 import { defineComponent } from "vue"
@@ -17,32 +18,35 @@ const MAX_HOUR_WEEKLY = 7 * 24
 
 const _default = defineComponent(() => {
     const data = useSopData()
+    const isXs = useXsState()
 
     return () => (
         <Flex justify="center">
-            <ElForm labelWidth={150} labelPosition="left">
+            <ElForm labelWidth={150} labelPosition='left'>
                 <ElFormItem label={t(msg => msg.limit.item.daily)}>
-                    <Flex gap={10}>
+                    <Flex gap={10} column={isXs.value}>
                         <TimeInput modelValue={data.time} onChange={v => data.time = v} />
-                        {t(msg => msg.limit.item.or)}
+                        {!isXs.value && t(msg => msg.limit.item.or)}
                         <ElInputNumber
                             min={0}
                             step={10}
                             modelValue={data.count}
                             onChange={v => data.count = v ?? 0}
+                            size={isXs.value ? 'small' : undefined}
                             v-slots={{ suffix: () => t(msg => msg.limit.item.visits) }}
                         />
                     </Flex>
                 </ElFormItem>
                 <ElFormItem label={t(msg => msg.limit.item.weekly)}>
-                    <Flex gap={10}>
+                    <Flex gap={10} column={isXs.value}>
                         <TimeInput modelValue={data.weekly} onChange={v => data.weekly = v} hourMax={MAX_HOUR_WEEKLY} />
-                        {t(msg => msg.limit.item.or)}
+                        {!isXs.value && t(msg => msg.limit.item.or)}
                         <ElInputNumber
                             min={0}
                             step={10}
                             modelValue={data.weeklyCount}
                             onChange={v => data.weeklyCount = v ?? 0}
+                            size={isXs.value ? 'small' : undefined}
                             v-slots={{ suffix: () => t(msg => msg.limit.item.visits) }}
                         />
                     </Flex>

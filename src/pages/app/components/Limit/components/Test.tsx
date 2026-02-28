@@ -6,13 +6,13 @@
  */
 
 import { t } from "@app/locale"
-import { useDebounce, useRequest, useState, useSwitch } from "@hooks"
+import { useDebounce, useRequest, useState, useSwitch, useXsState } from "@hooks"
 import Flex from '@pages/components/Flex'
 import limitService from "@service/limit-service"
 import { ElDialog, ElInput } from "element-plus"
 import { defineComponent } from "vue"
-import AlertLines, { type AlertLinesProps } from '../common/AlertLines'
-import { type TestInstance } from "./context"
+import AlertLines, { type AlertLinesProps } from '../../common/AlertLines'
+import { type TestInstance } from "../context"
 
 async function fetchResult(url: string | undefined): Promise<AlertLinesProps> {
     if (!url) {
@@ -35,6 +35,7 @@ const _default = defineComponent((_props, ctx) => {
     const debouncedUrl = useDebounce(url)
     const [visible, open, close] = useSwitch()
     const { data: result } = useRequest(() => fetchResult(debouncedUrl.value), { deps: debouncedUrl })
+    const isXs = useXsState()
 
     ctx.expose({
         show: () => {
@@ -49,6 +50,7 @@ const _default = defineComponent((_props, ctx) => {
             modelValue={visible.value}
             closeOnClickModal={false}
             onClose={close}
+            fullscreen={isXs.value}
         >
             <Flex gap={18} column>
                 <ElInput

@@ -11,9 +11,9 @@ import weekHelper from "@service/components/week-helper"
 import { isEffective } from "@util/limit"
 import { ElSwitch, ElTable, ElTableColumn, ElTag, type RenderRowData, type Sort } from "element-plus"
 import { defineComponent, watch } from "vue"
-import { useLimitTable } from "../context"
-import LimitOperationColumn from "./column/LimitOperationColumn"
-import RuleContent from "./RuleContent"
+import { useLimitTable } from "../../context"
+import LimitOperationColumn from "./OperationColumn"
+import Rule from "./Rule"
 import Waste from "./Waste"
 import Weekday from "./Weekday"
 
@@ -36,7 +36,7 @@ const _default = defineComponent(() => {
 
     const {
         list, table,
-        changeEnabled, changeDelay, changeLocked
+        changeEnabled, changeDelay, changeLocked,
     } = useLimitTable()
 
     const [cachedSort, setCachedSort] = useLocalStorage<Sort>(
@@ -78,7 +78,7 @@ const _default = defineComponent(() => {
                 minWidth={200}
                 align="center"
             >
-                {({ row }: RenderRowData<timer.limit.Item>) => <RuleContent value={row} />}
+                {({ row }: RenderRowData<timer.limit.Item>) => <Rule value={row} />}
             </ElTableColumn>
             <ElTableColumn
                 prop='effectiveDays'

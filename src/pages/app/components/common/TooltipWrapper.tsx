@@ -1,7 +1,7 @@
-import { ElTooltip, ElTooltipProps } from "element-plus"
+import { ElTooltip, type UseTooltipProps } from "element-plus"
 import { defineComponent, ref, useSlots } from "vue"
 
-type Props = PartialPick<ElTooltipProps, 'placement' | 'effect' | 'trigger' | 'offset'> & {
+type Props = PartialPick<UseTooltipProps, 'placement' | 'effect' | 'trigger' | 'offset'> & {
     usePopover?: boolean
 }
 

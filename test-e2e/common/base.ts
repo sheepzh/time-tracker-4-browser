@@ -1,6 +1,6 @@
 import { type Browser, launch, type Page } from "puppeteer"
 import { E2E_OUTPUT_PATH } from "../../rspack/constant"
-import { removeAllWhitelist } from './whitelist'
+import { removeAllWhitelist } from './whitelist.test'
 
 const USE_HEADLESS_PUPPETEER = !!process.env['USE_HEADLESS_PUPPETEER']
 
