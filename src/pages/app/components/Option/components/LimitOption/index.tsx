@@ -126,7 +126,7 @@ const _default = defineComponent((_, ctx) => {
                 default: () => (
                     <ElSwitch
                         modelValue={option.limitReminder}
-                        onChange={val => option.limitReminder = val as boolean}
+                        onChange={val => option.limitReminder = !!val}
                     />
                 ),
                 minInput: () => (

@@ -5,8 +5,6 @@ import { useRouter } from "vue-router"
 import ContentContainer from "../common/ContentContainer"
 import { CATE_LABELS, changeQuery, type OptionCategory, parseQuery } from "./common"
 
-const IGNORED_CATE: OptionCategory[] = ['limit']
-
 const _default = defineComponent(() => {
     const tab = ref<OptionCategory>(parseQuery() || 'appearance')
     const router = useRouter()
@@ -21,12 +19,9 @@ const _default = defineComponent(() => {
                     modelValue={tab.value}
                     onChange={val => tab.value = val}
                 >
-                    {Object.keys(slots)
-                        .filter(key => !IGNORED_CATE.includes(key as OptionCategory) && key !== 'default')
-                        .map(cate => (
-                            <ElSelect.Option value={cate} label={t(CATE_LABELS[cate as OptionCategory])} />
-                        ))
-                    }
+                    {Object.keys(slots).map(cate => (
+                        <ElSelect.Option value={cate} label={t(CATE_LABELS[cate as OptionCategory])} />
+                    ))}
                 </ElSelect>
             ),
             default: () => {

@@ -12,18 +12,19 @@ import SwitchFilterItem from "@app/components/common/filter/SwitchFilterItem"
 import { t } from "@app/locale"
 import { OPTION_ROUTE } from "@app/router/constants"
 import { Delete, Open, Operation, Plus, SetUp, TurnOff, WarningFilled } from "@element-plus/icons-vue"
+import { useXsState } from '@hooks/useMediaSize'
 import Flex from "@pages/components/Flex"
 import { getAppPageUrl } from "@util/constant/url"
 import { ElIcon, ElText, ElTooltip } from 'element-plus'
-import { defineComponent, ref, Ref, watch } from "vue"
-import DropdownButton, { type DropdownButtonItem } from "../common/DropdownButton"
-import { useLimitAction, useLimitBatch, useLimitFilter } from "./context"
+import { computed, defineComponent, ref, Ref, watch } from "vue"
+import DropdownButton, { type DropdownButtonItem } from "../../common/DropdownButton"
+import { useLimitAction, useLimitBatch, useLimitFilter } from "../context"
 
 const optionPageUrl = getAppPageUrl(OPTION_ROUTE, { i: 'limit' })
 
 type BatchOpt = 'delete' | 'enable' | 'disable'
 
-const useCreateTip = (empty: Ref<boolean>) => {
+const useCreateTip = (empty: Ref<boolean>, isXs: Ref<boolean>) => {
     const tipVisible = ref(false)
     let initialized = false
     watch(empty, emptyVal => {
@@ -33,12 +34,14 @@ const useCreateTip = (empty: Ref<boolean>) => {
         setTimeout(closeTip, 10000)
     })
     const closeTip = () => tipVisible.value = false
-    return { tipVisible, closeTip }
+    const finalVisible = computed(() => !isXs.value && tipVisible.value)
+    return { tipVisible: finalVisible, closeTip }
 }
 
 const _default = defineComponent(() => {
     const { create, test, empty } = useLimitAction()
-    const { tipVisible, closeTip } = useCreateTip(empty)
+    const isXs = useXsState()
+    const { tipVisible, closeTip } = useCreateTip(empty, isXs)
     const filter = useLimitFilter()
     const { batchDelete, batchDisable, batchEnable } = useLimitBatch()
 
@@ -75,20 +78,22 @@ const _default = defineComponent(() => {
                     onSearch={val => filter.url = val}
                 />
                 <SwitchFilterItem
+                    v-show={!isXs.value}
                     historyName="onlyEnabled"
                     label={t(msg => msg.limit.filterDisabled)}
                     defaultValue={filter.onlyEnabled}
                     onChange={val => filter.onlyEnabled = val}
                 />
             </Flex>
-            <Flex gap={10}>
-                <DropdownButton items={batchItems} />
+            <Flex gap={10} align='center'>
+                <DropdownButton v-show={!isXs.value} items={batchItems} />
                 <ButtonFilterItem
                     text={msg => msg.limit.button.test}
                     icon={Operation}
                     onClick={test}
                 />
                 <ButtonFilterItem
+                    v-show={!isXs.value}
                     text={msg => msg.base.option}
                     icon={SetUp}
                     onClick={() => createTabAfterCurrent(optionPageUrl)}
