@@ -1,4 +1,4 @@
-import { type LaunchContext, sleep } from "./base"
+import { launchBrowser, type LaunchContext, sleep } from "./base"
 
 export async function createWhitelist(context: LaunchContext, white: string) {
     const whitePage = await context.openAppPage('/additional/whitelist')
@@ -11,8 +11,10 @@ export async function createWhitelist(context: LaunchContext, white: string) {
     await input?.focus()
     await whitePage.keyboard.type(white)
     await sleep(.4)
-    const selectItem = await whitePage.waitForSelector('.el-popper .el-select-dropdown li:nth-child(1)')
-    await selectItem?.click()
+    await whitePage.keyboard.press('ArrowDown')
+    await sleep(.2)
+    await whitePage.keyboard.press('Enter')
+
     await whitePage.click('.el-button:nth-child(3)')
     const checkBtn = await whitePage.waitForSelector('.el-overlay.is-message-box .el-button.el-button--primary')
     await checkBtn?.click()
@@ -26,3 +28,9 @@ export async function removeAllWhitelist(context: LaunchContext) {
     })
     await whitePage.close()
 }
+
+// Run to test the function, but skip it in normal test runs
+test.skip('create whitelist', async () => {
+    const context = await launchBrowser()
+    await createWhitelist(context, 'example.com')
+})

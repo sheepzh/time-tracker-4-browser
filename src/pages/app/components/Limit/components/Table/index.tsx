@@ -9,11 +9,11 @@ import { t } from "@app/locale"
 import { useLocalStorage, useRequest, useState } from "@hooks"
 import weekHelper from "@service/components/week-helper"
 import { isEffective } from "@util/limit"
-import { ElSwitch, ElTable, ElTableColumn, ElTag, type RenderRowData, type Sort } from "element-plus"
-import { defineComponent, watch } from "vue"
-import { useLimitTable } from "../context"
-import LimitOperationColumn from "./column/LimitOperationColumn"
-import RuleContent from "./RuleContent"
+import { ElSwitch, ElTable, ElTableColumn, ElTag, type RenderRowData, type Sort, type TableInstance } from "element-plus"
+import { defineComponent, ref, watch } from "vue"
+import { useLimitData, type LimitInstance } from "../../context"
+import LimitOperationColumn from "./OperationColumn"
+import Rule from "./Rule"
 import Waste from "./Waste"
 import Weekday from "./Weekday"
 
@@ -27,17 +27,14 @@ const sortMethodByNumVal = (key: keyof timer.limit.Item & 'waste' | 'weeklyWaste
 
 const sortByEffectiveDays = ({ weekdays: a }: timer.limit.Item, { weekdays: b }: timer.limit.Item) => (a?.length ?? 0) - (b?.length ?? 0)
 
-const _default = defineComponent(() => {
+const _default = defineComponent((_, ctx) => {
     const { data: weekStartName } = useRequest(async () => {
         const offset = await weekHelper.getRealWeekStart()
         const name = t(msg => msg.calendar.weekDays)?.split('|')?.[offset]
         return name || 'NaN'
     })
 
-    const {
-        list, table,
-        changeEnabled, changeDelay, changeLocked
-    } = useLimitTable()
+    const { list, changeEnabled, changeDelay, changeLocked } = useLimitData()
 
     const [cachedSort, setCachedSort] = useLocalStorage<Sort>(
         '__limit_sort_default__', { prop: DEFAULT_SORT_COL, order: 'descending' }
@@ -45,6 +42,12 @@ const _default = defineComponent(() => {
 
     const [sort, setSort] = useState(cachedSort)
     watch(sort, () => setCachedSort(sort.value))
+
+    const table = ref<TableInstance>()
+
+    ctx.expose({
+        getSelected: () => table.value?.getSelectionRows?.() ?? []
+    } satisfies LimitInstance)
 
     return () => (
         <ElTable
@@ -78,7 +81,7 @@ const _default = defineComponent(() => {
                 minWidth={200}
                 align="center"
             >
-                {({ row }: RenderRowData<timer.limit.Item>) => <RuleContent value={row} />}
+                {({ row }: RenderRowData<timer.limit.Item>) => <Rule value={row} />}
             </ElTableColumn>
             <ElTableColumn
                 prop='effectiveDays'
