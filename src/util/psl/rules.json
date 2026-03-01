@@ -2134,7 +2134,18 @@
                     "es-1": 1
                 }
             },
-            "convex": 1,
+            "begetcdn": {
+                "c": {
+                    "*": 1
+                }
+            },
+            "convex": {
+                "c": {
+                    "eu-west-1": 1,
+                    "us-east-1": 1
+                },
+                "l": 1
+            },
             "diadem": 1,
             "elementor": 1,
             "emergent": 1,
@@ -2620,6 +2631,7 @@
                 }
             },
             "180r": 1,
+            "1cooldns": 1,
             "1kapp": 1,
             "3utilities": 1,
             "4u": 1,
@@ -4145,6 +4157,7 @@
             "bplaced": 1,
             "br": 1,
             "builtwithdark": 1,
+            "bumbleshrimp": 1,
             "cafjs": 1,
             "canva-apps": 1,
             "canva-hosted-embed": 1,
@@ -4219,6 +4232,7 @@
             "dattoweb": 1,
             "ddnsfree": 1,
             "ddnsgeek": 1,
+            "ddnsguru": 1,
             "ddnsking": 1,
             "de": 1,
             "deus-canvas": 1,
@@ -4247,6 +4261,7 @@
             "dopaas": 1,
             "drayddns": 1,
             "dreamhosters": 1,
+            "drive-platform": 1,
             "dsmynas": 1,
             "durumis": 1,
             "dyn-o-saur": 1,
@@ -4266,6 +4281,8 @@
             "dyndns-wiki": 1,
             "dyndns-work": 1,
             "dynns": 1,
+            "dynuddns": 1,
+            "dynuhosting": 1,
             "elasticbeanstalk": {
                 "c": {
                     "af-south-1": 1,
@@ -4499,15 +4516,6 @@
                     "demo": 1
                 }
             },
-            "joyent": {
-                "c": {
-                    "cns": {
-                        "c": {
-                            "*": 1
-                        }
-                    }
-                }
-            },
             "jpn": 1,
             "kasserver": 1,
             "kozow": 1,
@@ -4648,6 +4656,7 @@
                 }
             },
             "pgfog": 1,
+            "pivohosting": 1,
             "pixolino": 1,
             "playstation-cloud": 1,
             "pleskns": 1,
@@ -4822,6 +4831,7 @@
                     "pages": 1
                 }
             },
+            "wiredbladehosting": 1,
             "withgoogle": 1,
             "withyoutube": 1,
             "wixsite": 1,
@@ -4861,7 +4871,12 @@
         },
         "l": 1
     },
-    "company": 1,
+    "company": {
+        "c": {
+            "mybox": 1
+        },
+        "l": 1
+    },
     "compare": 1,
     "computer": 1,
     "comsec": 1,
@@ -5168,7 +5183,6 @@
     },
     "dev": {
         "c": {
-            "12chars": 1,
             "barsy": 1,
             "bearblog": 1,
             "botdash": 1,
@@ -5443,7 +5457,8 @@
     "dish": 1,
     "diy": {
         "c": {
-            "discourse": 1
+            "discourse": 1,
+            "imagine": 1
         },
         "l": 1
     },
@@ -5634,6 +5649,7 @@
                     "on": 1
                 }
             },
+            "intouch": 1,
             "tawk": {
                 "c": {
                     "p": 1
@@ -5899,6 +5915,7 @@
             "gouv": 1,
             "greta": 1,
             "huissier-justice": 1,
+            "kdns": 1,
             "medecin": 1,
             "myspreadshop": 1,
             "nom": 1,
@@ -6072,7 +6089,6 @@
     "gold": 1,
     "goldpoint": 1,
     "golf": 1,
-    "goo": 1,
     "goodyear": 1,
     "goog": {
         "c": {
@@ -6592,6 +6608,7 @@
             "darklang": 1,
             "dedyn": 1,
             "definima": 1,
+            "drive-platform": 1,
             "editorx": 1,
             "edu": 1,
             "edugit": 1,
@@ -6802,7 +6819,6 @@
     "it": {
         "c": {
             "123homepage": 1,
-            "12chars": 1,
             "16-b": 1,
             "32-b": 1,
             "64-b": 1,
@@ -9507,8 +9523,13 @@
     },
     "kh": {
         "c": {
-            "*": 1
-        }
+            "com": 1,
+            "edu": 1,
+            "gov": 1,
+            "net": 1,
+            "org": 1
+        },
+        "l": 1
     },
     "ki": {
         "c": {
@@ -9947,6 +9968,7 @@
             "loginto": 1,
             "lohmus": 1,
             "mcdir": 1,
+            "mybox": 1,
             "myds": 1,
             "net": 1,
             "nohost": 1,
@@ -10369,7 +10391,12 @@
             "de5": 1,
             "debian": 1,
             "definima": 1,
-            "deno": 1,
+            "deno": {
+                "c": {
+                    "sandbox": 1
+                },
+                "l": 1
+            },
             "dns-cloud": 1,
             "dns-dynamic": 1,
             "dnsalias": 1,
@@ -10381,6 +10408,7 @@
             "dynalias": 1,
             "dynathome": 1,
             "dynu": 1,
+            "dynuddns": 1,
             "dynv6": 1,
             "eating-organic": 1,
             "edgekey": 1,
@@ -10500,11 +10528,13 @@
             "myradweb": 1,
             "mysecuritycamera": 1,
             "myspreadshop": 1,
+            "mysynology": 1,
             "nhlfan": 1,
             "no-ip": 1,
             "now-dns": 1,
             "office-on-the": 1,
             "oninferno": 1,
+            "opik": 1,
             "ovh": {
                 "c": {
                     "hosting": {
@@ -10553,6 +10583,7 @@
             "server-on": 1,
             "shopselect": 1,
             "siteleaf": 1,
+            "spryt": 1,
             "square7": 1,
             "squares": 1,
             "srcf": {
@@ -10589,10 +10620,18 @@
             "uni5": 1,
             "usgovcloudapi": {
                 "c": {
+                    "core": {
+                        "c": {
+                            "blob": 1,
+                            "file": 1,
+                            "web": 1
+                        }
+                    },
                     "servicebus": 1
                 }
             },
             "usgovcloudapp": 1,
+            "usgovtrafficmanager": 1,
             "vpndns": 1,
             "vps-host": {
                 "c": {
@@ -10612,7 +10651,9 @@
                 "c": {
                     "core": {
                         "c": {
-                            "blob": 1
+                            "blob": 1,
+                            "file": 1,
+                            "web": 1
                         }
                     },
                     "servicebus": 1
@@ -11939,6 +11980,7 @@
             "read-books": 1,
             "readmyblog": 1,
             "routingthecloud": 1,
+            "roxa": 1,
             "selfip": 1,
             "sellsyourhome": 1,
             "servebbs": 1,
@@ -12007,6 +12049,7 @@
             "deuxfleurs": 1,
             "heyflow": 1,
             "hlx": 1,
+            "mybox": 1,
             "pdns": 1,
             "plesk": 1,
             "prvcy": 1,
@@ -12442,7 +12485,6 @@
     "prime": 1,
     "pro": {
         "c": {
-            "12chars": 1,
             "aaa": 1,
             "aca": 1,
             "acct": 1,
@@ -13023,7 +13065,13 @@
                 }
             },
             "co": 1,
-            "convex": 1,
+            "convex": {
+                "c": {
+                    "eu-west-1": 1,
+                    "us-east-1": 1
+                },
+                "l": 1
+            },
             "cpanel": 1,
             "cyon": 1,
             "fastvps": 1,
@@ -14440,6 +14488,7 @@
             "haugiang": 1,
             "health": 1,
             "hoabinh": 1,
+            "hue": 1,
             "hungyen": 1,
             "id": 1,
             "info": 1,
@@ -14542,7 +14591,6 @@
     "wine": 1,
     "winners": 1,
     "wme": 1,
-    "wolterskluwer": 1,
     "woodside": 1,
     "work": {
         "c": {
