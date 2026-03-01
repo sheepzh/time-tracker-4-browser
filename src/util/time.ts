@@ -51,10 +51,12 @@ export function formatTimeYMD(time: Date | number) {
     return formatTime(time, '{y}{m}{d}')
 }
 
+type PeriodMsgFormat = Record<'dayMsg' | 'hourMsg' | 'minuteMsg' | 'secondMsg', string>
+
 /**
  * Format milliseconds for display
  */
-export function formatPeriod(milliseconds: number, message: Record<'dayMsg' | 'hourMsg' | 'minuteMsg' | 'secondMsg', string>): string {
+export function formatPeriod(milliseconds: number, message: PeriodMsgFormat): string {
     const prefix = milliseconds < 0 ? '-' : ''
     milliseconds = Math.abs(milliseconds)
     const { dayMsg, hourMsg, minuteMsg, secondMsg } = message
@@ -82,29 +84,45 @@ export function formatPeriod(milliseconds: number, message: Record<'dayMsg' | 'h
     return prefix + result
 }
 
+const PERIOD_RTL: PeriodMsgFormat = {
+    dayMsg: 's{second} m{minute} h{hour} d{day}',
+    hourMsg: 's{second} m{minute} h{hour}',
+    minuteMsg: 's{second} m{minute}',
+    secondMsg: 's{second}',
+}
+const PERIOD_RTL_SIMPLIFIED: PeriodMsgFormat = {
+    dayMsg: 's{second}m{minute}h{hour}d{day}',
+    hourMsg: 's{second}m{minute}h{hour}',
+    minuteMsg: 's{second}m{minute}',
+    secondMsg: 's{second}',
+}
+const PERIOD_LTR: PeriodMsgFormat = {
+    dayMsg: '{day}d {hour}h {minute}m {second}s',
+    hourMsg: '{hour}h {minute}m {second}s',
+    minuteMsg: '{minute}m {second}s',
+    secondMsg: '{second}s',
+}
+const PERIOD_LTR_SIMPLIFIED: PeriodMsgFormat = {
+    dayMsg: '{day}d{hour}h{minute}m{second}s',
+    hourMsg: '{hour}h{minute}m{second}s',
+    minuteMsg: '{minute}m{second}s',
+    secondMsg: '{second}s',
+}
+
 /**
  * e.g.
  *
- * 100h0m0s
- * 20h10m59s
- * 20h0m1s
- * 10m20s
+ * 2d 10h 0m 0s
+ * 20h 0m 1s
+ * 10m 20s
  * 30s
  *
  * @return (xx+h)(xx+m)xx+s
  */
-export function formatPeriodCommon(milliseconds: number): string {
-    const defaultMessage = isRtl() ? {
-        dayMsg: 's{second} m{minute} h{hour} d{day}',
-        hourMsg: 's{second} m{minute} h{hour}',
-        minuteMsg: 's{second} m{minute}',
-        secondMsg: 's{second}',
-    } : {
-        dayMsg: '{day}d {hour}h {minute}m {second}s',
-        hourMsg: '{hour}h {minute}m {second}s',
-        minuteMsg: '{minute}m {second}s',
-        secondMsg: '{second}s',
-    }
+export function formatPeriodCommon(milliseconds: number, simplified?: boolean): string {
+    const defaultMessage = isRtl()
+        ? (simplified ? PERIOD_RTL_SIMPLIFIED : PERIOD_RTL)
+        : (simplified ? PERIOD_LTR_SIMPLIFIED : PERIOD_LTR)
     return formatPeriod(milliseconds, defaultMessage)
 }
 

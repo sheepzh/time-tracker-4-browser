@@ -10,7 +10,7 @@ import { locale } from "@i18n"
 import { ElButton, ElTableColumn, type RenderRowData } from "element-plus"
 import { defineComponent } from "vue"
 import { verifyCanModify } from "../../common"
-import { useLimitAction, useLimitTable } from "../../context"
+import { useLimitAction, useLimitData } from "../../context"
 
 const LOCALE_WIDTH: { [locale in timer.Locale]: number } = {
     en: 220,
@@ -29,7 +29,7 @@ const LOCALE_WIDTH: { [locale in timer.Locale]: number } = {
 }
 
 const _default = defineComponent<{}>(() => {
-    const { deleteRow } = useLimitTable()
+    const { deleteRow } = useLimitData()
     const { modify } = useLimitAction()
 
     const handleModify = (row: timer.limit.Item) => verifyCanModify(row)

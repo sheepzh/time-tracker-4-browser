@@ -76,7 +76,8 @@ export const menuGroups = (): MenuGroup[] => [{
     }, {
         title: msg => msg.menu.limit,
         route: '/behavior/limit',
-        icon: Timer
+        icon: Timer,
+        mobile: true,
     }]
 }, {
     title: msg => msg.menu.additional,

@@ -1,15 +1,17 @@
 import { t } from "@app/locale"
+import { useXsState } from '@hooks/useMediaSize'
 import { ElCol, ElForm, ElFormItem, ElInput, ElRow, ElSelect, ElSwitch } from "element-plus"
 import { defineComponent } from "vue"
 import { useSopData } from "./context"
 
 const _default = defineComponent(() => {
     const data = useSopData()
+    const isXs = useXsState()
 
     return () => (
         <ElForm labelWidth={130} labelPosition="left">
             <ElRow gutter={30}>
-                <ElCol span={12}>
+                <ElCol span={isXs.value ? 24 : 12}>
                     <ElFormItem label={t(msg => msg.limit.item.name)} required>
                         <ElInput
                             modelValue={data.name} onInput={val => data.name = val}
@@ -17,7 +19,7 @@ const _default = defineComponent(() => {
                         />
                     </ElFormItem>
                 </ElCol>
-                <ElCol span={12}>
+                <ElCol span={isXs.value ? 24 : 12}>
                     <ElFormItem label={t(msg => msg.limit.item.enabled)} required>
                         <ElSwitch modelValue={data.enabled} onChange={v => data.enabled = !!v} />
                     </ElFormItem>

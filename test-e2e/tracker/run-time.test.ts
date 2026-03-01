@@ -1,6 +1,6 @@
 import { launchBrowser, MOCK_HOST, MOCK_URL, sleep, type LaunchContext } from "../common/base"
 import { parseTime2Sec, readRecordsOfFirstPage } from "../common/record"
-import { createWhitelist } from "../common/whitelist"
+import { createWhitelist } from "../common/whitelist.test"
 
 let context: LaunchContext
 

@@ -1,5 +1,6 @@
 import { getUrl } from "@api/chrome/runtime"
 import { t } from "@cs/locale"
+import { useXsState } from '@hooks/useMediaSize'
 import { useRequest } from "@hooks/useRequest"
 import Box from '@pages/components/Box'
 import Flex from '@pages/components/Flex'
@@ -21,13 +22,19 @@ const _default = defineComponent(() => {
         return option?.limitPrompt || defaultPrompt
     }, { defaultValue: defaultPrompt })
 
+    const isXs = useXsState()
+
     return () => (
         <Flex marginBottom={80} column align='center'>
             <Flex as='h2' align='center' lineHeight='2em'>
                 <img src={ICON_URL} style={IMG_STYLE} />
                 <span>{t(msg => msg.meta.name)?.toUpperCase()}</span>
             </Flex>
-            <Box fontSize='2.7em' maxWidth='50vw' marginBlock='0.67em'>
+            <Box
+                fontSize={`${isXs.value ? 1 : 2.7}em`}
+                maxWidth={`${isXs.value ? 80 : 50}vw`}
+                marginBlock={`${isXs.value ? .3 : .67}em`}
+            >
                 {prompt.value}
             </Box>
         </Flex>

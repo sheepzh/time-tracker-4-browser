@@ -6,7 +6,7 @@ import { t } from "@popup/locale"
 import { IS_ANDROID } from "@util/constant/environment"
 import { getAppPageUrl } from "@util/constant/url"
 import { ElLink } from "element-plus"
-import { FunctionalComponent } from "vue"
+import type { FunctionalComponent } from "vue"
 import DarkSwitch from "./DarkSwitch"
 import Logo from "./Logo"
 import MoreInfo from './MoreInfo'
@@ -29,7 +29,7 @@ const openAppPage = async () => {
     await createTab(appPageUrl)
 }
 
-const Header: FunctionalComponent = () => (
+const Header: FunctionalComponent<{}> = () => (
     <Flex justify="space-between" padding='0 10px' color='text-primary'>
         <Logo />
         <Flex gap={10}>

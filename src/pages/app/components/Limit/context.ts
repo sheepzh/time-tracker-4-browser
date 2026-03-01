@@ -1,7 +1,7 @@
 import { t } from "@app/locale"
 import { useDocumentVisibility, useManualRequest, useProvide, useProvider, useRequest } from "@hooks"
 import limitService from "@service/limit-service"
-import { ElMessage, ElMessageBox, type TableInstance } from "element-plus"
+import { ElMessage, ElMessageBox } from "element-plus"
 import { computed, Reactive, reactive, ref, toRaw, watch, type Ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { verifyCanModify } from "./common"
@@ -16,10 +16,14 @@ export type TestInstance = {
     show(): void
 }
 
+export type LimitInstance = {
+    getSelected(): timer.limit.Item[]
+}
+
 type Context = {
-    table: Ref<TableInstance | undefined>
     filter: Reactive<LimitFilterOption>
-    list: Ref<timer.limit.Item[]>, refresh: NoArgCallback,
+    list: Ref<timer.limit.Item[]>
+    refresh: NoArgCallback
     deleteRow: ArgCallback<timer.limit.Item>
     batchDelete: NoArgCallback
     batchEnable: NoArgCallback
@@ -69,10 +73,10 @@ export const useLimitProvider = () => {
         }
     })
 
-    const table = ref<TableInstance>()
+    const inst = ref<LimitInstance>()
 
     const selectedAndThen = (then: (list: timer.limit.Item[]) => void): void => {
-        const list = table.value?.getSelectionRows?.()
+        const list = inst.value?.getSelected?.()
         if (!list?.length) {
             ElMessage.info('No limit rule selected')
             return
@@ -85,10 +89,14 @@ export const useLimitProvider = () => {
         refresh()
     }
 
-    const handleBatchDelete = (list: timer.limit.Item[]) => verifyCanModify(...list)
-        .then(() => limitService.remove(...list))
-        .then(onBatchSuccess)
-        .catch(() => { })
+    const handleBatchDelete = (list: timer.limit.Item[]) => {
+        const names = list.map(item => item.name ?? item.id).join(', ')
+        verifyCanModify(...list)
+            .then(() => ElMessageBox.confirm(t(msg => msg.limit.message.deleteConfirm, { name: names }), { type: "warning" }))
+            .then(() => limitService.remove(...list))
+            .then(onBatchSuccess)
+            .catch(() => { })
+    }
 
     const handleBatchEnable = (list: timer.limit.Item[]) => {
         list.forEach(item => item.enabled = true)
@@ -149,7 +157,6 @@ export const useLimitProvider = () => {
     const empty = computed(() => !loading.value && !list.value.length)
 
     useProvide<Context>(NAMESPACE, {
-        table,
         filter,
         list, empty, refresh,
         deleteRow,
@@ -160,13 +167,13 @@ export const useLimitProvider = () => {
         modify, create, test,
     })
 
-    return { modifyInst, testInst }
+    return { modifyInst, testInst, inst }
 }
 
 export const useLimitFilter = (): Reactive<LimitFilterOption> => useProvider<Context, 'filter'>(NAMESPACE, "filter").filter
 
-export const useLimitTable = () => useProvider<Context, 'list' | 'table' | 'refresh' | 'deleteRow' | 'changeEnabled' | 'changeDelay' | 'changeLocked'>(
-    NAMESPACE, 'list', 'table', 'refresh', 'deleteRow', 'changeEnabled', 'changeDelay', 'changeLocked'
+export const useLimitData = () => useProvider<Context, 'list' | 'refresh' | 'deleteRow' | 'changeEnabled' | 'changeDelay' | 'changeLocked'>(
+    NAMESPACE, 'list', 'refresh', 'deleteRow', 'changeEnabled', 'changeDelay', 'changeLocked'
 )
 
 export const useLimitBatch = () => useProvider<Context, 'batchDelete' | 'batchEnable' | 'batchDisable'>(
