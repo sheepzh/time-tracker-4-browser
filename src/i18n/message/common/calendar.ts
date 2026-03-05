@@ -24,6 +24,7 @@ export type CalendarMessage = {
         yesterday: string
         thisWeek: string
         thisMonth: string
+        lastWeek: string
         lastDays: string
         tillYesterday: string
         tillDaysAgo: string

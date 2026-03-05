@@ -62,6 +62,7 @@
             "everyday": "Everyday",
             "thisWeek": "This week",
             "thisMonth": "This month",
+            "lastWeek": "Last week",
             "lastDays": "Last {n} days",
             "tillYesterday": "Through yesterday",
             "tillDaysAgo": "Through {n} days ago",

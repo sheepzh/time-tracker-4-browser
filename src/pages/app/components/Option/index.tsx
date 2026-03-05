@@ -7,33 +7,31 @@
 import { MediaSize, useMediaSize } from "@hooks"
 import { ElScrollbar } from 'element-plus'
 import { defineComponent, ref, type Ref, type StyleValue } from "vue"
-import { type JSX } from "vue/jsx-runtime"
-import { type OptionCategory, type OptionInstance } from "./common"
-import AccessibilityOption from "./components/AccessibilityOption"
-import AppearanceOption from "./components/AppearanceOption"
-import BackupOption from './components/BackupOption'
-import LimitOption from './components/LimitOption'
-import TrackingOption from "./components/TrackingOption"
+import type { JSX } from "vue/jsx-runtime"
+import { Accessibility, Appearance, Backup, type CategoryInstance, Limit, Notification, Tracking } from './categories'
 import Select from "./Select"
 import Tabs from "./Tabs"
+import type { OptionCategory } from "./useCategory"
 
 const _default = defineComponent(() => {
-    const paneRefMap: Record<OptionCategory, Ref<OptionInstance | undefined>> = {
+    const paneRefMap: Record<OptionCategory, Ref<CategoryInstance | undefined>> = {
         appearance: ref(),
         tracking: ref(),
         backup: ref(),
         limit: ref(),
         accessibility: ref(),
+        notification: ref(),
     }
 
     const mediaSize = useMediaSize()
 
     const slots: Record<OptionCategory, () => JSX.Element> = {
-        appearance: () => <AppearanceOption ref={paneRefMap.appearance} />,
-        tracking: () => <TrackingOption ref={paneRefMap.tracking} />,
-        limit: () => <LimitOption ref={paneRefMap.limit} />,
-        accessibility: () => <AccessibilityOption ref={paneRefMap.accessibility} />,
-        backup: () => <BackupOption ref={paneRefMap.backup} />,
+        appearance: () => <Appearance ref={paneRefMap.appearance} />,
+        tracking: () => <Tracking ref={paneRefMap.tracking} />,
+        limit: () => <Limit ref={paneRefMap.limit} />,
+        accessibility: () => <Accessibility ref={paneRefMap.accessibility} />,
+        backup: () => <Backup ref={paneRefMap.backup} />,
+        notification: () => <Notification ref={paneRefMap.notification} />,
     }
 
     const handleReset = (cate: OptionCategory) => paneRefMap[cate]?.value?.reset?.()

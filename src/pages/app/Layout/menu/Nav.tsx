@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getUrl } from "@api/chrome/runtime"
+import { getIconUrl } from "@api/chrome/runtime"
 import { t } from "@app/locale"
 import { CloseBold, Link, Menu } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
@@ -72,7 +72,7 @@ const _default = defineComponent<{}>(() => {
             <Flex justify='space-between' align='center' height={HEADER_HEIGHT}>
                 <Flex gap={20} align='center'>
                     <ElIcon>
-                        <img width='32' height='32' src={getUrl('static/images/icon.png')} />
+                        <img width='32' height='32' src={getIconUrl()} />
                     </ElIcon>
                     <ElBreadcrumb separator="/">
                         <ElBreadcrumbItem>{t(msg => msg.meta.name)}</ElBreadcrumbItem>

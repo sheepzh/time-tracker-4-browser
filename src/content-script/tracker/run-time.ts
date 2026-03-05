@@ -1,4 +1,4 @@
-import { onRuntimeMessage, sendMsg2Runtime } from "@api/chrome/runtime"
+import { onRuntimeMessage, trySendMsg2Runtime } from "@api/chrome/runtime"
 
 class RunTimeTracker {
     private start: number = Date.now()
@@ -25,11 +25,9 @@ class RunTimeTracker {
         setInterval(() => this.collect(), 1000)
     }
 
-    private fetchSite() {
-        sendMsg2Runtime('cs.getRunSites', this.url)
-            .then((site: timer.site.SiteKey) => this.host = site?.host)
-            // Extension reloaded, so terminate
-            .catch(() => this.host = undefined)
+    private async fetchSite() {
+        const site: timer.site.SiteKey | undefined = await trySendMsg2Runtime('cs.getRunSites', this.url)
+        this.host = site?.host
     }
 
     private async collect() {
@@ -45,7 +43,7 @@ class RunTimeTracker {
                     ignoreTabCheck: false,
                     host: this.host,
                 }
-                await sendMsg2Runtime('cs.trackRunTime', event)
+                await trySendMsg2Runtime('cs.trackRunTime', event)
             }
             this.start = now
         } catch {

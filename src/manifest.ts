@@ -53,6 +53,7 @@ const _default: chrome.runtime.ManifestV3 = {
     ],
     optional_permissions: [
         'tabGroups',
+        'notifications',
     ],
     host_permissions: [
         "<all_urls>",

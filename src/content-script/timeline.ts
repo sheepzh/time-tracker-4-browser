@@ -1,4 +1,4 @@
-import { sendMsg2Runtime } from '@api/chrome/runtime'
+import { trySendMsg2Runtime } from '@api/chrome/runtime'
 
 class TimelineCollector {
     private startTime: number | null = null
@@ -43,7 +43,7 @@ class TimelineCollector {
         if (!this.startTime) return
         const url = document?.location?.href
 
-        url && sendMsg2Runtime('cs.timelineEv', {
+        url && trySendMsg2Runtime('cs.timelineEv', {
             start: this.startTime,
             end: Date.now(),
             url,

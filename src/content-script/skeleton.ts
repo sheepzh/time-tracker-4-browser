@@ -1,4 +1,4 @@
-import { sendMsg2Runtime } from "@api/chrome/runtime"
+import { trySendMsg2Runtime } from "@api/chrome/runtime"
 
 function awaitDocumentReady() {
     if (document.readyState === 'complete') {
@@ -12,7 +12,7 @@ function awaitDocumentReady() {
 
 const main = async () => {
     await awaitDocumentReady()
-    sendMsg2Runtime('cs.onInjected')
+    trySendMsg2Runtime('cs.onInjected')
 }
 
 main()

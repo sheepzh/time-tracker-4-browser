@@ -1,6 +1,6 @@
 import { ElDivider } from 'element-plus'
 import { type FunctionalComponent, h, isVNode, type VNode } from "vue"
-import { isOptionItem } from './OptionItem'
+import { isOptionItem } from './Item'
 
 function isComment({ type, children }: VNode): boolean {
     return typeof type === 'symbol' && (children === null || children === undefined)
@@ -33,7 +33,7 @@ function flattenChildren(original: VNode[]): VNode[] {
     return flat
 }
 
-const OptionLines: FunctionalComponent<{}> = (_, { slots }) => {
+const Lines: FunctionalComponent<{}> = (_, { slots }) => {
     const children: VNode[] = []
 
     let beforeIsItem = false
@@ -50,7 +50,7 @@ const OptionLines: FunctionalComponent<{}> = (_, { slots }) => {
     }
     return <div>{children}</div>
 }
-OptionLines.displayName = 'OptionLines'
+Lines.displayName = 'OptionLines'
 
 
-export default OptionLines
+export default Lines

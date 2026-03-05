@@ -1,4 +1,4 @@
-import { getUrl } from "@api/chrome/runtime"
+import { getIconUrl } from "@api/chrome/runtime"
 import { t } from "@cs/locale"
 
 const containerStyle = (dark: boolean): Partial<CSSStyleDeclaration> => ({
@@ -63,7 +63,7 @@ function createIcon(): HTMLImageElement {
     const icon = document.createElement('img')
     icon.width = 32
     icon.height = 32
-    icon.src = getUrl('static/images/icon.png')
+    icon.src = getIconUrl()
     return icon
 }
 

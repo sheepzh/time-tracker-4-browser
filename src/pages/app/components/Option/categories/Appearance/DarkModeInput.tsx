@@ -9,9 +9,12 @@ import { ElSelect, ElTimePicker } from "element-plus"
 import { computed, defineComponent, StyleValue } from "vue"
 
 const ALL_MODES: timer.option.DarkMode[] = ["default", "on", "off", "timed"]
-const labelOfMode = (mode: timer.option.DarkMode) => mode === 'default'
-    ? t(msg => msg.option.followBrowser)
-    : t(msg => msg.option.appearance.darkMode.options[mode])
+const MODE_LABELS: Record<timer.option.DarkMode, string> = {
+    default: t(msg => msg.option.followBrowser),
+    on: t(msg => msg.option.on),
+    off: t(msg => msg.option.off),
+    timed: t(msg => msg.option.appearance.darkMode.timed)
+}
 
 function computeSecondToDate(secondOfDate: number): Date {
     const now = new Date()
@@ -49,7 +52,7 @@ const _default = defineComponent<Props>(props => {
             size="small"
             style={{ width: "120px" }}
             onChange={val => props.onChange?.(val as timer.option.DarkMode, [props.startSecond, props.endSecond])}
-            options={ALL_MODES.map(value => ({ value, label: labelOfMode(value) }))}
+            options={ALL_MODES.map(value => ({ value, label: MODE_LABELS[value] }))}
         />
         {props.modelValue === "timed" && <>
             <ElTimePicker

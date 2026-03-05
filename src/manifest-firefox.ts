@@ -51,7 +51,8 @@ const _default: chrome.runtime.ManifestFirefox = {
         '<all_urls>',
     ],
     optional_permissions: [
-        "tabGroups",
+        'tabGroups',
+        'notifications',
     ],
     browser_action: {
         default_popup: "static/popup_skeleton.html",

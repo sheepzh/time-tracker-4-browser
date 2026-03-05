@@ -1,4 +1,4 @@
-import { getRuntimeId, getUrl, sendMsg2Runtime } from '@api/chrome/runtime'
+import { getRuntimeId, getUrl, trySendMsg2Runtime } from '@api/chrome/runtime'
 import optionService from '@service/option-service'
 import { init as initTheme, toggle } from '@util/dark-mode'
 import { createApp, Ref, type App } from 'vue'
@@ -78,7 +78,7 @@ class ModalInstance implements MaskModal {
     rootElement: RootElement | undefined
     body: HTMLBodyElement | undefined
     delayHandlers: (() => void)[] = [
-        () => sendMsg2Runtime('cs.moreMinutes', this.url),
+        () => trySendMsg2Runtime('cs.moreMinutes', this.url),
     ]
     reasons: LimitReason[] = []
     reason: Ref<LimitReason | undefined> | undefined

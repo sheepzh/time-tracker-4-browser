@@ -9,6 +9,8 @@ import resource from './option-resource.json'
 export type OptionMessage = {
     yes: string
     no: string
+    on: string
+    off: string
     followBrowser: string
     appearance: {
         title: string
@@ -33,7 +35,7 @@ export type OptionMessage = {
         },
         darkMode: {
             label: string
-            options: Omit<Record<timer.option.DarkMode, string>, 'default'>
+            timed: string
         }
         animationDuration: string
         sidePanel: string
@@ -78,7 +80,6 @@ export type OptionMessage = {
         client: string
         meta: {
             [type in timer.backup.Type]: {
-                label?: string
                 authInfo?: string
             }
         } & {
@@ -118,6 +119,22 @@ export type OptionMessage = {
     accessibility: {
         title: string
         chartDecal: string
+    }
+    notification: {
+        title: string
+        cycle: {
+            label: string
+            daily: string
+            weekly: string
+        }
+        method: {
+            label: string
+            browser: string
+            callback: {
+                label: string
+                url: string
+            }
+        }
     }
     resetButton: string
     resetSuccess: string
