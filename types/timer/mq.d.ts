@@ -20,6 +20,9 @@ declare namespace timer.mq {
         | "enableTabGroup"
         // @since 3.7.3
         | "syncAudible"
+        | "resetBackupScheduler"
+        // @since 4.1.0
+        | "resetNotificationScheduler"
         // Request by content script
         // @since 1.3.0
         | "cs.isInWhitelist"

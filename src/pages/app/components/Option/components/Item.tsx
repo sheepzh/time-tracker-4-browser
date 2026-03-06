@@ -27,7 +27,8 @@ const computedDefValText = (defVal: Props['defaultValue']): string | number | un
 const TAG_STYLE: StyleValue = { height: '20px', marginInlineStart: '4px' }
 
 const renderLabel = (label: Props['label'], param: any) => {
-    return typeof label === 'string' ? label : tN(label, param)
+    const key = typeof label === 'string' ? () => label : label
+    return tN(key, param)
 }
 
 export function isOptionItem(component: VNode): boolean {
@@ -88,7 +89,7 @@ const useStyle = () => {
     return { lineCls, smCls }
 }
 
-const OptionItem = defineComponent<Props>((props, { slots }) => {
+const Item = defineComponent<Props>((props, { slots }) => {
     const defaultText = computed(() => computedDefValText(props.defaultValue))
     const mediaSize = useMediaSize()
     const isSmScreen = computed(() => mediaSize.value <= MediaSize.sm)
@@ -115,7 +116,7 @@ const OptionItem = defineComponent<Props>((props, { slots }) => {
     }
 }, { props: ['label', 'required', 'defaultValue'] })
 
-const OptionItemAny = OptionItem as any
-OptionItemAny[OPTION_ITEM_SYMBOL] = true
+const ItemAny = Item as any
+ItemAny[OPTION_ITEM_SYMBOL] = true
 
-export default OptionItem
+export default Item

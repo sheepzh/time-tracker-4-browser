@@ -71,6 +71,13 @@ declare namespace timer {
                 msg?: string
             }
         }
+        notification?: {
+            [key in timer.notification.Method]?: {
+                ts: number
+                endDate: string
+                msg?: string
+            }
+        }
         // Flags
         flag?: Partial<Record<ExtensionMetaFlag, boolean>>
     }

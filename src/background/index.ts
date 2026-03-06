@@ -10,7 +10,6 @@ import { isNoneWindowId, onNormalWindowFocusChanged } from "@api/chrome/window"
 import optionHolder from "@service/components/option-holder"
 import { isBrowserUrl } from "@util/pattern"
 import { openLog } from "../common/logger"
-import BackupScheduler from "./backup-scheduler"
 import badgeTextManager from "./badge-manager"
 import initBrowserAction from "./browser-action-manager"
 import initCsHandler from "./content-script-handler"
@@ -19,6 +18,7 @@ import handleInstall from './install-handler'
 import initLimitProcessor from "./limit-processor"
 import MessageDispatcher from "./message-dispatcher"
 import VersionMigrator from "./migrator"
+import { initScheduler } from './scheduler'
 import initSidePanel from "./side-panel"
 import TabListener from './tab-listener'
 import initTrackServer from "./track-server"
@@ -50,8 +50,8 @@ initTrackServer(messageDispatcher)
 // Process version
 new VersionMigrator().init()
 
-// Backup scheduler
-new BackupScheduler().init()
+// scheduler
+initScheduler(messageDispatcher)
 
 // Manage the context menus
 initWhitelistMenuManager()

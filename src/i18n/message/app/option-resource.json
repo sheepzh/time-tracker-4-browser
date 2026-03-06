@@ -2,6 +2,8 @@
     "zh_CN": {
         "yes": "是",
         "no": "否",
+        "on": "始终开启",
+        "off": "始终关闭",
         "followBrowser": "跟随浏览器",
         "appearance": {
             "title": "外观",
@@ -24,11 +26,7 @@
             },
             "darkMode": {
                 "label": "夜间模式 {input}",
-                "options": {
-                    "on": "始终开启",
-                    "off": "始终关闭",
-                    "timed": "定时开启"
-                }
+                "timed": "定时开启"
             },
             "animationDuration": "图表初始动画的时长 {input}",
             "sidePanel": "{input} 是否启用侧边栏视图"
@@ -76,9 +74,6 @@
             "type": "远端类型 {input}",
             "client": "客户端标识 {input}",
             "meta": {
-                "none": {
-                    "label": "不开启备份"
-                },
                 "gist": {
                     "authInfo": "需要创建一个至少包含 gist 权限的 token"
                 },
@@ -133,6 +128,8 @@
     "zh_TW": {
         "yes": "是",
         "no": "否",
+        "on": "始終開啟",
+        "off": "始終關閉",
         "followBrowser": "跟隨瀏覽器",
         "appearance": {
             "title": "外觀設定",
@@ -155,11 +152,7 @@
             },
             "darkMode": {
                 "label": "深色模式 {input}",
-                "options": {
-                    "on": "始終開啟",
-                    "off": "始終關閉",
-                    "timed": "定時開啟"
-                }
+                "timed": "定時開啟"
             },
             "animationDuration": "圖表動畫持續時間 {input}"
         },
@@ -203,9 +196,6 @@
             "type": "雲端服務類型 {input}",
             "client": "用戶端識別碼 {input}",
             "meta": {
-                "none": {
-                    "label": "關閉備份"
-                },
                 "gist": {
                     "authInfo": "需建立至少包含 gist 權限的 token"
                 },
@@ -260,6 +250,8 @@
     "en": {
         "yes": "Yes",
         "no": "No",
+        "on": "Always on",
+        "off": "Always off",
         "followBrowser": "Follow browser",
         "appearance": {
             "title": "Appearance",
@@ -282,11 +274,7 @@
             },
             "darkMode": {
                 "label": "Dark mode {input}",
-                "options": {
-                    "on": "Always on",
-                    "off": "Always off",
-                    "timed": "Timed on"
-                }
+                "timed": "Timed on"
             },
             "animationDuration": "The duration of the chart's initial animation {input}",
             "sidePanel": "{input} Whether to enable the side panel"
@@ -334,9 +322,7 @@
             "type": "Remote type {input}",
             "client": "Client name {input}",
             "meta": {
-                "none": {
-                    "label": "Always off"
-                },
+                "none": {},
                 "gist": {
                     "authInfo": "One token with at least gist permission is required"
                 },
@@ -378,6 +364,22 @@
             "title": "Accessibility",
             "chartDecal": "{input} Whether to display the chart decal"
         },
+        "notification": {
+            "title": "Notification",
+            "cycle": {
+                "label": "Notification cycle {input}",
+                "daily": "Daily",
+                "weekly": "Weekly"
+            },
+            "method": {
+                "label": "Notification method {input}",
+                "browser": "Browser",
+                "callback": {
+                    "label": "HTTP Callback",
+                    "url": "Callback URL {input}"
+                }
+            }
+        },
         "resetButton": "Reset",
         "resetSuccess": "Reset to default successfully!",
         "exportButton": "Export Settings",
@@ -392,6 +394,8 @@
     "ja": {
         "yes": "はい",
         "no": "いいえ",
+        "on": "常にオン",
+        "off": "常にオフ",
         "followBrowser": "ブラウザと同じ",
         "appearance": {
             "title": "外観",
@@ -414,11 +418,7 @@
             },
             "darkMode": {
                 "label": "ダークモード {input}",
-                "options": {
-                    "on": "常にオン",
-                    "off": "常にオフ",
-                    "timed": "時限スタート"
-                }
+                "timed": "時限スタート"
             },
             "animationDuration": "チャートの初期アニメーションの持続時間 {input}"
         },
@@ -459,9 +459,7 @@
             "type": "バックアップ方法 {input}",
             "client": "クライアント名 {input}",
             "meta": {
-                "none": {
-                    "label": "バックアップを有効にしない"
-                },
+                "none": {},
                 "gist": {
                     "authInfo": "少なくとも gist 権限を持つトークンが 1 つ必要です"
                 },
@@ -516,6 +514,8 @@
     "pt_PT": {
         "yes": "Sim",
         "no": "Não",
+        "on": "Sempre ativo",
+        "off": "Sempre inativo",
         "followBrowser": "Usar do navegador",
         "appearance": {
             "title": "Aparência",
@@ -538,11 +538,7 @@
             },
             "darkMode": {
                 "label": "Modo escuro {input}",
-                "options": {
-                    "on": "Sempre ativo",
-                    "off": "Sempre inativo",
-                    "timed": "Ativo por tempo"
-                }
+                "timed": "Ativo por tempo"
             },
             "animationDuration": "Duração da animação inicial {input}",
             "sidePanel": "{input} Se ativar ou não o painel lateral"
@@ -588,9 +584,7 @@
             "type": "Tipo remoto {input}",
             "client": "Nome do cliente {input}",
             "meta": {
-                "none": {
-                    "label": "Sempre inativo"
-                },
+                "none": {},
                 "gist": {
                     "authInfo": "Necessário token com permissão gist"
                 },
@@ -645,6 +639,8 @@
     "uk": {
         "yes": "Так",
         "no": "Ні",
+        "on": "Увімкнено",
+        "off": "Вимкнено",
         "followBrowser": "Як у браузері",
         "appearance": {
             "title": "Зовнішній вигляд",
@@ -667,11 +663,7 @@
             },
             "darkMode": {
                 "label": "Темний режим: {input}",
-                "options": {
-                    "on": "Увімкнено",
-                    "off": "Вимкнено",
-                    "timed": "За розкладом"
-                }
+                "timed": "За розкладом"
             },
             "animationDuration": "Тривалість початкової анімації діаграми {input}"
         },
@@ -715,9 +707,7 @@
             "type": "Тип резервного копіювання {input}",
             "client": "Назва клієнта {input}",
             "meta": {
-                "none": {
-                    "label": "Завжди вимкнено"
-                },
+                "none": {},
                 "gist": {
                     "authInfo": "Потрібно вказати токен для доступу gist"
                 },
@@ -772,6 +762,8 @@
     "es": {
         "yes": "Sí",
         "no": "No",
+        "on": "Siempre encendido",
+        "off": "Siempre apagado",
         "followBrowser": "Igual que el navegador",
         "appearance": {
             "title": "Apariencia",
@@ -794,11 +786,7 @@
             },
             "darkMode": {
                 "label": "Modo oscuro {input}",
-                "options": {
-                    "on": "Siempre encendido",
-                    "off": "Siempre apagado",
-                    "timed": "Cronometrado"
-                }
+                "timed": "Cronometrado"
             },
             "animationDuration": "Duración de la animación inicial del gráfico {input}"
         },
@@ -842,9 +830,7 @@
             "type": "Tipo remoto {input}",
             "client": "Nombre del cliente {input}",
             "meta": {
-                "none": {
-                    "label": "Siempre apagado"
-                },
+                "none": {},
                 "gist": {
                     "authInfo": "Se requiere un token con al menos los permisos esenciales"
                 },
@@ -969,9 +955,7 @@
             "type": "Remote Typ {input}",
             "client": "Kundenname {input}",
             "meta": {
-                "none": {
-                    "label": "Immer aus"
-                },
+                "none": {},
                 "gist": {
                     "authInfo": "Ein Token mit mindestens gist Berechtigung ist erforderlich"
                 },
@@ -1026,6 +1010,8 @@
     "fr": {
         "yes": "Oui",
         "no": "Non",
+        "on": "Toujours activé",
+        "off": "Toujours éteint",
         "followBrowser": "Suivre le navigateur",
         "appearance": {
             "title": "Apparence",
@@ -1048,11 +1034,7 @@
             },
             "darkMode": {
                 "label": "Mode sombre {input}",
-                "options": {
-                    "on": "Toujours activé",
-                    "off": "Toujours éteint",
-                    "timed": "Horaire"
-                }
+                "timed": "Horaire"
             },
             "animationDuration": "La durée de l'animation initiale du graphique {input}",
             "sidePanel": "{input} Autoriser l'affichage du panneau latéral"
@@ -1098,9 +1080,7 @@
             "type": "Type distant {input}",
             "client": "Nom du client {input}",
             "meta": {
-                "none": {
-                    "label": "Toujours éteint"
-                },
+                "none": {},
                 "gist": {
                     "authInfo": "Un jeton avec au moins une permission de gist est requis"
                 },
@@ -1155,6 +1135,8 @@
     "ru": {
         "yes": "Да",
         "no": "Нет",
+        "on": "Всегда включен",
+        "off": "Всегда выключен",
         "followBrowser": "Как в браузере",
         "appearance": {
             "title": "Появление",
@@ -1177,11 +1159,7 @@
             },
             "darkMode": {
                 "label": "Тёмный режим {input}",
-                "options": {
-                    "on": "Всегда включен",
-                    "off": "Всегда выключен",
-                    "timed": "По времени"
-                }
+                "timed": "По времени"
             },
             "animationDuration": "Длительность начальной анимации графика {input}"
         },
@@ -1235,6 +1213,8 @@
     "ar": {
         "yes": "نعم",
         "no": "لا",
+        "on": "تفعيل دائم",
+        "off": "إيقاف دائم",
         "followBrowser": "نفس وضع المتصفح",
         "appearance": {
             "title": "المظهر",
@@ -1257,11 +1237,7 @@
             },
             "darkMode": {
                 "label": "الوضع الداكن {input}",
-                "options": {
-                    "on": "تفعيل دائم",
-                    "off": "إيقاف دائم",
-                    "timed": "تفعيل مؤقت"
-                }
+                "timed": "تفعيل مؤقت"
             },
             "animationDuration": "مدة تحريك الرسوم البيانية {input}"
         },
@@ -1305,9 +1281,7 @@
             "type": "نوع الربط الخارجي {input}",
             "client": "اسم العميل {input}",
             "meta": {
-                "none": {
-                    "label": "معطّل دائمًا"
-                },
+                "none": {},
                 "gist": {
                     "authInfo": "مطلوب رمز وصول واحد على الأقل مع صلاحية Gist"
                 },
@@ -1362,6 +1336,8 @@
     "tr": {
         "yes": "Evet",
         "no": "Hayır",
+        "on": "Her zaman açık",
+        "off": "Her zaman kapalı",
         "followBrowser": "Tarayıcıyı takip et",
         "appearance": {
             "title": "Görünüm",
@@ -1384,11 +1360,7 @@
             },
             "darkMode": {
                 "label": "Karanlık mod {input}",
-                "options": {
-                    "on": "Her zaman açık",
-                    "off": "Her zaman kapalı",
-                    "timed": "Zamanlanmış"
-                }
+                "timed": "Zamanlanmış"
             },
             "animationDuration": "Grafiğin ilk animasyonunun süresi {input}",
             "sidePanel": "{input} Yan panelin gösterilip gösterilmeyeceğini seçin"
@@ -1436,9 +1408,7 @@
             "type": "Uzaktan yedekleme tipi {input}",
             "client": "Uygulama adı {input}",
             "meta": {
-                "none": {
-                    "label": "Her zaman kapalı"
-                },
+                "none": {},
                 "gist": {
                     "authInfo": "Gist iznine sahip bir token gereklidir"
                 },
@@ -1493,6 +1463,8 @@
     "pl": {
         "yes": "Tak",
         "no": "Nie",
+        "on": "Zawsze włączone",
+        "off": "Zawsze wyłączone",
         "appearance": {
             "title": "Wygląd",
             "displayWhitelist": "{input} Wyświetlanie {whitelist} w {contextMenu}",
@@ -1514,11 +1486,7 @@
             },
             "darkMode": {
                 "label": "Tryb ciemny {input}",
-                "options": {
-                    "on": "Zawsze włączone",
-                    "off": "Zawsze wyłączone",
-                    "timed": "Czas na"
-                }
+                "timed": "Czas na"
             },
             "animationDuration": "Długość trwania początkowej animacji wykresu {input}"
         },
@@ -1553,9 +1521,7 @@
             "title": "Kopia zapasowa danych",
             "client": "Nazwa klienta {input}",
             "meta": {
-                "none": {
-                    "label": "Zawsze wyłączone"
-                }
+                "none": {}
             },
             "label": {
                 "endpoint": "Adres punktu końcowego {info} {input}",

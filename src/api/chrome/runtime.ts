@@ -8,6 +8,10 @@ export function getRuntimeName(): string {
     return chrome.runtime.getManifest().name
 }
 
+export function getIconUrl(): string {
+    return getUrl('static/images/icon.png')
+}
+
 /**
  * Fix proxy data failed to serialized in Firefox
  */

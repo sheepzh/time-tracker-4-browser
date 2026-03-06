@@ -1,4 +1,4 @@
-import { sendMsg2Runtime } from "@api/chrome/runtime"
+import { trySendMsg2Runtime } from "@api/chrome/runtime"
 import Trend from "@app/Layout/icons/Trend"
 import { judgeVerificationRequired, processVerification } from "@app/util/limit"
 import { TAG_NAME } from "@cs/limit/element"
@@ -55,7 +55,7 @@ const _default = defineComponent(() => {
                 round
                 icon={Trend}
                 type="success"
-                onClick={() => sendMsg2Runtime('cs.openAnalysis')}
+                onClick={() => trySendMsg2Runtime('cs.openAnalysis')}
             >
                 {t(msg => msg.menu.siteAnalysis)}
             </ElButton>
@@ -68,11 +68,7 @@ const _default = defineComponent(() => {
             >
                 {t(msg => msg.modal.more5Minutes)}
             </ElButton>
-            <ElButton
-                round
-                icon={Timer}
-                onClick={() => sendMsg2Runtime('cs.openLimit')}
-            >
+            <ElButton round icon={Timer} onClick={() => trySendMsg2Runtime('cs.openLimit')}>
                 {t(msg => msg.modal.ruleDetail)}
             </ElButton>
         </Flex>

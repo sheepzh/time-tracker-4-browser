@@ -184,12 +184,37 @@ declare namespace timer.option {
         chartDecal: boolean
     }
 
+    type NotificationOption = {
+        /**
+         * Notification cycle: none, daily, or weekly
+         */
+        notificationCycle: timer.notification.Cycle
+        /**
+         * Offset time in minutes relative to the start of the cycle
+         */
+        notificationOffset: number
+        /**
+         * Notification method: browser or callback
+         */
+        notificationMethod: timer.notification.Method
+        /**
+         * HTTP callback endpoint URL
+         */
+        notificationEndpoint?: string
+        /**
+         * Auth token for HTTP callback (optional)
+         */
+        notificationAuthToken?: string
+    }
+
     type AllOption =
         & AppearanceOption
         & TrackingOption
         & LimitOption
         & AccessibilityOption
         & BackupOption
+        & NotificationOption
+
     /**
      * @since 0.8.0
      */

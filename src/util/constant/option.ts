@@ -69,9 +69,18 @@ export function defaultAccessibility(): timer.option.AccessibilityOption {
     }
 }
 
+export function defaultNotification(): timer.option.NotificationOption {
+    return {
+        notificationCycle: 'none',
+        notificationMethod: 'browser',
+        notificationOffset: 0,
+    }
+}
+
 export type DefaultOption =
     & AppearanceRequired & TrackingRequired & LimitRequired
     & timer.option.BackupOption & timer.option.AccessibilityOption
+    & timer.option.NotificationOption
 
 export function defaultOption(): DefaultOption {
     return {
@@ -80,5 +89,6 @@ export function defaultOption(): DefaultOption {
         ...defaultBackup(),
         ...defaultLimit(),
         ...defaultAccessibility(),
+        ...defaultNotification(),
     }
 }

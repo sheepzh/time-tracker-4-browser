@@ -16,11 +16,9 @@ import { defaultAppearance } from "@util/constant/option"
 import { toggle } from "@util/dark-mode"
 import { ElColorPicker, ElMessageBox, ElSelect, ElSlider, ElSwitch, ElTag, type TagProps } from "element-plus"
 import { computed, defineComponent, type StyleValue } from "vue"
-import { type OptionInstance } from "../../common"
+import { OptionItem, OptionLines, OptionTag } from '../../components'
 import { useOption } from "../../useOption"
-import OptionItem from '../OptionItem'
-import OptionLines from '../OptionLines'
-import OptionTag from '../OptionTag'
+import { CategoryInstance } from '../types'
 import DarkModeInput from "./DarkModeInput"
 
 const FOLLOW_BROWSER: I18nKey = msg => msg.option.followBrowser
@@ -68,7 +66,7 @@ const _default = defineComponent((_props, ctx) => {
             handleSidePanelChange(DEFAULT_SIDE_PANEL_ENABLED)
             copy(option, defaultAppearance())
         }
-    } satisfies OptionInstance)
+    } satisfies CategoryInstance)
 
     const handleLocaleChange = (newVal: timer.option.LocaleOption) => {
         option.locale = newVal

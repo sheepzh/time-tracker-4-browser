@@ -47,22 +47,18 @@ export const menuGroups = (): MenuGroup[] => [{
         title: msg => msg.menu.dashboard,
         route: '/data/dashboard',
         icon: Stopwatch,
-        mobile: true,
     }, {
         title: msg => msg.menu.dataReport,
         route: '/data/report',
         icon: Table,
-        mobile: true,
     }, {
         title: msg => msg.menu.siteAnalysis,
         route: ANALYSIS_ROUTE,
         icon: Trend,
-        mobile: true,
     }, {
         title: msg => msg.menu.dataClear,
         route: '/data/manage',
         icon: Database,
-        mobile: true,
     }]
 }, {
     title: msg => msg.menu.behavior,
@@ -72,12 +68,10 @@ export const menuGroups = (): MenuGroup[] => [{
         title: msg => msg.menu.habit,
         route: '/behavior/habit',
         icon: Aim,
-        mobile: true,
     }, {
         title: msg => msg.menu.limit,
         route: '/behavior/limit',
         icon: Timer,
-        mobile: true,
     }]
 }, {
     title: msg => msg.menu.additional,
@@ -86,20 +80,22 @@ export const menuGroups = (): MenuGroup[] => [{
     children: [{
         title: msg => msg.menu.siteManage,
         route: '/additional/site-manage',
-        icon: Website
+        icon: Website,
+        mobile: false,
     }, {
         title: msg => msg.menu.whitelist,
         route: '/additional/whitelist',
-        icon: Whitelist
+        icon: Whitelist,
+        mobile: false,
     }, {
         title: msg => msg.menu.mergeRule,
         route: MERGE_ROUTE,
-        icon: Rank
+        icon: Rank,
+        mobile: false,
     }, {
         title: msg => msg.base.option,
         route: '/additional/option',
         icon: SetUp,
-        mobile: true,
     }]
 }, {
     title: msg => msg.menu.other,
@@ -110,16 +106,17 @@ export const menuGroups = (): MenuGroup[] => [{
         href: getGuidePageUrl(),
         icon: Memo,
         index: '_guide',
+        mobile: false,
     }, {
         title: msg => msg.menu.helpUs,
         route: '/other/help',
         icon: HelpFilled,
+        mobile: false,
     }, {
         title: msg => msg.menu.about,
         route: '/other/about',
         icon: About,
-        mobile: true,
     }]
 }]
 
-export const navMenus = (): MenuItem[] => menuGroups().flatMap(g => g.children || []).filter(m => m.mobile)
+export const navMenus = (): MenuItem[] => menuGroups().flatMap(g => g.children || []).filter(({ mobile = true }) => mobile)

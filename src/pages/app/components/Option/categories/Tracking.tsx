@@ -16,12 +16,9 @@ import { defaultTracking } from "@util/constant/option"
 import { MILL_PER_SECOND } from "@util/time"
 import { ElMessage, ElMessageBox, ElSelect, ElSwitch, ElTimePicker, ElTooltip } from "element-plus"
 import { computed, defineComponent } from "vue"
-import { type OptionInstance } from "../common"
+import { OptionItem, OptionLines, OptionTag, OptionTooltip } from '../components'
 import { useOption } from "../useOption"
-import OptionItem from "./OptionItem"
-import OptionLines from './OptionLines'
-import OptionTag from './OptionTag'
-import OptionTooltip from './OptionTooltip'
+import type { CategoryInstance } from './types'
 
 const ALL_STORAGES: Record<timer.option.StorageType, string> = {
     classic: 'chrome.storage.local',
@@ -61,7 +58,7 @@ const _default = defineComponent((_props, ctx) => {
         option.autoPauseInterval = oldInterval
         option.storage = oldStorage
     }
-    ctx.expose({ reset } satisfies OptionInstance)
+    ctx.expose({ reset } satisfies CategoryInstance)
 
     const { refresh: changeStorageType, loading: storageMigrating } = useManualRequest(async (type: timer.option.StorageType) => {
         await immigration.migrateStorage(type)

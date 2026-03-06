@@ -55,7 +55,7 @@ const _default = defineComponent<{ type: timer.backup.Type }>(props => {
 
     return () => <>
         <ElDivider />
-        <Flex gap={12}>
+        <Flex gap={12} wrap>
             <ElButton type="primary" icon={Operation} onClick={handleTest}>
                 {t(msg => msg.button.test)}
             </ElButton>

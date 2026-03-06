@@ -1,4 +1,4 @@
-import { sendMsg2Runtime } from "@api/chrome/runtime"
+import { trySendMsg2Runtime } from "@api/chrome/runtime"
 import { hasDailyLimited, hasWeeklyLimited, matches } from "@util/limit"
 import { type LimitReason, type ModalContext, type Processor } from "../common"
 
@@ -55,7 +55,7 @@ class MessageAdaptor implements Processor {
 
     async initRules(): Promise<void> {
         this.context.modal?.removeReasonsByType?.('DAILY', 'WEEKLY')
-        const limitedRules = await sendMsg2Runtime<string, timer.limit.Item[]>('cs.getLimitedRules', this.context.url)
+        const limitedRules = await trySendMsg2Runtime<string, timer.limit.Item[]>('cs.getLimitedRules', this.context.url)
 
         limitedRules
             ?.flatMap?.(cvtItem2AddReason)

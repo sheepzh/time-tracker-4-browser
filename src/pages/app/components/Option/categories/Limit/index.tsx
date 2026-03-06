@@ -12,10 +12,9 @@ import { locale } from '@i18n'
 import { defaultLimit } from "@util/constant/option"
 import { ElButton, ElInput, ElInputNumber, ElMessage, ElMessageBox, ElSelect, ElSwitch, useNamespace } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
-import { type OptionInstance } from "../../common"
+import { OptionItem, OptionLines } from '../../components'
 import { useOption } from "../../useOption"
-import OptionItem from "../OptionItem"
-import OptionLines from '../OptionLines'
+import type { CategoryInstance } from '../types'
 import { usePswEdit } from "./usePswEdit"
 import { useVerify } from "./useVerify"
 
@@ -90,7 +89,7 @@ const _default = defineComponent((_, ctx) => {
 
     ctx.expose({
         reset: () => verify().then(() => reset(option)).catch(() => { })
-    } satisfies OptionInstance)
+    } satisfies CategoryInstance)
 
     const handleLevelChange = async (val: timer.limit.RestrictionLevel) => {
         try {
