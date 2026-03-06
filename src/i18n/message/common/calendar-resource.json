@@ -16,6 +16,7 @@
             "everyday": "每天",
             "thisWeek": "本周",
             "thisMonth": "本月",
+            "lastWeek": "上周",
             "lastDays": "最近{n}天",
             "tillYesterday": "截至昨天",
             "tillDaysAgo": "截至{n}天前",
