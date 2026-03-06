@@ -114,6 +114,22 @@
             "title": "无障碍功能",
             "chartDecal": "{input} 是否显示图表的贴花图案"
         },
+        "notification": {
+            "title": "消息推送",
+            "cycle": {
+                "label": "消息推送周期 {input}",
+                "daily": "每天",
+                "weekly": "每周"
+            },
+            "method": {
+                "label": "消息推送方式 {input}",
+                "browser": "浏览器通知",
+                "callback": {
+                    "label": "HTTP 回调",
+                    "url": "回调 URL {input}"
+                }
+            }
+        },
         "resetButton": "恢复默认",
         "resetSuccess": "成功重置为默认值",
         "exportButton": "导出设置",
@@ -459,7 +475,6 @@
             "type": "バックアップ方法 {input}",
             "client": "クライアント名 {input}",
             "meta": {
-                "none": {},
                 "gist": {
                     "authInfo": "少なくとも gist 権限を持つトークンが 1 つ必要です"
                 },
@@ -584,7 +599,6 @@
             "type": "Tipo remoto {input}",
             "client": "Nome do cliente {input}",
             "meta": {
-                "none": {},
                 "gist": {
                     "authInfo": "Necessário token com permissão gist"
                 },
@@ -707,7 +721,6 @@
             "type": "Тип резервного копіювання {input}",
             "client": "Назва клієнта {input}",
             "meta": {
-                "none": {},
                 "gist": {
                     "authInfo": "Потрібно вказати токен для доступу gist"
                 },
@@ -830,7 +843,6 @@
             "type": "Tipo remoto {input}",
             "client": "Nombre del cliente {input}",
             "meta": {
-                "none": {},
                 "gist": {
                     "authInfo": "Se requiere un token con al menos los permisos esenciales"
                 },
@@ -906,12 +918,7 @@
                 "info": "Die Anzahl der Besuche der aktuellen Website heute"
             },
             "darkMode": {
-                "label": "Dunkler Modus {input}",
-                "options": {
-                    "on": "Immer an",
-                    "off": "Immer aus",
-                    "timed": "Zeitgesteuert"
-                }
+                "label": "Dunkler Modus {input}"
             },
             "animationDuration": "Die Dauer der ersten Animation des Diagramms {input}"
         },
@@ -955,7 +962,6 @@
             "type": "Remote Typ {input}",
             "client": "Kundenname {input}",
             "meta": {
-                "none": {},
                 "gist": {
                     "authInfo": "Ein Token mit mindestens gist Berechtigung ist erforderlich"
                 },
@@ -1080,7 +1086,6 @@
             "type": "Type distant {input}",
             "client": "Nom du client {input}",
             "meta": {
-                "none": {},
                 "gist": {
                     "authInfo": "Un jeton avec au moins une permission de gist est requis"
                 },
@@ -1281,7 +1286,6 @@
             "type": "نوع الربط الخارجي {input}",
             "client": "اسم العميل {input}",
             "meta": {
-                "none": {},
                 "gist": {
                     "authInfo": "مطلوب رمز وصول واحد على الأقل مع صلاحية Gist"
                 },
@@ -1408,7 +1412,6 @@
             "type": "Uzaktan yedekleme tipi {input}",
             "client": "Uygulama adı {input}",
             "meta": {
-                "none": {},
                 "gist": {
                     "authInfo": "Gist iznine sahip bir token gereklidir"
                 },
@@ -1520,9 +1523,6 @@
         "backup": {
             "title": "Kopia zapasowa danych",
             "client": "Nazwa klienta {input}",
-            "meta": {
-                "none": {}
-            },
             "label": {
                 "endpoint": "Adres punktu końcowego {info} {input}",
                 "account": "Nazwa użytkownika {input}",
