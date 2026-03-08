@@ -5,6 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
+import FIFOCache from '@util/fifo-cache'
 import { isIpAndPort, judgeVirtualFast } from "@util/pattern"
 import { get } from "@util/psl"
 
@@ -58,7 +59,7 @@ export default class CustomizedHostMergeRuler {
 
     private regulars: RegRuleItem[] = []
 
-    private cache: Record<string, string> = {}
+    private cache: FIFOCache<string> = new FIFOCache(500)
 
     constructor(rules: timer.merge.Rule[]) {
         rules.map(item => convert(item))
@@ -68,9 +69,10 @@ export default class CustomizedHostMergeRuler {
     }
 
     merge(origin: string): string {
-        let result = this.cache[origin]
+        let result = this.cache.get(origin)
         if (result) return result
-        result = this.cache[origin] = this.mergeInner(origin)
+        result = this.mergeInner(origin)
+        this.cache.set(origin, result)
         return result
     }
 

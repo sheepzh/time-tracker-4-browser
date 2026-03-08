@@ -41,6 +41,10 @@ class FIFOCache<T> {
         }
     }
 
+    get(origin: string): T | undefined {
+        return this.map[origin]
+    }
+
     async getOrSupply(key: string, supplier: () => PromiseLike<T>): Promise<T> {
         const exist = this.map[key]
         if (exist) {
