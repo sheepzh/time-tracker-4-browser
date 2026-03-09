@@ -119,9 +119,11 @@
     "pl": {
         "addConfirmMsg": "{url} zostanie dodany do whitelisty.",
         "removeConfirmMsg": "{url} zostanie usunięty z whitelisty.",
+        "duplicateMsg": "Duplikat",
         "infoAlertTitle": "Na tej stronie możesz dodawać strony do whitelisty",
         "infoAlert0": "Strony znajdujące się na whiteliście nie będą liczone",
         "infoAlert1": "Strony znajdujące się na whiteliście nie będą limitowane",
+        "infoAlert2": "Możesz użyć symboli wieloznacznych(*) do dopasowania wielu witryn, takich jak *.przykład.com/**, i użyć + jako prefiks do wykluczenia witryn, takich jak +potrzebny.przykład.com/**",
         "errorInput": "Niepoprawny URL strony"
     }
 }

@@ -212,5 +212,20 @@
             "importWholeData": "İçe aktar",
             "importOtherData": "Uzantılardan içe aktar"
         }
+    },
+    "pl": {
+        "date": "Data",
+        "host": "Domena",
+        "group": "Grupa zakładek",
+        "focus": "Czas trwania",
+        "run": "Czas pracy",
+        "time": "Liczba wizyt",
+        "operation": {
+            "add2Whitelist": "Whitelista",
+            "analysis": "Analizuj",
+            "exportWholeData": "Eksportuj",
+            "importWholeData": "Importuj",
+            "importOtherData": "Importuj z rozszerzenia"
+        }
     }
 }

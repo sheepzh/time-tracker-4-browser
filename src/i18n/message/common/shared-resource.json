@@ -177,5 +177,20 @@
         "cate": {
             "notSet": "Ayarlanmadı"
         }
+    },
+    "pl": {
+        "merge": {
+            "mergeBy": "Połącz przez",
+            "mergeMethod": {
+                "date": "Data",
+                "domain": "Adres URL",
+                "cate": "Kategoria",
+                "group": "Grupa zakładek",
+                "notMerge": "Nie scalaj"
+            }
+        },
+        "cate": {
+            "notSet": "Nie ustawiono"
+        }
     }
 }

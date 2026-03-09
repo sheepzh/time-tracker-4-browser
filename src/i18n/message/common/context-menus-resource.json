@@ -58,5 +58,10 @@
         "add2Whitelist": "{host} adresini beyaz listeye ekle",
         "removeFromWhitelist": "{host} adresini beyaz listeden çıkart",
         "feedbackPage": "Sorunlar"
+    },
+    "pl": {
+        "add2Whitelist": "Dodaj {host} do Whitelisty",
+        "removeFromWhitelist": "Usuń {host} z Whitelisty",
+        "feedbackPage": "Zgłoszenia"
     }
 }

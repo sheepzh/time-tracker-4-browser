@@ -38,6 +38,7 @@
         "donutChart": "Affichés sous forme de graphiques en anneau"
     },
     "ru": {
+        "rating": "Отправить оценку",
         "showSiteName": "Отобразить имя сайта",
         "showTopN": "Отображать заголовок {n}"
     },
@@ -47,5 +48,9 @@
         "showSiteName": "Site adını göster",
         "showTopN": "En iyi {n} göster",
         "donutChart": "Halka grafik olarak göster"
+    },
+    "pl": {
+        "rating": "Prześlij ocenę",
+        "showSiteName": "Wyświetl nazwę witryny"
     }
 }

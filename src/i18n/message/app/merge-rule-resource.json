@@ -240,8 +240,10 @@
         "infoAlert2": "Scalona witryna może być wypełniona określoną witryną, liczbą lub zostawiona pusta",
         "infoAlert3": "Liczba oznacza poziom scalonej witryny. Na przykład istnieje reguła '*.*.edu.cn >>> 3', a następnie 'www.hust.edu.cn' zostanie połączona z 'hust.edu.cn'",
         "infoAlert4": "Puste oznacza, że oryginalna strona nie zostanie połączona",
+        "infoAlert5": "Jeśli żadna reguła nie jest dopasowana, będzie domyślnie przed {psl}",
         "tagResult": {
-            "blank": "Nie scalaj"
+            "blank": "Nie scalaj",
+            "level": "Zachowaj poziom {level}"
         }
     }
 }

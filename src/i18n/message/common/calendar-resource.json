@@ -276,5 +276,27 @@
             "tillDaysAgo": "{n} gün önce",
             "allTime": "Tüm zamanlar"
         }
+    },
+    "pl": {
+        "weekDays": "Pn|Wt|Śr|Cz|Pt|Sb|Nd",
+        "months": "Sty|Lut|Mar|Kwi|Maj|Cze|Lip|Sie|Wrz|Paź|Lis|Gru",
+        "dateFormat": "{m}/{d}/{y}",
+        "simpleTimeFormat": "{m}/{d} {h}:{i}",
+        "label": {
+            "startDate": "Data rozpoczęcia",
+            "endDate": "Data zakończenia"
+        },
+        "range": {
+            "today": "Dzisiaj",
+            "yesterday": "Wczoraj",
+            "everyday": "Codziennie",
+            "thisWeek": "W tym tygodniu",
+            "thisMonth": "W tym miesiącu",
+            "lastWeek": "W zeszłym tygodniu",
+            "lastDays": "W ciągu ostatnich {n} dni",
+            "tillYesterday": "Wczoraj",
+            "tillDaysAgo": "Przez {n} dni temu",
+            "allTime": "Od początku"
+        }
     }
 }

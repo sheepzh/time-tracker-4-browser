@@ -209,6 +209,7 @@
     },
     "ru": {
         "create": "Создать",
+        "add": "Добавить",
         "delete": "Удалить",
         "batchDelete": "Массовое удаление",
         "modify": "Редактировать",
@@ -224,6 +225,7 @@
         "operation": "Действия",
         "configuration": "Настройки",
         "clear": "Очистить",
+        "enable": "Включить",
         "batchEnable": "Массовое включение",
         "batchDisable": "Массовое отключение"
     },
@@ -272,5 +274,26 @@
         "batchDisable": "Toplu Devre Dışı Bırakma",
         "collapse": "Daralt",
         "expand": "Genişlet"
+    },
+    "pl": {
+        "create": "Nowe",
+        "add": "Dodaj",
+        "delete": "Usuń",
+        "batchDelete": "Usuń wiele",
+        "modify": "Edytuj",
+        "save": "Zapisz",
+        "test": "Test",
+        "paste": "Wklej",
+        "confirm": "Potwierdź",
+        "cancel": "Anuluj",
+        "previous": "Wstecz",
+        "next": "Dalej",
+        "okey": "Ok",
+        "operation": "Działania",
+        "configuration": "Ustawienia",
+        "clear": "Wyczyść",
+        "enable": "Włącz",
+        "collapse": "Zwiń",
+        "expand": "Rozwiń"
     }
 }

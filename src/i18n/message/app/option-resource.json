@@ -1166,43 +1166,101 @@
                 "label": "Тёмный режим {input}",
                 "timed": "По времени"
             },
-            "animationDuration": "Длительность начальной анимации графика {input}"
+            "animationDuration": "Длительность начальной анимации графика {input}",
+            "sidePanel": "{input} включает ли боковую панель"
         },
         "tracking": {
             "title": "Статистика",
             "autoPauseTrack": "{input} Приостановить отслеживание, если нет активности {info} в течение {maxTime}",
+            "noActivityInfo": "Мышь и клавиатура неактивны, не в полноэкранном режиме, и нет воспроизводимого звука.",
+            "countLocalFiles": "{input} Отслеживать ли время, когда браущер читает {localFileTime} {info}",
             "localFilesInfo": "Поддержка типов файлов, таких как PDF, изображения, txt и json.",
             "countTabGroup": "{input} Отслеживать время для групп вкладок {info}",
-            "weekStartAsNormal": "Как обычно (Воскресенье)"
+            "tabGroupInfo": "При удалении группы вкладок данные также будут удалены.",
+            "tabGroupsPermGrant": "Эта функция требует соответствующих разрешений",
+            "fileAccessDisabled": "Доступ к URL-адресам файлов в настоящее время запрещен. Пожалуйста, сначала включите его на странице управления",
+            "weekStart": "Первый день каждой недели {input}",
+            "weekStartAsNormal": "Как обычно (Воскресенье)",
+            "storage": "Сохранять данные отслеживания в {input}",
+            "storageConfirm": "Вы хотите изменить тип хранилища на {type}"
         },
         "limit": {
+            "prompt": "Шаблон, отображаемый при ограниченных {input}",
+            "reminder": "{input} Напоминать за {minInput} минут до окончания времени",
             "level": {
+                "label": "Как разблокировать при ограничении {input}",
+                "nothing": "Разрешить прямую разблокировку на странице администратора",
+                "password": "Необходимо ввести пароль для разблокировки",
+                "verification": "Необходимо ввести проверочный код для разблокировки",
+                "passwordLabel": "Пароль для разблокировки {input}",
+                "verificationLabel": "Сложность проверочного кода {input}",
                 "verificationDifficulty": {
                     "easy": "Лёгкий",
-                    "hard": "Сложный"
-                }
+                    "hard": "Сложный",
+                    "disgusting": "Отвратительный"
+                },
+                "strict": "Не разрешать разблокировку при любых обстоятельствах",
+                "strictTitle": "Подтверждение операции",
+                "strictContent": "При выборе этой опции, если сайт вызывает ежедневное ограничение, вам не будет разрешено разблокировать его вручную, кроме ожидания, до следующего дня. Если правила настроены неправильно, они могут очень затруднять ваши процедуры!",
+                "pswFormLabel": "Пароль",
+                "pswFormAgain": "Введите повторно"
             }
         },
         "backup": {
             "title": "Резервное копирование данных",
+            "type": "Дистанционный тип {input}",
+            "client": "Наименование клиента {input}",
+            "meta": {
+                "gist": {
+                    "authInfo": "Требуется один токен с как минимум разрешением на создание фрагментов кода (gist permission)"
+                },
+                "obsidian_local_rest_api": {
+                    "endpointInfo": "Доступен только HTTP, так как CORS не может быть настроен для страниц расширений"
+                }
+            },
             "label": {
+                "endpoint": "Конечный адрес {info} {input}",
+                "path": "Путь к директории {input}",
                 "account": "Имя пользователя {input}",
                 "password": "Пароль {input}"
             },
             "operation": "Резервное копирование",
             "download": {
-                "btn": "Скачать"
+                "btn": "Скачать",
+                "willDownload": "Для скачивания",
+                "confirmTip": "{size} фрагментов данных из [{clientName}] будут загружены"
+            },
+            "clear": {
+                "btn": "Очистить",
+                "confirmTip": "{rowCount} фрагментов данных для {hostCount} сайтов, отслеживаемых [{clientName}] будут удалены!"
             },
             "confirmStep": "Подтвердить данные",
             "clientTable": {
                 "selectTip": "Выбрать клиент",
+                "dataRange": "Диапазон данных",
                 "notSelected": "Клиент не выбран",
                 "current": "Текущий"
+            },
+            "lastTimeTip": "Время последнего резервного копирования: {lastTime}",
+            "auto": {
+                "label": "Включить ли автоматическое резервное копирование?",
+                "interval": "и запускать каждые {input} минут"
             }
         },
         "accessibility": {
             "title": "Специальные возможности",
             "chartDecal": "{input} Отображать клетки на графике"
+        },
+        "notification": {
+            "title": "Уведомление",
+            "cycle": {
+                "label": "Цикл уведомлений {input}",
+                "daily": "Ежедневно",
+                "weekly": "Еженедельно"
+            },
+            "method": {
+                "label": "Метод оповещения {input}"
+            }
         },
         "resetButton": "Сброс",
         "resetSuccess": "Сброс к настройкам по умолчанию выполнен успешно!",
@@ -1496,10 +1554,13 @@
         "tracking": {
             "title": "Monitorowanie",
             "autoPauseTrack": "{input} Wstrzymaj monitorowanie, jeżeli nie wykryto aktywności {info} przez {maxTime}",
+            "noActivityInfo": "Mysz i klawiatura są nieaktywne, nie są w trybie pełnoekranowym i nie ma dźwięku",
             "localFileTime": "pliki lokalne",
             "tabGroupInfo": "Po usunięciu grupy tagów, dane również zostaną usunięte.",
             "tabGroupsPermGrant": "Ta funkcja wymaga odpowiednich uprawnień",
-            "weekStart": "Pierwszy dzień tygodnia {input}"
+            "weekStart": "Pierwszy dzień tygodnia {input}",
+            "weekStartAsNormal": "Normalnie",
+            "storage": "Przechowuj dane śledzenia w {input}"
         },
         "limit": {
             "reminder": "Przypomnienie {input} {minInput} minut(y) przed limitem czasu",
@@ -1517,12 +1578,18 @@
                 "strict": "Nie zezwalaj na odblokowanie mimo to",
                 "strictTitle": "Potwierdzenie operacji",
                 "strictContent": "Gdy wybierzesz tę opcję, jeśli witryna osiągnie dzienny limit, nie będzie wolno jej odblokować ręcznie inaczej, niż czekając do następnego dnia. Jeśli reguły nie są poprawnie skonfigurowane, mogą one skutecznie utrudnić twoją rutynę!",
+                "pswFormLabel": "Hasło",
                 "pswFormAgain": "Wprowadź ponownie"
             }
         },
         "backup": {
             "title": "Kopia zapasowa danych",
             "client": "Nazwa klienta {input}",
+            "meta": {
+                "obsidian_local_rest_api": {
+                    "endpointInfo": "Tylko HTTP jest dostępny, ponieważ CORS nie może być skonfigurowany dla stron rozszerzenia"
+                }
+            },
             "label": {
                 "endpoint": "Adres punktu końcowego {info} {input}",
                 "account": "Nazwa użytkownika {input}",
@@ -1551,6 +1618,22 @@
         },
         "accessibility": {
             "title": "Ułatwienia dostępu"
+        },
+        "notification": {
+            "title": "Powiadomienie",
+            "cycle": {
+                "label": "Cykl powiadomień {input}",
+                "daily": "Codziennie",
+                "weekly": "Co tydzień"
+            },
+            "method": {
+                "label": "Metoda powiadomienia {input}",
+                "browser": "Przeglądarka",
+                "callback": {
+                    "label": "HTTP Callback",
+                    "url": "Callback URL {input}"
+                }
+            }
         },
         "resetButton": "Reset",
         "resetSuccess": "Pomyślnie przywrócono ustawienia domyślne!",

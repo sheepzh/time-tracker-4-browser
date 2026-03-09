@@ -250,5 +250,22 @@
         "ranking": {
             "includingCount": "{siteCount} site dahil"
         }
+    },
+    "pl": {
+        "percentage": {
+            "title": {
+                "today": "Dzisiejsze dane",
+                "yesterday": "Dane wczorajsze",
+                "thisWeek": "Dane w tym tygodniu",
+                "thisMonth": "Dane z tego miesiąca",
+                "lastDays": "Ostatnie dane z {n} dnia/i",
+                "allTime": "Wszystkie dane"
+            },
+            "saveAsImageTitle": "Podsumowanie",
+            "totalTime": "Ogółem {totalTime}"
+        },
+        "ranking": {
+            "includingCount": "Wliczając {siteCount} stron"
+        }
     }
 }
