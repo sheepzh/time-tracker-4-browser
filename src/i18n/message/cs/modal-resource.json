@@ -70,5 +70,11 @@
         "more5Minutes": "5 dakika daha",
         "browsingTime": "Gezinme süresi",
         "ruleDetail": "Kural Detayları"
+    },
+    "pl": {
+        "defaultPrompt": "Ta strona została zablokowana!",
+        "more5Minutes": "jeszcze 5 minut",
+        "browsingTime": "Czas przeglądania",
+        "ruleDetail": "Szczegóły zasad"
     }
 }

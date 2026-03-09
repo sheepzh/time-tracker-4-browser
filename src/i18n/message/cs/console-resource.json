@@ -48,6 +48,7 @@
         "closeAlert": "Bu bildirimleri [{appName}] ayarlarından devre dışı bırakabilirsiniz!"
     },
     "pl": {
+        "consoleLog": "Dziś otworzyłeś {host} {time} raz(y) i spędziłeś {focus} przeglądając go.",
         "closeAlert": "Możesz wyłączyć te powiadomienia w ustawieniach [{appName}]!"
     }
 }

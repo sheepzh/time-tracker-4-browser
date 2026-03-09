@@ -94,5 +94,13 @@
             "pic": "Resimler",
             "txt": "Metin"
         }
+    },
+    "pl": {
+        "localFile": {
+            "json": "JSON",
+            "pdf": "PDF",
+            "pic": "Zdjęcia",
+            "txt": "Tekst"
+        }
     }
 }

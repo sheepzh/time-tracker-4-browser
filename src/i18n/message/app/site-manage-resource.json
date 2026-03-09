@@ -408,7 +408,10 @@
             }
         },
         "cate": {
-            "removeConfirm": "Вы уверены, что хотите удалить категорию: {category}?"
+            "name": "Наименование",
+            "relatedMsg": "Эта категория была связана с {siteCount} сайтами и не может быть удалена",
+            "removeConfirm": "Вы уверены, что хотите удалить категорию: {category}?",
+            "batchChange": "Изменить категории"
         },
         "form": {
             "emptyAlias": "Введите название сайта",
@@ -509,6 +512,7 @@
     },
     "pl": {
         "deleteConfirmMsg": "{host} zostanie usunięty",
+        "genAliasConfirmMsg": "Czy automatycznie uzupełniać nazwy witryny w seriach?",
         "column": {
             "type": "Typ witryny",
             "alias": "Nazwa strony",
@@ -516,6 +520,10 @@
             "icon": "Ikona"
         },
         "type": {
+            "normal": {
+                "name": "normalny",
+                "info": "statystyki według nazwy domeny"
+            },
             "merged": {
                 "name": "scalone"
             }
@@ -531,6 +539,7 @@
             "emptyHost": "Wprowadź adres URL witryny"
         },
         "msg": {
+            "hostExistWarn": "{host} istnieje",
             "noSelected": "Nie wybrano żadnej witryny",
             "disassociatedMsg": "Czy chcesz wyczyścić kategorie wszystkich wybranych witryn?",
             "batchDeleteMsg": "Czy chcesz usunąć wszystkie wybrane witryny?"

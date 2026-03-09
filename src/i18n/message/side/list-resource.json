@@ -46,5 +46,9 @@
     "tr": {
         "searchPlaceholder": "Alan adı veya URL giriniz",
         "title": "Gezinme Analizi"
+    },
+    "pl": {
+        "searchPlaceholder": "Wprowadź domenę lub adres URL",
+        "title": "Analiza przeglądania "
     }
 }

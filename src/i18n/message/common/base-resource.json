@@ -94,5 +94,13 @@
         "option": "Seçenekler",
         "sourceCode": "Kaynak Kodu",
         "changeLog": "Sürüm Notları"
+    },
+    "pl": {
+        "sidebar": "Pasek boczny",
+        "allFunction": "Wszystkie funkcje",
+        "guidePage": "Podręcznik użytkownika",
+        "option": "Ustawienia",
+        "sourceCode": "Kod źródłowy",
+        "changeLog": "Lista Zmian"
     }
 }

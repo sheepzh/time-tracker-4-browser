@@ -251,12 +251,23 @@
     },
     "pl": {
         "exportFileName": "My_Browsing_Time",
+        "total": "Całkowita liczba wizyt: {visit}, całkowity czas trwania: {focus}",
+        "batchDelete": {
+            "noSelectedMsg": "Proszę najpierw wybrać wiersz, który chcesz usunąć z tabeli",
+            "confirmMsg": "{count} rekord/y/ów takich jak [{example}] z {date} zostaną usunięte!",
+            "confirmMsgAll": "{count} rekord/y/ów takich jak [{example}] zostaną usunięte!",
+            "confirmMsgRange": "{count} rekord/y/ów takich jak [{example}] pomiędzy {start} i {end} zostaną usunięte!"
+        },
         "remoteReading": {
+            "on": "Czytanie zdalnych kopii zapasowych",
+            "off": "Kliknij, aby przeczytać zdalne kopie zapasowe",
             "table": {
                 "client": "Nazwa klienta",
+                "localData": "Lokalne Dane",
                 "value": "Wartość",
                 "percentage": "Procent"
             }
-        }
+        },
+        "noMore": "Nie więcej"
     }
 }
