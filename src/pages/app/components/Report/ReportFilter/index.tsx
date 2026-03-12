@@ -11,8 +11,8 @@ import InputFilterItem from '@app/components/common/filter/InputFilterItem'
 import TimeFormatFilterItem from "@app/components/common/filter/TimeFormatFilterItem"
 import { t } from "@app/locale"
 import Flex from "@pages/components/Flex"
+import type { ElDatePickerShortcut } from '@pages/types'
 import { daysAgo } from "@util/time"
-import type { Shortcut } from "element-plus/es/components/date-picker-panel/src/composables/use-shortcut"
 import { defineComponent } from "vue"
 import { useReportFilter } from "../context"
 import BatchDelete from "./BatchDelete"
@@ -20,11 +20,11 @@ import DownloadFile from "./DownloadFile"
 import MergeFilterItem from "./MergeFilterItem"
 import RemoteClient from "./RemoteClient"
 
-const shortcut = (text: string, agoOfStart?: number, agoOfEnd?: number) => (
-    { text, value: daysAgo(agoOfStart ?? 0, agoOfEnd ?? 0) } satisfies Shortcut
+const shortcut = (text: string, agoOfStart?: number, agoOfEnd?: number): ElDatePickerShortcut => (
+    { text, value: daysAgo(agoOfStart ?? 0, agoOfEnd ?? 0) }
 )
 
-const dateShortcuts: Shortcut[] = [
+const dateShortcuts: ElDatePickerShortcut[] = [
     shortcut(t(msg => msg.calendar.range.today)),
     shortcut(t(msg => msg.calendar.range.yesterday), 1, 1),
     shortcut(t(msg => msg.calendar.range.lastDays, { n: 7 }), 7),

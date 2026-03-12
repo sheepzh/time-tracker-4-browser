@@ -123,6 +123,9 @@ export const useEcharts = <BizOption, EchartsOption, EW extends EchartsWrapper<B
         afterInit?.(wrapperInstance)
         !manual && refresh()
         isRef(fetch) && watch(fetch, refresh)
+
+        // The element reference perhaps change
+        watch(elRef, () => elRef.value && wrapperInstance.init(elRef.value))
     })
 
     deps && watch(deps, refresh)

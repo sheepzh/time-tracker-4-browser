@@ -12,13 +12,13 @@ import { useXsState } from '@hooks/useMediaSize'
 import { dateFormat } from "@i18n/element"
 import Flex from '@pages/components/Flex'
 import { getDatePickerIconSlots } from "@pages/element-ui/rtl"
+import type { ElDatePickerShortcut } from '@pages/types'
 import { isRtl } from '@util/document'
 import { MILL_PER_DAY } from '@util/time'
 import { type DatePickerProps, ElButton, ElDatePicker, ElText, useNamespace } from "element-plus"
-import type { Shortcut } from "element-plus/es/components/date-picker-panel/src/composables/use-shortcut"
 import { computed, defineComponent, type FunctionalComponent, type StyleValue, toRaw, toRef } from "vue"
 
-const clearShortcut = (): Shortcut => ({
+const clearShortcut = (): ElDatePickerShortcut => ({
     text: t(msg => msg.button.clear),
     value: [new Date(0), new Date(0)],
 })
@@ -29,7 +29,7 @@ type Props = ModelValue<Value> & {
     disabledDate?: (date: Date) => boolean
     startPlaceholder?: string
     endPlaceholder?: string
-    shortcuts?: Shortcut[]
+    shortcuts?: ElDatePickerShortcut[]
     clearable?: boolean
 }
 
