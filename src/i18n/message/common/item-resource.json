@@ -223,6 +223,9 @@
         "operation": {
             "add2Whitelist": "Whitelista",
             "analysis": "Analizuj",
+            "deleteConfirmMsgAll": "Wszystkie wpisy wizyt dla [{url}] zostaną usunięte",
+            "deleteConfirmMsgRange": "Sprawdź wpisy dla [{url}] pomiędzy {start} a {end} zostaną usunięte",
+            "deleteConfirmMsg": "Wpis wizyt dla [{url}] z {date} zostanie usunięty",
             "exportWholeData": "Eksportuj",
             "importWholeData": "Importuj",
             "importOtherData": "Importuj z rozszerzenia"
