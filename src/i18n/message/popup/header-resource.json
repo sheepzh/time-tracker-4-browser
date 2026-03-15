@@ -51,6 +51,8 @@
     },
     "pl": {
         "rating": "Prześlij ocenę",
-        "showSiteName": "Wyświetl nazwę witryny"
+        "showSiteName": "Wyświetl nazwę witryny",
+        "showTopN": "Wyświetl górną część {n}",
+        "donutChart": "Wyświetlane jako wykresy"
     }
 }
