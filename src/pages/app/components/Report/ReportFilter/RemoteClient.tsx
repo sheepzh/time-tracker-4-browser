@@ -8,7 +8,7 @@
 import { t } from "@app/locale"
 import { UploadFilled } from "@element-plus/icons-vue"
 import { useRequest } from "@hooks"
-import { canReadRemote } from '@service/stat-service/remote'
+import { canReadRemote } from '@api/sw/stat'
 import { ElButton, ElIcon, ElTooltip } from "element-plus"
 import { computed, defineComponent } from "vue"
 import { useReportFilter } from "../context"

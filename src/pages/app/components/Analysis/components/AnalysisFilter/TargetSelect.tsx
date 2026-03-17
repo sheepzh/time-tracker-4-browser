@@ -2,8 +2,8 @@ import { useCategory } from "@app/context"
 import { t } from "@app/locale"
 import { useDebounceState, useRequest } from "@hooks"
 import Flex from "@pages/components/Flex"
-import { selectAllSites } from "@service/site-service"
-import { listHosts } from "@service/stat-service"
+import { selectAllSites } from "@api/sw/site"
+import { listHosts } from "@api/sw/stat"
 import { CATE_NOT_SET_ID, identifySiteKey, parseSiteKeyFromIdentity, SiteMap } from "@util/site"
 import { ElSelectV2, ElTag, useNamespace } from "element-plus"
 import type { OptionType } from "element-plus/es/components/select-v2/src/select.types"
@@ -63,11 +63,11 @@ const fetchItems = async (categories: timer.site.Cate[]): Promise<[siteItems: Ta
     const siteSet = new SiteMap<timer.site.SiteInfo>()
 
     // 2.1 sites from hosts
-    const hosts = await listHosts()
+    const hosts = (await listHosts()) ?? { normal: [], merged: [], virtual: [] }
     collectHosts(hosts, siteSet)
 
     // 2.2 query sites from sites
-    const sites = await selectAllSites()
+    const sites = (await selectAllSites()) ?? []
     sites?.forEach(site => siteSet.put(site, site))
 
     const siteItems = siteSet?.map((_, site) => site)

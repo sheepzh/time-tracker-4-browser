@@ -8,11 +8,11 @@
 import { executeScript } from "@api/chrome/script"
 import { createTab } from "@api/chrome/tab"
 import { ANALYSIS_ROUTE, LIMIT_ROUTE } from "@app/router/constants"
-import optionHolder from "@service/components/option-holder"
-import limitService from "@service/limit-service"
-import { getSite } from "@service/site-service"
-import timelineThrottler from '@service/throttler/timeline-throttler'
-import whitelistHolder from "@service/whitelist/holder"
+import optionHolder from "@/background/service/components/option-holder"
+import limitService from "@/background/service/limit-service"
+import { getSite } from "@/background/service/site-service"
+import timelineThrottler from '@/background/service/throttler/timeline-throttler'
+import whitelistHolder from "@/background/service/whitelist/holder"
 import { getAppPageUrl } from "@util/constant/url"
 import { extractFileHost, extractHostname } from "@util/pattern"
 import badgeManager from "./badge-manager"

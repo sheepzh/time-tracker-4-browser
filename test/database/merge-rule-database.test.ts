@@ -1,4 +1,4 @@
-import db from "@db/merge-rule-database"
+import db from "@/background/database/merge-rule-database"
 import { mockStorage } from "../__mock__/storage"
 import { mockLegacyData } from './migratable'
 
@@ -6,12 +6,12 @@ function of(origin: string, merged?: string | number): timer.merge.Rule {
     return { origin, merged: merged || '' }
 }
 
-describe('merge-rule-database.test', () => {
+describe('merge-rule-database', () => {
     beforeAll(mockStorage)
 
     beforeEach(async () => chrome.storage.local.clear())
 
-    test('1', async () => {
+    test('add, selectAll, remove', async () => {
         let toAdd: timer.merge.Rule[] = [of('4', 2)]
         await db.add(...toAdd)
         expect((await db.selectAll())).toEqual(expect.arrayContaining(toAdd))

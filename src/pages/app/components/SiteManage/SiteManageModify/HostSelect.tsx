@@ -4,9 +4,9 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import siteDatabase from '@db/site-database'
+import siteDatabase from '@/background/database/site-database'
 import { useManualRequest } from "@hooks"
-import { listHosts } from "@service/stat-service"
+import { listHosts } from "@api/sw/stat"
 import { MERGED_HOST, ALL_HOSTS as REMAIN_HOSTS } from "@util/constant/remain-host"
 import { isValidVirtualHost, judgeVirtualFast } from "@util/pattern"
 import { ElOption, ElSelect, ElTag } from "element-plus"
@@ -32,7 +32,8 @@ function cleanQuery(query: string) {
 async function handleRemoteSearch(query: string): Promise<_OptionInfo[]> {
     query = cleanQuery(query)
     if (!query) return []
-    const { normal, merged } = await listHosts(query)
+    const hosts = (await listHosts(query)) ?? { normal: [], merged: [], virtual: [] }
+    const { normal, merged } = hosts
     const allAlias: timer.site.SiteKey[] = [
         ...normal.map(host => ({ host, type: 'normal' } satisfies timer.site.SiteKey)),
         ...merged.map(host => ({ host, type: 'merged' } satisfies timer.site.SiteKey)),

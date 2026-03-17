@@ -1,4 +1,4 @@
-import itemService from '@service/item-service'
+import itemService from '@/background/service/item-service'
 
 function handleTabGroupRemove(group: chrome.tabGroups.TabGroup) {
     itemService.deleteByGroup(group.id)

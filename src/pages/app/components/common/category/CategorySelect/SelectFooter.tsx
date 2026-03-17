@@ -3,7 +3,7 @@ import { t } from "@app/locale"
 import { Check, Close, Plus } from "@element-plus/icons-vue"
 import { useManualRequest, useState, useSwitch } from "@hooks"
 import Flex from "@pages/components/Flex"
-import cateService from "@service/cate-service"
+import { addCate } from "@api/sw/cate"
 import { stopPropagationAfter } from "@util/document"
 import { ElButton, ElForm, ElFormItem, ElInput, ElMessage } from "element-plus"
 import { defineComponent, nextTick, ref } from "vue"
@@ -14,7 +14,7 @@ const SelectFooter = defineComponent(() => {
     const [name, setName] = useState<string>()
 
     const { refresh: saveCate, loading } = useManualRequest(
-        (name: string) => cateService.add(name),
+        (name: string) => addCate(name),
         {
             onSuccess() {
                 cate.refresh()

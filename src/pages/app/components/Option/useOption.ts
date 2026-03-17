@@ -1,5 +1,5 @@
 import { useRequest } from '@hooks/useRequest'
-import optionHolder from "@service/components/option-holder"
+import { getOption, setOption } from "@api/sw/option"
 import { reactive, toRaw, watch } from "vue"
 
 type Options<T> = {
@@ -13,13 +13,13 @@ export const useOption = <T extends object = Partial<timer.option.AllOption>>(op
     const option = reactive<T>(defaultValue?.())
 
     const { loading } = useRequest(async () => {
-        const currentVal = await optionHolder.get() as T
+        const currentVal = await getOption() as T
         copy(option as T, currentVal)
     })
 
     watch(option, async () => {
         const newVal = toRaw(option) as T
-        !loading.value && await optionHolder.set(newVal)
+        !loading.value && await setOption(newVal)
         onChange?.(newVal)
     })
 

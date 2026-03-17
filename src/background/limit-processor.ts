@@ -7,7 +7,7 @@
 
 import { createTabAfterCurrent, getRightOf, listTabs, resetTabUrl, sendMsg2Tab } from "@api/chrome/tab"
 import { LIMIT_ROUTE } from "@app/router/constants"
-import limitService from "@service/limit-service"
+import limitService from "@/background/service/limit-service"
 import { getAppPageUrl } from "@util/constant/url"
 import { matches } from "@util/limit"
 import { isBrowserUrl } from "@util/pattern"

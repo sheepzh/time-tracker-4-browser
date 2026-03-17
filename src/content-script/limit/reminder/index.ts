@@ -1,4 +1,4 @@
-import optionService from "@service/option-service"
+import { isDarkMode } from "@api/sw/option"
 import { MILL_PER_MINUTE } from "@util/time"
 import { exitFullscreen, type Processor } from "../common"
 import { createComponent } from "./component"
@@ -38,7 +38,7 @@ class Reminder implements Processor {
     }
 
     async init(): Promise<void> {
-        this.darkMode = await optionService.isDarkMode()
+        this.darkMode = !!(await isDarkMode())
     }
 }
 

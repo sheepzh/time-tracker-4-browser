@@ -1,4 +1,4 @@
-import itemService from "@service/item-service"
+import itemService from "@/background/service/item-service"
 import { IS_ANDROID, IS_FIREFOX } from '@util/constant/environment'
 import { isFileUrl } from '@util/pattern'
 import type MessageDispatcher from "../message-dispatcher"

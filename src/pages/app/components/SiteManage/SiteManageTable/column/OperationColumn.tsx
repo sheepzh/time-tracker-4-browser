@@ -8,14 +8,14 @@ import PopupConfirmButton from "@app/components/common/PopupConfirmButton"
 import { t } from "@app/locale"
 import { Delete } from "@element-plus/icons-vue"
 import { useRequest } from '@hooks'
-import { removeSites } from "@service/site-service"
+import { removeSites } from "@api/sw/site"
 import { ElTableColumn, type RenderRowData } from "element-plus"
 import { defineComponent } from "vue"
 import { useSiteManageTable } from '../../useSiteManage'
 
 const OperationColumn = defineComponent<{}>(() => {
     const { refresh } = useSiteManageTable()
-    const { refresh: handleConfirm } = useRequest(removeSites, { onSuccess: refresh })
+    const { refresh: handleConfirm } = useRequest((...keys: timer.site.SiteKey[]) => removeSites(...keys), { onSuccess: refresh })
     return () => (
         <ElTableColumn
             width={150}

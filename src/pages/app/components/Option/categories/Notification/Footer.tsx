@@ -1,7 +1,7 @@
 import { t } from '@app/locale'
 import { Operation } from '@element-plus/icons-vue'
 import Flex from '@pages/components/Flex'
-import processor from '@service/notification/processor'
+import processor from '@/background/service/notification/processor'
 import { ElButton, ElDivider, ElMessage } from 'element-plus'
 import type { FunctionalComponent } from 'vue'
 

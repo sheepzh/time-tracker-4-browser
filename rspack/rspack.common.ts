@@ -7,6 +7,7 @@ import {
 import path, { join } from "path"
 import postcssRTLCSS from 'postcss-rtlcss'
 import i18nChrome from "../src/i18n/chrome"
+import { ForbidBackendInFrontendPlugin } from "./plugins/forbid-backend-in-frontend"
 import { GenerateJsonPlugin } from "./plugins/generate-json"
 
 export const MANIFEST_JSON_NAME = "manifest.json"
@@ -125,6 +126,7 @@ type Option = {
 const generateOption = ({ outputPath, manifest, mode }: Option) => {
     const plugins = [
         ...generateJsonPlugins,
+        new ForbidBackendInFrontendPlugin(),
         new GenerateJsonPlugin(MANIFEST_JSON_NAME, manifest),
         // copy static resources
         new CopyRspackPlugin({

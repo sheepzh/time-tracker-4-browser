@@ -6,7 +6,7 @@
  */
 
 import { getTab } from "@api/chrome/tab"
-import { saveAlias, saveIconUrl } from "@service/site-service"
+import { saveAlias, saveIconUrl } from "@/background/service/site-service"
 import { IS_ANDROID, IS_CHROME, IS_SAFARI } from "@util/constant/environment"
 import { extractHostname, isBrowserUrl, isHomepage } from "@util/pattern"
 import { extractSiteName } from "@util/site"

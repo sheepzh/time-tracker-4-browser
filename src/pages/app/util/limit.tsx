@@ -3,7 +3,7 @@ import { t, tN } from "@app/locale"
 import { useCountDown } from '@hooks/useCount'
 import { I18nResultItem, locale } from "@i18n"
 import { getCssVariable } from "@pages/util/style"
-import verificationProcessor from "@service/limit-service/verification/processor"
+import { verifyLimit } from "@api/sw/limit"
 import { dateMinute2Idx, hasLimited, isEnabledAndEffective } from "@util/limit"
 import { ElMessage, ElMessageBox, type ElMessageBoxOptions, type InputType, useId } from "element-plus"
 import { defineComponent, onMounted, ref, type VNode } from "vue"
@@ -89,7 +89,7 @@ const AnswerCanvas = defineComponent(((props: { text: string }) => {
  * @returns null if verification not required,
  *          or promise with resolve invoked only if verification code or password correct
  */
-export function processVerification(option: timer.option.LimitOption, context?: { appendTo: Exclude<ElMessageBoxOptions['appendTo'], string> }): Promise<void> {
+export async function processVerification(option: timer.option.LimitOption, context?: { appendTo: Exclude<ElMessageBoxOptions['appendTo'], string> }): Promise<void> {
     const { limitLevel, limitPassword, limitVerifyDifficulty } = option
     const { appendTo } = context || {}
     if (limitLevel === "strict") {
@@ -112,10 +112,10 @@ export function processVerification(option: timer.option.LimitOption, context?: 
         incorrectMessage = t(msg => msg.limit.verification.incorrectPsw)
         inputType = 'password'
     } else if (limitLevel === 'verification') {
-        const pair = verificationProcessor.generate(limitVerifyDifficulty ?? 'easy', locale)
-        const { prompt, promptParam, answer, second = 60 } = pair || {}
+        const pair = await verifyLimit(limitVerifyDifficulty ?? 'easy', locale as timer.Locale)
+        const { prompt, promptParam, answer, second = 60 } = (pair || {}) as { prompt?: (msg: any) => string; promptParam?: any; answer?: string | ((msg: any) => string); second?: number }
         countdown = second
-        answerValue = typeof answer === 'function' ? t(msg => answer(msg.limit.verification)) : answer
+        answerValue = typeof answer === 'function' ? t(msg => (answer as (msg: any) => string)(msg.limit.verification)) : answer
         incorrectMessage = t(msg => msg.limit.verification.incorrectAnswer)
         if (prompt) {
             const promptTxt = typeof prompt === 'function'

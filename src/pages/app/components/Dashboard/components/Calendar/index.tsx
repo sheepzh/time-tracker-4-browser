@@ -12,8 +12,8 @@ import { REPORT_ROUTE } from "@app/router/constants"
 import { useRequest } from "@hooks"
 import { useEcharts } from "@hooks/useEcharts"
 import Flex from "@pages/components/Flex"
-import weekHelper from "@service/components/week-helper"
-import { selectSite } from '@service/stat-service'
+import weekHelper from "@/background/service/components/week-helper"
+import { selectSite } from '@api/sw/stat'
 import { groupBy, sum } from "@util/array"
 import { getAppPageUrl } from "@util/constant/url"
 import { formatTimeYMD, MILL_PER_DAY, MILL_PER_HOUR } from "@util/time"
@@ -40,12 +40,12 @@ const fetchData = async (): Promise<Result> => {
     const endTime = new Date()
     const yearAgo = new Date(endTime.getTime() - MILL_PER_DAY * 365)
     const [startTime] = await weekHelper.getWeekDate(yearAgo)
-    const items = await selectSite({ date: [startTime, endTime], sortKey: 'date' })
+    const items = (await selectSite({ date: [startTime, endTime], sortKey: 'date' })) ?? []
     const value = groupBy(
         items,
         i => i.date,
         list => sum(list?.map(i => i.focus ?? 0))
-    )
+    ) as { [date: string]: number }
     return { value, startTime, endTime, yearAgo }
 }
 

@@ -9,7 +9,7 @@ import { isAllowedFileSchemeAccess, sendMsg2Runtime } from "@api/chrome/runtime"
 import { t } from "@app/locale"
 import { useManualRequest, useRequest } from "@hooks"
 import { locale } from "@i18n"
-import immigration from '@service/components/immigration'
+import immigration from '@/background/service/components/immigration'
 import { rotate } from "@util/array"
 import { IS_ANDROID, IS_FIREFOX } from "@util/constant/environment"
 import { defaultTracking } from "@util/constant/option"

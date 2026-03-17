@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { fillExist } from "@service/components/import-processor"
-import { AUTHOR_EMAIL } from "@src/package"
+import { fillExist } from "@/background/service/components/import-processor"
+import { AUTHOR_EMAIL } from "@/package"
 import { IS_WINDOWS } from "@util/constant/environment"
 import { extractHostname, isBrowserUrl } from "@util/pattern"
 import { formatTimeYMD, MILL_PER_SECOND } from "@util/time"

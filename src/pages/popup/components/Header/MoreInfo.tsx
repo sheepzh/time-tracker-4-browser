@@ -5,7 +5,7 @@ import Flex from '@pages/components/Flex'
 import { Coffee, GitHub, Heart } from '@pages/util/icon'
 import { getColor, type ColorVariant } from '@pages/util/style'
 import { t } from '@popup/locale'
-import { saveFlag } from "@service/meta-service"
+import { saveFlag } from "@api/sw/meta"
 import { BUY_ME_A_COFFEE_PAGE, CHANGE_LOG_PAGE, DONATION_PAGE, REVIEW_PAGE, SOURCE_CODE_PAGE } from "@util/constant/url"
 import { ElDropdown, ElDropdownItem, ElDropdownMenu, ElIcon } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"

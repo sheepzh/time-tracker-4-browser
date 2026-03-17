@@ -12,7 +12,7 @@ import { Delete, Open, Plus, Stopwatch } from "@element-plus/icons-vue"
 import { useRequest } from "@hooks"
 import { useTabGroups } from "@hooks/useTabGroups"
 import { locale } from "@i18n"
-import whitelistService from "@service/whitelist/service"
+import { listWhitelist, addWhitelist, removeWhitelist } from "@api/sw/whitelist"
 import { CATE_NOT_SET_ID } from "@util/site"
 import { isCate, isGroup, isNormalSite, isSite } from "@util/stat"
 import { ElButton, ElMessage, ElTableColumn, type RenderRowData } from "element-plus"
@@ -65,7 +65,7 @@ const _default = defineComponent<Props>(({ onDelete }) => {
     const {
         data: whitelist,
         refresh: refreshWhitelist,
-    } = useRequest(() => whitelistService.listAll(), { defaultValue: [] })
+    } = useRequest(() => listWhitelist(), { defaultValue: [] })
 
     const jump2Analysis = (row: timer.stat.Row) => {
         let query: AnalysisQuery
@@ -119,7 +119,7 @@ const _default = defineComponent<Props>(({ onDelete }) => {
                         confirmText={t(msg => msg.whitelist.addConfirmMsg, { url: row.siteKey?.host })}
                         onConfirm={async () => {
                             const host = row.siteKey?.host
-                            host && await whitelistService.add(host)
+                            host && await addWhitelist(host)
                             refreshWhitelist()
                             ElMessage.success(t(msg => msg.operation.successMsg))
                         }}
@@ -134,7 +134,7 @@ const _default = defineComponent<Props>(({ onDelete }) => {
                         confirmText={t(msg => msg.whitelist.removeConfirmMsg, { url: row.siteKey?.host })}
                         onConfirm={async () => {
                             const host = row.siteKey?.host
-                            host && await whitelistService.remove(host)
+                            host && await removeWhitelist(host)
                             refreshWhitelist()
                             ElMessage.success(t(msg => msg.operation.successMsg))
                         }}

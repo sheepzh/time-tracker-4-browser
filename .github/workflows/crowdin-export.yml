@@ -10,7 +10,7 @@ jobs:
             TIMER_CROWDIN_AUTH: ${{ secrets.TIMER_CROWDIN_AUTH }}
         steps:
             - name: Prepare branch
-              uses: actions/checkout@v6
+              uses: actions/checkout@v4
               with:
                   fetch-depth: 1
                   token: ${{secrets.GITHUB_TOKEN}}

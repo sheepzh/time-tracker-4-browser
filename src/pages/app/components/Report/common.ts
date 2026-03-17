@@ -1,9 +1,9 @@
 import { t } from "@app/locale"
-import statDatabase from "@db/stat-database"
+import statDatabase from "@/background/database/stat-database"
 import {
     selectCate, selectCatePage, selectGroup, selectGroupPage, selectSite, selectSitePage,
-    type CateQuery, type GroupQuery, type SiteQuery,
-} from "@service/stat-service"
+} from "@api/sw/stat"
+import type { CateQuery, GroupQuery, SiteQuery } from "@/background/service/stat-service"
 import { getGroupName, isGroup, isSite } from "@util/stat"
 import { formatTime, getBirthday } from "@util/time"
 import type { ReportFilterOption, ReportSort } from "./types"
@@ -109,24 +109,25 @@ const cvt2CateQuery = (
     sortDirection: cvtOrderDir(order),
 })
 
-export const queryPage = (filter: ReportFilterOption, sort: ReportSort, page: timer.common.PageQuery): Promise<timer.common.PageResult<timer.stat.Row>> => {
+export const queryPage = async (filter: ReportFilterOption, sort: ReportSort, page: timer.common.PageQuery): Promise<timer.common.PageResult<timer.stat.Row>> => {
     const { siteMerge } = filter
+    const empty: timer.common.PageResult<timer.stat.Row> = { list: [], total: 0 }
     if (siteMerge === 'group') {
-        return selectGroupPage(cvt2GroupQuery(filter, sort), page)
+        return ((await selectGroupPage(cvt2GroupQuery(filter, sort), page)) ?? empty) as timer.common.PageResult<timer.stat.Row>
     } else if (siteMerge === 'cate') {
-        return selectCatePage(cvt2CateQuery(filter, sort), page)
+        return ((await selectCatePage(cvt2CateQuery(filter, sort), page)) ?? empty) as timer.common.PageResult<timer.stat.Row>
     } else {
-        return selectSitePage(cvt2SiteQuery(filter, sort), page)
+        return ((await selectSitePage(cvt2SiteQuery(filter, sort), page)) ?? empty) as timer.common.PageResult<timer.stat.Row>
     }
 }
 
-export const queryAll = (filter: ReportFilterOption, sort: ReportSort): Promise<timer.stat.Row[]> => {
+export const queryAll = async (filter: ReportFilterOption, sort: ReportSort): Promise<timer.stat.Row[]> => {
     const { siteMerge } = filter
     if (siteMerge === 'group') {
-        return selectGroup(cvt2GroupQuery(filter, sort))
+        return (await selectGroup(cvt2GroupQuery(filter, sort))) ?? []
     } else if (siteMerge === 'cate') {
-        return selectCate(cvt2CateQuery(filter, sort))
+        return (await selectCate(cvt2CateQuery(filter, sort))) ?? []
     } else {
-        return selectSite(cvt2SiteQuery(filter, sort))
+        return (await selectSite(cvt2SiteQuery(filter, sort))) ?? []
     }
 }

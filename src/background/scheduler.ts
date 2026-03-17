@@ -1,6 +1,6 @@
-import optionDatabase from '@db/option-database'
-import backupProcessor from "@service/backup/processor"
-import notificationProcessor from "@service/notification/processor"
+import optionDatabase from '@/background/database/option-database'
+import backupProcessor from "@/background/service/backup/processor"
+import notificationProcessor from "@/background/service/notification/processor"
 import { MILL_PER_MINUTE } from "@util/time"
 import alarmManager from "./alarm-manager"
 import type MessageDispatcher from './message-dispatcher'

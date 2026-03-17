@@ -6,7 +6,7 @@
  */
 import { initLocale } from "@i18n"
 import { initElementLocale } from "@i18n/element"
-import optionService from "@service/option-service"
+import optionService from "@/background/service/option-service"
 import { injectGlobalCss } from '@side/style'
 import { init as initTheme, toggle } from "@util/dark-mode"
 import { ElLoadingDirective } from 'element-plus'

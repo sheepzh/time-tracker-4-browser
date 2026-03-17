@@ -1,4 +1,4 @@
-import db from "@db/whitelist-database"
+import db from "@/background/database/whitelist-database"
 import { mockStorage } from "../__mock__/storage"
 
 describe('timer-database', () => {
@@ -6,7 +6,7 @@ describe('timer-database', () => {
 
     beforeEach(async () => chrome.storage.local.clear())
 
-    test('1', async () => {
+    test('add, selectAll, exist, remove work correctly', async () => {
         await db.add('www.baidu.com')
         await db.add('google.com')
         const list = await db.selectAll()

@@ -6,7 +6,7 @@
  */
 import { t } from "@app/locale"
 import Flex from "@pages/components/Flex"
-import whitelistService from "@service/whitelist/service"
+import { listWhitelist, addWhitelist, removeWhitelist } from "@api/sw/whitelist"
 import { ElMessage, ElMessageBox } from "element-plus"
 import { defineComponent, onBeforeMount, reactive } from "vue"
 import AddButton from './AddButton'
@@ -14,7 +14,7 @@ import WhiteItem from './WhiteItem'
 
 const _default = defineComponent(() => {
     const whitelist = reactive<string[]>([])
-    onBeforeMount(() => whitelistService.listAll().then(l => whitelist.push(...l)))
+    onBeforeMount(() => listWhitelist().then(l => whitelist.push(...(l ?? []))))
 
     const handleChanged = async (val: string, index: number): Promise<boolean> => {
         const duplicate = whitelist.find((white, i) => white === val && i !== index)
@@ -23,8 +23,8 @@ const _default = defineComponent(() => {
             // Reopen
             return false
         }
-        await whitelistService.remove(whitelist[index])
-        await whitelistService.add(val)
+        await removeWhitelist(whitelist[index])
+        await addWhitelist(val)
         whitelist[index] = val
         ElMessage.success(t(msg => msg.operation.successMsg))
         return true
@@ -41,7 +41,7 @@ const _default = defineComponent(() => {
         const title = t(msg => msg.operation.confirmTitle)
         return ElMessageBox.confirm(msg, title, { dangerouslyUseHTMLString: true })
             .then(async () => {
-                await whitelistService.add(val)
+                await addWhitelist(val)
                 whitelist.push(val)
                 ElMessage.success(t(msg => msg.operation.successMsg))
                 return true
@@ -54,7 +54,7 @@ const _default = defineComponent(() => {
         const confirmTitle = t(msg => msg.operation.confirmTitle)
         ElMessageBox
             .confirm(confirmMsg, confirmTitle, { dangerouslyUseHTMLString: true })
-            .then(() => whitelistService.remove(whiteItem))
+            .then(() => removeWhitelist(whiteItem))
             .then(() => {
                 ElMessage.success(t(msg => msg.operation.successMsg))
                 const index = whitelist.indexOf(whiteItem)

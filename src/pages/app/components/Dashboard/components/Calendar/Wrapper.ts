@@ -9,7 +9,7 @@ import { getStepColors } from "@app/util/echarts"
 import { cvt2LocaleTime } from "@app/util/time"
 import { EchartsWrapper } from "@hooks/useEcharts"
 import { getPrimaryTextColor } from "@pages/util/style"
-import weekHelper from "@service/components/week-helper"
+import weekHelper from "@/background/service/components/week-helper"
 import { groupBy, rotate } from "@util/array"
 import { formatPeriodCommon, getAllDatesBetween, MILL_PER_HOUR, MILL_PER_MINUTE } from "@util/time"
 import {

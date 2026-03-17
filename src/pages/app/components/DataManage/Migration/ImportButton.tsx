@@ -7,7 +7,7 @@
 
 import { t } from "@app/locale"
 import { Upload } from "@element-plus/icons-vue"
-import immigration from '@service/components/immigration'
+import immigration from '@/background/service/components/immigration'
 import { deserialize } from "@util/file"
 import { ElButton, ElLoading, ElMessage } from "element-plus"
 import { defineComponent, ref } from "vue"

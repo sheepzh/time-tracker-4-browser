@@ -1,5 +1,5 @@
-import cateService from "@service/cate-service"
-import { batchSaveSiteCate } from "@service/site-service"
+import cateService from "@/background/service/cate-service"
+import { batchSaveSiteCate } from "@/background/service/site-service"
 import type { Migrator } from "./types"
 
 type InitialCate = {

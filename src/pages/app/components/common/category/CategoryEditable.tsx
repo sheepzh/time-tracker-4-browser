@@ -2,7 +2,7 @@ import { useCategory } from "@app/context"
 import { Edit } from "@element-plus/icons-vue"
 import { useManualRequest, useSwitch } from "@hooks"
 import Flex from "@pages/components/Flex"
-import { saveSiteCate } from '@service/site-service'
+import { saveSiteCate } from '@api/sw/site'
 import { supportCategory } from "@util/site"
 import { ElIcon, ElTag } from "element-plus"
 import { computed, defineComponent, nextTick, ref } from "vue"

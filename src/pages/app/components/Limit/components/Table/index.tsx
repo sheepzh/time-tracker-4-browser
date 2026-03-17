@@ -7,7 +7,7 @@
 import ColumnHeader from "@app/components/common/ColumnHeader"
 import { t } from "@app/locale"
 import { useLocalStorage, useRequest, useState } from "@hooks"
-import weekHelper from "@service/components/week-helper"
+import weekHelper from "@/background/service/components/week-helper"
 import { isEffective } from "@util/limit"
 import { ElSwitch, ElTable, ElTableColumn, ElTag, type RenderRowData, type Sort, type TableInstance } from "element-plus"
 import { defineComponent, ref, watch } from "vue"

@@ -8,7 +8,7 @@
 import { t } from "@app/locale"
 import { Download } from "@element-plus/icons-vue"
 import Flex from "@pages/components/Flex"
-import immigration from '@service/components/immigration'
+import immigration from '@/background/service/components/immigration'
 import { exportJson } from "@util/file"
 import { formatTime } from "@util/time"
 import { ElButton, ElCard } from "element-plus"

@@ -1,4 +1,4 @@
-import { calculate, getMaxDivisiblePeriod, merge } from "@service/components/period-calculator"
+import { calculate, getMaxDivisiblePeriod, merge } from "@/background/service/components/period-calculator"
 import { keyOf, PERIOD_PER_DATE } from "@util/period"
 import { MILL_PER_DAY } from "@util/time"
 

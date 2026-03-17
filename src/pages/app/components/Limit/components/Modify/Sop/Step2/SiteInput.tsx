@@ -2,7 +2,7 @@ import { listTabs } from '@api/chrome/tab'
 import { t } from '@app/locale'
 import { useDebounceState, useRequest } from '@hooks'
 import Flex from '@pages/components/Flex'
-import { selectAllSites } from '@service/site-service'
+import { selectAllSites } from '@api/sw/site'
 import { cleanCond } from '@util/limit'
 import { extractHostname, isBrowserUrl } from '@util/pattern'
 import { ElMessage, ElSelectV2, ElText, useNamespace, type SelectV2Instance } from 'element-plus'
@@ -22,7 +22,7 @@ const fetchAllHosts = async () => {
             hostSet.add(host)
         }
     })
-    const sites = await selectAllSites({ types: ['normal', 'virtual'] })
+    const sites = (await selectAllSites({ types: ['normal', 'virtual'] })) ?? []
     sites.forEach(({ host }) => hostSet.add(host))
     return Array.from(hostSet)
 }

@@ -1,10 +1,10 @@
 import { getTab, listTabs, sendMsg2Tab } from "@api/chrome/tab"
 import { getWindow } from "@api/chrome/window"
-import optionHolder from "@service/components/option-holder"
-import itemService, { type ItemIncContext } from "@service/item-service"
-import limitService from "@service/limit-service"
-import periodThrottler from '@service/throttler/period-throttler'
-import whitelistHolder from "@service/whitelist/holder"
+import optionHolder from "@/background/service/components/option-holder"
+import itemService, { type ItemIncContext } from "@/background/service/item-service"
+import limitService from "@/background/service/limit-service"
+import periodThrottler from '@/background/service/throttler/period-throttler'
+import whitelistHolder from "@/background/service/whitelist/holder"
 import { IS_ANDROID } from "@util/constant/environment"
 import { extractHostname } from "@util/pattern"
 import badgeManager from "../badge-manager"

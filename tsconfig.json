@@ -26,6 +26,9 @@
         "skipLibCheck": true,
         "moduleResolution": "bundler",
         "paths": {
+            "@/*": [
+                "./src/*"
+            ],
             "@api/*": [
                 "./src/api/*"
             ],
@@ -50,12 +53,6 @@
             "@pages/*": [
                 "./src/pages/*"
             ],
-            "@db/*": [
-                "./src/database/*"
-            ],
-            "@service/*": [
-                "./src/service/*"
-            ],
             "@util/*": [
                 "./src/util/*"
             ],
@@ -64,12 +61,6 @@
             ],
             "@i18n": [
                 "./src/i18n/index"
-            ],
-            "@src/*": [
-                "./src/*"
-            ],
-            "*": [
-                "./types/*"
             ]
         }
     },

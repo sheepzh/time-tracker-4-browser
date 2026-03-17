@@ -1,7 +1,7 @@
 import DialogSop, { type SopInstance, type SopStepInstance } from "@app/components/common/DialogSop"
 import { t } from "@app/locale"
 import { useManualRequest, useState } from "@hooks"
-import processor from "@service/backup/processor"
+import { clearBackup } from "@api/sw/backup"
 import { ElMessage, ElStep, ElSteps } from "element-plus"
 import { defineComponent, ref } from "vue"
 import Step1, { type StatResult } from "./Step1"
@@ -24,8 +24,8 @@ const _default = defineComponent<Props>((props, ctx) => {
     const { refresh: handleClear, loading: deleting } = useManualRequest(async () => {
         const cid = data.value?.client?.id
         if (!cid) throw new Error('Client not selected')
-        const result = await processor.clear(cid)
-        if (!result.success) throw new Error(result.errorMsg)
+        const result = await clearBackup(cid)
+        if (!result?.success) throw new Error(result?.errorMsg)
     }, {
         onSuccess: () => {
             ElMessage.success(t(msg => msg.operation.successMsg))

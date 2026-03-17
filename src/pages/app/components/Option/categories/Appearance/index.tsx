@@ -10,7 +10,7 @@ import { type I18nKey, t, tWith } from "@app/locale"
 import { useRequest } from '@hooks/useRequest'
 import { ALL_LOCALES, localeSameAsBrowser } from "@i18n"
 import localeMessages from "@i18n/message/common/locale"
-import optionService from "@service/option-service"
+import { isDarkMode } from "@api/sw/option"
 import { IS_ANDROID } from "@util/constant/environment"
 import { defaultAppearance } from "@util/constant/option"
 import { toggle } from "@util/dark-mode"
@@ -51,7 +51,7 @@ const DEFAULT_SIDE_PANEL_ENABLED = true
 const _default = defineComponent((_props, ctx) => {
     const { option } = useOption<timer.option.AppearanceOption>({
         defaultValue: defaultAppearance, copy,
-        onChange: async val => optionService.isDarkMode(val).then(toggle)
+        onChange: async val => isDarkMode(val).then(v => toggle(!!v))
     })
     const { data: sidePanelEnabled, refresh: refreshSidePanel } = useRequest(isSidePanelEnabled, {
         defaultValue: DEFAULT_SIDE_PANEL_ENABLED,

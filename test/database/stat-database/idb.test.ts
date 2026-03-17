@@ -1,5 +1,5 @@
-import { zeroResult, zeroRow } from '@db/stat-database/common'
-import { IDBStatDatabase } from '@db/stat-database/idb'
+import { zeroResult, zeroRow } from '@/background/database/stat-database/common'
+import { IDBStatDatabase } from '@/background/database/stat-database/idb'
 import 'fake-indexeddb/auto'
 import { mockRuntime } from '../../__mock__/runtime'
 

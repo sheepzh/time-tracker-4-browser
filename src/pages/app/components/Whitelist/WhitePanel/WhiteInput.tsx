@@ -10,7 +10,7 @@ import { Check, CirclePlus, Close } from "@element-plus/icons-vue"
 import { useRequest, useShadow } from "@hooks"
 import Box from "@pages/components/Box"
 import Flex from '@pages/components/Flex'
-import { selectAllSites } from '@service/site-service'
+import { selectAllSites } from '@api/sw/site'
 import { EXCLUDING_PREFIX, isRemainHost } from "@util/constant/remain-host"
 import { isValidHost, judgeVirtualFast } from "@util/pattern"
 import { ElButton, ElIcon, ElMessage, ElOption, ElSelect, ElTag } from "element-plus"
@@ -28,7 +28,7 @@ async function remoteSearch(query: string): Promise<SearchItem[]> {
     }
     if (!query) return []
 
-    let sites: SearchItem[] = await selectAllSites({ fuzzyQuery: query })
+    let sites: SearchItem[] = (await selectAllSites({ fuzzyQuery: query })) ?? []
     const idx = sites.findIndex(s => s.host === query)
 
     const target = idx >= 0

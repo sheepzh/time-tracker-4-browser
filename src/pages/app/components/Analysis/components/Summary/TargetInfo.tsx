@@ -9,7 +9,7 @@ import { useCategory } from "@app/context"
 import { t } from "@app/locale"
 import { useRequest } from "@hooks"
 import Flex from "@pages/components/Flex"
-import { getSite } from '@service/site-service'
+import { getSite } from '@api/sw/site'
 import { CATE_NOT_SET_ID } from '@util/site'
 import { ElTag } from "element-plus"
 import { computed, defineComponent, type StyleValue, toRef } from "vue"

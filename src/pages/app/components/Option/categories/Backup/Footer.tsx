@@ -9,8 +9,7 @@ import { t } from "@app/locale"
 import { Operation, UploadFilled } from "@element-plus/icons-vue"
 import { useManualRequest, useRequest, useState } from "@hooks"
 import Flex from "@pages/components/Flex"
-import processor from "@service/backup/processor"
-import { getLastBackUp } from "@service/meta-service"
+import { checkAuth, getLastBackUp, syncData } from "@api/sw/backup"
 import { formatTime } from "@util/time"
 import { ElButton, ElDivider, ElLoading, ElMessage, ElText } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
@@ -20,7 +19,8 @@ import Download from "./Download"
 async function handleTest() {
     const loading = ElLoading.service({ text: "Please wait...." })
     try {
-        const { errorMsg } = await processor.checkAuth()
+        const result = await checkAuth()
+        const errorMsg = result?.errorMsg
         if (!errorMsg) {
             ElMessage.success("Valid!")
         } else {
@@ -41,7 +41,7 @@ const _default = defineComponent<{ type: timer.backup.Type }>(props => {
         onSuccess: setLastTime,
     })
 
-    const { refresh: handleBackup } = useManualRequest(() => processor.syncData(), {
+    const { refresh: handleBackup } = useManualRequest(() => syncData(), {
         loadingText: "Doing backup....",
         onSuccess: ({ success, data, errorMsg }) => {
             if (success) {

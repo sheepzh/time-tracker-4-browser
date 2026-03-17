@@ -1,4 +1,4 @@
-import db from "@db/limit-database"
+import db from "@/background/database/limit-database"
 import { formatTimeYMD } from "@util/time"
 import { mockStorage } from "../__mock__/storage"
 import { mockLegacyData } from './migratable'
@@ -7,7 +7,7 @@ describe('limit-database', () => {
     beforeAll(() => mockStorage())
 
     beforeEach(async () => chrome.storage.local.clear())
-    test('test1', async () => {
+    test('save, all, save no rewrite, remove', async () => {
         const toAdd: timer.limit.Rule = {
             id: 1,
             name: "foobar",

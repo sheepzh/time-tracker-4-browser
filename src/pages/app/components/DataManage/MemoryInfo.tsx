@@ -7,7 +7,7 @@
 
 import { t } from "@app/locale"
 import { OPTION_ROUTE } from '@app/router/constants'
-import optionDatabase from '@db/option-database'
+import optionDatabase from '@/background/database/option-database'
 import { useRequest } from '@hooks/useRequest'
 import Flex from "@pages/components/Flex"
 import { getColor } from '@pages/util/style'

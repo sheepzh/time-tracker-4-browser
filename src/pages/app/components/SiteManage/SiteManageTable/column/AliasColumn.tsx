@@ -9,7 +9,7 @@ import Editable from "@app/components/common/Editable"
 import { t } from "@app/locale"
 import { MagicStick } from "@element-plus/icons-vue"
 import Flex from "@pages/components/Flex"
-import { batchGetSites, batchSaveAliasNoRewrite, removeAlias, saveAlias } from "@service/site-service"
+import { saveAlias, removeAlias, batchGetSites, batchSaveAliasNoRewrite } from "@api/sw/site"
 import { getSuffix as getPslSuffix } from "@util/psl"
 import { identifySiteKey, SiteMap } from "@util/site"
 import { ElIcon, ElMessage, ElPopconfirm, ElTableColumn, ElText } from "element-plus"
@@ -59,12 +59,14 @@ const AliasColumn = defineComponent<{}>(() => {
             return ElMessage.info("No data")
         }
         const toSave = new SiteMap<string>()
-        const items = await batchGetSites(data)
-        items.filter(i => !i.alias).forEach(site => {
+        const items = (await batchGetSites(data)) ?? []
+        items.filter((i: timer.site.SiteInfo) => !i.alias).forEach((site: timer.site.SiteInfo) => {
             const newAlias = genInitialAlias(site)
             newAlias && toSave.put(site, newAlias)
         })
-        await batchSaveAliasNoRewrite(toSave)
+        const arr: Array<{ key: timer.site.SiteKey; alias: string }> = []
+        toSave.forEach((k, alias) => alias != null && arr.push({ key: k, alias }))
+        await batchSaveAliasNoRewrite(arr)
         refresh()
         ElMessage.success(t(msg => msg.operation.successMsg))
     }

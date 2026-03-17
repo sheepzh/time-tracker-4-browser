@@ -8,8 +8,8 @@
 import DialogSop, { type SopInstance, type SopStepInstance } from "@app/components/common/DialogSop"
 import { t } from "@app/locale"
 import { useManualRequest, useState } from "@hooks"
-import processor from "@service/backup/processor"
-import { fillExist, processImportedData } from "@service/components/import-processor"
+import { queryBackup } from "@api/sw/backup"
+import { fillExist, processImportedData } from "@api/sw/import"
 import { getBirthday, parseTime } from "@util/time"
 import { ElMessage, ElStep, ElSteps } from "element-plus"
 import { defineComponent, ref } from "vue"
@@ -20,7 +20,7 @@ async function fetchData(client: timer.backup.Client): Promise<timer.imported.Da
     const { id: specCid, maxDate, minDate } = client
     const start = parseTime(minDate) ?? getBirthday()
     const end = parseTime(maxDate) ?? new Date()
-    const remoteRows = await processor.query({ specCid, start, end })
+    const remoteRows = (await queryBackup({ specCid, start, end })) ?? []
     const rows: timer.imported.Row[] = remoteRows.map(rr => ({
         date: rr.date,
         host: rr.host,

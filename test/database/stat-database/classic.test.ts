@@ -1,5 +1,5 @@
-import type { StatCondition } from '@db/stat-database'
-import { ClassicStatDatabase, parseImportData } from "@db/stat-database/classic"
+import type { StatCondition } from '@/background/database/stat-database'
+import { ClassicStatDatabase, parseImportData } from "@/background/database/stat-database/classic"
 import { resultOf } from "@util/stat"
 import { formatTimeYMD, MILL_PER_DAY } from "@util/time"
 import { mockStorage } from '../../__mock__/storage'
@@ -20,13 +20,13 @@ describe('stat-database/classic', () => {
 
     beforeEach(async () => chrome.storage.local.clear())
 
-    test('1', async () => {
+    test('accumulate and get single host result', async () => {
         await db.accumulate(baidu, nowStr, resultOf(100, 0))
         const data: timer.core.Result = await db.get(baidu, now)
         expect(data).toMatchObject(resultOf(100, 0))
     })
 
-    test('2', async () => {
+    test('accumulate merges focus and time', async () => {
         await db.accumulate(baidu, nowStr, resultOf(200, 0))
         await db.accumulate(baidu, nowStr, resultOf(200, 0))
         let data = await db.get(baidu, now)
@@ -36,7 +36,7 @@ describe('stat-database/classic', () => {
         expect(data).toEqual({ host: baidu, date: nowStr, focus: 400, time: 1 } satisfies timer.core.Row)
     })
 
-    test('3', async () => {
+    test('batchAccumulate and select with condition/date range', async () => {
         await db.batchAccumulate(
             {
                 [google]: resultOf(11, 0),
@@ -96,7 +96,7 @@ describe('stat-database/classic', () => {
         expect((await db.select(cond)).length).toEqual(2)
     })
 
-    test('5', async () => {
+    test('accumulate and delete by key/date', async () => {
         await db.accumulate(baidu, nowStr, resultOf(10, 0))
         await db.accumulate(baidu, formatTimeYMD(yesterday), resultOf(12, 0))
         expect((await db.select()).length).toEqual(2)
@@ -127,15 +127,14 @@ describe('stat-database/classic', () => {
         expect((await db.select()).length).toEqual(1)
     })
 
-    test('6', async () => {
+    test('batchAccumulate empty returns zero and get returns zero result', async () => {
         await db.batchAccumulate({}, now)
         expect((await db.select()).length).toEqual(0)
-        // Return zero instance
         const result = await db.get(baidu, now)
         expect([result.focus, result.time]).toEqual([0, 0])
     })
 
-    test('7', async () => {
+    test('delete by key and deleteByHost date range', async () => {
         const foo = resultOf(1, 1)
         await db.accumulate(baidu, nowStr, foo)
         await db.accumulate(baidu, formatTimeYMD(yesterday), foo)

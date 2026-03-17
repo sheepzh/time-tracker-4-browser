@@ -6,7 +6,7 @@
  */
 
 import { t } from "@app/locale"
-import mergeRuleDatabase from "@db/merge-rule-database"
+import mergeRuleDatabase from "@/background/database/merge-rule-database"
 import { useManualRequest, useRequest } from "@hooks"
 import Flex from "@pages/components/Flex"
 import { ElMessage, ElMessageBox } from "element-plus"

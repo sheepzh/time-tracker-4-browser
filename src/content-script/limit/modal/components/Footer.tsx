@@ -5,7 +5,7 @@ import { TAG_NAME } from "@cs/limit/element"
 import { t } from "@cs/locale"
 import { Plus, Timer } from "@element-plus/icons-vue"
 import Flex from '@pages/components/Flex'
-import optionHolder from "@service/components/option-holder"
+import { getOption } from "@api/sw/option"
 import { meetTimeLimit } from '@util/limit'
 import { ElButton } from "element-plus"
 import { computed, defineComponent } from "vue"
@@ -15,7 +15,11 @@ async function handleMore5Minutes(rule: timer.limit.Item | null, callback: () =>
     let promise: Promise<void> | undefined = undefined
     const ele = document.querySelector(TAG_NAME)?.shadowRoot?.querySelector('body')
     if (rule && await judgeVerificationRequired(rule)) {
-        const option = await optionHolder.get()
+        const option = await getOption()
+        if (!option) {
+            callback()
+            return
+        }
         promise = processVerification(option, { appendTo: ele ?? undefined })
         promise ? promise.then(callback).catch(() => { }) : callback()
     } else {

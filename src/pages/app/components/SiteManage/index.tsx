@@ -9,7 +9,7 @@ import { t } from "@app/locale"
 import { Check, Close, WarnTriangleFilled } from "@element-plus/icons-vue"
 import { useState, useSwitch } from "@hooks"
 import Flex from "@pages/components/Flex"
-import { batchSaveSiteCate, removeSites } from "@service/site-service"
+import { batchSaveSiteCate, removeSites } from "@api/sw/site"
 import { supportCategory } from "@util/site"
 import { ElButton, ElDialog, ElForm, ElFormItem, ElMessage, ElMessageBox } from "element-plus"
 import { computed, defineComponent, markRaw, ref, type VNode } from "vue"
@@ -111,7 +111,7 @@ export default defineComponent(() => {
                     <Pagination
                         disabled={loading.value}
                         defaultValue={page}
-                        total={pagination.value?.total || 0}
+                        total={Number(pagination.value?.total ?? 0)}
                         onChange={val => { page.num = val.num, page.size = val.size }}
                     />
                 </Flex>

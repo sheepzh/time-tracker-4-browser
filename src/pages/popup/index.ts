@@ -6,8 +6,8 @@
  */
 
 import { initLocale } from "@i18n"
-import { increasePopup } from "@service/meta-service"
-import optionService from "@service/option-service"
+import { increasePopup } from "@api/sw/meta"
+import { isDarkMode as getOptionDarkMode } from "@api/sw/option"
 import { toggle } from "@util/dark-mode"
 import "element-plus/theme-chalk/index.css"
 import { createApp } from "vue"
@@ -39,8 +39,8 @@ async function main() {
     await initLocale()
     injectGlobalCss()
 
-    const isDarkMode = await optionService.isDarkMode()
-    toggle(isDarkMode)
+    const dark = await getOptionDarkMode()
+    toggle(!!dark)
     await send2ParentWindow('themeInitialized')
 
     const el = document.createElement('div')

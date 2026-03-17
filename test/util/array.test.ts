@@ -43,10 +43,10 @@ describe("util/array", () => {
 
     test("sum", () => {
         let arr: number[] = [1, 2, 3, 4]
-        expect(10).toEqual(sum(arr))
+        expect(sum(arr)).toEqual(10)
 
         arr = []
-        expect(0).toEqual(sum(arr))
+        expect(sum(arr)).toEqual(0)
     })
 
     test("average", () => {

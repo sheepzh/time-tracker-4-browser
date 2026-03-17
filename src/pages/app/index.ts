@@ -8,7 +8,7 @@
 import { listenMediaSizeChange } from "@hooks"
 import { initLocale } from "@i18n"
 import { initElementLocale } from "@i18n/element"
-import optionService from "@service/option-service"
+import { isDarkMode } from "@api/sw/option"
 import { init as initTheme, toggle } from "@util/dark-mode"
 import { createApp, type App } from "vue"
 import '../../common/timer'
@@ -23,7 +23,7 @@ async function main() {
     initTheme()
     listenMediaSizeChange()
     // Calculate the latest mode
-    optionService.isDarkMode().then(toggle)
+    isDarkMode().then(v => toggle(!!v))
     await initLocale()
     initEcharts()
     const app: App = createApp(Main)

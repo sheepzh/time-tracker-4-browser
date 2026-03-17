@@ -4,8 +4,8 @@ import { MediaSize, useMediaSize } from "@hooks"
 import { locale } from "@i18n"
 import Flex from "@pages/components/Flex"
 import { Coffee, GitHub } from '@pages/util/icon'
-import { saveFlag } from "@service/meta-service"
-import packageInfo, { AUTHOR_EMAIL } from "@src/package"
+import { saveFlag } from "@api/sw/meta"
+import packageInfo, { AUTHOR_EMAIL } from "@/package"
 import {
     BUY_ME_A_COFFEE_PAGE,
     CHANGE_LOG_PAGE,

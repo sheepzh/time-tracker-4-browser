@@ -8,7 +8,7 @@ import { t } from "@app/locale"
 import { periodFormatter } from "@app/util/time"
 import { EchartsWrapper } from "@hooks/useEcharts"
 import { getRegularTextColor, getSecondaryTextColor } from "@pages/util/style"
-import weekHelper from "@service/components/week-helper"
+import weekHelper from "@/background/service/components/week-helper"
 import { groupBy, rotate, toMap } from "@util/array"
 import { formatTime, getAllDatesBetween, MILL_PER_WEEK, parseTime } from "@util/time"
 import type {

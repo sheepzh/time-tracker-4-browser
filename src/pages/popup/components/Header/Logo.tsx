@@ -1,7 +1,7 @@
 import { getIconUrl } from '@api/chrome/runtime'
 import Flex from "@pages/components/Flex"
 import { t } from "@popup/locale"
-import packageInfo from "@src/package"
+import packageInfo from "@/package"
 import { ElText } from "element-plus"
 import type { FunctionalComponent } from "vue"
 

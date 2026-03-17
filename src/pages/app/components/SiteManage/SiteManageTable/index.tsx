@@ -7,7 +7,7 @@
 import HostAlert from "@app/components/common/HostAlert"
 import { t } from "@app/locale"
 import Flex from "@pages/components/Flex"
-import { removeIconUrl, saveSiteRunState } from '@service/site-service'
+import { removeIconUrl, saveSiteRunState } from '@api/sw/site'
 import { ElSwitch, ElTable, ElTableColumn, type RenderRowData } from "element-plus"
 import { defineComponent } from "vue"
 import CategoryEditable from "../../common/category/CategoryEditable"

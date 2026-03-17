@@ -1,6 +1,6 @@
 import { useRequest } from "@hooks"
 import Flex from '@pages/components/Flex'
-import { selectSite } from "@service/stat-service"
+import { selectSite } from "@api/sw/stat"
 import { formatTime } from "@util/time"
 import { ElText } from "element-plus"
 import { defineComponent, ref, type StyleValue } from "vue"

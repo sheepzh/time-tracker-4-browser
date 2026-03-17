@@ -1,4 +1,4 @@
-import db from "@db/period-database"
+import db from "@/background/database/period-database"
 import { keyOf } from "@util/period"
 import { formatTimeYMD } from "@util/time"
 import { mockStorage } from "../__mock__/storage"
@@ -12,7 +12,7 @@ describe('period-database', () => {
 
     beforeEach(async () => chrome.storage.local.clear())
 
-    test('1', async () => {
+    test('get empty, accumulate and get by date', async () => {
         const date = new Date(2021, 5, 7)
         const dateStr = formatTimeYMD(date)
         const yesterday = new Date(2021, 5, 6)

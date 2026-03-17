@@ -1,4 +1,4 @@
-import timelineDatabase from '@db/timeline-database'
+import timelineDatabase from '@/background/database/timeline-database'
 import { useRequest } from '@hooks'
 import { getStartOfDay, MILL_PER_DAY } from '@util/time'
 import { defineComponent } from 'vue'

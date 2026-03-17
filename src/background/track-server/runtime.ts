@@ -1,5 +1,5 @@
-import itemService from "@service/item-service"
-import whitelistHolder from "@service/whitelist/holder"
+import itemService from "@/background/service/item-service"
+import whitelistHolder from "@/background/service/whitelist/holder"
 import FIFOCache from '@util/fifo-cache'
 import { formatTimeYMD, getStartOfDay, MILL_PER_DAY } from "@util/time"
 

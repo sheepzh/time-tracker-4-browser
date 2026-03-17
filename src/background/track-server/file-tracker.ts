@@ -1,6 +1,6 @@
 import { getTab, onTabActivated } from '@api/chrome/tab'
-import optionHolder from '@service/components/option-holder'
 import { extractFileHost } from '@util/pattern'
+import optionHolder from '../service/components/option-holder'
 import { handleTrackTimeEvent } from './normal'
 
 type Context = {
@@ -30,7 +30,7 @@ class FileTracker {
     private enabled = false
     private current: Context | null = null
 
-    init() {
+    async init() {
         optionHolder.get().then(v => this.enabled = v.countLocalFiles)
         optionHolder.addChangeListener(v => this.enabled = v.countLocalFiles)
 

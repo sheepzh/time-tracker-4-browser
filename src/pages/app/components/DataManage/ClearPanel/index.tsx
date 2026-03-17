@@ -6,7 +6,7 @@
  */
 
 import { t } from "@app/locale"
-import db, { type StatCondition } from "@db/stat-database"
+import db, { type StatCondition } from "@/background/database/stat-database"
 import { MILL_PER_DAY, MILL_PER_SECOND } from "@util/time"
 import { ElCard, ElMessage, ElMessageBox } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"

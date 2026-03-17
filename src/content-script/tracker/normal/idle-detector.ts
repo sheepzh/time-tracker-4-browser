@@ -1,5 +1,5 @@
 import { onRuntimeMessage, trySendMsg2Runtime } from '@api/chrome/runtime'
-import optionHolder from "@service/components/option-holder"
+import { getOption } from "@api/sw/option"
 
 export default class IdleDetector {
     fullScreen: boolean = false
@@ -33,15 +33,22 @@ export default class IdleDetector {
     }
 
     private async init() {
-        const option = await optionHolder.get()
-
-        this.processOption(option)
+        const option = await getOption()
+        if (option) this.processOption(option)
         this.resetTimeout()
 
-        optionHolder.addChangeListener(opt => {
-            this.processOption(opt)
-            this.resetTimeout()
-        })
+        // Poll option when tab becomes visible (content-script has no push from background)
+        const pollOption = async () => {
+            const opt = await getOption()
+            if (opt) {
+                this.processOption(opt)
+                this.resetTimeout()
+            }
+        }
+        document.addEventListener('visibilitychange', () => document.visibilityState === 'visible' && pollOption())
+        const pollInterval = setInterval(pollOption, 60_000)
+        const stopPoll = () => clearInterval(pollInterval)
+        window.addEventListener('beforeunload', stopPoll)
 
         const handleActive = () => {
             this.lastActiveTime = Date.now()

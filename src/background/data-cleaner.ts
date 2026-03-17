@@ -1,4 +1,4 @@
-import periodService, { type PeriodQueryParam } from "@service/period-service"
+import periodService, { type PeriodQueryParam } from "@/background/service/period-service"
 import { keyOf } from "@util/period"
 import { getBirthday, getStartOfDay, MILL_PER_DAY } from "@util/time"
 import alarmManager from "./alarm-manager"

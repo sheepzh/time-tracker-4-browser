@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getUsedStorage } from "@db/memory-detector"
+import { getUsedStorage } from "@/background/database/memory-detector"
 import { closeLog, openLog } from "./logger"
 
 /**

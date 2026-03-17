@@ -3,8 +3,8 @@ import { t } from "@app/locale"
 import { Check, Close, Delete, Edit } from "@element-plus/icons-vue"
 import { useManualRequest, useRequest, useState, useSwitch } from "@hooks"
 import Flex from "@pages/components/Flex"
-import cateService from "@service/cate-service"
-import { selectAllSites } from '@service/site-service'
+import { saveCateName, removeCate } from "@api/sw/cate"
+import { selectAllSites } from "@api/sw/site"
 import { stopPropagationAfter } from "@util/document"
 import { ElButton, ElInput, ElMessage, ElMessageBox } from "element-plus"
 import { defineComponent, nextTick, ref } from "vue"
@@ -16,7 +16,7 @@ const OptionItem = defineComponent<{ value: timer.site.Cate }>(props => {
     const [editingName, setEditingName] = useState(props.value.name)
     const inputRef = ref<HTMLInputElement>()
 
-    const { refresh: saveCate } = useManualRequest((name: string) => cateService.saveName(props.value.id, name), {
+    const { refresh: saveCate } = useManualRequest((name: string) => saveCateName(props.value.id, name), {
         onSuccess: () => {
             cate.refresh()
             closeEditing()
@@ -28,7 +28,7 @@ const OptionItem = defineComponent<{ value: timer.site.Cate }>(props => {
         name ? saveCate(name) : ElMessage.warning("Name is blank")
     }
 
-    const { refresh: removeCate } = useManualRequest(() => cateService.remove(props.value.id), {
+    const { refresh: doRemoveCate } = useManualRequest(() => removeCate(props.value.id), {
         onSuccess: () => {
             cate.refresh()
             ElMessage.success(t(msg => msg.operation.successMsg))
@@ -48,7 +48,7 @@ const OptionItem = defineComponent<{ value: timer.site.Cate }>(props => {
             message: t(msg => msg.siteManage.cate.removeConfirm, { category: props.value?.name }),
             type: 'warning',
             closeOnClickModal: false,
-        }).then(removeCate).catch(() => { })
+        }).then(doRemoveCate).catch(() => { })
     }
 
     const onEditClick = () => {

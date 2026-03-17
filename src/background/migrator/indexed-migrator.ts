@@ -1,7 +1,7 @@
-import { BaseIDBStorage } from '@db/common/indexed-storage'
-import { IDBStatDatabase } from '@db/stat-database/idb'
-import timelineDatabase from '@db/timeline-database'
-import IDBTimelineDatabase from '@db/timeline-database/idb'
+import { BaseIDBStorage } from '@/background/database/common/indexed-storage'
+import { IDBStatDatabase } from '@/background/database/stat-database/idb'
+import timelineDatabase from '@/background/database/timeline-database'
+import IDBTimelineDatabase from '@/background/database/timeline-database/idb'
 import type { Migrator } from './types'
 
 async function upgradeIndexedDB() {

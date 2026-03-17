@@ -6,8 +6,7 @@
  */
 
 import { useProvide, useProvider, useRequest } from "@hooks"
-import { selectSite } from "@service/stat-service"
-import { mergeDate } from "@service/stat-service/merge/date"
+import { selectSite, mergeDate } from "@api/sw/stat"
 import { getDayLength } from "@util/time"
 import { computed, type Ref } from "vue"
 import { useHabitFilter } from "../context"
@@ -29,8 +28,13 @@ export const initProvider = () => {
 
     const dateRangeLength = computed(() => getDayLength(filter.dateRange?.[0], filter.dateRange?.[1]))
 
-    const dateMergedRows = computed(() => mergeDate(rows.value ?? []))
-    useProvide<Context>(NAMESPACE, { rows, dateMergedRows })
+    const { data: dateMergedRowsRaw } = useRequest(() => mergeDate(rows.value ?? []), {
+        deps: [() => rows.value],
+        defaultValue: [],
+    })
+    const dateMergedRows = computed<timer.stat.Row[]>(() => (dateMergedRowsRaw.value ?? []) as timer.stat.Row[])
+    const rowsRef = computed<timer.stat.Row[]>(() => (rows.value ?? []) as timer.stat.Row[])
+    useProvide<Context>(NAMESPACE, { rows: rowsRef, dateMergedRows })
 
     return dateRangeLength
 }

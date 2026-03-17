@@ -9,7 +9,7 @@ import DialogSop, { type SopStepInstance } from "@app/components/common/DialogSo
 import { t } from "@app/locale"
 import { useManualRequest } from "@hooks"
 import Flex from "@pages/components/Flex"
-import { processImportedData } from "@service/components/import-processor"
+import { processImportedData } from "@/background/service/components/import-processor"
 import { ElMessage, ElStep, ElSteps } from "element-plus"
 import { defineComponent, ref } from "vue"
 import Step1 from "./Step1"

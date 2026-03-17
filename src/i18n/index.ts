@@ -6,7 +6,7 @@
  */
 
 import { getUILanguage } from "@api/chrome/i18n"
-import optionHolder from "@service/components/option-holder"
+import optionHolder from "@/background/service/components/option-holder"
 import { setDir, setLocale } from "@util/document"
 import { ALL_LOCALES as _ALL_LOCALES } from "./message/merge"
 

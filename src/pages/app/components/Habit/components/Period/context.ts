@@ -6,8 +6,8 @@
  */
 
 import { useLocalStorage, useProvide, useProvider, useRequest } from "@hooks"
-import { merge } from "@service/components/period-calculator"
-import periodService from "@service/period-service"
+import { merge } from "@/background/service/components/period-calculator"
+import periodService from "@/background/service/period-service"
 import { keyOf, MAX_PERIOD_ORDER } from "@util/period"
 import { getDayLength, MILL_PER_DAY } from "@util/time"
 import { computed, reactive, toRaw, watch, type Reactive, type Ref } from "vue"

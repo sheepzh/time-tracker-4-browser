@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import mergeRuleDatabase from "@db/merge-rule-database"
+import mergeRuleDatabase from "@/background/database/merge-rule-database"
 import type { Migrator } from "./types"
 
 /**
