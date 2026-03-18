@@ -897,6 +897,8 @@
     "de": {
         "yes": "Ja",
         "no": "Nein",
+        "on": "Immer an",
+        "off": "Immer aus",
         "followBrowser": "Browser verfolgen",
         "appearance": {
             "title": "Aussehen",
@@ -920,11 +922,13 @@
             "darkMode": {
                 "label": "Dunkler Modus {input}"
             },
-            "animationDuration": "Die Dauer der ersten Animation des Diagramms {input}"
+            "animationDuration": "Die Dauer der ersten Animation des Diagramms {input}",
+            "sidePanel": "{input} Ob das Seitenpanel aktiviert wird"
         },
         "tracking": {
             "title": "Statistik",
             "autoPauseTrack": "{input} Tracking pausieren, wenn {maxTime} keine Aktivität erkannt wird {info}",
+            "noActivityInfo": "Maus und Tastatur sind inaktiv, nicht im Vollbildmodus und es gibt kein Audio",
             "countLocalFiles": "{input} Zeit an {localFileTime} {info} im Browser zählen",
             "localFileTime": "eine lokale Datei lesen",
             "localFilesInfo": "Unterstützt Dateitypen, wie PDF, Bilder, .txt und .json",
@@ -933,7 +937,9 @@
             "tabGroupsPermGrant": "Dieses Feature benötigt entsprechende Berechtigungen",
             "fileAccessDisabled": "Der Zugriff auf Datei-URLs ist derzeit nicht erlaubt. Bitte aktiviere ihn zuerst auf der Verwaltungsseite",
             "weekStart": "Erster Tag der Woche {input}",
-            "weekStartAsNormal": "Wie normal"
+            "weekStartAsNormal": "Wie normal",
+            "storage": "Speichern der Trackingdaten in {input}",
+            "storageConfirm": "Möchten Sie die Speicherart ändern zu {type}?"
         },
         "limit": {
             "prompt": "Eingabeaufforderung wird angezeigt, wenn eingeschränkt {input}",
@@ -1001,6 +1007,22 @@
         "accessibility": {
             "title": "Barrierefreiheit",
             "chartDecal": "{input} Ob das Diagramm-Aufkleber angezeigt werden soll"
+        },
+        "notification": {
+            "title": "Benachrichtigungen",
+            "cycle": {
+                "label": "Benachrichtigungszyklus {input}",
+                "daily": "Täglich",
+                "weekly": "Wöchentlich"
+            },
+            "method": {
+                "label": "Nachrichtenmethode {input}",
+                "browser": "Browser",
+                "callback": {
+                    "label": "HTTP Callback",
+                    "url": "Callback URL {input}"
+                }
+            }
         },
         "resetButton": "Zurücksetzen",
         "resetSuccess": "Auf Standardwerte zurückgesetzt!",

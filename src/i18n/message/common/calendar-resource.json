@@ -179,6 +179,7 @@
             "everyday": "Täglich",
             "thisWeek": "Diese Woche",
             "thisMonth": "Diesen Monat",
+            "lastWeek": "Letzte Woche",
             "lastDays": "Letzte {n} Tage",
             "tillYesterday": "Bis gestern",
             "tillDaysAgo": "Bis vor {n} Tagen",

@@ -208,6 +208,7 @@
         "totalMemoryAlert": "Der Browser stellt {size}MB zur Verfügung, um lokale Daten für jede Erweiterung zu speichern",
         "totalMemoryAlert1": "Der vom Browser maximal verfügbare Speicher kann nicht ermittelt werden",
         "usedMemoryAlert": "Derzeit werden {size}MB verwendet",
+        "idbAlert": "Bewege Tracking Daten nach IndexedDB um Speichernutzung zu Reduzieren",
         "operationAlert": "Sie können diese unwichtigen Daten löschen, um den Speicherverbrauch zu reduzieren",
         "filterItems": "Daten filtern",
         "filterFocus": "Die Browsing-Zeit am Tag liegt zwischen {start} Sekunden und {end} Sekunden",
