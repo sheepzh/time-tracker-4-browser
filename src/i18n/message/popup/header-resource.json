@@ -29,8 +29,10 @@
         "showTopN": "Mostrar primeros {n}"
     },
     "de": {
+        "rating": "Bewertung absenden",
         "showSiteName": "Seitenname anzeigen",
-        "showTopN": "Top {n} anzeigen"
+        "showTopN": "Top {n} anzeigen",
+        "donutChart": "Als Donut-Diagramme angezeigt"
     },
     "fr": {
         "showSiteName": "Afficher le nom du site",
