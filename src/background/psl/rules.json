@@ -296,7 +296,13 @@
             },
             "expo": {
                 "c": {
-                    "staging": 1
+                    "on": 1,
+                    "staging": {
+                        "c": {
+                            "on": 1
+                        },
+                        "l": 1
+                    }
                 },
                 "l": 1
             },
@@ -1351,6 +1357,7 @@
                     "ezproxy": 1
                 }
             },
+            "my": 1,
             "myspreadshop": 1,
             "transurl": {
                 "c": {
@@ -4560,7 +4567,6 @@
                     "paas": 1
                 }
             },
-            "mazeplay": 1,
             "messwithdns": 1,
             "meteorapp": {
                 "c": {
@@ -5937,7 +5943,12 @@
     "frontier": 1,
     "ftr": 1,
     "fujitsu": 1,
-    "fun": 1,
+    "fun": {
+        "c": {
+            "ms": 1
+        },
+        "l": 1
+    },
     "fund": 1,
     "furniture": 1,
     "futbol": 1,
@@ -13037,7 +13048,12 @@
     },
     "shopping": 1,
     "shouji": 1,
-    "show": 1,
+    "show": {
+        "c": {
+            "ms": 1
+        },
+        "l": 1
+    },
     "si": {
         "c": {
             "f5": 1,
@@ -14842,6 +14858,7 @@
         "c": {
             "botdash": 1,
             "caffeine": 1,
+            "exe": 1,
             "telebit": {
                 "c": {
                     "*": 1

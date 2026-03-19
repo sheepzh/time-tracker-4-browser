@@ -4,11 +4,11 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { t } from "@app/locale"
 import siteDatabase from '@/background/database/site-database'
+import { addSite } from "@api/sw/site"
+import { t } from "@app/locale"
 import { Check } from "@element-plus/icons-vue"
 import { useSwitch } from "@hooks"
-import { addSite } from "@api/sw/site"
 import { supportCategory } from "@util/site"
 import { ElButton, ElDialog, ElForm, ElFormItem, ElInput, ElMessage, type FormInstance, type FormItemRule } from "element-plus"
 import { computed, defineComponent, reactive, ref } from "vue"

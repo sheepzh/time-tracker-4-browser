@@ -12,4 +12,12 @@ declare namespace timer.common {
         sortKey?: T
         sortDirection?: SortDirection
     }
+
+    /**
+     * chrome.storage.local usage (mq memory.getUsedStorage).
+     */
+    type StorageUsage = {
+        used: number
+        total: number
+    }
 }

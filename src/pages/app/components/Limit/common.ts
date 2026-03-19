@@ -1,5 +1,5 @@
-import { judgeVerificationRequired, processVerification } from "@app/util/limit"
 import { getOption } from "@api/sw/option"
+import { judgeVerificationRequired, processVerification } from "@app/util/limit"
 
 const batchJudge = async (items: timer.limit.Item[]): Promise<boolean> => {
     if (!items?.length) return false
@@ -13,6 +13,7 @@ const batchJudge = async (items: timer.limit.Item[]): Promise<boolean> => {
 
 export const verifyCanModify = async (...items: timer.limit.Item[]) => {
     const needVerify = await batchJudge(items)
+    console.log('needVerify', needVerify)
     if (!needVerify) return
 
     // Open delay for limited rules, so verification is required

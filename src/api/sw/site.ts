@@ -1,5 +1,5 @@
 /**
- * Site domain: request to sw. Variable requestSite for tree-shaking.
+ * Site domain: request to sw.
  */
 import { sendMsg2Runtime } from "@api/chrome/runtime"
 
@@ -9,57 +9,58 @@ export type SiteQueryParam = {
     types?: timer.site.Type | timer.site.Type[]
 }
 
-const requestSite = <T, R>(code: string, data?: T) =>
-    sendMsg2Runtime<T, R>(`site.${code}` as timer.mq.ReqCode, data)
+export function getSitePslSuffix(host: string) {
+    return sendMsg2Runtime('site.getPslSuffix', host)
+}
 
 export function getSite(key: timer.site.SiteKey) {
-    return requestSite<timer.site.SiteKey, timer.site.SiteInfo>('getSite', key)
+    return sendMsg2Runtime('site.getSite', key)
 }
 
 export function selectAllSites(param?: SiteQueryParam) {
-    return requestSite<SiteQueryParam | undefined, timer.site.SiteInfo[]>('selectAllSites', param)
+    return sendMsg2Runtime('site.selectAllSites', param)
 }
 
 export function selectSitePage(param?: SiteQueryParam, page?: timer.common.PageQuery) {
-    return requestSite('selectSitePage', { param, page })
+    return sendMsg2Runtime('site.selectSitePage', { param, page })
 }
 
 export function addSite(info: timer.site.SiteInfo) {
-    return requestSite<timer.site.SiteInfo, void>('addSite', info)
+    return sendMsg2Runtime('site.addSite', info)
 }
 
 export function removeSites(...keys: timer.site.SiteKey[]) {
-    return requestSite<timer.site.SiteKey[], void>('removeSites', keys)
+    return sendMsg2Runtime('site.removeSites', keys)
 }
 
 export function saveSiteCate(key: timer.site.SiteKey, cateId: number | undefined) {
-    return requestSite<{ key: timer.site.SiteKey; cateId: number | undefined }, void>('saveSiteCate', { key, cateId })
+    return sendMsg2Runtime('site.saveSiteCate', { key, cateId })
 }
 
 export function batchSaveSiteCate(cateId: number | undefined, keys: timer.site.SiteKey[]) {
-    return requestSite<{ cateId: number | undefined; keys: timer.site.SiteKey[] }, void>('batchSaveSiteCate', { cateId, keys })
+    return sendMsg2Runtime('site.batchSaveSiteCate', { cateId, keys })
 }
 
 export function removeIconUrl(key: timer.site.SiteKey) {
-    return requestSite<timer.site.SiteKey, void>('removeIconUrl', key)
+    return sendMsg2Runtime('site.removeIconUrl', key)
 }
 
 export function saveSiteRunState(key: timer.site.SiteKey, run: boolean) {
-    return requestSite<{ key: timer.site.SiteKey; run: boolean }, void>('saveSiteRunState', { key, run })
+    return sendMsg2Runtime('site.saveSiteRunState', { key, run })
 }
 
 export function batchGetSites(keys: timer.site.SiteKey[]) {
-    return requestSite<timer.site.SiteKey[], timer.site.SiteInfo[]>('batchGetSites', keys)
+    return sendMsg2Runtime('site.batchGetSites', keys)
 }
 
 export function batchSaveAliasNoRewrite(items: Array<{ key: timer.site.SiteKey; alias: string }>) {
-    return requestSite<Array<{ key: timer.site.SiteKey; alias: string }>, void>('batchSaveAliasNoRewrite', items)
+    return sendMsg2Runtime('site.batchSaveAliasNoRewrite', items)
 }
 
 export function removeAlias(key: timer.site.SiteKey) {
-    return requestSite<timer.site.SiteKey, void>('removeAlias', key)
+    return sendMsg2Runtime('site.removeAlias', key)
 }
 
 export function saveAlias(key: timer.site.SiteKey, alias: string, noRewrite?: boolean) {
-    return requestSite<{ key: timer.site.SiteKey; alias: string; noRewrite?: boolean }, void>('saveAlias', { key, alias, noRewrite })
+    return sendMsg2Runtime('site.saveAlias', { key, alias, noRewrite })
 }

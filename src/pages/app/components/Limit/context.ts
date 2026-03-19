@@ -1,6 +1,6 @@
+import { removeLimit, selectLimits, updateDelay, updateEnabled, updateLocked } from "@api/sw/limit"
 import { t } from "@app/locale"
 import { useDocumentVisibility, useManualRequest, useProvide, useProvider, useRequest } from "@hooks"
-import { selectLimits, removeLimit, updateEnabled, updateDelay, updateLocked } from "@api/sw/limit"
 import { ElMessage, ElMessageBox } from "element-plus"
 import { computed, Reactive, reactive, ref, toRaw, watch, type Ref } from "vue"
 import { useRoute, useRouter } from "vue-router"

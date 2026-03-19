@@ -5,12 +5,11 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { batchGetSites, batchSaveAliasNoRewrite, getSitePslSuffix, removeAlias, saveAlias } from "@api/sw/site"
 import Editable from "@app/components/common/Editable"
 import { t } from "@app/locale"
 import { MagicStick } from "@element-plus/icons-vue"
 import Flex from "@pages/components/Flex"
-import { saveAlias, removeAlias, batchGetSites, batchSaveAliasNoRewrite } from "@api/sw/site"
-import { getSuffix as getPslSuffix } from "@util/psl"
 import { identifySiteKey, SiteMap } from "@util/site"
 import { ElIcon, ElMessage, ElPopconfirm, ElTableColumn, ElText } from "element-plus"
 import { toUnicode as punyCode2Unicode } from "punycode"
@@ -26,14 +25,14 @@ function cvt2Alias(part: string): string {
     return decoded.charAt(0).toUpperCase() + decoded.slice(1)
 }
 
-export function genInitialAlias(site: timer.site.SiteInfo): string | undefined {
+export async function genInitialAlias(site: timer.site.SiteInfo): Promise<string | undefined> {
     const { host, alias, type } = site || {}
     if (alias) return
     if (type !== 'normal') return
     let parts = host.split('.')
     if (parts.length < 2) return
 
-    const suffix = getPslSuffix(host)
+    const suffix = await getSitePslSuffix(host)
     const prefix = host.replace(`.${suffix}`, '').replace(/^www\./, '')
     parts = prefix.split('.')
     return parts.reverse().map(cvt2Alias).join(' ')
@@ -59,11 +58,12 @@ const AliasColumn = defineComponent<{}>(() => {
             return ElMessage.info("No data")
         }
         const toSave = new SiteMap<string>()
-        const items = (await batchGetSites(data)) ?? []
-        items.filter((i: timer.site.SiteInfo) => !i.alias).forEach((site: timer.site.SiteInfo) => {
-            const newAlias = genInitialAlias(site)
+        const items = await batchGetSites(data)
+        for (const site of items) {
+            if (site.alias) continue
+            const newAlias = await genInitialAlias(site)
             newAlias && toSave.put(site, newAlias)
-        })
+        }
         const arr: Array<{ key: timer.site.SiteKey; alias: string }> = []
         toSave.forEach((k, alias) => alias != null && arr.push({ key: k, alias }))
         await batchSaveAliasNoRewrite(arr)
@@ -100,7 +100,7 @@ const AliasColumn = defineComponent<{}>(() => {
                 default: ({ row }: { row: timer.site.SiteInfo }) => <Editable
                     key={`${identifySiteKey(row)}_${row.alias}`}
                     modelValue={row.alias}
-                    initialValue={genInitialAlias(row)}
+                    initialValue={() => genInitialAlias(row)}
                     onChange={val => handleChange(val, row)}
                 />
             }}

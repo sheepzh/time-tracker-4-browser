@@ -194,101 +194,101 @@ export function recommendRate() {
 
 先替换**只依赖 stat-service、不混用其他 service** 的文件，保证改动最小、易回滚。
 
-- [ ] **`src/pages/app/components/Dashboard/components/MonthOnMonth/index.tsx`**  
-  - 将 `import { selectSite } from "@service/stat-service"` 改为  
-    `import { selectSite } from "@api/sw/stat"`  
+- [ ] **`src/pages/app/components/Dashboard/components/MonthOnMonth/index.tsx`**
+  - 将 `import { selectSite } from "@service/stat-service"` 改为
+    `import { selectSite } from "@api/sw/stat"`
   - 调用处保持 `selectSite(...)` 不变。
 
-- [ ] **`src/pages/app/components/Dashboard/components/Calendar/index.tsx`**  
-  - 将 `import { selectSite } from '@service/stat-service'` 改为  
-    `import { selectSite } from '@api/sw/stat'`  
+- [ ] **`src/pages/app/components/Dashboard/components/Calendar/index.tsx`**
+  - 将 `import { selectSite } from '@service/stat-service'` 改为
+    `import { selectSite } from '@api/sw/stat'`
   - 调用处不变。
 
-- [ ] **`src/pages/app/components/Dashboard/components/Indicator.tsx`**  
-  - 将 `import { selectSite } from "@service/stat-service"` 改为  
-    `import { selectSite } from "@api/sw/stat"`  
+- [ ] **`src/pages/app/components/Dashboard/components/Indicator.tsx`**
+  - 将 `import { selectSite } from "@service/stat-service"` 改为
+    `import { selectSite } from "@api/sw/stat"`
   - 调用处不变。（若该文件还用了 `periodDatabase`，本 Wave 暂不删，仅改 stat 部分。）
 
-- [ ] **`src/pages/side/Layout.tsx`**  
-  - 将 `import { selectSite } from "@service/stat-service"` 改为  
+- [ ] **`src/pages/side/Layout.tsx`**
+  - 将 `import { selectSite } from "@service/stat-service"` 改为
     `import { selectSite } from "@api/sw/stat"`。
 
-- [ ] **`src/pages/side/components/Search/useDatePicker.ts`**  
-  - 将 `import { selectSite } from '@service/stat-service'` 改为  
+- [ ] **`src/pages/side/components/Search/useDatePicker.ts`**
+  - 将 `import { selectSite } from '@service/stat-service'` 改为
     `import { selectSite } from '@api/sw/stat'`。
 
-- [ ] **`src/pages/app/components/Analysis/context.ts`**  
-  - 将 `import { selectCate, selectSite } from "@service/stat-service"` 改为  
+- [ ] **`src/pages/app/components/Analysis/context.ts`**
+  - 将 `import { selectCate, selectSite } from "@service/stat-service"` 改为
     `import { selectCate, selectSite } from "@api/sw/stat"`。
 
-- [ ] **`src/pages/app/components/Habit/components/Site/context.ts`**  
-  - 将 `import { selectSite } from "@service/stat-service"` 与  
-    `import { mergeDate } from "@service/stat-service/merge/date"`  
-  - 改为  
-    `import { selectSite, mergeDate } from "@api/sw/stat"`  
+- [ ] **`src/pages/app/components/Habit/components/Site/context.ts`**
+  - 将 `import { selectSite } from "@service/stat-service"` 与
+    `import { mergeDate } from "@service/stat-service/merge/date"`
+  - 改为
+    `import { selectSite, mergeDate } from "@api/sw/stat"`
   - 调用处不变。
 
-- [ ] **`src/pages/app/components/Analysis/components/Summary/TargetInfo.tsx`**  
+- [ ] **`src/pages/app/components/Analysis/components/Summary/TargetInfo.tsx`**
   - 仅用 `getSite`，属于 site 领域，本 Wave 不改；若该文件还用了 stat，只改 stat 的 import。
 
-- [ ] **`src/pages/app/components/Report/ReportFilter/RemoteClient.tsx`**  
-  - 将 `import { canReadRemote } from '@service/stat-service/remote'` 改为  
+- [ ] **`src/pages/app/components/Report/ReportFilter/RemoteClient.tsx`**
+  - 将 `import { canReadRemote } from '@service/stat-service/remote'` 改为
     `import { canReadRemote } from '@api/sw/stat'`。
 
-- [ ] **`src/pages/app/components/Report/ReportFilter/BatchDelete.tsx`**  
-  - 将  
-    `import { batchDelete, countGroupByIds, countSiteByHosts } from "@service/stat-service"`  
-  - 改为  
-    `import { batchDelete, countGroupByIds, countSiteByHosts } from "@api/sw/stat"`  
+- [ ] **`src/pages/app/components/Report/ReportFilter/BatchDelete.tsx`**
+  - 将
+    `import { batchDelete, countGroupByIds, countSiteByHosts } from "@service/stat-service"`
+  - 改为
+    `import { batchDelete, countGroupByIds, countSiteByHosts } from "@api/sw/stat"`
   - 若仍引用 `statDatabase` 仅作类型，可改为从 `types` 或 `@db/stat-database` 仅 `import type`。
 
-- [ ] **`src/pages/app/components/Analysis/components/AnalysisFilter/TargetSelect.tsx`**  
-  - 将 `import { listHosts } from "@service/stat-service"` 改为  
-    `import { listHosts } from "@api/sw/stat"`  
+- [ ] **`src/pages/app/components/Analysis/components/AnalysisFilter/TargetSelect.tsx`**
+  - 将 `import { listHosts } from "@service/stat-service"` 改为
+    `import { listHosts } from "@api/sw/stat"`
   - `selectAllSites` 属于 site，本 Wave 不改。
 
-- [ ] **`src/pages/app/components/SiteManage/SiteManageModify/HostSelect.tsx`**  
-  - 将 `import { listHosts } from "@service/stat-service"` 改为  
-    `import { listHosts } from "@api/sw/stat"`  
+- [ ] **`src/pages/app/components/SiteManage/SiteManageModify/HostSelect.tsx`**
+  - 将 `import { listHosts } from "@service/stat-service"` 改为
+    `import { listHosts } from "@api/sw/stat"`
   - 若存在 `import siteDatabase from '@db/site-database'`，本 Wave 可暂保留或只删 stat 相关。
 
-- [ ] **`src/pages/popup/common.tsx`**  
-  - 将  
-    `import { selectCate, selectGroup, selectSite } from '@service/stat-service'`  
-  - 改为  
-    `import { selectCate, selectGroup, selectSite } from '@api/sw/stat'`  
+- [ ] **`src/pages/popup/common.tsx`**
+  - 将
+    `import { selectCate, selectGroup, selectSite } from '@service/stat-service'`
+  - 改为
+    `import { selectCate, selectGroup, selectSite } from '@api/sw/stat'`
   - `weekHelper` 本 Wave 不改。
 
-- [ ] **`src/pages/popup/components/Percentage/Cate/Wrapper.ts`**  
-  - 将 `import { mergeDate } from "@service/stat-service/merge/date"` 改为  
-    `import { mergeDate } from "@api/sw/stat"`  
+- [ ] **`src/pages/popup/components/Percentage/Cate/Wrapper.ts`**
+  - 将 `import { mergeDate } from "@service/stat-service/merge/date"` 改为
+    `import { mergeDate } from "@api/sw/stat"`
   - `cateService` 本 Wave 不改。
 
-- [ ] **`src/pages/app/components/Dashboard/index.tsx`**  
-  - 将 `import { recommendRate, saveFlag } from "@service/meta-service"` 改为：  
-    `import { recommendRate } from "@api/sw/stat"` 与  
-    `import { saveFlag } from "@service/meta-service"`（或等 Wave 2 meta 再做 saveFlag）。  
+- [ ] **`src/pages/app/components/Dashboard/index.tsx`**
+  - 将 `import { recommendRate, saveFlag } from "@service/meta-service"` 改为：
+    `import { recommendRate } from "@api/sw/stat"` 与
+    `import { saveFlag } from "@service/meta-service"`（或等 Wave 2 meta 再做 saveFlag）。
   - 若已为 meta 建好 client，可一并改为从 `@api/sw` 引 `recommendRate` 和 `saveFlag`（见 Wave 2）。
 
-- [ ] **`src/pages/app/components/Dashboard/components/TopKVisit/context.ts`**  
-  - 将 `import { selectSitePage, type SiteQuery } from "@service/stat-service"` 改为  
-    `import { selectSitePage } from "@api/sw/stat"`，  
+- [ ] **`src/pages/app/components/Dashboard/components/TopKVisit/context.ts`**
+  - 将 `import { selectSitePage, type SiteQuery } from "@service/stat-service"` 改为
+    `import { selectSitePage } from "@api/sw/stat"`，
   - `SiteQuery` 类型改为 `import type { SiteQuery } from "@service/stat-service"` 或从 `types/timer` 引用（若已抽类型）。
 
-- [ ] **`src/pages/app/components/Report/common.ts`**  
-  - 将其中对 `selectCate` / `selectCatePage` / `selectGroup` / `selectGroupPage` / `selectSite` / `selectSitePage` 的 import 从 `@service/stat-service` 改为 `@api/sw`；  
+- [ ] **`src/pages/app/components/Report/common.ts`**
+  - 将其中对 `selectCate` / `selectCatePage` / `selectGroup` / `selectGroupPage` / `selectSite` / `selectSitePage` 的 import 从 `@service/stat-service` 改为 `@api/sw`；
   - 若仍有 `statDatabase` 仅作类型，保留 `import type` 或迁到 types。
 
-- [ ] **`src/pages/app/components/Report/ReportTable/index.tsx`**  
-  - 将  
-    `import { selectCate, selectGroup, selectSite, type SiteQuery } from "@service/stat-service"`  
-  - 改为从 `@api/sw` 引入 `selectCate`、`selectGroup`、`selectSite`；  
+- [ ] **`src/pages/app/components/Report/ReportTable/index.tsx`**
+  - 将
+    `import { selectCate, selectGroup, selectSite, type SiteQuery } from "@service/stat-service"`
+  - 改为从 `@api/sw` 引入 `selectCate`、`selectGroup`、`selectSite`；
   - `SiteQuery` 从 types 或 stat-service 的 `import type` 保留。
 
 ### 1.5 Wave 1 校验
 
 - [x] 执行：`npm run build`，应成功。
-- [x] 执行：`rg "from ['\"]@service/stat-service|from ['\"]@service/stat-service/" src/pages src/content-script`  
+- [x] 执行：`rg "from ['\"]@service/stat-service|from ['\"]@service/stat-service/" src/pages src/content-script`
   - 预期：仅剩仍使用 `SiteQuery` 等类型的 `import type`，或 0 处（若类型已迁到 types）。
 - [ ] 手动验证：打开 Popup、App 仪表盘/分析/报表、Side 搜索，确认统计与筛选正常。
 
@@ -322,27 +322,27 @@ export function recommendRate() {
 
 ### 2.2 Background 领域模块
 
-- [ ] 新建 **`src/background/services/option.ts`**：  
-  - `register('option.get', () => optionHolder.get())`  
-  - `register('option.set', data => optionHolder.set(data))`  
-  - `register('option.isDarkMode', ...)` 调 `optionService.isDarkMode`  
-  - `register('option.setDarkMode', ...)` 调 `optionService.setDarkMode`  
-  - 同上 setLocale、setBackupOption（参见 option-service 签名）。  
+- [ ] 新建 **`src/background/services/option.ts`**：
+  - `register('option.get', () => optionHolder.get())`
+  - `register('option.set', data => optionHolder.set(data))`
+  - `register('option.isDarkMode', ...)` 调 `optionService.isDarkMode`
+  - `register('option.setDarkMode', ...)` 调 `optionService.setDarkMode`
+  - 同上 setLocale、setBackupOption（参见 option-service 签名）。
   - 在 **`src/background/index.ts`** 中增加 `import initOptionService from "./services/option"` 与 `initOptionService(messageDispatcher)`。
 
-- [ ] 新建 **`src/background/services/cate.ts`**：  
-  - `register('cate.listAll', () => cateService.listAll())`  
-  - `register('cate.add', name => cateService.add(name))`  
-  - `register('cate.saveName', ({ id, name }) => cateService.saveName(id, name))`  
-  - `register('cate.remove', id => cateService.remove(id))`  
+- [ ] 新建 **`src/background/services/cate.ts`**：
+  - `register('cate.listAll', () => cateService.listAll())`
+  - `register('cate.add', name => cateService.add(name))`
+  - `register('cate.saveName', ({ id, name }) => cateService.saveName(id, name))`
+  - `register('cate.remove', id => cateService.remove(id))`
   - 在 **`src/background/index.ts`** 中增加 `initCateService(messageDispatcher)`。
 
-- [ ] 新建 **`src/background/services/meta.ts`**：  
-  - `register('meta.saveFlag', ...)` 调 `saveFlag`  
-  - `register('meta.getCid', () => getCid())`  
-  - `register('meta.increaseApp', routePath => increaseApp(routePath))`  
-  - `register('meta.increasePopup', () => increasePopup())`  
-  - `register('meta.recommendRate', () => recommendRate())`  
+- [ ] 新建 **`src/background/services/meta.ts`**：
+  - `register('meta.saveFlag', ...)` 调 `saveFlag`
+  - `register('meta.getCid', () => getCid())`
+  - `register('meta.increaseApp', routePath => increaseApp(routePath))`
+  - `register('meta.increasePopup', () => increasePopup())`
+  - `register('meta.recommendRate', () => recommendRate())`
   - 在 **`src/background/index.ts`** 中增加 `initMetaService(messageDispatcher)`。
 
 ### 2.3 Runtime Client
@@ -407,9 +407,9 @@ export function recommendRate() {
 
 ### 4.1 ReqCode（limit / whitelist / backup）
 
-- [ ] **mq.d.ts** 追加：  
-  `limit.select` / `limit.remove` / `limit.updateEnabled` / `limit.updateDelay` / `limit.updateLocked` / `limit.verify`  
-  `whitelist.listAll` / `whitelist.add` / `whitelist.remove`  
+- [ ] **mq.d.ts** 追加：
+  `limit.select` / `limit.remove` / `limit.updateEnabled` / `limit.updateDelay` / `limit.updateLocked`
+  `whitelist.listAll` / `whitelist.add` / `whitelist.remove`
   `backup.syncData` / `backup.checkAuth` / `backup.clear` / `backup.query` / `backup.getLastBackUp`
 
 ### 4.2 Background 模块

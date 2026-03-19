@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
+import limitService from "@/background/service/limit-service"
 import { createTabAfterCurrent, getRightOf, listTabs, resetTabUrl, sendMsg2Tab } from "@api/chrome/tab"
 import { LIMIT_ROUTE } from "@app/router/constants"
-import limitService from "@/background/service/limit-service"
 import { getAppPageUrl } from "@util/constant/url"
 import { matches } from "@util/limit"
 import { isBrowserUrl } from "@util/pattern"
@@ -77,9 +77,9 @@ const processAskHitVisit = async (item: timer.limit.Item) => {
 export default function init(dispatcher: MessageDispatcher) {
     initDailyBroadcast()
     dispatcher
-        .register<string>('openLimitPage', processOpenPage)
+        .register('openLimitPage', processOpenPage)
         // More minutes
-        .register<string>('cs.moreMinutes', processMoreMinutes)
+        .register('cs.moreMinutes', processMoreMinutes)
         // Judge any tag hit the time limit per visit
-        .register<timer.limit.Item, boolean>("askHitVisit", processAskHitVisit)
+        .register("askHitVisit", processAskHitVisit)
 }

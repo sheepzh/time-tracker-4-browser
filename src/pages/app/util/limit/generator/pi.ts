@@ -6,7 +6,7 @@
  */
 
 import { randomIntBetween } from "@util/number"
-import { type VerificationContext, type VerificationGenerator, type VerificationPair } from "../common"
+import type { VerificationContext, VerificationGenerator, VerificationPair } from "../types"
 
 const MIN_START_IDX = 10
 const MAX_START_IDX = 25

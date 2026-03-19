@@ -1,6 +1,6 @@
 import { getRuntimeId, getUrl, trySendMsg2Runtime } from '@api/chrome/runtime'
-import { isDarkMode } from '@api/sw/option'
-import { init as initTheme, toggle } from '@util/dark-mode'
+import { getOption } from '@api/sw/option'
+import { init as initTheme, processDarkMode } from '@util/dark-mode'
 import { createApp, Ref, type App } from 'vue'
 import { exitFullscreen, isSameReason, type LimitReason, type MaskModal } from '../common'
 import { TAG_NAME, type RootElement } from '../element'
@@ -147,7 +147,7 @@ class ModalInstance implements MaskModal {
 
         // 2. Init dark mode
         initTheme(html)
-        isDarkMode().then(val => toggle(!!val, html))
+        getOption().then(processDarkMode)
 
         // 3. Init vue app instance
         this.initApp()

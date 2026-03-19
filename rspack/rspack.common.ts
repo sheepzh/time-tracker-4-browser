@@ -1,14 +1,12 @@
 import {
     CopyRspackPlugin, CssExtractRspackPlugin, DefinePlugin, HtmlRspackPlugin,
-    type Chunk, type Configuration,
-    type RspackPluginInstance,
-    type RuleSetRule
+    type Chunk, type Configuration, type Module, type RspackPluginInstance, type RuleSetRule
 } from "@rspack/core"
 import path, { join } from "path"
 import postcssRTLCSS from 'postcss-rtlcss'
 import i18nChrome from "../src/i18n/chrome"
-import { ForbidBackendInFrontendPlugin } from "./plugins/forbid-backend-in-frontend"
 import { GenerateJsonPlugin } from "./plugins/generate-json"
+import { ImportCheckerPlugin } from './plugins/import-checker'
 
 export const MANIFEST_JSON_NAME = "manifest.json"
 
@@ -64,6 +62,10 @@ const chunkFilter = ({ name }: Chunk) => {
     return !name || ![BACKGROUND, CONTENT_SCRIPT, CONTENT_SCRIPT_SKELETON].includes(name)
 }
 
+/** Modules under src/background must not be extracted into shared chunks (vendor/*, etc.). */
+const isBackgroundModule = (module: Module) =>
+    /[\\/]src[\\/]background[\\/]/.test(module.nameForCondition?.() ?? '')
+
 const staticOptions: Configuration = {
     entry() {
         const entry: Record<string, string> = {}
@@ -105,13 +107,24 @@ const staticOptions: Configuration = {
         splitChunks: {
             chunks: chunkFilter,
             cacheGroups: {
+                /**
+                 * Exclude src/background from the default shared chunk group so those files are
+                 * never pulled into vendor/* (merging into entry name: 'background' panics in Rspack).
+                 */
+                default: {
+                    minChunks: 2,
+                    priority: -20,
+                    reuseExistingChunk: true,
+                    test: (module) => !isBackgroundModule(module),
+                },
                 elementPlus: {
                     name: 'element-plus',
                     test: /[\\/]node_modules[\\/]element-plus[\\/]/,
                 },
                 defaultVendors: {
-                    filename: 'vendor/[name].js'
-                }
+                    test: /[\\/]node_modules[\\/]/,
+                    filename: 'vendor/[name].js',
+                },
             }
         },
     },
@@ -126,7 +139,7 @@ type Option = {
 const generateOption = ({ outputPath, manifest, mode }: Option) => {
     const plugins = [
         ...generateJsonPlugins,
-        new ForbidBackendInFrontendPlugin(),
+        new ImportCheckerPlugin(),
         new GenerateJsonPlugin(MANIFEST_JSON_NAME, manifest),
         // copy static resources
         new CopyRspackPlugin({

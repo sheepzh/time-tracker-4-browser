@@ -16,12 +16,13 @@ class VisitProcessor implements Processor {
         this.context = context
     }
 
-    async handleMsg(code: timer.mq.ReqCode): Promise<timer.mq.Response> {
+    async handleMsg(code: timer.mq.ReqCode): Promise<timer.mq.Response<timer.mq.ReqCode>> {
         if (code === "limitChanged") {
             this.initRules()
             return { code: "success" }
         } else if (code === "askVisitTime") {
-            return { code: "success", data: this.focusTime }
+            const res = { code: "success", data: this.focusTime } satisfies { code: "success"; data: timer.mq.ResData<"askVisitTime"> }
+            return res
         }
         return { code: "ignore" }
     }

@@ -9,16 +9,16 @@ import { handleTrackRunTimeEvent } from './runtime'
 
 export default function initTrackServer(messageDispatcher: MessageDispatcher) {
     messageDispatcher
-        .register<timer.core.Event, void>('cs.trackTime', (ev, sender) => {
+        .register('cs.trackTime', (ev, sender) => {
             // not to process cs events from local files for FF
             if (IS_FIREFOX && isFileUrl(ev.url)) return
 
             handleTrackTimeEvent(ev, sender.tab)
         })
-        .register<timer.core.Event, void>('cs.trackRunTime', handleTrackRunTimeEvent)
-        .register<{ host: string, url: string }, void>('cs.incVisitCount', handleIncVisitEvent)
-        .register<string, timer.core.Result>('cs.getTodayInfo', host => itemService.getResult(host, new Date()))
-        .register<void, void>('enableTabGroup', handleTabGroupEnabled)
+        .register('cs.trackRunTime', handleTrackRunTimeEvent)
+        .register('cs.incVisitCount', handleIncVisitEvent)
+        .register('cs.getTodayInfo', host => itemService.getResult(host, new Date()))
+        .register('enableTabGroup', handleTabGroupEnabled)
 
     // Track file time in background script for FF
     // Not accurate, since can't detect if the tabs are active or not

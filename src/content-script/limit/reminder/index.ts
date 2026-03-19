@@ -1,4 +1,5 @@
-import { isDarkMode } from "@api/sw/option"
+import { getOption } from '@/api/sw/option'
+import { processDarkMode } from '@/util/dark-mode'
 import { MILL_PER_MINUTE } from "@util/time"
 import { exitFullscreen, type Processor } from "../common"
 import { createComponent } from "./component"
@@ -8,7 +9,7 @@ class Reminder implements Processor {
     private el: HTMLElement | undefined
     private darkMode: boolean = false
 
-    handleMsg(code: timer.mq.ReqCode, data: unknown): timer.mq.Response | Promise<timer.mq.Response> {
+    handleMsg(code: timer.mq.ReqCode, data: unknown): timer.mq.Response<timer.mq.ReqCode> | Promise<timer.mq.Response<timer.mq.ReqCode>> {
         if (code !== 'limitReminder') {
             return { code: 'ignore' }
         }
@@ -38,7 +39,7 @@ class Reminder implements Processor {
     }
 
     async init(): Promise<void> {
-        this.darkMode = !!(await isDarkMode())
+        getOption().then(processDarkMode)
     }
 }
 

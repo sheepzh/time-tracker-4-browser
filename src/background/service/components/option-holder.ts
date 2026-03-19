@@ -9,10 +9,6 @@ class OptionHolder {
     private listeners: ChangeListener[] = []
 
     constructor() {
-        db.addOptionChangeListener(async () => {
-            const option = await this.reset()
-            this.listeners.forEach(listener => listener(option))
-        })
         onPermRemoved(perm => {
             perm.permissions?.includes('tabGroups') && this.set({ countTabGroup: false })
         })
@@ -33,10 +29,11 @@ class OptionHolder {
     }
 
     async set(option: Partial<timer.option.AllOption>): Promise<void> {
-        const exist = await db.getOption()
-        const toSet: DefaultOption = Object.assign(defaultOption(), exist, option)
+        const exist = await this.get()
+        const toSet = Object.assign(defaultOption(), exist, option)
         await db.setOption(toSet)
         this.value = toSet
+        this.listeners.forEach(listener => listener(toSet))
     }
 }
 

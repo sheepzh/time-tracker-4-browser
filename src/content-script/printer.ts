@@ -13,7 +13,7 @@ import { t } from "./locale"
  * Print info of today
  */
 export default async function printInfo(host: string) {
-    const waste = await trySendMsg2Runtime<string, timer.core.Result>('cs.getTodayInfo', host)
+    const waste = await trySendMsg2Runtime('cs.getTodayInfo', host)
     if (!waste) return
     const { time, focus } = waste
 

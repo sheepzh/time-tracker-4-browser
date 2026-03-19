@@ -25,20 +25,23 @@ function cloneData<T = any>(data: T | undefined): T | undefined {
     }
 }
 
-export function sendMsg2Runtime<T = any, R = any>(code: timer.mq.ReqCode, data?: T): Promise<R | undefined> {
-    const request: timer.mq.Request<T> = { code, data: cloneData(data) }
+export function sendMsg2Runtime<C extends timer.mq.RuntimeReqCode>(code: C, data?: timer.mq.ReqData<C>, timeout_ms?: number): Promise<timer.mq.ResData<C>> {
+    const request: timer.mq.Request<C> = { code, data: cloneData(data) as timer.mq.ReqData<C> }
     return new Promise((resolve, reject) => {
         const timeout = setTimeout(() => {
             // timeout: no response from runtime
-            resolve(undefined)
-        }, 10_000)
+            reject('sendMsg2Runtime timeout')
+        }, timeout_ms ?? 10_000)
         try {
-            chrome.runtime.sendMessage(request, (response: timer.mq.Response<R>) => {
+            chrome.runtime.sendMessage(request, (response: timer.mq.Response<C>) => {
                 clearTimeout(timeout)
                 handleError('sendMsg2Runtime')
                 const resCode = response?.code
-                resCode === 'fail' && reject(new Error(response?.msg || 'Unknown error'))
-                resCode === 'success' && resolve(response.data)
+                if (resCode === 'fail') {
+                    console.warn("Error occurred when querying service-worker", code, data, response?.msg)
+                    return reject(new Error(response?.msg || 'Unknown error'))
+                }
+                resCode === 'success' && resolve(response.data as timer.mq.ResData<C>)
             })
         } catch (e) {
             clearTimeout(timeout)
@@ -51,7 +54,7 @@ export function sendMsg2Runtime<T = any, R = any>(code: timer.mq.ReqCode, data?:
  * Wrap for hooks, after the extension reloaded or upgraded, the context of current content script will be invalid
  * And sending messages to the runtime will be failed
  */
-export async function trySendMsg2Runtime<Req, Res>(code: timer.mq.ReqCode, data?: Req): Promise<Res | undefined> {
+export async function trySendMsg2Runtime<C extends timer.mq.RuntimeReqCode>(code: C, data?: timer.mq.ReqData<C>): Promise<timer.mq.ResData<C> | undefined> {
     try {
         return await sendMsg2Runtime(code, data)
     } catch {
@@ -59,11 +62,11 @@ export async function trySendMsg2Runtime<Req, Res>(code: timer.mq.ReqCode, data?
     }
 }
 
-export function onRuntimeMessage<T = any, R = any>(handler: ChromeMessageHandler<T, R>): void {
+export function onRuntimeMessage(handler: ChromeMessageHandler): void {
     // Be careful!!!
     // Can't use await/async in callback parameter
-    chrome.runtime.onMessage.addListener((message: timer.mq.Request<T>, sender: chrome.runtime.MessageSender, sendResponse: timer.mq.Callback<R>) => {
-        handler(message, sender).then((response: timer.mq.Response<R>) => {
+    chrome.runtime.onMessage.addListener((message: timer.mq.Request<timer.mq.ReqCode>, sender: chrome.runtime.MessageSender, sendResponse: timer.mq.Callback<timer.mq.ReqCode>) => {
+        handler(message, sender).then((response: timer.mq.Response<timer.mq.ReqCode>) => {
             if (response.code === 'ignore') return
             sendResponse(response)
         })

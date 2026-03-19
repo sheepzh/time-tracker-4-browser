@@ -124,6 +124,14 @@ declare namespace timer.backup {
 
     type Row = core.Row & RowExtend
 
+    /** @see backup processor query() */
+    type RemoteRowsQuery = {
+        start: Date
+        end: Date
+        specCid?: string
+        excludeLocal?: boolean
+    }
+
     /**
      * The data format for export and import
      */

@@ -4,10 +4,10 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import weekHelper from "@/background/service/components/week-helper"
 import ColumnHeader from "@app/components/common/ColumnHeader"
 import { t } from "@app/locale"
 import { useLocalStorage, useRequest, useState } from "@hooks"
-import weekHelper from "@/background/service/components/week-helper"
 import { isEffective } from "@util/limit"
 import { ElSwitch, ElTable, ElTableColumn, ElTag, type RenderRowData, type Sort, type TableInstance } from "element-plus"
 import { defineComponent, ref, watch } from "vue"

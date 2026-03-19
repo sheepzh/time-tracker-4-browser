@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 import siteDatabase from '@/background/database/site-database'
-import { useManualRequest } from "@hooks"
 import { listHosts } from "@api/sw/stat"
+import { useManualRequest } from "@hooks"
 import { MERGED_HOST, ALL_HOSTS as REMAIN_HOSTS } from "@util/constant/remain-host"
 import { isValidVirtualHost, judgeVirtualFast } from "@util/pattern"
 import { ElOption, ElSelect, ElTag } from "element-plus"

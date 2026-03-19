@@ -23,28 +23,28 @@
 
 ## 二、目标架构（CS 解耦）
 
-- **Server 端（仅 background）**  
-  - 唯一允许引用 `@service` 和 `@db` 的上下文。  
-  - 在 `background/` 下按领域拆分“服务模块”（如 limit、stat、site、option、backup、whitelist、meta、cate、period 等），每个模块只负责：  
-    - 在 `MessageDispatcher` 上注册本领域的 ReqCode；  
-    - 在 handler 内调用现有 `@service/*`（或必要时直接 `@db/*`）。  
+- **Server 端（仅 background）**
+  - 唯一允许引用 `@service` 和 `@db` 的上下文。
+  - 在 `background/` 下按领域拆分“服务模块”（如 limit、stat、site、option、backup、whitelist、meta、cate、period 等），每个模块只负责：
+    - 在 `MessageDispatcher` 上注册本领域的 ReqCode；
+    - 在 handler 内调用现有 `@service/*`（或必要时直接 `@db/*`）。
   - 页面和 content-script **不**再 import 任何 `@service` / `@db`。
 
-- **Client 端（popup / app / side / content-script）**  
-  - 仅通过 `sendMsg2Runtime(ReqCode, data)` 与 background 通信。  
+- **Client 端（popup / app / side / content-script）**
+  - 仅通过 `sendMsg2Runtime(ReqCode, data)` 与 background 通信。
   - 可引入一层 **SW API**（`src/api/sw/`）：按领域子路径（如 `@api/sw/stat`、`@api/sw/option`）导出命名函数，方法命名规范为动词+名词（如 `getOption`、`selectSite`），内部用 `requestStat` / `requestOption` 等领域 request 封装 `sendMsg2Runtime`，便于 tree-shaking，且不透出 client 概念。
 
-- **构建与打包**  
+- **构建与打包**
   - 仅 background 的 entry 打包 `@service` 和 `@db`；popup / app / side / content-script 的 entry 只依赖 `@api/chrome/runtime` 和上述 SW API（`@api/sw/<domain>`），不再包含 service/db 代码，实现真正的“页面与 service 解耦”。
 
 ---
 
 ## 三、可行性结论
 
-- **技术上完全可行**：Chrome 扩展的 background 与各 page/content-script 本就隔离，现有消息通道已在使用，只需：  
-  - 补全“页面/CS 当前直接调用的每个 service 能力”对应的 ReqCode + handler；  
-  - 用 SW API（`src/api/sw/`）封装这些 ReqCode，并替换所有直接 import `@service` 的调用。  
-- **无需真实网络 CS**：这里的“CS”指 **进程/上下文架构**（background = 服务端，pages/CS = 客户端），不要求独立后端或 HTTP 服务。  
+- **技术上完全可行**：Chrome 扩展的 background 与各 page/content-script 本就隔离，现有消息通道已在使用，只需：
+  - 补全“页面/CS 当前直接调用的每个 service 能力”对应的 ReqCode + handler；
+  - 用 SW API（`src/api/sw/`）封装这些 ReqCode，并替换所有直接 import `@service` 的调用。
+- **无需真实网络 CS**：这里的“CS”指 **进程/上下文架构**（background = 服务端，pages/CS = 客户端），不要求独立后端或 HTTP 服务。
 - **可渐进迁移**：可以按“领域”或“页面”逐步替换，先加 ReqCode + handler + client 方法，再删对应 `@service` 引用。
 
 ---
@@ -104,7 +104,6 @@
 | limit | `limit.updateEnabled` | `timer.limit.Item[]` | `void` | `limit-service.updateEnabled` |
 | limit | `limit.updateDelay` | `timer.limit.Item` | `void` | `limit-service.updateDelay` |
 | limit | `limit.updateLocked` | `timer.limit.Item` | `void` | `limit-service.updateLocked` |
-| limit | `limit.verify` | 验证参数（见 useVerify） | 验证结果 | `limit-service/verification/processor` |
 | backup | `backup.syncData` | 无 | `{ success, errorMsg? }` | `backup/processor.syncData` |
 | backup | `backup.checkAuth` | 无 | `{ success?, errorMsg? }` | `backup/processor.checkAuth` |
 | backup | `backup.clear` | `string` (cid) | 结果 | `backup/processor.clear` |
@@ -154,7 +153,7 @@
 | `src/background/services/site.ts` | 注册 `site.*`，调 `@service/site-service`。 |
 | `src/background/services/option.ts` | 注册 `option.get` / `option.set` / `option.isDarkMode` 等，调 `option-holder`、`option-service`。 |
 | `src/background/services/cate.ts` | 注册 `cate.listAll` / `cate.add` / `cate.saveName` / `cate.remove`，调 `cate-service`。 |
-| `src/background/services/limit.ts` | 注册 `limit.select` / `limit.remove` / `limit.updateEnabled` / `limit.updateDelay` / `limit.updateLocked` / `limit.verify`，调 `limit-service` 及 verification processor。 |
+| `src/background/services/limit.ts` | 注册 `limit.select` / `limit.remove` / `limit.updateEnabled` / `limit.updateDelay` / `limit.updateLocked` / 调 `limit-service` 及 verification processor。 |
 | `src/background/services/backup.ts` | 注册 `backup.syncData` / `backup.checkAuth` / `backup.clear` / `backup.query`，调 `backup/processor`；`backup.getLastBackUp` 调 `meta-service`。 |
 | `src/background/services/whitelist.ts` | 注册 `whitelist.listAll` / `whitelist.add` / `whitelist.remove`，调 `whitelist/service`。 |
 | `src/background/services/meta.ts` | 注册 `meta.saveFlag` / `meta.getCid` / `meta.increaseApp` / `meta.increasePopup` / `meta.recommendRate`，调 `meta-service`。 |
@@ -334,7 +333,6 @@ export function selectSitePage(param?: SiteQuery, page?: timer.common.PageQuery)
 | `src/pages/app/components/DataManage/ClearPanel/index.tsx` | db, StatCondition from stat-database | `@api/sw/stat` 查询 + 删除；类型从 types | 不变 |
 | `src/pages/app/components/RuleMerge/ItemList.tsx` | mergeRuleDatabase | 新 ReqCode mergeRule.list 等，mergeRuleClient | 不变 |
 | `src/pages/app/components/About/Description.tsx` | saveFlag | `@api/sw/meta`（如 `saveFlag`, `recommendRate`）.saveFlag | 不变 |
-| `src/pages/app/util/limit.tsx` | sendMsg2Runtime, verificationProcessor | 保留 sendMsg2Runtime('askHitVisit')；verify 改为 limitClient.verify 或保留 verificationProcessor 在 background，页面发 limit.verify | 不变 |
 | `src/pages/app/components/Option/categories/Backup/Download/Sop.tsx` | fillExist, processImportedData | importClient | 已列在上表 |
 
 **5.2 Pages（popup）**
@@ -418,19 +416,19 @@ export function selectSitePage(param?: SiteQuery, page?: timer.common.PageQuery)
 
 ## 五、风险与注意点
 
-- **消息序列化**：Chrome 的 `sendMessage` 会做 JSON 序列化，不能传函数、Symbol、不可序列化对象。复杂参数/返回值需保证可 JSON 序列化（当前代码已多用 plain object，需保持）。  
-- **异步与错误**：所有 client 方法都是异步的，且依赖 background 存活；扩展 reload/升级后，已有页面或 CS 的“旧 context”可能暂时收不到回复，现有 `trySendMsg2Runtime` 等已有一定防护，Client API 层可统一用相同策略。  
-- **性能**：每次操作都经消息通道，会有一定延迟；若某页面存在“高频、批量”调用（如表格逐行查 site），可考虑在 background 增加批量 ReqCode（如 `site.batchGet`），减少往返次数。  
+- **消息序列化**：Chrome 的 `sendMessage` 会做 JSON 序列化，不能传函数、Symbol、不可序列化对象。复杂参数/返回值需保证可 JSON 序列化（当前代码已多用 plain object，需保持）。
+- **异步与错误**：所有 client 方法都是异步的，且依赖 background 存活；扩展 reload/升级后，已有页面或 CS 的“旧 context”可能暂时收不到回复，现有 `trySendMsg2Runtime` 等已有一定防护，Client API 层可统一用相同策略。
+- **性能**：每次操作都经消息通道，会有一定延迟；若某页面存在“高频、批量”调用（如表格逐行查 site），可考虑在 background 增加批量 ReqCode（如 `site.batchGet`），减少往返次数。
 - **测试**：background 的 handler 可单测（直接调 handler 函数）；页面/CS 侧可 mock `sendMsg2Runtime` 或 Runtime Client，便于单元测试。
 
 ---
 
 ## 六、小结
 
-- **能否完全改成 CS 架构**：可以；把“所有 service 调用”都收口到 background，页面和 content-script 只通过消息调用即可。  
-- **核心改动**：  
-  1）补全 ReqCode 与类型；  
-  2）在 background 按领域拆分并注册 handler，handler 内调现有 service；  
-  3）实现 Runtime Client API，替换页面/CS 中所有对 `@service`（及 `@db`）的直接引用；  
-  4）构建与规范上保证只有 background 依赖 service/db。  
+- **能否完全改成 CS 架构**：可以；把“所有 service 调用”都收口到 background，页面和 content-script 只通过消息调用即可。
+- **核心改动**：
+  1）补全 ReqCode 与类型；
+  2）在 background 按领域拆分并注册 handler，handler 内调现有 service；
+  3）实现 Runtime Client API，替换页面/CS 中所有对 `@service`（及 `@db`）的直接引用；
+  4）构建与规范上保证只有 background 依赖 service/db。
 按上述步骤分阶段做，即可在不大改业务逻辑的前提下，把 extension 做成“逻辑与数据仅在 background、页面与 content-script 纯客户端”的 CS 架构。

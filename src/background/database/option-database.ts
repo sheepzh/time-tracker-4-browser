@@ -26,20 +26,6 @@ class OptionDatabase extends BaseDatabase {
     async setOption(option: timer.option.AllOption): Promise<void> {
         option && await this.setByKey(DB_KEY, option)
     }
-
-    /**
-     * @since 0.3.2
-     */
-    addOptionChangeListener(listener: (newVal: timer.option.AllOption) => void) {
-        const storageListener = (
-            changes: { [key: string]: chrome.storage.StorageChange },
-            _areaName: chrome.storage.AreaName,
-        ) => {
-            const optionInfo = changes[DB_KEY]
-            optionInfo && listener(optionInfo.newValue as timer.option.AllOption ?? {})
-        }
-        chrome.storage.onChanged.addListener(storageListener)
-    }
 }
 
 const optionDatabase = new OptionDatabase()

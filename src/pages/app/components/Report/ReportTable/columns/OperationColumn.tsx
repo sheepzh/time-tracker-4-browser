@@ -4,6 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import { addWhitelist, listWhitelist, removeWhitelist } from "@api/sw/whitelist"
 import type { AnalysisQuery } from "@app/components/Analysis/context"
 import PopupConfirmButton from "@app/components/common/PopupConfirmButton"
 import { t } from "@app/locale"
@@ -12,7 +13,6 @@ import { Delete, Open, Plus, Stopwatch } from "@element-plus/icons-vue"
 import { useRequest } from "@hooks"
 import { useTabGroups } from "@hooks/useTabGroups"
 import { locale } from "@i18n"
-import { listWhitelist, addWhitelist, removeWhitelist } from "@api/sw/whitelist"
 import { CATE_NOT_SET_ID } from "@util/site"
 import { isCate, isGroup, isNormalSite, isSite } from "@util/stat"
 import { ElButton, ElMessage, ElTableColumn, type RenderRowData } from "element-plus"

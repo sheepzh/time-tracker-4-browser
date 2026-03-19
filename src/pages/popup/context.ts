@@ -1,8 +1,8 @@
-import { useLocalStorage, useProvide, useProvider, useRequest } from "@hooks"
 import { listCates } from "@api/sw/cate"
-import { isDarkMode as getOptionDarkMode, setDarkMode as setOptionDarkMode } from "@api/sw/option"
+import { getOption, setDarkMode as setOptionDarkMode } from "@api/sw/option"
+import { useLocalStorage, useProvide, useProvider, useRequest } from "@hooks"
 import { toMap } from "@util/array"
-import { isDarkMode, toggle } from "@util/dark-mode"
+import { isDarkMode, processDarkMode } from "@util/dark-mode"
 import { CATE_NOT_SET_ID } from "@util/site"
 import { reactive, type Reactive, ref, type Ref, toRaw, watch } from "vue"
 import { t } from "./locale"
@@ -40,12 +40,14 @@ export const initPopupContext = (): Ref<number> => {
     const appKey = ref(Date.now())
     const reload = () => appKey.value = Date.now()
 
-    const { data: darkMode, refresh: refreshDarkMode } = useRequest(() => getOptionDarkMode(), { defaultValue: isDarkMode() })
+    const { data: darkMode, refresh: refreshDarkMode } = useRequest(async () => {
+        const option = await getOption()
+        return processDarkMode(option)
+    }, { defaultValue: isDarkMode() })
 
     const setDarkMode = async (val: boolean) => {
         const option: timer.option.DarkMode = val ? 'on' : 'off'
         await setOptionDarkMode(option)
-        toggle(val)
         refreshDarkMode()
     }
 

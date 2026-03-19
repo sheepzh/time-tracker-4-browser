@@ -92,4 +92,71 @@ declare namespace timer.stat {
      * @since 3.0.0
      */
     type MergeMethod = 'cate' | 'date' | 'domain' | 'group'
+
+    /**
+     * Shared shape with stat-database StatCondition (mq / SW).
+     */
+    type StatCondition = {
+        date?: Date | [Date?, Date?]
+        focusRange?: Vector<2>
+        timeRange?: [number, number?]
+        virtual?: boolean
+        keys?: string[] | string
+    }
+
+    /** @see stat-service SiteQuery */
+    type SiteSelectQuery = Pick<StatCondition, 'date' | 'focusRange' | 'timeRange' | 'virtual'>
+        & timer.common.SortBy<'date' | 'host' | timer.core.Dimension>
+        & {
+            query?: string
+            host?: string
+            mergeDate?: boolean
+            mergeHost?: boolean
+            inclusiveRemote?: boolean
+            cateIds?: number[]
+            ignoreSite?: boolean
+        }
+
+    type SiteSelectPageQuery = {
+        param?: SiteSelectQuery
+        page?: timer.common.PageQuery
+    }
+
+    /** @see stat-service CateQuery */
+    type CateSelectQuery = Pick<StatCondition, 'date'>
+        & timer.common.SortBy<'date' | 'focus' | 'time'>
+        & {
+            query?: string
+            mergeDate?: boolean
+            inclusiveRemote?: boolean
+            cateIds?: number[]
+        }
+
+    type CateSelectPageQuery = {
+        query?: CateSelectQuery
+        page?: timer.common.PageQuery
+    }
+
+    /** @see stat-service GroupQuery */
+    type GroupSelectQuery = Pick<StatCondition, 'date'>
+        & timer.common.SortBy<'date' | 'title' | 'focus' | 'time'>
+        & {
+            query?: string
+            mergeDate?: boolean
+        }
+
+    type GroupSelectPageQuery = {
+        param?: GroupSelectQuery
+        page?: timer.common.PageQuery
+    }
+
+    type StatCountGroupByIdsQuery = {
+        groupIds: number[]
+        dateRange: StatCondition['date']
+    }
+
+    type StatCountSiteByHostsQuery = {
+        hosts: string[]
+        dateRange: StatCondition['date']
+    }
 }

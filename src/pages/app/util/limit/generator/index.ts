@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { type VerificationGenerator } from "../common"
+import type { VerificationGenerator } from "../types"
 import ConfessionGenerator from "./confession"
 import PiGenerator from "./pi"
 import UglyGenerator from "./ugly"

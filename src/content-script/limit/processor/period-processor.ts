@@ -30,7 +30,7 @@ class PeriodProcessor implements Processor {
         this.context = context
     }
 
-    async handleMsg(code: timer.mq.ReqCode, data: timer.limit.Item[]): Promise<timer.mq.Response> {
+    async handleMsg(code: timer.mq.ReqCode, data: timer.limit.Item[]): Promise<timer.mq.Response<timer.mq.ReqCode>> {
         if (code === "limitChanged") {
             this.timers?.forEach(clearTimeout)
             await this.init0(data)

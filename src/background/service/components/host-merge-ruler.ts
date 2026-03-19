@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { get } from "@/background/psl"
 import FIFOCache from '@util/fifo-cache'
 import { isIpAndPort, judgeVirtualFast } from "@util/pattern"
-import { get } from "@util/psl"
 
 /**
  * @param origin origin host

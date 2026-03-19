@@ -29,4 +29,16 @@ declare namespace timer.site {
         id: number
         name: string
     }
+
+    /** @see site-database SiteCondition (mq / SW). */
+    type SiteListQuery = {
+        fuzzyQuery?: string
+        cateIds?: number | number[]
+        types?: timer.site.Type | timer.site.Type[]
+    }
+
+    type SiteSelectPageQuery = {
+        param?: SiteListQuery
+        page?: timer.common.PageQuery
+    }
 }

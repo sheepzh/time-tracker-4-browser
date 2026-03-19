@@ -28,7 +28,7 @@
     },
     "license": "MIT",
     "devDependencies": {
-        "@crowdin/crowdin-api-client": "^1.53.1",
+        "@crowdin/crowdin-api-client": "^1.53.3",
         "@emotion/babel-plugin": "^11.13.5",
         "@emotion/css": "^11.13.5",
         "@rsdoctor/rspack-plugin": "^1.5.4",

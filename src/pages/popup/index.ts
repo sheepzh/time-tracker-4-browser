@@ -5,10 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { initLocale } from "@i18n"
+import { processDarkMode } from '@/util/dark-mode'
 import { increasePopup } from "@api/sw/meta"
-import { isDarkMode as getOptionDarkMode } from "@api/sw/option"
-import { toggle } from "@util/dark-mode"
+import { getOption } from "@api/sw/option"
+import { initLocale } from "@i18n"
 import "element-plus/theme-chalk/index.css"
 import { createApp } from "vue"
 import Main from "./Main"
@@ -39,8 +39,7 @@ async function main() {
     await initLocale()
     injectGlobalCss()
 
-    const dark = await getOptionDarkMode()
-    toggle(!!dark)
+    getOption().then(processDarkMode)
     await send2ParentWindow('themeInitialized')
 
     const el = document.createElement('div')

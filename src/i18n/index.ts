@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { getOption } from '@/api/sw/option'
 import { getUILanguage } from "@api/chrome/i18n"
-import optionHolder from "@/background/service/components/option-holder"
 import { setDir, setLocale } from "@util/document"
 import { ALL_LOCALES as _ALL_LOCALES } from "./message/merge"
 
@@ -117,8 +117,8 @@ export function handleLocaleOption(option: timer.option.LocaleOption) {
  * @since 0.8.0
  */
 export async function initLocale() {
-    const option = await optionHolder.get()
-    handleLocaleOption(option?.locale)
+    const option = await getOption()
+    handleLocaleOption(option.locale)
 }
 
 function tryGetOriginalI18nVal<MessageType>(

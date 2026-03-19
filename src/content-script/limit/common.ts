@@ -28,7 +28,7 @@ export type ModalContext = {
 }
 
 export interface Processor {
-    handleMsg(code: timer.mq.ReqCode, data: unknown): timer.mq.Response | Promise<timer.mq.Response>
+    handleMsg(code: timer.mq.ReqCode, data: unknown): timer.mq.Response<timer.mq.ReqCode> | Promise<timer.mq.Response<timer.mq.ReqCode>>
     init(): void | Promise<void>
 }
 

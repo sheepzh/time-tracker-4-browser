@@ -1,27 +1,24 @@
 /**
- * Meta domain: request to sw. Variable requestMeta for tree-shaking.
+ * Meta domain: request to sw.
  */
 import { sendMsg2Runtime } from "@api/chrome/runtime"
 
-const requestMeta = <T, R>(code: string, data?: T) =>
-    sendMsg2Runtime<T, R>(`meta.${code}` as timer.mq.ReqCode, data)
-
 export function saveFlag(flag: timer.ExtensionMetaFlag) {
-    return requestMeta<timer.ExtensionMetaFlag, void>('saveFlag', flag)
+    return sendMsg2Runtime('meta.saveFlag', flag)
 }
 
 export function getCid() {
-    return requestMeta<void, string | undefined>('getCid')
+    return sendMsg2Runtime('meta.getCid')
 }
 
 export function increaseApp(routePath: string) {
-    return requestMeta<string, void>('increaseApp', routePath)
+    return sendMsg2Runtime('meta.increaseApp', routePath)
 }
 
 export function increasePopup() {
-    return requestMeta<void, void>('increasePopup')
+    return sendMsg2Runtime('meta.increasePopup')
 }
 
 export function recommendRate() {
-    return requestMeta<void, boolean>('recommendRate')
+    return sendMsg2Runtime('meta.recommendRate')
 }

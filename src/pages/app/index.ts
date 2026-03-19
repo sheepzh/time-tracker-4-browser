@@ -5,11 +5,11 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { getOption } from "@api/sw/option"
 import { listenMediaSizeChange } from "@hooks"
 import { initLocale } from "@i18n"
 import { initElementLocale } from "@i18n/element"
-import { isDarkMode } from "@api/sw/option"
-import { init as initTheme, toggle } from "@util/dark-mode"
+import { init as initDarkMode, processDarkMode } from "@util/dark-mode"
 import { createApp, type App } from "vue"
 import '../../common/timer'
 import { initEcharts } from "./echarts"
@@ -20,10 +20,10 @@ import { injectAppCss } from './styles/index'
 async function main() {
     injectAppCss()
     // Init theme with cache first
-    initTheme()
+    initDarkMode()
     listenMediaSizeChange()
     // Calculate the latest mode
-    isDarkMode().then(v => toggle(!!v))
+    getOption().then(processDarkMode)
     await initLocale()
     initEcharts()
     const app: App = createApp(Main)

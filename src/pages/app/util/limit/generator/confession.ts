@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { type VerificationContext, type VerificationGenerator, type VerificationPair } from "../common"
+import type { VerificationContext, VerificationGenerator, VerificationPair } from "../types"
 
 /**
  * Generator of confession

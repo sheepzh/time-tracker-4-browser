@@ -1,5 +1,5 @@
-import { judgeVerificationRequired, processVerification } from "@app/util/limit"
 import { selectLimits } from "@api/sw/limit"
+import { judgeVerificationRequired, processVerification } from "@app/util/limit"
 import { ref } from "vue"
 
 export const useVerify = (option: timer.option.LimitOption) => {

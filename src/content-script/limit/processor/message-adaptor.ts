@@ -25,11 +25,11 @@ class MessageAdaptor implements Processor {
         this.context = context
     }
 
-    handleMsg(code: timer.mq.ReqCode, data: unknown): timer.mq.Response | Promise<timer.mq.Response> {
+    handleMsg(code: timer.mq.ReqCode, data: unknown): timer.mq.Response<timer.mq.ReqCode> | Promise<timer.mq.Response<timer.mq.ReqCode>> {
         let items = data as timer.limit.Item[]
         if (code === "limitTimeMeet") {
             if (!items?.length) {
-                return { code: "fail" }
+                return { code: "fail", msg: "No items" }
             }
             items.filter(item => matches(item?.cond, this.context.url))
                 .flatMap(cvtItem2AddReason)
@@ -55,7 +55,7 @@ class MessageAdaptor implements Processor {
 
     async initRules(): Promise<void> {
         this.context.modal?.removeReasonsByType?.('DAILY', 'WEEKLY')
-        const limitedRules = await trySendMsg2Runtime<string, timer.limit.Item[]>('cs.getLimitedRules', this.context.url)
+        const limitedRules = await trySendMsg2Runtime('cs.getLimitedRules', this.context.url)
 
         limitedRules
             ?.flatMap?.(cvtItem2AddReason)

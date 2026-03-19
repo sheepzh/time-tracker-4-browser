@@ -14,7 +14,7 @@ class RunTimeTracker {
     init(): void {
         this.fetchSite()
 
-        onRuntimeMessage<void, void>(async req => {
+        onRuntimeMessage(async req => {
             if (req.code === 'siteRunChange') {
                 this.fetchSite()
                 return { code: 'success' }
@@ -26,7 +26,7 @@ class RunTimeTracker {
     }
 
     private async fetchSite() {
-        const site: timer.site.SiteKey | undefined = await trySendMsg2Runtime('cs.getRunSites', this.url)
+        const site = await trySendMsg2Runtime('cs.getRunSites', this.url)
         this.host = site?.host
     }
 

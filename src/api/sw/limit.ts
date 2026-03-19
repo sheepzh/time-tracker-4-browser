@@ -1,39 +1,32 @@
 /**
- * Limit domain: request to sw. Variable requestLimit for tree-shaking.
+ * Limit domain: request to sw.
  */
 import { sendMsg2Runtime } from "@api/chrome/runtime"
 
-const requestLimit = <T, R>(code: string, data?: T) =>
-    sendMsg2Runtime<T, R>(`limit.${code}` as timer.mq.ReqCode, data)
-
 export function selectLimits(cond?: { filterDisabled?: boolean; url?: string; id?: number }) {
-    return requestLimit<{ filterDisabled?: boolean; url?: string; id?: number } | undefined, timer.limit.Item[]>('select', cond)
+    return sendMsg2Runtime('limit.select', cond)
 }
 
 export function removeLimit(item: timer.limit.Item | timer.limit.Item[]) {
-    return requestLimit<timer.limit.Item | timer.limit.Item[], void>('remove', item)
+    return sendMsg2Runtime('limit.remove', item)
 }
 
 export function updateEnabled(...items: timer.limit.Item[]) {
-    return requestLimit<timer.limit.Item[], void>('updateEnabled', items)
+    return sendMsg2Runtime('limit.updateEnabled', items)
 }
 
 export function updateDelay(item: timer.limit.Item) {
-    return requestLimit<timer.limit.Item, void>('updateDelay', item)
+    return sendMsg2Runtime('limit.updateDelay', item)
 }
 
 export function updateLocked(item: timer.limit.Item) {
-    return requestLimit<timer.limit.Item, void>('updateLocked', item)
-}
-
-export function verifyLimit(difficulty: timer.limit.VerificationDifficulty, locale: timer.Locale) {
-    return requestLimit<{ difficulty: timer.limit.VerificationDifficulty; locale: timer.Locale }, { prompt?: string; promptParam?: any; answer: string; second: number } | null>('verify', { difficulty, locale })
+    return sendMsg2Runtime('limit.updateLocked', item)
 }
 
 export function updateLimit(...rules: timer.limit.Rule[]) {
-    return requestLimit<timer.limit.Rule[], void>('update', rules)
+    return sendMsg2Runtime('limit.update', rules)
 }
 
 export function createLimit(rule: Partial<timer.limit.Rule>) {
-    return requestLimit<Partial<timer.limit.Rule>, number>('create', rule)
+    return sendMsg2Runtime('limit.create', rule)
 }

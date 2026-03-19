@@ -4,7 +4,6 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-
 import { type I18nKey } from "@i18n"
 import { type LimitMessage } from "@i18n/message/app/limit"
 

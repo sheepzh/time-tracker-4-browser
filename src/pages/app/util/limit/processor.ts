@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { type VerificationContext, type VerificationGenerator, type VerificationPair } from "./common"
 import { ALL_GENERATORS } from "./generator"
+import type { VerificationContext, VerificationGenerator, VerificationPair } from "./types"
 
 class VerificationProcessor {
     generators: VerificationGenerator[]
@@ -31,4 +31,6 @@ class VerificationProcessor {
     }
 }
 
-export default new VerificationProcessor()
+const verificationProcessor = new VerificationProcessor()
+
+export default verificationProcessor

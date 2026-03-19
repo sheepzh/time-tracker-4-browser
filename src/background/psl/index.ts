@@ -14,7 +14,7 @@ const TREE: PslTree = rules
 
 type Chain = string | [string, boolean]
 
-export const getSuffix = (origin: string): string | null => {
+export const getSuffix = (origin: string): string => {
     if (!origin) return origin
     const ascii = toASCII(origin)
     const parts = ascii.split(".")
