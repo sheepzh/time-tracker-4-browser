@@ -1,3 +1,4 @@
+import { getBirthday, parseTime } from '@/util/time'
 import {
     DEFAULT_VAULT,
     deleteFile,
@@ -45,10 +46,12 @@ export default class ObsidianCoordinator implements timer.backup.Coordinator<nev
         }
     }
 
-    async download(context: timer.backup.CoordinatorContext<never>, dateStart: Date, dateEnd: Date, targetCid?: string): Promise<timer.core.Row[]> {
+    async download(context: timer.backup.CoordinatorContext<never>, start: string, end: string, targetCid?: string): Promise<timer.core.Row[]> {
         const { ctx, dirPath, cid } = prepareContext(context)
 
-        const dateIterator = new DateIterator(dateStart, dateEnd)
+        const startTime = parseTime(start) ?? getBirthday()
+        const endTime = parseTime(end) ?? new Date()
+        const dateIterator = new DateIterator(startTime, endTime)
         const result: timer.core.Row[] = []
         await Promise.all(dateIterator.toArray().map(async date => {
             const filePath = `${dirPath}${targetCid || cid}/${date}.md`

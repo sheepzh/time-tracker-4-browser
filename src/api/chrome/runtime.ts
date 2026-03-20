@@ -1,4 +1,3 @@
-import { handleError } from "./common"
 
 export function getRuntimeId(): string {
     return chrome.runtime.id
@@ -12,54 +11,18 @@ export function getIconUrl(): string {
     return getUrl('static/images/icon.png')
 }
 
-/**
- * Fix proxy data failed to serialized in Firefox
- */
-function cloneData<T = any>(data: T | undefined): T | undefined {
-    if (data === undefined) return undefined
-    try {
-        return JSON.parse(JSON.stringify(data))
-    } catch (cloneError) {
-        console.warn("Failed clone data", cloneError)
-        return data
-    }
-}
-
-export function sendMsg2Runtime<C extends timer.mq.RuntimeReqCode>(code: C, data?: timer.mq.ReqData<C>, timeout_ms?: number): Promise<timer.mq.ResData<C>> {
-    const request: timer.mq.Request<C> = { code, data: cloneData(data) as timer.mq.ReqData<C> }
-    return new Promise((resolve, reject) => {
-        const timeout = setTimeout(() => {
-            // timeout: no response from runtime
-            reject('sendMsg2Runtime timeout')
-        }, timeout_ms ?? 10_000)
-        try {
-            chrome.runtime.sendMessage(request, (response: timer.mq.Response<C>) => {
-                clearTimeout(timeout)
-                handleError('sendMsg2Runtime')
-                const resCode = response?.code
-                if (resCode === 'fail') {
-                    console.warn("Error occurred when querying service-worker", code, data, response?.msg)
-                    return reject(new Error(response?.msg || 'Unknown error'))
-                }
-                resCode === 'success' && resolve(response.data as timer.mq.ResData<C>)
-            })
-        } catch (e) {
-            clearTimeout(timeout)
-            reject('Failed to send message: ' + (e as Error)?.message || 'Unknown error')
-        }
+export function onTabMessage(handler: ChromeTabMessageHandler): void {
+    // Be careful!!!
+    // Can't use await/async in callback parameter
+    chrome.runtime.onMessage.addListener((message: timer.mq.tab.TabRequest<timer.mq.tab.TabCode>, sender: chrome.runtime.MessageSender, sendResponse: timer.mq.tab.Callback<timer.mq.tab.TabCode>) => {
+        handler(message, sender).then((response: timer.mq.tab.TabResponse<timer.mq.tab.TabCode>) => {
+            if (response.code === 'ignore') return
+            sendResponse(response)
+        })
+        // 'return true' will force chrome to wait for the response processed in the above promise.
+        // @see https://github.com/mozilla/webextension-polyfill/issues/130
+        return true
     })
-}
-
-/**
- * Wrap for hooks, after the extension reloaded or upgraded, the context of current content script will be invalid
- * And sending messages to the runtime will be failed
- */
-export async function trySendMsg2Runtime<C extends timer.mq.RuntimeReqCode>(code: C, data?: timer.mq.ReqData<C>): Promise<timer.mq.ResData<C> | undefined> {
-    try {
-        return await sendMsg2Runtime(code, data)
-    } catch {
-        // ignored
-    }
 }
 
 export function onRuntimeMessage(handler: ChromeMessageHandler): void {

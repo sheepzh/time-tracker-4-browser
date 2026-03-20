@@ -1,5 +1,5 @@
 import { BaseIDBStorage, closedRangeKey, IndexResult, iterateCursor, type Key, req2Promise, type Table } from '@/background/database/common/indexed-storage'
-import { cvtGroupId2Host, formatDateStr, GROUP_PREFIX, increase, zeroRow } from './common'
+import { cvtGroupId2Host, formatDateStr, increase, zeroRow } from './common'
 import { filterDate, filterHost, filterNumberRange, processCondition, type ProcessedCondition } from './condition'
 import type { StatCondition, StatDatabase } from './types'
 
@@ -7,8 +7,6 @@ type StoredRow = timer.core.Row & {
     // If present, this is a group row
     groupId?: number
 }
-
-const GROUP_HOST_PATTERN = new RegExp(`^${GROUP_PREFIX}(\\d+)$`)
 
 const INDEXES: (Key<StoredRow> | Key<StoredRow>[])[] = [
     'date', 'host', 'groupId',

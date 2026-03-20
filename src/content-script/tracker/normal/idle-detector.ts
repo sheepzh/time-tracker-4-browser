@@ -1,5 +1,6 @@
-import { onRuntimeMessage, trySendMsg2Runtime } from '@api/chrome/runtime'
-import { getOption } from "@api/sw/option"
+import { trySendMsg2Runtime } from '@/api/chrome/runtime-sender'
+import { getOption } from '@/api/sw/option'
+import { onRuntimeMessage } from '@api/chrome/runtime'
 
 export default class IdleDetector {
     fullScreen: boolean = false
@@ -33,20 +34,9 @@ export default class IdleDetector {
     }
 
     private async init() {
-        const option = await getOption()
-        if (option) this.processOption(option)
-        this.resetTimeout()
-
-        // Poll option when tab becomes visible (content-script has no push from background)
-        const pollOption = async () => {
-            const opt = await getOption()
-            if (opt) {
-                this.processOption(opt)
-                this.resetTimeout()
-            }
-        }
-        document.addEventListener('visibilitychange', () => document.visibilityState === 'visible' && pollOption())
-        const pollInterval = setInterval(pollOption, 60_000)
+        this.reset()
+        document.addEventListener('visibilitychange', () => document.visibilityState === 'visible' && this.reset())
+        const pollInterval = setInterval(() => this.reset(), 60_000)
         const stopPoll = () => clearInterval(pollInterval)
         window.addEventListener('beforeunload', stopPoll)
 
@@ -56,15 +46,14 @@ export default class IdleDetector {
             if (!this.needTimeout()) return
 
             if (!this.pauseTimeout) {
-                // Paused, so activate
-                this.onActive?.()
+                this.onActive()
                 this.resetTimeout()
             }
         }
 
         window.addEventListener('mousedown', handleActive)
         window.addEventListener('mousemove', handleActive)
-        window.addEventListener('keypress', handleActive)
+        window.addEventListener('keydown', handleActive)
         window.addEventListener('scroll', handleActive)
         window.addEventListener('wheel', handleActive)
         document?.addEventListener('fullscreenchange', () => {
@@ -81,13 +70,16 @@ export default class IdleDetector {
         })
     }
 
-    private processOption(option: timer.option.TrackingOption) {
-        this.autoPauseTracking = !!option?.autoPauseTracking
-        this.autoPauseInterval = option?.autoPauseInterval * 1000
+    private reset() {
+        getOption().then(({ autoPauseTracking, autoPauseInterval }) => {
+            this.autoPauseTracking = autoPauseTracking
+            this.autoPauseInterval = autoPauseInterval * 1000
+
+            this.resetTimeout()
+        }).catch(() => { })
     }
 
     private resetTimeout() {
-
         if (!!this.pauseTimeout) {
             clearTimeout(this.pauseTimeout)
             this.pauseTimeout = undefined
@@ -111,8 +103,7 @@ export default class IdleDetector {
         if (!this.needTimeout()) return
 
         if (this.isIdle()) {
-            // Idle interval meets
-            this.onIdle?.()
+            this.onIdle()
         } else {
             this.resetTimeout()
         }

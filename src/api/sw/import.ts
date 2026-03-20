@@ -1,7 +1,7 @@
 /**
  * Import domain: request to sw.
  */
-import { sendMsg2Runtime } from "@api/chrome/runtime"
+import { sendMsg2Runtime } from "@api/chrome/runtime-sender"
 
 export function fillExist(rows: timer.imported.Row[]) {
     return sendMsg2Runtime('import.fillExist', rows)

@@ -5,29 +5,23 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { listTabs, sendMsg2Tab } from "@api/chrome/tab"
 import db from "@/background/database/limit-database"
 import optionHolder from "@/background/service/components/option-holder"
 import weekHelper from "@/background/service/components/week-helper"
 import whitelistHolder from "@/background/service/whitelist/holder"
+import { listTabs, sendMsg2Tab } from "@api/chrome/tab"
 import { sum } from "@util/array"
 import { calcTimeState, hasLimited, isEnabledAndEffective, matches } from "@util/limit"
 import { formatTimeYMD, MILL_PER_MINUTE } from "@util/time"
 
-export type QueryParam = {
-    filterDisabled: boolean
-    id?: number
-    url?: string
-}
-
-async function select(cond?: QueryParam): Promise<timer.limit.Item[]> {
-    const { filterDisabled, url, id } = cond || {}
+export async function selectLimit(param?: timer.limit.Query): Promise<timer.limit.Item[]> {
+    const { onlyEnabled, url, id } = param ?? {}
     const now = new Date()
     const today = formatTimeYMD(now)
     const [startDate, endDate] = await weekHelper.getWeekDateRange(now)
 
     return (await db.all())
-        .filter(item => !filterDisabled || item.enabled)
+        .filter(item => !onlyEnabled || item.enabled)
         .filter(item => !id || id === item?.id)
         // If use url, then test it
         .filter(item => !url || matches(item?.cond, url))
@@ -52,7 +46,7 @@ async function select(cond?: QueryParam): Promise<timer.limit.Item[]> {
 }
 
 async function selectEffective(url?: string) {
-    const enabledItems: timer.limit.Item[] = await select({ filterDisabled: true, url })
+    const enabledItems: timer.limit.Item[] = await selectLimit({ onlyEnabled: true, url })
     return enabledItems?.filter(isEnabledAndEffective) || []
 }
 
@@ -170,7 +164,7 @@ function addFocusForEach(item: timer.limit.Item, focusTime: number, durationMill
 async function incVisit(host: string, url: string): Promise<timer.limit.Item[]> {
     if (whitelistHolder.contains(host, url)) return []
 
-    const allEnabled: timer.limit.Item[] = await select({ filterDisabled: true, url })
+    const allEnabled: timer.limit.Item[] = await selectLimit({ onlyEnabled: true, url })
     const result: timer.limit.Item[] = []
     await db.increaseVisit(formatTimeYMD(new Date()), allEnabled.map(item => item.id))
     allEnabled.forEach(item => {
@@ -187,7 +181,7 @@ async function incVisit(host: string, url: string): Promise<timer.limit.Item[]> 
  * @returns Rules to wake
  */
 async function moreMinutes(url: string): Promise<timer.limit.Item[]> {
-    const rules = (await select({ url: url, filterDisabled: true }))
+    const rules = (await selectLimit({ url: url, onlyEnabled: true }))
         .filter(item => hasLimited(item) && item.allowDelay)
     rules.forEach(rule => {
         rule.delayCount = (rule.delayCount ?? 0) + 1
@@ -221,7 +215,6 @@ class LimitService {
     updateEnabled = updateEnabled
     updateDelay = updateDelay
     updateLocked = updateLocked
-    select = select
     remove = remove
     update = update
     create = create

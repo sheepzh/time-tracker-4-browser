@@ -1,5 +1,4 @@
 import { judgeVirtualFast } from "@util/pattern"
-import { formatTimeYMD } from "@util/time"
 import type { StatCondition } from './types'
 
 export type ProcessedCondition = StatCondition & {
@@ -43,14 +42,14 @@ export function processCondition(condition?: StatCondition): ProcessedCondition 
 
     const paramDate = condition?.date
     if (paramDate) {
-        if (paramDate instanceof Date) {
+        if (typeof paramDate === 'string') {
             result.useExactDate = true
-            result.exactDateStr = formatTimeYMD(paramDate)
+            result.exactDateStr = paramDate
         } else {
             const [startDate, endDate] = paramDate
             result.useExactDate = false
-            startDate && (result.startDateStr = formatTimeYMD(startDate))
-            endDate && (result.endDateStr = formatTimeYMD(endDate))
+            result.startDateStr = startDate
+            result.endDateStr = endDate
         }
     }
 

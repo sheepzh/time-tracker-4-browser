@@ -59,7 +59,7 @@ function mergeDate(origin: timer.stat.Row[]): timer.stat.Row[] {
     const map: Record<
         string,
         | MakeRequired<timer.stat.SiteRow | timer.stat.CateRow, 'mergedDates' | 'mergedRows'>
-        | MakeRequired<timer.stat.GroupRow, 'mergedDates'>
+        | MakeRequired<timer.stat.GroupRow, 'mergedDates' | 'mergedRows'>
     > = {}
     origin.forEach(ele => {
         const { date = '', focus, time } = ele

@@ -1,14 +1,13 @@
-import type { ReportQueryParam } from "@app/components/Report/types"
-import { REPORT_ROUTE } from "@app/router/constants"
 import weekHelper from "@/background/service/components/week-helper"
 import { selectCate, selectGroup, selectSite } from '@api/sw/stat'
+import type { ReportQueryParam } from "@app/components/Report/types"
+import { REPORT_ROUTE } from "@app/router/constants"
 import { isRemainHost } from "@util/constant/remain-host"
 import { getAppPageUrl } from "@util/constant/url"
 import { isSite } from "@util/stat"
 import { getMonthTime, MILL_PER_DAY } from "@util/time"
+import { cvtDateRange2Str, type DateRange } from '../app/util/time'
 import { type PopupDuration, type PopupQuery } from "./context"
-
-type DateRange = Date | [Date, Date] | undefined
 
 type DateRangeCalculator = (now: Date, num?: number) => Awaitable<DateRange>
 
@@ -26,7 +25,8 @@ const DATE_RANGE_CALCULATORS: { [duration in PopupDuration]: DateRangeCalculator
 
 export const queryRows = async (param: PopupQuery): Promise<[rows: timer.stat.Row[], date: DateRange]> => {
     const { duration, durationNum, mergeMethod, dimension: sortKey } = param
-    const date = await DATE_RANGE_CALCULATORS[duration]?.(new Date(), durationNum)
+    const dateRange = await DATE_RANGE_CALCULATORS[duration]?.(new Date(), durationNum)
+    const date = cvtDateRange2Str(dateRange)
     const sortDirection: timer.common.SortDirection = 'DESC'
     let rows: timer.stat.Row[]
     if (mergeMethod === 'cate') {
@@ -40,7 +40,7 @@ export const queryRows = async (param: PopupQuery): Promise<[rows: timer.stat.Ro
             sortKey, sortDirection,
         })) ?? []
     }
-    return [rows, date]
+    return [rows, dateRange]
 }
 
 function buildReportQuery(siteType: timer.site.Type, date: Date | [Date, Date?] | undefined, type: timer.core.Dimension): ReportQueryParam {

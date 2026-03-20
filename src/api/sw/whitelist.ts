@@ -1,7 +1,7 @@
 /**
  * Whitelist domain: request to sw.
  */
-import { sendMsg2Runtime } from "@api/chrome/runtime"
+import { sendMsg2Runtime } from "@api/chrome/runtime-sender"
 
 export function listWhitelist() {
     return sendMsg2Runtime('whitelist.listAll')

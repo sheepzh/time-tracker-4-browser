@@ -7,9 +7,9 @@
 
 import syncDb from "@/background/database/backup-database"
 import optionHolder from "@/background/service/components/option-holder"
-import itemService from "@/background/service/item-service"
 import { getCid, updateBackUpTime, updateCid } from "@/background/service/meta-service"
-import { formatTimeYMD, getBirthday } from "@util/time"
+import { formatTimeYMD } from "@util/time"
+import { selectItems } from '../item-service'
 import GistCoordinator from "./gist/coordinator"
 import ObsidianCoordinator from "./obsidian/coordinator"
 import WebDAVCoordinator from "./web-dav/coordinator"
@@ -105,17 +105,16 @@ async function syncFull(
     client: timer.backup.Client
 ): Promise<timer.backup.Snapshot> {
     // 1. select rows
-    let start = getBirthday()
-    let end = new Date()
-    const rows = await itemService.selectItems({ date: [start, end] })
+    const rows = await selectItems()
     const allDates = rows.map(r => r.date).sort((a, b) => a == b ? 0 : a > b ? 1 : -1)
     client.maxDate = allDates[allDates.length - 1]
     client.minDate = allDates[0]
     // 2. upload
     await coordinator.upload(context, rows)
+    const now = Date.now()
     return {
-        ts: end.getTime(),
-        date: formatTimeYMD(end),
+        ts: now,
+        date: formatTimeYMD(now),
     }
 }
 
@@ -133,13 +132,6 @@ function prepareAuth(option: timer.option.BackupOption): timer.backup.Auth {
     const token = option?.backupAuths?.[type]
     const login = option.backupLogin?.[type]
     return { token, login }
-}
-
-export type RemoteQueryParam = {
-    start: Date
-    end: Date
-    specCid?: string
-    excludeLocal?: boolean
 }
 
 class Processor {
@@ -214,21 +206,19 @@ class Processor {
         return { option, auth, ext, type, coordinator, errorMsg }
     }
 
-    async query(param: RemoteQueryParam): Promise<timer.backup.Row[]> {
+    async query(param: timer.backup.RemoteQuery): Promise<timer.backup.Row[]> {
         const { type, coordinator, auth, ext, errorMsg } = await this.checkAuth()
         if (errorMsg || !coordinator) {
             return []
         }
 
-        const { start = getBirthday(), end, specCid, excludeLocal } = param
+        const { start, end, specCid, excludeLocal } = param
         let localCid = await lazyGetCid()
         // 1. init context
         const context: timer.backup.CoordinatorContext<unknown> = await new CoordinatorContextWrapper<unknown>(localCid, auth, ext, type).init()
         // 2. query all clients, and filter them
-        let startStr = start ? formatTimeYMD(start) : undefined
-        let endStr = end ? formatTimeYMD(end) : undefined
         const allClients = (await coordinator.listAllClients(context))
-            .filter(c => filterClient(c, !!excludeLocal, localCid, startStr, endStr))
+            .filter(c => filterClient(c, !!excludeLocal, localCid, start, end))
             .filter(c => !specCid || c.id === specCid)
         // 3. iterate clients
         const result: timer.backup.Row[] = []

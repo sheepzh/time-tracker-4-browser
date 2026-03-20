@@ -1,4 +1,4 @@
-import { trySendMsg2Runtime } from "@api/chrome/runtime"
+import { trySendMsg2Runtime } from "@api/chrome/runtime-sender"
 import { hasDailyLimited, hasWeeklyLimited, matches } from "@util/limit"
 import { type LimitReason, type ModalContext, type Processor } from "../common"
 

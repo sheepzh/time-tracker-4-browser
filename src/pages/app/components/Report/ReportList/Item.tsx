@@ -70,7 +70,7 @@ const _default = defineComponent<Props>(props => {
                             trigger="click"
                             usePopover={props.value.siteKey.type === 'merged'}
                             v-slots={{
-                                content: () => <TooltipSiteList modelValue={mergedRows} />,
+                                content: () => <TooltipSiteList modelValue={mergedRows as timer.stat.SiteRow[]} />,
                             }}
                         >
                             <HostAlert

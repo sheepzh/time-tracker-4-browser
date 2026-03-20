@@ -31,7 +31,6 @@ declare namespace timer.period {
         milliseconds: number
     }
 
-    /** @see period-calculator merge() */
     type MergeConfig = {
         start: Key
         end: Key

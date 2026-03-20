@@ -139,7 +139,9 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
             ...adaptDonutSeries(donutChart, selected ? '30%' : '55%', selected ? 0.3 : undefined),
         }]
         if (selected) {
-            let mergedRows = (selected?.mergedRows || []).sort((a, b) => (b[dimension] ?? 0) - (a[dimension] ?? 0))
+            let mergedRows = ((selected?.mergedRows || []) as unknown as timer.stat.SiteRow[]).sort(
+                (a, b) => (b[dimension] ?? 0) - (a[dimension] ?? 0),
+            )
             mergedRows = (await mergeDate(mergedRows)) ?? mergedRows
 
             const siteSeries = generateSiteSeriesOption(mergedRows, result, {

@@ -5,7 +5,7 @@ export function mergeDate<T extends timer.stat.Row>(origin: T[]): T[] {
     const map: Record<
         string,
         | MakeRequired<timer.stat.SiteRow | timer.stat.CateRow, 'mergedDates' | 'mergedRows'>
-        | MakeRequired<timer.stat.GroupRow, 'mergedDates'>
+        | MakeRequired<timer.stat.GroupRow, 'mergedDates' | 'mergedRows'>
     > = {}
     origin.forEach(ele => {
         const { date } = ele
@@ -24,6 +24,7 @@ export function mergeDate<T extends timer.stat.Row>(origin: T[]): T[] {
         mergeResult(exist, ele)
         isSite(ele) && isSite(exist) && exist.mergedRows.push(...ele.mergedRows ?? [])
         isCate(ele) && isCate(exist) && exist.mergedRows.push(...ele.mergedRows ?? [])
+        isGroup(ele) && isGroup(exist) && exist.mergedRows.push(...(ele.mergedRows ?? []))
         date && exist.mergedDates.push(date)
         if (isNormalSite(ele) && !isGroup(exist)) {
             const { mergedRows, ...toMerge } = ele

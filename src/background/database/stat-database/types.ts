@@ -4,7 +4,7 @@ export type StatCondition = {
      * Date
      * {y}{m}{d}
      */
-    date?: Date | [Date?, Date?]
+    date?: string | [string?, string?]
     /**
      * Focus range, milliseconds
      *

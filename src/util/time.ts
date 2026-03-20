@@ -47,7 +47,7 @@ export function formatTime(time: Date | number, cFormat?: string) {
     return timeStr
 }
 
-export function formatTimeYMD(time: Date | number) {
+export function formatTimeYMD(time: Date | number): string {
     return formatTime(time, '{y}{m}{d}')
 }
 

@@ -4,17 +4,16 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import { removeAlias, saveAlias } from '@api/sw/site'
+import { selectCate, selectGroup, selectSite } from "@api/sw/stat"
 import ContentCard from "@app/components/common/ContentCard"
 import Editable from "@app/components/common/Editable"
 import Pagination from "@app/components/common/Pagination"
 import { t } from "@app/locale"
-import { periodFormatter } from "@app/util/time"
+import { cvtDateRange2Str, periodFormatter } from "@app/util/time"
 import { Histogram } from "@element-plus/icons-vue"
 import { useDocumentVisibility, useManualRequest, useRequest, useState } from "@hooks"
 import Flex from "@pages/components/Flex"
-import { removeAlias, saveAlias } from '@api/sw/site'
-import { selectCate, selectGroup, selectSite } from "@api/sw/stat"
-import type { SiteQuery } from "@/background/service/stat-service"
 import { sum } from "@util/array"
 import { isRtl } from "@util/document"
 import { siteEqual } from "@util/site"
@@ -73,14 +72,15 @@ const _default = defineComponent((_, ctx) => {
         refresh: refreshTotal,
         loading: totalLoading,
     } = useManualRequest(async () => {
-        const { siteMerge, dateRange: date, query, readRemote: inclusiveRemote, cateIds } = filter
+        const { siteMerge, dateRange, query, readRemote: inclusiveRemote, cateIds } = filter
+        const date = cvtDateRange2Str(dateRange)
         let rows: timer.stat.Row[] = []
         if (siteMerge === 'group') {
             rows = (await selectGroup({ date, query })) ?? []
         } else if (siteMerge === 'cate') {
             rows = (await selectCate({ date, query, cateIds, inclusiveRemote })) ?? []
         } else {
-            const param: SiteQuery = {
+            const param: timer.stat.SiteQuery = {
                 date, query, cateIds, inclusiveRemote,
                 mergeHost: siteMerge === 'domain',
             }

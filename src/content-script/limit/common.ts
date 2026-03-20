@@ -28,7 +28,7 @@ export type ModalContext = {
 }
 
 export interface Processor {
-    handleMsg(code: timer.mq.ReqCode, data: unknown): timer.mq.Response<timer.mq.ReqCode> | Promise<timer.mq.Response<timer.mq.ReqCode>>
+    handleMsg(code: timer.mq.tab.TabCode, data: unknown): Awaitable<timer.mq.tab.TabResponse<timer.mq.tab.TabCode>>
     init(): void | Promise<void>
 }
 

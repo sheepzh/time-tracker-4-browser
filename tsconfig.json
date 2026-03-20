@@ -23,7 +23,6 @@
         "strictPropertyInitialization": true,
         "resolveJsonModule": true,
         "importHelpers": true,
-        "skipLibCheck": true,
         "moduleResolution": "bundler",
         "paths": {
             "@/*": [

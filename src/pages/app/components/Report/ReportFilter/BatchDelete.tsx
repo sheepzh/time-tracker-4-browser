@@ -1,10 +1,10 @@
-import { getGroup } from "@api/chrome/tabGroups"
-import { type I18nKey, t } from "@app/locale"
 import statDatabase from "@/background/database/stat-database"
-import { DeleteFilled } from "@element-plus/icons-vue"
+import { getGroup } from "@api/chrome/tabGroups"
 import { batchDelete, countGroupByIds, countSiteByHosts } from "@api/sw/stat"
+import { type I18nKey, t } from "@app/locale"
+import { DeleteFilled } from "@element-plus/icons-vue"
 import { isGroup, isNormalSite, isSite } from "@util/stat"
-import { formatTime, getBirthday } from "@util/time"
+import { formatTime, formatTimeYMD, getBirthday } from "@util/time"
 import { ElButton, ElMessage, ElMessageBox } from "element-plus"
 import { computed, defineComponent } from "vue"
 import { useReportComponent, useReportFilter } from "../context"
@@ -30,8 +30,10 @@ async function computeBatchDeleteMsg(selected: timer.stat.Row[], mergeDate: bool
     let count2Delete = selected.length ?? 0
     if (mergeDate) {
         // All the items
-        const siteCount = (hosts.length ? await countSiteByHosts(hosts, dateRange) : 0) as number
-        const groupCount = (groupIds.length ? await countGroupByIds(groupIds, dateRange) : 0) as number
+        const [start, end] = dateRange
+        const date: [string?, string?] = [start && formatTimeYMD(start), end && formatTimeYMD(end)]
+        const siteCount = hosts.length ? await countSiteByHosts(hosts, date) : 0
+        const groupCount = groupIds.length ? await countGroupByIds(groupIds, date) : 0
         count2Delete = siteCount + groupCount
     }
     const i18nParam: Record<string, string | number | undefined> = {

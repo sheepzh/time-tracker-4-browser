@@ -1,5 +1,13 @@
-type _HandlerIO<Input = undefined, Output = void> = [Input, Output]
-type _MakeRegistry<Codes extends string, Param = undefined, Result = undefined> = Record<Codes, _HandlerIO<Param, Result>>
+type _TransmitValue =
+    | undefined
+    | string
+    | number
+    | boolean
+    | { readonly [key: string]: _TransmitValue }
+    | readonly _TransmitValue[]
+
+type _HandlerIO<Input extends _TransmitValue = undefined, Output extends _TransmitValue = undefined> = [Input, Output]
+type _MakeRegistry<Codes extends string, Param extends _TransmitValue = undefined, Result extends _TransmitValue = undefined> = Record<Codes, _HandlerIO<Param, Result>>
 
 /** Derive request/response/handler types from a handler registry (Record of [Req, Res] tuples). */
 type _MqReqData<R, K extends keyof R> = R[K] extends [infer In, unknown] ? In : never
@@ -41,6 +49,11 @@ declare namespace timer.mq {
         type TabRequest<T extends TabCode = TabCode> = _MqRequest<TabHandlerRegistry, T>
 
         type TabResponse<T extends TabCode = TabCode> = _MqResponse<TabHandlerRegistry, T>
+
+        /**
+         * @since 0.8.4
+         */
+        type Callback<T extends TabCode = TabCode> = (result?: TabResponse<T>) => void
     }
 
     type _HandlerRegistry =
@@ -55,21 +68,21 @@ declare namespace timer.mq {
         & _MakeRegistry<'cs.trackTime' | 'cs.trackRunTime', timer.core.Event>
         & _MakeRegistry<'cs.onInjected' | 'cs.openAnalysis' | 'cs.openLimit'>
         & _MakeRegistry<'cs.idleChange', boolean>
-        & _MakeRegistry<'cs.getRunSites', string, timer.site.SiteKey | null>
+        & _MakeRegistry<'cs.getRunSites', string, timer.site.SiteKey | undefined>
         & _MakeRegistry<'cs.timelineEv', timer.timeline.Event>
         & _MakeRegistry<'cs.getAudible', undefined, boolean>
         // stat
-        & _MakeRegistry<'stat.selectSite', timer.stat.SiteSelectQuery | undefined, timer.stat.SiteRow[]>
-        & _MakeRegistry<'stat.selectSitePage', timer.stat.SiteSelectPageQuery, timer.common.PageResult<timer.stat.SiteRow>>
-        & _MakeRegistry<'stat.selectCate', timer.stat.CateSelectQuery | undefined, timer.stat.CateRow[]>
-        & _MakeRegistry<'stat.selectCatePage', timer.stat.CateSelectPageQuery, timer.common.PageResult<timer.stat.CateRow>>
-        & _MakeRegistry<'stat.selectGroup', timer.stat.GroupSelectQuery | undefined, timer.stat.GroupRow[]>
-        & _MakeRegistry<'stat.selectGroupPage', timer.stat.GroupSelectPageQuery, timer.common.PageResult<timer.stat.GroupRow>>
+        & _MakeRegistry<'stat.selectSite', timer.stat.SiteQuery | undefined, timer.stat.SiteRow[]>
+        & _MakeRegistry<'stat.selectSitePage', timer.stat.SitePageQuery | undefined, timer.common.PageResult<timer.stat.SiteRow>>
+        & _MakeRegistry<'stat.countSite', timer.stat.SiteQuery | undefined, number>
+        & _MakeRegistry<'stat.selectCate', timer.stat.CateQuery | undefined, timer.stat.CateRow[]>
+        & _MakeRegistry<'stat.selectCatePage', timer.stat.CatePageQuery | undefined, timer.common.PageResult<timer.stat.CateRow>>
+        & _MakeRegistry<'stat.countGroup', timer.stat.GroupQuery | undefined, number>
+        & _MakeRegistry<'stat.selectGroup', timer.stat.GroupQuery | undefined, timer.stat.GroupRow[]>
+        & _MakeRegistry<'stat.selectGroupPage', timer.stat.GroupPageQuery | undefined, timer.common.PageResult<timer.stat.GroupRow>>
         & _MakeRegistry<'stat.listHosts', string | undefined, Record<timer.site.Type, string[]>>
         & _MakeRegistry<'stat.mergeDate', timer.stat.SiteRow[], timer.stat.SiteRow[]>
         & _MakeRegistry<'stat.batchDelete', timer.stat.Row[]>
-        & _MakeRegistry<'stat.countGroupByIds', timer.stat.StatCountGroupByIdsQuery, number>
-        & _MakeRegistry<'stat.countSiteByHosts', timer.stat.StatCountSiteByHostsQuery, number>
         & _MakeRegistry<'stat.canReadRemote' | 'stat.recommendRate', undefined, boolean>
         // option / cate / meta
         & _MakeRegistry<'option.get', undefined, timer.option.AllOption>
@@ -84,7 +97,8 @@ declare namespace timer.mq {
         & _MakeRegistry<'meta.saveFlag', timer.ExtensionMetaFlag>
         & _MakeRegistry<'meta.getCid', undefined, string | undefined>
         & _MakeRegistry<'meta.increaseApp', string>
-        & _MakeRegistry<'meta.increasePopup' | 'meta.recommendRate', undefined, boolean>
+        & _MakeRegistry<'meta.increasePopup'>
+        & _MakeRegistry<'meta.recommendRate', undefined, boolean>
         // site
         & _MakeRegistry<'site.getSite', timer.site.SiteKey, timer.site.SiteInfo>
         & _MakeRegistry<'site.getPslSuffix', string, string>
@@ -101,7 +115,7 @@ declare namespace timer.mq {
         & _MakeRegistry<'site.saveAlias', { key: timer.site.SiteKey; alias: string; noRewrite?: boolean }>
         // limit / whitelist / backup (runtime; CS→SW etc.)
         & _MakeRegistry<'openLimitPage', string>
-        & _MakeRegistry<'limit.select', timer.limit.ServiceSelectQuery | undefined, timer.limit.Item[]>
+        & _MakeRegistry<'limit.select', timer.limit.Query | undefined, timer.limit.Item[]>
         & _MakeRegistry<'limit.remove', timer.limit.Item | timer.limit.Item[]>
         & _MakeRegistry<'limit.updateEnabled', timer.limit.Item[]>
         & _MakeRegistry<'limit.updateDelay' | 'limit.updateLocked', timer.limit.Item>
@@ -112,19 +126,17 @@ declare namespace timer.mq {
         & _MakeRegistry<'backup.syncData', undefined, { success: boolean; errorMsg?: string; data?: number }>
         & _MakeRegistry<'backup.checkAuth', undefined, { errorMsg?: string }>
         & _MakeRegistry<'backup.clear', string, { success: boolean; errorMsg?: string }>
-        & _MakeRegistry<'backup.query', timer.backup.RemoteRowsQuery, timer.backup.Row[]>
+        & _MakeRegistry<'backup.query', timer.backup.RemoteQuery, timer.backup.Row[]>
         & _MakeRegistry<'backup.getLastBackUp', timer.backup.Type, { ts: number; msg?: string } | undefined>
         & _MakeRegistry<'backup.listClients', undefined, { success: boolean; errorMsg?: string; data?: timer.backup.Client[] }>
         // period / import / immigration / memory
-        & _MakeRegistry<'period.merge', timer.period.MergeRequest, timer.period.Row[]>
+        & _MakeRegistry<'period.merge', timer.period.MergeRequest, timer.period.Result[]>
         & _MakeRegistry<'period.listBetween', { periodRange: timer.period.KeyRange }, timer.period.Result[]>
         & _MakeRegistry<'import.fillExist', timer.imported.Row[]>
         & _MakeRegistry<'import.processImportedData', { data: timer.imported.Data; resolution: timer.imported.ConflictResolution }>
-        & _MakeRegistry<'immigration.importData', unknown>
+        & _MakeRegistry<'immigration.importData', any>
         & _MakeRegistry<'immigration.exportData', undefined, timer.backup.ExportData>
         & _MakeRegistry<'memory.getUsedStorage', undefined, timer.common.StorageUsage>
-        // SW → content script (tabs.sendMessage only; excluded from RuntimeReqCode)
-        & tab.TabHandlerRegistry
 
     type ReqCode = keyof _HandlerRegistry
     /** Codes handled only via tabs.sendMessage — must not use sendMsg2Runtime. */

@@ -12,16 +12,6 @@ declare namespace timer.stat {
     type DateKey = { date?: string }
     type StatKey = TargetKey & DateKey
 
-    type SiteMergeExtend = {
-        /**
-         * The merged domains
-         * Can't be empty if merged
-         *
-         * @since 0.1.5
-         */
-        mergedRows?: Omit<timer.stat.SiteRow, 'mergedRows'>[]
-    }
-
     type DateMergeExtend = {
         /**
          * The merged dates
@@ -38,29 +28,110 @@ declare namespace timer.stat {
         composition?: RemoteComposition
     }
 
-    interface SiteRow extends SiteTarget, DateKey, core.Result, backup.RowExtend, SiteMergeExtend, DateMergeExtend, RemoteExtend {
-        /**
-         * Icon url
-         */
-        iconUrl?: string
-        /**
-         * The alias name of this Site, always is the title of its homepage by detected
-         */
-        alias?: string
-        /**
-         * @since 3.0.0
-         */
-        cateId?: number
+    /** StatCondition.date fields only (mq / stat-database queries). */
+    type _BaseQuery = {
+        date?: string | [string?, string?]
+        mergeDate?: boolean
     }
 
-    interface CateRow extends CateTarget, DateKey, core.Result, backup.RowExtend, SiteMergeExtend, DateMergeExtend, RemoteExtend {
-        cateName: string | undefined
+    type SiteQuery =
+        & _BaseQuery
+        & {
+            focusRange?: Vector<2>
+            timeRange?: [number, number?]
+            virtual?: boolean
+        }
+        & timer.common.SortBy<'date' | 'host' | timer.core.Dimension>
+        & {
+            query?: string
+            host?: string | string[]
+            mergeHost?: boolean
+            inclusiveRemote?: boolean
+            cateIds?: number[]
+            ignoreSite?: boolean
+        }
+
+    type SitePageQuery = SiteQuery & timer.common.PageQuery
+
+    type SiteRowFlat = SiteTarget &
+        DateKey &
+        core.Result &
+        backup.RowExtend &
+        DateMergeExtend &
+        RemoteExtend & {
+            /**
+             * Icon url
+             */
+            iconUrl?: string
+            /**
+             * The alias name of this Site, always is the title of its homepage by detected
+             */
+            alias?: string
+            /**
+             * @since 3.0.0
+             */
+            cateId?: number
+        }
+
+    type SiteMergeExtend = {
+        /**
+         * The merged domains
+         * Can't be empty if merged
+         *
+         * @since 0.1.5
+         */
+        mergedRows?: SiteRowFlat[]
     }
 
-    interface GroupRow extends GroupTarget, DateKey, DateMergeExtend, core.Result {
-        color: `${chrome.tabGroups.Color}` | undefined
-        title: string | undefined
+    type SiteRow = SiteRowFlat & SiteMergeExtend
+
+    type CateQuery = _BaseQuery
+        & timer.common.SortBy<'date' | 'focus' | 'time'>
+        & {
+            query?: string
+            inclusiveRemote?: boolean
+            cateIds?: number[]
+        }
+
+    type CatePageQuery = CateQuery & timer.common.PageQuery
+
+    type CateRowFlat = CateTarget &
+        DateKey &
+        core.Result &
+        backup.RowExtend &
+        DateMergeExtend &
+        RemoteExtend & {
+            cateName: string | undefined
+        }
+
+    type CateMergeExtend = {
+        mergedRows?: SiteRowFlat[]
     }
+
+    type CateRow = CateRowFlat & CateMergeExtend
+
+    type GroupRowFlat = GroupTarget &
+        DateKey &
+        DateMergeExtend &
+        core.Result & {
+            color: `${chrome.tabGroups.Color}` | undefined
+            title: string | undefined
+        }
+
+    type GroupQuery = _BaseQuery
+        & timer.common.SortBy<'date' | 'title' | 'focus' | 'time'>
+        & {
+            query?: string
+            groupIds?: number[]
+        }
+
+    type GroupPageQuery = GroupQuery & timer.common.PageQuery
+
+    type GroupMergeExtend = {
+        mergedRows?: GroupRowFlat[]
+    }
+
+    type GroupRow = GroupRowFlat & GroupMergeExtend
 
     /**
      * Row of each statistics result
@@ -92,71 +163,4 @@ declare namespace timer.stat {
      * @since 3.0.0
      */
     type MergeMethod = 'cate' | 'date' | 'domain' | 'group'
-
-    /**
-     * Shared shape with stat-database StatCondition (mq / SW).
-     */
-    type StatCondition = {
-        date?: Date | [Date?, Date?]
-        focusRange?: Vector<2>
-        timeRange?: [number, number?]
-        virtual?: boolean
-        keys?: string[] | string
-    }
-
-    /** @see stat-service SiteQuery */
-    type SiteSelectQuery = Pick<StatCondition, 'date' | 'focusRange' | 'timeRange' | 'virtual'>
-        & timer.common.SortBy<'date' | 'host' | timer.core.Dimension>
-        & {
-            query?: string
-            host?: string
-            mergeDate?: boolean
-            mergeHost?: boolean
-            inclusiveRemote?: boolean
-            cateIds?: number[]
-            ignoreSite?: boolean
-        }
-
-    type SiteSelectPageQuery = {
-        param?: SiteSelectQuery
-        page?: timer.common.PageQuery
-    }
-
-    /** @see stat-service CateQuery */
-    type CateSelectQuery = Pick<StatCondition, 'date'>
-        & timer.common.SortBy<'date' | 'focus' | 'time'>
-        & {
-            query?: string
-            mergeDate?: boolean
-            inclusiveRemote?: boolean
-            cateIds?: number[]
-        }
-
-    type CateSelectPageQuery = {
-        query?: CateSelectQuery
-        page?: timer.common.PageQuery
-    }
-
-    /** @see stat-service GroupQuery */
-    type GroupSelectQuery = Pick<StatCondition, 'date'>
-        & timer.common.SortBy<'date' | 'title' | 'focus' | 'time'>
-        & {
-            query?: string
-            mergeDate?: boolean
-        }
-
-    type GroupSelectPageQuery = {
-        param?: GroupSelectQuery
-        page?: timer.common.PageQuery
-    }
-
-    type StatCountGroupByIdsQuery = {
-        groupIds: number[]
-        dateRange: StatCondition['date']
-    }
-
-    type StatCountSiteByHostsQuery = {
-        hosts: string[]
-        dateRange: StatCondition['date']
-    }
 }

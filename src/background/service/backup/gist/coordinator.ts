@@ -11,7 +11,7 @@ import {
 } from "@api/gist"
 import { SOURCE_CODE_PAGE } from "@util/constant/url"
 import MonthIterator from "@util/month-iterator"
-import { formatTimeYMD } from "@util/time"
+import { getBirthday, parseTime } from "@util/time"
 import { calcAllBuckets, divide2Buckets, gistData2Rows, type GistData } from "./compressor"
 
 const TIMER_META_GIST_DESC = "Used for timer to save meta info. Don't change this description :)"
@@ -91,11 +91,11 @@ export default class GistCoordinator implements timer.backup.Coordinator<Cache> 
         return file ? await getJsonFileContent(file) ?? [] : []
     }
 
-    async download(context: timer.backup.CoordinatorContext<Cache>, startTime: Date, endTime: Date, targetCid?: string): Promise<timer.core.Row[]> {
-        const allYearMonth = new MonthIterator(startTime, endTime || new Date()).toArray()
+    async download(context: timer.backup.CoordinatorContext<Cache>, start: string, end: string, targetCid?: string): Promise<timer.core.Row[]> {
+        const startTime = parseTime(start) ?? getBirthday()
+        const endTime = parseTime(end) ?? new Date()
+        const allYearMonth = new MonthIterator(startTime, endTime).toArray()
         const result: timer.core.Row[] = []
-        const start = formatTimeYMD(startTime)
-        const end = formatTimeYMD(endTime)
         await Promise.all(allYearMonth.map(async yearMonth => {
             const filename = bucket2filename(yearMonth, targetCid || context.cid)
             const gist: Gist = await this.getStatGist(context)

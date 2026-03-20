@@ -1,7 +1,7 @@
 /**
  * Backup domain: request to sw.
  */
-import { sendMsg2Runtime } from "@api/chrome/runtime"
+import { sendMsg2Runtime } from "@api/chrome/runtime-sender"
 
 export function syncData() {
     // Timeout = 60s

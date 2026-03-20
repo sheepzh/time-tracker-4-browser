@@ -1,11 +1,11 @@
-import { trySendMsg2Runtime } from "@api/chrome/runtime"
+import { tryGetOption } from '@/api/sw/option'
+import { trySendMsg2Runtime } from "@api/chrome/runtime-sender"
 import Trend from "@app/Layout/icons/Trend"
 import { judgeVerificationRequired, processVerification } from "@app/util/limit"
 import { TAG_NAME } from "@cs/limit/element"
 import { t } from "@cs/locale"
 import { Plus, Timer } from "@element-plus/icons-vue"
 import Flex from '@pages/components/Flex'
-import { getOption } from "@api/sw/option"
 import { meetTimeLimit } from '@util/limit'
 import { ElButton } from "element-plus"
 import { computed, defineComponent } from "vue"
@@ -15,11 +15,8 @@ async function handleMore5Minutes(rule: timer.limit.Item | null, callback: () =>
     let promise: Promise<void> | undefined = undefined
     const ele = document.querySelector(TAG_NAME)?.shadowRoot?.querySelector('body')
     if (rule && await judgeVerificationRequired(rule)) {
-        const option = await getOption()
-        if (!option) {
-            callback()
-            return
-        }
+        const option = await tryGetOption()
+        if (!option) return callback()
         promise = processVerification(option, { appendTo: ele ?? undefined })
         promise ? promise.then(callback).catch(() => { }) : callback()
     } else {

@@ -1,4 +1,4 @@
-import { trySendMsg2Runtime } from "@api/chrome/runtime"
+import { trySendMsg2Runtime } from "@api/chrome/runtime-sender"
 import NormalTracker from "@cs/tracker/normal"
 import { DELAY_MILL } from "@util/limit"
 import { MILL_PER_SECOND } from "@util/time"

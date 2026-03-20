@@ -6,7 +6,7 @@
  */
 
 import { t } from "@app/locale"
-import { formatPeriodCommon, MILL_PER_MINUTE, MILL_PER_SECOND } from "@util/time"
+import { formatPeriodCommon, formatTimeYMD, MILL_PER_MINUTE, MILL_PER_SECOND } from "@util/time"
 
 /**
  * Convert {yyyy}{mm}{dd} to locale time
@@ -59,4 +59,13 @@ export function periodFormatter(milliseconds: number | undefined | null, option?
     if (hideUnit) return val
     let unit = UNIT_MAP[format]
     return val + unit
+}
+
+export type DateRange = Date | [Date?, Date?] | undefined
+
+export const cvtDateRange2Str = (range: DateRange): string | [string?, string?] | undefined => {
+    if (range === undefined) return undefined
+    if (range instanceof Date) return formatTimeYMD(range)
+    const [start, end] = range
+    return [start && formatTimeYMD(start), end && formatTimeYMD(end)]
 }

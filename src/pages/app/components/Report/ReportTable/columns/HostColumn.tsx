@@ -35,7 +35,11 @@ const _default = defineComponent(() => {
                         offset={10}
                         placement="left"
                         v-slots={{
-                            content: () => <TooltipSiteList modelValue={isGroup(row) ? undefined : row.mergedRows} />,
+                            content: () => (
+                                <TooltipSiteList
+                                    modelValue={isGroup(row) ? undefined : (row.mergedRows as timer.stat.SiteRow[] | undefined)}
+                                />
+                            ),
                             default: () => isSite(row) ? <HostAlert value={row.siteKey} iconUrl={row.iconUrl} /> : '',
                         }}
                     />

@@ -1,5 +1,6 @@
-import { getRuntimeId, getUrl, trySendMsg2Runtime } from '@api/chrome/runtime'
-import { getOption } from '@api/sw/option'
+import { trySendMsg2Runtime } from '@/api/chrome/runtime-sender'
+import { getOption } from '@/api/sw/option'
+import { getRuntimeId, getUrl } from '@api/chrome/runtime'
 import { init as initTheme, processDarkMode } from '@util/dark-mode'
 import { createApp, Ref, type App } from 'vue'
 import { exitFullscreen, isSameReason, type LimitReason, type MaskModal } from '../common'
@@ -125,7 +126,7 @@ class ModalInstance implements MaskModal {
 
     private refresh() {
         setTimeout(() => {
-            // update vue ref in another micro task
+            // Defer show/hide to a timer callback (macrotask), not from the sync stack that mutates reasons.
             const reason = this.reasons?.[0]
             reason ? this.show(reason) : this.hide()
         })
@@ -147,7 +148,7 @@ class ModalInstance implements MaskModal {
 
         // 2. Init dark mode
         initTheme(html)
-        getOption().then(processDarkMode)
+        getOption().then(processDarkMode).catch(() => { })
 
         // 3. Init vue app instance
         this.initApp()

@@ -4,12 +4,13 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import { sendMsg2Runtime } from '@/api/chrome/runtime-sender'
+import immigration from '@/background/service/components/immigration'
 import { hasPerm, requestPerm } from "@api/chrome/permission"
-import { isAllowedFileSchemeAccess, sendMsg2Runtime } from "@api/chrome/runtime"
+import { isAllowedFileSchemeAccess } from "@api/chrome/runtime"
 import { t } from "@app/locale"
 import { useManualRequest, useRequest } from "@hooks"
 import { locale } from "@i18n"
-import immigration from '@/background/service/components/immigration'
 import { rotate } from "@util/array"
 import { IS_ANDROID, IS_FIREFOX } from "@util/constant/environment"
 import { defaultTracking } from "@util/constant/option"

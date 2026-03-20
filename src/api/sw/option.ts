@@ -1,10 +1,18 @@
 /**
  * Option domain: request to sw.
  */
-import { sendMsg2Runtime } from "@api/chrome/runtime"
+import { sendMsg2Runtime } from "@api/chrome/runtime-sender"
 
 export function getOption() {
     return sendMsg2Runtime('option.get')
+}
+
+export async function tryGetOption(): Promise<timer.option.AllOption | null> {
+    try {
+        return await sendMsg2Runtime('option.get')
+    } catch {
+        return await Promise.resolve(null)
+    }
 }
 
 export function setOption(option: Partial<timer.option.AllOption>) {

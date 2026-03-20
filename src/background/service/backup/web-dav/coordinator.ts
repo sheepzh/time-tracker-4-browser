@@ -1,3 +1,4 @@
+import { getBirthday, parseTime } from '@/util/time'
 import {
     deleteDir, judgeDirExist, makeDirs, readFile, writeFile,
     type WebDAVAuth, type WebDAVContext,
@@ -50,11 +51,13 @@ export default class WebDAVCoordinator implements timer.backup.Coordinator<never
         }
     }
 
-    async download(context: timer.backup.CoordinatorContext<never>, dateStart: Date, dateEnd: Date, targetCid?: string): Promise<timer.core.Row[]> {
+    async download(context: timer.backup.CoordinatorContext<never>, start: string, end: string, targetCid?: string): Promise<timer.core.Row[]> {
         const dirPath = processDir(context?.ext?.dirPath)
         const davContext = prepareContext(context)
         targetCid = targetCid || context?.cid
 
+        const dateStart = parseTime(start) ?? getBirthday()
+        const dateEnd = parseTime(end) ?? new Date()
         const dateIterator = new DateIterator(dateStart, dateEnd)
         const result: timer.core.Row[] = []
         await Promise.all(dateIterator.toArray().map(async date => {

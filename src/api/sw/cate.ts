@@ -1,7 +1,7 @@
 /**
  * Cate domain: request to sw.
  */
-import { sendMsg2Runtime } from "@api/chrome/runtime"
+import { sendMsg2Runtime } from "@api/chrome/runtime-sender"
 
 export function listCates() {
     return sendMsg2Runtime('cate.listAll')

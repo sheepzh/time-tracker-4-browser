@@ -11,8 +11,7 @@ import backupProcessor from "@/background/service/backup/processor"
 import immigration from "@/background/service/components/immigration"
 import { fillExist, processImportedData } from "@/background/service/components/import-processor"
 import optionHolder from "@/background/service/components/option-holder"
-import { merge } from "@/background/service/components/period-calculator"
-import limitService from "@/background/service/limit-service"
+import limitService, { selectLimit } from "@/background/service/limit-service"
 import { getCid, getLastBackUp, increaseApp, increasePopup, recommendRate, saveFlag } from "@/background/service/meta-service"
 import { setBackupOption, setDarkMode, setLocale } from "@/background/service/option-service"
 import periodService from "@/background/service/period-service"
@@ -33,8 +32,8 @@ import {
 } from "@/background/service/site-service"
 import {
     batchDelete,
-    countGroupByIds,
-    countSiteByHosts,
+    countGroup,
+    countSite,
     listHosts,
     selectCate,
     selectCatePage,
@@ -68,16 +67,16 @@ class MessageDispatcher {
     private initServiceHandlers() {
         this
             .register('stat.selectSite', selectSite)
-            .register('stat.selectSitePage', ({ param, page }) => selectSitePage(param, page))
+            .register('stat.selectSitePage', selectSitePage)
+            .register('stat.countSite', countSite)
             .register('stat.selectCate', selectCate)
-            .register('stat.selectCatePage', ({ query, page }) => selectCatePage(query, page))
+            .register('stat.selectCatePage', selectCatePage)
             .register('stat.selectGroup', selectGroup)
-            .register('stat.selectGroupPage', ({ param, page }) => selectGroupPage(param, page))
+            .register('stat.selectGroupPage', selectGroupPage)
+            .register('stat.countGroup', countGroup)
             .register('stat.listHosts', listHosts)
             .register('stat.mergeDate', mergeDate)
             .register('stat.batchDelete', batchDelete)
-            .register('stat.countGroupByIds', ({ groupIds, dateRange }) => countGroupByIds(groupIds, dateRange))
-            .register('stat.countSiteByHosts', ({ hosts, dateRange }) => countSiteByHosts(hosts, dateRange))
             .register('stat.canReadRemote', canReadRemote)
             .register('stat.recommendRate', recommendRate)
             .register('site.getPslSuffix', getSuffix)
@@ -110,9 +109,9 @@ class MessageDispatcher {
             .register('meta.saveFlag', saveFlag)
             .register('meta.getCid', () => getCid())
             .register('meta.increaseApp', increaseApp)
-            .register('meta.increasePopup', () => { increasePopup(); return true })
-            .register('meta.recommendRate', () => recommendRate())
-            .register('limit.select', cond => limitService.select(cond ? { filterDisabled: cond.filterDisabled ?? false, url: cond.url, id: cond.id } : undefined))
+            .register('meta.increasePopup', increasePopup)
+            .register('meta.recommendRate', recommendRate)
+            .register('limit.select', selectLimit)
             .register('limit.remove', data => {
                 const items = Array.isArray(data) ? data : [data]
                 limitService.remove(...items)
@@ -134,7 +133,6 @@ class MessageDispatcher {
             .register('backup.query', param => backupProcessor.query(param))
             .register('backup.getLastBackUp', type => getLastBackUp(type))
             .register('backup.listClients', () => backupProcessor.listClients())
-            .register('period.merge', ({ periods, config }) => Promise.resolve(merge(periods, config)))
             .register('period.listBetween', param => periodService.listBetween(param))
             .register('import.fillExist', rows => fillExist(rows))
             .register('import.processImportedData', ({ data, resolution }) => processImportedData(data, resolution))

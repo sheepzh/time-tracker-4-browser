@@ -30,7 +30,6 @@ declare namespace timer.site {
         name: string
     }
 
-    /** @see site-database SiteCondition (mq / SW). */
     type SiteListQuery = {
         fuzzyQuery?: string
         cateIds?: number | number[]

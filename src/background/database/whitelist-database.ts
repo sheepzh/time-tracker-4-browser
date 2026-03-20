@@ -74,7 +74,7 @@ class WhitelistDatabase extends BaseDatabase implements BrowserMigratable<'__whi
      * @deprecated Only for legacy data, will be removed in future version
      */
     private parseLegacyData(data: timer.backup.ExportData): string[] {
-        const toMigrate = data[WHITELIST_KEY]
+        const toMigrate = (data as any)[WHITELIST_KEY]
         return isStringArray(toMigrate) ? toMigrate : []
     }
 

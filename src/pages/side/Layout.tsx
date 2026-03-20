@@ -1,9 +1,9 @@
-import { useRequest } from "@hooks"
-import Flex from '@pages/components/Flex'
 import { selectSite } from "@api/sw/stat"
+import { useRequest } from "@hooks/useRequest"
+import Flex from '@pages/components/Flex'
 import { formatTime } from "@util/time"
 import { ElText } from "element-plus"
-import { defineComponent, ref, type StyleValue } from "vue"
+import { defineComponent, ref } from "vue"
 import RowList from "./components/RowList"
 import Search from "./components/Search"
 import { t } from "./locale"
@@ -13,11 +13,11 @@ const _default = defineComponent<{}>(() => {
     const query = ref('')
 
     const { data, refresh, loading } = useRequest(() => selectSite({
-        date: date.value ?? new Date(),
+        date: date.value,
         query: query.value,
         sortKey: 'focus',
         sortDirection: 'DESC',
-    }))
+    }), { defaultValue: [] })
 
     return () => <Flex column height='100%'>
         <Search
@@ -39,11 +39,7 @@ const _default = defineComponent<{}>(() => {
                 @{formatTime(date.value, t(msg => msg.calendar.dateFormat))}
             </ElText>
         </Flex>
-        <RowList
-            loading={loading.value}
-            data={data.value ?? []}
-            style={{ flex: 1, overflow: "auto" } satisfies StyleValue}
-        />
+        <RowList loading={loading.value} data={data.value} />
     </Flex>
 })
 

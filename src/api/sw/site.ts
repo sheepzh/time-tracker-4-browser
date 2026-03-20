@@ -1,7 +1,7 @@
 /**
  * Site domain: request to sw.
  */
-import { sendMsg2Runtime } from "@api/chrome/runtime"
+import { sendMsg2Runtime } from "@api/chrome/runtime-sender"
 
 export type SiteQueryParam = {
     fuzzyQuery?: string

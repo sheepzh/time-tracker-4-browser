@@ -1,4 +1,5 @@
-import { onRuntimeMessage, trySendMsg2Runtime } from "@api/chrome/runtime"
+import { trySendMsg2Runtime } from '@/api/chrome/runtime-sender'
+import { onTabMessage } from "@api/chrome/runtime"
 
 class RunTimeTracker {
     private start: number = Date.now()
@@ -14,7 +15,7 @@ class RunTimeTracker {
     init(): void {
         this.fetchSite()
 
-        onRuntimeMessage(async req => {
+        onTabMessage(async req => {
             if (req.code === 'siteRunChange') {
                 this.fetchSite()
                 return { code: 'success' }

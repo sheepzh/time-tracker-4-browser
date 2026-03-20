@@ -1,7 +1,7 @@
 /**
  * Limit domain: request to sw.
  */
-import { sendMsg2Runtime } from "@api/chrome/runtime"
+import { sendMsg2Runtime } from "@api/chrome/runtime-sender"
 
 export function selectLimits(cond?: { filterDisabled?: boolean; url?: string; id?: number }) {
     return sendMsg2Runtime('limit.select', cond)

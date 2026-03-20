@@ -54,7 +54,7 @@ const CateColumn = defineComponent<Props>(props => {
                 const cateId = getRelatedCateId(row)
                 return (
                     <Flex key={`${identifyStatKey(row)}_${cateId}`} justify="center">
-                        {isCate(row) && renderMerged(row.cateKey, cate.all, mergedRows ?? [])}
+                        {isCate(row) && renderMerged(row.cateKey, cate.all, (mergedRows ?? []) as timer.stat.SiteRow[])}
                         {isSite(row) && (
                             <CategoryEditable
                                 siteKey={row.siteKey}

@@ -1,4 +1,4 @@
-import { trySendMsg2Runtime } from "@api/chrome/runtime"
+import { trySendMsg2Runtime } from "@api/chrome/runtime-sender"
 import { date2Idx } from "@util/limit"
 import { MILL_PER_SECOND } from "@util/time"
 import { type LimitReason, type ModalContext, type Processor } from "../common"
@@ -30,7 +30,7 @@ class PeriodProcessor implements Processor {
         this.context = context
     }
 
-    async handleMsg(code: timer.mq.ReqCode, data: timer.limit.Item[]): Promise<timer.mq.Response<timer.mq.ReqCode>> {
+    async handleMsg(code: timer.mq.tab.TabCode, data: timer.limit.Item[]): Promise<timer.mq.Response<timer.mq.ReqCode>> {
         if (code === "limitChanged") {
             this.timers?.forEach(clearTimeout)
             await this.init0(data)

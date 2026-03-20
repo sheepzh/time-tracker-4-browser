@@ -1,4 +1,4 @@
-import { sendMsg2Runtime } from "@api/chrome/runtime"
+import { sendMsg2Runtime } from "@api/chrome/runtime-sender"
 import { t, tN } from "@app/locale"
 import { useCountDown } from '@hooks/useCount'
 import { I18nResultItem, locale } from "@i18n"
