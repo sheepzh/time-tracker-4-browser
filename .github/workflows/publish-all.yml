@@ -10,14 +10,14 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout repository
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
               with:
                   fetch-depth: 0
 
             - name: Setup Node.js
-              uses: actions/setup-node@v4
+              uses: actions/setup-node@v6
               with:
-                  node-version: "v22"
+                  node-version: "v24"
 
             - name: Install dependencies
               run: npm install
@@ -53,19 +53,19 @@ jobs:
                   fi
 
             - name: Upload Chrome/Edge Artifact
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v7
               with:
                   name: chrome-edge-package
                   path: market_packages/target.zip
 
             - name: Upload Firefox XPI Artifact
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v7
               with:
                   name: firefox-xpi-package
                   path: market_packages/target.firefox.zip
 
             - name: Upload Firefox Source Artifact
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v7
               with:
                   name: firefox-source-package
                   path: market_packages/target.src.zip
@@ -75,7 +75,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Download Chrome/Edge Artifact
-              uses: actions/download-artifact@v4
+              uses: actions/download-artifact@v8
               with:
                   name: chrome-edge-package
 
@@ -94,7 +94,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Download Chrome/Edge Artifact
-              uses: actions/download-artifact@v4
+              uses: actions/download-artifact@v8
               with:
                   name: chrome-edge-package
 
@@ -112,17 +112,17 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Download Firefox XPI Artifact
-              uses: actions/download-artifact@v4
+              uses: actions/download-artifact@v8
               with:
                   name: firefox-xpi-package
 
             - name: Download Firefox Source Artifact
-              uses: actions/download-artifact@v4
+              uses: actions/download-artifact@v8
               with:
                   name: firefox-source-package
 
             - name: Upload to Firefox Add-on Store
-              uses: wdzeng/firefox-addon@v1.2.0-alpha.0
+              uses: wdzeng/firefox-addon@v1.2.0
               with:
                   addon-guid: "{a8cf72f7-09b7-4cd4-9aaa-7a023bf09916}"
                   xpi-path: target.firefox.zip
