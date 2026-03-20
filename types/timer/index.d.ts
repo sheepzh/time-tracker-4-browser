@@ -23,6 +23,8 @@ declare namespace timer {
         | 'tr'
         // @since 3.7.3
         | 'pl'
+        // @since 4.1.2
+        | 'it'
 
     /**
      * @since 0.8.0

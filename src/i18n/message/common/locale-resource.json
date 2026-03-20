@@ -45,17 +45,18 @@
     },
     "tr": {
         "name": "Türkçe",
-        "comma": ","
+        "comma": ", "
     },
     "pl": {
         "name": "Polski",
-        "comma": ","
+        "comma": ", "
+    },
+    "it": {
+        "name": "italiano",
+        "comma": ", "
     },
     "ko": {
         "name": "한국인"
-    },
-    "it": {
-        "name": "italiano"
     },
     "sv": {
         "name": "Sverige"

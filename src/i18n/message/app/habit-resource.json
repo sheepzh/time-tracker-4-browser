@@ -492,5 +492,43 @@
                 "siteCount": "Liczba stron"
             }
         }
+    },
+    "it": {
+        "common": {
+            "focusAverage": "{value} medio giornaliera"
+        },
+        "period": {
+            "title": "Abitudine per periodi di tempo",
+            "busiest": "Ora più attiva della giornata",
+            "idle": "Periodo d'inattività più lungo",
+            "chartType": {
+                "average": "Media giornaliera",
+                "trend": "Tendenza",
+                "stack": "Stack"
+            },
+            "sizes": {
+                "fifteen": "Per 15 minuti",
+                "halfHour": "Per mezz'ora",
+                "hour": "Per un'ora",
+                "twoHour": "Per due ore"
+            }
+        },
+        "site": {
+            "title": "Abitudine dei siti",
+            "histogramTitle": "TOP {n} più visitati",
+            "exclusiveToday": "I dati di oggi non sono inclusi nella media",
+            "countTotal": "Totale visite/siti",
+            "siteAverage": "Visite medie a {value} siti web al giorno",
+            "distribution": {
+                "title": "Distribuzione di frequenza media giornaliera",
+                "aveTime": "Tempo medio di navigazione giornaliero",
+                "aveVisit": "Numero medio di visite giornaliere",
+                "tooltip": "Totale: {value} siti"
+            },
+            "trend": {
+                "title": "Tendenze quotidiane",
+                "siteCount": "Conteggio siti web"
+            }
+        }
     }
 }

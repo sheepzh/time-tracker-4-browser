@@ -269,5 +269,25 @@
             }
         },
         "noMore": "Nie więcej"
+    },
+    "it": {
+        "exportFileName": "My_Browsing_Time",
+        "total": "Visite totali: {visit} volte, durata totale: {focus}",
+        "batchDelete": {
+            "noSelectedMsg": "Si prega di selezionare la riga che si desidera eliminare nella prima tabella",
+            "confirmMsg": "{count} record come [{example}] di {date} saranno eliminati!",
+            "confirmMsgAll": "{count} record come [{example}], saranno eliminati!"
+        },
+        "remoteReading": {
+            "on": "Lettura dei dati di backup remoti",
+            "off": "Clicca per leggere i dati di backup remoti",
+            "table": {
+                "client": "Nome del cliente",
+                "localData": "Dati locali",
+                "value": "Valore",
+                "percentage": "Percentuale"
+            }
+        },
+        "noMore": "Nient'altro"
     }
 }

@@ -12,7 +12,7 @@
     "ja": {
         "name": "タイムトラッカー",
         "marketName": "タイムトラッカー - Web習慣ビルダー",
-        "description": "時間を追跡し、あなたの習慣を分析して、中毒性の高いサイトをブロック"
+        "description": "時間を追跡し、習慣を分析し、依存性のあるサイトをブロック"
     },
     "en": {
         "name": "Time Tracker",
@@ -26,23 +26,23 @@
     },
     "uk": {
         "name": "Веб-трекер часу",
-        "marketName": "Веб-трекер часу",
-        "description": "Відстежуйте, аналізуйте, контролюйте, а потім підвищуйте ефективність"
+        "marketName": "Веб-трекер часу - Творець веб-звичок",
+        "description": "Відстежуйте час, аналізуйте звички та блокуйте сайти, що викликають залежність"
     },
     "es": {
         "name": "Rastreador de tiempo web",
-        "marketName": "Rastreador de tiempo web",
-        "description": "Realice un seguimiento, analice, controle y luego mejore la eficiencia"
+        "marketName": "Rastreador de tiempo web - Creador de hábitos web",
+        "description": "Realice un seguimiento, analice sus hábitos y bloquee sitios adictivos"
     },
     "de": {
         "name": "Zeiterfassung",
-        "marketName": "Zeiterfassung",
-        "description": "Verfolgen, analysieren, kontrollieren und dann die Effizienz verbessern"
+        "marketName": "Zeiterfassung - Web-Gewohnheitstrainer",
+        "description": "Verfolgen Sie die Zeit, analysieren Sie Ihre Gewohnheiten und blockieren Sie süchtig machende Websites"
     },
     "fr": {
         "name": "Suivi du temps Web",
-        "marketName": "Suivi du temps Web - Online Habit Formers",
-        "description": "Suivre, analyser, contrôler, puis améliorer l’efficacité"
+        "marketName": "Suivi du temps Web - Créateur d'habitudes web",
+        "description": "Suivez votre temps, analysez vos habitudes et bloquez les sites addictifs"
     },
     "ru": {
         "name": "Трекер времени",
@@ -52,16 +52,21 @@
     "ar": {
         "name": "متتبع الوقت",
         "marketName": "متتبع الوقت - منشئ عادات الويب",
-        "description": "تتبع وتحليل ومراقبة ثم تحسين الكفاءة"
+        "description": "تتبع الوقت، حلل عاداتك، واحظر المواقع الإدمانية"
     },
     "tr": {
         "name": "Zaman Takipçisi",
         "marketName": "Zaman Takipçisi – Alışkanlık Oluşturucu ve Site Engelleyici",
-        "description": "Zamanınızı takip edin, alışkanlıklarınızı analiz edin, bağımlılık yapan siteleri engelleyin."
+        "description": "Zamanınızı takip edin, alışkanlıklarınızı analiz edin, bağımlılık yapan siteleri engelleyin"
     },
     "pl": {
         "name": "Zegar Czasu",
         "marketName": "Zegar Czasu - Kreator Nawyków Internetowych",
         "description": "Śledź czas, analizuj swoje nawyki i blokuj uzależniające strony"
+    },
+    "it": {
+        "name": "Tracker del Tempo",
+        "marketName": "Tracker del Tempo - Costruttore di Abitudini Web",
+        "description": "Traccia il tempo, analizza le tue abitudini e blocca i siti che creano dipendenza"
     }
 }

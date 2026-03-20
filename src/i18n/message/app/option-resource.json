@@ -1684,5 +1684,60 @@
         "importConfirm": "Ustawienia zaimportowane pomyślnie, proszę odświeżyć stronę aby zastosować zmiany!",
         "reloadButton": "Odśwież",
         "defaultValue": "Domyślnie: {default}"
+    },
+    "it": {
+        "yes": "Si",
+        "no": "No",
+        "appearance": {
+            "title": "Apparenza",
+            "displayWhitelist": "{input}  Se visualizzare {whitelist} in {contextMenu}",
+            "locale": {
+                "label": "Linguaggio {input}",
+                "changeConfirm": "La lingua è stata modificata con successo, si prega di aggiorna questa pagina!",
+                "reloadButton": "Aggiorna"
+            },
+            "printInConsole": {
+                "console": "console"
+            },
+            "darkMode": {
+                "label": "Modalità oscura {input}"
+            }
+        },
+        "tracking": {
+            "storageConfirm": "Vuoi cambiare il tipo di storage in {type}?"
+        },
+        "backup": {
+            "client": "Nome dell' Cliente {input}",
+            "label": {
+                "account": "Nome Utente {input}",
+                "password": "Password {input}"
+            },
+            "operation": "Backup",
+            "download": {
+                "btn": "Scarica",
+                "willDownload": "Da scaricare"
+            },
+            "clear": {
+                "btn": "Cancella"
+            },
+            "confirmStep": "Conferma i dati",
+            "clientTable": {
+                "selectTip": "Seleziona cliente",
+                "current": "Attuale"
+            },
+            "lastTimeTip": "L' Ultimo tempo di backup: {lastTime}",
+            "auto": {
+                "label": "Indica se abilitare il backup automatico",
+                "interval": "e esegui ogni {input} minuti"
+            }
+        },
+        "accessibility": {
+            "title": "Accessibilità"
+        },
+        "resetButton": "Reset",
+        "resetSuccess": "Reset completato!",
+        "exportButton": "Impostazioni di esportazione",
+        "importButton": "Impostazioni di importazione",
+        "defaultValue": "Default: {default}"
     }
 }

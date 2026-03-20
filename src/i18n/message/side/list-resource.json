@@ -50,5 +50,8 @@
     "pl": {
         "searchPlaceholder": "Wprowadź domenę lub adres URL",
         "title": "Analiza przeglądania "
+    },
+    "it": {
+        "title": "Analisi Di Esplorazione"
     }
 }

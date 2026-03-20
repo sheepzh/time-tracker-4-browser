@@ -219,5 +219,21 @@
         "other": "Pozostałe funkcje",
         "helpUs": "Pomóż w tłumaczeniu",
         "about": "O rozszerzeniu"
+    },
+    "it": {
+        "dashboard": "Dashboard",
+        "data": "Miei Dati",
+        "dataReport": "Record",
+        "siteAnalysis": "Analiso Sito",
+        "dataClear": "Memoria",
+        "behavior": "Comportamento Dell'Utente",
+        "habit": "Abitudini",
+        "limit": "Limite di tempo",
+        "additional": "Funzionalità aggiuntive",
+        "siteManage": "Gestione del sito",
+        "whitelist": "Whitelist",
+        "other": "Altre funzioni",
+        "helpUs": "Aiuto Traduzione",
+        "about": "Info su"
     }
 }

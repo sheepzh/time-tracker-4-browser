@@ -309,5 +309,30 @@
             "focusScore": "Skupienie",
             "focusScoreDesc": "Powiązane z całkowitym czasem ciągłego przebywania na tej samej stronie. Wzór znajduje się w kodzie źródłowym"
         }
+    },
+    "it": {
+        "heatMap": {
+            "title0": "Navigato per {hour} ore nell'ultimo anno",
+            "title1": "Navigato meno di 1 ora l'anno scorso"
+        },
+        "topK": {
+            "title": "TOP {k} più visitati negli ultimi {day} giorni"
+        },
+        "indicator": {
+            "installedDays": "Installato per {number} giorni",
+            "visitCount": "Visitato {site}  {visit} volte",
+            "browsingTime": "Navigato per {minute} minuti",
+            "mostUse": "Navigazione preferita tra le {start} e le {end}"
+        },
+        "monthOnMonth": {
+            "title": "Tendenza del tempo di navigazione mese per mese"
+        },
+        "timeline": {
+            "title": "Cronologia degli ultimi {n} giorni",
+            "busyScore": "Frenesia",
+            "busyScoreDesc": "Relativo al tempo totale di navigazione e al numero di siti web per ora. Guarda il codice sorgente per la formula di calcolo",
+            "focusScore": "Focalizzazione",
+            "focusScoreDesc": "Relativo al tempo totale di navigazione continua dello stesso sito web. Guarda il codice sorgente per la formula di calcolo"
+        }
     }
 }

@@ -320,7 +320,7 @@
             "daily": "Límite diario",
             "weekly": "Límite semanal",
             "weekStartInfo": "El primer día de cada semana es {weekStart}, puedes cambiar este valor en las opciones de estadísticas",
-            "delayCount": "Contagem de atraso",
+            "delayCount": "Contador de retraso",
             "detail": "Detalle de la regla",
             "visitTime": "Límite por visita",
             "period": "Periodos no permitidos",
@@ -678,5 +678,55 @@
             "confession": "Czas ucieka"
         },
         "reminder": "Mniej niż {min} minut do osiągnięcia limitu!"
+    },
+    "it": {
+        "filterDisabled": "Solo Abilitati",
+        "emptyTips": "Clicca qui per creare una regola!",
+        "item": {
+            "name": "Nome della regola",
+            "condition": "Url Ristretto",
+            "daily": "Limite giornaliero",
+            "weekly": "Limite settimanale",
+            "weekStartInfo": "Il primo giorno di ogni settimana è {weekStart}, puoi cambiare questo valore nelle opzioni di tracciamento",
+            "delayCount": "Ritardo conteggio",
+            "detail": "Dettagli regola",
+            "visitTime": "Limite di tempo per visita",
+            "period": "Periodi bloccati",
+            "enabled": "Attivata",
+            "locked": "Bloccato",
+            "effectiveDay": "Effettivo On",
+            "delayAllowed": "Ritardabile",
+            "delayAllowedInfo": "Se va in timeout, aspetta 5 minuti prima di riprovare",
+            "visits": "visite",
+            "or": "o",
+            "notEffective": "Non valido"
+        },
+        "step": {
+            "base": "Informazione Base",
+            "url": "URL Di Configurazione",
+            "rule": "Regola di configurazione"
+        },
+        "button": {
+            "test": "Test URL"
+        },
+        "message": {
+            "noUrl": "Nessuna URL aggiunta",
+            "noRule": "Nessuna regola inserita",
+            "deleteConfirm": "Vorresti eliminare la regola [{name}]?",
+            "lockConfirm": "Se bloccato, tutte le operazioni richiederanno la verifica anche se la regola non viene attivata.",
+            "inputTestUrl": "Si prega d'inserire il link URL da testare per primo",
+            "noRuleMatched": "L'URL non soddisfa alcuna regola",
+            "rulesMatched": "L'URL soddisfa le seguenti regole:",
+            "timeout": "Tempo scaduto! XD"
+        },
+        "verification": {
+            "inputTip": "La regola è stata attivata o bloccata. Per continuare, inserisci la risposta alla seguente domanda entro {second} secondi: {prompt}",
+            "inputTip2": "La regola è stata attivata o bloccata. Per continuare, inseriscila così com'è entro  {second} secondi: {answer}",
+            "strictTip": "Attivato, nessuna operazione è consentita prima del rilascio!",
+            "incorrectPsw": "Password non e corretta",
+            "incorrectAnswer": "Risposta sbagliata",
+            "pi": "{digitCount} cifre da {startIndex} a {endIndex} della parte decimale di π"
+        },
+        "reminder": "Meno di {min} minuti fino al limite!"
     }
 }

@@ -141,5 +141,14 @@
         "button": "Przejdź do Crowdin",
         "loading": "Sprawdzanie postępu tłumaczenia...",
         "contributors": "Lista współtwórców"
+    },
+    "it": {
+        "title": "Sentitevi liberi di contribuire a migliorare le traduzioni di localizzazione dell'estensione!",
+        "alert": {
+            "l1": "Al fine di fornire una migliore esperienza utente, ospito le attività di traduzione su Crowdin.",
+            "l3": "Quando il progresso della traduzione di una lingua raggiunge il 50 per cento, considererò di sostenerla in questa estensione."
+        },
+        "loading": "Controllo avanzamento traduzione...",
+        "contributors": "Lista Contributori"
     }
 }

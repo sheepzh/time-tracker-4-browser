@@ -156,6 +156,7 @@
             "everyday": "Diario",
             "thisWeek": "Esta semana",
             "thisMonth": "Este mes",
+            "lastWeek": "Semana pasada",
             "lastDays": "Últimos {n} días",
             "tillYesterday": "Hasta ayer",
             "tillDaysAgo": "Hasta hace {n} días",

@@ -219,5 +219,22 @@
             "rate": "Oceń 5 gwiazdek, aby pomóc innym dowiedzieć się o tym~~",
             "feedback": "Zapraszamy do przesłania opinii i próśb o funkcje !!"
         }
+    },
+    "it": {
+        "label": {
+            "name": "Nome",
+            "version": "Versione",
+            "website": "Sito Web",
+            "installation": "Installa",
+            "thanks": "Riconoscimenti",
+            "privacy": "Informativa Privacy",
+            "license": "Licenza",
+            "support": "Supporto"
+        },
+        "text": {
+            "greet": "Ti piace questa estensione?",
+            "rate": "Valuta 5 stelle per supportarci!",
+            "feedback": "Le tue idee ci rendono migliori!"
+        }
     }
 }

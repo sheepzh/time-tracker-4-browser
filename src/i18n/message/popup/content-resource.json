@@ -271,5 +271,24 @@
         "ranking": {
             "includingCount": "Wliczając {siteCount} stron"
         }
+    },
+    "it": {
+        "percentage": {
+            "title": {
+                "today": "Dati di oggi",
+                "yesterday": "Data di Ieri",
+                "thisWeek": "Dati di questa Settimana",
+                "thisMonth": "Dati di questo Mese",
+                "lastDays": "Ultimo {n} giorni dati",
+                "allTime": "Tutti i dati"
+            },
+            "saveAsImageTitle": "Snapshot",
+            "averageTime": "{value} al giorno in media",
+            "totalTime": "Totale {totalTime}",
+            "totalCount": "{totalCount} volte Totale"
+        },
+        "ranking": {
+            "includingCount": "Inclusi siti {siteCount}"
+        }
     }
 }

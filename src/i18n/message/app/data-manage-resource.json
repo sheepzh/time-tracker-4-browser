@@ -381,5 +381,35 @@
         "deleteConfirm": "Wyfiltrowano w sumie {count} wpisów. Czy chcesz je usunąć?",
         "migrationAlert": "Przenieś dane między przeglądarkami za pomocą importu i eksportu",
         "importError": "Błędne rozszerzenie pliku"
+    },
+    "it": {
+        "totalMemoryAlert": "Il browser fornisce {size}MB per memorizzare i dati locali per ogni estensione",
+        "totalMemoryAlert1": "Impossibile determinare la memoria massima disponibile consentita dal browser",
+        "usedMemoryAlert": "{size}MB è attualmente in uso",
+        "idbAlert": "Sposta i dati di tracciamento su IndexedDB per ridurre l'utilizzo dello storage",
+        "operationAlert": "È possibile eliminare i dati non importanti per ridurre l'utilizzo della memoria",
+        "filterItems": "Filtro dati",
+        "filterFocus": "L'ora di navigazione del giorno è tra {start} secondi e {end} secondi",
+        "filterTime": "Il numero di visite per il giorno è compreso tra {start} e {end}",
+        "filterDate": "Registrato tra {picker}",
+        "importOther": {
+            "step1": "Seleziona dati",
+            "step2": "Conferma dei dati",
+            "dataSource": "Origine dati",
+            "file": "File di dati",
+            "selectFileBtn": "Seleziona",
+            "conflictType": "Risoluzione dei conflitti",
+            "conflictTip": "Cosa fare se i dati importati sono in conflitto con i dati locali",
+            "overwrite": "Sovrascrivere",
+            "accumulate": "Accumulare",
+            "imported": "Importato",
+            "local": "Locali",
+            "fileNotSelected": "File non selezionato",
+            "conflictNotSelected": "Risoluzione dei conflitti non selezionata"
+        },
+        "paramError": "Il parametro è errato, per favore controlla!",
+        "deleteConfirm": "Un totale di {count} record sono stati filtrati. Vuoi eliminarli tutti?",
+        "migrationAlert": "Migrare i dati tra browser utilizzando importazione ed esportazione",
+        "importError": "Estensione del file sbagliata"
     }
 }

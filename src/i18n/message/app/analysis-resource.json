@@ -401,5 +401,36 @@
             "focusTitle": "Trendy czasu przeglądania",
             "visitTitle": "Trendy wizyt"
         }
+    },
+    "it": {
+        "target": {
+            "site": "Sito web",
+            "cate": "Categoria"
+        },
+        "common": {
+            "focusTotal": "Tempo totale di navigazione",
+            "visitTotal": "Visite totali",
+            "merged": "Uniti",
+            "virtual": "Virtuale",
+            "hostPlaceholder": "Cerca un sito da analizzare",
+            "emptyDesc": "Nessun sito selezionato"
+        },
+        "summary": {
+            "title": "Riepilogo",
+            "day": "Giorni attivi in totale",
+            "firstDay": "Prima visita {value}",
+            "calendarTitle": "Attività nelle ultime settimane"
+        },
+        "trend": {
+            "title": "Tendenze",
+            "activeDay": "Giorni attivi",
+            "totalDay": "Periodo: Giorni",
+            "maxFocus": "Tempo di navigazione massimo giornaliero",
+            "averageFocus": "Tempo medio di navigazione giornaliero",
+            "maxVisit": "Visite massime giornaliere",
+            "averageVisit": "Visite medie giornaliere",
+            "focusTitle": "Tendenze di Navigazione nel periodo",
+            "visitTitle": "Tendenze Di Visite"
+        }
     }
 }

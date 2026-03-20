@@ -12,6 +12,7 @@ const ALL_LOCALE_VALIDATOR: { [locale in timer.Locale]: 0 } = {
     ar: 0,
     tr: 0,
     pl: 0,
+    it: 0,
 }
 
 export const ALL_LOCALES: timer.Locale[] = Object.keys(ALL_LOCALE_VALIDATOR) as timer.Locale[]

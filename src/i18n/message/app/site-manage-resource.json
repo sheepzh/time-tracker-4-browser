@@ -552,5 +552,41 @@
             "disassociatedMsg": "Czy chcesz wyczyścić kategorie wszystkich wybranych witryn?",
             "batchDeleteMsg": "Czy chcesz usunąć wszystkie wybrane witryny?"
         }
+    },
+    "it": {
+        "deleteConfirmMsg": "{host} sarà eliminato",
+        "column": {
+            "type": "Site Type",
+            "alias": "Nome del sito",
+            "cate": "Categoria di Sito",
+            "icon": "Icone"
+        },
+        "type": {
+            "normal": {
+                "name": "normale",
+                "info": "statistiche in base al nome dominio"
+            },
+            "merged": {
+                "name": "uniti"
+            },
+            "virtual": {
+                "name": "virtuale"
+            }
+        },
+        "cate": {
+            "name": "Nome",
+            "removeConfirm": "Confermi di voler eliminare la categoria: {category}?",
+            "batchChange": "Cambia categorie"
+        },
+        "form": {
+            "emptyAlias": "Inserisci il nome del sito",
+            "emptyHost": "Inserisci l'URL del sito"
+        },
+        "msg": {
+            "hostExistWarn": "{host} esiste",
+            "noSelected": "Nessun sito selezionato",
+            "disassociatedMsg": "Vuoi cancellare le categorie di tutti i siti selezionati?",
+            "batchDeleteMsg": "Vuoi eliminare tutti i siti selezionati?"
+        }
     }
 }

@@ -35,6 +35,7 @@ const LOCALE_WIDTH: { [locale in timer.Locale]: number } = {
     ar: 320,
     tr: 320,
     pl: 320,
+    it: 320,
 }
 
 type Props = {
