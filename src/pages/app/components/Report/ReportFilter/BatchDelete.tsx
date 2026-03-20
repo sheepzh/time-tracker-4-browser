@@ -1,4 +1,5 @@
 import statDatabase from "@/background/database/stat-database"
+import { DateRange } from '@/pages/app/util/time'
 import { getGroup } from "@api/chrome/tabGroups"
 import { batchDelete, countGroupByIds, countSiteByHosts } from "@api/sw/stat"
 import { type I18nKey, t } from "@app/locale"
@@ -10,7 +11,7 @@ import { computed, defineComponent } from "vue"
 import { useReportComponent, useReportFilter } from "../context"
 import type { DisplayComponent, ReportFilterOption } from "../types"
 
-async function computeBatchDeleteMsg(selected: timer.stat.Row[], mergeDate: boolean, dateRange: [Date?, Date?]): Promise<string> {
+async function computeBatchDeleteMsg(selected: timer.stat.Row[], mergeDate: boolean, dateRange: DateRange): Promise<string> {
     const hosts: string[] = []
     const groupIds: number[] = []
     selected.forEach(row => {
@@ -30,7 +31,7 @@ async function computeBatchDeleteMsg(selected: timer.stat.Row[], mergeDate: bool
     let count2Delete = selected.length ?? 0
     if (mergeDate) {
         // All the items
-        const [start, end] = dateRange
+        const [start, end] = dateRange instanceof Date ? [dateRange,] : dateRange ?? []
         const date: [string?, string?] = [start && formatTimeYMD(start), end && formatTimeYMD(end)]
         const siteCount = hosts.length ? await countSiteByHosts(hosts, date) : 0
         const groupCount = groupIds.length ? await countGroupByIds(groupIds, date) : 0
@@ -50,7 +51,7 @@ async function computeBatchDeleteMsg(selected: timer.stat.Row[], mergeDate: bool
     }
 
     let key: I18nKey | undefined = undefined
-    let [startDate, endDate] = dateRange
+    let [startDate, endDate] = dateRange instanceof Date ? [dateRange,] : dateRange ?? []
     if (!startDate && !endDate) {
         // Delete all
         key = msg => msg.report.batchDelete.confirmMsgAll
@@ -103,10 +104,10 @@ async function handleBatchDelete(displayComp: DisplayComponent | undefined, filt
     })
 }
 
-async function deleteBatch(selected: timer.stat.Row[], mergeDate: boolean, dateRange: [Date?, Date?]) {
+async function deleteBatch(selected: timer.stat.Row[], mergeDate: boolean, dateRange: DateRange) {
     if (mergeDate) {
         // Delete according to the date range
-        const [start, end] = dateRange ?? []
+        const [start, end] = dateRange instanceof Date ? [dateRange,] : dateRange ?? []
         for (const row of selected) {
             isNormalSite(row) && await statDatabase.deleteByHost(row.siteKey.host, [start, end])
             isGroup(row) && await statDatabase.deleteByGroup(row.groupKey, [start, end])

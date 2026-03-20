@@ -1,6 +1,6 @@
 import { trySendMsg2Runtime } from '@/api/chrome/runtime-sender'
 import { getOption } from '@/api/sw/option'
-import { onRuntimeMessage } from '@api/chrome/runtime'
+import { onTabMessage } from '@api/chrome/runtime'
 
 export default class IdleDetector {
     fullScreen: boolean = false
@@ -62,7 +62,7 @@ export default class IdleDetector {
         })
 
         trySendMsg2Runtime('cs.getAudible').then(val => this.audible = !!val)
-        onRuntimeMessage(async req => {
+        onTabMessage(async req => {
             const { code, data } = req
             if (code !== 'syncAudible' || typeof data !== 'boolean') return { code: 'ignore' }
             this.audible = !!data

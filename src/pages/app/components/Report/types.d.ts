@@ -1,4 +1,5 @@
 import type { Sort } from "element-plus"
+import { DateRange } from '../../util/time'
 
 export type ReportSort = Omit<Sort, 'prop'> & {
     prop: timer.core.Dimension | 'host' | 'date'
@@ -36,7 +37,7 @@ export type ReportQueryParam = {
 
 export type ReportFilterOption = {
     query: string | undefined
-    dateRange: [Date?, Date?]
+    dateRange: DateRange
     mergeDate: boolean
     siteMerge?: timer.stat.MergeMethod & ('cate' | 'domain' | 'group')
     cateIds?: number[]

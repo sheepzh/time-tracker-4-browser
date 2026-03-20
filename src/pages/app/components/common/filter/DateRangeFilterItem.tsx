@@ -5,6 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { DateRange } from '@/pages/app/util/time'
 import { t } from "@app/locale"
 import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
 import { css } from '@emotion/css'
@@ -23,7 +24,7 @@ const clearShortcut = (): ElDatePickerShortcut => ({
     value: [new Date(0), new Date(0)],
 })
 
-type Value = [Date?, Date?]
+type Value = DateRange
 
 type Props = ModelValue<Value> & {
     disabledDate?: (date: Date) => boolean
@@ -108,7 +109,7 @@ const DefaultRange = defineComponent<Props>(props => {
     } = useRange(props)
 
     const innerVal = computed(() => {
-        const [start, end] = props.modelValue
+        const [start, end] = props.modelValue ?? []
         return start && end ? [start, end] : undefined
     })
 

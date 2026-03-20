@@ -29,33 +29,6 @@ type _MqHandler<R, C extends keyof R> = _MqResData<R, C> extends undefined
  * Message queue
  */
 declare namespace timer.mq {
-    /**
-     * Background → content script via chrome.tabs.sendMessage (see sendMsg2Tab).
-     */
-    namespace tab {
-        type TabHandlerRegistry =
-            & _MakeRegistry<'siteRunChange'>
-            & _MakeRegistry<'syncAudible', boolean>
-            & _MakeRegistry<'limitTimeMeet' | 'limitWaking' | 'limitChanged', timer.limit.Item[]>
-            & _MakeRegistry<'limitReminder', timer.limit.ReminderInfo>
-            & _MakeRegistry<'askVisitTime', undefined, number>
-
-        type TabCode = keyof TabHandlerRegistry
-
-        type TabReqData<T extends TabCode> = _MqReqData<TabHandlerRegistry, T>
-
-        type TabResData<T extends TabCode> = _MqResData<TabHandlerRegistry, T>
-
-        type TabRequest<T extends TabCode = TabCode> = _MqRequest<TabHandlerRegistry, T>
-
-        type TabResponse<T extends TabCode = TabCode> = _MqResponse<TabHandlerRegistry, T>
-
-        /**
-         * @since 0.8.4
-         */
-        type Callback<T extends TabCode = TabCode> = (result?: TabResponse<T>) => void
-    }
-
     type _HandlerRegistry =
         & _MakeRegistry<'askHitVisit', timer.limit.Item, boolean>
         & _MakeRegistry<'enableTabGroup' | 'resetBackupScheduler' | 'resetNotificationScheduler'>
@@ -139,8 +112,6 @@ declare namespace timer.mq {
         & _MakeRegistry<'memory.getUsedStorage', undefined, timer.common.StorageUsage>
 
     type ReqCode = keyof _HandlerRegistry
-    /** Codes handled only via tabs.sendMessage — must not use sendMsg2Runtime. */
-    type RuntimeReqCode = Exclude<ReqCode, tab.TabCode>
 
     type ReqData<T extends ReqCode> = _MqReqData<_HandlerRegistry, T>
 
@@ -161,6 +132,33 @@ declare namespace timer.mq {
      * @since 1.3.0
      */
     type Handler<C extends ReqCode> = _MqHandler<_HandlerRegistry, C>
+    /**
+     * @since 0.8.4
+     */
+    type Callback<T extends ReqCode = ReqCode> = (result?: Response<T>) => void
+}
+
+/**
+ * Background → content script via chrome.tabs.sendMessage (see sendMsg2Tab).
+ */
+declare namespace timer.tab {
+    type _HandlerRegistry =
+        & _MakeRegistry<'siteRunChange'>
+        & _MakeRegistry<'syncAudible', boolean>
+        & _MakeRegistry<'limitTimeMeet' | 'limitWaking' | 'limitChanged', timer.limit.Item[]>
+        & _MakeRegistry<'limitReminder', timer.limit.ReminderInfo>
+        & _MakeRegistry<'askVisitTime', undefined, number>
+
+    type ReqCode = keyof _HandlerRegistry
+
+    type ReqData<T extends ReqCode> = _MqReqData<_HandlerRegistry, T>
+
+    type ResData<T extends ReqCode> = _MqResData<_HandlerRegistry, T>
+
+    type Request<T extends ReqCode = ReqCode> = _MqRequest<_HandlerRegistry, T>
+
+    type Response<T extends ReqCode = ReqCode> = _MqResponse<_HandlerRegistry, T>
+
     /**
      * @since 0.8.4
      */

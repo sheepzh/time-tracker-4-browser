@@ -8,7 +8,7 @@
 import type { StatCondition } from "@/background/database/stat-database"
 import processor from "@/background/service/backup/processor"
 import { identifyStatKey } from "@util/stat"
-import { getBirthday } from "@util/time"
+import { BIRTHDAY, formatTimeYMD } from "@util/time"
 import { cvt2SiteRow } from "./common"
 
 export async function processRemote(origin: timer.stat.SiteRow[], param?: StatCondition): Promise<timer.stat.SiteRow[]> {
@@ -33,14 +33,14 @@ export async function processRemote(origin: timer.stat.SiteRow[], param?: StatCo
         : () => true
 
     // 1. query remote
-    let start: Date | undefined = undefined, end: Date | undefined = undefined
+    let start: string | undefined, end: string | undefined
     if (Array.isArray(date)) {
         [start, end] = date
     } else {
         start = date
     }
-    start = start ?? getBirthday()
-    end = end ?? new Date()
+    start = start ?? BIRTHDAY
+    end = end ?? formatTimeYMD(Date.now())
     const remote = await processor.query({ excludeLocal: true, start, end })
     remote.filter(predicate).forEach(row => processRemoteRow(originMap, row))
     return Object.values(originMap)

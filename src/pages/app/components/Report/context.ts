@@ -55,11 +55,12 @@ const cvtStorage2Filter = (storage: FilterStorageValue | undefined): ReportFilte
 
 const cvtFilter2Storage = (filter: ReportFilterOption): FilterStorageValue => {
     const { query, dateRange, mergeDate, siteMerge, cateIds, timeFormat } = filter
+    const [dateStart, dateEnd] = dateRange instanceof Date ? [dateRange,] : dateRange ?? []
     return {
         query,
         mergeDate, siteMerge,
-        dateStart: dateRange?.[0]?.getTime?.(),
-        dateEnd: dateRange?.[1]?.getTime?.(),
+        dateStart: dateStart?.getTime?.(),
+        dateEnd: dateEnd?.getTime?.(),
         cateIds, timeFormat,
     }
 }

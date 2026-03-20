@@ -13,19 +13,19 @@ function cloneData<T = any>(data: T | undefined): T | undefined {
     }
 }
 
-export function sendMsg2Runtime<C extends timer.mq.RuntimeReqCode>(
+export function sendMsg2Runtime<C extends timer.mq.ReqCode>(
     code: C,
     data?: timer.mq.ReqData<C>,
     timeout_ms?: number
 ): Promise<timer.mq.ResData<C>>
 
-export function sendMsg2Runtime<C extends timer.mq.RuntimeReqCode>(
+export function sendMsg2Runtime<C extends timer.mq.ReqCode>(
     code: timer.mq.ReqData<C> extends undefined ? C : never,
     data?: timer.mq.ReqData<C>,
     timeout_ms?: number
 ): Promise<timer.mq.ResData<C>>
 
-export function sendMsg2Runtime<C extends timer.mq.RuntimeReqCode>(
+export function sendMsg2Runtime<C extends timer.mq.ReqCode>(
     code: C,
     data?: timer.mq.ReqData<C>,
     timeout_ms?: number
@@ -59,19 +59,19 @@ export function sendMsg2Runtime<C extends timer.mq.RuntimeReqCode>(
  * Wrap for hooks, after the extension reloaded or upgraded, the context of current content script will be invalid
  * And sending messages to the runtime will be failed
  */
-export function trySendMsg2Runtime<C extends timer.mq.RuntimeReqCode>(
+export function trySendMsg2Runtime<C extends timer.mq.ReqCode>(
     code: C,
     data: timer.mq.ReqData<C>,
     timeout_ms?: number
 ): Promise<timer.mq.ResData<C>>
 
-export function trySendMsg2Runtime<C extends timer.mq.RuntimeReqCode>(
+export function trySendMsg2Runtime<C extends timer.mq.ReqCode>(
     code: timer.mq.ReqData<C> extends undefined ? C : never,
     data?: timer.mq.ReqData<C>,
     timeout_ms?: number
 ): Promise<timer.mq.ResData<C>>
 
-export async function trySendMsg2Runtime<C extends timer.mq.RuntimeReqCode>(code: C, data?: timer.mq.ReqData<C>): Promise<timer.mq.ResData<C> | undefined> {
+export async function trySendMsg2Runtime<C extends timer.mq.ReqCode>(code: C, data?: timer.mq.ReqData<C>): Promise<timer.mq.ResData<C> | undefined> {
     try {
         return await sendMsg2Runtime(code, data)
     } catch {

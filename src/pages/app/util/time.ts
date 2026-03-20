@@ -61,11 +61,10 @@ export function periodFormatter(milliseconds: number | undefined | null, option?
     return val + unit
 }
 
-export type DateRange = Date | [Date?, Date?] | undefined
+export type DateRange = [Date?, Date?] | undefined
 
-export const cvtDateRange2Str = (range: DateRange): string | [string?, string?] | undefined => {
+export const cvtDateRange2Str = (range: DateRange): [string?, string?] | undefined => {
     if (range === undefined) return undefined
-    if (range instanceof Date) return formatTimeYMD(range)
-    const [start, end] = range
+    const [start, end] = range ?? []
     return [start && formatTimeYMD(start), end && formatTimeYMD(end)]
 }

@@ -16,7 +16,7 @@ export function clearBackup(cid: string) {
     return sendMsg2Runtime('backup.clear', cid)
 }
 
-export function queryBackup(param: { start: Date; end: Date; specCid?: string; excludeLocal?: boolean }) {
+export function queryBackup(param: timer.backup.RemoteQuery) {
     return sendMsg2Runtime('backup.query', param)
 }
 

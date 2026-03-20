@@ -1,8 +1,8 @@
+import { selectLimits } from "@api/sw/limit"
 import { useRequest } from '@hooks/useRequest'
 import { useWindowFocus } from '@hooks/useWindowFocus'
-import { selectLimits } from "@api/sw/limit"
 import { type App, inject, provide, type Ref, shallowRef, watch } from "vue"
-import { type LimitReason } from "../common"
+import type { LimitReason } from "../types"
 
 const REASON_KEY = "display_reason"
 const RULE_KEY = "display_rule"

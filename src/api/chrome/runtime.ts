@@ -14,8 +14,8 @@ export function getIconUrl(): string {
 export function onTabMessage(handler: ChromeTabMessageHandler): void {
     // Be careful!!!
     // Can't use await/async in callback parameter
-    chrome.runtime.onMessage.addListener((message: timer.mq.tab.TabRequest<timer.mq.tab.TabCode>, sender: chrome.runtime.MessageSender, sendResponse: timer.mq.tab.Callback<timer.mq.tab.TabCode>) => {
-        handler(message, sender).then((response: timer.mq.tab.TabResponse<timer.mq.tab.TabCode>) => {
+    chrome.runtime.onMessage.addListener((message: timer.tab.Request<timer.tab.ReqCode>, sender: chrome.runtime.MessageSender, sendResponse: timer.tab.Callback<timer.tab.ReqCode>) => {
+        handler(message, sender).then((response: timer.tab.Response<timer.tab.ReqCode>) => {
             if (response.code === 'ignore') return
             sendResponse(response)
         })

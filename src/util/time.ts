@@ -206,6 +206,7 @@ export function getBirthday(): Date {
     date.setHours(0, 0, 0, 0)
     return date
 }
+
 export const BIRTHDAY = '20220303'
 
 /**

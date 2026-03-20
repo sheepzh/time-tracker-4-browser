@@ -5,15 +5,16 @@
  * https://opensource.org/licenses/MIT
  */
 
+import weekHelper from "@/background/service/components/week-helper"
+import { cvtDateRange2Str } from '@/pages/app/util/time'
 import { createTabAfterCurrent } from "@api/chrome/tab"
+import { selectSite } from '@api/sw/stat'
 import type { ReportQueryParam } from "@app/components/Report/types"
 import { t } from "@app/locale"
 import { REPORT_ROUTE } from "@app/router/constants"
 import { useRequest } from "@hooks"
 import { useEcharts } from "@hooks/useEcharts"
 import Flex from "@pages/components/Flex"
-import weekHelper from "@/background/service/components/week-helper"
-import { selectSite } from '@api/sw/stat'
 import { groupBy, sum } from "@util/array"
 import { getAppPageUrl } from "@util/constant/url"
 import { formatTimeYMD, MILL_PER_DAY, MILL_PER_HOUR } from "@util/time"
@@ -40,7 +41,7 @@ const fetchData = async (): Promise<Result> => {
     const endTime = new Date()
     const yearAgo = new Date(endTime.getTime() - MILL_PER_DAY * 365)
     const [startTime] = await weekHelper.getWeekDate(yearAgo)
-    const items = (await selectSite({ date: [startTime, endTime], sortKey: 'date' })) ?? []
+    const items = await selectSite({ date: cvtDateRange2Str([startTime, endTime]), sortKey: 'date' })
     const value = groupBy(
         items,
         i => i.date,

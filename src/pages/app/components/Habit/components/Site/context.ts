@@ -5,8 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { cvtDateRange2Str } from '@/pages/app/util/time'
+import { mergeDate, selectSite } from "@api/sw/stat"
 import { useProvide, useProvider, useRequest } from "@hooks"
-import { selectSite, mergeDate } from "@api/sw/stat"
 import { getDayLength } from "@util/time"
 import { computed, type Ref } from "vue"
 import { useHabitFilter } from "../context"
@@ -21,7 +22,7 @@ const NAMESPACE = 'habitSite'
 export const initProvider = () => {
     const filter = useHabitFilter()
 
-    const { data: rows } = useRequest(() => selectSite({ date: filter.dateRange }), {
+    const { data: rows } = useRequest(() => selectSite({ date: cvtDateRange2Str(filter.dateRange) }), {
         deps: [() => filter.dateRange],
         defaultValue: [],
     })

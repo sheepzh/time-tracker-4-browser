@@ -1,11 +1,11 @@
-import { t } from "@app/locale"
 import statDatabase from "@/background/database/stat-database"
 import {
     selectCate, selectCatePage, selectGroup, selectGroupPage, selectSite, selectSitePage,
 } from "@api/sw/stat"
-import type { CateQuery, GroupQuery, SiteQuery } from "@/background/service/stat-service"
+import { t } from "@app/locale"
 import { getGroupName, isGroup, isSite } from "@util/stat"
 import { formatTime, getBirthday } from "@util/time"
+import { cvtDateRange2Str, DateRange } from '../../util/time'
 import type { ReportFilterOption, ReportSort } from "./types"
 
 /**
@@ -18,8 +18,8 @@ function computeSingleConfirmText(url: string, date: string): string {
     return t(msg => msg.item.operation.deleteConfirmMsg, { url, date })
 }
 
-function computeRangeConfirmText(url: string, dateRange: [Date?, Date?]): string {
-    let [startDate, endDate] = dateRange
+function computeRangeConfirmText(url: string, dateRange: DateRange): string {
+    let [startDate, endDate] = dateRange instanceof Date ? [dateRange,] : dateRange ?? []
     if (!startDate && !endDate) {
         // Delete all
         return t(msg => msg.item.operation.deleteConfirmMsgAll, { url })
@@ -59,8 +59,7 @@ export async function handleDelete(row: timer.stat.Row, filterOption: ReportFilt
         isGroup(row) && date && await statDatabase.deleteGroup([row.groupKey, date])
         return
     }
-    const start = dateRange?.[0]
-    const end = dateRange?.[1]
+    const [start, end] = dateRange instanceof Date ? [dateRange,] : dateRange ?? []
     if (!start && !end) {
         // Delete all
         isSite(row) && await statDatabase.deleteByHost(row.siteKey.host)
@@ -82,8 +81,8 @@ const cvtOrderDir = (order: ReportSort['order']): timer.common.SortDirection | u
 const cvt2GroupQuery = (
     { query, mergeDate, dateRange: date }: ReportFilterOption,
     { prop, order }: ReportSort,
-): GroupQuery => ({
-    date, mergeDate, query,
+): timer.stat.GroupQuery => ({
+    date: cvtDateRange2Str(date), mergeDate, query,
     sortKey: prop !== 'host' && prop !== 'run' ? prop : undefined,
     sortDirection: cvtOrderDir(order),
 })
@@ -91,8 +90,8 @@ const cvt2GroupQuery = (
 const cvt2SiteQuery = (
     { dateRange: date, mergeDate, siteMerge, query, cateIds, readRemote: inclusiveRemote }: ReportFilterOption,
     { prop, order }: ReportSort,
-): SiteQuery => ({
-    date, mergeDate,
+): timer.stat.SiteQuery => ({
+    date: cvtDateRange2Str(date), mergeDate,
     mergeHost: siteMerge === 'domain',
     query, cateIds, inclusiveRemote,
     virtual: true,
@@ -103,21 +102,20 @@ const cvt2SiteQuery = (
 const cvt2CateQuery = (
     { dateRange: date, mergeDate, query, cateIds, readRemote: inclusiveRemote }: ReportFilterOption,
     { prop, order }: ReportSort,
-): CateQuery => ({
-    date, mergeDate, query, cateIds, inclusiveRemote,
+): timer.stat.CateQuery => ({
+    date: cvtDateRange2Str(date), mergeDate, query, cateIds, inclusiveRemote,
     sortKey: prop !== 'host' && prop !== 'run' ? prop : undefined,
     sortDirection: cvtOrderDir(order),
 })
 
 export const queryPage = async (filter: ReportFilterOption, sort: ReportSort, page: timer.common.PageQuery): Promise<timer.common.PageResult<timer.stat.Row>> => {
     const { siteMerge } = filter
-    const empty: timer.common.PageResult<timer.stat.Row> = { list: [], total: 0 }
     if (siteMerge === 'group') {
-        return ((await selectGroupPage(cvt2GroupQuery(filter, sort), page)) ?? empty) as timer.common.PageResult<timer.stat.Row>
+        return await selectGroupPage({ ...cvt2GroupQuery(filter, sort), ...page })
     } else if (siteMerge === 'cate') {
-        return ((await selectCatePage(cvt2CateQuery(filter, sort), page)) ?? empty) as timer.common.PageResult<timer.stat.Row>
+        return await selectCatePage({ ...cvt2CateQuery(filter, sort), ...page })
     } else {
-        return ((await selectSitePage(cvt2SiteQuery(filter, sort), page)) ?? empty) as timer.common.PageResult<timer.stat.Row>
+        return await selectSitePage({ ...cvt2SiteQuery(filter, sort), ...page })
     }
 }
 

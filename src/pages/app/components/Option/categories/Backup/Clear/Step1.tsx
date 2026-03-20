@@ -5,11 +5,11 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { queryBackup } from "@api/sw/backup"
 import { type SopStepInstance } from "@app/components/common/DialogSop"
 import { t } from "@app/locale"
 import { useState } from "@hooks"
-import { queryBackup } from "@api/sw/backup"
-import { BIRTHDAY, getBirthday, parseTime } from "@util/time"
+import { BIRTHDAY, formatTimeYMD } from "@util/time"
 import { defineComponent } from "vue"
 import ClientTable from "../ClientTable"
 
@@ -21,8 +21,8 @@ export type StatResult = {
 
 async function fetchStatResult(client: timer.backup.Client): Promise<StatResult> {
     const { id: specCid, maxDate, minDate = BIRTHDAY } = client
-    const start = parseTime(minDate) ?? getBirthday()
-    const end = parseTime(maxDate) ?? new Date()
+    const start = minDate ?? BIRTHDAY
+    const end = maxDate ?? formatTimeYMD(Date.now())
     const remoteRows: timer.core.Row[] = (await queryBackup({ specCid, start, end })) ?? []
     const siteSet: Set<string> = new Set()
     remoteRows?.forEach(row => {

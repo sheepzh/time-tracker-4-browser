@@ -1,4 +1,4 @@
-import itemService from "@/background/service/item-service"
+import { addRunTime } from "@/background/service/item-service"
 import whitelistHolder from "@/background/service/whitelist/holder"
 import FIFOCache from '@util/fifo-cache'
 import { formatTimeYMD, getStartOfDay, MILL_PER_DAY } from "@util/time"
@@ -24,6 +24,6 @@ export async function handleTrackRunTimeEvent(event: timer.core.Event): Promise<
     const realStart = Math.max(RUN_TIME_END_CACHE.get(host) ?? 0, start)
     const byDate = splitRunTime(realStart, end)
     if (!Object.keys(byDate).length) return
-    await itemService.addRunTime(host, byDate)
+    await addRunTime(host, byDate)
     RUN_TIME_END_CACHE.set(host, Math.max(end, realStart))
 }

@@ -1,6 +1,6 @@
 import { trySendMsg2Runtime } from "@api/chrome/runtime-sender"
 import { hasDailyLimited, hasWeeklyLimited, matches } from "@util/limit"
-import { type LimitReason, type ModalContext, type Processor } from "../common"
+import type { LimitReason, ModalContext, Processor } from "../types"
 
 const cvtItem2AddReason = (item: timer.limit.Item): LimitReason[] => {
     const { cond, allowDelay, id, delayCount, weeklyDelayCount } = item
@@ -25,7 +25,7 @@ class MessageAdaptor implements Processor {
         this.context = context
     }
 
-    handleMsg(code: timer.mq.ReqCode, data: unknown): timer.mq.Response<timer.mq.ReqCode> | Promise<timer.mq.Response<timer.mq.ReqCode>> {
+    handleMsg(code: timer.tab.ReqCode, data: unknown): Awaitable<timer.tab.Response<timer.tab.ReqCode>> {
         let items = data as timer.limit.Item[]
         if (code === "limitTimeMeet") {
             if (!items?.length) {

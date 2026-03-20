@@ -1,4 +1,4 @@
-import itemService from "@/background/service/item-service"
+import { getResult } from "@/background/service/item-service"
 import { IS_ANDROID, IS_FIREFOX } from '@util/constant/environment'
 import { isFileUrl } from '@util/pattern'
 import type MessageDispatcher from "../message-dispatcher"
@@ -17,7 +17,7 @@ export default function initTrackServer(messageDispatcher: MessageDispatcher) {
         })
         .register('cs.trackRunTime', handleTrackRunTimeEvent)
         .register('cs.incVisitCount', handleIncVisitEvent)
-        .register('cs.getTodayInfo', host => itemService.getResult(host, new Date()))
+        .register('cs.getTodayInfo', host => getResult(host, new Date()))
         .register('enableTabGroup', handleTabGroupEnabled)
 
     // Track file time in background script for FF

@@ -66,10 +66,10 @@ export default function init(dispatcher: MessageDispatcher) {
         // Get sites which need to count run time
         .register('cs.getRunSites', async url => {
             const { host } = extractHostname(url) || {}
-            if (!host) return null
+            if (!host) return undefined
             const site: timer.site.SiteKey = { host, type: 'normal' }
             const exist = await getSite(site)
-            return exist?.run ? site : null
+            return exist?.run ? site : undefined
         })
         .register('cs.getAudible', async (_, sender) => !!sender.tab?.audible)
         .register('cs.timelineEv', ev => timelineThrottler.saveEvent(ev))

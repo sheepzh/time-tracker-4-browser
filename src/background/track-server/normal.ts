@@ -1,10 +1,14 @@
-import { getTab, listTabs, sendMsg2Tab } from "@api/chrome/tab"
-import { getWindow } from "@api/chrome/window"
 import optionHolder from "@/background/service/components/option-holder"
-import itemService, { type ItemIncContext } from "@/background/service/item-service"
+import {
+    addFocusTime as addItemFocusTime,
+    increaseVisit as increaseItemVisit,
+    type ItemIncContext
+} from "@/background/service/item-service"
 import limitService from "@/background/service/limit-service"
 import periodThrottler from '@/background/service/throttler/period-throttler'
 import whitelistHolder from "@/background/service/whitelist/holder"
+import { getTab, listTabs, sendMsg2Tab } from "@api/chrome/tab"
+import { getWindow } from "@api/chrome/window"
 import { IS_ANDROID } from "@util/constant/environment"
 import { extractHostname } from "@util/pattern"
 import badgeManager from "../badge-manager"
@@ -14,7 +18,7 @@ async function handleTime(context: ItemIncContext, timeRange: [number, number], 
     const [start, end] = timeRange
     const focusTime = end - start
     // 1. Save async
-    await itemService.addFocusTime(context, focusTime)
+    await addItemFocusTime(context, focusTime)
     // 2. Process limit
     const { limited, reminder } = await limitService.addFocusTime(host, url, focusTime)
     // If time limited after this operation, send messages
@@ -77,7 +81,7 @@ async function sendLimitedMessage(items: timer.limit.Item[]) {
 }
 
 async function handleVisit(context: ItemIncContext) {
-    await itemService.increaseVisit(context)
+    await increaseItemVisit(context)
     const { host, url } = context
     const metLimits = await limitService.incVisit(host, url)
     // If time limited after this operation, send messages

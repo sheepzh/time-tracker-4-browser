@@ -5,12 +5,12 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { queryBackup } from "@api/sw/backup"
+import { fillExist, processImportedData } from "@api/sw/import"
 import DialogSop, { type SopInstance, type SopStepInstance } from "@app/components/common/DialogSop"
 import { t } from "@app/locale"
 import { useManualRequest, useState } from "@hooks"
-import { queryBackup } from "@api/sw/backup"
-import { fillExist, processImportedData } from "@api/sw/import"
-import { getBirthday, parseTime } from "@util/time"
+import { BIRTHDAY, formatTimeYMD } from "@util/time"
 import { ElMessage, ElStep, ElSteps } from "element-plus"
 import { defineComponent, ref } from "vue"
 import ClientTable from "../ClientTable"
@@ -18,15 +18,15 @@ import Step2 from "./Step2"
 
 async function fetchData(client: timer.backup.Client): Promise<timer.imported.Data> {
     const { id: specCid, maxDate, minDate } = client
-    const start = parseTime(minDate) ?? getBirthday()
-    const end = parseTime(maxDate) ?? new Date()
-    const remoteRows = (await queryBackup({ specCid, start, end })) ?? []
-    const rows: timer.imported.Row[] = remoteRows.map(rr => ({
+    const start = minDate ?? BIRTHDAY
+    const end = maxDate ?? formatTimeYMD(Date.now())
+    const remoteRows = await queryBackup({ specCid, start, end })
+    const rows = remoteRows.map(rr => ({
         date: rr.date,
         host: rr.host,
         focus: rr.focus,
         time: rr.time,
-    }))
+    }) satisfies timer.imported.Row)
     await fillExist(rows)
     return { rows, focus: true, time: true }
 }

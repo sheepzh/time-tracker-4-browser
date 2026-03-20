@@ -1,7 +1,8 @@
+import optionHolder from "@/background/service/components/option-holder"
+import { selectItems } from "@/background/service/item-service"
+import { cvtDateRange2Str } from '@/pages/app/util/time'
 import { getVersion } from "@api/chrome/runtime"
 import { cvtOption2Locale } from "@i18n"
-import optionHolder from "@/background/service/components/option-holder"
-import itemService from "@/background/service/item-service"
 import { formatTimeYMD, MILL_PER_DAY, MILL_PER_WEEK } from "@util/time"
 import BrowserNotifier from "./browser/notifier"
 import CallbackNotifier from "./callback/notifier"
@@ -67,7 +68,7 @@ class Processor {
         const date = DATE_RANGE_CALCULATORS[req.cycle](now)
 
         // Query rows
-        const rows = await itemService.selectItems({ date })
+        const rows = await selectItems({ date: cvtDateRange2Str(date) })
 
         // Calculate summary
         let totalFocus = 0

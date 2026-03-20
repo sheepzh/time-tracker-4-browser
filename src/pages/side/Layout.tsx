@@ -1,7 +1,7 @@
 import { selectSite } from "@api/sw/stat"
 import { useRequest } from "@hooks/useRequest"
 import Flex from '@pages/components/Flex'
-import { formatTime } from "@util/time"
+import { formatTime, formatTimeYMD } from "@util/time"
 import { ElText } from "element-plus"
 import { defineComponent, ref } from "vue"
 import RowList from "./components/RowList"
@@ -13,7 +13,7 @@ const _default = defineComponent<{}>(() => {
     const query = ref('')
 
     const { data, refresh, loading } = useRequest(() => selectSite({
-        date: date.value,
+        date: formatTimeYMD(date.value),
         query: query.value,
         sortKey: 'focus',
         sortDirection: 'DESC',

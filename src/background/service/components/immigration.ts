@@ -39,8 +39,8 @@ class Immigration {
         }
         for (const migratable of this.browserMigratables) {
             const namespace = migratable.namespace
-            const exportData = await migratable.exportData()
-            data[namespace] = exportData
+            const dataAny = data as any
+            dataAny[namespace] = await migratable.exportData()
         }
         return data
     }

@@ -30,7 +30,8 @@ type ExportInfo = {
  * Compute the name of downloaded file
  */
 function computeFileName(filterParam: ReportFilterOption): string {
-    const { dateRange: [ds, de], siteMerge, mergeDate, timeFormat } = filterParam
+    const { dateRange, siteMerge, mergeDate, timeFormat } = filterParam
+    const [ds, de] = dateRange instanceof Date ? [dateRange,] : dateRange ?? []
     const parts = [
         t(msg => msg.report.exportFileName),
         ds && formatTimeYMD(ds),
