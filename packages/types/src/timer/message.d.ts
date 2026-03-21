@@ -107,7 +107,6 @@ declare namespace timer.mq {
         & _MakeRegistry<'backup.getLastBackUp', timer.backup.Type, { ts: number; msg?: string } | undefined>
         & _MakeRegistry<'backup.listClients', undefined, { success: boolean; errorMsg?: string; data?: timer.backup.Client[] }>
         // period
-        & _MakeRegistry<'period.merge', timer.period.MergeRequest, timer.period.Result[]>
         & _MakeRegistry<'period.select', timer.period.Query, timer.period.Row[]>
         & _MakeRegistry<'import.fillExist', timer.imported.Row[]>
         & _MakeRegistry<'import.processImportedData', { data: timer.imported.Data; resolution: timer.imported.ConflictResolution }>

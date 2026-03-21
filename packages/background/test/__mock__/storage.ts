@@ -1,4 +1,4 @@
-import StoragePromise from "@/background/database/storage-promise"
+import StoragePromise from "@/background/database/common/storage-promise"
 
 let store: Record<string, any> = {}
 

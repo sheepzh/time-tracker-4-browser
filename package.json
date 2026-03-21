@@ -19,9 +19,9 @@
         "build": "npm run check:boundaries && rspack --config=rspack/rspack.prod.ts",
         "build:firefox": "npm run check:boundaries && rspack --config=rspack/rspack.prod.firefox.ts",
         "build:safari": "npm run check:boundaries && rspack --config=rspack/rspack.prod.safari.ts",
-        "test": "jest --env=jsdom test/",
-        "test-c": "jest --coverage --reporters=jest-junit --env=jsdom test/",
-        "test-e2e": "jest test-e2e/ --runInBand",
+        "test": "jest --env=jsdom",
+        "test-c": "jest --coverage --reporters=jest-junit --env=jsdom",
+        "test-e2e": "jest --config=test-e2e/jest.config.ts --runInBand",
         "prepare": "husky"
     },
     "author": {

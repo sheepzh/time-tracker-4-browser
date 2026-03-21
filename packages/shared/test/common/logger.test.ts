@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { closeLog, log, openLog } from "@/common/logger"
+import { closeLog, log, openLog } from "@common/logger"
 
 describe('common/logger', () => {
     test('openLog enables log output', () => {

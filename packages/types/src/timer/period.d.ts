@@ -39,15 +39,4 @@ declare namespace timer.period {
         range: KeyRange
         size: number
     }
-
-    type MergeConfig = {
-        start: Key
-        end: Key
-        periodSize: number
-    }
-
-    type MergeRequest = {
-        periods: Result[]
-        config: MergeConfig
-    }
 }
