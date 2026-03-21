@@ -1,0 +1,11 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "noEmit": true
+    },
+    "include": [
+        "src/**/*",
+        "../shared/src/**/*",
+        "../types/src/**/*.d.ts"
+    ]
+}

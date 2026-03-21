@@ -1,5 +1,5 @@
 import path from "path"
-import manifest from "../src/manifest-firefox"
+import manifest from "./manifest/firefox"
 import generateOption from "./rspack.common"
 
 manifest.name = "IS DEV"

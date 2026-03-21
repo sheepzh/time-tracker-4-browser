@@ -1,0 +1,9 @@
+{
+    "name": "@timer/shared",
+    "version": "0.0.0",
+    "private": true,
+    "type": "module",
+    "dependencies": {
+        "@timer/types": "file:../types"
+    }
+}

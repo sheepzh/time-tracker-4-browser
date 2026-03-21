@@ -1,5 +1,5 @@
 import path from "path"
-import manifest from "../src/manifest"
+import manifest from "./manifest/chrome"
 import generateOption from "./rspack.common"
 
 manifest.name = "IS DEV"

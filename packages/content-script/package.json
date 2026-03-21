@@ -1,0 +1,10 @@
+{
+    "name": "@timer/content-script",
+    "version": "0.0.0",
+    "private": true,
+    "type": "module",
+    "dependencies": {
+        "@timer/shared": "file:../shared",
+        "@timer/types": "file:../types"
+    }
+}

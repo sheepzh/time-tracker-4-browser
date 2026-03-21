@@ -289,6 +289,7 @@ main() {
                 do_init=true
                 do_build=true
                 do_build_prod=true
+                do_start_servers=true
                 shift
                 ;;
             --help|-h)

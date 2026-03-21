@@ -1,0 +1,290 @@
+{
+    "zh_CN": {
+        "percentage": {
+            "title": {
+                "today": "今日数据",
+                "yesterday": "昨日数据",
+                "thisWeek": "本周数据",
+                "thisMonth": "本月数据",
+                "lastDays": "近 {n} 天数据",
+                "allTime": "全部数据"
+            },
+            "saveAsImageTitle": "保存",
+            "averageCount": "平均每天 {value} 次",
+            "averageTime": "平均每天 {value}",
+            "totalTime": "共 {totalTime}",
+            "totalCount": "共 {totalCount} 次",
+            "otherLabel": "其他{count}个网站"
+        },
+        "ranking": {
+            "includingCount": "含 {siteCount} 个网站"
+        }
+    },
+    "zh_TW": {
+        "percentage": {
+            "title": {
+                "today": "今日統計",
+                "yesterday": "昨日統計",
+                "thisWeek": "本週統計",
+                "thisMonth": "本月統計",
+                "lastDays": "近{n}天紀錄",
+                "allTime": "全部紀錄"
+            },
+            "saveAsImageTitle": "儲存圖片",
+            "averageCount": "平均每日 {value} 次",
+            "averageTime": "平均每日 {value}",
+            "totalTime": "總計 {totalTime}",
+            "totalCount": "總計 {totalCount} 次",
+            "otherLabel": "其他{count}個網站"
+        },
+        "ranking": {
+            "includingCount": "包含 {siteCount} 個網站"
+        }
+    },
+    "en": {
+        "percentage": {
+            "title": {
+                "today": "Today's Data",
+                "yesterday": "Yesterday's Data",
+                "thisWeek": "This Week's Data",
+                "thisMonth": "This Month's Data",
+                "lastDays": "Last {n} days' data",
+                "allTime": "All data"
+            },
+            "saveAsImageTitle": "Snapshot",
+            "averageCount": "{value} times per day on average",
+            "averageTime": "{value} per day on average",
+            "totalTime": "Total {totalTime}",
+            "totalCount": "Total {totalCount} times",
+            "otherLabel": "Other {count} sites"
+        },
+        "ranking": {
+            "includingCount": "Including {siteCount} sites"
+        }
+    },
+    "ja": {
+        "percentage": {
+            "title": {
+                "today": "今日のデータ",
+                "yesterday": "昨日のデータ",
+                "thisWeek": "今週のデータ",
+                "thisMonth": "今月のデータ",
+                "lastDays": "過去 {n} 日間のデータ",
+                "allTime": "すべてのデータ"
+            },
+            "saveAsImageTitle": "スクリーンショット",
+            "averageCount": "1日平均 {value} 回",
+            "averageTime": "1日平均 {value}",
+            "totalTime": "合計 {totalTime}",
+            "totalCount": "合計 {totalCount} 回",
+            "otherLabel": "他 {count} サイト"
+        },
+        "ranking": {
+            "includingCount": "{siteCount} サイトを含む"
+        }
+    },
+    "pt_PT": {
+        "percentage": {
+            "title": {
+                "today": "Dados de Hoje",
+                "yesterday": "Dados de Ontem",
+                "thisWeek": "Dados desta Semana",
+                "thisMonth": "Dados deste Mês",
+                "lastDays": "Dados dos últimos {n} dias",
+                "allTime": "Todos os dados"
+            },
+            "saveAsImageTitle": "Captura",
+            "averageCount": "Média de {value} vezes por dia",
+            "averageTime": "Média de {value} por dia",
+            "totalTime": "Total: {totalTime}",
+            "totalCount": "Total: {totalCount} vezes",
+            "otherLabel": "Outros {count} sites"
+        },
+        "ranking": {
+            "includingCount": "Inclui {siteCount} sites"
+        }
+    },
+    "uk": {
+        "percentage": {
+            "title": {
+                "today": "Дані за сьогодні",
+                "yesterday": "Дані за вчорашній день",
+                "thisWeek": "Дані за цей тиждень",
+                "thisMonth": "Дані за цей місяць",
+                "lastDays": "Дані за минулі {n} днів",
+                "allTime": "Всі дані"
+            },
+            "saveAsImageTitle": "Знімок",
+            "averageCount": "{value} разів на день у середньому",
+            "averageTime": "{value} на день у середньому",
+            "totalTime": "Всього {totalTime}",
+            "totalCount": "Всього {totalCount} разів",
+            "otherLabel": "Інші {count} сайтів"
+        },
+        "ranking": {
+            "includingCount": "Включаючи {siteCount} сайтів"
+        }
+    },
+    "es": {
+        "percentage": {
+            "title": {
+                "today": "Datos de hoy",
+                "yesterday": "Datos de ayer",
+                "thisWeek": "Datos de esta semana",
+                "thisMonth": "Datos de este mes",
+                "lastDays": "Datos de los últimos {n} días",
+                "allTime": "Todos los datos"
+            },
+            "saveAsImageTitle": "Captura de pantalla",
+            "averageCount": "{value} veces al día en promedio",
+            "averageTime": "{value} al día en promedio",
+            "totalTime": "Total {totalTime}",
+            "totalCount": "Total {totalCount} veces",
+            "otherLabel": "Otros {count} sitios"
+        },
+        "ranking": {
+            "includingCount": "Incluidos {siteCount} sitios"
+        }
+    },
+    "de": {
+        "percentage": {
+            "title": {
+                "today": "Daten von heute",
+                "yesterday": "Daten von gestern",
+                "thisWeek": "Daten dieser Woche",
+                "thisMonth": "Daten dieses Monats",
+                "lastDays": "Daten der letzten {n} Tage",
+                "allTime": "Alle Daten"
+            },
+            "saveAsImageTitle": "Bildschirmfoto",
+            "averageCount": "{value} mal pro Tag",
+            "averageTime": "{value} pro Tag im Durchschnitt",
+            "totalTime": "Gesamt {totalTime}",
+            "totalCount": "Gesamt {totalCount} mal",
+            "otherLabel": "{count} andere Websites"
+        },
+        "ranking": {
+            "includingCount": "Einschließlich {siteCount} Websites"
+        }
+    },
+    "fr": {
+        "percentage": {
+            "title": {
+                "today": "Les données d'aujourd'hui",
+                "yesterday": "Données d'hier",
+                "thisWeek": "Les données de cette semaine",
+                "thisMonth": "Les données de ce mois",
+                "lastDays": "Les données de ces {n} derniers jours",
+                "allTime": "Toutes les données"
+            },
+            "saveAsImageTitle": "Capture d'écran",
+            "averageCount": "{value} fois par jour en moyenne",
+            "averageTime": "{value} par jour en moyenne",
+            "totalTime": "{totalTime} au total",
+            "totalCount": "{totalCount} fois au total",
+            "otherLabel": "{count} autres sites"
+        },
+        "ranking": {
+            "includingCount": "Y compris {siteCount} sites"
+        }
+    },
+    "ru": {
+        "percentage": {
+            "title": {
+                "today": "Данные за сегодня",
+                "yesterday": "Данные за вчера",
+                "thisWeek": "Данные за эту неделю",
+                "thisMonth": "Данные за этот месяц",
+                "lastDays": "Данные за последние {n} дней",
+                "allTime": "Все данные"
+            },
+            "saveAsImageTitle": "Снимок",
+            "averageCount": "{value} раз в день в среднем",
+            "averageTime": "{value} в день в среднем",
+            "totalTime": "Всего {totalTime}",
+            "totalCount": "Всего {totalCount} раз",
+            "otherLabel": "Другие {count} сайтов"
+        },
+        "ranking": {
+            "includingCount": "Включая {siteCount} сайтов"
+        }
+    },
+    "ar": {
+        "percentage": {
+            "title": {
+                "today": "بيانات اليوم",
+                "yesterday": "بيانات الأمس",
+                "thisWeek": "بيانات هذا الأسبوع",
+                "thisMonth": "بيانات هذا الشهر",
+                "lastDays": "بيانات آخر {n} يوم",
+                "allTime": "كل البيانات"
+            },
+            "saveAsImageTitle": "لقطة",
+            "averageCount": "متوسط {value} زيارة يومياً",
+            "averageTime": "متوسط {value} يومياً",
+            "totalTime": "الإجمالي {totalTime}",
+            "totalCount": "الإجمالي {totalCount} زيارة",
+            "otherLabel": "{count} مواقع أخرى"
+        },
+        "ranking": {
+            "includingCount": "بما في ذلك {siteCount} موقعاً"
+        }
+    },
+    "tr": {
+        "percentage": {
+            "title": {
+                "today": "Bugünkü Veriler",
+                "yesterday": "Dünkü Veriler",
+                "thisWeek": "Bu Haftaki Veriler",
+                "thisMonth": "Bu Ayki Veriler",
+                "lastDays": "Son {n} günün verileri",
+                "allTime": "Tüm Veriler"
+            },
+            "saveAsImageTitle": "Grafiği İndir",
+            "averageCount": "Günde ortalama {value} kez",
+            "averageTime": "Günde ortalama {value}",
+            "totalTime": "Toplam Zaman {totalTime}",
+            "totalCount": "Toplam {totalCount} kez",
+            "otherLabel": "Diğer {count} site"
+        },
+        "ranking": {
+            "includingCount": "{siteCount} site dahil"
+        }
+    },
+    "pl": {
+        "percentage": {
+            "title": {
+                "today": "Dzisiejsze dane",
+                "yesterday": "Dane wczorajsze",
+                "thisWeek": "Dane w tym tygodniu",
+                "thisMonth": "Dane z tego miesiąca",
+                "lastDays": "Ostatnie dane z {n} dnia/i",
+                "allTime": "Wszystkie dane"
+            },
+            "saveAsImageTitle": "Podsumowanie",
+            "totalTime": "Ogółem {totalTime}"
+        },
+        "ranking": {
+            "includingCount": "Wliczając {siteCount} stron"
+        }
+    },
+    "it": {
+        "percentage": {
+            "title": {
+                "today": "Dati di oggi",
+                "yesterday": "Data di Ieri",
+                "thisWeek": "Dati di questa Settimana",
+                "thisMonth": "Dati di questo Mese",
+                "lastDays": "Ultimo {n} giorni dati",
+                "allTime": "Tutti i dati"
+            },
+            "saveAsImageTitle": "Snapshot",
+            "averageTime": "{value} al giorno in media",
+            "totalTime": "Totale {totalTime}",
+            "totalCount": "{totalCount} volte Totale"
+        },
+        "ranking": {
+            "includingCount": "Inclusi siti {siteCount}"
+        }
+    }
+}
