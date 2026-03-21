@@ -4,9 +4,8 @@ import {
 } from "@rspack/core"
 import path, { join } from "path"
 import postcssRTLCSS from 'postcss-rtlcss'
-import i18nChrome from "../src/i18n/chrome"
+import i18nChrome from "../packages/shared/src/i18n/chrome"
 import { GenerateJsonPlugin } from "./plugins/generate-json"
-import { ImportCheckerPlugin } from './plugins/import-checker'
 
 export const MANIFEST_JSON_NAME = "manifest.json"
 
@@ -28,25 +27,25 @@ const POPUP = 'popup'
 
 const entryConfigs: EntryConfig[] = [{
     name: BACKGROUND,
-    path: './src/background',
+    path: './packages/background/src',
 }, {
     name: CONTENT_SCRIPT,
-    path: './src/content-script',
+    path: './packages/content-script/src',
 }, {
     name: CONTENT_SCRIPT_SKELETON,
-    path: './src/content-script/skeleton',
+    path: './packages/content-script/src/skeleton',
 }, {
     name: POPUP,
-    path: './src/pages/popup',
+    path: './packages/pages/src/popup',
 }, {
     name: 'popup_skeleton',
-    path: './src/pages/popup/skeleton',
+    path: './packages/pages/src/popup/skeleton',
 }, {
     name: 'app',
-    path: './src/pages/app',
+    path: './packages/pages/src/app',
 }, {
     name: 'side',
-    path: './src/pages/side'
+    path: './packages/pages/src/side'
 }]
 
 const POSTCSS_LOADER_CONF: RuleSetRule['use'] = {
@@ -62,9 +61,9 @@ const chunkFilter = ({ name }: Chunk) => {
     return !name || ![BACKGROUND, CONTENT_SCRIPT, CONTENT_SCRIPT_SKELETON].includes(name)
 }
 
-/** Modules under src/background must not be extracted into shared chunks (vendor/*, etc.). */
+/** Modules under packages/background/src must not be extracted into shared chunks (vendor/*, etc.). */
 const isBackgroundModule = (module: Module) =>
-    /[\\/]src[\\/]background[\\/]/.test(module.nameForCondition?.() ?? '')
+    /[\\/]packages[\\/]background[\\/]src[\\/]/.test(module.nameForCondition?.() ?? '')
 
 const staticOptions: Configuration = {
     entry() {
@@ -89,7 +88,13 @@ const staticOptions: Configuration = {
                             "@emotion/babel-plugin",
                         ],
                     },
-                }, 'ts-loader'],
+                }, {
+                    loader: 'ts-loader',
+                    options: {
+                        configFile: join(__dirname, '..', 'tsconfig.json'),
+                        onlyCompileBundledFiles: true,
+                    },
+                }],
             }, {
                 test: /\.css$/,
                 use: [CssExtractRspackPlugin.loader, 'css-loader', POSTCSS_LOADER_CONF],
@@ -104,11 +109,13 @@ const staticOptions: Configuration = {
         tsConfig: join(__dirname, '..', 'tsconfig.json'),
     },
     optimization: {
+        // In dev/watch, do not emit runnable assets when compilation has errors.
+        emitOnErrors: false,
         splitChunks: {
             chunks: chunkFilter,
             cacheGroups: {
                 /**
-                 * Exclude src/background from the default shared chunk group so those files are
+                 * Exclude packages/background/src from the default shared chunk group so those files are
                  * never pulled into vendor/* (merging into entry name: 'background' panics in Rspack).
                  */
                 default: {
@@ -139,7 +146,6 @@ type Option = {
 const generateOption = ({ outputPath, manifest, mode }: Option) => {
     const plugins = [
         ...generateJsonPlugins,
-        new ImportCheckerPlugin(),
         new GenerateJsonPlugin(MANIFEST_JSON_NAME, manifest),
         // copy static resources
         new CopyRspackPlugin({
@@ -189,6 +195,7 @@ const generateOption = ({ outputPath, manifest, mode }: Option) => {
             ...staticOptions.output,
             path: outputPath,
             filename: '[name].js',
+            clean: true,
         },
         plugins, mode,
         // no eval with development, but generate *.map.js

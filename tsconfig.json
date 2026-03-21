@@ -25,41 +25,97 @@
         "importHelpers": true,
         "moduleResolution": "bundler",
         "paths": {
-            "@/*": [
-                "./src/*"
+            "@/background/*": [
+                "./packages/background/src/*"
+            ],
+            "@/content-script/*": [
+                "./packages/content-script/src/*"
+            ],
+            "@/pages/*": [
+                "./packages/pages/src/*"
             ],
             "@api/*": [
-                "./src/api/*"
+                "./packages/shared/src/api/*"
             ],
-            "@cs/*": [
-                "./src/content-script/*"
-            ],
-            "@app/*": [
-                "./src/pages/app/*"
-            ],
-            "@popup/*": [
-                "./src/pages/popup/*"
-            ],
-            "@side/*": [
-                "./src/pages/side/*"
-            ],
-            "@hooks/*": [
-                "./src/pages/hooks/*"
-            ],
-            "@hooks": [
-                "./src/pages/hooks/index"
-            ],
-            "@pages/*": [
-                "./src/pages/*"
+            "@common/*": [
+                "./packages/shared/src/common/*"
             ],
             "@util/*": [
-                "./src/util/*"
+                "./packages/shared/src/util/*"
             ],
             "@i18n/*": [
-                "./src/i18n/*"
+                "./packages/shared/src/i18n/*"
+            ],
+            "@i18n/message/*": [
+                "./packages/shared/src/i18n/message/common/*",
+                "./packages/shared/src/i18n/message/*"
             ],
             "@i18n": [
-                "./src/i18n/index"
+                "./packages/shared/src/i18n/index"
+            ],
+            "@router/*": [
+                "./packages/shared/src/router/*"
+            ],
+            "@manifest": [
+                "./rspack/manifest/chrome"
+            ],
+            "@manifest-firefox": [
+                "./rspack/manifest/firefox"
+            ],
+            "@package": [
+                "./packages/shared/src/package"
+            ],
+            "@cs/*": [
+                "./packages/content-script/src/*"
+            ],
+            "@app/*": [
+                "./packages/pages/src/app/*"
+            ],
+            "@app/time": [
+                "./packages/pages/src/app/util/time"
+            ],
+            "@app/echarts": [
+                "./packages/pages/src/app/util/echarts"
+            ],
+            "@app/constants": [
+                "./packages/pages/src/app/router/constants"
+            ],
+            "@app/components/filter/*": [
+                "./packages/pages/src/app/components/common/filter/*"
+            ],
+            "@app/components/category/*": [
+                "./packages/pages/src/app/components/common/category/*"
+            ],
+            "@app/components/kanban": [
+                "./packages/pages/src/app/components/common/kanban/index"
+            ],
+            "@app/components/grid": [
+                "./packages/pages/src/app/components/common/grid"
+            ],
+            "@app/components/*": [
+                "./packages/pages/src/app/components/*",
+                "./packages/pages/src/app/components/common/*"
+            ],
+            "@popup/*": [
+                "./packages/pages/src/popup/*"
+            ],
+            "@side/*": [
+                "./packages/pages/src/side/*"
+            ],
+            "@hooks/*": [
+                "./packages/pages/src/hooks/*"
+            ],
+            "@hooks": [
+                "./packages/pages/src/hooks/index"
+            ],
+            "@pages/*": [
+                "./packages/pages/src/*"
+            ],
+            "@pages/style": [
+                "./packages/pages/src/util/style"
+            ],
+            "@pages/icon": [
+                "./packages/pages/src/util/icon"
             ]
         }
     },

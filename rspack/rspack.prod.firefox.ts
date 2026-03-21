@@ -1,5 +1,5 @@
 import path from "path"
-import manifestFirefox from "../src/manifest-firefox"
+import manifestFirefox from "./manifest/firefox"
 import { FileManagerPlugin } from "./plugins/file-manager"
 import optionGenerator from "./rspack.common"
 
@@ -17,13 +17,15 @@ const readmeForFirefox = path.join(__dirname, '..', 'doc', 'for-firefox.md')
 const sourceTempDir = path.resolve(__dirname, '..', 'source_temp')
 const srcDir = [
     'public',
-    'src',
-    'test', 'types',
+    'packages',
+    'test',
     'package.json', 'package-lock.json',
     'tsconfig.json',
+    'tsconfig.workspace.json',
     'rspack',
     'jest.config.ts',
     'script',
+    'depcruise.config.cjs',
     ".gitignore",
 ]
 const copyMapper = srcDir.map(p => { return { source: path.resolve(__dirname, '..', p), destination: path.resolve(sourceTempDir, p) } })
