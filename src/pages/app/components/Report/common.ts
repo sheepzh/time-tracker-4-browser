@@ -1,11 +1,11 @@
-import statDatabase from "@/background/database/stat-database"
 import {
+    deleteSiteByGroup,
+    deleteSiteByHost,
     selectCate, selectCatePage, selectGroup, selectGroupPage, selectSite, selectSitePage,
 } from "@api/sw/stat"
 import { t } from "@app/locale"
 import { getGroupName, isGroup, isSite } from "@util/stat"
-import { formatTime, getBirthday } from "@util/time"
-import { cvtDateRange2Str, DateRange } from '../../util/time'
+import { cvtDateRange2Str, type DateRange, formatTime, getBirthday } from "@util/time"
 import type { ReportFilterOption, ReportSort } from "./types"
 
 /**
@@ -55,21 +55,21 @@ export async function handleDelete(row: timer.stat.Row, filterOption: ReportFilt
     const { mergeDate, dateRange } = filterOption
     if (!mergeDate) {
         // Delete one day
-        isSite(row) && date && await statDatabase.delete({ host: row.siteKey.host, date })
-        isGroup(row) && date && await statDatabase.deleteGroup([row.groupKey, date])
+        isSite(row) && date && await deleteSiteByHost(row.siteKey.host, date)
+        isGroup(row) && date && await deleteSiteByGroup(row.groupKey, date)
         return
     }
     const [start, end] = dateRange instanceof Date ? [dateRange,] : dateRange ?? []
     if (!start && !end) {
         // Delete all
-        isSite(row) && await statDatabase.deleteByHost(row.siteKey.host)
-        isGroup(row) && await statDatabase.deleteByGroup(row.groupKey)
+        isSite(row) && await deleteSiteByHost(row.siteKey.host)
+        isGroup(row) && await deleteSiteByGroup(row.groupKey)
         return
     }
 
     // Delete by range
-    isSite(row) && await statDatabase.deleteByHost(row.siteKey.host, [start, end])
-    isGroup(row) && await statDatabase.deleteByGroup(row.groupKey, [start, end])
+    isSite(row) && await deleteSiteByHost(row.siteKey.host, [start, end])
+    isGroup(row) && await deleteSiteByGroup(row.groupKey, [start, end])
 }
 
 const cvtOrderDir = (order: ReportSort['order']): timer.common.SortDirection | undefined => {
@@ -122,10 +122,10 @@ export const queryPage = async (filter: ReportFilterOption, sort: ReportSort, pa
 export const queryAll = async (filter: ReportFilterOption, sort: ReportSort): Promise<timer.stat.Row[]> => {
     const { siteMerge } = filter
     if (siteMerge === 'group') {
-        return (await selectGroup(cvt2GroupQuery(filter, sort))) ?? []
+        return await selectGroup(cvt2GroupQuery(filter, sort))
     } else if (siteMerge === 'cate') {
-        return (await selectCate(cvt2CateQuery(filter, sort))) ?? []
+        return await selectCate(cvt2CateQuery(filter, sort))
     } else {
-        return (await selectSite(cvt2SiteQuery(filter, sort))) ?? []
+        return await selectSite(cvt2SiteQuery(filter, sort))
     }
 }

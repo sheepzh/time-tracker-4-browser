@@ -5,7 +5,6 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { DateRange } from '@/pages/app/util/time'
 import { t } from "@app/locale"
 import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
 import { css } from '@emotion/css'
@@ -24,9 +23,7 @@ const clearShortcut = (): ElDatePickerShortcut => ({
     value: [new Date(0), new Date(0)],
 })
 
-type Value = DateRange
-
-type Props = ModelValue<Value> & {
+type Props = ModelValue<[Date?, Date?]> & {
     disabledDate?: (date: Date) => boolean
     startPlaceholder?: string
     endPlaceholder?: string
@@ -114,7 +111,7 @@ const DefaultRange = defineComponent<Props>(props => {
     })
 
     const handleUpdate = (innerVal: [Date, Date] | undefined) => {
-        let value: Value = innerVal ?? [undefined, undefined]
+        let value = innerVal ?? [undefined, undefined]
         if (innerVal?.[0].getTime() === 0 && innerVal[1].getTime() === 0) {
             // clear shortcuts
             value = [undefined, undefined]

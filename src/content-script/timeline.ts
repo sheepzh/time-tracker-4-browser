@@ -1,4 +1,4 @@
-import { trySendMsg2Runtime } from '@api/chrome/runtime-sender'
+import { trySendMsg2Runtime } from '@/api/sw/common'
 
 class TimelineCollector {
     private startTime: number | null = null

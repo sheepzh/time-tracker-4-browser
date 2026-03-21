@@ -5,13 +5,13 @@
  * https://opensource.org/licenses/MIT
  */
 
+import periodDatabase from "@/background/database/period-database"
+import { selectSite } from "@api/sw/stat"
 import NumberGrow from "@app/components/common/NumberGrow"
 import { tN, type I18nKey } from "@app/locale"
-import periodDatabase from "@/background/database/period-database"
 import { Sunrise } from "@element-plus/icons-vue"
 import { useRequest, useXsState } from "@hooks"
 import Flex from "@pages/components/Flex"
-import { selectSite } from "@api/sw/stat"
 import { calcMostPeriodOf2Hours } from "@util/period"
 import { getStartOfDay, MILL_PER_DAY, MILL_PER_MINUTE } from "@util/time"
 import { ElIcon, ElScrollbar } from "element-plus"
@@ -34,7 +34,7 @@ function calculateInstallDays(installTime: Date, now: Date): number {
 }
 
 async function query(): Promise<_Value> {
-    const allData = (await selectSite()) ?? []
+    const allData = await selectSite()
     const hostSet = new Set<string>()
     let visits = 0
     let browsingTime = 0

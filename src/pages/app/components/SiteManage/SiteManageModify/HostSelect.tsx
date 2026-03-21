@@ -32,7 +32,7 @@ function cleanQuery(query: string) {
 async function handleRemoteSearch(query: string): Promise<_OptionInfo[]> {
     query = cleanQuery(query)
     if (!query) return []
-    const hosts = (await listHosts(query)) ?? { normal: [], merged: [], virtual: [] }
+    const hosts = await listHosts(query)
     const { normal, merged } = hosts
     const allAlias: timer.site.SiteKey[] = [
         ...normal.map(host => ({ host, type: 'normal' } satisfies timer.site.SiteKey)),

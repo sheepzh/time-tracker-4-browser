@@ -43,9 +43,16 @@ export interface StatDatabase {
      *
      * @param host host
      * @param range date range, inclusive start and end, if null, delete all
+     * @return dates to deleted
      */
-    deleteByHost(host: string, range?: [start?: Date | string, end?: Date | string]): Promise<string[]>
-
+    deleteByHost(query: timer.stat.SiteDeleteByHost): Promise<string[]>
+    /**
+     * Delete group data
+     *
+     * @param groupId the id of group
+     * @param range date range, inclusive start and end, if null, delete all
+     */
+    deleteByGroup(param: timer.stat.SiteDeleteByGroup): Promise<void>
     /******* GROUP *******/
     /**
      * Accumulate data for tab group
@@ -53,14 +60,6 @@ export interface StatDatabase {
     accumulateGroup(groupId: number, date: Date | string, item: timer.core.Result): Promise<timer.core.Result>
     selectGroup(condition?: StatCondition): Promise<timer.core.Row[]>
     deleteGroup(...rows: [groupId: number, date: string][]): Promise<void>
-    /**
-     * Delete group data
-     *
-     * @param groupId the id of group
-     * @param range date range, inclusive start and end, if null, delete all
-     */
-    deleteByGroup(groupId: number, range?: [start?: Date | string, end?: Date | string]): Promise<void>
-
     /**
      * Force update data with overwriting
      */

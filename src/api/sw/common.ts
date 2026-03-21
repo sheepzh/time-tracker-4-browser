@@ -1,4 +1,4 @@
-import { handleError } from './common'
+import { handleError } from '../chrome/common'
 
 /**
  * Fix proxy data failed to serialized in Firefox

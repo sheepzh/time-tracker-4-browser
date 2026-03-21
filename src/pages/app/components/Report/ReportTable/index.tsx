@@ -4,13 +4,14 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import { periodFormatter } from '@/pages/app/util/time'
+import { cvtDateRange2Str } from '@/util/time'
 import { removeAlias, saveAlias } from '@api/sw/site'
 import { selectCate, selectGroup, selectSite } from "@api/sw/stat"
 import ContentCard from "@app/components/common/ContentCard"
 import Editable from "@app/components/common/Editable"
 import Pagination from "@app/components/common/Pagination"
 import { t } from "@app/locale"
-import { cvtDateRange2Str, periodFormatter } from "@app/util/time"
 import { Histogram } from "@element-plus/icons-vue"
 import { useDocumentVisibility, useManualRequest, useRequest, useState } from "@hooks"
 import Flex from "@pages/components/Flex"
@@ -76,15 +77,15 @@ const _default = defineComponent((_, ctx) => {
         const date = cvtDateRange2Str(dateRange)
         let rows: timer.stat.Row[] = []
         if (siteMerge === 'group') {
-            rows = (await selectGroup({ date, query })) ?? []
+            rows = await selectGroup({ date, query })
         } else if (siteMerge === 'cate') {
-            rows = (await selectCate({ date, query, cateIds, inclusiveRemote })) ?? []
+            rows = await selectCate({ date, query, cateIds, inclusiveRemote })
         } else {
             const param: timer.stat.SiteQuery = {
                 date, query, cateIds, inclusiveRemote,
                 mergeHost: siteMerge === 'domain',
             }
-            rows = (await selectSite(param)) ?? []
+            rows = await selectSite(param)
         }
         const visit = sum(rows.map(e => e.time))
         const focus = sum(rows.map(e => e.focus))

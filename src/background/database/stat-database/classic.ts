@@ -205,18 +205,17 @@ export class ClassicStatDatabase extends BaseDatabase implements StatDatabase {
      * @returns [dates]
      * @since 0.0.7
      */
-    async deleteByHost(host: string, range?: [start?: Date | string, end?: Date | string]): Promise<string[]> {
-        const [start, end] = range ?? []
-        const startStr = start && formatDateStr(start)
-        const endStr = end && formatDateStr(end)
-        if (startStr && startStr === endStr) {
+    async deleteByHost(query: timer.stat.SiteDeleteByHost): Promise<string[]> {
+        const { host, date } = query
+        const [start, end] = Array.isArray(date) ? date : [date, date]
+        if (start && start === end) {
             // Delete one day
             const key = generateKey(host, start)
             await this.storage.remove(key)
-            return [startStr]
+            return [start]
         }
 
-        const dateFilter = (date: string) => (startStr ? startStr <= date : true) && (endStr ? date <= endStr : true)
+        const dateFilter = (date: string) => (start ? start <= date : true) && (end ? date <= end : true)
         const items = await this.refresh()
 
         // Key format: 20201112www.google.com

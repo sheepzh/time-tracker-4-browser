@@ -51,6 +51,16 @@ declare namespace timer.stat {
             ignoreSite?: boolean
         }
 
+    type SiteDeleteByHost = {
+        host: string
+        date?: [start?: string, end?: string] | string
+    }
+
+    type SiteDeleteByGroup = {
+        groupId: number
+        date?: [start?: string, end?: string] | string
+    }
+
     type SitePageQuery = SiteQuery & timer.common.PageQuery
 
     type SiteRowFlat = SiteTarget &

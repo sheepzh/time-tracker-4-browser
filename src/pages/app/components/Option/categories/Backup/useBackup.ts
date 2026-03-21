@@ -1,4 +1,4 @@
-import { trySendMsg2Runtime } from '@api/chrome/runtime-sender'
+import { trySendMsg2Runtime } from '@/api/sw/common'
 import { defaultBackup } from "@util/constant/option"
 import { computed, watch } from "vue"
 import { useOption } from '../../useOption'

@@ -10,6 +10,7 @@ declare namespace timer.period {
         order: number
     }
     type KeyRange = [Key, Key]
+
     type Result = Key & {
         /**
          * 1~900000
@@ -17,18 +18,26 @@ declare namespace timer.period {
          */
         milliseconds: number
     }
+
     type Row = {
         /**
          * {yyyy}{mm}{dd}
          */
         date: string
-        startTime: Date
-        endTime: Date
+        // Offset of the day, millseconds
+        offset: number
+        // Duration of this period
+        duration: number
         /**
          * 1 - 60000
          * ps. 60000 = 60s * 1000ms/s
          */
         milliseconds: number
+    }
+
+    type Query = {
+        range: KeyRange
+        size: number
     }
 
     type MergeConfig = {

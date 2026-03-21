@@ -9,7 +9,7 @@ import { useCateNameMap, useQuery } from "@popup/context"
 import { t } from "@popup/locale"
 import { isRemainHost } from "@util/constant/remain-host"
 import { getGroupName, getIconUrl, isCate, isGroup, isNormalSite, isSite } from "@util/stat"
-import { formatPeriodCommon } from "@util/time"
+import { DateRange, formatPeriodCommon } from "@util/time"
 import { ElAvatar, ElCard, ElIcon, ElLink, ElProgress, ElTag, ElText } from "element-plus"
 import { computed, defineComponent, type StyleValue } from "vue"
 
@@ -82,7 +82,7 @@ type ItemProps = {
     value: timer.stat.Row
     max?: number
     total?: number
-    date?: Date | [start: Date, end?: Date]
+    date?: DateRange
     displaySiteName?: boolean
     onJump?: NoArgCallback
 }

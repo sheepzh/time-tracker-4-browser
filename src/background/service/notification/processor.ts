@@ -1,9 +1,8 @@
 import optionHolder from "@/background/service/components/option-holder"
 import { selectItems } from "@/background/service/item-service"
-import { cvtDateRange2Str } from '@/pages/app/util/time'
 import { getVersion } from "@api/chrome/runtime"
 import { cvtOption2Locale } from "@i18n"
-import { formatTimeYMD, MILL_PER_DAY, MILL_PER_WEEK } from "@util/time"
+import { cvtDateRange2Str, formatTimeYMD, MILL_PER_DAY, MILL_PER_WEEK } from "@util/time"
 import BrowserNotifier from "./browser/notifier"
 import CallbackNotifier from "./callback/notifier"
 import type { NotificationData, NotificationRequest, Notifier } from "./types"
@@ -41,7 +40,7 @@ class Processor {
         }
     }
 
-    async doSend(): Promise<Result<void>> {
+    async doSend(): Promise<timer.common.Result<void>> {
         const option = await optionHolder.get()
         const {
             notificationCycle: cycle, notificationMethod: method,

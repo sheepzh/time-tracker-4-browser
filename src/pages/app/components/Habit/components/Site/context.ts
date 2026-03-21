@@ -5,10 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { cvtDateRange2Str } from '@/pages/app/util/time'
 import { mergeDate, selectSite } from "@api/sw/stat"
 import { useProvide, useProvider, useRequest } from "@hooks"
-import { getDayLength } from "@util/time"
+import { cvtDateRange2Str, getDayLength } from "@util/time"
 import { computed, type Ref } from "vue"
 import { useHabitFilter } from "../context"
 

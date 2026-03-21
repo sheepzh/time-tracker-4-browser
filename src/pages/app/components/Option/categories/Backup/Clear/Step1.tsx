@@ -23,7 +23,7 @@ async function fetchStatResult(client: timer.backup.Client): Promise<StatResult>
     const { id: specCid, maxDate, minDate = BIRTHDAY } = client
     const start = minDate ?? BIRTHDAY
     const end = maxDate ?? formatTimeYMD(Date.now())
-    const remoteRows: timer.core.Row[] = (await queryBackup({ specCid, start, end })) ?? []
+    const remoteRows = await queryBackup({ specCid, start, end })
     const siteSet: Set<string> = new Set()
     remoteRows?.forEach(row => {
         const { host } = row || {}

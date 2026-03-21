@@ -3,6 +3,7 @@ type _TransmitValue =
     | string
     | number
     | boolean
+    | void
     | { readonly [key: string]: _TransmitValue }
     | readonly _TransmitValue[]
 
@@ -37,7 +38,6 @@ declare namespace timer.mq {
         & _MakeRegistry<'cs.printTodayInfo', undefined, boolean>
         & _MakeRegistry<'cs.getTodayInfo', string, timer.core.Result>
         & _MakeRegistry<'cs.moreMinutes', string>
-        & _MakeRegistry<'cs.getLimitedRules' | 'cs.getRelatedRules', string, timer.limit.Item[]>
         & _MakeRegistry<'cs.trackTime' | 'cs.trackRunTime', timer.core.Event>
         & _MakeRegistry<'cs.onInjected' | 'cs.openAnalysis' | 'cs.openLimit'>
         & _MakeRegistry<'cs.idleChange', boolean>
@@ -47,6 +47,8 @@ declare namespace timer.mq {
         // stat
         & _MakeRegistry<'stat.selectSite', timer.stat.SiteQuery | undefined, timer.stat.SiteRow[]>
         & _MakeRegistry<'stat.selectSitePage', timer.stat.SitePageQuery | undefined, timer.common.PageResult<timer.stat.SiteRow>>
+        & _MakeRegistry<'stat.deleteSiteByHost', timer.stat.SiteDeleteByHost, string[]>
+        & _MakeRegistry<'stat.deleteSiteByGroup', timer.stat.SiteDeleteByGroup>
         & _MakeRegistry<'stat.countSite', timer.stat.SiteQuery | undefined, number>
         & _MakeRegistry<'stat.selectCate', timer.stat.CateQuery | undefined, timer.stat.CateRow[]>
         & _MakeRegistry<'stat.selectCatePage', timer.stat.CatePageQuery | undefined, timer.common.PageResult<timer.stat.CateRow>>
@@ -63,6 +65,8 @@ declare namespace timer.mq {
         & _MakeRegistry<'option.setDarkMode', { mode: timer.option.DarkMode; period?: [number, number] }>
         & _MakeRegistry<'option.setLocale', timer.option.LocaleOption>
         & _MakeRegistry<'option.setBackupOption', Partial<timer.option.BackupOption>>
+        & _MakeRegistry<'option.migrateStorage', timer.option.StorageType>
+        & _MakeRegistry<'option.testNotification', undefined, timer.common.Result<void>>
         & _MakeRegistry<'cate.listAll', undefined, timer.site.Cate[]>
         & _MakeRegistry<'cate.add', string, timer.site.Cate>
         & _MakeRegistry<'cate.saveName', { id: number; name: string }>
@@ -75,8 +79,8 @@ declare namespace timer.mq {
         // site
         & _MakeRegistry<'site.getSite', timer.site.SiteKey, timer.site.SiteInfo>
         & _MakeRegistry<'site.getPslSuffix', string, string>
-        & _MakeRegistry<'site.selectAllSites', timer.site.SiteListQuery | undefined, timer.site.SiteInfo[]>
-        & _MakeRegistry<'site.selectSitePage', timer.site.SiteSelectPageQuery, timer.common.PageResult<timer.site.SiteInfo>>
+        & _MakeRegistry<'site.selectAllSites', timer.site.Query | undefined, timer.site.SiteInfo[]>
+        & _MakeRegistry<'site.selectSitePage', timer.site.PageQuery | undefined, timer.common.PageResult<timer.site.SiteInfo>>
         & _MakeRegistry<'site.addSite', timer.site.SiteInfo>
         & _MakeRegistry<'site.removeSites', timer.site.SiteKey[]>
         & _MakeRegistry<'site.saveSiteCate', { key: timer.site.SiteKey; cateId: number | undefined }>
@@ -89,11 +93,11 @@ declare namespace timer.mq {
         // limit / whitelist / backup (runtime; CS→SW etc.)
         & _MakeRegistry<'openLimitPage', string>
         & _MakeRegistry<'limit.select', timer.limit.Query | undefined, timer.limit.Item[]>
-        & _MakeRegistry<'limit.remove', timer.limit.Item | timer.limit.Item[]>
-        & _MakeRegistry<'limit.updateEnabled', timer.limit.Item[]>
-        & _MakeRegistry<'limit.updateDelay' | 'limit.updateLocked', timer.limit.Item>
-        & _MakeRegistry<'limit.update', timer.limit.Rule[]>
-        & _MakeRegistry<'limit.create', Partial<timer.limit.Rule>, number>
+        & _MakeRegistry<'limit.batchRemove', timer.limit.Rule[]>
+        & _MakeRegistry<'limit.batchUpdateEnabled', timer.limit.Rule[]>
+        & _MakeRegistry<'limit.updateDelay' | 'limit.updateLocked' | 'limit.update', timer.limit.Rule>
+        & _MakeRegistry<'limit.create', MakeOptional<timer.limit.Rule, 'id'>, number>
+        & _MakeRegistry<'limit.getLimited' | 'limit.getEffective', string, timer.limit.Item[]>
         & _MakeRegistry<'whitelist.listAll', undefined, string[]>
         & _MakeRegistry<'whitelist.add' | 'whitelist.remove', string>
         & _MakeRegistry<'backup.syncData', undefined, { success: boolean; errorMsg?: string; data?: number }>
@@ -102,9 +106,9 @@ declare namespace timer.mq {
         & _MakeRegistry<'backup.query', timer.backup.RemoteQuery, timer.backup.Row[]>
         & _MakeRegistry<'backup.getLastBackUp', timer.backup.Type, { ts: number; msg?: string } | undefined>
         & _MakeRegistry<'backup.listClients', undefined, { success: boolean; errorMsg?: string; data?: timer.backup.Client[] }>
-        // period / import / immigration / memory
+        // period
         & _MakeRegistry<'period.merge', timer.period.MergeRequest, timer.period.Result[]>
-        & _MakeRegistry<'period.listBetween', { periodRange: timer.period.KeyRange }, timer.period.Result[]>
+        & _MakeRegistry<'period.select', timer.period.Query, timer.period.Row[]>
         & _MakeRegistry<'import.fillExist', timer.imported.Row[]>
         & _MakeRegistry<'import.processImportedData', { data: timer.imported.Data; resolution: timer.imported.ConflictResolution }>
         & _MakeRegistry<'immigration.importData', any>

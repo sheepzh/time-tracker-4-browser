@@ -6,7 +6,6 @@
  */
 
 import optionHolder from "@/background/service/components/option-holder"
-import limitService from "@/background/service/limit-service"
 import { getSite } from "@/background/service/site-service"
 import timelineThrottler from '@/background/service/throttler/timeline-throttler'
 import whitelistHolder from "@/background/service/whitelist/holder"
@@ -58,8 +57,6 @@ export default function init(dispatcher: MessageDispatcher) {
         .register('cs.isInWhitelist', ({ host, url } = {}) => !!host && !!url && whitelistHolder.contains(host, url))
         // Need to print the information of today
         .register('cs.printTodayInfo', async () => (await optionHolder.get()).printInConsole)
-        .register('cs.getLimitedRules', url => limitService.getLimited(url))
-        .register('cs.getRelatedRules', url => limitService.getRelated(url))
         .register('cs.openAnalysis', (_, sender) => handleOpenAnalysisPage(sender))
         .register('cs.openLimit', (_, sender) => handleOpenLimitPage(sender))
         .register('cs.onInjected', (_, sender) => handleInjected(sender))

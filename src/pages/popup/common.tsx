@@ -5,11 +5,10 @@ import { REPORT_ROUTE } from "@app/router/constants"
 import { isRemainHost } from "@util/constant/remain-host"
 import { getAppPageUrl } from "@util/constant/url"
 import { isSite } from "@util/stat"
-import { getMonthTime, MILL_PER_DAY } from "@util/time"
-import { cvtDateRange2Str, type DateRange } from '../app/util/time'
+import { cvtDateRange2Str, getMonthTime, MILL_PER_DAY, type DateRange } from "@util/time"
 import { type PopupDuration, type PopupQuery } from "./context"
 
-type DateRangeCalculator = (now: Date, num?: number) => Awaitable<DateRange>
+type DateRangeCalculator = (now: Date, num?: number) => Awaitable<[Date, Date] | Date | undefined>
 
 const DATE_RANGE_CALCULATORS: { [duration in PopupDuration]: DateRangeCalculator } = {
     today: now => now,
@@ -23,27 +22,27 @@ const DATE_RANGE_CALCULATORS: { [duration in PopupDuration]: DateRangeCalculator
     allTime: () => undefined,
 }
 
-export const queryRows = async (param: PopupQuery): Promise<[rows: timer.stat.Row[], date: DateRange]> => {
+export const queryRows = async (param: PopupQuery): Promise<[rows: timer.stat.Row[], date: [Date, Date] | Date | undefined]> => {
     const { duration, durationNum, mergeMethod, dimension: sortKey } = param
     const dateRange = await DATE_RANGE_CALCULATORS[duration]?.(new Date(), durationNum)
     const date = cvtDateRange2Str(dateRange)
     const sortDirection: timer.common.SortDirection = 'DESC'
     let rows: timer.stat.Row[]
     if (mergeMethod === 'cate') {
-        rows = (await selectCate({ date, mergeDate: true, sortKey, sortDirection })) ?? []
+        rows = await selectCate({ date, mergeDate: true, sortKey, sortDirection })
     } else if (mergeMethod === 'group') {
-        rows = (await selectGroup({ date, mergeDate: true, sortKey, sortDirection })) ?? []
+        rows = await selectGroup({ date, mergeDate: true, sortKey, sortDirection })
     } else {
-        rows = (await selectSite({
+        rows = await selectSite({
             date, mergeDate: true,
             mergeHost: mergeMethod === 'domain',
             sortKey, sortDirection,
-        })) ?? []
+        })
     }
     return [rows, dateRange]
 }
 
-function buildReportQuery(siteType: timer.site.Type, date: Date | [Date, Date?] | undefined, type: timer.core.Dimension): ReportQueryParam {
+function buildReportQuery(siteType: timer.site.Type, date: DateRange | undefined, type: timer.core.Dimension): ReportQueryParam {
     const query: ReportQueryParam = {}
     // Merge host
     siteType === 'merged' && (query.mm = 'domain')
@@ -66,7 +65,11 @@ function buildReportQuery(siteType: timer.site.Type, date: Date | [Date, Date?] 
     return query
 }
 
-export function calJumpUrl(row: timer.stat.Row | undefined, date: Date | [Date, Date?] | undefined, type: timer.core.Dimension): string | undefined {
+export function calJumpUrl(
+    row: timer.stat.Row | undefined,
+    date: DateRange | undefined,
+    type: timer.core.Dimension,
+): string | undefined {
     if (!row) return
     if (isSite(row)) {
         const { siteKey: { host, type: siteType } } = row

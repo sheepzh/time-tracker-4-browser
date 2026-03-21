@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { createLimit, updateLimit } from "@api/sw/limit"
 import { t } from "@app/locale"
 import { useSwitch, useXsState } from "@hooks"
-import { selectLimits, removeLimit, updateEnabled, updateLimit, createLimit } from "@api/sw/limit"
 import { ElDialog, ElMessage } from "element-plus"
 import { computed, defineComponent, nextTick, ref, toRaw } from "vue"
 import { type ModifyInstance, useLimitData } from "../../context"

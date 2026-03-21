@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { trySendMsg2Runtime } from "@api/chrome/runtime-sender"
+import { trySendMsg2Runtime } from '@/api/sw/common'
 import { formatPeriodCommon } from "@util/time"
 import { t } from "./locale"
 

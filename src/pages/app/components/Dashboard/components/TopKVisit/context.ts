@@ -1,7 +1,6 @@
-import { cvtDateRange2Str } from '@/pages/app/util/time'
 import { selectSitePage } from "@api/sw/stat"
 import { useLocalStorage, useProvide, useProvider, useRequest } from "@hooks"
-import { MILL_PER_DAY } from "@util/time"
+import { MILL_PER_DAY, cvtDateRange2Str } from "@util/time"
 import { reactive, toRaw, watch, type Reactive, type Ref } from "vue"
 
 export type BizOption = {

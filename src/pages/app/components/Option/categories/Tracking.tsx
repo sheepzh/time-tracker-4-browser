@@ -4,8 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { sendMsg2Runtime } from '@/api/chrome/runtime-sender'
-import immigration from '@/background/service/components/immigration'
+import { sendMsg2Runtime } from '@/api/sw/common'
 import { hasPerm, requestPerm } from "@api/chrome/permission"
 import { isAllowedFileSchemeAccess } from "@api/chrome/runtime"
 import { t } from "@app/locale"
@@ -61,10 +60,13 @@ const _default = defineComponent((_props, ctx) => {
     }
     ctx.expose({ reset } satisfies CategoryInstance)
 
-    const { refresh: changeStorageType, loading: storageMigrating } = useManualRequest(async (type: timer.option.StorageType) => {
-        await immigration.migrateStorage(type)
-        option.storage = type
-    }, { loadingText: 'Data migrating...' })
+    const { refresh: changeStorageType, loading: storageMigrating } = useManualRequest(
+        type => sendMsg2Runtime('option.migrateStorage', type),
+        {
+            loadingText: 'Data migrating...',
+            onSuccess: (_, type) => option.storage = type,
+        }
+    )
 
     const handleChangeStorage = (type: timer.option.StorageType) => {
         const msg = t(msg => msg.option.tracking.storageConfirm, { type: ALL_STORAGES[type] })

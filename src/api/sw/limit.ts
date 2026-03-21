@@ -1,32 +1,29 @@
-/**
- * Limit domain: request to sw.
- */
-import { sendMsg2Runtime } from "@api/chrome/runtime-sender"
+import { sendMsg2Runtime } from "./common"
 
 export function selectLimits(cond?: { filterDisabled?: boolean; url?: string; id?: number }) {
     return sendMsg2Runtime('limit.select', cond)
 }
 
-export function removeLimit(item: timer.limit.Item | timer.limit.Item[]) {
-    return sendMsg2Runtime('limit.remove', item)
+export function batchRemoveLimitRules(rules: timer.limit.Rule[]) {
+    return sendMsg2Runtime('limit.batchRemove', rules)
 }
 
-export function updateEnabled(...items: timer.limit.Item[]) {
-    return sendMsg2Runtime('limit.updateEnabled', items)
+export function batchUpdateEnabled(rules: timer.limit.Rule[]) {
+    return sendMsg2Runtime('limit.batchUpdateEnabled', rules)
 }
 
-export function updateDelay(item: timer.limit.Item) {
-    return sendMsg2Runtime('limit.updateDelay', item)
+export function updateDelay(rule: timer.limit.Rule) {
+    return sendMsg2Runtime('limit.updateDelay', rule)
 }
 
-export function updateLocked(item: timer.limit.Item) {
-    return sendMsg2Runtime('limit.updateLocked', item)
+export function updateLocked(rule: timer.limit.Rule) {
+    return sendMsg2Runtime('limit.updateLocked', rule)
 }
 
-export function updateLimit(...rules: timer.limit.Rule[]) {
-    return sendMsg2Runtime('limit.update', rules)
+export function updateLimit(rule: timer.limit.Rule) {
+    return sendMsg2Runtime('limit.update', rule)
 }
 
-export function createLimit(rule: Partial<timer.limit.Rule>) {
+export function createLimit(rule: MakeOptional<timer.limit.Rule, 'id'>) {
     return sendMsg2Runtime('limit.create', rule)
 }

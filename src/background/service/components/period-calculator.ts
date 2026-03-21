@@ -53,33 +53,23 @@ export function getMaxDivisiblePeriod(period: timer.period.Key, periodWindowSize
     return period
 }
 
-export type MergeConfig = {
-    periodSize: number
-    /**
-     * Inclusive
-     */
-    start: timer.period.Key
-    /**
-     * Inclusive
-     */
-    end: timer.period.Key
-}
-
-export function merge(periods: timer.period.Result[], config: MergeConfig): timer.period.Row[] {
+export function merge(periods: timer.period.Result[], config: timer.period.Query): timer.period.Row[] {
     if (!periods?.length) return []
-    const result: timer.period.Row[] = []
-    let { start, end, periodSize } = config
+    const rows: timer.period.Row[] = []
+    let { range: [start, end], size } = config
+    if (size <= 0 || !Number.isInteger(size)) size = 1
+
     const map: Map<number, number> = new Map()
     periods.forEach(p => map.set(indexOf(p), p.milliseconds))
     let mills: number[] = []
     for (; compare(start, end) <= 0; start = after(start, 1)) {
         mills.push(map.get(indexOf(start)) ?? 0)
-        const isEndOfWindow = (start.order % periodSize) === periodSize - 1
+        const isEndOfWindow = (start.order % size) === size - 1
         if (isEndOfWindow) {
-            const isFullWindow = mills.length === periodSize
-            isFullWindow && result.push(rowOf(start, periodSize, sum(mills)))
+            const isFullWindow = mills.length === size
+            isFullWindow && rows.push(rowOf(start, size, sum(mills)))
             mills = []
         }
     }
-    return result
+    return rows
 }

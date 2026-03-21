@@ -1,5 +1,5 @@
+import { trySendMsg2Runtime } from '@/api/sw/common'
 import { tryGetOption } from '@/api/sw/option'
-import { trySendMsg2Runtime } from "@api/chrome/runtime-sender"
 import Trend from "@app/Layout/icons/Trend"
 import { judgeVerificationRequired, processVerification } from "@app/util/limit"
 import { TAG_NAME } from "@cs/limit/element"

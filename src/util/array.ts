@@ -150,3 +150,10 @@ export function joinAny<T = any>(arr: T[], separator: T): T[] {
         [],
     )
 }
+
+export function flatArrable<T>(arrable: Arrable<T>): T[] {
+    if (Array.isArray(arrable)) {
+        return arrable
+    }
+    return [arrable]
+}

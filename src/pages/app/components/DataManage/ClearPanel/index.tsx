@@ -6,9 +6,8 @@
  */
 
 import db, { type StatCondition } from "@/background/database/stat-database"
-import { cvtDateRange2Str } from '@/pages/app/util/time'
 import { t } from "@app/locale"
-import { getBirthday, MILL_PER_DAY, MILL_PER_SECOND } from "@util/time"
+import { cvtDateRange2Str, getBirthday, MILL_PER_DAY, MILL_PER_SECOND } from "@util/time"
 import { ElCard, ElMessage, ElMessageBox } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
 import { useDataMemory } from "../context"
@@ -31,7 +30,7 @@ async function generateParamAndSelect(option: FilterOption): Promise<timer.core.
     const { date } = option
     let [
         start = getBirthday(),
-        end = new Date(new Date().getTime() - MILL_PER_DAY),
+        end = new Date(Date.now() - MILL_PER_DAY),
     ] = date ?? []
     param.date = cvtDateRange2Str([start, end])
     return await db.select(param)

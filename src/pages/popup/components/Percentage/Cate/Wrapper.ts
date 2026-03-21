@@ -1,8 +1,8 @@
+import { listCates } from "@api/sw/cate"
+import { mergeDate } from "@api/sw/stat"
 import { EchartsWrapper } from "@hooks/useEcharts"
 import { getInfoColor, getPrimaryTextColor } from "@pages/util/style"
 import { t } from "@popup/locale"
-import { listCates } from "@api/sw/cate"
-import { mergeDate } from "@api/sw/stat"
 import { toMap } from "@util/array"
 import { CATE_NOT_SET_ID } from "@util/site"
 import { isCate } from "@util/stat"
@@ -142,7 +142,7 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
             let mergedRows = ((selected?.mergedRows || []) as unknown as timer.stat.SiteRow[]).sort(
                 (a, b) => (b[dimension] ?? 0) - (a[dimension] ?? 0),
             )
-            mergedRows = (await mergeDate(mergedRows)) ?? mergedRows
+            mergedRows = await mergeDate(mergedRows)
 
             const siteSeries = generateSiteSeriesOption(mergedRows, result, {
                 center: ['60%', '58%'],

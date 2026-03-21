@@ -5,15 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-import periodDatabase from "@/background/database/period-database"
+import db from "@/background/database/period-database"
 import { after, compare, getDateString } from "@util/period"
-
-export type PeriodQueryParam = {
-    /**
-     * Required
-     */
-    periodRange: timer.period.KeyRange
-}
+import { merge } from './components/period-calculator'
 
 function dateStrBetween(startDate: timer.period.Key, endDate: timer.period.Key): string[] {
     const result: string[] = []
@@ -24,22 +18,15 @@ function dateStrBetween(startDate: timer.period.Key, endDate: timer.period.Key):
     return result
 }
 
-async function listBetween(param: PeriodQueryParam): Promise<timer.period.Result[]> {
-    const [start, end] = param.periodRange
+export async function selectPeriods(param: timer.period.Query): Promise<timer.period.Row[]> {
+    const { range: [start, end], size = 1 } = param
     const allDates = dateStrBetween(start, end)
-    return periodDatabase.getBatch(allDates)
+    const results = await db.getBatch(allDates)
+    return merge(results, param)
 }
 
-async function batchDeleteBetween(param: PeriodQueryParam): Promise<void> {
-    const [start, end] = param.periodRange
-    if (!start || !end) return
+export async function batchDeletePeriods(param: timer.period.Query): Promise<void> {
+    const [start, end] = param.range
     const allDates = dateStrBetween(start, end)
-    await periodDatabase.batchDelete(allDates)
+    await db.batchDelete(allDates)
 }
-
-class PeriodService {
-    listBetween = listBetween
-    batchDeleteBetween = batchDeleteBetween
-}
-
-export default new PeriodService()

@@ -1,11 +1,10 @@
-import { cvtDateRange2Str } from '@/pages/app/util/time'
 import { selectSite } from "@api/sw/stat"
 import { t } from "@app/locale"
 import { useEcharts } from "@hooks/useEcharts"
 import Flex from "@pages/components/Flex"
 import { groupBy, sum } from "@util/array"
 import DateIterator from "@util/date-iterator"
-import { MILL_PER_DAY } from "@util/time"
+import { cvtDateRange2Str, MILL_PER_DAY } from "@util/time"
 import { defineComponent } from "vue"
 import ChartTitle from "../../ChartTitle"
 import Wrapper from "./Wrapper"

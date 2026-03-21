@@ -5,9 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { selectPeriods } from '@/api/sw/period'
 import { useLocalStorage, useProvide, useProvider, useRequest } from "@hooks"
-import { merge } from "@/background/service/components/period-calculator"
-import periodService from "@/background/service/period-service"
 import { keyOf, MAX_PERIOD_ORDER } from "@util/period"
 import { getDayLength, MILL_PER_DAY } from "@util/time"
 import { computed, reactive, toRaw, watch, type Reactive, type Ref } from "vue"
@@ -41,12 +40,6 @@ const computeRange = (filterDateRange: [Date, Date]): PeriodRange => {
     }
 }
 
-const fetchRows = async (range: timer.period.KeyRange, periodSize: number) => {
-    const results = await periodService.listBetween({ periodRange: range })
-    const [start, end] = range || []
-    return merge(results, { start, end, periodSize })
-}
-
 const NAMESPACE = 'habitPeriod'
 
 export const initProvider = () => {
@@ -62,8 +55,8 @@ export const initProvider = () => {
         const { curr: currRange, prev: prevRange } = periodRange.value || {}
         const periodSize = filter.periodSize
         const [curr, prev] = await Promise.all([
-            fetchRows(currRange, periodSize),
-            fetchRows(prevRange, periodSize),
+            selectPeriods(currRange, periodSize),
+            selectPeriods(prevRange, periodSize),
         ])
         return { curr, prev }
     }, {

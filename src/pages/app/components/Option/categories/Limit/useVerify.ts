@@ -7,7 +7,7 @@ export const useVerify = (option: timer.option.LimitOption) => {
 
     const verify = async (): Promise<void> => {
         if (verified.value) return
-        const items = (await selectLimits()) ?? []
+        const items = await selectLimits() ?? []
         const triggerResults = await Promise.all((items || []).map(judgeVerificationRequired))
         const anyTrigger = triggerResults.some(t => !!t)
         if (anyTrigger) {

@@ -1,7 +1,4 @@
-/**
- * Meta domain: request to sw.
- */
-import { sendMsg2Runtime } from "@api/chrome/runtime-sender"
+import { sendMsg2Runtime } from "./common"
 
 export function saveFlag(flag: timer.ExtensionMetaFlag) {
     return sendMsg2Runtime('meta.saveFlag', flag)

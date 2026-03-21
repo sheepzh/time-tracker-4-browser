@@ -1,4 +1,4 @@
-import { sendMsg2Runtime } from "@api/chrome/runtime-sender"
+import { trySendMsg2Runtime } from '@/api/sw/common'
 import { t, tN } from "@app/locale"
 import { useCountDown } from '@hooks/useCount'
 import { I18nResultItem, locale } from "@i18n"
@@ -28,13 +28,8 @@ export async function judgeVerificationRequired(item: timer.limit.Item): Promise
     }
     // Visit
     if (visitTime) {
-        let hitVisit = false
-        try {
-            hitVisit = !!await sendMsg2Runtime("askHitVisit", item)
-        } catch (e) {
-            // If error occurs, regarded as not hitting
-            // ignored
-        }
+        // If error occurs, regarded as not hitting
+        const hitVisit = await trySendMsg2Runtime('askHitVisit', item) ?? false
         if (hitVisit) return true
     }
     return false

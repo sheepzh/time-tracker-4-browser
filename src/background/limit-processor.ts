@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import limitService from "@/background/service/limit-service"
+import { moreMinutes, noticeLimitChanged } from "@/background/service/limit-service"
 import { createTabAfterCurrent, getRightOf, listTabs, resetTabUrl, sendMsg2Tab } from "@api/chrome/tab"
 import { LIMIT_ROUTE } from "@app/router/constants"
 import { getAppPageUrl } from "@util/constant/url"
@@ -47,12 +47,12 @@ function initDailyBroadcast() {
     alarmManager.setWhen(
         'limit-daily-broadcast',
         () => getStartOfDay(new Date()) + MILL_PER_DAY,
-        () => limitService.broadcastRules(),
+        noticeLimitChanged,
     )
 }
 
 const processMoreMinutes = async (url: string) => {
-    const rules = await limitService.moreMinutes(url)
+    const rules = await moreMinutes(url)
 
     const tabs = await listTabs({ status: 'complete' })
     tabs.forEach(tab => processLimitWaking(rules, tab))

@@ -209,21 +209,19 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
         }, 'readwrite')
     }
 
-    deleteByHost(host: string, range?: [start?: Date | string, end?: Date | string]): Promise<string[]> {
+    deleteByHost(query: timer.stat.SiteDeleteByHost): Promise<string[]> {
+        const { host, date } = query
+        const [start, end] = Array.isArray(date) ? date : [date, date]
         return this.withStore(async store => {
-            const [start, end] = range ?? []
-            const startStr = start ? formatDateStr(start) : undefined
-            const endStr = end ? formatDateStr(end) : undefined
-
-            if (startStr && startStr === endStr) {
+            if (start && start === end) {
                 // Delete one day
                 const index = super.assertIndex(store, ['date', 'host'])
-                const req = index.getKey([startStr, host])
+                const req = index.getKey([start, host])
                 const key = await req2Promise(req)
                 if (key) {
                     await req2Promise(store.delete(key))
                 }
-                return [startStr]
+                return [start]
             }
 
             // Delete by range
@@ -236,7 +234,7 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
                 if (!r || isGroup(r)) return
 
                 const dateStr = r.date
-                const inRange = (!startStr || startStr <= dateStr) && (!endStr || dateStr <= endStr)
+                const inRange = (!start || start <= dateStr) && (!end || dateStr <= end)
                 if (inRange) {
                     cursor.delete()
                     deletedDates.add(dateStr)
@@ -283,17 +281,15 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
         }, 'readwrite')
     }
 
-    deleteByGroup(groupId: number, range?: [start?: Date | string, end?: Date | string]): Promise<void> {
+    deleteByGroup(param: timer.stat.SiteDeleteByGroup): Promise<void> {
+        const { groupId, date } = param
         return this.withStore(async store => {
-            const [start, end] = range ?? []
-            const startStr = start ? formatDateStr(start) : undefined
-            const endStr = end ? formatDateStr(end) : undefined
+            const [start, end] = Array.isArray(date) ? date : [date, date]
             const host = cvtGroupId2Host(groupId)
-
-            if (startStr && startStr === endStr) {
+            if (start && start === end) {
                 // Delete one day
                 const index = super.assertIndex(store, ['date', 'host'])
-                const req = index.getKey([startStr, host])
+                const req = index.getKey([start, host])
                 const key = await req2Promise(req)
                 if (key) {
                     await req2Promise(store.delete(key))
@@ -309,7 +305,7 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
                 const r = cursor.value as StoredRow | undefined
                 if (!r) return
                 const dateStr = r.date
-                const inRange = (!startStr || startStr <= dateStr) && (!endStr || dateStr <= endStr)
+                const inRange = (!start || start <= dateStr) && (!end || dateStr <= end)
                 inRange && cursor.delete()
             })
         }, 'readwrite')

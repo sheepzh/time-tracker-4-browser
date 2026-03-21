@@ -1,4 +1,4 @@
-import { trySendMsg2Runtime } from "@api/chrome/runtime-sender"
+import { trySendMsg2Runtime } from '@/api/sw/common'
 import NormalTracker from "@cs/tracker/normal"
 import { DELAY_MILL } from "@util/limit"
 import { MILL_PER_SECOND } from "@util/time"
@@ -50,7 +50,7 @@ class VisitProcessor implements Processor {
     }
 
     async initRules() {
-        this.rules = await trySendMsg2Runtime("cs.getRelatedRules", this.context.url) ?? []
+        this.rules = await trySendMsg2Runtime("limit.getEffective", this.context.url)
         this.context.modal.removeReasonsByType("VISIT")
     }
 

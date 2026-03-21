@@ -1,4 +1,4 @@
-import { trySendMsg2Runtime } from "@api/chrome/runtime-sender"
+import { trySendMsg2Runtime } from '@/api/sw/common'
 
 function awaitDocumentReady() {
     if (document.readyState === 'complete') {

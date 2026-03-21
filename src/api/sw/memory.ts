@@ -1,7 +1,4 @@
-/**
- * Memory domain: request to sw.
- */
-import { sendMsg2Runtime } from "@api/chrome/runtime-sender"
+import { sendMsg2Runtime } from "./common"
 
 export type MemoryInfo = { used: number; total: number }
 

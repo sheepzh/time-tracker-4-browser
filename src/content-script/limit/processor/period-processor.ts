@@ -1,4 +1,4 @@
-import { trySendMsg2Runtime } from "@api/chrome/runtime-sender"
+import { trySendMsg2Runtime } from '@/api/sw/common'
 import { date2Idx } from "@util/limit"
 import { MILL_PER_SECOND } from "@util/time"
 import type { LimitReason, ModalContext, Processor } from "../types"
@@ -44,7 +44,7 @@ class PeriodProcessor implements Processor {
     }
 
     private async init0(rules?: timer.limit.Item[]) {
-        rules = rules ?? await trySendMsg2Runtime("cs.getRelatedRules", this.context.url)
+        rules = rules ?? await trySendMsg2Runtime("limit.getEffective", this.context.url)
         // Clear first
         this.context.modal.removeReasonsByType("PERIOD")
         const nowSeconds = date2Idx(new Date())

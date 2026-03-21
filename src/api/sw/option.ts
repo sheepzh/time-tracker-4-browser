@@ -1,7 +1,4 @@
-/**
- * Option domain: request to sw.
- */
-import { sendMsg2Runtime } from "@api/chrome/runtime-sender"
+import { sendMsg2Runtime } from "./common"
 
 export function getOption() {
     return sendMsg2Runtime('option.get')

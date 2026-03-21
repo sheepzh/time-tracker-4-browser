@@ -6,7 +6,6 @@
  */
 
 import weekHelper from "@/background/service/components/week-helper"
-import { cvtDateRange2Str } from '@/pages/app/util/time'
 import { createTabAfterCurrent } from "@api/chrome/tab"
 import { selectSite } from '@api/sw/stat'
 import type { ReportQueryParam } from "@app/components/Report/types"
@@ -17,7 +16,7 @@ import { useEcharts } from "@hooks/useEcharts"
 import Flex from "@pages/components/Flex"
 import { groupBy, sum } from "@util/array"
 import { getAppPageUrl } from "@util/constant/url"
-import { formatTimeYMD, MILL_PER_DAY, MILL_PER_HOUR } from "@util/time"
+import { cvtDateRange2Str, formatTimeYMD, MILL_PER_DAY, MILL_PER_HOUR } from "@util/time"
 import { computed, defineComponent } from "vue"
 import ChartTitle from "../../ChartTitle"
 import Wrapper, { type BizOption, type ChartValue } from "./Wrapper"

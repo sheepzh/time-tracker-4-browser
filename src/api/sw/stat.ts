@@ -1,7 +1,4 @@
-/**
- * Stat domain: request to sw.
- */
-import { sendMsg2Runtime } from "@api/chrome/runtime-sender"
+import { sendMsg2Runtime } from "./common"
 
 export function selectSite(param?: timer.stat.SiteQuery) {
     return sendMsg2Runtime('stat.selectSite', param)
@@ -9,6 +6,14 @@ export function selectSite(param?: timer.stat.SiteQuery) {
 
 export function selectSitePage(param?: timer.stat.SitePageQuery) {
     return sendMsg2Runtime('stat.selectSitePage', param)
+}
+
+export function deleteSiteByHost(host: string, date?: [string?, string?] | string) {
+    return sendMsg2Runtime('stat.deleteSiteByHost', { host, date })
+}
+
+export function deleteSiteByGroup(groupId: number, date?: [string?, string?] | string) {
+    return sendMsg2Runtime('stat.deleteSiteByGroup', { groupId, date })
 }
 
 export function selectCate(param?: timer.stat.CateQuery) {

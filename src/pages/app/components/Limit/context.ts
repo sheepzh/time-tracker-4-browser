@@ -1,4 +1,4 @@
-import { removeLimit, selectLimits, updateDelay, updateEnabled, updateLocked } from "@api/sw/limit"
+import { batchRemoveLimitRules, batchUpdateEnabled, selectLimits, updateDelay, updateLocked } from "@api/sw/limit"
 import { t } from "@app/locale"
 import { useDocumentVisibility, useManualRequest, useProvide, useProvider, useRequest } from "@hooks"
 import { ElMessage, ElMessageBox } from "element-plus"
@@ -65,7 +65,7 @@ export const useLimitProvider = () => {
         await verifyCanModify(row)
         const message = t(msg => msg.limit.message.deleteConfirm, { name: row.name })
         await ElMessageBox.confirm(message, { type: "warning" })
-        await removeLimit(row)
+        await batchRemoveLimitRules([row])
     }, {
         onSuccess() {
             ElMessage.success(t(msg => msg.operation.successMsg))
@@ -93,20 +93,20 @@ export const useLimitProvider = () => {
         const names = list.map(item => item.name ?? item.id).join(', ')
         verifyCanModify(...list)
             .then(() => ElMessageBox.confirm(t(msg => msg.limit.message.deleteConfirm, { name: names }), { type: "warning" }))
-            .then(() => removeLimit(list))
+            .then(() => batchRemoveLimitRules(list))
             .then(onBatchSuccess)
             .catch(() => { })
     }
 
     const handleBatchEnable = (list: timer.limit.Item[]) => {
         list.forEach(item => item.enabled = true)
-        updateEnabled(...list).then(onBatchSuccess).catch(() => { })
+        batchUpdateEnabled(list).then(onBatchSuccess).catch(() => { })
     }
 
     const handleBatchDisable = (list: timer.limit.Item[]) => verifyCanModify(...list)
         .then(() => {
             list.forEach(item => item.enabled = false)
-            return updateEnabled(...list)
+            return batchUpdateEnabled(list)
         })
         .then(onBatchSuccess)
         .catch(() => { })
@@ -116,7 +116,7 @@ export const useLimitProvider = () => {
         try {
             (row.locked || !enabled) && await verifyCanModify(row)
             row.enabled = enabled
-            await updateEnabled(toRaw(row))
+            await batchUpdateEnabled([toRaw(row)])
         } catch (e) {
             console.warn(e)
         }

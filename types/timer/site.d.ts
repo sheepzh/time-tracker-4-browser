@@ -30,14 +30,11 @@ declare namespace timer.site {
         name: string
     }
 
-    type SiteListQuery = {
+    type Query = {
         fuzzyQuery?: string
-        cateIds?: number | number[]
-        types?: timer.site.Type | timer.site.Type[]
+        cateIds?: Arrable<number>
+        types?: Arrable<timer.site.Type>
     }
 
-    type SiteSelectPageQuery = {
-        param?: SiteListQuery
-        page?: timer.common.PageQuery
-    }
+    type PageQuery = Query & common.PageQuery
 }

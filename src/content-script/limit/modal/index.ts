@@ -1,4 +1,4 @@
-import { trySendMsg2Runtime } from '@/api/chrome/runtime-sender'
+import { trySendMsg2Runtime } from '@/api/sw/common'
 import { getOption } from '@/api/sw/option'
 import { getRuntimeId, getUrl } from '@api/chrome/runtime'
 import { init as initTheme, processDarkMode } from '@util/dark-mode'

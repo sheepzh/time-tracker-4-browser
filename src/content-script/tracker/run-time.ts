@@ -1,4 +1,4 @@
-import { trySendMsg2Runtime } from '@/api/chrome/runtime-sender'
+import { trySendMsg2Runtime } from '@/api/sw/common'
 import { onTabMessage } from "@api/chrome/runtime"
 
 class RunTimeTracker {

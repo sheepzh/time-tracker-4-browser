@@ -1,11 +1,9 @@
-import statDatabase from "@/background/database/stat-database"
-import { DateRange } from '@/pages/app/util/time'
 import { getGroup } from "@api/chrome/tabGroups"
-import { batchDelete, countGroupByIds, countSiteByHosts } from "@api/sw/stat"
+import { batchDelete, countGroupByIds, countSiteByHosts, deleteSiteByHost } from "@api/sw/stat"
 import { type I18nKey, t } from "@app/locale"
 import { DeleteFilled } from "@element-plus/icons-vue"
 import { isGroup, isNormalSite, isSite } from "@util/stat"
-import { formatTime, formatTimeYMD, getBirthday } from "@util/time"
+import { cvtDateRange2Str, DateRange, formatTime, formatTimeYMD, getBirthday } from "@util/time"
 import { ElButton, ElMessage, ElMessageBox } from "element-plus"
 import { computed, defineComponent } from "vue"
 import { useReportComponent, useReportFilter } from "../context"
@@ -107,9 +105,9 @@ async function handleBatchDelete(displayComp: DisplayComponent | undefined, filt
 async function deleteBatch(selected: timer.stat.Row[], mergeDate: boolean, dateRange: DateRange) {
     if (mergeDate) {
         // Delete according to the date range
-        const [start, end] = dateRange instanceof Date ? [dateRange,] : dateRange ?? []
+        const date = cvtDateRange2Str(dateRange)
         for (const row of selected) {
-            isNormalSite(row) && await statDatabase.deleteByHost(row.siteKey.host, [start, end])
+            isNormalSite(row) && await deleteSiteByHost(row.siteKey.host, date)
             isGroup(row) && await statDatabase.deleteByGroup(row.groupKey, [start, end])
         }
     } else {

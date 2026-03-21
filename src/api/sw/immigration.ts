@@ -1,7 +1,4 @@
-/**
- * Immigration domain: request to sw.
- */
-import { sendMsg2Runtime } from "@api/chrome/runtime-sender"
+import { sendMsg2Runtime } from "./common"
 
 export function importData(data: unknown) {
     return sendMsg2Runtime('immigration.importData', data)

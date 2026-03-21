@@ -5,10 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { sendMsg2Runtime } from '@/api/sw/common'
 import { t } from "@app/locale"
 import { Download } from "@element-plus/icons-vue"
 import Flex from "@pages/components/Flex"
-import immigration from '@/background/service/components/immigration'
 import { exportJson } from "@util/file"
 import { formatTime } from "@util/time"
 import { ElButton, ElCard } from "element-plus"
@@ -18,7 +18,7 @@ import ImportButton from "./ImportButton"
 import ImportOtherButton from "./ImportOtherButton"
 
 async function handleExport() {
-    const data = await immigration.exportData()
+    const data = await sendMsg2Runtime('immigration.exportData')
     const timestamp = formatTime(new Date(), '{y}{m}{d}_{h}{i}{s}')
     exportJson(data, `timer_backup_${timestamp}`)
 }

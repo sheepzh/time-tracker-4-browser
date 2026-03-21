@@ -1,3 +1,4 @@
+import { type DateRange } from '@/util/time'
 import { queryRows } from "@popup/common"
 import type { PopupOption, PopupQuery } from "@popup/context"
 import { sum } from "@util/array"
@@ -7,7 +8,7 @@ export type RankingResult = {
     max: number
     total: number
     displaySiteName: boolean
-    date: Date | [Date, Date?] | undefined
+    date: DateRange
 }
 
 export const doQuery = async (query: PopupQuery, option: PopupOption): Promise<RankingResult> => {

@@ -5,13 +5,11 @@
  * https://opensource.org/licenses/MIT
  */
 
+import siteDatabase from "@/background/database/site-database"
 import { listTabs, sendMsg2Tab } from "@api/chrome/tab"
-import siteDatabase, { type SiteCondition } from "@/background/database/site-database"
 import { toMap } from "@util/array"
 import { identifySiteKey, SiteMap, supportCategory } from "@util/site"
 import { slicePageResult } from "./components/page-info"
-
-export type SiteQueryParam = SiteCondition
 
 export async function removeAlias(key: timer.site.SiteKey) {
     const exist = await siteDatabase.get(key)
@@ -90,13 +88,12 @@ export async function addSite(siteInfo: timer.site.SiteInfo): Promise<void> {
     await siteDatabase.save(siteInfo)
 }
 
-export async function selectSitePage(param?: SiteQueryParam, page?: timer.common.PageQuery): Promise<timer.common.PageResult<timer.site.SiteInfo>> {
-    const origin: timer.site.SiteInfo[] = await siteDatabase.select(param)
-    const result: timer.common.PageResult<timer.site.SiteInfo> = slicePageResult(origin, page)
-    return result
+export async function selectSitePage(param?: timer.site.PageQuery): Promise<timer.common.PageResult<timer.site.SiteInfo>> {
+    const origin = await siteDatabase.select(param)
+    return slicePageResult(origin, param)
 }
 
-export function selectAllSites(param?: SiteQueryParam): Promise<timer.site.SiteInfo[]> {
+export function selectAllSites(param?: timer.site.Query): Promise<timer.site.SiteInfo[]> {
     return siteDatabase.select(param)
 }
 

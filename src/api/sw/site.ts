@@ -1,7 +1,4 @@
-/**
- * Site domain: request to sw.
- */
-import { sendMsg2Runtime } from "@api/chrome/runtime-sender"
+import { sendMsg2Runtime } from "./common"
 
 export type SiteQueryParam = {
     fuzzyQuery?: string
@@ -22,7 +19,7 @@ export function selectAllSites(param?: SiteQueryParam) {
 }
 
 export function selectSitePage(param?: SiteQueryParam, page?: timer.common.PageQuery) {
-    return sendMsg2Runtime('site.selectSitePage', { param, page })
+    return sendMsg2Runtime('site.selectSitePage', { ...param, ...page })
 }
 
 export function addSite(info: timer.site.SiteInfo) {

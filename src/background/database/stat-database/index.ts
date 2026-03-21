@@ -65,8 +65,8 @@ class StatDatabaseWrapper implements StateDatabaseComposite {
         return this.current().delete(...rows)
     }
 
-    deleteByHost(host: string, range?: [start?: Date | string, end?: Date | string]): Promise<string[]> {
-        return this.current().deleteByHost(host, range)
+    deleteByHost(query: timer.stat.SiteDeleteByHost): Promise<string[]> {
+        return this.current().deleteByHost(query)
     }
 
     selectGroup(condition?: StatCondition): Promise<timer.core.Row[]> {
