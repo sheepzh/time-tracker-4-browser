@@ -21,8 +21,7 @@ const FLAG_ID = '__TIMER_INJECTION_FLAG__' + chrome.runtime.id
 function getOrSetFlag(): boolean {
     const pre = document?.getElementById(FLAG_ID)
     if (!pre) {
-        const flag = document.createElement('a')
-        flag.href = '#'
+        const flag = document.createElement('span')
         flag.style && (flag.style.visibility = 'hidden')
         flag && (flag.id = FLAG_ID)
 
