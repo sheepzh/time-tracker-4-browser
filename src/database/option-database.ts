@@ -6,6 +6,7 @@
  */
 
 import { defaultOption } from "@util/constant/option"
+import { mergeObject } from '@util/lang'
 import BaseDatabase from "./common/base-database"
 import { REMAIN_WORD_PREFIX } from "./common/constant"
 
@@ -20,7 +21,7 @@ class OptionDatabase extends BaseDatabase {
 
     async getOption(): Promise<timer.option.AllOption> {
         const option = await this.storage.getOne<timer.option.AllOption>(DB_KEY)
-        return option || defaultOption()
+        return mergeObject(defaultOption(), option)
     }
 
     async setOption(option: timer.option.AllOption): Promise<void> {

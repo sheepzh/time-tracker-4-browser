@@ -118,7 +118,7 @@ const staticOptions: Configuration = {
 
 type Option = {
     outputPath: string
-    manifest: chrome.runtime.ManifestV3 | chrome.runtime.ManifestFirefox
+    manifest: chrome.runtime.ManifestV3 | browser._manifest.WebExtensionManifest
     mode: Configuration["mode"]
 }
 

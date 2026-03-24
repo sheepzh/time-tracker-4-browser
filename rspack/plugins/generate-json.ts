@@ -1,14 +1,14 @@
 import { Compilation, Compiler, sources } from '@rspack/core'
 
 type GenerateJsonPluginOptions = {
-    data: Record<string, unknown>
+    data: unknown
     outputPath: string
 }
 
 export class GenerateJsonPlugin {
     private options: GenerateJsonPluginOptions
 
-    constructor(outputPath: string, data: Record<string, unknown>) {
+    constructor(outputPath: string, data: unknown) {
         if (!data || typeof data !== 'object') {
             throw new Error('Invalid data option')
         }

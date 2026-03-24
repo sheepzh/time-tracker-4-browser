@@ -1,10 +1,13 @@
 import { t } from '@app/locale'
-import { ElInput, ElSelect, ElTimePicker } from 'element-plus'
+import { Check, Close } from '@element-plus/icons-vue'
+import Flex from '@pages/components/Flex'
+import { ElButton, ElDialog, ElInput, ElSelect, ElText, ElTimePicker } from 'element-plus'
 import { computed, defineComponent, StyleValue } from 'vue'
 import { OptionItem, OptionLines } from '../../components'
 import type { CategoryInstance } from '../types'
 import Footer from './Footer'
 import { useNotification } from './useNotification'
+import usePermission from './usePermission'
 
 const CYCLE_LABELS: Record<timer.notification.Cycle, string> = {
     none: t(msg => msg.option.off),
@@ -23,8 +26,21 @@ const PADDING: StyleValue = { paddingInlineStart: '2px' }
 
 const Notification = defineComponent((_, ctx) => {
     const { option, weekday, datetime, reset } = useNotification()
-
     const isNotNone = computed(() => option.notificationCycle !== 'none')
+
+    const {
+        confirmVisible, setConfirmVisible, granted, checkBeforeRequest, doRequest
+    } = usePermission()
+
+    const onCycleChange = (val: timer.notification.Cycle) => {
+        const setVal = () => option.notificationCycle = val
+        val === 'none'
+            ? setVal()
+            // need to check the permission
+            : checkBeforeRequest(option.notificationMethod, setVal)
+    }
+
+    const onMethodChange = (val: timer.notification.Method) => checkBeforeRequest(val, () => option.notificationMethod = val)
 
     ctx.expose({
         reset,
@@ -37,7 +53,7 @@ const Notification = defineComponent((_, ctx) => {
                     modelValue={option.notificationCycle}
                     size="small"
                     style={{ width: "120px" } satisfies StyleValue}
-                    onChange={val => option.notificationCycle = val as timer.notification.Cycle}
+                    onChange={val => onCycleChange(val as timer.notification.Cycle)}
                     options={Object.entries(CYCLE_LABELS).map(([value, label]) => ({ value: value as timer.notification.Cycle, label }))}
                 />
                 {option.notificationCycle === 'weekly' && <>
@@ -66,7 +82,7 @@ const Notification = defineComponent((_, ctx) => {
                     modelValue={option.notificationMethod}
                     size="small"
                     style={{ width: "150px" } satisfies StyleValue}
-                    onChange={val => option.notificationMethod = val as timer.notification.Method}
+                    onChange={val => onMethodChange(val as timer.notification.Method)}
                     options={Object.entries(METHOD_LABELS).map(([value, label]) => ({ value: value as timer.notification.Method, label }))}
                 />
             </OptionItem>
@@ -95,6 +111,25 @@ const Notification = defineComponent((_, ctx) => {
                 </>
             )}
             {isNotNone.value && <Footer />}
+            <ElDialog
+                width={400} closeOnPressEscape={false} closeOnClickModal={false}
+                modelValue={confirmVisible.value}
+                onUpdate:modelValue={setConfirmVisible}
+            >
+                <Flex column gap={20}>
+                    <ElText size='large'>
+                        {t(msg => msg.option.permGrantConfirm)}
+                    </ElText>
+                    <Flex justify='end'>
+                        <ElButton onClick={() => setConfirmVisible(false)} icon={Close}>
+                            {t(msg => msg.button.cancel)}
+                        </ElButton>
+                        <ElButton onClick={doRequest} icon={Check} type='primary'>
+                            {t(msg => msg.button.confirm)}
+                        </ElButton>
+                    </Flex>
+                </Flex>
+            </ElDialog>
         </OptionLines>
     )
 })

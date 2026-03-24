@@ -1,3 +1,4 @@
+import { IS_FIREFOX } from '@util/constant/environment'
 import hash from 'hash.js'
 import type { NotificationData, NotificationMeta, NotificationRequest, Notifier } from '../types'
 
@@ -17,7 +18,23 @@ function genSign(meta: NotificationMeta, auth: string): string {
 }
 
 export default class CallbackNotifier implements Notifier {
+    private async assertPerm(): Promise<string | undefined> {
+        // Not need to check data permission if not FF
+        if (!IS_FIREFOX) return undefined
+
+        const perm = await browser?.permissions?.getAll?.()
+        const granted = perm?.data_collection?.includes?.('technicalAndInteraction')
+        if (!granted) {
+            // Unable to request permissions in FF's Service Worker
+            // So fast fail
+            return "Required permission is not granted"
+        }
+    }
+
     async send(req: NotificationRequest, data: NotificationData): Promise<string | undefined> {
+        const errMsg = await this.assertPerm()
+        if (errMsg) return errMsg
+
         const { endpoint, authToken } = req
 
         if (!endpoint) return "Endpoint is required for HTTP callback"

@@ -98,7 +98,7 @@ const _default = defineComponent((_props, ctx) => {
     const handleTabGroupChange = async (val: boolean) => {
         if (val && !await hasPerm("tabGroups")) {
             try {
-                const granted = await ElMessageBox.confirm(t(msg => msg.option.tracking.tabGroupsPermGrant), { type: 'primary' })
+                const granted = await ElMessageBox.confirm(t(msg => msg.option.permGrantConfirm), { type: 'primary' })
                     .then(() => requestPerm("tabGroups"))
                 if (!granted) {
                     ElMessage.error("Grant permission failed")

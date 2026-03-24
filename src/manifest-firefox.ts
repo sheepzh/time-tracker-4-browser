@@ -15,7 +15,7 @@
 import packageInfo from "./package"
 const { version, author: { name: authorName }, homepage } = packageInfo
 
-const _default: chrome.runtime.ManifestFirefox = {
+const _default: browser._manifest.WebExtensionManifest = {
     name: '__MSG_meta_marketName__',
     description: "__MSG_meta_description__",
     version,
@@ -63,6 +63,7 @@ const _default: chrome.runtime.ManifestFirefox = {
             id: '{a8cf72f7-09b7-4cd4-9aaa-7a023bf09916}',
             data_collection_permissions: {
                 required: ['none'],
+                optional: ['technicalAndInteraction'],
             },
         },
     },

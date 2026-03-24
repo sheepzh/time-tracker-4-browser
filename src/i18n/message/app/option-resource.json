@@ -5,6 +5,7 @@
         "on": "始终开启",
         "off": "始终关闭",
         "followBrowser": "跟随浏览器",
+        "permGrantConfirm": "该功能需要授予相关权限",
         "appearance": {
             "title": "外观",
             "displayWhitelist": "{input}  是否在 {contextMenu} 里，显示 {whitelist} 相关功能",
@@ -40,7 +41,6 @@
             "localFilesInfo": "支持 PDF、图片、txt 以及 json 等格式",
             "countTabGroup": "{input} 是否统计标签组的时间 {info}",
             "tabGroupInfo": "删除标签组后，数据也会被删除",
-            "tabGroupsPermGrant": "该功能需要授予相关权限",
             "fileAccessDisabled": "目前不允许访问文件网址，请先在管理界面开启",
             "weekStart": "每周的第一天 {input}",
             "weekStartAsNormal": "按照惯例",
@@ -147,6 +147,7 @@
         "on": "始終開啟",
         "off": "始終關閉",
         "followBrowser": "跟隨瀏覽器",
+        "permGrantConfirm": "此功能需要相關權限才能運作",
         "appearance": {
             "title": "外觀設定",
             "displayWhitelist": "{input} 是否在 {contextMenu} 顯示 {whitelist} 功能",
@@ -180,7 +181,6 @@
             "localFilesInfo": "支援 PDF、圖片、txt 及 json 等格式",
             "countTabGroup": "{input} 是否追蹤分頁群組的時間 {info}",
             "tabGroupInfo": "刪除分頁群組時，相關的時間追蹤數據也會一併清除。",
-            "tabGroupsPermGrant": "此功能需要相關權限才能運作",
             "fileAccessDisabled": "目前不允許存取檔案 URL，請至管理頁面啟用",
             "weekStart": "每週起始日 {input}",
             "weekStartAsNormal": "依慣例"
@@ -269,6 +269,7 @@
         "on": "Always on",
         "off": "Always off",
         "followBrowser": "Follow browser",
+        "permGrantConfirm": "This feature requires relevant permissions",
         "appearance": {
             "title": "Appearance",
             "displayWhitelist": "{input}  Whether to display {whitelist} in {contextMenu}",
@@ -304,7 +305,6 @@
             "localFilesInfo": "Supports files of types such as PDF, image, txt and json.",
             "countTabGroup": "{input} Whether to track the time of tab groups {info}",
             "tabGroupInfo": "When you delete a tab group, the data will also be deleted.",
-            "tabGroupsPermGrant": "This feature requires relevant permissions",
             "fileAccessDisabled": "Access to file URLs is currently not allowed. Please enable it on the manage page first",
             "weekStart": "The first day for each week {input}",
             "weekStartAsNormal": "As Normal",
@@ -532,6 +532,7 @@
         "on": "Sempre ativo",
         "off": "Sempre inativo",
         "followBrowser": "Usar do navegador",
+        "permGrantConfirm": "Esta funcionalidade precisa de permissões relevantes",
         "appearance": {
             "title": "Aparência",
             "displayWhitelist": "{input} Mostrar {whitelist} no {contextMenu}",
@@ -567,7 +568,6 @@
             "localFilesInfo": "Suporta PDF, imagens, txt e json.",
             "countTabGroup": "{input} Se quiser acompanhar o tempo da aba{info}",
             "tabGroupInfo": "Quando você excluir um grupo de tags, os dados também serão excluídos.",
-            "tabGroupsPermGrant": "Esta funcionalidade precisa de permissões relevantes",
             "fileAccessDisabled": "Acesso a URLs de ficheiro não permitido. Ative na página de gestão.",
             "weekStart": "Primeiro dia da semana {input}",
             "weekStartAsNormal": "Normal"
@@ -656,6 +656,7 @@
         "on": "Увімкнено",
         "off": "Вимкнено",
         "followBrowser": "Як у браузері",
+        "permGrantConfirm": "Ця функція потребує відповідних дозволів",
         "appearance": {
             "title": "Зовнішній вигляд",
             "displayWhitelist": "{input}  Показувати {whitelist} в {contextMenu}",
@@ -689,7 +690,6 @@
             "localFilesInfo": "Підтримуються файли PDF, зображення, текстові та формат json",
             "countTabGroup": "{input} Відстежувати час груп вкладок {info}",
             "tabGroupInfo": "Якщо видалити групу вкладок, дані також видаляться.",
-            "tabGroupsPermGrant": "Ця функція потребує відповідних дозволів",
             "fileAccessDisabled": "Доступ до URL-адрес файлу наразі не дозволено. Спершу ввімкніть на сторінці керування",
             "weekStart": "Перший день тижня: {input}",
             "weekStartAsNormal": "Типово"
@@ -778,6 +778,7 @@
         "on": "Siempre encendido",
         "off": "Siempre apagado",
         "followBrowser": "Igual que el navegador",
+        "permGrantConfirm": "Esta función requiere permisos pertinentes",
         "appearance": {
             "title": "Apariencia",
             "displayWhitelist": "{input}  Mostrar {whitelist} en {contextMenu}",
@@ -811,7 +812,6 @@
             "localFilesInfo": "Soporta archivos de tipos como PDF, imagen, TXT y JSON",
             "countTabGroup": "{input} Rastrear el tiempo de los grupos de pestañas {info}",
             "tabGroupInfo": "Al eliminar un grupo de pestañas, sus datos también se borrarán.",
-            "tabGroupsPermGrant": "Esta función requiere permisos pertinentes",
             "fileAccessDisabled": "Actualmente no se permite el acceso a las URL de archivos. Habilítelo primero en la página de administración",
             "weekStart": "El primer día de cada semana {input}",
             "weekStartAsNormal": "Como normalmente"
@@ -900,6 +900,7 @@
         "on": "Immer an",
         "off": "Immer aus",
         "followBrowser": "Browser verfolgen",
+        "permGrantConfirm": "Dieses Feature benötigt entsprechende Berechtigungen",
         "appearance": {
             "title": "Aussehen",
             "displayWhitelist": "{input} {whitelist} in {contextMenu} anzeigen",
@@ -934,7 +935,6 @@
             "localFilesInfo": "Unterstützt Dateitypen, wie PDF, Bilder, .txt und .json",
             "countTabGroup": "{input} Ob die Zeit der Tab-Gruppen {info} verfolgt werden soll",
             "tabGroupInfo": "Wenn Sie eine Tag-Gruppe löschen, werden auch die Daten gelöscht.",
-            "tabGroupsPermGrant": "Dieses Feature benötigt entsprechende Berechtigungen",
             "fileAccessDisabled": "Der Zugriff auf Datei-URLs ist derzeit nicht erlaubt. Bitte aktiviere ihn zuerst auf der Verwaltungsseite",
             "weekStart": "Erster Tag der Woche {input}",
             "weekStartAsNormal": "Wie normal",

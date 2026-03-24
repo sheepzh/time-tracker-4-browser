@@ -12,6 +12,7 @@ export type OptionMessage = {
     on: string
     off: string
     followBrowser: string
+    permGrantConfirm: string
     appearance: {
         title: string
         // whitelist
@@ -49,7 +50,6 @@ export type OptionMessage = {
         localFilesInfo: string
         countTabGroup: string
         tabGroupInfo: string
-        tabGroupsPermGrant: string
         fileAccessDisabled: string
         weekStart: string
         weekStartAsNormal: string
