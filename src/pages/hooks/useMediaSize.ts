@@ -1,5 +1,5 @@
-import { useWindowSize } from "@hooks"
 import { computed } from "vue"
+import { useWindowSize } from "./useWindowSize"
 
 export enum MediaSize {
     xs,

@@ -1,4 +1,4 @@
-import cateService from "@service/cate-service"
+import siteCateDatabase from '@db/site-cate-database'
 import { batchSaveSiteCate } from "@service/site-service"
 import type { Migrator } from "./types"
 
@@ -31,7 +31,7 @@ const DEMO_ITEMS: InitialCate[] = [
 
 async function initItem(item: InitialCate) {
     const { name, hosts } = item
-    const cate = await cateService.add(name)
+    const cate = await siteCateDatabase.add(name)
     const cateId = cate.id
     const siteKeys = hosts.map(host => ({ host, type: 'normal' } satisfies timer.site.SiteKey))
     await batchSaveSiteCate(cateId, siteKeys)

@@ -4,11 +4,12 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { t } from "@app/locale"
-import { periodFormatter } from "@app/util/time"
-import { EchartsWrapper } from "@hooks/useEcharts"
-import { getRegularTextColor, getSecondaryTextColor } from "@pages/util/style"
-import weekHelper from "@service/components/week-helper"
+import { EchartsWrapper } from '@hooks'
+import { t } from '@app/locale'
+import { periodFormatter } from '@app/util/time'
+import { parseValueOfFormatter } from "@app/util/echarts"
+import { getRegularTextColor, getSecondaryTextColor } from '@pages/util/style'
+import { getWeekBounds, getWeekStartDay } from '@api/sw/option'
 import { groupBy, rotate, toMap } from "@util/array"
 import { formatTime, getAllDatesBetween, MILL_PER_WEEK, parseTime } from "@util/time"
 import type {
@@ -81,7 +82,10 @@ function getXAxisLabelMap(data: _Value[]): { [x: string]: string } {
     return result
 }
 
-function optionOf(data: _Value[], weekDays: string[], format: timer.app.TimeFormat, domWidth: number): EcOption {
+function optionOf(
+    data: _Value[], weekDays: string[],
+    format: timer.app.TimeFormat, domWidth: number,
+): EcOption {
     const xAxisLabelMap = getXAxisLabelMap(data)
     const axisTextColor = getSecondaryTextColor()
     const gridLeft = domWidth * 0.1 < MIN_GRID_LEFT_PX ? MIN_GRID_LEFT_PX : '10%'
@@ -99,12 +103,12 @@ function optionOf(data: _Value[], weekDays: string[], format: timer.app.TimeForm
         tooltip: {
             borderWidth: 0,
             formatter: (params: TopLevelFormatterParams) => {
-                const parma = Array.isArray(params) ? params[0] : params
-                const { data } = parma
-                const { value } = data as any
+                const value = parseValueOfFormatter(params)
+                // todo: not safety
                 const [_1, _2, mills, date] = value as _Value
                 if (!mills) return ''
                 const time = parseTime(date)
+                if (!time) return ''
                 return time ? `${formatTime(time, t(msg => msg.calendar.dateFormat))}<br /><b>${periodFormatter(mills, { format })}</b>` : ''
             },
         },
@@ -154,7 +158,7 @@ class Wrapper extends EchartsWrapper<BizOption, EcOption> {
         const width = this.getDomWidth()
         const colNum = getWeekNum(width)
         const endTime = new Date()
-        const [startTime,] = await weekHelper.getWeekDate(endTime.getTime() - MILL_PER_WEEK * (colNum - 1))
+        const [startTime,] = await getWeekBounds(endTime.getTime() - MILL_PER_WEEK * (colNum - 1))
         const allDates = getAllDatesBetween(startTime, endTime)
         const value = toMap(rows, r => r.date, r => r.focus)
         const data: _Value[] = []
@@ -165,7 +169,7 @@ class Wrapper extends EchartsWrapper<BizOption, EcOption> {
             const x = colIndex, y = 7 - (1 + weekDay)
             data.push([x, y, dailyMills, date])
         })
-        const weekStart = await weekHelper.getRealWeekStart()
+        const weekStart = await getWeekStartDay()
         const weekDays = (t(msg => msg.calendar.weekDays)?.split?.('|') || []).reverse()
         rotate(weekDays, weekStart, true)
         return optionOf(data, weekDays, timeFormat, width)

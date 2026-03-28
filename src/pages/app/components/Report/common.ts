@@ -1,11 +1,11 @@
-import { t } from "@app/locale"
-import statDatabase from "@db/stat-database"
+import { t } from '@app/locale'
 import {
+    deleteSiteByGroup,
+    deleteSiteByHost,
     selectCate, selectCatePage, selectGroup, selectGroupPage, selectSite, selectSitePage,
-    type CateQuery, type GroupQuery, type SiteQuery,
-} from "@service/stat-service"
+} from "@api/sw/stat"
 import { getGroupName, isGroup, isSite } from "@util/stat"
-import { formatTime, getBirthday } from "@util/time"
+import { cvtDateRange2Str, type DateRange, formatTime, getBirthday } from "@util/time"
 import type { ReportFilterOption, ReportSort } from "./types"
 
 /**
@@ -18,8 +18,8 @@ function computeSingleConfirmText(url: string, date: string): string {
     return t(msg => msg.item.operation.deleteConfirmMsg, { url, date })
 }
 
-function computeRangeConfirmText(url: string, dateRange: [Date?, Date?]): string {
-    let [startDate, endDate] = dateRange
+function computeRangeConfirmText(url: string, dateRange: DateRange): string {
+    let [startDate, endDate] = dateRange instanceof Date ? [dateRange,] : dateRange ?? []
     if (!startDate && !endDate) {
         // Delete all
         return t(msg => msg.item.operation.deleteConfirmMsgAll, { url })
@@ -55,22 +55,22 @@ export async function handleDelete(row: timer.stat.Row, filterOption: ReportFilt
     const { mergeDate, dateRange } = filterOption
     if (!mergeDate) {
         // Delete one day
-        isSite(row) && date && await statDatabase.delete({ host: row.siteKey.host, date })
-        isGroup(row) && date && await statDatabase.deleteGroup([row.groupKey, date])
+        isSite(row) && date && await deleteSiteByHost(row.siteKey.host, date)
+        isGroup(row) && date && await deleteSiteByGroup(row.groupKey, date)
         return
     }
-    const start = dateRange?.[0]
-    const end = dateRange?.[1]
+    const strRange = cvtDateRange2Str(dateRange)
+    const [start, end] = strRange ?? []
     if (!start && !end) {
         // Delete all
-        isSite(row) && await statDatabase.deleteByHost(row.siteKey.host)
-        isGroup(row) && await statDatabase.deleteByGroup(row.groupKey)
+        isSite(row) && await deleteSiteByHost(row.siteKey.host)
+        isGroup(row) && await deleteSiteByGroup(row.groupKey)
         return
     }
 
     // Delete by range
-    isSite(row) && await statDatabase.deleteByHost(row.siteKey.host, [start, end])
-    isGroup(row) && await statDatabase.deleteByGroup(row.groupKey, [start, end])
+    isSite(row) && await deleteSiteByHost(row.siteKey.host, strRange)
+    isGroup(row) && await deleteSiteByGroup(row.groupKey, strRange)
 }
 
 const cvtOrderDir = (order: ReportSort['order']): timer.common.SortDirection | undefined => {
@@ -82,8 +82,8 @@ const cvtOrderDir = (order: ReportSort['order']): timer.common.SortDirection | u
 const cvt2GroupQuery = (
     { query, mergeDate, dateRange: date }: ReportFilterOption,
     { prop, order }: ReportSort,
-): GroupQuery => ({
-    date, mergeDate, query,
+): timer.stat.GroupQuery => ({
+    date: cvtDateRange2Str(date), mergeDate, query,
     sortKey: prop !== 'host' && prop !== 'run' ? prop : undefined,
     sortDirection: cvtOrderDir(order),
 })
@@ -91,8 +91,8 @@ const cvt2GroupQuery = (
 const cvt2SiteQuery = (
     { dateRange: date, mergeDate, siteMerge, query, cateIds, readRemote: inclusiveRemote }: ReportFilterOption,
     { prop, order }: ReportSort,
-): SiteQuery => ({
-    date, mergeDate,
+): timer.stat.SiteQuery => ({
+    date: cvtDateRange2Str(date), mergeDate,
     mergeHost: siteMerge === 'domain',
     query, cateIds, inclusiveRemote,
     virtual: true,
@@ -103,30 +103,30 @@ const cvt2SiteQuery = (
 const cvt2CateQuery = (
     { dateRange: date, mergeDate, query, cateIds, readRemote: inclusiveRemote }: ReportFilterOption,
     { prop, order }: ReportSort,
-): CateQuery => ({
-    date, mergeDate, query, cateIds, inclusiveRemote,
+): timer.stat.CateQuery => ({
+    date: cvtDateRange2Str(date), mergeDate, query, cateIds, inclusiveRemote,
     sortKey: prop !== 'host' && prop !== 'run' ? prop : undefined,
     sortDirection: cvtOrderDir(order),
 })
 
-export const queryPage = (filter: ReportFilterOption, sort: ReportSort, page: timer.common.PageQuery): Promise<timer.common.PageResult<timer.stat.Row>> => {
+export const queryPage = async (filter: ReportFilterOption, sort: ReportSort, page: timer.common.PageQuery): Promise<timer.common.PageResult<timer.stat.Row>> => {
     const { siteMerge } = filter
     if (siteMerge === 'group') {
-        return selectGroupPage(cvt2GroupQuery(filter, sort), page)
+        return await selectGroupPage({ ...cvt2GroupQuery(filter, sort), ...page })
     } else if (siteMerge === 'cate') {
-        return selectCatePage(cvt2CateQuery(filter, sort), page)
+        return await selectCatePage({ ...cvt2CateQuery(filter, sort), ...page })
     } else {
-        return selectSitePage(cvt2SiteQuery(filter, sort), page)
+        return await selectSitePage({ ...cvt2SiteQuery(filter, sort), ...page })
     }
 }
 
-export const queryAll = (filter: ReportFilterOption, sort: ReportSort): Promise<timer.stat.Row[]> => {
+export const queryAll = async (filter: ReportFilterOption, sort: ReportSort): Promise<timer.stat.Row[]> => {
     const { siteMerge } = filter
     if (siteMerge === 'group') {
-        return selectGroup(cvt2GroupQuery(filter, sort))
+        return await selectGroup(cvt2GroupQuery(filter, sort))
     } else if (siteMerge === 'cate') {
-        return selectCate(cvt2CateQuery(filter, sort))
+        return await selectCate(cvt2CateQuery(filter, sort))
     } else {
-        return selectSite(cvt2SiteQuery(filter, sort))
+        return await selectSite(cvt2SiteQuery(filter, sort))
     }
 }

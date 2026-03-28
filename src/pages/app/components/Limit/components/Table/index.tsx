@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 import ColumnHeader from "@app/components/common/ColumnHeader"
-import { t } from "@app/locale"
-import { useLocalStorage, useRequest, useState } from "@hooks"
-import weekHelper from "@service/components/week-helper"
+import { useLocalStorage, useRequest, useState } from '@hooks'
+import { t } from '@app/locale'
+import { getWeekStartDay } from "@api/sw/option"
 import { isEffective } from "@util/limit"
 import { ElSwitch, ElTable, ElTableColumn, ElTag, type RenderRowData, type Sort, type TableInstance } from "element-plus"
 import { defineComponent, ref, watch } from "vue"
@@ -29,7 +29,7 @@ const sortByEffectiveDays = ({ weekdays: a }: timer.limit.Item, { weekdays: b }:
 
 const _default = defineComponent((_, ctx) => {
     const { data: weekStartName } = useRequest(async () => {
-        const offset = await weekHelper.getRealWeekStart()
+        const offset = await getWeekStartDay()
         const name = t(msg => msg.calendar.weekDays)?.split('|')?.[offset]
         return name || 'NaN'
     })

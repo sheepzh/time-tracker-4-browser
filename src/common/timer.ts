@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getUsedStorage } from "@db/memory-detector"
+import { getUsedStorage } from "../api/sw/memory"
 import { closeLog, openLog } from "./logger"
 
 /**
@@ -14,7 +14,9 @@ import { closeLog, openLog } from "./logger"
  * @since 0.0.9
  */
 export function showMemory() {
-    getUsedStorage().then(({ used, total }) => {
+    getUsedStorage().then(info => {
+        if (!info) return
+        const { used, total } = info
         console.log(`\t${used} / ${total} = ${Math.round(used * 100.0 / total * 100) / 100}%`)
     })
     return 'Memory used:'

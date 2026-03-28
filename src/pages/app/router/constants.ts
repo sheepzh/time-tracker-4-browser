@@ -12,16 +12,9 @@ export const ANALYSIS_ROUTE = '/data/analysis'
 export const OPTION_ROUTE = '/additional/option'
 
 /**
- * Use on the app page and background script
- *
  * @since 0.2.2
  */
-export const LIMIT_ROUTE = '/behavior/limit'
-
-/**
- * @since 0.9.1
- */
-export const REPORT_ROUTE = '/data/report'
+export { APP_LIMIT_ROUTE as LIMIT_ROUTE } from "@/util/constant/route"
 
 /**
  * @since 1.8.0

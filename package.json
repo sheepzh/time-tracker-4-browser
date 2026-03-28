@@ -13,9 +13,9 @@
         "build": "rspack --config=rspack/rspack.prod.ts",
         "build:firefox": "rspack --config=rspack/rspack.prod.firefox.ts",
         "build:safari": "rspack --config=rspack/rspack.prod.safari.ts",
-        "test": "jest --env=jsdom test/",
-        "test-c": "jest --coverage --reporters=jest-junit --env=jsdom test/",
-        "test-e2e": "jest test-e2e/ --runInBand",
+        "test": "jest --env=jsdom",
+        "test-c": "jest --coverage --reporters=jest-junit --env=jsdom",
+        "test-e2e": "jest --config=test-e2e/jest.config.ts --runInBand",
         "prepare": "husky"
     },
     "author": {
@@ -28,7 +28,7 @@
     },
     "license": "MIT",
     "devDependencies": {
-        "@crowdin/crowdin-api-client": "^1.54.0",
+        "@crowdin/crowdin-api-client": "^1.55.0",
         "@emotion/babel-plugin": "^11.13.5",
         "@emotion/css": "^11.13.5",
         "@rsdoctor/rspack-plugin": "^1.5.5",

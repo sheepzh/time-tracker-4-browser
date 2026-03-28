@@ -4,7 +4,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import optionHolder from "@service/components/option-holder"
+import { getOption, setOption } from "@api/sw/option"
 import { deserialize, exportJson } from "@util/file"
 import { mergeObject } from '@util/lang'
 
@@ -18,7 +18,8 @@ export interface ExportedSettings {
  * Export all settings to JSON file
  */
 export async function exportSettings(): Promise<void> {
-    const settings = await optionHolder.get()
+    const settings = await getOption()
+    if (!settings) throw new Error('Failed to get settings')
     const exportData: ExportedSettings = {
         version: '1.0',
         timestamp: Date.now(),
@@ -43,7 +44,7 @@ export async function importSettings(jsonString: string): Promise<void> {
     const validatedSettings = await validateAndMergeSettings(importData.settings)
 
     // Set the imported settings
-    await optionHolder.set(validatedSettings)
+    await setOption(validatedSettings as Partial<timer.option.AllOption>)
 }
 
 /**
@@ -51,10 +52,10 @@ export async function importSettings(jsonString: string): Promise<void> {
  */
 async function validateAndMergeSettings(importedSettings: Partial<timer.option.AllOption>): Promise<timer.option.AllOption> {
     // Get current user settings as defaults instead of default options
-    const defaults = await optionHolder.get()
+    const defaults = await getOption()
     // Delete client name
     delete importedSettings['clientName']
-    return mergeObject(defaults, importedSettings)
+    return mergeObject(defaults ?? {}, importedSettings) as timer.option.AllOption
 }
 
 /**

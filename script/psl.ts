@@ -1,14 +1,14 @@
 /**
  * Build psl tree
  */
+import { type PslTree } from '@/background/psl'
 import { fetchGet } from '@api/http'
-import { type PslTree } from '@util/psl'
 import { writeFileSync } from 'fs'
 import path from 'path'
 import punycode from "punycode"
 
 const LIST_URL = "https://publicsuffix.org/list/effective_tld_names.dat"
-const JSON_PATH = path.join(__dirname, "..", "src", "util", "psl", "rules.json")
+const JSON_PATH = path.join(__dirname, "..", "src", "background", "psl", "rules.json")
 
 const downloadList = async (): Promise<string> => {
     const response = await fetchGet(LIST_URL)

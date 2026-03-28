@@ -1,4 +1,4 @@
-import { IS_ANDROID, IS_FIREFOX } from "@util/constant/environment"
+import { IS_ANDROID, IS_FIREFOX } from "../../util/constant/environment"
 import { handleError } from "./common"
 
 export function listAllWindows(): Promise<chrome.windows.Window[]> {

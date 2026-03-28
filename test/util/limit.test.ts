@@ -1,7 +1,7 @@
 import {
     calcTimeState, cleanCond, dateMinute2Idx, hasLimited, hasWeeklyLimited, isEffective, isEnabledAndEffective,
     matchCond, matches, meetLimit, meetTimeLimit, period2Str
-} from "@util/limit"
+} from "../../src/util/limit"
 
 describe('util/limit', () => {
     test('cleanCond', () => {
@@ -81,6 +81,7 @@ describe('util/limit', () => {
 
         expect(isEffective([1, 2])).toBe(false)
         expect(isEffective([0, 1, 2])).toBe(true)
+        jest.useRealTimers()
     })
 
     test('isEffectiveAndEnabled', () => {
@@ -102,6 +103,7 @@ describe('util/limit', () => {
         expect(isEnabledAndEffective(rule([0, 1, 2], true))).toBe(true)
         expect(isEnabledAndEffective(rule([0, 1, 2], false))).toBe(false)
         expect(isEnabledAndEffective(rule([1, 2], true))).toBe(false)
+        jest.useRealTimers()
     })
 
     test('hasWeeklyLimited', () => {

@@ -1,7 +1,7 @@
-import { trySendMsg2Runtime } from '@api/chrome/runtime'
+import { useOption } from '@app/components/Option/useOption'
+import { trySendMsg2Runtime } from '@api/sw/common'
 import { defaultNotification } from '@util/constant/option'
 import { computed, watch } from 'vue'
-import { useOption } from '../../useOption'
 
 function copy(target: timer.option.NotificationOption, source: timer.option.NotificationOption) {
     target.notificationCycle = source.notificationCycle

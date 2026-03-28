@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { increaseApp } from "@service/meta-service"
+import { increaseApp } from "@api/sw/meta"
 import { type App } from "vue"
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from "vue-router"
 import { ANALYSIS_ROUTE, DASHBOARD_ROUTE, LIMIT_ROUTE, MERGE_ROUTE, OPTION_ROUTE, REPORT_ROUTE } from "./constants"

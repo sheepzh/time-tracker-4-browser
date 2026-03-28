@@ -1,7 +1,7 @@
-import { t } from "@app/locale"
 import { getPieBorderColor, getSeriesPalette } from "@app/util/echarts"
-import { EchartsWrapper } from "@hooks/useEcharts"
-import { getPrimaryTextColor, getRegularTextColor } from "@pages/util/style"
+import { EchartsWrapper } from '@hooks'
+import { t } from '@app/locale'
+import { getPrimaryTextColor, getRegularTextColor } from '@pages/util/style'
 import { groupBy, sum } from "@util/array"
 import { getHost } from "@util/stat"
 import { MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND } from "@util/time"

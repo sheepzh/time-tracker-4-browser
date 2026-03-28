@@ -5,15 +5,15 @@
  * https://opensource.org/licenses/MIT
  */
 
-import type { RingValue } from "@app/components/Analysis/util"
-import { KanbanIndicatorCell } from "@app/components/common/kanban"
+import { useAnalysisTimeFormat } from '@app/components/Analysis/context'
+import { GRID_CELL_STYLE } from '@app/components/common/grid'
+import { KanbanIndicatorCell } from '@app/components/common/kanban'
+import type { RingValue } from '@app/components/common/kanban/types'
 import { t } from "@app/locale"
-import { periodFormatter } from "@app/util/time"
+import { periodFormatter } from '@app/util/time'
 import Flex from "@pages/components/Flex"
-import { defineComponent, StyleValue } from "vue"
-import { useAnalysisTimeFormat } from "../../context"
-import { useAnalysisTrendRangeLength } from "./context"
-import { GRID_CELL_STYLE } from "../../../common/grid"
+import { defineComponent, type CSSProperties } from "vue"
+import { useAnalysisTrendRangeLength } from './context'
 
 const computeDayValue = (activeDay: RingValue | undefined, rangeLength: number) => {
     const thisActiveDay = activeDay?.[0]
@@ -22,7 +22,7 @@ const computeDayValue = (activeDay: RingValue | undefined, rangeLength: number) 
 
 type Props = Record<'activeDay' | 'visit' | 'focus', RingValue>
 
-const INDICATOR_CONTAINER_STYLE: StyleValue = {
+const INDICATOR_CONTAINER_STYLE: CSSProperties = {
     ...GRID_CELL_STYLE,
     flex: 1, width: '100%',
 }

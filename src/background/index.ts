@@ -7,9 +7,8 @@
 
 import { listTabs, trySendMsg2Tab } from "@api/chrome/tab"
 import { isNoneWindowId, onNormalWindowFocusChanged } from "@api/chrome/window"
-import optionHolder from "@service/components/option-holder"
+import { openLog } from "@/common/logger"
 import { isBrowserUrl } from "@util/pattern"
-import { openLog } from "../common/logger"
 import badgeTextManager from "./badge-manager"
 import initBrowserAction from "./browser-action-manager"
 import initCsHandler from "./content-script-handler"
@@ -80,6 +79,3 @@ onNormalWindowFocusChanged(async windowId => {
         badgeTextManager.updateFocus({ url, tabId })
     })
 })
-
-// listen permission change event
-optionHolder.listenPermChange()

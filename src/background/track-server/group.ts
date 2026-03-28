@@ -1,13 +1,11 @@
-import itemService from '@service/item-service'
+import db from "@db/stat-database"
 
-function handleTabGroupRemove(group: chrome.tabGroups.TabGroup) {
-    itemService.deleteByGroup(group.id)
-}
+const handleRemove = (group: chrome.tabGroups.TabGroup) => db.deleteByGroup(group.id)
 
 export function handleTabGroupEnabled() {
     try {
-        chrome.tabGroups.onRemoved.removeListener(handleTabGroupRemove)
-        chrome.tabGroups.onRemoved.addListener(handleTabGroupRemove)
+        chrome.tabGroups.onRemoved.removeListener(handleRemove)
+        chrome.tabGroups.onRemoved.addListener(handleRemove)
     } catch (e) {
         console.warn('failed to handle event: enableTabGroup', e)
     }

@@ -1,6 +1,6 @@
+import { useDebounceFn, useState, useXsState } from '@hooks'
 import { CircleClose, Clock } from "@element-plus/icons-vue"
-import { useDebounceFn, useState, useXsState } from "@hooks"
-import { getStyle } from "@pages/util/style"
+import { getStyle } from '@pages/util/style'
 import { range } from "@util/array"
 import {
     Effect, ElIcon, ElInput, ElPopover, ElScrollbar,
@@ -145,7 +145,7 @@ type TimeInputProps = {
 /**
  * Rewrite
  *
- * https://github.com/element-plus/element-plus/blob/dev/packages/components/time-picker/src/time-picker-com/panel-time-pick.vue
+ * https://github.com/element-plus/element-plus/blob/devs/components/time-picker/src/time-picker-com/panel-time-pick.vue
  */
 const TimeInput = defineComponent<TimeInputProps>(props => {
     const [popoverVisible, setPopoverVisible] = useState(false)

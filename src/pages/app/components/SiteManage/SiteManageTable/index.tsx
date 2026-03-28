@@ -4,13 +4,13 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import HostAlert from "@app/components/common/HostAlert"
-import { t } from "@app/locale"
+import Category from '@app/components/common/Category'
+import HostAlert from '@app/components/common/HostAlert'
+import { t } from '@app/locale'
 import Flex from "@pages/components/Flex"
-import { removeIconUrl, saveSiteRunState } from '@service/site-service'
+import { removeIconUrl, saveSiteRunState } from '@api/sw/site'
 import { ElSwitch, ElTable, ElTableColumn, type RenderRowData } from "element-plus"
 import { defineComponent } from "vue"
-import CategoryEditable from "../../common/category/CategoryEditable"
 import { useSiteManageTable } from '../useSiteManage'
 import AliasColumn from "./column/AliasColumn"
 import OperationColumn from "./column/OperationColumn"
@@ -70,7 +70,7 @@ const _default = defineComponent<{}>(() => {
                 minWidth={140}
                 align="center"
                 v-slots={({ row }: RenderRowData<timer.site.SiteInfo>) => (
-                    <CategoryEditable siteKey={row} modelValue={row?.cate} onChange={val => row.cate = val} />
+                    <Category.Editable siteKey={row} modelValue={row?.cate} onChange={val => row.cate = val} />
                 )}
             />
             <ElTableColumn

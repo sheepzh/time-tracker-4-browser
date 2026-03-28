@@ -1,7 +1,7 @@
-import periodService, { type PeriodQueryParam } from "@service/period-service"
-import { keyOf } from "@util/period"
+import { keyOf } from "@/background/util/period"
 import { getBirthday, getStartOfDay, MILL_PER_DAY } from "@util/time"
 import alarmManager from "./alarm-manager"
+import { batchDeletePeriods } from "./service/period-service"
 
 const PERIOD_ALARM_NAME = 'period-cleaner-alarm'
 const START_DAY = keyOf(getBirthday())
@@ -9,8 +9,7 @@ const KEEP_RANGE_DAYS = 366
 
 const cleanPeriodData = async () => {
     const endDate = new Date().getTime() - MILL_PER_DAY * KEEP_RANGE_DAYS
-    const param: PeriodQueryParam = { periodRange: [START_DAY, keyOf(endDate)] }
-    await periodService.batchDeleteBetween(param)
+    await batchDeletePeriods(START_DAY, keyOf(endDate))
 }
 
 export default function initDataCleaner() {

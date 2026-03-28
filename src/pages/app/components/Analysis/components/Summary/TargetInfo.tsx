@@ -5,16 +5,16 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { useCategory } from "@app/context"
-import { t } from "@app/locale"
-import { useRequest } from "@hooks"
+import { useAnalysisTarget } from "@app/components/Analysis/context"
+import { labelOfHostInfo } from "@app/components/Analysis/util"
+import { useCategory } from '@app/context'
+import { useRequest } from '@hooks'
+import { t } from '@app/locale'
 import Flex from "@pages/components/Flex"
-import { getSite } from '@service/site-service'
+import { getSite } from '@api/sw/site'
 import { CATE_NOT_SET_ID } from '@util/site'
 import { ElTag } from "element-plus"
 import { computed, defineComponent, type StyleValue, toRef } from "vue"
-import { useAnalysisTarget } from "../../context"
-import { labelOfHostInfo } from "../../util"
 
 const TITLE_STYLE: StyleValue = {
     fontSize: '26px',
@@ -36,7 +36,7 @@ const SUBTITLE_STYLE: StyleValue = {
 
 const SiteInfo = defineComponent<{ value: timer.site.SiteKey }>(props => {
     const key = toRef(props, 'value')
-    const { data: site } = useRequest(() => key.value ? getSite(key.value) : undefined, { deps: key })
+    const { data: site } = useRequest(() => getSite(key.value), { deps: key })
     const iconUrl = computed(() => site.value?.iconUrl)
     const title = computed(() => site.value?.alias ?? labelOfHostInfo(site.value))
     const subtitle = computed(() => site.value?.alias ? labelOfHostInfo(site.value) : undefined)

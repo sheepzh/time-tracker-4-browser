@@ -5,19 +5,19 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { createTabAfterCurrent } from "@api/chrome/tab"
+import DropdownButton, { type DropdownButtonItem } from '@app/components/common/DropdownButton'
 import ButtonFilterItem from "@app/components/common/filter/ButtonFilterItem"
 import InputFilterItem from "@app/components/common/filter/InputFilterItem"
 import SwitchFilterItem from "@app/components/common/filter/SwitchFilterItem"
-import { t } from "@app/locale"
-import { OPTION_ROUTE } from "@app/router/constants"
+import { useXsState } from '@hooks'
+import { t } from '@app/locale'
+import { OPTION_ROUTE } from '@app/router/constants'
 import { Delete, Open, Operation, Plus, SetUp, TurnOff, WarningFilled } from "@element-plus/icons-vue"
-import { useXsState } from '@hooks/useMediaSize'
 import Flex from "@pages/components/Flex"
+import { createTabAfterCurrent } from "@api/chrome/tab"
 import { getAppPageUrl } from "@util/constant/url"
 import { ElIcon, ElText, ElTooltip } from 'element-plus'
 import { computed, defineComponent, ref, Ref, watch } from "vue"
-import DropdownButton, { type DropdownButtonItem } from "../../common/DropdownButton"
 import { useLimitAction, useLimitBatch, useLimitFilter } from "../context"
 
 const optionPageUrl = getAppPageUrl(OPTION_ROUTE, { i: 'limit' })

@@ -5,8 +5,8 @@ import {
     type Gist,
     type GistForm,
     updateGist as updateGistApi
-} from "@src/api/gist"
-import { CHROME_ID } from "@src/util/constant/meta"
+} from "@/api/gist"
+import { CHROME_ID } from "@/util/constant/meta"
 import fs from "fs"
 import { exitWith } from "../util/process"
 import { type Browser, descriptionOf, filenameOf, getExistGist, type UserCount, validateTokenFromEnv } from "./common"

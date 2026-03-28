@@ -1,5 +1,5 @@
-import { useRequest } from "@hooks/useRequest"
 import { useOption, useQuery } from "@popup/context"
+import { useRequest } from "@hooks"
 import { ElCol, ElRow, ElScrollbar } from "element-plus"
 import { defineComponent } from "vue"
 import Item from "./Item"

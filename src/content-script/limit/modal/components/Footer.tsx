@@ -1,21 +1,22 @@
-import { trySendMsg2Runtime } from "@api/chrome/runtime"
-import Trend from "@app/Layout/icons/Trend"
-import { judgeVerificationRequired, processVerification } from "@app/util/limit"
+import { trySendMsg2Runtime } from '@api/sw/common'
+import { tryGetOption } from '@api/sw/option'
+import { judgeVerificationRequired, processVerification } from '@app/util/limit/index'
 import { TAG_NAME } from "@cs/limit/element"
 import { t } from "@cs/locale"
 import { Plus, Timer } from "@element-plus/icons-vue"
 import Flex from '@pages/components/Flex'
-import optionHolder from "@service/components/option-holder"
+import Trend from "@pages/icons/Trend"
 import { meetTimeLimit } from '@util/limit'
 import { ElButton } from "element-plus"
 import { computed, defineComponent } from "vue"
-import { useDelayHandler, useReason, useRule } from "../context"
+import { useDelayHandler, useGlobalParam, useReason, useRule } from "../context"
 
 async function handleMore5Minutes(rule: timer.limit.Item | null, callback: () => void) {
     let promise: Promise<void> | undefined = undefined
     const ele = document.querySelector(TAG_NAME)?.shadowRoot?.querySelector('body')
     if (rule && await judgeVerificationRequired(rule)) {
-        const option = await optionHolder.get()
+        const option = await tryGetOption()
+        if (!option) return callback()
         promise = processVerification(option, { appendTo: ele ?? undefined })
         promise ? promise.then(callback).catch(() => { }) : callback()
     } else {
@@ -24,6 +25,7 @@ async function handleMore5Minutes(rule: timer.limit.Item | null, callback: () =>
 }
 
 const _default = defineComponent(() => {
+    const { url } = useGlobalParam()
     const reason = useReason()
     const rule = useRule()
     const showDelay = computed(() => {
@@ -68,7 +70,7 @@ const _default = defineComponent(() => {
             >
                 {t(msg => msg.modal.more5Minutes)}
             </ElButton>
-            <ElButton round icon={Timer} onClick={() => trySendMsg2Runtime('cs.openLimit')}>
+            <ElButton round icon={Timer} onClick={() => trySendMsg2Runtime('limit.openRule', url)}>
                 {t(msg => msg.modal.ruleDetail)}
             </ElButton>
         </Flex>

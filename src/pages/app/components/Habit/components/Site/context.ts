@@ -5,10 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { useProvide, useProvider, useRequest } from "@hooks"
-import { selectSite } from "@service/stat-service"
-import { mergeDate } from "@service/stat-service/merge/date"
-import { getDayLength } from "@util/time"
+import { useProvide, useProvider, useRequest } from '@hooks'
+import { mergeDate, selectSite } from "@api/sw/stat"
+import { cvtDateRange2Str, getDayLength } from "@util/time"
 import { computed, type Ref } from "vue"
 import { useHabitFilter } from "../context"
 
@@ -22,15 +21,20 @@ const NAMESPACE = 'habitSite'
 export const initProvider = () => {
     const filter = useHabitFilter()
 
-    const { data: rows } = useRequest(() => selectSite({ date: filter.dateRange }), {
+    const { data: rows } = useRequest(() => selectSite({ date: cvtDateRange2Str(filter.dateRange) }), {
         deps: [() => filter.dateRange],
         defaultValue: [],
     })
 
     const dateRangeLength = computed(() => getDayLength(filter.dateRange?.[0], filter.dateRange?.[1]))
 
-    const dateMergedRows = computed(() => mergeDate(rows.value ?? []))
-    useProvide<Context>(NAMESPACE, { rows, dateMergedRows })
+    const { data: dateMergedRowsRaw } = useRequest(() => mergeDate(rows.value ?? []), {
+        deps: [() => rows.value],
+        defaultValue: [],
+    })
+    const dateMergedRows = computed<timer.stat.Row[]>(() => (dateMergedRowsRaw.value ?? []) as timer.stat.Row[])
+    const rowsRef = computed<timer.stat.Row[]>(() => (rows.value ?? []) as timer.stat.Row[])
+    useProvide<Context>(NAMESPACE, { rows: rowsRef, dateMergedRows })
 
     return dateRangeLength
 }
