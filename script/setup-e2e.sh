@@ -139,6 +139,20 @@ install_e2e_dependencies() {
     log_success "E2E dependencies installed successfully"
 }
 
+install_mock_server_dependencies() {
+	if [ -f "$PROJECT_ROOT/examples/package.json" ]; then
+		log_step "Installing dependencies for mock server..."
+		if npm install --prefix "$PROJECT_ROOT/examples" &> /dev/null; then
+			log_success "Mock server dependencies installed successfully"
+		else
+			log_error "Failed to install mock server dependencies"
+			exit 1
+		fi
+	else
+		log_warning "examples/package.json not found, skipping mock server dependencies installation"
+	fi
+}
+
 # Upgrade e2e dependencies
 upgrade_e2e_dependencies() {
     log_step "Upgrading e2e test dependencies..."
@@ -195,6 +209,33 @@ build_production_output() {
     build_npm_script "build" "dist_prod" false
 }
 
+is_port_open() {
+    local port=$1
+    lsof -nP -iTCP:"$port" -sTCP:LISTEN > /dev/null 2>&1
+}
+
+wait_port_open() {
+    local port=$1
+    local timeout_seconds=${2:-5}
+    local start_seconds=$SECONDS
+    while true; do
+        if is_port_open "$port"; then
+            return 0
+        fi
+        if [ $((SECONDS - start_seconds)) -ge "$timeout_seconds" ]; then
+            return 1
+        fi
+    done
+}
+
+remove_pm2_app_if_exists() {
+    local app_name=$1
+    if pm2 describe "$app_name" > /dev/null 2>&1; then
+        log_info "Removing existing pm2 app: $app_name"
+        pm2 delete "$app_name" > /dev/null 2>&1 || true
+    fi
+}
+
 # Start test servers
 start_test_servers() {
     log_step "Starting test servers..."
@@ -206,24 +247,56 @@ start_test_servers() {
 
     cd "$PROJECT_ROOT" || exit 1
 
-    # Check if servers are already running
-    if pm2 list 2>/dev/null | grep -q "http-server.*12345" || pm2 list 2>/dev/null | grep -q "http-server.*12346"; then
-        log_warning "Test servers might already be running"
-        log_info "Stopping existing servers..."
-        pm2 stop all 2>/dev/null || true
-        pm2 delete all 2>/dev/null || true
+    log_info "Checking and starting e2e-server-1..."
+    remove_pm2_app_if_exists "e2e-server-1"
+    if is_port_open 12345; then
+        log_warning "Port 12345 is already in use before starting e2e-server-1"
+    fi
+    pm2 start http-server --name "e2e-server-1" -- ./examples/host -p 12345
+    if ! wait_port_open 12345 5; then
+        log_error "e2e-server-1 failed to start on port 12345"
+        log_info "Check logs with: pm2 logs e2e-server-1 --lines 50"
+        exit 1
     fi
 
-    log_info "Starting test server on port 12345..."
-    pm2 start "http-server ./test-e2e/example -p 12345" --name "e2e-server-1"
+    if [ ! -f "$PROJECT_ROOT/examples/package.json" ]; then
+        log_error "examples package is missing. Please check examples/package.json"
+        exit 1
+    fi
+    if [ ! -d "$PROJECT_ROOT/examples/node_modules" ]; then
+        log_error "examples dependencies are not installed. Please run: cd examples && npm install"
+        exit 1
+    fi
 
-    log_info "Starting test server on port 12346..."
-    pm2 start "http-server ./test-e2e/example -p 12346" --name "e2e-server-2"
+    log_info "Checking and starting e2e-server-2..."
+    remove_pm2_app_if_exists "e2e-server-2"
+    if is_port_open 12346; then
+        log_warning "Port 12346 is already in use before starting e2e-server-2"
+    fi
+    pm2 start http-server --name "e2e-server-2" -- ./examples/host -p 12346
+    if ! wait_port_open 12346 5; then
+        log_error "e2e-server-2 failed to start on port 12346"
+        log_info "Check logs with: pm2 logs e2e-server-2 --lines 50"
+        exit 1
+    fi
+
+    log_info "Checking and starting gist-mock-server..."
+    remove_pm2_app_if_exists "gist-mock-server"
+    if is_port_open 12347; then
+        log_warning "Port 12347 is already in use before starting gist-mock-server"
+    fi
+    PORT=12347 pm2 start npm --name "gist-mock-server" --cwd "$PROJECT_ROOT/examples" -- run start:gist
+    if ! wait_port_open 12347 8; then
+        log_error "gist-mock-server failed to start on port 12347"
+        log_info "Check logs with: pm2 logs gist-mock-server --lines 50"
+        exit 1
+    fi
 
     log_success "Test servers started"
     log_info "Server 1: http://127.0.0.1:12345"
     log_info "Server 2: http://127.0.0.1:12346"
-    log_info "To stop servers, run: pm2 stop all && pm2 delete all"
+    log_info "Gist mock: http://127.0.0.1:12347"
+    log_info "To stop servers, run: pm2 delete e2e-server-1 e2e-server-2 gist-mock-server"
     log_info "To view server logs, run: pm2 logs"
 }
 
@@ -241,7 +314,7 @@ show_usage() {
     echo "  --upgrade, -u        Upgrade e2e dependencies (http-server, pm2)"
     echo "  --build, -b          Build e2e output (runs 'npm run dev:e2e')"
     echo "  --build-prod         Also build production output (runs 'npm run build')"
-    echo "  --start-servers, -s  Start test servers (http-server on ports 12345 and 12346)"
+    echo "  --start-servers, -s  Start test servers (12345/12346) and gist mock server (12347)"
     echo "  --all, -a            Run all steps (init + build + build-prod)"
     echo "  --help, -h           Show this help message"
     echo ""
@@ -289,6 +362,7 @@ main() {
                 do_init=true
                 do_build=true
                 do_build_prod=true
+                do_start_servers=true
                 shift
                 ;;
             --help|-h)
@@ -332,6 +406,7 @@ main() {
     # Run requested operations
     if [ "$do_init" = true ]; then
         install_e2e_dependencies
+		install_mock_server_dependencies
     fi
 
     if [ "$do_upgrade" = true ]; then

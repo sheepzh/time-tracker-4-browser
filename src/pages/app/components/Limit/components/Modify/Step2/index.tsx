@@ -5,6 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { useDialogSop } from '@app/components/common/DialogSop/context'
 import { t } from "@app/locale"
 import { Delete, WarnTriangleFilled } from "@element-plus/icons-vue"
 import Flex from "@pages/components/Flex"
@@ -16,12 +17,11 @@ import {
     type ScrollbarInstance
 } from "element-plus"
 import { defineComponent, ref } from "vue"
-import { useSopData, useUrlMiss } from "../context"
+import type { ModifyForm } from '../types'
 import SiteInput from './SiteInput'
 
 const _default = defineComponent(() => {
-    const data = useSopData()
-    const urlMiss = useUrlMiss()
+    const { form: data } = useDialogSop<ModifyForm>()
     const scrollbar = ref<ScrollbarInstance>()
 
     const handleAdd = (url: string) => {
@@ -29,7 +29,7 @@ const _default = defineComponent(() => {
         if (urls.includes(url)) return 'URL added already'
         urls.unshift(url)
 
-        urlMiss.value = false
+        data.urlMiss = false
         scrollbar.value?.scrollTo(0)
     }
 
