@@ -30,7 +30,7 @@ class FileTracker {
     private enabled = false
     private current: Context | null = null
 
-    init() {
+    async init() {
         optionHolder.get().then(v => this.enabled = v.countLocalFiles)
         optionHolder.addChangeListener(v => this.enabled = v.countLocalFiles)
 

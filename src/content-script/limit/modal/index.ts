@@ -1,9 +1,11 @@
-import { getRuntimeId, getUrl, trySendMsg2Runtime } from '@api/chrome/runtime'
-import optionService from '@service/option-service'
-import { init as initTheme, toggle } from '@util/dark-mode'
+import { getRuntimeId, getUrl } from '@api/chrome/runtime'
+import { trySendMsg2Runtime } from '@api/sw/common'
+import { getOption } from '@api/sw/option'
+import { init as initTheme, processDarkMode } from '@util/dark-mode'
 import { createApp, Ref, type App } from 'vue'
-import { exitFullscreen, isSameReason, type LimitReason, type MaskModal } from '../common'
+import { exitFullscreen, isSameReason } from '../common'
 import { createRootElement, TAG_NAME, type RootElement } from '../element'
+import type { LimitReason, MaskModal } from '../types'
 import Main from './Main'
 import { provideDelayHandler, provideGlobalParam, provideReason } from './context'
 
@@ -78,7 +80,7 @@ class ModalInstance implements MaskModal {
     rootElement: RootElement | undefined
     body: HTMLBodyElement | undefined
     delayHandlers: (() => void)[] = [
-        () => trySendMsg2Runtime('cs.moreMinutes', this.url),
+        () => trySendMsg2Runtime('limit.delay', this.url),
     ]
     reasons: LimitReason[] = []
     reason: Ref<LimitReason | undefined> | undefined
@@ -125,7 +127,7 @@ class ModalInstance implements MaskModal {
 
     private refresh() {
         setTimeout(() => {
-            // update vue ref in another micro task
+            // Defer show/hide to a timer callback (macrotask), not from the sync stack that mutates reasons.
             const reason = this.reasons?.[0]
             reason ? this.show(reason) : this.hide()
         })
@@ -147,7 +149,7 @@ class ModalInstance implements MaskModal {
 
         // 2. Init dark mode
         initTheme(html)
-        optionService.isDarkMode().then(val => toggle(val, html))
+        getOption().then(processDarkMode).catch(() => { })
 
         // 3. Init vue app instance
         this.initApp()

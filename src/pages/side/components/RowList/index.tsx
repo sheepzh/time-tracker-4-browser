@@ -29,7 +29,7 @@ const RowList = defineComponent<Props>(props => {
         }
     `
     return () => (
-        <Flex flex={1} style={props.style}>
+        <Flex flex={1} style={{ overflow: 'hidden' }}>
             <ElScrollbar v-loading={props.loading} height="100%" ref={scrollbar} style={{ width: '100%' }}>
                 <Flex column gap={8}>
                     {!data.value?.length && !props.loading && <ElEmpty class={emptyCls} />}

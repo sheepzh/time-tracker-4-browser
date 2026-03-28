@@ -27,6 +27,9 @@
         "skipLibCheck": true,
         "moduleResolution": "bundler",
         "paths": {
+            "@/*": [
+                "./src/*"
+            ],
             "@api/*": [
                 "./src/api/*"
             ],
@@ -52,10 +55,10 @@
                 "./src/pages/*"
             ],
             "@db/*": [
-                "./src/database/*"
+                "./src/background/database/*"
             ],
             "@service/*": [
-                "./src/service/*"
+                "./src/background/service/*"
             ],
             "@util/*": [
                 "./src/util/*"
@@ -65,18 +68,15 @@
             ],
             "@i18n": [
                 "./src/i18n/index"
-            ],
-            "@src/*": [
-                "./src/*"
-            ],
-            "*": [
-                "./types/*"
             ]
         }
     },
     "exclude": [
         "node_modules",
-        "dist"
+        "dist",
+        "script",
+        "test",
+        "test-e2e"
     ],
     "ts-node": {
         "files": true,

@@ -242,8 +242,9 @@ Create a Pull Request to the `main` branch of this repository.
 ```
 time-tracker-4-browser/
 ├── src/                                   # Source code
-│   ├── manifest.ts                        # Chrome/Edge manifest
-│   ├── manifest-firefox.ts                # Firefox manifest
+│   ├── manifest/                          # Extension manifests
+│   │   ├── chrome.ts                      # Chrome/Edge manifest
+│   │   └── firefox.ts                     # Firefox manifest
 │   ├── api/                               # API layer
 │   ├── background/                        # Service Worker
 │   ├── content-script/                    # Content scripts
@@ -275,8 +276,8 @@ time-tracker-4-browser/
 
 ### Key Files
 
--   **`src/manifest.ts`** - Chrome/Edge extension manifest (Manifest V3)
--   **`src/manifest-firefox.ts`** - Firefox extension manifest (Manifest V2)
+-   **`rspack/manifest/chrome.ts`** - Chrome/Edge extension manifest (Manifest V3)
+-   **`rspack/manifest/firefox.ts`** - Firefox extension manifest (Manifest V2)
 -   **`src/background/`** - Service Worker and background scripts
 -   **`src/content-script/`** - Scripts injected into web pages
 -   **`src/pages/`** - Extension UI (popup, side panel, options)

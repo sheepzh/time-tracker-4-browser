@@ -1,9 +1,9 @@
-import { css } from '@emotion/css'
-import { useSwitch } from '@hooks/useSwitch'
-import Flex from '@pages/components/Flex'
 import { useOption } from '@popup/context'
+import { useSwitch } from '@hooks'
 import { t, tN } from '@popup/locale'
 import { ROUTE_PERCENTAGE } from '@popup/router'
+import { css } from '@emotion/css'
+import Flex from '@pages/components/Flex'
 import { ElCheckbox, ElIcon, ElInputNumber, ElPopover, ElText, useNamespace } from "element-plus"
 import { computed, defineComponent, type StyleValue } from "vue"
 import { useRoute } from 'vue-router'

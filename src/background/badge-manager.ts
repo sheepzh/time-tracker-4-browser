@@ -8,13 +8,13 @@
 import { setBadgeBgColor, setBadgeText } from "@api/chrome/action"
 import { listTabs } from "@api/chrome/tab"
 import { getFocusedNormalWindowId } from "@api/chrome/window"
-import statDatabase from "@db/stat-database"
-import optionHolder from "@service/components/option-holder"
-import whitelistHolder from "@service/whitelist/holder"
 import { IS_ANDROID } from "@util/constant/environment"
 import { extractHostname, isBrowserUrl } from "@util/pattern"
 import { MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND } from "@util/time"
+import statDatabase from "./database/stat-database"
 import MessageDispatcher from "./message-dispatcher"
+import optionHolder from "./service/components/option-holder"
+import whitelistHolder from "./service/whitelist/holder"
 
 export type BadgeLocation = {
     /**

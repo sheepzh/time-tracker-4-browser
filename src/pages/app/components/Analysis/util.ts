@@ -6,6 +6,7 @@
  */
 
 import { t } from "@app/locale"
+import type { ValueFormatter } from '../common/kanban/types'
 
 /**
  * Transfer host info to label
@@ -20,35 +21,5 @@ export function labelOfHostInfo(site: timer.site.SiteKey | undefined): string {
     return `${host}${label}`
 }
 
-export type RingValue = [
-    current?: number,
-    last?: number,
-]
-
-/**
- * Compute ring text
- *
- * @param ring ring value
- * @param formatter formatter
- * @returns text or '-'
- */
-export function computeRingText(ring: RingValue, formatter?: ValueFormatter): string | undefined {
-    const [current, last] = ring
-    if (current === undefined && last === undefined) {
-        // return undefined if both are undefined
-        return undefined
-    }
-    const delta = (current ?? 0) - (last ?? 0)
-    let result = formatter ? formatter(delta) : delta?.toString()
-    delta >= 0 && (result = '+' + result)
-    return result
-}
-
-export type ValueFormatter = (val: number | undefined) => string
 
 export const formatValue = (val: number | undefined, formatter?: ValueFormatter) => formatter ? formatter(val) : val?.toString() || '-'
-
-export type DimensionEntry = {
-    date: string
-    value: number
-}

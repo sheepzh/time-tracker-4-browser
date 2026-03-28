@@ -1,4 +1,4 @@
-import WhitelistProcessor from '@service/whitelist/processor'
+import WhitelistProcessor from '../../../src/background/service/whitelist/processor'
 
 describe('whitelist-holder', () => {
     let processor: WhitelistProcessor

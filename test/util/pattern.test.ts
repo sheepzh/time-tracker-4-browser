@@ -1,5 +1,5 @@
-import { JSON_HOST, PDF_HOST, PIC_HOST, TXT_HOST } from "@util/constant/remain-host"
-import { extractFileHost, extractHostname, isBrowserUrl, isHomepage, isIpAndPort, isValidHost, isValidVirtualHost } from "@util/pattern"
+import { JSON_HOST, PDF_HOST, PIC_HOST, TXT_HOST } from "../../src/util/constant/remain-host"
+import { extractFileHost, extractHostname, isBrowserUrl, isHomepage, isIpAndPort, isValidHost, isValidVirtualHost } from "../../src/util/pattern"
 
 test('browser url', () => {
     // chrome

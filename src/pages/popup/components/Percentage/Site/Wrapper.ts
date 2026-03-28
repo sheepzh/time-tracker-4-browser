@@ -1,11 +1,8 @@
-import { EchartsWrapper } from "@hooks/useEcharts"
+import { EchartsWrapper } from '@hooks'
 import { getInfoColor, getPrimaryTextColor } from "@pages/util/style"
 import { type PieSeriesOption } from "echarts/charts"
-import {
-    type LegendComponentOption,
-    type TitleComponentOption,
-    type ToolboxComponentOption,
-    type TooltipComponentOption,
+import type {
+    LegendComponentOption, TitleComponentOption, ToolboxComponentOption, TooltipComponentOption,
 } from "echarts/components"
 import { type ComposeOption, type ECElementEvent } from "echarts/core"
 import type { TopLevelFormatterParams } from "echarts/types/dist/shared"

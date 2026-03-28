@@ -1,4 +1,4 @@
-import CustomizedHostMergeRuler from "@service/components/host-merge-ruler"
+import CustomizedHostMergeRuler from "../../../src/background/service/components/host-merge-ruler"
 
 const test0 = (host: string, expected: string) =>
     expect(new CustomizedHostMergeRuler([]).merge(host)).toEqual(expected)

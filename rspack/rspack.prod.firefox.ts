@@ -17,8 +17,8 @@ const readmeForFirefox = path.join(__dirname, '..', 'doc', 'for-firefox.md')
 const sourceTempDir = path.resolve(__dirname, '..', 'source_temp')
 const srcDir = [
     'public',
-    'src',
-    'test', 'types',
+    'packages',
+    'test',
     'package.json', 'package-lock.json',
     'tsconfig.json',
     'rspack',

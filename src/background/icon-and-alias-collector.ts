@@ -6,10 +6,10 @@
  */
 
 import { getTab } from "@api/chrome/tab"
-import { saveAlias, saveIconUrl } from "@service/site-service"
 import { IS_ANDROID, IS_CHROME, IS_SAFARI } from "@util/constant/environment"
 import { extractHostname, isBrowserUrl, isHomepage } from "@util/pattern"
 import { extractSiteName } from "@util/site"
+import { saveAlias, saveIconUrl } from "./service/site-service"
 
 function isUrl(title: string) {
     return title.startsWith('https://') || title.startsWith('http://') || title.startsWith('ftp://')

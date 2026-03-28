@@ -6,8 +6,8 @@
  */
 
 import { t } from "@app/locale"
-import db, { type StatCondition } from "@db/stat-database"
-import { MILL_PER_DAY, MILL_PER_SECOND } from "@util/time"
+import { batchDelete, selectGroup, selectSite } from "@api/sw/stat"
+import { cvtDateRange2Str, getBirthday, MILL_PER_DAY, MILL_PER_SECOND } from "@util/time"
 import { ElCard, ElMessage, ElMessageBox } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
 import { useDataMemory } from "../context"
@@ -20,21 +20,20 @@ type FilterOption = {
     time: [string?, string?]
 }
 
-async function generateParamAndSelect(option: FilterOption): Promise<timer.core.Row[]> {
-    const param = checkParam(option)
-    if (!param) {
-        ElMessage.warning(t(msg => msg.dataManage.paramError))
-        return []
-    }
+type ClearFilterRanges = {
+    focusRange: [number, number]
+    timeRange: [number, number?]
+}
 
+function buildClearStatQuery(option: FilterOption): (timer.stat.SiteQuery & timer.stat.GroupQuery) | undefined {
+    const param = checkParam(option)
+    if (!param) return undefined
     const { date } = option
-    let [dateStart, dateEnd] = date || []
-    if (dateEnd == null) {
-        // default end time is the yesterday
-        dateEnd = new Date(new Date().getTime() - MILL_PER_DAY)
-    }
-    param.date = dateStart ? [dateStart, dateEnd] : undefined
-    return await db.select(param)
+    let [
+        start = getBirthday(),
+        end = new Date(Date.now() - MILL_PER_DAY),
+    ] = date ?? []
+    return { ...param, date: cvtDateRange2Str([start, end]) }
 }
 
 /**
@@ -57,7 +56,7 @@ function assertQueryParam(range: [number, number?], mustInteger?: boolean): bool
 const str2Num = (str: string | undefined) => str ? parseInt(str) : undefined
 const seconds2Milliseconds = (a: number) => a * MILL_PER_SECOND
 
-function checkParam(option: FilterOption): StatCondition | undefined {
+function checkParam(option: FilterOption): ClearFilterRanges | undefined {
     const { focus, time } = option
     let hasError = false
     const focusRange = str2Range(focus, seconds2Milliseconds) as [number, number]
@@ -67,10 +66,7 @@ function checkParam(option: FilterOption): StatCondition | undefined {
     if (hasError) {
         return undefined
     }
-    const condition: StatCondition = {}
-    condition.focusRange = focusRange
-    condition.timeRange = timeRange
-    return condition
+    return { focusRange, timeRange }
 }
 
 function str2Range(startAndEnd: [string?, string?], numAmplifier?: (origin: number) => number): [number, number | undefined] {
@@ -86,15 +82,24 @@ function str2Range(startAndEnd: [string?, string?], numAmplifier?: (origin: numb
 const _default = defineComponent(() => {
     const { refreshMemory } = useDataMemory()
     async function handleClick(option: FilterOption) {
-        const result = await generateParamAndSelect(option)
+        const q = buildClearStatQuery(option)
+        if (!q) {
+            ElMessage.warning(t(msg => msg.dataManage.paramError))
+            return
+        }
+        const [siteRows, groupRows] = await Promise.all([
+            selectSite(q),
+            selectGroup(q),
+        ])
+        const count = siteRows.length + groupRows.length
+        if (!count) return
 
-        const count = result.length
         const confirmMsg = t(msg => msg.dataManage.deleteConfirm, { count })
         ElMessageBox.confirm(confirmMsg, {
             cancelButtonText: t(msg => msg.button.cancel),
-            confirmButtonText: t(msg => msg.button.confirm)
+            confirmButtonText: t(msg => msg.button.confirm),
         }).then(async () => {
-            await db.delete(...result)
+            await batchDelete([...siteRows, ...groupRows])
             ElMessage.success(t(msg => msg.operation.successMsg))
             refreshMemory?.()
         }).catch(() => { })

@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { extractSiteName, generateSiteLabel } from "@util/site"
+import { extractSiteName, generateSiteLabel } from "../../src/util/site"
 
 test('extract site name', () => {
     expect(extractSiteName("")).toEqual(undefined)

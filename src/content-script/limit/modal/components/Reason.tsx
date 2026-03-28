@@ -1,12 +1,11 @@
 import { t } from "@cs/locale"
-import { useXsState } from '@hooks/index'
-import { useRequest } from "@hooks/useRequest"
 import Flex from "@pages/components/Flex"
 import { matchCond, meetLimit, meetTimeLimit, period2Str } from "@util/limit"
 import { formatPeriodCommon, MILL_PER_SECOND } from "@util/time"
 import { ElDescriptions, ElDescriptionsItem, ElTag } from 'element-plus'
 import { computed, defineComponent, type StyleValue } from "vue"
 import { useGlobalParam, useReason, useRule } from "../context"
+import { useRequest, useXsState } from "../hooks"
 
 const useDescriptions = () => {
     const isXs = useXsState()

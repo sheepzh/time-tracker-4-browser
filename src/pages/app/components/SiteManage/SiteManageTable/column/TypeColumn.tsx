@@ -1,5 +1,5 @@
-import ColumnHeader from "@app/components/common/ColumnHeader"
-import { t } from "@app/locale"
+import ColumnHeader from '@app/components/common/ColumnHeader'
+import { t } from '@app/locale'
 import { ElTableColumn, ElTag, type RenderRowData, type TagProps } from "element-plus"
 import { type FunctionalComponent } from "vue"
 import type { JSX } from "vue/jsx-runtime"

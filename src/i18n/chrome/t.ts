@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getMessage } from "@api/chrome/i18n"
+import { getMessage } from "../../api/chrome/i18n"
 import { t } from ".."
 import messages, { router, type ChromeMessage } from "./message"
 

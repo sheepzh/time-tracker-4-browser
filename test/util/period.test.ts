@@ -1,4 +1,4 @@
-import { copyKeyWith, keyOf, compare } from "@util/period"
+import { copyKeyWith, keyOf, compare } from "../../src/util/period"
 
 test('test1', () => {
     const key1 = keyOf(new Date(), 0)

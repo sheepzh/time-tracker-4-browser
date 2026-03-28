@@ -1,14 +1,9 @@
-import { t } from "@app/locale"
 import { getLineSeriesPalette } from "@app/util/echarts"
-import { periodFormatter } from "@app/util/time"
-import { EchartsWrapper } from "@hooks/useEcharts"
+import { EchartsWrapper } from "@hooks"
+import { t } from '@app/locale'
+import { periodFormatter } from '@app/util/time'
 import { formatTime } from "@util/time"
-import {
-    type ComposeOption,
-    type GridComponentOption,
-    type LineSeriesOption,
-    type TooltipComponentOption,
-} from "echarts"
+import type { ComposeOption, GridComponentOption, LineSeriesOption, TooltipComponentOption } from "echarts"
 import { type TopLevelFormatterParams } from "echarts/types/dist/shared"
 import { formatXAxisTime, generateGridOption } from "../common"
 
@@ -38,8 +33,8 @@ const generateOption = (biz: BizOption): EcOption => {
     const { data, timeFormat } = biz || {}
     let stackVal: number = 0
     const seriesData = data.map(row => {
-        const startTime = row.startTime.getTime()
-        const endTime = row.endTime.getTime()
+        const startTime = row.startTime
+        const endTime = row.endTime
         const time = (startTime + endTime) / 2
         const delta = row.milliseconds ?? 0
         stackVal += delta

@@ -1,18 +1,20 @@
 import { getSeriesPalette, tooltipDot } from '@app/util/echarts'
-import { EchartsWrapper } from '@hooks/useEcharts'
+import { EchartsWrapper } from '@hooks'
 import { getPrimaryTextColor } from '@pages/util/style'
 import { groupBy, toMap } from '@util/array'
-import { formatPeriodCommon, MILL_PER_DAY, MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND } from '@util/time'
 import {
-    type ComposeOption, type CustomSeriesOption, type CustomSeriesRenderItem,
-    type DataZoomComponentOption, type GridComponentOption, type LegendComponentOption, type TooltipComponentOption
+    formatPeriodCommon,
+    formatTimeYMD, MILL_PER_DAY, MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND
+} from '@util/time'
+import type {
+    ComposeOption, CustomSeriesOption, CustomSeriesRenderItem, DataZoomComponentOption, GridComponentOption,
+    LegendComponentOption, TooltipComponentOption,
 } from 'echarts'
 import { graphic } from "echarts/core"
-import type { Activity, MergeMethod } from './useMerge'
 
 export type BizData = {
-    activities: Activity[]
-    merge: MergeMethod
+    activities: timer.timeline.Activity[]
+    merge: timer.timeline.MergeMethod
     dates: string[]
 }
 
@@ -71,7 +73,7 @@ const formatDuration = (duration: number): string => {
 
 const LEGEND_WIDTH = 180
 
-const collectLegends = (activities: Activity[]): LegendInfo[] => {
+const collectLegends = (activities: timer.timeline.Activity[]): LegendInfo[] => {
     const colors = getSeriesPalette()
     const colorLen = colors.length || 1
 
@@ -137,14 +139,17 @@ const generateSeries = (biz: BizData, legendColors: Record<string, string>): EcO
             },
             renderItem,
             selectedMode: true,
-            data: list.map(({ date, start, duration }) => ({
-                value: [dates.indexOf(date), start, start + duration, duration],
-            }))
+            data: list.map(({ start, duration }) => {
+                const date = formatTimeYMD(start)
+                const dateIdx = dates.indexOf(date)
+                const value = [dateIdx, start, start + duration, duration]
+                return { value }
+            })
         }
     })
 }
 
-const calcDataZoomDefaultRange = (activities: Activity[]): [start: number | undefined, end: number | undefined] => {
+const calcDataZoomDefaultRange = (activities: timer.timeline.Activity[]): [start: number | undefined, end: number | undefined] => {
     if (!activities.length) return [undefined, undefined]
     let min = activities.map(a => a.start).reduce((a, b) => b < a ? b : a)
     let max = activities.map(({ start, duration }) => start + duration).reduce((a, b) => b > a ? b : a)

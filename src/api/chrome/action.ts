@@ -1,4 +1,4 @@
-import { IS_FIREFOX, IS_MV3 } from "@util/constant/environment"
+import { IS_FIREFOX, IS_MV3 } from "../../util/constant/environment"
 import { handleError } from "./common"
 
 const action = IS_MV3 ? chrome.action : chrome.browserAction

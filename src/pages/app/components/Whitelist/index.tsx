@@ -5,11 +5,11 @@
  * https://opensource.org/licenses/MIT
  */
 
-import AlertLines from '@app/components/common/AlertLines'
 import Flex from "@pages/components/Flex"
 import { ElCard } from "element-plus"
 import { type FunctionalComponent } from "vue"
-import ContentContainer from "../common/ContentContainer"
+import AlertLines from '../common/AlertLines'
+import ContentContainer from '../common/ContentContainer'
 import WhitePanel from "./WhitePanel"
 
 const Whitelist: FunctionalComponent = () => (

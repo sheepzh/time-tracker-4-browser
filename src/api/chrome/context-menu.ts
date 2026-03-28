@@ -1,4 +1,4 @@
-import { IS_ANDROID } from "@util/constant/environment"
+import { IS_ANDROID } from "../../util/constant/environment"
 import { handleError } from "./common"
 
 function onClick(id: string, handler: Function) {

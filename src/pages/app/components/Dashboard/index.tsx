@@ -5,16 +5,16 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { t } from "@app/locale"
 import { MediaSize, useManualRequest, useMediaSize, useRequest, useXsState } from "@hooks"
-import { isTranslatingLocale, locale } from "@i18n"
+import { t } from "@app/locale"
 import Flex from "@pages/components/Flex"
-import { recommendRate, saveFlag } from "@service/meta-service"
+import { recommendRate, saveFlag } from "@api/sw/meta"
+import { isTranslatingLocale, locale } from "@i18n"
 import { REVIEW_PAGE } from "@util/constant/url"
 import { ElRow, ElScrollbar } from "element-plus"
 import { computed, defineComponent, type FunctionalComponent } from "vue"
 import { useRouter } from "vue-router"
-import ContentContainer from "../common/ContentContainer"
+import ContentContainer from '../common/ContentContainer'
 import Calendar from "./components/Calendar"
 import Indicator from "./components/Indicator"
 import MonthOnMonth from "./components/MonthOnMonth"

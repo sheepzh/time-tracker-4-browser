@@ -4,20 +4,17 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { formatValue, type DimensionEntry, type RingValue, type ValueFormatter } from "@app/components/Analysis/util"
+import type { DimensionData } from '@app/components/Analysis/types'
+import { formatValue } from "@app/components/Analysis/util"
 import { GRID_CELL_STYLE } from '@app/components/common/grid'
-import { KanbanIndicatorCell } from "@app/components/common/kanban"
-import { cvt2LocaleTime } from "@app/util/time"
-import { useXsState } from "@hooks"
+import { KanbanIndicatorCell } from '@app/components/common/kanban'
+import type { RingValue, ValueFormatter } from '@app/components/common/kanban/types'
+import { useXsState } from '@hooks'
+import { cvt2LocaleTime } from '@app/util/time'
 import Box from "@pages/components/Box"
 import Flex from "@pages/components/Flex"
 import { defineComponent } from "vue"
 import Chart from "./Chart"
-
-export type DimensionData = {
-    thisPeriod: DimensionEntry[]
-    previousPeriod: DimensionEntry[]
-}
 
 type Props = {
     maxLabel: string

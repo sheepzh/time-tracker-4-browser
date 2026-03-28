@@ -1,29 +1,12 @@
+import { listCates } from "@api/sw/cate"
+import { getOption, setDarkMode as setOptionDarkMode } from "@api/sw/option"
 import { useLocalStorage, useProvide, useProvider, useRequest } from "@hooks"
-import cateService from "@service/cate-service"
-import optionService from "@service/option-service"
 import { toMap } from "@util/array"
-import { isDarkMode, toggle } from "@util/dark-mode"
+import { isDarkMode, processDarkMode } from "@util/dark-mode"
 import { CATE_NOT_SET_ID } from "@util/site"
 import { reactive, type Reactive, ref, type Ref, toRaw, watch } from "vue"
 import { t } from "./locale"
-
-export type PopupDuration =
-    | "today" | "yesterday" | "thisWeek" | "thisMonth"
-    | "lastDays"
-    | "allTime"
-
-export type PopupQuery = {
-    mergeMethod: Exclude<timer.stat.MergeMethod, 'date'> | undefined
-    duration: PopupDuration
-    durationNum?: number
-    dimension: Exclude<timer.core.Dimension, 'run'>
-}
-
-export type PopupOption = {
-    showName: boolean
-    topN: number
-    donutChart: boolean
-}
+import type { PopupOption, PopupQuery } from './types'
 
 type PopupContextValue = {
     reload: () => void
@@ -40,17 +23,19 @@ export const initPopupContext = (): Ref<number> => {
     const appKey = ref(Date.now())
     const reload = () => appKey.value = Date.now()
 
-    const { data: darkMode, refresh: refreshDarkMode } = useRequest(() => optionService.isDarkMode(), { defaultValue: isDarkMode() })
+    const { data: darkMode, refresh: refreshDarkMode } = useRequest(async () => {
+        const option = await getOption()
+        return processDarkMode(option)
+    }, { defaultValue: isDarkMode() })
 
     const setDarkMode = async (val: boolean) => {
         const option: timer.option.DarkMode = val ? 'on' : 'off'
-        await optionService.setDarkMode(option)
-        toggle(val)
+        await setOptionDarkMode(option)
         refreshDarkMode()
     }
 
     const { data: cateNameMap } = useRequest(async () => {
-        const categories = await cateService.listAll()
+        const categories = await listCates()
         const result = toMap(categories ?? [], c => c.id, c => c.name)
         result[CATE_NOT_SET_ID] = t(msg => msg.shared.cate.notSet)
         return result
@@ -58,7 +43,7 @@ export const initPopupContext = (): Ref<number> => {
 
     const query = initQuery()
     const option = initOption()
-    useProvide<PopupContextValue>(NAMESPACE, { reload, darkMode, setDarkMode, query, option, cateNameMap })
+    useProvide<PopupContextValue>(NAMESPACE, { reload, darkMode: darkMode as Ref<boolean>, setDarkMode, query, option, cateNameMap })
 
     return appKey
 }

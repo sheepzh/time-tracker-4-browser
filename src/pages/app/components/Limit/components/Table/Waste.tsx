@@ -1,6 +1,6 @@
-import TooltipWrapper from "@app/components/common/TooltipWrapper"
-import { t } from "@app/locale"
+import { t } from '@app/locale'
 import Flex from "@pages/components/Flex"
+import TooltipWrapper from '@pages/components/TooltipWrapper'
 import { meetLimit, meetTimeLimit } from "@util/limit"
 import { formatPeriodCommon } from "@util/time"
 import { ElTag } from "element-plus"

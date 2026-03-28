@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { t } from "@app/locale"
+import { t } from '@app/locale'
 import { Delete, Edit } from "@element-plus/icons-vue"
 import { locale } from "@i18n"
 import { ElButton, ElTableColumn, type RenderRowData } from "element-plus"

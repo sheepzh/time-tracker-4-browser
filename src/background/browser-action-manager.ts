@@ -10,12 +10,12 @@ import { getRuntimeId } from "@api/chrome/runtime"
 import { createTab } from "@api/chrome/tab"
 import { locale } from "@i18n"
 import { t2Chrome } from "@i18n/chrome/t"
+import { OPTION_ROUTE, REPORT_ROUTE } from "@app/router/constants"
 import { IS_ANDROID, IS_FIREFOX, IS_MV3, IS_SAFARI } from "@util/constant/environment"
 import {
     CHANGE_LOG_PAGE, GITHUB_ISSUE_ADD, SOURCE_CODE_PAGE, TU_CAO_PAGE,
     getAppPageUrl, getGuidePageUrl,
 } from "@util/constant/url"
-import { OPTION_ROUTE, REPORT_ROUTE } from "../pages/app/router/constants"
 
 const APP_PAGE_URL = getAppPageUrl()
 

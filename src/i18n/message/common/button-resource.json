@@ -289,13 +289,10 @@
         "previous": "Wstecz",
         "next": "Dalej",
         "okey": "Ok",
-        "dont": "Nie",
         "operation": "Działania",
         "configuration": "Ustawienia",
         "clear": "Wyczyść",
         "enable": "Włącz",
-        "batchEnable": "Włączanie serii",
-        "batchDisable": "Seria wyłączenia",
         "collapse": "Zwiń",
         "expand": "Rozwiń"
     }
