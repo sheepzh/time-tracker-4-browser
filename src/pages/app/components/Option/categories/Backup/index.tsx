@@ -68,6 +68,7 @@ const _default = defineComponent((_, ctx) => {
             }}
         >
             <ElInput
+                name='token'
                 modelValue={auth.value}
                 size="small"
                 type="password"

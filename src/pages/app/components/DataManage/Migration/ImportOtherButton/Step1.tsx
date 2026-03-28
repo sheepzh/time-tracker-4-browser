@@ -5,14 +5,13 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { type SopStepInstance } from "@app/components/common/DialogSop"
+import { useDialogSop } from '@app/components/common/DialogSop/context'
 import { t } from "@app/locale"
 import { Document } from "@element-plus/icons-vue"
-import { useState } from "@hooks"
 import Flex from "@pages/components/Flex"
 import { ElButton, ElForm, ElFormItem, ElSelect } from "element-plus"
 import { defineComponent, ref } from "vue"
-import { type OtherExtension, parseFile } from "./processor"
+import type { ImportForm, OtherExtension } from './types'
 
 const OTHER_NAMES: { [ext in OtherExtension]: string } = {
     webtime_tracker: "Webtime Tracker",
@@ -29,27 +28,14 @@ const OTHER_FILE_FORMAT: { [ext in OtherExtension]: string } = {
 const ALL_TYPES: OtherExtension[] = Object.keys(OTHER_NAMES) as OtherExtension[]
 
 const _default = defineComponent<{}>((_, ctx) => {
-    const [type, setType] = useState<OtherExtension>('webtime_tracker')
-    const [selectedFile, setSelectedFile] = useState<File>()
+    const { form } = useDialogSop<ImportForm>()
     const fileInput = ref<HTMLInputElement>()
-
-    const parseData = async () => {
-        const file = selectedFile.value
-        if (!file) throw new Error(t(msg => msg.dataManage.importOther.fileNotSelected))
-
-        const data = await parseFile(type.value, file)
-        if (!data?.rows?.length) throw new Error("No rows parsed")
-
-        return data
-    }
-
-    ctx.expose({ parseData } satisfies SopStepInstance<timer.imported.Data>)
 
     return () => (
         <ElForm labelWidth={100} labelPosition="left" style={{ width: '500px' }}>
             <ElFormItem label={t(msg => msg.dataManage.importOther.dataSource)} required>
                 <ElSelect
-                    modelValue={type.value} onChange={setType}
+                    modelValue={form.ext} onChange={v => form.ext = v}
                     options={ALL_TYPES.map(value => ({ value, label: OTHER_NAMES[value] }))}
                 />
             </ElFormItem>
@@ -60,12 +46,12 @@ const _default = defineComponent<{}>((_, ctx) => {
                         <input
                             ref={fileInput}
                             type="file"
-                            accept={OTHER_FILE_FORMAT[type.value]}
+                            accept={OTHER_FILE_FORMAT[form.ext]}
                             style={{ display: 'none' }}
-                            onChange={() => setSelectedFile(fileInput.value?.files?.[0])}
+                            onChange={() => form.file = fileInput.value?.files?.[0]}
                         />
                     </ElButton>
-                    {selectedFile.value?.name && <span>{selectedFile.value?.name}</span>}
+                    {<span>{form.file?.name ?? ''}</span>}
                 </Flex>
             </ElFormItem>
         </ElForm>

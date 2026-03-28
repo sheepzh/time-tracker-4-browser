@@ -5,82 +5,122 @@
  * https://opensource.org/licenses/MIT
  */
 
+import DialogSop from '@app/components/common/DialogSop'
+import { initDialogSopContext } from '@app/components/common/DialogSop/context'
 import { t } from "@app/locale"
-import { useSwitch, useXsState } from "@hooks"
 import limitService from "@service/limit-service"
-import { ElDialog, ElMessage } from "element-plus"
-import { computed, defineComponent, nextTick, ref, toRaw } from "vue"
+import { range } from '@util/array'
+import { computed, defineComponent, ref, toRaw } from "vue"
 import { type ModifyInstance, useLimitData } from "../../context"
-import Sop, { type SopInstance } from "./Sop"
+import Step1 from './Step1'
+import Step2 from './Step2'
+import Step3 from './Step3'
+import { ModifyForm } from './types'
 
 type Mode = "create" | "modify"
 
+const STEP_TITLES = [
+    t(msg => msg.limit.step.base),
+    t(msg => msg.limit.step.url),
+    t(msg => msg.limit.step.rule),
+]
+
+const createInitial = (): ModifyForm => ({
+    name: `RULE-${new String(new Date().getTime() % 10000).padStart(4, '0')}`,
+    time: 3600,
+    weekly: 0,
+    cond: [],
+    visitTime: 0,
+    periods: [],
+    enabled: true,
+    weekdays: range(7),
+    count: 0,
+    weeklyCount: 0,
+    allowDelay: false,
+    locked: false,
+})
+
 const _default = defineComponent((_, ctx) => {
     const { refresh } = useLimitData()
-    const [visible, open, close] = useSwitch()
-    const sop = ref<SopInstance>()
     const mode = ref<Mode>()
     const title = computed(() => mode.value === "create" ? t(msg => msg.button.create) : t(msg => msg.button.modify))
+
+    const { step, open } = initDialogSopContext<ModifyForm>({
+        stepCount: STEP_TITLES.length,
+        init: createInitial,
+        onNext: ({ form, current }) => {
+            if (current === 0) {
+                const nameVal = form.name?.trim?.()
+                const weekdaysVal = form.weekdays
+                if (!nameVal) {
+                    throw new Error("Name is empty")
+                } if (!weekdaysVal?.length) {
+                    throw new Error("Effective days are empty")
+                }
+            } else if (current === 1) {
+                if (!form.cond?.length) {
+                    form.urlMiss = true
+                    throw new Error(t(msg => msg.limit.message.noUrl))
+                }
+                form.urlMiss = false
+            }
+        },
+        onFinish: async ({ form }) => {
+            const { cond, enabled, name, time, count, weekly, weeklyCount, visitTime, periods, weekdays } = toRaw(form)
+            if (true
+                && !time && !count
+                && !weekly && !weeklyCount
+                && !visitTime && !periods?.length
+            ) {
+                throw new Error(t(msg => msg.limit.message.noRule))
+            }
+            let saved: timer.limit.Rule
+            if (mode.value === 'modify') {
+                if (!modifyingItem) return
+                saved = {
+                    ...modifyingItem,
+                    cond, enabled, name, time, weekly, visitTime, weekdays, count, weeklyCount,
+                    // Object to array
+                    periods: periods?.map(i => ([i?.[0], i?.[1]] satisfies Vector<number>)),
+                } satisfies timer.limit.Rule
+                await limitService.update(saved)
+            } else {
+                const toCreate = {
+                    cond, enabled, name, time, weekly, visitTime, weekdays, count, weeklyCount,
+                    // Object to array
+                    periods: periods?.map(i => ([i?.[0], i?.[1]] satisfies Vector<number>)),
+                    allowDelay: false, locked: false,
+                } satisfies MakeOptional<timer.limit.Rule, 'id'>
+                const id = await limitService.create(toCreate)
+                saved = { ...toCreate, id }
+            }
+            refresh?.()
+        }
+    })
     // Cache
     let modifyingItem: timer.limit.Rule | undefined = undefined
-
-    const handleSave = async (rule: MakeOptional<timer.limit.Rule, "id">) => {
-        if (!rule) return
-        const { cond, enabled, name, time, weekly, visitTime, periods, weekdays, count, weeklyCount } = rule
-        let saved: timer.limit.Rule
-        if (mode.value === 'modify') {
-            if (!modifyingItem) return
-            saved = {
-                ...modifyingItem,
-                cond, enabled, name, time, weekly, visitTime, weekdays, count, weeklyCount,
-                // Object to array
-                periods: periods?.map(i => ([i?.[0], i?.[1]] satisfies Vector<number>)),
-            } satisfies timer.limit.Rule
-            await limitService.update(saved)
-        } else {
-            const toCreate = {
-                cond, enabled, name, time, weekly, visitTime, weekdays, count, weeklyCount,
-                // Object to array
-                periods: periods?.map(i => ([i?.[0], i?.[1]] satisfies Vector<number>)),
-                allowDelay: false, locked: false,
-            } satisfies MakeOptional<timer.limit.Rule, 'id'>
-            const id = await limitService.create(toCreate)
-            saved = { ...toCreate, id }
-        }
-        close()
-        ElMessage.success(t(msg => msg.operation.successMsg))
-        sop.value?.reset?.()
-        refresh?.()
-    }
 
     ctx.expose({
         create() {
             open()
             mode.value = 'create'
             modifyingItem = undefined
-            nextTick(() => sop.value?.reset())
         },
         modify(row: timer.limit.Item) {
-            open()
+            open(toRaw(row))
             mode.value = 'modify'
             modifyingItem = { ...row }
-            nextTick(() => sop.value?.reset?.(toRaw(row)))
         },
     } satisfies ModifyInstance)
 
-    const isXs = useXsState()
 
     return () => (
-        <ElDialog
-            title={title.value}
-            modelValue={visible.value}
-            closeOnClickModal={false}
-            fullscreen={isXs.value}
-            width={isXs.value ? '100%' : 800}
-            onClose={close}
-        >
-            <Sop ref={sop} onSave={handleSave} onCancel={close} />
-        </ElDialog>
+        <DialogSop title={title.value} stepTitles={STEP_TITLES}>
+            <Step1 v-show={step.value === 0} />
+            <Step2 v-show={step.value === 1} />
+            <Step3 v-show={step.value === 2} />
+        </DialogSop>
+
     )
 })
 

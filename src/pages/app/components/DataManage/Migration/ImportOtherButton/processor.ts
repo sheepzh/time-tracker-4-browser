@@ -10,11 +10,7 @@ import { AUTHOR_EMAIL } from "@src/package"
 import { IS_WINDOWS } from "@util/constant/environment"
 import { extractHostname, isBrowserUrl } from "@util/pattern"
 import { formatTimeYMD, MILL_PER_SECOND } from "@util/time"
-
-export type OtherExtension =
-    | "webtime_tracker"
-    | "web_activity_time_tracker"
-    | "history_trends_unlimited"
+import type { OtherExtension } from './types'
 
 const throwError = () => { throw new Error("Failed to parse, please check your file or contact the author via " + AUTHOR_EMAIL) }
 
@@ -50,7 +46,9 @@ async function parseWebActivityTimeTracker(file: File): Promise<[timer.imported.
         const lines = text.split('\n').map(line => line.trim()).filter(line => !!line).splice(1)
         const rows = lines.map(line => {
             const [host, date, seconds] = line.split(',').map(cell => cell.trim())
-            !host || !date || (!seconds && seconds !== '0') && throwError()
+            if (!host || !date || (!seconds && seconds !== '0')) {
+                throwError()
+            }
             const [year, month, day] = date.split('/')
             !year || !month || !day && throwError()
             const realDate = `${year}${month.length == 2 ? month : '0' + month}${day.length == 2 ? day : '0' + day}`

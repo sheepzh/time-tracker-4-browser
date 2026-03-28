@@ -7,15 +7,25 @@
 
 import { t } from "@app/locale"
 import { Operation, UploadFilled } from "@element-plus/icons-vue"
+import { css } from '@emotion/css'
 import { useManualRequest, useRequest, useState } from "@hooks"
 import Flex from "@pages/components/Flex"
 import processor from "@service/backup/processor"
 import { getLastBackUp } from "@service/meta-service"
 import { formatTime } from "@util/time"
-import { ElButton, ElDivider, ElLoading, ElMessage, ElText } from "element-plus"
+import { ElButton, ElDivider, ElLoading, ElMessage, ElText, useNamespace } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
 import Clear from "./Clear"
 import Download from "./Download"
+
+const useStyle = () => {
+    const buttonNs = useNamespace('button')
+    return css`
+        .${buttonNs.b()}+.${buttonNs.b()} {
+            margin-inline-start: 0px;
+        }
+    `
+}
 
 async function handleTest() {
     const loading = ElLoading.service({ text: "Please wait...." })
@@ -53,9 +63,11 @@ const _default = defineComponent<{ type: timer.backup.Type }>(props => {
         },
     })
 
+    const footerCls = useStyle()
+
     return () => <>
         <ElDivider />
-        <Flex gap={12} wrap>
+        <Flex gap={12} wrap class={footerCls}>
             <ElButton type="primary" icon={Operation} onClick={handleTest}>
                 {t(msg => msg.button.test)}
             </ElButton>

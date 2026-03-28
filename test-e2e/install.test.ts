@@ -6,7 +6,7 @@ let context: LaunchContext
 describe('After installed', () => {
     beforeEach(async () => {
         const path = join(__dirname, '..', 'dist_prod')
-        context = await launchBrowser(path)
+        context = await launchBrowser({ dirPath: path })
     })
 
     afterEach(async () => context.close())
