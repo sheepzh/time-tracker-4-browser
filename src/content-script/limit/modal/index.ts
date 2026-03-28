@@ -3,7 +3,7 @@ import optionService from '@service/option-service'
 import { init as initTheme, toggle } from '@util/dark-mode'
 import { createApp, Ref, type App } from 'vue'
 import { exitFullscreen, isSameReason, type LimitReason, type MaskModal } from '../common'
-import { TAG_NAME, type RootElement } from '../element'
+import { createRootElement, TAG_NAME, type RootElement } from '../element'
 import Main from './Main'
 import { provideDelayHandler, provideGlobalParam, provideReason } from './context'
 
@@ -163,12 +163,12 @@ class ModalInstance implements MaskModal {
 
     private async prepareRoot(): Promise<ShadowRoot | null> {
         const inner = (): ShadowRoot | null => {
-            const exist = this.rootElement || document.querySelector(TAG_NAME) as RootElement
+            const exist = this.rootElement ?? document.querySelector(TAG_NAME) as RootElement
             if (exist) {
                 this.rootElement = exist
                 return exist.shadowRoot
             }
-            this.rootElement = document.createElement(TAG_NAME) as RootElement
+            this.rootElement = createRootElement()
             document.body.appendChild(this.rootElement)
             return this.rootElement.attachShadow({ mode: 'open' })
         }
