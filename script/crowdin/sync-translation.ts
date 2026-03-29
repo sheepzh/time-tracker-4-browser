@@ -1,7 +1,7 @@
 
 import { type SourceFilesModel } from "@crowdin/crowdin-api-client"
 import { toMap } from "@util/array"
-import { exitWith } from "../process"
+import { exitWith } from "../util/process"
 import { type CrowdinClient, getClientFromEnv } from "./client"
 import {
     ALL_DIRS, ALL_TRANS_LOCALES,

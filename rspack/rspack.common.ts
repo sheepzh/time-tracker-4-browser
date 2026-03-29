@@ -89,7 +89,7 @@ const staticOptions: Configuration = {
                         ],
                     },
                 }, {
-                    loader: 'builtin:swc-loader',
+                    loader: 'ts-loader',
                     options: {
                         configFile: join(__dirname, '..', 'tsconfig.json'),
                     },

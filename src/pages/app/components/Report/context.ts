@@ -1,7 +1,7 @@
+import { type ReportQuery } from '@app/router/constants'
 import { useLocalStorage, useProvide, useProvider } from '@hooks'
 import { reactive, type Reactive, ref, type Ref, toRaw, watch } from "vue"
 import { type RouteLocation, type Router, useRoute, useRouter } from "vue-router"
-import type { ReportQueryParam } from "@app/router/constants"
 import type { DisplayComponent, ReportFilterOption, ReportSort } from "./types"
 
 type Context = {
@@ -18,7 +18,7 @@ type QueryPartial = PartialPick<ReportFilterOption, 'query' | 'dateRange' | 'mer
  * Init the query parameters
  */
 function parseQuery(route: RouteLocation, router: Router): [QueryPartial, ReportSort['prop'] | undefined] {
-    const routeQuery = route.query as unknown as ReportQueryParam
+    const routeQuery = route.query as ReportQuery
     const { q, mm, md, ds, de, sc } = routeQuery
     const dateStart = ds ? new Date(Number.parseInt(ds)) : undefined
     const dateEnd = de ? new Date(Number.parseInt(de)) : undefined

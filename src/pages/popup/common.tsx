@@ -1,7 +1,7 @@
-import type { PopupDuration, PopupQuery } from "@popup/types"
-import { REPORT_ROUTE, type ReportQueryParam } from "@app/router/constants"
 import { getWeekBounds } from "@api/sw/option"
 import { selectCate, selectGroup, selectSite } from '@api/sw/stat'
+import { REPORT_ROUTE, type ReportQuery } from "@app/router/constants"
+import type { PopupDuration, PopupQuery } from "@popup/types"
 import { isRemainHost } from "@util/constant/remain-host"
 import { getAppPageUrl } from "@util/constant/url"
 import { isSite } from "@util/stat"
@@ -41,8 +41,8 @@ export const queryRows = async (param: PopupQuery): Promise<[rows: timer.stat.Ro
     return [rows, dateRange]
 }
 
-function buildReportQuery(siteType: timer.site.Type, date: DateRange | undefined, type: timer.core.Dimension): ReportQueryParam {
-    const query: ReportQueryParam = {}
+function buildReportQuery(siteType: timer.site.Type, date: DateRange | undefined, type: timer.core.Dimension): ReportQuery {
+    const query: ReportQuery = {}
     // Merge host
     siteType === 'merged' && (query.mm = 'domain')
     // Date

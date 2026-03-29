@@ -14,7 +14,8 @@ export const ANALYSIS_ROUTE = '/data/analysis'
  */
 export {
     APP_LIMIT_ROUTE as LIMIT_ROUTE, APP_OPTION_ROUTE as OPTION_ROUTE,
-    APP_REPORT_ROUTE as REPORT_ROUTE, type AppLimitQuery as LimitQuery
+    APP_REPORT_ROUTE as REPORT_ROUTE,
+    type AppLimitQuery as LimitQuery, type AppReportQuery as ReportQuery
 } from "@/shared/route"
 
 /**
