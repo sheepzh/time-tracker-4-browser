@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getUrl, getVersion } from "@api/chrome/runtime"
-import { locale } from "@i18n"
+import { getUrl, getVersion } from "../../api/chrome/runtime"
+import { locale } from "../../i18n"
 import { BROWSER_MAJOR_VERSION, BROWSER_NAME } from "./environment"
 
 export const FIREFOX_HOMEPAGE = 'https://addons.mozilla.org/firefox/addon/besttimetracker'

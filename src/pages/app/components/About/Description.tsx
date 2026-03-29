@@ -1,11 +1,12 @@
-import { t } from "@app/locale"
+import { MediaSize, useMediaSize } from '@hooks'
+import { t } from '@app/locale'
 import { css } from '@emotion/css'
-import { MediaSize, useMediaSize } from "@hooks"
-import { locale } from "@i18n"
 import Flex from "@pages/components/Flex"
-import { Coffee, GitHub } from '@pages/util/icon'
-import { saveFlag } from "@service/meta-service"
-import packageInfo, { AUTHOR_EMAIL } from "@src/package"
+import Coffee from '@pages/icons/Coffee'
+import GitHub from '@pages/icons/Github'
+import { saveFlag } from "@api/sw/meta"
+import { locale } from "@i18n"
+import packageInfo, { AUTHOR_EMAIL } from "@/package"
 import {
     BUY_ME_A_COFFEE_PAGE,
     CHANGE_LOG_PAGE,

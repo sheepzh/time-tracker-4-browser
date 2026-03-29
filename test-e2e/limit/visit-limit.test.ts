@@ -4,7 +4,7 @@ import { createLimitRule } from './common'
 describe('Time limit per visit', () => {
     let context: LaunchContext
 
-    beforeEach(async () => context = await launchBrowser())
+    beforeEach(async () => { context = await launchBrowser() })
 
     afterEach(() => context.close())
 

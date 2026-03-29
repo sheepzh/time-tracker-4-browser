@@ -1,8 +1,8 @@
-import { GRID_CELL_STYLE } from "@app/components/common/grid"
-import { KanbanIndicatorCell } from "@app/components/common/kanban"
-import { t } from "@app/locale"
-import { periodFormatter } from "@app/util/time"
-import { useXsState } from "@hooks"
+import { GRID_CELL_STYLE } from '@app/components/common/grid'
+import { KanbanIndicatorCell } from '@app/components/common/kanban'
+import { useXsState } from '@hooks'
+import { t } from '@app/locale'
+import { periodFormatter } from '@app/util/time'
 import Flex from "@pages/components/Flex"
 import { sum } from "@util/array"
 import { getHost } from "@util/stat"

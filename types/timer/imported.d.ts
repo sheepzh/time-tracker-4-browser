@@ -14,4 +14,13 @@ declare namespace timer.imported {
     } & {
         rows: Row[]
     }
+
+    type PreviewQuery =
+        | { source: 'backup'; param: timer.backup.RemoteQuery }
+        | { source: 'rows'; rows: Row[] }
+
+    type ProcessQuery = {
+        data: Data
+        resolution: ConflictResolution
+    }
 }

@@ -5,15 +5,15 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { APP_LIMIT_ROUTE, type AppLimitQuery } from '@/shared/route'
 import { createTabAfterCurrent, getRightOf, listTabs, resetTabUrl, sendMsg2Tab } from "@api/chrome/tab"
-import { LIMIT_ROUTE } from "@app/router/constants"
-import limitService from "@service/limit-service"
 import { getAppPageUrl } from "@util/constant/url"
 import { matches } from "@util/limit"
 import { isBrowserUrl } from "@util/pattern"
 import { getStartOfDay, MILL_PER_DAY, MILL_PER_SECOND } from "@util/time"
 import alarmManager from "./alarm-manager"
 import MessageDispatcher from "./message-dispatcher"
+import { batchRemoveLimitRules, batchUpdateEnabled, createLimitRule, getEffectiveRules, getLimitedRules, moreMinutes, noticeLimitChanged, selectLimit, updateDelay, updateLimitRule, updateLocked } from "./service/limit-service"
 
 function processLimitWaking(rules: timer.limit.Item[], tab: ChromeTab): void {
     const { url, id: tabId } = tab
@@ -30,8 +30,8 @@ function processLimitWaking(rules: timer.limit.Item[], tab: ChromeTab): void {
 async function processOpenPage(limitedUrl: string, sender: ChromeMessageSender) {
     const originTab = sender?.tab
     if (!originTab) return
-    const realUrl = getAppPageUrl(LIMIT_ROUTE, { url: encodeURI(limitedUrl) })
-    const baseUrl = getAppPageUrl(LIMIT_ROUTE)
+    const realUrl = getAppPageUrl(APP_LIMIT_ROUTE, { url: encodeURI(limitedUrl) } satisfies AppLimitQuery)
+    const baseUrl = getAppPageUrl(APP_LIMIT_ROUTE)
     const rightTab = await getRightOf(originTab)
     const { id: rightId, url: rightUrl } = rightTab || {}
     if (rightId && rightUrl && isBrowserUrl(rightUrl) && rightUrl.includes(baseUrl)) {
@@ -47,12 +47,12 @@ function initDailyBroadcast() {
     alarmManager.setWhen(
         'limit-daily-broadcast',
         () => getStartOfDay(new Date()) + MILL_PER_DAY,
-        () => limitService.broadcastRules(),
+        noticeLimitChanged,
     )
 }
 
 const processMoreMinutes = async (url: string) => {
-    const rules = await limitService.moreMinutes(url)
+    const rules = await moreMinutes(url)
 
     const tabs = await listTabs({ status: 'complete' })
     tabs.forEach(tab => processLimitWaking(rules, tab))
@@ -76,10 +76,18 @@ const processAskHitVisit = async (item: timer.limit.Item) => {
 
 export default function init(dispatcher: MessageDispatcher) {
     initDailyBroadcast()
+
     dispatcher
-        .register<string>('openLimitPage', processOpenPage)
-        // More minutes
-        .register<string>('cs.moreMinutes', processMoreMinutes)
-        // Judge any tag hit the time limit per visit
-        .register<timer.limit.Item, boolean>("askHitVisit", processAskHitVisit)
+        .register('limit.list', selectLimit)
+        .register('limit.batchRemove', batchRemoveLimitRules)
+        .register('limit.batchUpdateEnabled', batchUpdateEnabled)
+        .register('limit.updateDelay', updateDelay)
+        .register('limit.updateLocked', updateLocked)
+        .register('limit.update', updateLimitRule)
+        .register('limit.create', createLimitRule)
+        .register('limit.listLimited', getLimitedRules)
+        .register('limit.listEffective', getEffectiveRules)
+        .register('limit.hitVisit', processAskHitVisit)
+        .register('limit.openRule', processOpenPage)
+        .register('limit.delay', processMoreMinutes)
 }

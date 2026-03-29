@@ -1,16 +1,15 @@
-import { useCategory } from "@app/context"
-import { t } from "@app/locale"
-import { useDebounceState, useRequest } from "@hooks"
+import { useCategory } from '@app/context'
+import { useDebounceState, useRequest } from '@hooks'
+import { t } from '@app/locale'
 import Flex from "@pages/components/Flex"
-import { selectAllSites } from "@service/site-service"
-import { listHosts } from "@service/stat-service"
+import { searchHosts, selectAllSites } from "@api/sw/site"
 import { CATE_NOT_SET_ID, identifySiteKey, parseSiteKeyFromIdentity, SiteMap } from "@util/site"
 import { ElSelectV2, ElTag, useNamespace } from "element-plus"
 import type { OptionType } from "element-plus/es/components/select-v2/src/select.types"
 import { computed, defineComponent, type FunctionalComponent, onMounted, ref, type StyleValue } from "vue"
-import { useAnalysisTarget } from "../../context"
-import type { AnalysisTarget } from "../../types"
-import { labelOfHostInfo } from "../../util"
+import { useAnalysisTarget } from '../../context'
+import { AnalysisTarget } from '../../types'
+import { labelOfHostInfo } from '../../util'
 
 const SITE_PREFIX = 'S'
 const CATE_PREFIX = 'C'
@@ -45,16 +44,6 @@ type TargetItem = AnalysisTarget & {
     label: string
 }
 
-function collectHosts(hosts: Record<timer.site.Type, string[]>, collector: SiteMap<timer.site.SiteInfo>) {
-    Object.entries(hosts).forEach(([key, arr]) => {
-        const type = key as timer.site.Type
-        arr.forEach(host => {
-            const site: timer.site.SiteInfo = { host, type }
-            collector?.put(site, site)
-        })
-    })
-}
-
 const fetchItems = async (categories: timer.site.Cate[]): Promise<[siteItems: TargetItem[], cateItems: TargetItem[]]> => {
     // 1. query categories
     const cateItems = categories?.map(({ id, name }) => ({ type: 'cate', key: id, label: name } satisfies TargetItem))
@@ -62,12 +51,12 @@ const fetchItems = async (categories: timer.site.Cate[]): Promise<[siteItems: Ta
     // 2. query sites
     const siteSet = new SiteMap<timer.site.SiteInfo>()
 
-    // 2.1 sites from hosts
-    const hosts = await listHosts()
-    collectHosts(hosts, siteSet)
+    // 2.1 sites from usage stats (same RPC as site-manage host picker, no query = full list)
+    const fromUsage = (await searchHosts()) ?? []
+    fromUsage.forEach(site => siteSet.put(site, site))
 
     // 2.2 query sites from sites
-    const sites = await selectAllSites()
+    const sites = (await selectAllSites()) ?? []
     sites?.forEach(site => siteSet.put(site, site))
 
     const siteItems = siteSet?.map((_, site) => site)

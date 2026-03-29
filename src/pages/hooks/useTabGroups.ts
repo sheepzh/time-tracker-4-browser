@@ -1,6 +1,6 @@
 import { listAllGroups, onChanged, removeChangedHandler } from "@api/chrome/tabGroups"
 import { computed, onMounted } from "vue"
-import { useRequest } from "."
+import { useRequest } from "./useRequest"
 
 export const useTabGroups = () => {
     const { data: groups, refresh } = useRequest(listAllGroups, { defaultValue: [] })

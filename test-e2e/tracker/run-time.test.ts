@@ -17,7 +17,7 @@ async function clickRunTimeChange(siteHost: string): Promise<void> {
 }
 
 describe('Run time tracking', () => {
-    beforeEach(async () => context = await launchBrowser())
+    beforeEach(async () => { context = await launchBrowser() })
 
     afterEach(() => context.close())
 

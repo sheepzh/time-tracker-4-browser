@@ -1,4 +1,4 @@
-import type { Compiler } from '@rspack/core'
+import type { Compiler, RspackPluginInstance } from '@rspack/core'
 import fs from 'fs'
 import JSZip from 'jszip'
 import path from 'path'
@@ -23,7 +23,7 @@ interface FileManagerOptions {
     context?: string
 }
 
-export class FileManagerPlugin {
+export class FileManagerPlugin implements RspackPluginInstance {
     private options: FileManagerOptions
     private outputPath: string
 

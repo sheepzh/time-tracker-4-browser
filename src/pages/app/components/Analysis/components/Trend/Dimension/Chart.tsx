@@ -5,8 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { type DimensionEntry, type ValueFormatter } from "@app/components/Analysis/util"
-import { useEcharts } from "@hooks/useEcharts"
+import type { DimensionEntry } from '@app/components/Analysis/types'
+import type { ValueFormatter } from '@app/components/common/kanban/types'
+import { useEcharts } from '@hooks'
 import { defineComponent } from "vue"
 import Wrapper from "./Wrapper"
 

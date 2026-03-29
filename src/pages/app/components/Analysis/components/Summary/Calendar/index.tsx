@@ -4,8 +4,8 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { useAnalysisRows, useAnalysisTimeFormat } from "@app/components/Analysis/context"
-import { useEcharts } from "@hooks/useEcharts"
+import { useAnalysisRows, useAnalysisTimeFormat } from '@app/components/Analysis/context'
+import { useEcharts } from '@hooks'
 import { computed, defineComponent } from "vue"
 import Wrapper, { type BizOption } from "./Wrapper"
 

@@ -6,7 +6,7 @@
  */
 
 import { useDialogSop } from '@app/components/common/DialogSop/context'
-import { t } from "@app/locale"
+import { t } from '@app/locale'
 import { ElAlert } from "element-plus"
 import { defineComponent, toRaw } from "vue"
 import type { ClearForm } from './types'

@@ -11,6 +11,8 @@ import {
 import { use } from "echarts/core"
 import { CanvasRenderer } from "echarts/renderers"
 
+export * from './util/echarts'
+
 export const initEcharts = () => {
     use([
         CanvasRenderer,

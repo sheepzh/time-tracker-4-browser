@@ -1,5 +1,5 @@
+import { t } from "@app/locale"
 import Flex from "@pages/components/Flex"
-import { t } from "@popup/locale"
 import { ElTag } from "element-plus"
 import { computed, defineComponent, toRef, type PropType } from "vue"
 

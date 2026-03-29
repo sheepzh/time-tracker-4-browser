@@ -5,12 +5,12 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { t } from "@app/locale"
+import { useRequest, useShadow } from '@hooks'
+import { t } from '@app/locale'
 import { Check, CirclePlus, Close } from "@element-plus/icons-vue"
-import { useRequest, useShadow } from "@hooks"
 import Box from "@pages/components/Box"
 import Flex from '@pages/components/Flex'
-import { selectAllSites } from '@service/site-service'
+import { selectAllSites } from '@api/sw/site'
 import { EXCLUDING_PREFIX, isRemainHost } from "@util/constant/remain-host"
 import { isValidHost, judgeVirtualFast } from "@util/pattern"
 import { ElButton, ElIcon, ElMessage, ElOption, ElSelect, ElTag } from "element-plus"
@@ -28,14 +28,14 @@ async function remoteSearch(query: string): Promise<SearchItem[]> {
     }
     if (!query) return []
 
-    let sites: SearchItem[] = await selectAllSites({ fuzzyQuery: query })
+    const sites: SearchItem[] = await selectAllSites({ fuzzyQuery: query })
     const idx = sites.findIndex(s => s.host === query)
 
-    const target = idx >= 0
+    const target: SearchItem = idx >= 0
         // Move found item to the front
         ? sites.splice(idx, 1)[0]
         // Or create a new one if not found
-        : { host: query, type: judgeVirtualFast(query) ? 'virtual' : 'normal' } satisfies SearchItem
+        : { host: query, type: judgeVirtualFast(query) ? 'virtual' : 'normal' }
     const result = [target, ...sites]
 
     result.forEach(s => s.exclude = exclude)

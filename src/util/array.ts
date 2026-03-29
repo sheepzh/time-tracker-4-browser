@@ -5,6 +5,18 @@
  * https://opensource.org/licenses/MIT
  */
 
+export function groupBy<T, R>(
+    arr: T[],
+    keyFunc: (e: T, idx: number) => string | undefined | null,
+    downstream: (grouped: T[], key: string) => R
+): Record<string, R>
+
+export function groupBy<T, R>(
+    arr: T[],
+    keyFunc: (e: T, idx: number) => number,
+    downstream: (grouped: T[], key: string) => R
+): Record<number, R>
+
 /**
  * Group by
  *
@@ -149,4 +161,11 @@ export function joinAny<T = any>(arr: T[], separator: T): T[] {
         },
         [],
     )
+}
+
+export function flatArrable<T>(arrayable: Arrayable<T>): T[] {
+    if (Array.isArray(arrayable)) {
+        return arrayable
+    }
+    return [arrayable]
 }

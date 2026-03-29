@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getRuntimeId, getRuntimeName } from "@api/chrome/runtime"
+import { getRuntimeId, getRuntimeName } from "../../api/chrome/runtime"
 import { CHROME_ID, E2E_NAME, EDGE_ID, FIREFOX_ID } from "./meta"
 
 type BrowserEnv = 'unknown' | 'firefox' | 'edge' | 'opera' | 'safari' | 'chrome'

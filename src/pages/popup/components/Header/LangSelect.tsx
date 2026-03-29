@@ -1,14 +1,12 @@
+import { usePopupContext } from "@popup/context"
+import { useManualRequest, useRequest } from "@hooks"
+import { t as tPopup } from '@popup/locale'
+import Flex from "@pages/components/Flex"
 import { createTab } from "@api/chrome/tab"
-import { useManualRequest } from "@hooks/useManualRequest"
-import { useRequest } from "@hooks/useRequest"
+import { getOption, setLocale } from "@api/sw/option"
 import { ALL_LOCALES, handleLocaleOption, localeSameAsBrowser, t } from "@i18n"
 import optionMessages from "@i18n/message/app/option"
-import localeMessages from "@i18n/message/common/locale"
-import Flex from "@pages/components/Flex"
-import { usePopupContext } from "@popup/context"
-import { t as tPopup } from "@popup/locale"
-import optionHolder from "@service/components/option-holder"
-import optionService from "@service/option-service"
+import localeMessages from "@i18n/message/locale"
 import { CROWDIN_HOMEPAGE } from "@util/constant/url"
 import { ElDropdown, ElDropdownItem, ElDropdownMenu, ElIcon, ElText } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
@@ -23,7 +21,7 @@ const SELECTED_STYLES: StyleValue = {
 
 const LangSelect = defineComponent(() => {
     const { data: current } = useRequest(async () => {
-        const option = await optionHolder.get()
+        const option = await getOption()
         return option?.locale
     })
 
@@ -31,7 +29,7 @@ const LangSelect = defineComponent(() => {
 
     const { refresh: saveLocale } = useManualRequest(
         async opt => {
-            await optionService.setLocale(opt)
+            await setLocale(opt)
             handleLocaleOption(opt)
         },
         { onSuccess: reloadPopup },

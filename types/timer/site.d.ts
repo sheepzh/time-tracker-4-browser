@@ -29,4 +29,12 @@ declare namespace timer.site {
         id: number
         name: string
     }
+
+    type Query = {
+        fuzzyQuery?: string
+        cateIds?: Arrayable<number>
+        types?: Arrayable<timer.site.Type>
+    }
+
+    type PageQuery = Query & common.PageQuery
 }

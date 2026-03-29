@@ -5,24 +5,24 @@
  * https://opensource.org/licenses/MIT
  */
 
-import NumberGrow from "@app/components/common/NumberGrow"
+import { groupBy, sum } from '@/util/array'
+import { selectPeriods } from "@api/sw/period"
+import { selectSite } from "@api/sw/stat"
 import { tN, type I18nKey } from "@app/locale"
-import periodDatabase from "@db/period-database"
 import { Sunrise } from "@element-plus/icons-vue"
 import { useRequest, useXsState } from "@hooks"
 import Flex from "@pages/components/Flex"
-import { selectSite } from "@service/stat-service"
-import { calcMostPeriodOf2Hours } from "@util/period"
-import { getStartOfDay, MILL_PER_DAY, MILL_PER_MINUTE } from "@util/time"
+import { getStartOfDay, MILL_PER_DAY, MILL_PER_HOUR, MILL_PER_MINUTE } from "@util/time"
 import { ElIcon, ElScrollbar } from "element-plus"
 import { computed, defineComponent, toRef, type VNode } from "vue"
+import NumberGrow from "./NumberGrow"
 
 type _Value = {
     installedDays?: number
     sites: number
     visits: number
     browsingTime: number
-    most2Hour: number
+    most2Hour: number | undefined
 }
 
 /**
@@ -31,6 +31,16 @@ type _Value = {
 function calculateInstallDays(installTime: Date, now: Date): number {
     const deltaMills = getStartOfDay(now) - getStartOfDay(installTime)
     return Math.round(deltaMills / MILL_PER_DAY)
+}
+
+function calcMostPeriodOf2Hours(rows: timer.period.Row[]): number | undefined {
+    const map = groupBy(rows, e => e.startTime, list => sum(list.map(e => e.milliseconds)))
+    const maxOffsetStr = Object.entries(map).sort((a, b) => a[1] - b[1])[0]?.[0]
+    if (maxOffsetStr === undefined) {
+        return undefined
+    }
+    const offset = Number.parseInt(maxOffsetStr)
+    return Math.floor(offset / MILL_PER_HOUR * 2)
 }
 
 async function query(): Promise<_Value> {
@@ -44,8 +54,8 @@ async function query(): Promise<_Value> {
         visits += time
         browsingTime += focus
     })
-    const periodInfos: timer.period.Result[] = await periodDatabase.getAll()
-    const most2Hour = calcMostPeriodOf2Hours(periodInfos)
+    const periods = await selectPeriods({ size: 8 })
+    const most2Hour = calcMostPeriodOf2Hours(periods)
 
     const result: _Value = {
         sites: hostSet?.size || 0,

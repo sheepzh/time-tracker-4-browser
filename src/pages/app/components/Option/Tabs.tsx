@@ -1,10 +1,10 @@
-import { t } from "@app/locale"
+import { t } from '@app/locale'
 import { Download, Refresh, Upload } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
 import Flex from "@pages/components/Flex"
 import { ElButton, ElMessage, ElMessageBox, ElTabPane, ElTabs, TabPaneName, useNamespace } from "element-plus"
 import { defineComponent, h, useSlots } from "vue"
-import ContentContainer from "../common/ContentContainer"
+import ContentContainer from '../common/ContentContainer'
 import { createFileInput, exportSettings, importSettings } from "./export-import"
 import { type OptionCategory, useCategory } from './useCategory'
 

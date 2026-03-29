@@ -1,9 +1,9 @@
-import optionDatabase from '@db/option-database'
-import backupProcessor from "@service/backup/processor"
-import notificationProcessor from "@service/notification/processor"
 import { MILL_PER_MINUTE } from "@util/time"
 import alarmManager from "./alarm-manager"
+import optionDatabase from './database/option-database'
 import type MessageDispatcher from './message-dispatcher'
+import backupProcessor from "./service/backup/processor"
+import notificationProcessor from "./service/notification/processor"
 
 const BACKUP_ALARM_NAME = 'auto-backup-data'
 const NOTIFICATION_ALARM_NAME = 'notification-data'

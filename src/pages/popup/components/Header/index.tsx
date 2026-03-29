@@ -1,13 +1,13 @@
-import { createTab, listTabs, updateTab } from "@api/chrome/tab"
+import { t } from '@popup/locale'
 import { View } from "@element-plus/icons-vue"
 import Flex from "@pages/components/Flex"
-import LangSelect from "@popup/components/Header/LangSelect"
-import { t } from "@popup/locale"
+import { createTab, listTabs, updateTab } from "@api/chrome/tab"
 import { IS_ANDROID } from "@util/constant/environment"
 import { getAppPageUrl } from "@util/constant/url"
 import { ElLink } from "element-plus"
 import type { FunctionalComponent } from "vue"
 import DarkSwitch from "./DarkSwitch"
+import LangSelect from "./LangSelect"
 import Logo from "./Logo"
 import MoreInfo from './MoreInfo'
 import Option from "./Option"

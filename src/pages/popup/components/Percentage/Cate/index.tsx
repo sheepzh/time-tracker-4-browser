@@ -1,5 +1,5 @@
-import { useEcharts } from "@hooks/useEcharts"
 import { usePopupContext } from "@popup/context"
+import { useEcharts } from '@hooks'
 import { defineComponent, toRef } from "vue"
 import { type PercentageResult } from "../query"
 import Wrapper from "./Wrapper"

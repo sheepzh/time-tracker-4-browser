@@ -1,7 +1,7 @@
-import { createTab } from "@api/chrome/tab"
-import { getCssVariable, getInfoColor, getPrimaryTextColor, getSecondaryTextColor } from "@pages/util/style"
 import { calJumpUrl } from "@popup/common"
-import { t } from "@popup/locale"
+import { t } from '@popup/locale'
+import { getCssVariable, getInfoColor, getPrimaryTextColor, getSecondaryTextColor } from "@pages/util/style"
+import { createTab } from "@api/chrome/tab"
 import { sum, toMap } from "@util/array"
 import { IS_SAFARI } from "@util/constant/environment"
 import { isRtl } from "@util/document"

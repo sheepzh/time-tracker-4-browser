@@ -4,14 +4,14 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { KanbanCard, KanbanIndicatorCell } from "@app/components/common/kanban"
-import { t } from "@app/locale"
-import { cvt2LocaleTime, periodFormatter } from "@app/util/time"
+import { useAnalysisRows, useAnalysisTarget, useAnalysisTimeFormat } from "@app/components/Analysis/context"
+import type { AnalysisTarget } from "@app/components/Analysis/types"
+import { KanbanCard, KanbanIndicatorCell } from '@app/components/common/kanban'
+import { t } from '@app/locale'
+import { cvt2LocaleTime, periodFormatter } from '@app/util/time'
 import { css } from '@emotion/css'
 import Grid from '@pages/components/Grid'
 import { computed, defineComponent } from "vue"
-import { useAnalysisRows, useAnalysisTarget, useAnalysisTimeFormat } from "../../context"
-import { AnalysisTarget } from "../../types"
 import Calendar from "./Calendar"
 import TargetInfo from "./TargetInfo"
 

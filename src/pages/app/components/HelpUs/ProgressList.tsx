@@ -5,11 +5,11 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getTranslationStatus, type TranslationStatusInfo } from "@api/crowdin"
-import { t } from "@app/locale"
-import { useRequest } from "@hooks"
-import localeMessages from "@i18n/message/common/locale"
+import { useRequest } from '@hooks'
+import { t } from '@app/locale'
 import Flex from "@pages/components/Flex"
+import { getTranslationStatus, type TranslationStatusInfo } from "@api/crowdin"
+import localeMessages from "@i18n/message/locale"
 import { ElProgress, type ProgressProps } from "element-plus"
 import { defineComponent, ref, type StyleValue } from "vue"
 

@@ -1,8 +1,11 @@
-import { t } from "@app/locale"
-import { useDocumentVisibility, useManualRequest, useProvide, useProvider, useRequest } from "@hooks"
-import limitService from "@service/limit-service"
+import {
+    batchRemoveLimitRules, batchUpdateEnabled, selectLimits, updateDelay, updateLocked,
+} from "@api/sw/limit"
+import { t } from '@app/locale'
+import { type LimitQuery } from '@app/router/constants'
+import { useDocumentVisibility, useManualRequest, useProvide, useProvider, useRequest } from '@hooks'
 import { ElMessage, ElMessageBox } from "element-plus"
-import { computed, Reactive, reactive, ref, toRaw, watch, type Ref } from "vue"
+import { computed, reactive, ref, toRaw, watch, type Reactive, type Ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { verifyCanModify } from "./common"
 import type { LimitFilterOption } from "./types"
@@ -41,16 +44,16 @@ const NAMESPACE = 'limit'
 
 const initialUrl = () => {
     // Init with url parameter
-    const urlParam = useRoute().query['url'] as string
+    const { url } = useRoute().query as LimitQuery
     useRouter().replace({ query: {} })
-    return urlParam ? decodeURIComponent(urlParam) : ''
+    return url && decodeURIComponent(url)
 }
 
 export const useLimitProvider = () => {
     const filter = reactive<LimitFilterOption>({ url: initialUrl(), onlyEnabled: false })
 
     const { data: list, refresh, loading } = useRequest(
-        () => limitService.select({ filterDisabled: filter.onlyEnabled, url: filter.url ?? '' }),
+        () => selectLimits({ filterDisabled: filter.onlyEnabled, url: filter.url }),
         {
             defaultValue: [],
             deps: [() => filter.url, () => filter.onlyEnabled],
@@ -65,7 +68,7 @@ export const useLimitProvider = () => {
         await verifyCanModify(row)
         const message = t(msg => msg.limit.message.deleteConfirm, { name: row.name })
         await ElMessageBox.confirm(message, { type: "warning" })
-        await limitService.remove(row)
+        await batchRemoveLimitRules([row])
     }, {
         onSuccess() {
             ElMessage.success(t(msg => msg.operation.successMsg))
@@ -93,20 +96,20 @@ export const useLimitProvider = () => {
         const names = list.map(item => item.name ?? item.id).join(', ')
         verifyCanModify(...list)
             .then(() => ElMessageBox.confirm(t(msg => msg.limit.message.deleteConfirm, { name: names }), { type: "warning" }))
-            .then(() => limitService.remove(...list))
+            .then(() => batchRemoveLimitRules(list))
             .then(onBatchSuccess)
             .catch(() => { })
     }
 
     const handleBatchEnable = (list: timer.limit.Item[]) => {
         list.forEach(item => item.enabled = true)
-        limitService.updateEnabled(...list).then(onBatchSuccess).catch(() => { })
+        batchUpdateEnabled(list).then(onBatchSuccess).catch(() => { })
     }
 
     const handleBatchDisable = (list: timer.limit.Item[]) => verifyCanModify(...list)
         .then(() => {
             list.forEach(item => item.enabled = false)
-            return limitService.updateEnabled(...list)
+            return batchUpdateEnabled(list)
         })
         .then(onBatchSuccess)
         .catch(() => { })
@@ -116,7 +119,7 @@ export const useLimitProvider = () => {
         try {
             (row.locked || !enabled) && await verifyCanModify(row)
             row.enabled = enabled
-            await limitService.updateEnabled(toRaw(row))
+            await batchUpdateEnabled([toRaw(row)])
         } catch (e) {
             console.warn(e)
         }
@@ -127,7 +130,7 @@ export const useLimitProvider = () => {
         try {
             (row.locked || delayable) && await verifyCanModify(row)
             row.allowDelay = delayable
-            await limitService.updateDelay(toRaw(row))
+            await updateDelay(toRaw(row))
         } catch (e) {
             console.warn(e)
         }
@@ -143,7 +146,7 @@ export const useLimitProvider = () => {
                 await verifyCanModify(row)
             }
             row.locked = locked
-            await limitService.updateLocked(toRaw(row))
+            await updateLocked(toRaw(row))
         } catch (e) {
             console.warn(e)
         }
@@ -154,11 +157,11 @@ export const useLimitProvider = () => {
     const modify = (row: timer.limit.Item) => modifyInst.value?.modify?.(toRaw(row))
     const create = () => modifyInst.value?.create?.()
     const test = () => testInst.value?.show?.()
-    const empty = computed(() => !loading.value && !list.value.length)
+    const empty = computed(() => !loading.value && !(list.value?.length))
 
     useProvide<Context>(NAMESPACE, {
         filter,
-        list, empty, refresh,
+        list: list as Ref<timer.limit.Item[]>, empty, refresh,
         deleteRow,
         batchDelete: () => selectedAndThen(handleBatchDelete),
         batchEnable: () => selectedAndThen(handleBatchEnable),

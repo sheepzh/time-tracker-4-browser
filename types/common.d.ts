@@ -44,6 +44,8 @@ declare type CompareFn<T> = (a: T, b: T) => number
 
 declare type Awaitable<T> = T | Promise<T>
 
+declare type Arrayable<T> = T | T[]
+
 declare type Getter<T> = () => T | Promise<T>
 
 declare type NoArgCallback = () => void

@@ -4,6 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import { APP_OPTION_ROUTE, APP_REPORT_ROUTE } from "@/shared/route"
 import { onIconClick } from "@api/chrome/action"
 import { createContextMenu } from "@api/chrome/context-menu"
 import { getRuntimeId } from "@api/chrome/runtime"
@@ -15,7 +16,6 @@ import {
     CHANGE_LOG_PAGE, GITHUB_ISSUE_ADD, SOURCE_CODE_PAGE, TU_CAO_PAGE,
     getAppPageUrl, getGuidePageUrl,
 } from "@util/constant/url"
-import { OPTION_ROUTE, REPORT_ROUTE } from "../pages/app/router/constants"
 
 const APP_PAGE_URL = getAppPageUrl()
 
@@ -53,7 +53,7 @@ const allFunctionProps: ChromeContextMenuCreateProps = {
 const optionPageProps: ChromeContextMenuCreateProps = {
     id: getRuntimeId() + '_timer_menu_item_option_link',
     title: titleOf('🥰', t2Chrome(msg => msg.base.option)),
-    onclick: () => createTab(APP_PAGE_URL + '#' + OPTION_ROUTE),
+    onclick: () => createTab(getAppPageUrl(APP_OPTION_ROUTE)),
     ...baseProps
 }
 
@@ -97,7 +97,7 @@ function initBrowserAction() {
 
     if (IS_ANDROID) {
         // Forbidden popup page
-        onIconClick(() => createTab({ url: getAppPageUrl(REPORT_ROUTE) }))
+        onIconClick(() => createTab({ url: getAppPageUrl(APP_REPORT_ROUTE) }))
     }
 }
 

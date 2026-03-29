@@ -1,4 +1,4 @@
-import { useEcharts } from "@hooks/useEcharts"
+import { useEcharts } from "@hooks"
 import { defineComponent } from "vue"
 import { useTopKValue } from "../context"
 import Wrapper from "./Wrapper"

@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { useEcharts } from "@hooks/useEcharts"
+import { useEcharts } from '@hooks'
 import { computed, defineComponent } from "vue"
 import { useHabitFilter } from "../../context"
 import { useDateMergedRows } from "../context"

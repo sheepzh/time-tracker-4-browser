@@ -5,13 +5,13 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { t } from "@app/locale"
-import { cvt2LocaleTime } from "@app/util/time"
+import { useRequest } from '@hooks'
+import { t } from '@app/locale'
+import { cvt2LocaleTime } from '@app/util/time'
 import { Loading, RefreshRight } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
-import { useRequest } from "@hooks"
-import processor from "@service/backup/processor"
-import { getCid } from "@service/meta-service"
+import { listBackupClients } from "@api/sw/backup"
+import { getCid } from "@api/sw/meta"
 import {
     ElLink, ElMessage, ElRadio, ElTable, ElTableColumn, ElTag, useNamespace,
     type RenderRowData,
@@ -37,7 +37,7 @@ const formatTime = (value: timer.backup.Client): string => {
 
 const _default = defineComponent<{ onSelect: ArgCallback<timer.backup.Client> }>(props => {
     const { data: list, loading, refresh } = useRequest(async () => {
-        const { success, data, errorMsg } = await processor.listClients() || {}
+        const { success, data, errorMsg } = (await listBackupClients()) || {}
         if (!success) {
             throw new Error(errorMsg)
         }
@@ -47,7 +47,7 @@ const _default = defineComponent<{ onSelect: ArgCallback<timer.backup.Client> }>
         onError: e => ElMessage.error(typeof e === 'string' ? e : (e as Error).message || 'Unknown error...')
     })
 
-    const { data: localCid } = useRequest(getCid)
+    const { data: localCid } = useRequest(() => getCid())
 
     const selectedCid = ref<string>()
     const handleRowSelect = (row: timer.backup.Client) => {
