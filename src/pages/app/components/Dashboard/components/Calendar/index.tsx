@@ -5,14 +5,14 @@
  * https://opensource.org/licenses/MIT
  */
 
-import ChartTitle from '@app/components/Dashboard/ChartTitle'
-import { useEcharts, useRequest } from "@hooks"
-import { t } from "@app/locale"
-import { REPORT_ROUTE, type ReportQueryParam } from '@app/router/constants'
-import Flex from "@pages/components/Flex"
 import { createTabAfterCurrent } from "@api/chrome/tab"
 import { getWeekBounds } from "@api/sw/option"
 import { selectSite } from '@api/sw/stat'
+import ChartTitle from '@app/components/Dashboard/ChartTitle'
+import { t } from "@app/locale"
+import { REPORT_ROUTE, type ReportQuery } from '@app/router/constants'
+import { useEcharts, useRequest } from "@hooks"
+import Flex from "@pages/components/Flex"
 import { groupBy, sum } from "@util/array"
 import { getAppPageUrl } from "@util/constant/url"
 import { cvtDateRange2Str, formatTimeYMD, MILL_PER_DAY, MILL_PER_HOUR } from "@util/time"
@@ -62,9 +62,8 @@ function handleClick(value: ChartValue): void {
     const currentMonth = parseInt(currentDate.substring(4, 6)) - 1
     const currentDay = parseInt(currentDate.substring(6, 8))
     const currentTs = (new Date(currentYear, currentMonth, currentDay).getTime() + 1000).toString()
-    const query: ReportQueryParam = { ds: currentTs, de: currentTs }
 
-    const url = getAppPageUrl(REPORT_ROUTE, query)
+    const url = getAppPageUrl(REPORT_ROUTE, { ds: currentTs, de: currentTs } satisfies ReportQuery)
     createTabAfterCurrent(url)
 }
 

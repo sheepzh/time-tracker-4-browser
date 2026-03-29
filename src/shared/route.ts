@@ -3,6 +3,7 @@ export type AppLimitQuery = {
     url?: string
 }
 
+export const APP_ANALYSIS_ROUTE = '/data/analysis'
 export const APP_OPTION_ROUTE = '/additional/option'
 export const APP_REPORT_ROUTE = '/data/report'
 /**

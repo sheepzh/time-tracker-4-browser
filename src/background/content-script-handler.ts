@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { APP_ANALYSIS_ROUTE } from '@/shared/route'
 import { executeScript } from "@api/chrome/script"
 import { createTab } from "@api/chrome/tab"
-import { ANALYSIS_ROUTE } from "@app/router/constants"
 import { getAppPageUrl } from "@util/constant/url"
 import { extractFileHost, extractHostname } from "@util/pattern"
 import badgeManager from "./badge-manager"
@@ -21,7 +21,7 @@ const handleOpenAnalysisPage = (sender: ChromeMessageSender) => {
     const { tab, url } = sender || {}
     if (!url) return
     const host = extractFileHost(url) || extractHostname(url)?.host
-    const newTabUrl = getAppPageUrl(ANALYSIS_ROUTE, { host })
+    const newTabUrl = getAppPageUrl(APP_ANALYSIS_ROUTE, { host })
 
     const tabIndex = tab?.index
     const newTabIndex = tabIndex ? tabIndex + 1 : undefined
