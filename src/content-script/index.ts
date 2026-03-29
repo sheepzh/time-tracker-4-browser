@@ -6,7 +6,6 @@
  */
 
 import { trySendMsg2Runtime } from '@api/sw/common'
-import { tryGetOption } from '@api/sw/option'
 import { initLocale } from "@i18n"
 import processLimit from "./limit"
 import printInfo from "./printer"
@@ -58,9 +57,7 @@ async function main() {
     if (isWhitelist) return
 
     await initLocale()
-    const option = await tryGetOption()
-    const needPrintInfo = option?.printInConsole
-    !!needPrintInfo && printInfo(host)
+    printInfo(host)
     await processLimit(url)
 
     processTimeline()
