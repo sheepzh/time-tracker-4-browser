@@ -1,5 +1,5 @@
 import { ElDivider } from 'element-plus'
-import { type FunctionalComponent, h, isVNode, type VNode } from "vue"
+import { type FunctionalComponent, h, isVNode, type VNode, vShow } from "vue"
 import { isOptionItem } from './Item'
 
 function isComment({ type, children }: VNode): boolean {
@@ -7,7 +7,7 @@ function isComment({ type, children }: VNode): boolean {
 }
 
 function isHidden({ dirs }: VNode): boolean {
-    return !!dirs?.some(({ dir, value }) => (dir as any)?.name === 'show' && value === false)
+    return !!dirs?.some(({ dir, value }) => dir === vShow && value === false)
 }
 
 function flattenChildren(original: VNode[]): VNode[] {
