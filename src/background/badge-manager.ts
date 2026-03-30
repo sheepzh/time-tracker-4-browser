@@ -12,7 +12,7 @@ import { IS_ANDROID } from "@util/constant/environment"
 import { extractHostname, isBrowserUrl } from "@util/pattern"
 import { MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND } from "@util/time"
 import statDatabase from "./database/stat-database"
-import MessageDispatcher from "./message-dispatcher"
+import type MessageDispatcher from './message-dispatcher'
 import optionHolder from "./service/components/option-holder"
 import whitelistHolder from "./service/whitelist/holder"
 
@@ -38,11 +38,6 @@ function mill2Str(milliseconds: number) {
     } else {
         return `${(milliseconds / MILL_PER_HOUR).toFixed(1)}h`
     }
-}
-
-function setBadgeTextOfMills(milliseconds: number | undefined, tabId: number | undefined) {
-    const text = milliseconds === undefined ? '' : mill2Str(milliseconds)
-    setBadgeText(text, tabId)
 }
 
 async function findActiveTab(): Promise<BadgeLocation | undefined> {
@@ -125,36 +120,28 @@ class DefaultBadgeManager {
     }
 
     private async render(): Promise<void> {
-        this.state = await this.processState()
+        const [nextState, badgeText] = await this.processState()
+        if (this.state !== nextState) {
+            this.state = nextState
+            setBadgeText(badgeText, this.current?.tabId)
+        }
     }
 
-    private async processState(): Promise<BadgeState> {
-        const { url, tabId, focus } = this.current || {}
-        if (!this.visible || !url) {
-            this.state !== 'HIDDEN' && setBadgeText('', tabId)
-            return 'HIDDEN'
-        }
-        if (isBrowserUrl(url)) {
-            this.state !== 'NOT_SUPPORTED' && setBadgeText('∅', tabId)
-            return 'NOT_SUPPORTED'
-        }
-        const host = extractHostname(url)?.host
-        if (whitelistHolder.contains(host, url)) {
-            this.state !== 'WHITELIST' && setBadgeText('W', tabId)
-            return 'WHITELIST'
-        }
-        if (this.pausedTabId === tabId) {
-            this.state !== 'PAUSED' && setBadgeText('P', tabId)
-            return 'PAUSED'
-        }
-        const milliseconds = focus || (host ? (await statDatabase.get(host, new Date())).focus : undefined)
-        setBadgeTextOfMills(milliseconds, tabId)
-        return 'TIME'
+    private async processState(): Promise<[BadgeState, text: string]> {
+        const { url, tabId, focus } = this.current ?? {}
+        if (!this.visible || !url) return ['HIDDEN', '']
+        if (isBrowserUrl(url)) return ['NOT_SUPPORTED', '∅']
+        const { host } = extractHostname(url)
+        if (whitelistHolder.contains(host, url)) return ['WHITELIST', 'W']
+        if (this.pausedTabId === tabId) return ['PAUSED', 'P']
+        const milliseconds = focus ?? (await statDatabase.get(host, new Date())).focus
+        const millText = mill2Str(milliseconds)
+        return ['TIME', millText]
     }
 }
 
 class SilentBadgeManager implements BadgeManager {
-    init(_dispatcher: MessageDispatcher): void {
+    init(): void {
         // do nothing
     }
     updateFocus(_location?: BadgeLocation): void {

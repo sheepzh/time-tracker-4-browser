@@ -44,7 +44,7 @@ class TimelineCollector {
         const url = document?.location?.href
         if (!url) return
 
-        trySendMsg2Runtime('cs.timelineEv', { start: this.startTime, end: Date.now(), url })
+        trySendMsg2Runtime('timeline.tick', { start: this.startTime, end: Date.now(), url })
 
         this.startTime = null
     }

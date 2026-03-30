@@ -5,6 +5,7 @@ import {
 import path, { join } from "path"
 import postcssRTLCSS from 'postcss-rtlcss'
 import i18nChrome from "../src/i18n/chrome"
+import { compilerOptions } from "../tsconfig.json"
 import { GenerateJsonPlugin } from "./plugins/generate-json"
 import ImportCheckerPlugin, { isBgPath } from "./plugins/import-checker"
 
@@ -89,9 +90,20 @@ const staticOptions: Configuration = {
                         ],
                     },
                 }, {
-                    loader: 'ts-loader',
+                    loader: 'builtin:swc-loader',
                     options: {
-                        configFile: join(__dirname, '..', 'tsconfig.json'),
+                        jsc: {
+                            parser: {
+                                syntax: 'typescript',
+                                tsx: true,
+                            },
+                            transform: {
+                                react: {
+                                    runtime: 'preserve',
+                                },
+                            },
+                            target: compilerOptions.target,
+                        },
                     },
                 }],
             }, {

@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { openLog } from "@/common/logger"
 import { listTabs, trySendMsg2Tab } from "@api/chrome/tab"
 import { isNoneWindowId, onNormalWindowFocusChanged } from "@api/chrome/window"
-import { openLog } from "@/common/logger"
 import { isBrowserUrl } from "@util/pattern"
 import badgeTextManager from "./badge-manager"
 import initBrowserAction from "./browser-action-manager"

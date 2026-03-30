@@ -14,7 +14,6 @@ import badgeManager from "./badge-manager"
 import { collectIconAndAlias } from "./icon-and-alias-collector"
 import MessageDispatcher from "./message-dispatcher"
 import { getSite } from "./service/site-service"
-import timelineThrottler from './service/throttler/timeline-throttler'
 import whitelistHolder from "./service/whitelist/holder"
 
 const handleOpenAnalysisPage = (sender: ChromeMessageSender) => {
@@ -56,5 +55,4 @@ export default function init(dispatcher: MessageDispatcher) {
             return exist?.run ? site : undefined
         })
         .register('cs.getAudible', async (_, sender) => !!sender.tab?.audible)
-        .register('cs.timelineEv', ev => timelineThrottler.saveEvent(ev))
 }

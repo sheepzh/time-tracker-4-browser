@@ -264,7 +264,7 @@ export abstract class BaseIDBStorage<T = Record<string, unknown>> {
         }
     }
 
-    protected async withStore<T = unknown>(operation: (store: IDBObjectStore) => T | Promise<T>, mode?: IDBTransactionMode): Promise<T> {
+    protected async withStore<T = unknown>(operation: (store: IDBObjectStore) => Awaitable<T>, mode?: IDBTransactionMode): Promise<T> {
         let db = await this.initDb()
 
         for (let retryCount = 0; retryCount < 2; retryCount++) {

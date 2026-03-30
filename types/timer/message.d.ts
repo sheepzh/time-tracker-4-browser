@@ -25,14 +25,13 @@ type _MqHandler<R, C extends keyof R> = _MqResData<R, C> extends undefined
 
 declare namespace timer.mq {
     type _HandlerRegistry =
-        & _MakeRegistry<'enableTabGroup' | 'resetBackupScheduler' | 'resetNotificationScheduler'>
+        & _MakeRegistry<'enableTabGroup'>
         & _MakeRegistry<'cs.isInWhitelist', { host?: string; url?: string }, boolean>
         & _MakeRegistry<'cs.incVisitCount', { host: string; url: string }>
         & _MakeRegistry<'cs.trackTime' | 'cs.trackRunTime', timer.core.Event>
         & _MakeRegistry<'cs.onInjected' | 'cs.openAnalysis'>
         & _MakeRegistry<'cs.idleChange', boolean>
         & _MakeRegistry<'cs.getRunSites', string, timer.site.SiteKey | undefined>
-        & _MakeRegistry<'cs.timelineEv', timer.timeline.Event>
         & _MakeRegistry<'cs.getAudible', undefined, boolean>
         // Statistics
         & _MakeRegistry<'stat.today', string, timer.core.Result | undefined>
@@ -54,7 +53,7 @@ declare namespace timer.mq {
         & _MakeRegistry<'cate.add', string, timer.site.Cate>
         & _MakeRegistry<'cate.saveName', { id: number; name: string }>
         & _MakeRegistry<'cate.remove', number>
-        // option / cate / meta
+        // Option
         & _MakeRegistry<'option.get', undefined, timer.option.AllOption>
         & _MakeRegistry<'option.set', Partial<timer.option.AllOption>>
         & _MakeRegistry<'option.setDarkMode', Pick<timer.option.AppearanceOption, 'darkMode' | 'darkModeTimeStart' | 'darkModeTimeEnd'>>
@@ -64,12 +63,13 @@ declare namespace timer.mq {
         & _MakeRegistry<'option.testNotification', undefined, timer.common.Result<void>>
         & _MakeRegistry<'option.getWeekBounds', number, { start: number; end: number }>
         & _MakeRegistry<'option.getWeekStartDay', undefined, number>
+        // Meta
         & _MakeRegistry<'meta.saveFlag', timer.ExtensionMetaFlag>
         & _MakeRegistry<'meta.getCid', undefined, string | undefined>
         & _MakeRegistry<'meta.increaseApp', string>
         & _MakeRegistry<'meta.increasePopup'>
         & _MakeRegistry<'meta.recommendRate', undefined, boolean>
-        // site
+        // Site
         & _MakeRegistry<'site.getSite', timer.site.SiteKey, timer.site.SiteInfo>
         & _MakeRegistry<'site.getPslSuffix', string, string>
         & _MakeRegistry<'site.selectAllSites', timer.site.Query | undefined, timer.site.SiteInfo[]>
@@ -98,22 +98,28 @@ declare namespace timer.mq {
         & _MakeRegistry<'mergeRule.selectAll', undefined, timer.mergeRule.Rule[]>
         & _MakeRegistry<'mergeRule.remove', string>
         & _MakeRegistry<'mergeRule.add', timer.merge.Rule>
+        // Whitelist
         & _MakeRegistry<'whitelist.listAll', undefined, string[]>
         & _MakeRegistry<'whitelist.add' | 'whitelist.remove', string>
+        // Backup
         & _MakeRegistry<'backup.syncData', undefined, { success: boolean; errorMsg?: string; data?: number }>
         & _MakeRegistry<'backup.checkAuth', undefined, { errorMsg?: string }>
         & _MakeRegistry<'backup.clear', string, { success: boolean; errorMsg?: string }>
         & _MakeRegistry<'backup.query', timer.backup.RemoteQuery, timer.backup.Row[]>
         & _MakeRegistry<'backup.getLastBackUp', timer.backup.Type, { ts: number; msg?: string } | undefined>
         & _MakeRegistry<'backup.listClients', undefined, { success: boolean; errorMsg?: string; data?: timer.backup.Client[] }>
-        // period
+        // Period
         & _MakeRegistry<'period.select', timer.period.Query, timer.period.Row[]>
+        // Timeline
         & _MakeRegistry<'timeline.list', timer.timeline.Query, timer.timeline.Activity[]>
+        & _MakeRegistry<'timeline.tick', timer.timeline.Event>
         & _MakeRegistry<'import.preview', timer.imported.PreviewQuery, timer.imported.Row[]>
         & _MakeRegistry<'import.processImportedData', timer.imported.ProcessQuery>
         & _MakeRegistry<'immigration.importData', any>
         & _MakeRegistry<'immigration.exportData', undefined, timer.backup.ExportData>
         & _MakeRegistry<'memory.getUsedStorage', undefined, timer.common.StorageUsage>
+        // Scheduler
+        & _MakeRegistry<'scheduler.resetBackup' | 'scheduler.resetNotification'>
 
     type ReqCode = keyof _HandlerRegistry
 

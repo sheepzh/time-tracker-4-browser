@@ -9,8 +9,8 @@ const BACKUP_ALARM_NAME = 'auto-backup-data'
 const NOTIFICATION_ALARM_NAME = 'notification-data'
 
 export async function initScheduler(dispatcher: MessageDispatcher): Promise<void> {
-    dispatcher.register('resetBackupScheduler', resetBackup)
-        .register('resetNotificationScheduler', resetNotification)
+    dispatcher.register('scheduler.resetBackup', resetBackup)
+        .register('scheduler.resetNotification', resetNotification)
 
     const existBackup = await alarmManager.getAlarm(BACKUP_ALARM_NAME)
     !existBackup && await resetBackup()

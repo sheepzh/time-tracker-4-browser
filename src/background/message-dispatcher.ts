@@ -34,6 +34,7 @@ import {
 } from "./service/stat-service"
 import { mergeDate } from "./service/stat-service/merge/date"
 import { canReadRemote } from "./service/stat-service/remote"
+import timelineThrottler from './service/throttler/timeline-throttler'
 import { listTimeline } from "./service/timeline-service"
 import whitelistService from "./service/whitelist/service"
 
@@ -142,6 +143,7 @@ class MessageDispatcher {
             // Period & Timeline
             .register('period.select', selectPeriods)
             .register('timeline.list', listTimeline)
+            .register('timeline.tick', ev => timelineThrottler.saveEvent(ev))
             // Data immigration
             .register('import.preview', req => previewImport(req))
             .register('import.processImportedData', processImportedData)

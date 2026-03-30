@@ -1,5 +1,5 @@
-import { useOption } from '@app/components/Option/useOption'
 import { trySendMsg2Runtime } from '@api/sw/common'
+import { useOption } from '@app/components/Option/useOption'
 import { defaultNotification } from '@util/constant/option'
 import { computed, watch } from 'vue'
 
@@ -19,7 +19,7 @@ export const useNotification = () => {
     watch([
         () => option.notificationCycle,
         () => option.notificationOffset,
-    ], () => !loading.value && setTimeout(() => trySendMsg2Runtime('resetNotificationScheduler')))
+    ], () => !loading.value && setTimeout(() => trySendMsg2Runtime('scheduler.resetNotification')))
 
     const weekday = computed<number | null>({
         get() {

@@ -47,6 +47,7 @@
         "css-loader": "^7.1.4",
         "decompress": "^4.2.1",
         "fake-indexeddb": "^6.2.5",
+        "fork-ts-checker-webpack-plugin": "^9.1.0",
         "husky": "^9.1.7",
         "jsdom": "^29.0.1",
         "jszip": "^3.10.1",
@@ -54,7 +55,6 @@
         "postcss-loader": "^8.2.1",
         "postcss-rtlcss": "^6.0.0",
         "puppeteer": "^24.40.0",
-        "ts-loader": "^9.5.4",
         "ts-node": "^10.9.2",
         "tsconfig-paths": "^4.2.0",
         "typescript": "6.0.2"

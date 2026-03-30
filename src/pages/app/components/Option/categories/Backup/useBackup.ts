@@ -1,5 +1,5 @@
-import { useOption } from '@app/components/Option/useOption'
 import { trySendMsg2Runtime } from '@api/sw/common'
+import { useOption } from '@app/components/Option/useOption'
 import { defaultBackup } from "@util/constant/option"
 import { computed, watch } from "vue"
 
@@ -19,7 +19,7 @@ export const useBackup = () => {
     watch([
         () => option.autoBackUp,
         () => option.autoBackUpInterval,
-    ], () => !loading.value && setTimeout(() => trySendMsg2Runtime('resetBackupScheduler')))
+    ], () => !loading.value && setTimeout(() => trySendMsg2Runtime('scheduler.resetBackup')))
 
     const reset = () => {
         const defaultOption = defaultBackup()
