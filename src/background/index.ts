@@ -5,7 +5,6 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { openLog } from "@/common/logger"
 import { listTabs, trySendMsg2Tab } from "@api/chrome/tab"
 import { isNoneWindowId, onNormalWindowFocusChanged } from "@api/chrome/window"
 import { isBrowserUrl } from "@util/pattern"
@@ -22,9 +21,6 @@ import initSidePanel from "./side-panel"
 import TabListener from './tab-listener'
 import initTrackServer from "./track-server"
 import initWhitelistMenuManager from "./whitelist-menu-manager"
-
-// Open the log of console
-openLog()
 
 // Init side panel
 initSidePanel()
@@ -50,7 +46,7 @@ initTrackServer(messageDispatcher)
 new VersionMigrator().init()
 
 // scheduler
-initScheduler(messageDispatcher)
+initScheduler()
 
 // Manage the context menus
 initWhitelistMenuManager()

@@ -78,15 +78,14 @@ class DefaultBadgeManager {
 
     async init(messageDispatcher: MessageDispatcher) {
         const option = await optionHolder.get()
-        this.processOption(option)
-        optionHolder.addChangeListener(opt => this.processOption(opt))
+        await this.processOption(option)
+        optionHolder.addChangeListener(async opt => await this.processOption(opt))
         whitelistHolder.addPostHandler(() => this.render())
-        messageDispatcher
-            .register('cs.idleChange', (isIdle, sender) => {
-                const tabId = sender?.tab?.id
-                isIdle ? this.pause(tabId) : this.resume(tabId)
-            })
-        this.updateFocus()
+        messageDispatcher.register('cs.idleChange', (isIdle, sender) => {
+            const tabId = sender?.tab?.id
+            isIdle ? this.pause(tabId) : this.resume(tabId)
+        })
+        await this.updateFocus()
     }
 
     /**
@@ -94,16 +93,16 @@ class DefaultBadgeManager {
      */
     private async pause(tabId?: number) {
         this.pausedTabId = tabId
-        this.render()
+        await this.render()
     }
 
     /**
      * Show the badge text
      */
-    private resume(tabId?: number) {
+    private async resume(tabId?: number) {
         if (!this.pausedTabId || this.pausedTabId !== tabId) return
         this.pausedTabId = undefined
-        this.render()
+        await this.render()
     }
 
     async updateFocus(target?: BadgeLocation) {
@@ -111,20 +110,18 @@ class DefaultBadgeManager {
         await this.render()
     }
 
-    private processOption(option: timer.option.AppearanceOption) {
+    private async processOption(option: timer.option.AppearanceOption) {
         const { displayBadgeText, badgeBgColor } = option || {}
         const before = this.visible
         this.visible = !!displayBadgeText
-        !this.visible && before && clearAllBadge()
-        setBadgeBgColor(badgeBgColor)
+        !this.visible && before && await clearAllBadge()
+        await setBadgeBgColor(badgeBgColor)
     }
 
     private async render(): Promise<void> {
         const [nextState, badgeText] = await this.processState()
-        if (this.state !== nextState) {
-            this.state = nextState
-            setBadgeText(badgeText, this.current?.tabId)
-        }
+        this.state = nextState
+        await setBadgeText(badgeText, this.current?.tabId)
     }
 
     private async processState(): Promise<[BadgeState, text: string]> {

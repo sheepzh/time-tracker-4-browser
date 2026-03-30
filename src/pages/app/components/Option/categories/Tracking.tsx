@@ -4,11 +4,11 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { useManualRequest, useRequest } from '@hooks'
-import { t } from '@app/locale'
 import { hasPerm, requestPerm } from "@api/chrome/permission"
 import { isAllowedFileSchemeAccess } from "@api/chrome/runtime"
 import { sendMsg2Runtime } from '@api/sw/common'
+import { t } from '@app/locale'
+import { useManualRequest, useRequest } from '@hooks'
 import { locale } from "@i18n"
 import { rotate } from "@util/array"
 import { IS_ANDROID, IS_FIREFOX } from "@util/constant/environment"
@@ -112,7 +112,6 @@ const _default = defineComponent((_props, ctx) => {
             }
         }
         option.countTabGroup = val
-        val && sendMsg2Runtime("enableTabGroup")
     }
 
     return () => <OptionLines>

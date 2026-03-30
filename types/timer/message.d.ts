@@ -25,7 +25,6 @@ type _MqHandler<R, C extends keyof R> = _MqResData<R, C> extends undefined
 
 declare namespace timer.mq {
     type _HandlerRegistry =
-        & _MakeRegistry<'enableTabGroup'>
         & _MakeRegistry<'cs.isInWhitelist', { host?: string; url?: string }, boolean>
         & _MakeRegistry<'cs.incVisitCount', { host: string; url: string }>
         & _MakeRegistry<'cs.trackTime' | 'cs.trackRunTime', timer.core.Event>
@@ -118,8 +117,6 @@ declare namespace timer.mq {
         & _MakeRegistry<'immigration.importData', any>
         & _MakeRegistry<'immigration.exportData', undefined, timer.backup.ExportData>
         & _MakeRegistry<'memory.getUsedStorage', undefined, timer.common.StorageUsage>
-        // Scheduler
-        & _MakeRegistry<'scheduler.resetBackup' | 'scheduler.resetNotification'>
 
     type ReqCode = keyof _HandlerRegistry
 

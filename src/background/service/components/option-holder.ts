@@ -2,7 +2,7 @@ import { onPermRemoved } from "@api/chrome/permission"
 import db from "@db/option-database"
 import { defaultOption, type DefaultOption } from '@util/constant/option'
 
-type ChangeListener = (option: DefaultOption) => void
+type ChangeListener = (newVal: DefaultOption, oldVal: DefaultOption) => void
 
 class OptionHolder {
     private value: DefaultOption | undefined
@@ -33,7 +33,7 @@ class OptionHolder {
         const toSet = Object.assign(defaultOption(), exist, option)
         await db.setOption(toSet)
         this.value = toSet
-        this.listeners.forEach(listener => listener(toSet))
+        this.listeners.forEach(listener => listener(toSet, exist))
     }
 }
 

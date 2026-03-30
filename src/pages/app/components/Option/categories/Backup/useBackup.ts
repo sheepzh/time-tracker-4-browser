@@ -1,7 +1,6 @@
-import { trySendMsg2Runtime } from '@api/sw/common'
 import { useOption } from '@app/components/Option/useOption'
 import { defaultBackup } from "@util/constant/option"
-import { computed, watch } from "vue"
+import { computed } from "vue"
 
 function copy(target: timer.option.BackupOption, source: timer.option.BackupOption) {
     target.backupType = source.backupType
@@ -14,12 +13,7 @@ function copy(target: timer.option.BackupOption, source: timer.option.BackupOpti
 }
 
 export const useBackup = () => {
-    const { option, loading } = useOption({ defaultValue: defaultBackup, copy })
-
-    watch([
-        () => option.autoBackUp,
-        () => option.autoBackUpInterval,
-    ], () => !loading.value && setTimeout(() => trySendMsg2Runtime('scheduler.resetBackup')))
+    const { option } = useOption({ defaultValue: defaultBackup, copy })
 
     const reset = () => {
         const defaultOption = defaultBackup()
