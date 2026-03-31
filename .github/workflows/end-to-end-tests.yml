@@ -4,17 +4,15 @@ jobs:
     test:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v6
             - name: Test using Node.js
-              uses: actions/setup-node@v1
+              uses: actions/setup-node@v6
               with:
-                  node-version: "v22"
+                  node-version: "v24"
             - name: Install dependencies
               run: npm install
             - name: Setup e2e environment
               run: bash script/setup-e2e.sh --all
-            - name: Start test servers
-              run: bash script/setup-e2e.sh --start-servers
 
             - name: Run tests
               env:
