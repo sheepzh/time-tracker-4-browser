@@ -47,6 +47,7 @@ jobs:
               if: success()
               uses: peter-evans/create-pull-request@v8
               with:
+                  token: ${{ secrets.BOT_PAT_TOKEN }}
                   commit-message: "i18n(download): download translations by bot"
                   branch: crowdin-export/patch
                   title: "i18n(download): download translations by bot"

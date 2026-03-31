@@ -25,6 +25,7 @@ jobs:
             - name: Create Pull Request
               uses: peter-evans/create-pull-request@v7
               with:
+                  token: ${{ secrets.BOT_PAT_TOKEN }}
                   commit-message: "chore(psl): update PSL list by bot"
                   branch: psl-update/patch
                   title: "chore(psl): update PSL list by bot"
