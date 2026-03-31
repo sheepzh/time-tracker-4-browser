@@ -16,9 +16,7 @@ async function onFirstInstall() {
 
 async function reloadContentScript() {
     const files = chrome.runtime.getManifest().content_scripts?.[0]?.js
-    if (!files?.length) {
-        return
-    }
+    if (!files?.length) return
     const tabs = await listTabs()
     tabs.filter(({ url }) => url && !isBrowserUrl(url))
         .forEach(({ id: tabId }) => tabId && executeScript(tabId, files))
