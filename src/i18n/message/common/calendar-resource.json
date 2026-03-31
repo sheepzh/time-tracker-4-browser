@@ -273,6 +273,7 @@
             "everyday": "Her gün",
             "thisWeek": "Bu hafta",
             "thisMonth": "Bu ay",
+            "lastWeek": "Geçen hafta",
             "lastDays": "Son {n} gün",
             "tillYesterday": "Dün boyunca",
             "tillDaysAgo": "{n} gün önce",
