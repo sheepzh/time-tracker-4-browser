@@ -68,6 +68,6 @@ const _default = defineComponent<{}>(() => {
             </Flex>
         </Flex>
     )
-}, { props: ['hideCateFilter'] })
+})
 
 export default _default

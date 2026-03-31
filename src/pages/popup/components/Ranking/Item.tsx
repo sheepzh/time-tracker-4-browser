@@ -1,12 +1,12 @@
-import { calJumpUrl } from "@popup/common"
-import { useCateNameMap, useQuery } from "@popup/context"
-import { useTabGroups } from "@hooks"
-import { t } from '@popup/locale'
+import { cvtGroupColor } from '@/pages/util/style'
+import { createTab } from "@api/chrome/tab"
 import { Mouse, Timer } from "@element-plus/icons-vue"
+import { useTabGroups } from "@hooks"
 import Flex from "@pages/components/Flex"
 import TooltipWrapper from '@pages/components/TooltipWrapper'
-import { createTab } from "@api/chrome/tab"
-import { cvtGroupColor } from "@api/chrome/tabGroups"
+import { calJumpUrl } from "@popup/common"
+import { useCateNameMap, useQuery } from "@popup/context"
+import { t } from '@popup/locale'
 import { isRemainHost } from "@util/constant/remain-host"
 import { getGroupName, getIconUrl, isCate, isGroup, isNormalSite, isSite } from "@util/stat"
 import { DateRange, formatPeriodCommon } from "@util/time"

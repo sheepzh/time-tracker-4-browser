@@ -4,9 +4,9 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import { addWhitelist, listWhitelist, removeWhitelist } from "@api/sw/whitelist"
 import { t } from '@app/locale'
 import Flex from "@pages/components/Flex"
-import { addWhitelist, listWhitelist, removeWhitelist } from "@api/sw/whitelist"
 import { ElMessage, ElMessageBox } from "element-plus"
 import { defineComponent, onBeforeMount, reactive } from "vue"
 import AddButton from './AddButton'

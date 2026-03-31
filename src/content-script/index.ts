@@ -53,7 +53,7 @@ async function main() {
     if (getOrSetFlag()) return
     if (!host) return
 
-    const isWhitelist = await trySendMsg2Runtime('cs.isInWhitelist', { host, url })
+    const isWhitelist = await trySendMsg2Runtime('whitelist.contain', { host, url })
     if (isWhitelist) return
 
     await initLocale()

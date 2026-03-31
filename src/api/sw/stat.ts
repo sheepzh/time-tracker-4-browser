@@ -9,11 +9,11 @@ export function selectSitePage(param?: timer.stat.SitePageQuery) {
 }
 
 export function deleteSiteByHost(host: string, date?: [string?, string?] | string) {
-    return sendMsg2Runtime('stat.deleteSiteByHost', { host, date })
+    return sendMsg2Runtime('stat.deleteSite', { host, date })
 }
 
 export function deleteSiteByGroup(groupId: number, date?: [string?, string?] | string) {
-    return sendMsg2Runtime('stat.deleteSiteByGroup', { groupId, date })
+    return sendMsg2Runtime('stat.deleteSite', { groupId, date })
 }
 
 export function selectCate(param?: timer.stat.CateQuery) {

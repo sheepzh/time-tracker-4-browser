@@ -56,7 +56,7 @@ declare namespace timer.stat {
     } | {
         groupId: number
     }) & {
-        date: [start: string, end: string] | string
+        date?: [start?: string, end?: string] | string
     }
 
     type SitePageQuery = SiteQuery & timer.common.PageQuery

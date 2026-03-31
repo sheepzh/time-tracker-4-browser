@@ -36,7 +36,7 @@ import { mergeDate } from "./service/stat-service/merge/date"
 import { canReadRemote } from "./service/stat-service/remote"
 import timelineThrottler from './service/throttler/timeline-throttler'
 import { listTimeline } from "./service/timeline-service"
-import whitelistService from "./service/whitelist/service"
+import whitelistHolder from './service/whitelist/holder'
 
 function processParam(param: unknown): unknown {
     if (param === null || param === undefined) {
@@ -71,8 +71,9 @@ class MessageDispatcher {
             .register('stat.listSite', selectSite)
             .register('stat.getSitePage', selectStateSitePage)
             .register('stat.countSite', countSite)
-            .register('stat.deleteSiteByHost', param => statDatabase.deleteByHost(param))
-            .register('stat.deleteSiteByGroup', param => statDatabase.deleteByGroup(param))
+            .register('stat.deleteSite', param => 'host' in param
+                ? statDatabase.deleteByHost(param.host, param.date)
+                : statDatabase.deleteByGroup(param.groupId, param.date))
             .register('stat.selectCate', selectCate)
             .register('stat.selectCatePage', selectCatePage)
             .register('stat.selectGroup', selectGroup)
@@ -124,12 +125,14 @@ class MessageDispatcher {
             .register('meta.increasePopup', increasePopup)
             .register('meta.recommendRate', recommendRate)
             // Whitelist & Merge Rule
-            .register('whitelist.listAll', () => whitelistService.listAll())
-            .register('whitelist.add', whitelistService.add)
-            .register('whitelist.remove', whitelistService.remove)
-            .register('mergeRule.selectAll', () => mergeRuleDatabase.selectAll())
-            .register('mergeRule.remove', origin => mergeRuleDatabase.remove(origin))
-            .register('mergeRule.add', rule => mergeRuleDatabase.add(rule))
+            .register('whitelist.contain', ({ host, url }) => whitelistHolder.contains(host, url))
+            .register('whitelist.all', () => whitelistHolder.all())
+            .register('whitelist.add', white => whitelistHolder.add(white))
+            .register('whitelist.remove', white => whitelistHolder.remove(white))
+            // Merge rule
+            .register('merge.all', () => mergeRuleDatabase.selectAll())
+            .register('merge.remove', origin => mergeRuleDatabase.remove(origin))
+            .register('merge.add', rule => mergeRuleDatabase.add(rule))
             // Backup
             .register('backup.syncData', () => backupProcessor.syncData())
             .register('backup.checkAuth', async () => {

@@ -209,7 +209,7 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
         }, 'readwrite')
     }
 
-    deleteByHost(host: string, range?: string | Tuple<string, 2>): Promise<string[]> {
+    deleteByHost(host: string, range?: string | [string?, string?]): Promise<void> {
         const [start, end] = Array.isArray(range) ? range : [range, range]
         return this.withStore(async store => {
             if (start && start === end) {
@@ -220,7 +220,7 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
                 if (key) {
                     await req2Promise(store.delete(key))
                 }
-                return [start]
+                return
             }
 
             // Delete by range
@@ -239,12 +239,10 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
                     deletedDates.add(dateStr)
                 }
             })
-
-            return Array.from(deletedDates)
         }, 'readwrite')
     }
 
-    deleteByGroup(groupId: number, range?: string | Tuple<string, 2>): Promise<void> {
+    deleteByGroup(groupId: number, range?: string | [string, string]): Promise<void> {
         return this.withStore(async store => {
             const [start, end] = Array.isArray(range) ? range : [range, range]
             const host = cvtGroupId2Host(groupId)

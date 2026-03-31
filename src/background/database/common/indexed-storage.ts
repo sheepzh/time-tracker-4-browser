@@ -63,19 +63,23 @@ export async function iterateCursor<T = unknown>(
     })
 }
 
-type TransactionError = 'Connection' | 'StoreNotFound' | 'Unknown'
+type TransactionError = 'Connection' | 'StoreNotFound' | 'DataError' | 'Unknown'
 
 const detectTransactionError = (err: unknown): TransactionError => {
+    console.log(err)
     if (!(err instanceof DOMException)) {
         return 'Unknown'
     }
-    if (err.name === 'InvalidStateError' || err.name === 'AbortError') {
-        return 'Connection'
+    const { name } = err
+    switch (name) {
+        case 'InvalidStateError':
+        case 'AbortError': return 'Connection'
+        case 'NotFoundError': return 'StoreNotFound'
+        case 'DataError': return 'DataError'
+        default:
+            console.warn(`Unknown dom exception: name=${name}`)
+            return 'Unknown'
     }
-    if (err.name === 'NotFoundError') {
-        return 'StoreNotFound'
-    }
-    return 'Unknown'
 }
 
 export function closedRangeKey(lower: IDBValidKey | undefined, upper: IDBValidKey | undefined): IDBKeyRange | undefined {

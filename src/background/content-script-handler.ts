@@ -14,7 +14,6 @@ import badgeManager from "./badge-manager"
 import { collectIconAndAlias } from "./icon-and-alias-collector"
 import MessageDispatcher from "./message-dispatcher"
 import { getSite } from "./service/site-service"
-import whitelistHolder from "./service/whitelist/holder"
 
 const handleOpenAnalysisPage = (sender: ChromeMessageSender) => {
     const { tab, url } = sender || {}
@@ -43,7 +42,6 @@ const handleInjected = async (sender: ChromeMessageSender) => {
 export default function init(dispatcher: MessageDispatcher) {
     dispatcher
         // Judge is in whitelist
-        .register('cs.isInWhitelist', ({ host, url } = {}) => !!host && !!url && whitelistHolder.contains(host, url))
         .register('cs.openAnalysis', (_, sender) => handleOpenAnalysisPage(sender))
         .register('cs.onInjected', (_, sender) => handleInjected(sender))
         // Get sites which need to count run time

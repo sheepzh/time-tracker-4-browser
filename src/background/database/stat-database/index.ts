@@ -65,11 +65,11 @@ class StatDatabaseWrapper implements StateDatabaseComposite {
         return this.current().delete(...rows)
     }
 
-    deleteByHost(host: string, range?: string | Tuple<string, 2>): Promise<string[]> {
+    deleteByHost(host: string, range?: string | [string, string]): Promise<void> {
         return this.current().deleteByHost(host, range)
     }
 
-    deleteByGroup(groupId: number, range?: string | Tuple<string, 2>): Promise<void> {
+    deleteByGroup(groupId: number, range?: string | [string, string]): Promise<void> {
         return this.current().deleteByGroup(groupId, range)
     }
 

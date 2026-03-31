@@ -5,12 +5,12 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { processImportedData } from '@/api/sw/import'
 import DialogSop from '@app/components/common/DialogSop'
 import { initDialogSopContext } from '@app/components/common/DialogSop/context'
 import { t } from "@app/locale"
 import { Upload } from "@element-plus/icons-vue"
 import Flex from '@pages/components/Flex'
-import { processImportedData } from '@service/components/import-processor'
 import { ElButton } from "element-plus"
 import { defineComponent, toRaw } from "vue"
 import { useDataMemory } from '../../context'

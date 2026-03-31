@@ -45,14 +45,14 @@ export interface StatDatabase {
      * @param range date range, inclusive start and end, if null, delete all
      * @return dates to deleted
      */
-    deleteByHost(host: string, range?: string | Tuple<string, 2>): Promise<string[]>
+    deleteByHost(host: string, range?: string | [string?, string?]): Promise<void>
     /**
      * Delete group data
      *
      * @param groupId the id of group
      * @param range date range, inclusive start and end, if null, delete all
      */
-    deleteByGroup(groupId: number, range?: string | Tuple<string, 2>): Promise<void>
+    deleteByGroup(groupId: number, range?: string | [string?, string?]): Promise<void>
     /******* GROUP *******/
     /**
      * Accumulate data for tab group

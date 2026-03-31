@@ -11,6 +11,27 @@ const options = generateOption({
     mode: "development",
 })
 
-options.plugins?.push(new ForkTsCheckerWebpackPlugin())
+const tsCheckerPlugin = new ForkTsCheckerWebpackPlugin({
+    typescript: {
+        configOverwrite: {
+            compilerOptions: {
+                skipLibCheck: false,
+            },
+        },
+        diagnosticOptions: {
+            syntactic: true,
+            semantic: true,
+            declaration: true,
+            global: true,
+        },
+    },
+    issue: {
+        exclude: [
+            { file: '**/node_modules/**' },
+        ],
+    },
+})
+
+options.plugins?.push(tsCheckerPlugin)
 
 export default options

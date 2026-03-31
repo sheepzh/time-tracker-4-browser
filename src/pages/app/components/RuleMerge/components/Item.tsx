@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 import EditableTag from "@app/components/common/EditableTag"
-import { useShadow, useSwitch } from '@hooks'
 import { t } from '@app/locale'
+import { useShadow, useSwitch } from '@hooks'
 import Flex from "@pages/components/Flex"
 import { LOCAL_HOST_PATTERN } from "@util/constant/remain-host"
 import { type TagProps } from "element-plus"

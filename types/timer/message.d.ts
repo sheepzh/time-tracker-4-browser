@@ -25,7 +25,6 @@ type _MqHandler<R, C extends keyof R> = _MqResData<R, C> extends undefined
 
 declare namespace timer.mq {
     type _HandlerRegistry =
-        & _MakeRegistry<'cs.isInWhitelist', { host?: string; url?: string }, boolean>
         & _MakeRegistry<'cs.incVisitCount', { host: string; url: string }>
         & _MakeRegistry<'cs.trackTime' | 'cs.trackRunTime', timer.core.Event>
         & _MakeRegistry<'cs.onInjected' | 'cs.openAnalysis'>
@@ -36,8 +35,7 @@ declare namespace timer.mq {
         & _MakeRegistry<'stat.today', string, timer.core.Result | undefined>
         & _MakeRegistry<'stat.listSite', timer.stat.SiteQuery | undefined, timer.stat.SiteRow[]>
         & _MakeRegistry<'stat.getSitePage', timer.stat.SitePageQuery | undefined, timer.common.PageResult<timer.stat.SiteRow>>
-        & _MakeRegistry<'stat.deleteSiteByHost', timer.stat.SiteDeleteByHost, string[]>
-        & _MakeRegistry<'stat.deleteSiteByGroup', timer.stat.SiteDeleteByGroup>
+        & _MakeRegistry<'stat.deleteSite', timer.stat.SiteDeleteQuery>
         & _MakeRegistry<'stat.countSite', timer.stat.SiteQuery | undefined, number>
         & _MakeRegistry<'stat.selectCate', timer.stat.CateQuery | undefined, timer.stat.CateRow[]>
         & _MakeRegistry<'stat.selectCatePage', timer.stat.CatePageQuery | undefined, timer.common.PageResult<timer.stat.CateRow>>
@@ -94,12 +92,13 @@ declare namespace timer.mq {
         & _MakeRegistry<'limit.delay', string>
         & _MakeRegistry<'limit.openRule', string>
         // Merge
-        & _MakeRegistry<'mergeRule.selectAll', undefined, timer.mergeRule.Rule[]>
-        & _MakeRegistry<'mergeRule.remove', string>
-        & _MakeRegistry<'mergeRule.add', timer.merge.Rule>
+        & _MakeRegistry<'merge.all', undefined, timer.merge.Rule[]>
+        & _MakeRegistry<'merge.remove', string>
+        & _MakeRegistry<'merge.add', timer.merge.Rule>
         // Whitelist
-        & _MakeRegistry<'whitelist.listAll', undefined, string[]>
+        & _MakeRegistry<'whitelist.all', undefined, string[]>
         & _MakeRegistry<'whitelist.add' | 'whitelist.remove', string>
+        & _MakeRegistry<'whitelist.contain', { host: string; url: string }, boolean>
         // Backup
         & _MakeRegistry<'backup.syncData', undefined, { success: boolean; errorMsg?: string; data?: number }>
         & _MakeRegistry<'backup.checkAuth', undefined, { errorMsg?: string }>

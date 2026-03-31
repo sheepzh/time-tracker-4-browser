@@ -3,8 +3,8 @@ import { EchartsWrapper } from '@hooks'
 import { getPrimaryTextColor } from '@pages/util/style'
 import { groupBy, toMap } from '@util/array'
 import {
-    formatPeriodCommon,
-    formatTimeYMD, MILL_PER_DAY, MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND
+    formatPeriodCommon, formatTimeYMD,
+    MILL_PER_DAY, MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND
 } from '@util/time'
 import type {
     ComposeOption, CustomSeriesOption, CustomSeriesRenderItem, DataZoomComponentOption, GridComponentOption,

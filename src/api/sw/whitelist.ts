@@ -1,7 +1,7 @@
 import { sendMsg2Runtime } from "./common"
 
 export function listWhitelist() {
-    return sendMsg2Runtime('whitelist.listAll')
+    return sendMsg2Runtime('whitelist.all')
 }
 
 export function addWhitelist(white: string) {

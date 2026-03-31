@@ -30,4 +30,8 @@ export default class WhitelistProcessor {
         if (this.exclude.some(r => r.test(url))) return false
         return this.host.includes(host) || this.virtual.some(r => r.test(url))
     }
+
+    containsHost(host: string): boolean {
+        return this.host.includes(host)
+    }
 }

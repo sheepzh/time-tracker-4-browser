@@ -40,24 +40,6 @@ class WhitelistDatabase extends BaseDatabase implements BrowserMigratable<'__whi
         return exist?.includes(white)
     }
 
-    /**
-     * Add listener to listen changes
-     *
-     * @since 0.1.9
-     */
-    addChangeListener(listener: (whitelist: string[]) => void) {
-        const storageListener = (
-            changes: { [key: string]: chrome.storage.StorageChange },
-            _areaName: chrome.storage.AreaName,
-        ) => {
-            const changeInfo = changes[WHITELIST_KEY]
-            const newValue = changeInfo?.newValue
-            const whitelists: string[] = Array.isArray(newValue) ? newValue.map(n => new String(n).toString()) : []
-            changeInfo && listener(whitelists)
-        }
-        chrome.storage.onChanged.addListener(storageListener)
-    }
-
     async importData(data: unknown): Promise<void> {
         if (!isExportData(data)) return
         const toImport = isLegacyVersion(data)

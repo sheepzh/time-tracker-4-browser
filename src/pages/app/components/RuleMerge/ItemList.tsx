@@ -5,10 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { useManualRequest, useRequest } from '@hooks'
-import { t } from '@app/locale'
-import Flex from "@pages/components/Flex"
 import { addMergeRule, removeMergeRule, selectAllMergeRules } from "@api/sw/merge"
+import { t } from '@app/locale'
+import { useManualRequest, useRequest } from '@hooks'
+import Flex from "@pages/components/Flex"
 import { ElMessage, ElMessageBox } from "element-plus"
 import { defineComponent, ref } from "vue"
 import AddButton from './components/AddButton'

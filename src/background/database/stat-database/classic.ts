@@ -205,13 +205,13 @@ export class ClassicStatDatabase extends BaseDatabase implements StatDatabase {
      * @returns [dates]
      * @since 0.0.7
      */
-    async deleteByHost(host: string, range?: string | Tuple<string, 2>): Promise<string[]> {
+    async deleteByHost(host: string, range?: string | [string?, string?]): Promise<void> {
         const [start, end] = Array.isArray(range) ? range : [range, range]
         if (start && start === end) {
             // Delete one day
             const key = generateKey(host, start)
             await this.storage.remove(key)
-            return [start]
+            return
         }
 
         const dateFilter = (date: string) => (start ? start <= date : true) && (end ? date <= end : true)
@@ -223,10 +223,9 @@ export class ClassicStatDatabase extends BaseDatabase implements StatDatabase {
             .filter(key => keyReg.test(key) && dateFilter(key.substring(0, 8)))
 
         await this.storage.remove(keys)
-        return keys.map(k => k.substring(0, 8))
     }
 
-    async deleteByGroup(groupId: number, range?: string | Tuple<string, 2>): Promise<void> {
+    async deleteByGroup(groupId: number, range?: string | [string, string]): Promise<void> {
         const [start, end] = Array.isArray(range) ? range : [range, range]
         const startStr = start && formatDateStr(start)
         const endStr = end && formatDateStr(end)

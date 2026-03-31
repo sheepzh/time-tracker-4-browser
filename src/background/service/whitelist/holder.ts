@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import whitelistDatabase from "@db/whitelist-database"
+import db from "@db/whitelist-database"
 import WhitelistProcessor from './processor'
 
 /**
@@ -13,24 +13,44 @@ import WhitelistProcessor from './processor'
  */
 class WhitelistHolder {
     private processor = new WhitelistProcessor()
-    private postHandlers: NoArgCallback[]
+    private postHandlers: ArgCallback<string[]>[] = []
 
     constructor() {
-        whitelistDatabase.selectAll().then(list => this.processor.setWhitelist(list))
-        whitelistDatabase.addChangeListener(whitelist => {
-            this.processor.setWhitelist(whitelist)
-            this.postHandlers.forEach(handler => handler())
-        })
-        this.postHandlers = []
+        this.rebuild()
     }
 
-    addPostHandler(handler: () => void) {
+    private async rebuild() {
+        const whitelist = await db.selectAll()
+        this.processor.setWhitelist(whitelist)
+        this.postHandlers.forEach(handler => handler(whitelist))
+    }
+
+    addPostHandler(handler: ArgCallback<string[]>) {
         this.postHandlers.push(handler)
+    }
+
+    async add(white: string): Promise<void> {
+        await db.add(white)
+        await this.rebuild()
+    }
+
+    all(): Promise<string[]> {
+        return db.selectAll()
+    }
+
+    async remove(white: string): Promise<void> {
+        await db.remove(white)
+        await this.rebuild()
     }
 
     contains(host: string, url: string): boolean {
         return this.processor.contains(host, url)
     }
+
+    containsHost(host: string): boolean {
+        return this.processor.containsHost(host)
+    }
 }
 
-export default new WhitelistHolder()
+const whitelistHolder = new WhitelistHolder()
+export default whitelistHolder

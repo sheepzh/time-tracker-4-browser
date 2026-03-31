@@ -4,15 +4,15 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import { addWhitelist, listWhitelist, removeWhitelist } from "@api/sw/whitelist"
 import { AnalysisQuery } from '@app/components/Analysis/context'
 import PopupConfirmButton from '@app/components/common/PopupConfirmButton'
 import { computeDeleteConfirmMsg, handleDelete } from '@app/components/Report/common'
 import { useReportFilter } from '@app/components/Report/context'
-import { useRequest, useTabGroups } from '@hooks'
 import { t } from '@app/locale'
 import { ANALYSIS_ROUTE } from '@app/router/constants'
 import { Delete, Open, Plus, Stopwatch } from "@element-plus/icons-vue"
-import { addWhitelist, listWhitelist, removeWhitelist } from "@api/sw/whitelist"
+import { useManualRequest, useRequest, useTabGroups } from '@hooks'
 import { locale } from "@i18n"
 import { CATE_NOT_SET_ID } from "@util/site"
 import { isCate, isGroup, isNormalSite, isSite } from "@util/stat"
@@ -61,10 +61,13 @@ const _default = defineComponent<Props>(({ onDelete }) => {
         return !siteMerge || siteMerge === 'group' ? LOCALE_WIDTH[locale] : 110
     })
     const router = useRouter()
-    const {
-        data: whitelist,
-        refresh: refreshWhitelist,
-    } = useRequest(() => listWhitelist(), { defaultValue: [] })
+    const { data: whitelist, refresh: refreshWhitelist } = useRequest(listWhitelist, { defaultValue: [] })
+    const onWhitelistSuccess = () => {
+        refreshWhitelist()
+        ElMessage.success(t(msg => msg.operation.successMsg))
+    }
+    const { refresh: onAddWhitelist } = useManualRequest(addWhitelist, { onSuccess: onWhitelistSuccess })
+    const { refresh: onRemoveWhitelist } = useManualRequest(removeWhitelist, { onSuccess: onWhitelistSuccess })
 
     const jump2Analysis = (row: timer.stat.Row) => {
         let query: AnalysisQuery
@@ -110,33 +113,23 @@ const _default = defineComponent<Props>(({ onDelete }) => {
                     />
                 )}
                 {/* Add 2 whitelist */}
-                {isNormalSite(row) && !whitelist.value?.includes(row.siteKey.host) && (
+                {isNormalSite(row) && !whitelist.value.includes(row.siteKey.host) && (
                     <PopupConfirmButton
                         buttonIcon={Plus}
                         buttonType="warning"
                         buttonText={t(msg => msg.item.operation.add2Whitelist)}
                         confirmText={t(msg => msg.whitelist.addConfirmMsg, { url: row.siteKey?.host })}
-                        onConfirm={async () => {
-                            const host = row.siteKey?.host
-                            host && await addWhitelist(host)
-                            refreshWhitelist()
-                            ElMessage.success(t(msg => msg.operation.successMsg))
-                        }}
+                        onConfirm={() => onAddWhitelist(row.siteKey.host)}
                     />
                 )}
                 {/* Remove from whitelist */}
-                {isNormalSite(row) && whitelist.value?.includes(row.siteKey.host) && (
+                {isNormalSite(row) && whitelist.value.includes(row.siteKey.host) && (
                     <PopupConfirmButton
                         buttonIcon={Open}
                         buttonType="primary"
                         buttonText={t(msg => msg.button.enable)}
                         confirmText={t(msg => msg.whitelist.removeConfirmMsg, { url: row.siteKey?.host })}
-                        onConfirm={async () => {
-                            const host = row.siteKey?.host
-                            host && await removeWhitelist(host)
-                            refreshWhitelist()
-                            ElMessage.success(t(msg => msg.operation.successMsg))
-                        }}
+                        onConfirm={() => onRemoveWhitelist(row.siteKey.host)}
                     />
                 )}
             </>}
