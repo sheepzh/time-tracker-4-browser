@@ -16,6 +16,7 @@ jobs:
 
             - name: Run tests
               env:
+                  DEBUG: "*"
                   USE_HEADLESS_PUPPETEER: true
               run: npm run test-e2e
             - name: Tests ✅
