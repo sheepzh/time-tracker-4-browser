@@ -16,7 +16,7 @@ import type MessageDispatcher from './message-dispatcher'
 import optionHolder from "./service/components/option-holder"
 import whitelistHolder from "./service/whitelist/holder"
 
-export type BadgeLocation = {
+type BadgeLocation = {
     /**
      * The tab id of badge text show display with
      */
@@ -65,18 +65,15 @@ async function clearAllBadge(): Promise<void> {
 
 type BadgeState = 'HIDDEN' | 'NOT_SUPPORTED' | 'PAUSED' | 'TIME' | 'WHITELIST'
 
-interface BadgeManager {
-    init(dispatcher: MessageDispatcher): void
-    updateFocus(location?: BadgeLocation): void
-}
-
-class DefaultBadgeManager {
+class BadgeManager {
     pausedTabId: number | undefined
     current: BadgeLocation | undefined
     visible: boolean | undefined
     state: BadgeState | undefined
 
     async init(messageDispatcher: MessageDispatcher) {
+        if (IS_ANDROID) return // do nothing on Android, since badge text is not supported
+
         const option = await optionHolder.get()
         await this.processOption(option)
         optionHolder.addChangeListener(async opt => await this.processOption(opt))
@@ -137,16 +134,6 @@ class DefaultBadgeManager {
     }
 }
 
-class SilentBadgeManager implements BadgeManager {
-    init(): void {
-        // do nothing
-    }
-    updateFocus(_location?: BadgeLocation): void {
-        // do nothing
-    }
-}
+const badgeTextManager = new BadgeManager()
 
-// Don't display badge on Android
-const badgeManager: BadgeManager = IS_ANDROID ? new SilentBadgeManager() : new DefaultBadgeManager()
-
-export default badgeManager
+export default badgeTextManager

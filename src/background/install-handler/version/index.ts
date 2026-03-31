@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getVersion, onInstalled } from "@api/chrome/runtime"
+import { getVersion } from "@api/chrome/runtime"
 import CateInitializer from "./cate-initializer"
 import HostMergeInitializer from "./host-merge-initializer"
 import IndexedDBMigrator from './indexed-migrator'
@@ -31,7 +31,7 @@ class VersionManager {
         )
     }
 
-    private onChromeInstalled(reason: ChromeOnInstalledReason) {
+    handle(reason: ChromeOnInstalledReason) {
         const version: string = getVersion()
         if (reason === 'update') {
             // Update, process the latest version, which equals to current version
@@ -41,10 +41,8 @@ class VersionManager {
             this.processorChain.forEach(processor => processor.onInstall())
         }
     }
-
-    init() {
-        onInstalled(reason => this.onChromeInstalled(reason))
-    }
 }
 
-export default VersionManager
+const versionManager = new VersionManager()
+
+export default versionManager

@@ -9,24 +9,17 @@ import { listTabs, trySendMsg2Tab } from "@api/chrome/tab"
 import { isNoneWindowId, onNormalWindowFocusChanged } from "@api/chrome/window"
 import { isBrowserUrl } from "@util/pattern"
 import badgeTextManager from "./badge-manager"
-import initBrowserAction from "./browser-action-manager"
 import initCsHandler from "./content-script-handler"
 import initDataCleaner from "./data-cleaner"
-import handleInstall from './install-handler'
+import { initAfterInstalled } from './install-handler'
 import initLimitProcessor from "./limit-processor"
 import MessageDispatcher from "./message-dispatcher"
-import VersionMigrator from "./migrator"
 import { initScheduler } from './scheduler'
-import initSidePanel from "./side-panel"
 import TabListener from './tab-listener'
 import initTrackServer from "./track-server"
 import initWhitelistMenuManager from "./whitelist-menu-manager"
 
-// Init side panel
-initSidePanel()
-
-// Init browser action
-initBrowserAction()
+initAfterInstalled()
 
 // Init data cleaner
 initDataCleaner()
@@ -42,9 +35,6 @@ initCsHandler(messageDispatcher)
 // Start server
 initTrackServer(messageDispatcher)
 
-// Process version
-new VersionMigrator().init()
-
 // scheduler
 initScheduler()
 
@@ -59,8 +49,6 @@ new TabListener()
     .onActivated(({ url, tabId }) => badgeTextManager.updateFocus({ url, tabId }))
     .onUpdated((tabId, { audible }) => audible !== undefined && trySendMsg2Tab(tabId, 'syncAudible', audible))
     .start()
-
-handleInstall()
 
 // Start message dispatcher
 messageDispatcher.start()

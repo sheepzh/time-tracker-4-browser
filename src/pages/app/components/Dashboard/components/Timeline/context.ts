@@ -1,8 +1,8 @@
 import { listTimeline } from '@/api/sw/timeline'
-import { formatTime, getAllDatesBetween, getStartOfDay, MILL_PER_DAY } from '@/util/time'
+import { getAllDatesBetween, getStartOfDay, MILL_PER_DAY } from '@/util/time'
 import { useProvide, useProvider, useRequest, useState } from '@app/hooks'
-import { t } from '@app/locale'
-import { ShallowRef } from 'vue'
+import { type ShallowRef } from 'vue'
+import { formatYAxias } from './common'
 
 /**
  * The days shown in the timeline
@@ -10,8 +10,6 @@ import { ShallowRef } from 'vue'
 export const TIMELINE_DAY_COUNT = 3
 
 const NAMESPACE = 'dashboard-timeline'
-const MONTH_DATE_FORMAT = t(msg => msg.calendar.monthDateFormat)
-const formatDate = (date: Date | number) => formatTime(date, MONTH_DATE_FORMAT)
 
 type ContextValue = {
     dates: string[]
@@ -22,7 +20,7 @@ type ContextValue = {
 
 export const initTimelineContext = () => {
     const start = getStartOfDay(Date.now() - MILL_PER_DAY * (TIMELINE_DAY_COUNT - 1))
-    const dates = getAllDatesBetween(new Date(start), new Date(), formatDate)
+    const dates = getAllDatesBetween(new Date(start), new Date(), formatYAxias)
     const [merge, setMerge] = useState<timer.timeline.MergeMethod>('none')
     const { data: activities } = useRequest(
         () => listTimeline({ start, merge: merge.value }),

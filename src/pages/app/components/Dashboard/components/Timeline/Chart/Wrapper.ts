@@ -1,16 +1,18 @@
+import { t } from '@/pages/app/locale'
+import { CATE_NOT_SET_ID } from '@/util/site'
 import { getSeriesPalette, tooltipDot } from '@app/util/echarts'
 import { EchartsWrapper } from '@hooks'
 import { getPrimaryTextColor } from '@pages/util/style'
 import { groupBy, toMap } from '@util/array'
 import {
-    formatPeriodCommon, formatTimeYMD,
-    MILL_PER_DAY, MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND
+    formatPeriodCommon, getStartOfDay, MILL_PER_DAY, MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND
 } from '@util/time'
 import type {
     ComposeOption, CustomSeriesOption, CustomSeriesRenderItem, DataZoomComponentOption, GridComponentOption,
     LegendComponentOption, TooltipComponentOption,
 } from 'echarts'
 import { graphic } from "echarts/core"
+import { formatYAxias } from '../common'
 
 export type BizData = {
     activities: timer.timeline.Activity[]
@@ -32,18 +34,12 @@ type LegendInfo = {
     color: string
 }
 
-type MyItem = {
-    // host
-    name: string
-    value: [
-        yIndex: number,
-        // seconds
-        start: number,
-        // seconds
-        end: number,
-        duration: number,
-    ]
-}
+type MyValue = [
+    yIndex: number,
+    start: number, // milliseconds, offset of this day
+    end: number, // milliseconds, offset of this day
+    duration: number,
+]
 
 const formatTimeLabel = (val: number) => {
     let minute = Math.floor(val / MILL_PER_MINUTE)
@@ -73,7 +69,7 @@ const formatDuration = (duration: number): string => {
 
 const LEGEND_WIDTH = 180
 
-const collectLegends = (activities: timer.timeline.Activity[]): LegendInfo[] => {
+const collectLegends = (activities: timer.timeline.Activity[], merge: timer.timeline.MergeMethod): LegendInfo[] => {
     const colors = getSeriesPalette()
     const colorLen = colors.length || 1
 
@@ -84,7 +80,9 @@ const collectLegends = (activities: timer.timeline.Activity[]): LegendInfo[] => 
         .sort((a, b) => b[1] - a[1])
         .map(([key], idx) => ({
             name: key,
-            displayName: keyNameMap[key],
+            displayName: merge === 'cate' && key === String(CATE_NOT_SET_ID)
+                ? t(msg => msg.shared.cate.notSet)
+                : keyNameMap[key],
             color: colors[idx % colorLen],
         }))
 }
@@ -140,9 +138,12 @@ const generateSeries = (biz: BizData, legendColors: Record<string, string>): EcO
             renderItem,
             selectedMode: true,
             data: list.map(({ start, duration }) => {
-                const date = formatTimeYMD(start)
+                const date = formatYAxias(start)
                 const dateIdx = dates.indexOf(date)
-                const value = [dateIdx, start, start + duration, duration]
+                const dayStart = getStartOfDay(start)
+                const startOffset = start - dayStart
+                const endOffset = start + duration - dayStart
+                const value: MyValue = [dateIdx, startOffset, endOffset, duration]
                 return { value }
             })
         }
@@ -171,7 +172,7 @@ class Wrapper extends EchartsWrapper<BizData, EcOption> {
         const gridLeft = Math.min(Math.max(30, domWidth * .05), 60)
         const primaryTextColor = getPrimaryTextColor()
 
-        const legendData = collectLegends(activities)
+        const legendData = collectLegends(activities, merge)
         const legendNames = toMap(legendData, e => e.name, e => e.displayName)
         const legendColor = toMap(legendData, e => e.name, e => e.color)
 
@@ -226,7 +227,7 @@ class Wrapper extends EchartsWrapper<BizData, EcOption> {
                     const color = (params as any)?.color ?? "#000"
                     const param = Array.isArray(params) ? params[0] : params
                     const { value, seriesName } = param
-                    const [_1, start, _2, duration] = value as MyItem['value']
+                    const [_1, start, _2, duration] = value as MyValue
                     const startStr = formatStart(start)
                     const durStr = formatDuration(duration)
                     return `${tooltipDot(color)} ${seriesName ? tooltipSeriesName(seriesName) : ''}`
