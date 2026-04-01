@@ -5,8 +5,6 @@ import { BackupOptionWrapper } from './common'
 const GIST_MOCK_ORIGIN = 'http://127.0.0.1:12347'
 const GIST_MOCK_TOKEN = 'github_gist_mock_token'
 
-const _keepAlive = setInterval(() => {}, 2147483647)
-
 let context: LaunchContext
 
 describe('Backup with gist', () => {
@@ -65,5 +63,5 @@ describe('Backup with gist', () => {
         // Assert can't download current
         await sleep(1)
         await option.assertCantDownloadCurr()
-    })
+    }, 50000)
 })

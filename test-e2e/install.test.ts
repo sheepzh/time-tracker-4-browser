@@ -14,6 +14,6 @@ describe('After installed', () => {
     test('Open the official page', async () => {
         const { browser } = context
         await browser.waitForTarget(target => target.url().includes('wfhg.cc'))
-    })
+    }, 5000)
 })
 

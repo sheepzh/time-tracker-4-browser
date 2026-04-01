@@ -15,7 +15,7 @@
         "build:safari": "rspack --config=rspack/rspack.prod.safari.ts",
         "test": "rstest test/",
         "test-c": "rstest --coverage --reporter=junit test/",
-        "test-e2e": "rstest test-e2e/ --pool.maxWorkers 1",
+        "test-e2e": "rstest test-e2e/ --pool.maxWorkers 1 --testEnvironment node",
         "prepare": "husky"
     },
     "author": {
