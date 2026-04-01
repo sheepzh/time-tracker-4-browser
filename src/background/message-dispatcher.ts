@@ -7,12 +7,11 @@
 
 import { log } from '@/common/logger'
 import { onRuntimeMessage } from "@api/chrome/runtime"
-import { SiteMap } from "@util/site"
+import cateDatabase from './database/cate-database'
 import { getUsedStorage } from "./database/memory-detector"
 import mergeRuleDatabase from "./database/merge-rule-database"
-import siteCateDatabase from './database/site-cate-database'
+import siteDatabase from './database/site-database'
 import statDatabase from './database/stat-database'
-import { getSuffix } from './psl'
 import backupProcessor from "./service/backup/processor"
 import immigration from "./service/components/immigration"
 import { previewImport, processImportedData } from "./service/components/import-processor"
@@ -24,8 +23,9 @@ import processor from './service/notification/processor'
 import { setBackupOption, setDarkMode, setLocale } from "./service/option-service"
 import { selectPeriods } from "./service/period-service"
 import {
-    addSite, batchGetSites, batchSaveAliasNoRewrite, batchSaveSiteCate, getSite, removeAlias, removeIconUrl,
-    removeSites, saveAlias, saveSiteCate, saveSiteRunState, searchHosts, selectAllSites, selectSitePage,
+    addSite, batchChangeCate, fillInitialAlias, getInitialAlias, getSite, removeIconUrl,
+    saveAlias,
+    saveSiteRunState, searchSites, selectSitePage
 } from "./service/site-service"
 import {
     batchDelete, countGroup, countSite,
@@ -84,25 +84,18 @@ class MessageDispatcher {
             .register('stat.canReadRemote', canReadRemote)
             .register('stat.today', getTodayResult)
             // Site management
-            .register('site.getPslSuffix', getSuffix)
-            .register('site.getSite', getSite)
-            .register('site.selectAllSites', selectAllSites)
-            .register('site.selectSitePage', selectSitePage)
-            .register('site.addSite', addSite)
-            .register('site.removeSites', keys => removeSites(...keys))
-            .register('site.saveSiteCate', ({ key, cateId }) => saveSiteCate(key, cateId))
-            .register('site.batchSaveSiteCate', ({ cateId, keys }) => batchSaveSiteCate(cateId, keys))
-            .register('site.removeIconUrl', removeIconUrl)
-            .register('site.saveSiteRunState', ({ key, run }) => saveSiteRunState(key, run))
-            .register('site.batchGetSites', batchGetSites)
-            .register('site.batchSaveAliasNoRewrite', arr => {
-                const siteMap = new SiteMap<string>()
-                arr.forEach(({ key, alias }) => siteMap.put(key, alias))
-                batchSaveAliasNoRewrite(siteMap)
-            })
-            .register('site.removeAlias', removeAlias)
-            .register('site.saveAlias', ({ key, alias, noRewrite }) => saveAlias(key, alias, noRewrite))
-            .register('site.searchHosts', searchHosts)
+            .register('site.all', param => siteDatabase.select(param))
+            .register('site.page', selectSitePage)
+            .register('site.add', addSite)
+            .register('site.delete', keys => siteDatabase.remove(...keys))
+            .register('site.changeCate', ({ cateId, keys }) => batchChangeCate(cateId, keys))
+            .register('site.deleteIcon', removeIconUrl)
+            .register('site.changeAlias', ({ key, alias }) => saveAlias(key, alias))
+            .register('site.fillAlias', fillInitialAlias)
+            .register('site.initialAlias', getInitialAlias)
+            .register('site.changeRun', ({ key, enabled }) => saveSiteRunState(key, enabled))
+            .register('site.runEnabled', host => getSite({ host, type: 'normal' }).then(s => !!s.run))
+            .register('site.search', searchSites)
             // Options
             .register('option.get', () => optionHolder.get())
             .register('option.set', val => optionHolder.set(val))
@@ -114,10 +107,10 @@ class MessageDispatcher {
             .register('option.getWeekBounds', ts => weekHelper.getWeekDate(ts))
             .register('option.getWeekStartDay', () => weekHelper.getRealWeekStart())
             // Category
-            .register('cate.all', () => siteCateDatabase.listAll())
-            .register('cate.add', name => siteCateDatabase.add(name))
-            .register('cate.saveName', ({ id, name }) => siteCateDatabase.update(id, name))
-            .register('cate.remove', id => siteCateDatabase.delete(id))
+            .register('cate.all', () => cateDatabase.listAll())
+            .register('cate.add', name => cateDatabase.add(name))
+            .register('cate.saveName', ({ id, name }) => cateDatabase.update(id, name))
+            .register('cate.remove', id => cateDatabase.delete(id))
             // Meta information
             .register('meta.saveFlag', saveFlag)
             .register('meta.getCid', getCid)

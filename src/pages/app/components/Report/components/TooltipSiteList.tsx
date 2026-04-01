@@ -5,15 +5,15 @@ import { ElScrollbar } from "element-plus"
 import { computed, defineComponent, StyleValue, toRefs } from "vue"
 
 type Props = {
-    modelValue?: timer.stat.SiteRow[] | false
+    modelValue: timer.stat.SiteRow[] | false | undefined
     clickDisabled?: boolean
 }
 
 const TooltipSiteList = defineComponent<Props>(props => {
     const { modelValue, clickDisabled: clickable } = toRefs(props)
     const iconMap = computed(() => {
-        const siteMap = new SiteMap<string>()
-        const rows = modelValue?.value
+        const siteMap = new SiteMap<string | undefined>()
+        const rows = modelValue.value
         if (!rows) return siteMap
         rows.forEach(({ siteKey, iconUrl }) => siteMap.put(siteKey, iconUrl))
         return siteMap

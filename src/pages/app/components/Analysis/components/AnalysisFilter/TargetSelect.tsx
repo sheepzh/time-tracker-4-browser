@@ -1,14 +1,14 @@
+import { searchSite } from "@api/sw/site"
 import { useCategory } from '@app/context'
-import { useDebounceState, useRequest } from '@hooks'
 import { t } from '@app/locale'
+import { useDebounceState, useRequest } from '@hooks'
 import Flex from "@pages/components/Flex"
-import { searchHosts, selectAllSites } from "@api/sw/site"
 import { CATE_NOT_SET_ID, identifySiteKey, parseSiteKeyFromIdentity, SiteMap } from "@util/site"
 import { ElSelectV2, ElTag, useNamespace } from "element-plus"
 import type { OptionType } from "element-plus/es/components/select-v2/src/select.types"
 import { computed, defineComponent, type FunctionalComponent, onMounted, ref, type StyleValue } from "vue"
 import { useAnalysisTarget } from '../../context'
-import { AnalysisTarget } from '../../types'
+import type { AnalysisTarget } from '../../types'
 import { labelOfHostInfo } from '../../util'
 
 const SITE_PREFIX = 'S'
@@ -46,22 +46,12 @@ type TargetItem = AnalysisTarget & {
 
 const fetchItems = async (categories: timer.site.Cate[]): Promise<[siteItems: TargetItem[], cateItems: TargetItem[]]> => {
     // 1. query categories
-    const cateItems = categories?.map(({ id, name }) => ({ type: 'cate', key: id, label: name } satisfies TargetItem))
+    const cateItems: TargetItem[] = categories.map(({ id, name }) => ({ type: 'cate', key: id, label: name }))
 
     // 2. query sites
-    const siteSet = new SiteMap<timer.site.SiteInfo>()
-
-    // 2.1 sites from usage stats (same RPC as site-manage host picker, no query = full list)
-    const fromUsage = (await searchHosts()) ?? []
-    fromUsage.forEach(site => siteSet.put(site, site))
-
-    // 2.2 query sites from sites
-    const sites = (await selectAllSites()) ?? []
-    sites?.forEach(site => siteSet.put(site, site))
-
-    const siteItems = siteSet?.map((_, site) => site)
-        .filter(site => !!site)
-        .map(site => ({ type: 'site', key: site, label: labelOfHostInfo(site) }) satisfies TargetItem)
+    const sites = await searchSite()
+    const siteMap = SiteMap.identify(sites)
+    const siteItems: TargetItem[] = siteMap.map((_, key) => ({ type: 'site', key, label: labelOfHostInfo(key) }))
 
     return [cateItems, siteItems]
 }

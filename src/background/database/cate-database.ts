@@ -20,11 +20,11 @@ type Item = {
 type Items = Record<number, Item>
 
 /**
- * Site tag
+ * Category
  *
  * @since 3.0.0
  */
-class SiteCateDatabase extends BaseDatabase {
+class CateDatabase extends BaseDatabase {
 
     private async getItems(): Promise<Items> {
         return await this.storage.getOne<Items>(KEY) || {}
@@ -82,6 +82,6 @@ class SiteCateDatabase extends BaseDatabase {
     }
 }
 
-const siteCateDatabase = new SiteCateDatabase()
+const cateDatabase = new CateDatabase()
 
-export default siteCateDatabase
+export default cateDatabase

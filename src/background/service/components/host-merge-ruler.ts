@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { getPsl } from '@/background/psl'
 import FIFOCache from '@util/fifo-cache'
 import { isIpAndPort, judgeVirtualFast } from "@util/pattern"
-import { get } from "../../psl"
 
 /**
  * @param origin origin host
@@ -96,9 +96,7 @@ export default class CustomizedHostMergeRuler {
         matchResult && (merged = matchResult.result)
         if (merged === undefined) {
             // No rule matched
-            return isIpAndPort(host)
-                ? host
-                : get(host) || this.merge0(2, host)
+            return isIpAndPort(host) ? host : (getPsl(host) ?? this.merge0(2, host))
         } else {
             return this.merge0(merged, host)
         }

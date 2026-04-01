@@ -5,49 +5,22 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { ALL_HOSTS, MERGED_HOST } from '@/util/constant/remain-host'
+import { ALL_HOSTS as ALL_FILE_HOSTS, MERGED_HOST as MERGED_FILE_HOST } from '@/util/constant/remain-host'
 import { listTabs, sendMsg2Tab } from "@api/chrome/tab"
 import siteDatabase from "@db/site-database"
-import { toMap } from "@util/array"
-import { isValidVirtualHost, judgeVirtualFast } from "@util/pattern"
-import { identifySiteKey, SiteMap, supportCategory } from "@util/site"
+import { extractHostname, isValidVirtualHost, judgeVirtualFast } from "@util/pattern"
+import { SiteMap, supportCategory } from "@util/site"
+import { toUnicode as punyCode2Unicode } from "punycode"
+import mergeRuleDatabase from '../database/merge-rule-database'
+import statDatabase from '../database/stat-database'
+import { getPslSuffix } from '../psl'
+import CustomizedHostMergeRuler from './components/host-merge-ruler'
 import { slicePageResult } from "./components/page-info"
-import { listHosts as listStatHostsGrouped } from "./stat-service"
 
-export async function removeAlias(key: timer.site.SiteKey) {
+export async function saveAlias(key: timer.site.SiteKey, alias: string | undefined, noRewrite?: boolean) {
     const exist = await siteDatabase.get(key)
-    if (!exist) return
-    delete exist.alias
-    await siteDatabase.save(exist)
-}
-
-export async function saveAlias(key: timer.site.SiteKey, alias: string, noRewrite?: boolean) {
-    const exist = await siteDatabase.get(key)
-    let toUpdate: timer.site.SiteInfo
-    if (exist) {
-        // Can't overwrite if alias is already existed
-        if (exist.alias && noRewrite) return
-        toUpdate = exist
-        toUpdate.alias = alias
-    } else {
-        toUpdate = { ...key, alias }
-    }
-    await siteDatabase.save(toUpdate)
-}
-
-export async function batchSaveAliasNoRewrite(siteMap: SiteMap<string>): Promise<void> {
-    if (!siteMap?.count?.()) return
-    const allSites = await siteDatabase.getBatch(siteMap.keys())
-    const existMap = new SiteMap<timer.site.SiteInfo>()
-    allSites.forEach(exist => existMap.put(exist, exist))
-
-    const toSave: timer.site.SiteInfo[] = []
-    siteMap.forEach((k, alias) => {
-        const exist = existMap.get(k)
-        if (exist?.alias || !alias) return
-        toSave.push({ ...exist || k, alias })
-    })
-    await siteDatabase.save(...toSave)
+    if (exist && noRewrite) return
+    await siteDatabase.save({ ...exist, ...key, alias })
 }
 
 export async function removeIconUrl(key: timer.site.SiteKey) {
@@ -59,20 +32,13 @@ export async function removeIconUrl(key: timer.site.SiteKey) {
 
 export async function saveIconUrl(key: timer.site.SiteKey, iconUrl: string) {
     const exist = await siteDatabase.get(key)
-    let toUpdate: timer.site.SiteInfo
-    if (exist) {
-        toUpdate = { ...exist }
-        toUpdate.iconUrl = iconUrl
-    } else {
-        toUpdate = { ...key, iconUrl }
-    }
-    await siteDatabase.save(toUpdate)
+    await siteDatabase.save({ ...exist, ...key, iconUrl })
 }
 
-export async function saveSiteRunState(key: timer.site.SiteKey, run: boolean) {
+export async function saveSiteRunState(key: timer.site.SiteKey, enabled: boolean) {
     const exist = await siteDatabase.get(key)
     if (!exist) return
-    exist.run = run
+    exist.run = enabled
     await siteDatabase.save(exist)
     // send msg to tabs
     const tabs = await listTabs()
@@ -97,36 +63,13 @@ export async function selectSitePage(param?: timer.site.PageQuery): Promise<time
     return slicePageResult(origin, param)
 }
 
-export function selectAllSites(param?: timer.site.Query): Promise<timer.site.SiteInfo[]> {
-    return siteDatabase.select(param)
-}
-
-export function batchGetSites(keys: timer.site.SiteKey[]): Promise<timer.site.SiteInfo[]> {
-    return siteDatabase.getBatch(keys)
-}
-
-export function removeSites(...sites: timer.site.SiteKey[]): Promise<void> {
-    return siteDatabase.remove(...sites)
-}
-
-export async function saveSiteCate(key: timer.site.SiteKey, cateId: number | undefined): Promise<void> {
-    if (!supportCategory(key)) return
-
-    const exist = await siteDatabase.get(key)
-    await siteDatabase.save({ ...exist || key, cate: cateId })
-}
-
-export async function batchSaveSiteCate(cateId: number | undefined, keys: timer.site.SiteKey[]): Promise<void> {
+export async function batchChangeCate(cateId: number | undefined, keys: timer.site.SiteKey[]): Promise<void> {
     keys = keys?.filter(supportCategory)
     if (!keys?.length) return
 
-    const allSites = await siteDatabase.getBatch(keys)
-    const siteMap = toMap(allSites, identifySiteKey)
-
-    const toSave = keys.map(k => {
-        const s = siteMap[identifySiteKey(k)]
-        return ({ ...s || k, cate: cateId })
-    })
+    const sites = await siteDatabase.getBatch(keys)
+    const siteMap = SiteMap.identify(sites)
+    const toSave = keys.map(k => ({ ...siteMap.get(k), ...k, cate: cateId }))
     await siteDatabase.save(...toSave)
 }
 
@@ -138,60 +81,118 @@ export async function getSite(siteKey: timer.site.SiteKey): Promise<timer.site.S
     return info ?? siteKey
 }
 
-/**
- * `query === undefined`: all hosts from usage stats (normal, merged, virtual).
- * `query` string: site-manage picker — trim empty → []; else fuzzy stats + local hosts + DB rows.
- */
-export async function searchHosts(rawQuery?: string): Promise<timer.site.SiteInfo[]> {
-    if (rawQuery === undefined) {
-        const grouped = await listStatHostsGrouped(undefined)
-        const out: timer.site.SiteInfo[] = []
-        for (const host of grouped.normal) out.push({ host, type: 'normal' })
-        for (const host of grouped.merged) out.push({ host, type: 'merged' })
-        for (const host of grouped.virtual) out.push({ host, type: 'virtual' })
-        return out
-    }
+export async function searchSites(query: string | undefined): Promise<timer.site.SiteInfo[]> {
+    query = cleanSearchQuery(query)
+    const filter = query ? (host: string) => host.includes(query) : () => true
+    const [normal, merged] = await listHosts(filter)
 
-    const trimmed = rawQuery.trim()
-    if (!trimmed) return []
+    const keys: timer.site.SiteKey[] = []
+    normal.forEach(host => keys.push({ host, type: 'normal' }))
+    merged.forEach(host => keys.push({ host, type: 'merged' }))
 
-    let query = trimmed
-    try {
-        const u = new URL(query)
-        query = u.host + u.pathname
-    } catch { /* partial input */ }
-    if (query.endsWith('/')) query += '**'
-    if (!query) return []
-
-    const { normal, merged } = await listStatHostsGrouped(query)
-    const keys: timer.site.SiteKey[] = [
-        ...normal.map(host => ({ host, type: 'normal' as const })),
-        ...merged.map(host => ({ host, type: 'merged' as const })),
-    ]
-    for (const host of ALL_HOSTS) {
-        if (host.includes(query)) keys.push({ host, type: 'normal' })
-    }
-    if (MERGED_HOST.includes(query)) {
-        keys.push({ host: MERGED_HOST, type: 'merged' })
-    }
+    ALL_FILE_HOSTS.forEach(fileHost => filter(fileHost) && keys.push({ host: fileHost, type: 'normal' }))
+    filter(MERGED_FILE_HOST) && keys.push({ host: MERGED_FILE_HOST, type: 'merged' })
 
     const fromDb = await siteDatabase.getBatch(keys)
-    const byId = new Map(fromDb.map(r => [identifySiteKey(r), r] as const))
-    const rows = keys.map(k => {
-        const hit = byId.get(identifySiteKey(k))
-        return hit ? { ...hit } : { ...k }
-    })
+    const siteMap = SiteMap.identify(fromDb)
+    const rows = keys.map(k => ({ ...siteMap.get(k), ...k }))
     const ranked = [...rows.filter(r => !r.alias), ...rows.filter(r => r.alias)]
 
     const hitIdx = ranked.findIndex(r => r.host === query)
     if (hitIdx >= 0) {
-        const [hit] = ranked.splice(hitIdx, 1)
-        return [hit, ...ranked]
+        const [same] = ranked.splice(hitIdx, 1)
+        return [same, ...ranked]
+    } else if (!query) {
+        return ranked
+    } else if (judgeVirtualFast(query) && isValidVirtualHost(query)) {
+        return [{ host: query, type: 'virtual' }, ...ranked]
+    } else {
+        const { host } = extractHostname(query)
+        const hostIdx = ranked.findIndex(r => r.host === host)
+        if (hostIdx >= 0) {
+            const [same] = ranked.splice(hostIdx, 1)
+            return [same, ...ranked]
+        }
+        return [{ host, type: 'normal' }, ...ranked]
     }
-    if (judgeVirtualFast(query)) {
-        return isValidVirtualHost(query)
-            ? [{ host: query, type: 'virtual' }, ...ranked]
-            : ranked
+}
+
+/**
+ * Query hosts from stat databases
+ *
+ * @param query the part of host
+ * @since 0.0.8
+ */
+async function listHosts(filter: (host: string) => boolean): Promise<[normal: string[], merged: string[]]> {
+    const rows = await statDatabase.select({ virtual: false })
+    const hosts = new Set(rows.map(row => row.host))
+
+    const mergeRuleItems = await mergeRuleDatabase.selectAll()
+    const mergeRuler = new CustomizedHostMergeRuler(mergeRuleItems)
+
+    const normal = new Set<string>()
+    const merged = new Set<string>()
+
+    hosts.forEach(host => {
+        filter(host) && normal.add(host)
+        const mergedHost = mergeRuler.merge(host)
+        filter(mergedHost) && merged.add(mergedHost)
+    })
+
+    return [Array.from(normal), Array.from(merged)]
+}
+
+function cleanSearchQuery(query: string | undefined): string | undefined {
+    query = query?.trim?.()
+    if (!query) return undefined
+    try {
+        // Remove protocol and search params, only keep host and path for search
+        const u = new URL(query)
+        query = u.host + u.pathname
+    } catch { }
+    if (query.endsWith('/')) query += '**'
+    return query
+}
+
+export async function fillInitialAlias(keys: timer.site.SiteKey[]) {
+    const sites = await siteDatabase.getBatch(keys)
+    const toSave = new SiteMap<string>()
+    sites.forEach(site => {
+        if (site.alias) return
+        const alias = getInitialAlias(site.host)
+        alias && toSave.put(site, alias)
+    })
+    await batchSaveAlias(toSave)
+}
+
+export function getInitialAlias(host: string): string | undefined {
+    let parts = host.split('.')
+    if (parts.length < 2) return
+
+    const suffix = getPslSuffix(host)
+    const prefix = host.replace(`.${suffix}`, '').replace(/^www\./, '')
+    parts = prefix.split('.')
+    return parts.reverse().map(cvt2Alias).join(' ')
+}
+
+function cvt2Alias(part: string): string {
+    try {
+        part = punyCode2Unicode(part)
+    } catch {
     }
-    return [{ host: query, type: 'normal' }, ...ranked]
+    return part.charAt(0).toUpperCase() + part.slice(1)
+}
+
+async function batchSaveAlias(siteMap: SiteMap<string>): Promise<void> {
+    if (!siteMap.count()) return
+    const allSites = await siteDatabase.getBatch(siteMap.keys())
+    const existMap = SiteMap.identify(allSites)
+
+    const toSave: timer.site.SiteInfo[] = []
+    siteMap.forEach((k, alias) => {
+        const exist = existMap.get(k)
+        if (exist?.alias) return
+        toSave.push({ ...exist ?? k, alias })
+    })
+    await siteDatabase.save(...toSave)
 }

@@ -4,16 +4,16 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import { saveAlias } from '@api/sw/site'
+import { selectCate, selectGroup, selectSite } from "@api/sw/stat"
 import ContentCard from '@app/components/common/ContentCard'
 import Editable from '@app/components/common/Editable'
 import Pagination from '@app/components/common/Pagination'
-import { useDocumentVisibility, useManualRequest, useRequest, useState } from '@hooks'
 import { t } from '@app/locale'
 import { periodFormatter } from '@app/util/time'
 import { Histogram } from "@element-plus/icons-vue"
+import { useDocumentVisibility, useManualRequest, useRequest, useState } from '@hooks'
 import Flex from "@pages/components/Flex"
-import { removeAlias, saveAlias } from '@api/sw/site'
-import { selectCate, selectGroup, selectSite } from "@api/sw/stat"
 import { sum } from "@util/array"
 import { isRtl } from "@util/document"
 import { siteEqual } from "@util/site"
@@ -31,13 +31,9 @@ import HostColumn from "./columns/HostColumn"
 import OperationColumn from "./columns/OperationColumn"
 import TimeColumn from "./columns/TimeColumn"
 import VisitColumn from "./columns/VisitColumn"
+
 async function handleAliasChange(key: timer.site.SiteKey, newAlias: string | undefined, data: timer.stat.Row[]) {
-    newAlias = newAlias?.trim?.()
-    if (!newAlias) {
-        await removeAlias(key)
-    } else {
-        await saveAlias(key, newAlias)
-    }
+    newAlias = await saveAlias(key, newAlias)
     data?.filter(isSite)
         ?.filter(item => siteEqual(item.siteKey, key))
         ?.forEach(item => item.alias = newAlias)

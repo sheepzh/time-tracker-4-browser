@@ -4,11 +4,11 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import { sendMsg2Runtime } from '@/api/sw/common'
 import CategorySelect from '@app/components/common/Category/Select'
-import { useSwitch } from '@hooks'
 import { t } from '@app/locale'
 import { Check } from "@element-plus/icons-vue"
-import { addSite } from "@api/sw/site"
+import { useSwitch } from '@hooks'
 import { supportCategory } from "@util/site"
 import { ElButton, ElDialog, ElForm, ElFormItem, ElInput, ElMessage, type FormInstance, type FormItemRule } from "element-plus"
 import { computed, defineComponent, reactive, ref } from "vue"
@@ -50,12 +50,10 @@ function validateForm(form: FormInstance | undefined): Promise<boolean> {
 }
 
 async function handleAdd(siteInfo: timer.site.SiteInfo): Promise<boolean> {
-    const result = await addSite(siteInfo)
-    if (!result.success) {
-        ElMessage.warning(result.errorMsg)
-        return false
-    }
-    return true
+    const result = await sendMsg2Runtime('site.add', siteInfo)
+    if (result.success) return true
+    ElMessage.warning(result.errorMsg)
+    return false
 }
 
 const initData = (): _FormData => ({

@@ -5,17 +5,14 @@
  * https://opensource.org/licenses/MIT
  */
 
+import cateDatabase from "@/background/database/cate-database"
 import { log } from "@/common/logger"
 import { listAllGroups } from "@api/chrome/tabGroups"
-import mergeRuleDatabase from "@db/merge-rule-database"
-import cateDatabase from "@db/site-cate-database"
 import siteDatabase from "@db/site-database"
 import statDatabase, { type StatCondition } from "@db/stat-database"
 import { toMap } from "@util/array"
-import { judgeVirtualFast } from "@util/pattern"
 import { CATE_NOT_SET_ID, distinctSites, SiteMap } from "@util/site"
 import { isGroup, isSite } from "@util/stat"
-import CustomizedHostMergeRuler from "../components/host-merge-ruler"
 import { slicePageResult } from "../components/page-info"
 import { cvt2SiteRow } from "./common"
 import { mergeCate } from "./merge/cate"
@@ -58,47 +55,6 @@ export type CountQuery = Pick<StatCondition, 'date'> & {
 function filterByCateId(itemCateId: number | undefined, cateIds: number[] | undefined): boolean {
     if (!cateIds?.length) return true
     return cateIds.includes(itemCateId ?? CATE_NOT_SET_ID)
-}
-
-/**
- * Query hosts
- *
- * @param fuzzyQuery the part of host
- * @since 0.0.8
- */
-export async function listHosts(fuzzyQuery?: string): Promise<Record<timer.site.Type, string[]>> {
-    const rows = await statDatabase.select()
-    const allHosts: Set<string> = new Set(rows.map(row => row.host).filter(h => !!h))
-    // Generate ruler
-    const mergeRuleItems: timer.merge.Rule[] = await mergeRuleDatabase.selectAll()
-    const mergeRuler = new CustomizedHostMergeRuler(mergeRuleItems)
-
-    const normalSet: Set<string> = new Set()
-    const mergedSet: Set<string> = new Set()
-    const virtualSet: Set<string> = new Set()
-
-    const allHostArr = Array.from(allHosts)
-
-    allHostArr.forEach(host => {
-        if (judgeVirtualFast(host)) {
-            virtualSet.add(host)
-            return
-        }
-        normalSet.add(host)
-        const mergedHost = mergeRuler.merge(host)
-        mergedSet.add(mergedHost)
-    })
-
-    let normal = Array.from(normalSet)
-    let merged = Array.from(mergedSet)
-    let virtual = Array.from(virtualSet)
-    if (fuzzyQuery) {
-        normal = normal.filter(host => host?.includes(fuzzyQuery))
-        merged = merged.filter(host => host?.includes(fuzzyQuery))
-        virtual = virtual.filter(host => host?.includes(fuzzyQuery))
-    }
-
-    return { normal, merged, virtual }
 }
 
 export async function countSite(param?: timer.stat.SiteQuery): Promise<number> {
@@ -194,11 +150,10 @@ async function fillSite(rows: timer.stat.SiteRow[]): Promise<true> {
     extractAllSiteKeys(rows, keys)
     keys = distinctSites(keys)
 
-    const siteInfos = await siteDatabase.getBatch(keys)
-    const siteInfoMap = new SiteMap<timer.site.SiteInfo>()
-    siteInfos.forEach(siteInfo => siteInfoMap.put(siteInfo, siteInfo))
+    const sites = await siteDatabase.getBatch(keys)
+    const siteMap = SiteMap.identify(sites)
 
-    rows.forEach(item => fillRowWithSiteInfo(item, siteInfoMap))
+    rows.forEach(item => fillRowWithSiteInfo(item, siteMap))
     return true
 }
 

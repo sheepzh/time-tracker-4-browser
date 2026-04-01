@@ -1,3 +1,4 @@
+import { extractHostname } from '@/util/pattern'
 import { onTabMessage } from "@api/chrome/runtime"
 import { trySendMsg2Runtime } from '@api/sw/common'
 
@@ -27,8 +28,9 @@ class RunTimeTracker {
     }
 
     private async fetchSite() {
-        const site = await trySendMsg2Runtime('cs.getRunSites', this.url)
-        this.host = site?.host
+        const { host } = extractHostname(this.url)
+        const enabled = await trySendMsg2Runtime('site.runEnabled', host)
+        if (enabled) this.host = host
     }
 
     private async collect() {

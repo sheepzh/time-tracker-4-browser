@@ -9,16 +9,15 @@ import { APP_ANALYSIS_ROUTE } from '@/shared/route'
 import { executeScript } from "@api/chrome/script"
 import { createTab } from "@api/chrome/tab"
 import { getAppPageUrl } from "@util/constant/url"
-import { extractFileHost, extractHostname } from "@util/pattern"
+import { extractHostname } from "@util/pattern"
 import badgeManager from "./badge-manager"
 import { collectIconAndAlias } from "./icon-and-alias-collector"
 import MessageDispatcher from "./message-dispatcher"
-import { getSite } from "./service/site-service"
 
 const handleOpenAnalysisPage = (sender: ChromeMessageSender) => {
     const { tab, url } = sender || {}
     if (!url) return
-    const host = extractFileHost(url) || extractHostname(url)?.host
+    const { host } = extractHostname(url)
     const newTabUrl = getAppPageUrl(APP_ANALYSIS_ROUTE, { host })
 
     const tabIndex = tab?.index
@@ -45,12 +44,5 @@ export default function init(dispatcher: MessageDispatcher) {
         .register('cs.openAnalysis', (_, sender) => handleOpenAnalysisPage(sender))
         .register('cs.onInjected', (_, sender) => handleInjected(sender))
         // Get sites which need to count run time
-        .register('cs.getRunSites', async url => {
-            const { host } = extractHostname(url) || {}
-            if (!host) return undefined
-            const site: timer.site.SiteKey = { host, type: 'normal' }
-            const exist = await getSite(site)
-            return exist?.run ? site : undefined
-        })
         .register('cs.getAudible', async (_, sender) => !!sender.tab?.audible)
 }

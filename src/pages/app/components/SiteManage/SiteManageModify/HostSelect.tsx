@@ -4,9 +4,9 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { useManualRequest } from '@hooks'
+import { searchSite } from '@api/sw/site'
 import { t } from '@app/locale'
-import { searchHosts } from '@api/sw/site'
+import { useManualRequest } from '@hooks'
 import { identifySiteKey, parseSiteKeyFromIdentity } from '@util/site'
 import { ElOption, ElSelect, ElTag } from "element-plus"
 import { computed, defineComponent } from "vue"
@@ -45,7 +45,9 @@ export function cvt2SiteKey(optionValue: string): timer.site.SiteKey {
 
 const _default = defineComponent<Props>(props => {
     const value = computed(() => identifySiteKey(props.modelValue))
-    const { data: options, loading: searching, refresh: searchOption } = useManualRequest(searchHosts)
+    const { data: options, loading: searching, refresh: searchOption } = useManualRequest(
+        searchSite, { defaultValue: [] }
+    )
 
     return () => (
         <ElSelect
@@ -57,7 +59,7 @@ const _default = defineComponent<Props>(props => {
             remoteMethod={searchOption}
             onChange={val => props.onChange?.(cvt2SiteKey(val))}
         >
-            {options.value?.map(row => (
+            {options.value.map(row => (
                 <ElOption value={identifySiteKey(row)} disabled={!!row.alias} label={labelOf(row)}>
                     <span>{row.host}</span>
                     <ElTag v-show={row.type === 'merged'} size="small">{MERGED_MSG}</ElTag>

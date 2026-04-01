@@ -1,8 +1,8 @@
+import { changeCateOfSites } from '@/api/sw/site'
 import { useCategory } from "@app/context"
-import { useManualRequest, useSwitch } from "@hooks"
 import { Edit } from "@element-plus/icons-vue"
+import { useManualRequest, useSwitch } from "@hooks"
 import Flex from "@pages/components/Flex"
-import { saveSiteCate } from '@api/sw/site'
 import { supportCategory } from "@util/site"
 import { ElIcon, ElTag } from "element-plus"
 import { computed, defineComponent, nextTick, ref } from "vue"
@@ -25,7 +25,7 @@ const CategoryEditable = defineComponent<Props>(props => {
 
     const { refresh: doSave } = useManualRequest(async (cateId: number | string | undefined) => {
         const realCateId = typeof cateId === 'string' ? parseInt(cateId) : cateId
-        await saveSiteCate(props.siteKey, realCateId)
+        await changeCateOfSites(realCateId, props.siteKey)
         return realCateId
     }, {
         onSuccess(realCateId) {

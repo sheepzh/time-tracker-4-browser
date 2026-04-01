@@ -1,28 +1,19 @@
+import CategoryEditable from "@app/components/common/Category/Editable"
+import TooltipSiteList from "@app/components/Report/components/TooltipSiteList"
+import { useCategory } from '@app/context'
 import { t } from '@app/locale'
 import Flex from "@pages/components/Flex"
-import { CATE_NOT_SET_ID, SiteMap } from "@util/site"
+import { CATE_NOT_SET_ID } from "@util/site"
 import { getRelatedCateId, identifyStatKey, isCate, isGroup, isSite } from "@util/stat"
 import { Effect, ElTableColumn, ElText, ElTooltip, type RenderRowData } from "element-plus"
 import { defineComponent } from "vue"
-import { useCategory } from "../../../../context"
-import CategoryEditable from "../../../common/Category/Editable"
-import TooltipSiteList from "../../components/TooltipSiteList"
 
 const renderMerged = (cateId: number, categories: timer.site.Cate[], merged: timer.stat.SiteRow[]) => {
-    let cateName: string
-    let isNotSet = false
-    const siteMap = new SiteMap<string>()
-    merged.forEach(row => isSite(row) && siteMap.put(row.siteKey, row.iconUrl))
+    const [cateName, isNotSet] = CATE_NOT_SET_ID === cateId
+        ? [t(msg => msg.shared.cate.notSet), true]
+        : [categories.find(c => c.id === cateId)?.name, false]
 
-    if (cateId === CATE_NOT_SET_ID) {
-        cateName = t(msg => msg.shared.cate.notSet)
-        isNotSet = true
-    } else {
-        const current = categories?.find(c => c.id === cateId)
-        if (!current) return null
-        cateName = current?.name
-    }
-    return (
+    return cateName ? (
         <ElTooltip
             effect={Effect.LIGHT}
             offset={10}
@@ -37,7 +28,7 @@ const renderMerged = (cateId: number, categories: timer.site.Cate[], merged: tim
                 ),
             }}
         />
-    )
+    ) : null
 }
 
 type Props = {

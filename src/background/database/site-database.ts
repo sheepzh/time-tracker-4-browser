@@ -9,18 +9,6 @@ import { CATE_NOT_SET_ID } from "@util/site"
 import BaseDatabase from "./common/base-database"
 import { REMAIN_WORD_PREFIX } from "./common/constant"
 
-export type SiteCondition = {
-    /**
-     * Fuzzy query of host or alias
-     */
-    fuzzyQuery?: string
-    /**
-     * @since 3.0.0
-     */
-    cateIds?: number | number[]
-    types?: timer.site.Type | timer.site.Type[]
-}
-
 type _Entry = {
     /**
      * Alias
@@ -102,7 +90,7 @@ function cvt2SiteInfo(key: timer.site.SiteKey, entry: _Entry | undefined): timer
  *
  * @returns list not be undefined, maybe empty
  */
-async function select(this: SiteDatabase, condition?: SiteCondition): Promise<timer.site.SiteInfo[]> {
+async function select(this: SiteDatabase, condition?: timer.site.Query): Promise<timer.site.SiteInfo[]> {
     const filter = buildFilter(condition)
     const data = await this.storage.get()
     return Object.entries(data)
@@ -111,7 +99,7 @@ async function select(this: SiteDatabase, condition?: SiteCondition): Promise<ti
         .filter(filter)
 }
 
-function buildFilter(condition?: SiteCondition): (site: timer.site.SiteInfo) => boolean {
+function buildFilter(condition?: timer.site.Query): (site: timer.site.SiteInfo) => boolean {
     const { fuzzyQuery, cateIds, types } = condition || {}
     let cateFilter = typeof cateIds === 'number' ? [cateIds] : (cateIds?.length ? cateIds : undefined)
     let typeFilter = typeof types === 'string' ? [types] : (types?.length ? types : undefined)

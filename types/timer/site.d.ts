@@ -37,4 +37,16 @@ declare namespace timer.site {
     }
 
     type PageQuery = Query & common.PageQuery
+
+    type ChangeCateParam = {
+        // Undefined means uncategorized
+        cateId: number | undefined
+        keys: SiteKey[]
+    }
+
+    type ChangeAliasParam = {
+        key: SiteKey
+        // Undefined means delete alias
+        alias: string | undefined
+    }
 }

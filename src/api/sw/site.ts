@@ -1,68 +1,43 @@
 import { sendMsg2Runtime } from "./common"
 
-export type SiteQueryParam = {
-    fuzzyQuery?: string
-    cateIds?: number | number[]
-    types?: timer.site.Type | timer.site.Type[]
+export function selectAllSites(param?: timer.site.Query) {
+    return sendMsg2Runtime('site.all', param)
 }
 
-export function getSitePslSuffix(host: string) {
-    return sendMsg2Runtime('site.getPslSuffix', host)
+export function selectSitePage(param?: timer.site.Query, page?: timer.common.PageQuery) {
+    return sendMsg2Runtime('site.page', { ...param, ...page })
 }
 
-export function getSite(key: timer.site.SiteKey) {
-    return sendMsg2Runtime('site.getSite', key)
+export function deleteSites(...keys: timer.site.SiteKey[]) {
+    return sendMsg2Runtime('site.delete', keys)
 }
 
-export function selectAllSites(param?: SiteQueryParam) {
-    return sendMsg2Runtime('site.selectAllSites', param)
-}
-
-export function selectSitePage(param?: SiteQueryParam, page?: timer.common.PageQuery) {
-    return sendMsg2Runtime('site.selectSitePage', { ...param, ...page })
-}
-
-export function addSite(info: timer.site.SiteInfo) {
-    return sendMsg2Runtime('site.addSite', info)
-}
-
-export function removeSites(...keys: timer.site.SiteKey[]) {
-    return sendMsg2Runtime('site.removeSites', keys)
-}
-
-export function saveSiteCate(key: timer.site.SiteKey, cateId: number | undefined) {
-    return sendMsg2Runtime('site.saveSiteCate', { key, cateId })
-}
-
-export function batchSaveSiteCate(cateId: number | undefined, keys: timer.site.SiteKey[]) {
-    return sendMsg2Runtime('site.batchSaveSiteCate', { cateId, keys })
+export function changeCateOfSites(cateId: number | undefined, ...keys: timer.site.SiteKey[]) {
+    return sendMsg2Runtime('site.changeCate', { keys, cateId })
 }
 
 export function removeIconUrl(key: timer.site.SiteKey) {
-    return sendMsg2Runtime('site.removeIconUrl', key)
+    return sendMsg2Runtime('site.deleteIcon', key)
 }
 
-export function saveSiteRunState(key: timer.site.SiteKey, run: boolean) {
-    return sendMsg2Runtime('site.saveSiteRunState', { key, run })
+export async function saveAlias(key: timer.site.SiteKey, alias: string | undefined): Promise<string | undefined> {
+    const trimmed = alias?.trim() || undefined
+    await sendMsg2Runtime('site.changeAlias', { key, alias: trimmed })
+    return trimmed
 }
 
-export function batchGetSites(keys: timer.site.SiteKey[]) {
-    return sendMsg2Runtime('site.batchGetSites', keys)
+export async function fillInitialAlias(keys: timer.site.SiteKey[]) {
+    return sendMsg2Runtime('site.fillAlias', keys)
 }
 
-export function batchSaveAliasNoRewrite(items: Array<{ key: timer.site.SiteKey; alias: string }>) {
-    return sendMsg2Runtime('site.batchSaveAliasNoRewrite', items)
+export async function getInitialAlias(host: string) {
+    return sendMsg2Runtime('site.initialAlias', host)
 }
 
-export function removeAlias(key: timer.site.SiteKey) {
-    return sendMsg2Runtime('site.removeAlias', key)
+export function changeSiteRun(key: timer.site.SiteKey, enabled: boolean) {
+    return sendMsg2Runtime('site.changeRun', { key, enabled })
 }
 
-export function saveAlias(key: timer.site.SiteKey, alias: string, noRewrite?: boolean) {
-    return sendMsg2Runtime('site.saveAlias', { key, alias, noRewrite })
-}
-
-/** Usage stats hosts (`undefined` = all types) or site-manage picker (`string`, empty after trim = []). */
-export function searchHosts(query?: string) {
-    return sendMsg2Runtime('site.searchHosts', query)
+export function searchSite(query?: string) {
+    return sendMsg2Runtime('site.search', query)
 }

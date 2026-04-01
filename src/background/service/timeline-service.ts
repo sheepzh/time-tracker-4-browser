@@ -5,10 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 
+import cateDb from "@/background/database/cate-database"
 import { toMap } from '@/util/array'
 import { CATE_NOT_SET_ID } from '@/util/site'
 import mergeDb from '@db/merge-rule-database'
-import cateDb from "@db/site-cate-database"
 import siteDb from "@db/site-database"
 import db from "@db/timeline-database"
 import CustomizedHostMergeRuler from './components/host-merge-ruler'
