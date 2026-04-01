@@ -15,6 +15,11 @@ jobs:
               run: bash script/setup-e2e.sh --all
             - name: Collect env info
               run: npx envinfo --system --browsers --npmPackages '@rstest/*'
+            - name: Patch rstest for debugging
+              run: |
+                RSTEST_FILE=$(find node_modules -path "*/rstest*" -name "*.js" | xargs grep -l "exited unexpectedly" | head -1)
+                echo "Found file: $RSTEST_FILE"
+                sed -i 's/Rstest exited unexpectedly/process._getActiveHandles().forEach(h => console.error("handle:", h.constructor.name)); console.error(new Error().stack); \0/' "$RSTEST_FILE"
 
             - name: Run tests
               env:
