@@ -2,7 +2,7 @@ import { listTimeline } from '@/api/sw/timeline'
 import { getAllDatesBetween, getStartOfDay, MILL_PER_DAY } from '@/util/time'
 import { useProvide, useProvider, useRequest, useState } from '@app/hooks'
 import { type ShallowRef } from 'vue'
-import { formatYAxias } from './common'
+import { formatYAxis } from './common'
 
 /**
  * The days shown in the timeline
@@ -20,7 +20,7 @@ type ContextValue = {
 
 export const initTimelineContext = () => {
     const start = getStartOfDay(Date.now() - MILL_PER_DAY * (TIMELINE_DAY_COUNT - 1))
-    const dates = getAllDatesBetween(new Date(start), new Date(), formatYAxias)
+    const dates = getAllDatesBetween(new Date(start), new Date(), formatYAxis)
     const [merge, setMerge] = useState<timer.timeline.MergeMethod>('none')
     const { data: activities } = useRequest(
         () => listTimeline({ start, merge: merge.value }),

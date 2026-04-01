@@ -61,5 +61,5 @@ describe('Backup with gist', () => {
         // Assert can't download current
         await sleep(1)
         await option.assertCantDownloadCurr()
-    }, 50000)
+    })
 })

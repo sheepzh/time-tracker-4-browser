@@ -5,11 +5,11 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { batchGetSites, batchSaveAliasNoRewrite, getSitePslSuffix, removeAlias, saveAlias } from "@api/sw/site"
 import Editable from "@app/components/common/Editable"
 import { t } from '@app/locale'
 import { MagicStick } from "@element-plus/icons-vue"
 import Flex from "@pages/components/Flex"
-import { batchGetSites, batchSaveAliasNoRewrite, getSitePslSuffix, removeAlias, saveAlias } from "@api/sw/site"
 import { identifySiteKey, SiteMap } from "@util/site"
 import { ElIcon, ElMessage, ElPopconfirm, ElTableColumn, ElText } from "element-plus"
 import { toUnicode as punyCode2Unicode } from "punycode"

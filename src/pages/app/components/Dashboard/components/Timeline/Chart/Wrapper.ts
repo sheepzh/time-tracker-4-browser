@@ -12,7 +12,7 @@ import type {
     LegendComponentOption, TooltipComponentOption,
 } from 'echarts'
 import { graphic } from "echarts/core"
-import { formatYAxias } from '../common'
+import { formatYAxis } from '../common'
 
 export type BizData = {
     activities: timer.timeline.Activity[]
@@ -138,7 +138,7 @@ const generateSeries = (biz: BizData, legendColors: Record<string, string>): EcO
             renderItem,
             selectedMode: true,
             data: list.map(({ start, duration }) => {
-                const date = formatYAxias(start)
+                const date = formatYAxis(start)
                 const dateIdx = dates.indexOf(date)
                 const dayStart = getStartOfDay(start)
                 const startOffset = start - dayStart

@@ -60,7 +60,7 @@ describe('Run time tracking', () => {
         records = await readRecordsOfFirstPage(context)
         const runTime3 = parseTime2Sec(records[0].runTime)
         expect(runTime3).toBeLessThanOrEqual(Math.round((disableTs - enableTs) / 1000))
-    }, 60000)
+    })
 
     test('white list', async () => {
         await context.newPage(MOCK_URL)
@@ -84,5 +84,5 @@ describe('Run time tracking', () => {
         records = await readRecordsOfFirstPage(context)
         const runTime1 = parseTime2Sec(records[0].runTime)
         expect(runTime1).toBeLessThan((disableTs - enableTs) / 1000 + 1)
-    }, 60000)
+    })
 })

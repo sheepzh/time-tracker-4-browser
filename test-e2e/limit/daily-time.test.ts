@@ -85,5 +85,5 @@ describe('Daily time limit', () => {
             return !!shadow.shadowRoot!.querySelector('body:not([style*="display: none"])')
         })
         expect(modalExist).toBeFalsy()
-    }, 60000)
+    })
 })

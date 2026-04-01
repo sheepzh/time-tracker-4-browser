@@ -30,7 +30,7 @@ describe('Tracking', () => {
         expect(records.length).toEqual(2)
         const urls = records.map(r => r.url)
         expect(urls.includes(MOCK_HOST))
-    }, 60000)
+    })
 
     test('white list', async () => {
         const page = await context.newPageAndWaitCsInjected(MOCK_URL)
@@ -53,5 +53,5 @@ describe('Tracking', () => {
         expect(records.length).toEqual(1)
         expect(records[0].time).toEqual(timeStr)
         expect(records[0].visit).toEqual("1")
-    }, 60000)
+    })
 })

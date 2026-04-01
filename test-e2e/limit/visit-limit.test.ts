@@ -43,5 +43,5 @@ describe('Time limit per visit', () => {
         })
         expect(modalExist).toBeFalsy()
 
-    }, 10000)
+    })
 })
