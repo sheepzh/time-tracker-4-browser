@@ -28,9 +28,11 @@ describe('Backup with gist', () => {
 
         // Assert token is valid
         await tokenInput!.focus()
-        await page.keyboard.down('Control')
-        await page.keyboard.press('a')
-        await page.keyboard.up('Control')
+        await tokenInput!.evaluate(el => {
+            if (!(el instanceof HTMLInputElement)) return
+            el.value = ''
+            el.dispatchEvent(new Event('input', { bubbles: true }))
+        })
         await tokenInput!.type(GIST_MOCK_TOKEN)
         await option.assertTestValid()
 
