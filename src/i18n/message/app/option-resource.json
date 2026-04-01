@@ -1420,6 +1420,7 @@
         "on": "Her zaman açık",
         "off": "Her zaman kapalı",
         "followBrowser": "Tarayıcıyı takip et",
+        "permGrantConfirm": "Bu özellik ilgili izinleri gerektirir",
         "appearance": {
             "title": "Görünüm",
             "displayWhitelist": "{input}  {contextMenu} içinde {whitelist} gösterilip gösterilmeyeceğini seçin",
@@ -1527,6 +1528,22 @@
         "accessibility": {
             "title": "Erişilebilirlik",
             "chartDecal": "{input} Grafik çıkartmasını gösterip göstermemeyi seçin"
+        },
+        "notification": {
+            "title": "Bildirim",
+            "cycle": {
+                "label": "Bildirim döngüsü {input}",
+                "daily": "Günlük",
+                "weekly": "Haftalık"
+            },
+            "method": {
+                "label": "Bildirim methodu {input}",
+                "browser": "Tarayıcı",
+                "callback": {
+                    "label": "HTTP Callback",
+                    "url": "Callback URL {input}"
+                }
+            }
         },
         "resetButton": "Sıfırla",
         "resetSuccess": "Varsayılan ayarlara sıfırlama işlemi başarıyla tamamlandı!",

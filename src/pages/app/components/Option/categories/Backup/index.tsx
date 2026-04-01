@@ -51,32 +51,35 @@ const _default = defineComponent((_, ctx) => {
                 onChange={(val: timer.backup.Type) => option.backupType = val}
                 options={ALL_TYPES.map(value => ({ value, label: TYPE_NAMES[value] }))}
             />
-        </OptionItem >
-        <OptionItem v-show={isNotNone.value} label="{input}" defaultValue={false}>
-            <AutoInput
-                autoBackup={option.autoBackUp}
-                interval={option.autoBackUpInterval}
-                onAutoBackupChange={val => option.autoBackUp = val}
-                onIntervalChange={val => val !== undefined && (option.autoBackUpInterval = val)}
-            />
         </OptionItem>
-        <OptionItem
-            v-show={option.backupType === 'gist'}
-            label="Personal Access Token {info} {input}"
-            v-slots={{
-                info: () => <OptionTooltip>{t(msg => msg.option.backup.meta.gist.authInfo)}</OptionTooltip>
-            }}
-        >
-            <ElInput
-                name='token'
-                modelValue={auth.value}
-                size="small"
-                type="password"
-                showPassword
-                style={{ width: LONG_INPUT_WIDTH }}
-                onInput={val => auth.value = val?.trim?.() || ''}
-            />
-        </OptionItem>
+        {isNotNone.value && (
+            <OptionItem label="{input}" defaultValue={false}>
+                <AutoInput
+                    autoBackup={option.autoBackUp}
+                    interval={option.autoBackUpInterval}
+                    onAutoBackupChange={val => option.autoBackUp = val}
+                    onIntervalChange={val => val !== undefined && (option.autoBackUpInterval = val)}
+                />
+            </OptionItem>
+        )}
+        {option.backupType === 'gist' && (
+            <OptionItem
+                label="Personal Access Token {info} {input}"
+                v-slots={{
+                    info: () => <OptionTooltip>{t(msg => msg.option.backup.meta.gist.authInfo)}</OptionTooltip>
+                }}
+            >
+                <ElInput
+                    name='token'
+                    modelValue={auth.value}
+                    size="small"
+                    type="password"
+                    showPassword
+                    style={{ width: LONG_INPUT_WIDTH }}
+                    onInput={val => auth.value = val?.trim?.() || ''}
+                />
+            </OptionItem>
+        )}
         {option.backupType === 'obsidian_local_rest_api' && <>
             <OptionItem
                 label={msg => msg.option.backup.label.endpoint}
@@ -161,15 +164,17 @@ const _default = defineComponent((_, ctx) => {
                 />
             </OptionItem>
         </>}
-        <OptionItem v-show={isNotNone.value} label={msg => msg.option.backup.client}>
-            <ElInput
-                modelValue={option.clientName}
-                size="small"
-                style={{ width: "120px" }}
-                onInput={val => option.clientName = val?.trim?.() ?? ''}
-            />
-        </OptionItem>
-        {isNotNone.value && <Footer type={option.backupType} />}
+        {isNotNone.value && <>
+            <OptionItem label={msg => msg.option.backup.client}>
+                <ElInput
+                    modelValue={option.clientName}
+                    size="small"
+                    style={{ width: "120px" }}
+                    onInput={val => option.clientName = val?.trim?.() ?? ''}
+                />
+            </OptionItem>
+            <Footer type={option.backupType} />
+        </>}
     </OptionLines>
 })
 
