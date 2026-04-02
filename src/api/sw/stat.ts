@@ -47,7 +47,3 @@ export function countGroupByIds(groupIds: number[], date: string | [string?, str
 export function countSiteByHosts(hosts: string[], date: string | [string?, string?]) {
     return sendMsg2Runtime('stat.countSite', { host: hosts, date })
 }
-
-export function canReadRemote() {
-    return sendMsg2Runtime('stat.canReadRemote')
-}

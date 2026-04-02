@@ -5,10 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { useRequest } from '@hooks'
+import { checkAuth } from '@/api/sw/backup'
 import { t } from '@app/locale'
 import { UploadFilled } from "@element-plus/icons-vue"
-import { canReadRemote } from '@api/sw/stat'
+import { useRequest } from '@hooks'
 import { ElButton, ElIcon, ElTooltip } from "element-plus"
 import { computed, defineComponent } from "vue"
 import { useReportFilter } from "../context"
@@ -17,7 +17,7 @@ import { ICON_BTN_STYLE } from "./common"
 const _default = defineComponent(() => {
     const filter = useReportFilter()
     const content = computed(() => t(msg => msg.report.remoteReading[filter.readRemote ? 'on' : 'off']))
-    const { data: visible } = useRequest(() => canReadRemote(), { defaultValue: false })
+    const { data: visible } = useRequest(() => checkAuth().then(errMsg => !errMsg), { defaultValue: false })
 
     return () => (
         <ElTooltip trigger="hover" placement="bottom-start" effect="dark" content={content.value}>

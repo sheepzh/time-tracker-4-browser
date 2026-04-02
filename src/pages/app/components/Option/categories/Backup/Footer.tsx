@@ -29,13 +29,10 @@ const useStyle = () => {
 async function handleTest() {
     const loading = ElLoading.service({ text: "Please wait...." })
     try {
-        const result = await checkAuth()
-        const errorMsg = result?.errorMsg
-        if (!errorMsg) {
-            ElMessage.success("Valid!")
-        } else {
-            ElMessage.error(errorMsg)
-        }
+        const errorMsg = await checkAuth()
+        errorMsg
+            ? ElMessage.error(errorMsg)
+            : ElMessage.success("Valid!")
     } finally {
         loading.close()
     }

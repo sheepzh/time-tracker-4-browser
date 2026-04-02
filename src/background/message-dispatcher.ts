@@ -34,7 +34,6 @@ import {
     selectSite, selectSitePage as selectStateSitePage
 } from "./service/stat-service"
 import { mergeDate } from "./service/stat-service/merge/date"
-import { canReadRemote } from "./service/stat-service/remote"
 import timelineThrottler from './service/throttler/timeline-throttler'
 import { listTimeline } from "./service/timeline-service"
 import whitelistHolder from './service/whitelist/holder'
@@ -82,7 +81,6 @@ class MessageDispatcher {
             .register('stat.countGroup', countGroup)
             .register('stat.mergeDate', mergeDate)
             .register('stat.batchDelete', batchDelete)
-            .register('stat.canReadRemote', canReadRemote)
             .register('stat.today', getTodayResult)
             // Site management
             .register('site.all', param => siteDatabase.select(param))
@@ -129,10 +127,7 @@ class MessageDispatcher {
             .register('merge.add', rule => mergeRuleDatabase.add(rule))
             // Backup
             .register('backup.syncData', () => backupProcessor.syncData())
-            .register('backup.checkAuth', async () => {
-                const result = await backupProcessor.checkAuth()
-                return { errorMsg: result.errorMsg }
-            })
+            .register('backup.checkAuth', () => backupProcessor.checkAuth().then(res => res.errorMsg))
             .register('backup.clear', cid => backupProcessor.clear(cid))
             .register('backup.query', param => backupProcessor.query(param))
             .register('backup.getLastBackUp', type => getLastBackUp(type))

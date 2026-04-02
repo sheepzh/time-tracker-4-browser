@@ -43,7 +43,6 @@ declare namespace timer.mq {
         & _MakeRegistry<'stat.selectGroupPage', stat.GroupPageQuery | undefined, common.PageResult<timer.stat.GroupRow>>
         & _MakeRegistry<'stat.mergeDate', stat.SiteRow[], stat.SiteRow[]>
         & _MakeRegistry<'stat.batchDelete', stat.Row[]>
-        & _MakeRegistry<'stat.canReadRemote', undefined, boolean>
         // Category
         & _MakeRegistry<'cate.all', undefined, site.Cate[]>
         & _MakeRegistry<'cate.add', string, site.Cate>
@@ -98,7 +97,7 @@ declare namespace timer.mq {
         & _MakeRegistry<'whitelist.contain', { host: string; url: string }, boolean>
         // Backup
         & _MakeRegistry<'backup.syncData', undefined, { success: boolean; errorMsg?: string; data?: number }>
-        & _MakeRegistry<'backup.checkAuth', undefined, { errorMsg?: string }>
+        & _MakeRegistry<'backup.checkAuth', undefined, string | undefined>
         & _MakeRegistry<'backup.clear', string, { success: boolean; errorMsg?: string }>
         & _MakeRegistry<'backup.query', backup.RemoteQuery, backup.Row[]>
         & _MakeRegistry<'backup.getLastBackUp', backup.Type, { ts: number; msg?: string } | undefined>

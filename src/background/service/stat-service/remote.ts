@@ -12,9 +12,6 @@ import processor from "../backup/processor"
 import { cvt2SiteRow } from "./common"
 
 export async function processRemote(origin: timer.stat.SiteRow[], param?: StatCondition): Promise<timer.stat.SiteRow[]> {
-    if (!await canReadRemote()) {
-        return origin
-    }
     // Map to merge
     const originMap: Record<string, MakeRequired<timer.stat.SiteRow, 'composition'>> = {}
     origin.forEach(row => originMap[identifyStatKey(row)] = {
@@ -44,17 +41,6 @@ export async function processRemote(origin: timer.stat.SiteRow[], param?: StatCo
     const remote = await processor.query({ excludeLocal: true, start, end })
     remote.filter(predicate).forEach(row => processRemoteRow(originMap, row))
     return Object.values(originMap)
-}
-
-/**
- * Enabled to read remote backup data
- *
- * @since 1.2.0
- * @returns T/F
- */
-export async function canReadRemote(): Promise<boolean> {
-    const { errorMsg } = await processor.checkAuth()
-    return !errorMsg
 }
 
 function processRemoteRow(rowMap: Record<string, MakeRequired<timer.stat.SiteRow, 'composition'>>, remoteBase: timer.core.Row) {

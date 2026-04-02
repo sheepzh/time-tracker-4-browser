@@ -6,7 +6,6 @@
  */
 
 import cateDatabase from "@/background/database/cate-database"
-import { log } from "@/common/logger"
 import { listAllGroups } from "@api/chrome/tabGroups"
 import siteDatabase from "@db/site-database"
 import statDatabase, { type StatCondition } from "@db/stat-database"
@@ -48,25 +47,17 @@ function compareSortVal(a: string | number, b: string | number, direction?: time
     return direction === 'DESC' ? -val : val
 }
 
-export type CountQuery = Pick<StatCondition, 'date'> & {
-    keys: timer.stat.TargetKey
-}
-
 function filterByCateId(itemCateId: number | undefined, cateIds: number[] | undefined): boolean {
     if (!cateIds?.length) return true
     return cateIds.includes(itemCateId ?? CATE_NOT_SET_ID)
 }
 
 export async function countSite(param?: timer.stat.SiteQuery): Promise<number> {
-    log("service: countSiteByHosts: {param}", param)
     const rows = await statDatabase.select(param)
-    const result = rows.length
-    log("service: countSiteByHosts: {result}", result)
-    return result
+    return rows.length
 }
 
 export async function selectSite(param?: timer.stat.SiteQuery): Promise<timer.stat.SiteRow[]> {
-    log("service: select:{param}", param)
     const {
         mergeHost: needMerge, mergeDate: needMergeDate,
         date, query, host, cateIds,
@@ -103,11 +94,8 @@ export async function selectSite(param?: timer.stat.SiteQuery): Promise<timer.st
 }
 
 export async function selectSitePage(param?: timer.stat.SitePageQuery): Promise<timer.common.PageResult<timer.stat.SiteRow>> {
-    log("selectSitePage:{param}", param)
     const rows = await selectSite(param)
-    let result = slicePageResult(rows, param)
-    log("result of selectSitePage:{param}, {result}", param, result)
-    return result
+    return slicePageResult(rows, param)
 }
 
 export async function selectCate(param?: timer.stat.CateQuery): Promise<timer.stat.CateRow[]> {
@@ -185,13 +173,10 @@ export async function selectGroupPage(param?: timer.stat.GroupPageQuery) {
 }
 
 export async function countGroup(param?: timer.stat.GroupQuery): Promise<number> {
-    log("service: countGroup: {param}", param)
     const { groupIds, date } = param ?? {}
     const keys = groupIds?.map(gid => `${gid}`)
     const rows = await statDatabase.selectGroup({ keys, date })
-    const result = rows.length
-    log("service: countGroup: {result}", result)
-    return result
+    return rows.length
 }
 
 export async function batchDelete(targets: timer.stat.Row[]) {
@@ -206,9 +191,4 @@ export async function batchDelete(targets: timer.stat.Row[]) {
     })
     await statDatabase.delete(...siteKeys)
     await statDatabase.deleteGroup(...groupKeys)
-}
-
-export async function selectGroupByPage(param?: timer.stat.GroupPageQuery): Promise<timer.common.PageResult<timer.stat.Row>> {
-    const rows = await selectGroup(param)
-    return slicePageResult(rows, param)
 }

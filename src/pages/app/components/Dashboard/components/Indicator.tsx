@@ -22,7 +22,7 @@ type _Value = {
     sites: number
     visits: number
     browsingTime: number
-    most2Hour: number | undefined
+    busiestClock: number | undefined
 }
 
 /**
@@ -33,14 +33,15 @@ function calculateInstallDays(installTime: Date, now: Date): number {
     return Math.round(deltaMills / MILL_PER_DAY)
 }
 
-function calcMostPeriodOf2Hours(rows: timer.period.Row[]): number | undefined {
-    const map = groupBy(rows, e => e.startTime, list => sum(list.map(e => e.milliseconds)))
-    const maxOffsetStr = Object.entries(map).sort((a, b) => a[1] - b[1])[0]?.[0]
-    if (maxOffsetStr === undefined) {
-        return undefined
-    }
-    const offset = Number.parseInt(maxOffsetStr)
-    return Math.floor(offset / MILL_PER_HOUR * 2)
+function calcBusiestClock(rows: timer.period.Row[]): number | undefined {
+    const map = groupBy(rows,
+        ({ startTime }) => startTime - getStartOfDay(startTime),
+        list => sum(list.map(e => e.milliseconds))
+    )
+    const maxOffsetStr = Object.entries(map).sort((a, b) => b[1] - a[1])[0]?.[0]
+    if (maxOffsetStr === undefined) return undefined
+    console.log(map, maxOffsetStr, MILL_PER_HOUR, Number.parseInt(maxOffsetStr) / MILL_PER_HOUR)
+    return Math.floor(Number.parseInt(maxOffsetStr) / MILL_PER_HOUR)
 }
 
 async function query(): Promise<_Value> {
@@ -48,20 +49,19 @@ async function query(): Promise<_Value> {
     const hostSet = new Set<string>()
     let visits = 0
     let browsingTime = 0
-    allData.forEach(({ siteKey, focus, time }) => {
-        const { host } = siteKey || {}
-        host && hostSet.add(host)
+    allData.forEach(({ siteKey: { host }, focus, time }) => {
+        hostSet.add(host)
         visits += time
         browsingTime += focus
     })
     const periods = await selectPeriods({ size: 8 })
-    const most2Hour = calcMostPeriodOf2Hours(periods)
+    const busiestClock = calcBusiestClock(periods)
 
     const result: _Value = {
-        sites: hostSet?.size || 0,
+        sites: hostSet.size,
         visits,
         browsingTime,
-        most2Hour
+        busiestClock,
     }
 
     // 2. if not exist, calculate from all data items
@@ -99,10 +99,10 @@ const IndicatorLabel = defineComponent<Props>(props => {
 }, { props: ['path', 'param', 'duration'] })
 
 const computeMost2HourParam = (value: _Value | undefined): { start: number, end: number } => {
-    const most2HourIndex = value?.most2Hour
-    const [start, end] = most2HourIndex === undefined || isNaN(most2HourIndex)
+    const { busiestClock } = value ?? {}
+    const [start, end] = busiestClock === undefined || isNaN(busiestClock)
         ? [0, 0]
-        : [most2HourIndex * 2, most2HourIndex * 2 + 2]
+        : [busiestClock, busiestClock + 2]
     return { start, end }
 }
 
