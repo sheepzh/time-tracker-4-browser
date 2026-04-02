@@ -17,7 +17,8 @@ const readmeForFirefox = path.join(__dirname, '..', 'doc', 'for-firefox.md')
 const sourceTempDir = path.resolve(__dirname, '..', 'source_temp')
 const srcDir = [
     'public',
-    'test',
+    'src',
+    'test', 'types',
     'package.json', 'package-lock.json',
     'tsconfig.json',
     'rspack',
@@ -25,7 +26,6 @@ const srcDir = [
     'script',
     'examples',
     '.gitignore',
-    'types',
 ]
 const copyMapper = srcDir.map(p => { return { source: path.resolve(__dirname, '..', p), destination: path.resolve(sourceTempDir, p) } })
 

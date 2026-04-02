@@ -1,5 +1,5 @@
 import { onTabMessage } from "@api/chrome/runtime"
-import { allMatch } from "@util/array"
+import { allMatch, anyMatch } from "@util/array"
 import ModalInstance from "./modal"
 import MessageAdaptor from "./processor/message-adaptor"
 import PeriodProcessor from "./processor/period-processor"
@@ -27,7 +27,7 @@ export default async function processLimit(url: string) {
         const allIgnore = allMatch(results, (r: timer.tab.Response) => r.code === "ignore")
         if (allIgnore) return { code: "ignore" as const }
 
-        const anyFail = allMatch(results, (r: timer.tab.Response) => r.code === "fail")
+        const anyFail = anyMatch(results, (r: timer.tab.Response) => r.code === "fail")
         if (anyFail) {
             const failResult = results.find((r): r is timer.tab.Response & { code: "fail" } => r.code === "fail")
             return { code: "fail" as const, msg: failResult?.msg ?? "" }

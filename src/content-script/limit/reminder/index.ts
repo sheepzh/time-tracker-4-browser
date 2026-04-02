@@ -40,7 +40,8 @@ class Reminder implements Processor {
     }
 
     async init(): Promise<void> {
-        getOption().then(processDarkMode)
+        const option = await getOption()
+        this.darkMode = processDarkMode(option)
     }
 }
 

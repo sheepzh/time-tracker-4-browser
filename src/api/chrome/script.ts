@@ -1,4 +1,4 @@
-import { IS_MV3 } from "../../util/constant/environment"
+import { IS_MV3 } from "@util/constant/environment"
 import { handleError } from "./common"
 
 export async function executeScript(tabId: number, files: string[]): Promise<void> {
