@@ -1,4 +1,4 @@
-import { getWeekBounds } from "@api/sw/option"
+import { getWeekStartTime } from "@api/sw/option"
 import { selectCate, selectGroup, selectSite } from '@api/sw/stat'
 import { REPORT_ROUTE, type ReportQuery } from "@app/router/constants"
 import type { PopupDuration, PopupQuery } from "@popup/types"
@@ -13,7 +13,7 @@ const DATE_RANGE_CALCULATORS: { [duration in PopupDuration]: DateRangeCalculator
     today: now => now,
     yesterday: now => new Date(now.getTime() - MILL_PER_DAY),
     thisWeek: async now => {
-        const [start] = await getWeekBounds(now)
+        const start = await getWeekStartTime(now)
         return [start, now]
     },
     thisMonth: now => [getMonthTime(now)[0], now],

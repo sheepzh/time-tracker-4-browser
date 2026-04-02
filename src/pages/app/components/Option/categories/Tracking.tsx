@@ -61,7 +61,7 @@ const _default = defineComponent((_props, ctx) => {
     ctx.expose({ reset } satisfies CategoryInstance)
 
     const { refresh: changeStorageType, loading: storageMigrating } = useManualRequest(
-        type => sendMsg2Runtime('option.migrateStorage', type),
+        type => sendMsg2Runtime('option.changeStorage', type),
         {
             loadingText: 'Data migrating...',
             onSuccess: (_, type) => option.storage = type,

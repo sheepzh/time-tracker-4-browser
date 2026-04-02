@@ -16,11 +16,10 @@ import backupProcessor from "./service/backup/processor"
 import immigration from "./service/components/immigration"
 import { previewImport, processImportedData } from "./service/components/import-processor"
 import optionHolder from "./service/components/option-holder"
-import weekHelper from "./service/components/week-helper"
+import { getWeekStartDay, getWeekStartTime } from "./service/components/week-helper"
 import { getTodayResult } from './service/item-service'
 import { getCid, getLastBackUp, increaseApp, increasePopup, recommendRate, saveFlag } from "./service/meta-service"
-import processor from './service/notification/processor'
-import { setBackupOption, setDarkMode, setLocale } from "./service/option-service"
+import notificationProcessor from './service/notification/processor'
 import { selectPeriods } from "./service/period-service"
 import {
     addSite, batchChangeCate, fillInitialAlias, getInitialAlias, getSite, removeIconUrl,
@@ -98,18 +97,15 @@ class MessageDispatcher {
             // Options
             .register('option.get', () => optionHolder.get())
             .register('option.set', val => optionHolder.set(val))
-            .register('option.setDarkMode', setDarkMode)
-            .register('option.setLocale', setLocale)
-            .register('option.setBackupOption', setBackupOption)
-            .register('option.migrateStorage', type => immigration.migrateStorage(type))
-            .register('option.testNotification', () => processor.doSend())
-            .register('option.getWeekBounds', ts => weekHelper.getWeekDate(ts))
-            .register('option.getWeekStartDay', () => weekHelper.getRealWeekStart())
+            .register('option.changeStorage', type => immigration.migrateStorage(type))
+            .register('option.testNotification', () => notificationProcessor.doSend())
+            .register('option.weekStartDay', getWeekStartDay)
+            .register('option.weekStartTime', getWeekStartTime)
             // Category
             .register('cate.all', () => cateDatabase.listAll())
             .register('cate.add', name => cateDatabase.add(name))
-            .register('cate.saveName', ({ id, name }) => cateDatabase.update(id, name))
-            .register('cate.remove', id => cateDatabase.delete(id))
+            .register('cate.change', ({ id, name }) => cateDatabase.update(id, name))
+            .register('cate.delete', id => cateDatabase.delete(id))
             // Meta information
             .register('meta.saveFlag', saveFlag)
             .register('meta.getCid', getCid)

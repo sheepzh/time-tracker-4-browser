@@ -19,9 +19,8 @@ export interface ExportedSettings {
  */
 export async function exportSettings(): Promise<void> {
     const settings = await getOption()
-    if (!settings) throw new Error('Failed to get settings')
     const exportData: ExportedSettings = {
-        version: '1.0',
+        version: chrome.runtime.getManifest().version,
         timestamp: Date.now(),
         settings,
     }
@@ -52,10 +51,10 @@ export async function importSettings(jsonString: string): Promise<void> {
  */
 async function validateAndMergeSettings(importedSettings: Partial<timer.option.AllOption>): Promise<timer.option.AllOption> {
     // Get current user settings as defaults instead of default options
-    const defaults = await getOption()
+    const current = await getOption()
     // Delete client name
     delete importedSettings['clientName']
-    return mergeObject(defaults ?? {}, importedSettings) as timer.option.AllOption
+    return mergeObject(current ?? {}, importedSettings) as timer.option.AllOption
 }
 
 /**

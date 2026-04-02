@@ -84,9 +84,9 @@ async function resetNotification(): Promise<void> {
         NOTIFICATION_ALARM_NAME,
         () => OFFSET_HANDLERS[cycle](offset),
         async () => {
-            const result = await notificationProcessor.doSend()
-            if (!result.success) {
-                console.warn(`Failed to send notification ts=${Date.now()}, msg=${result.errorMsg}`)
+            const errMsg = await notificationProcessor.doSend()
+            if (errMsg) {
+                console.warn(`Failed to send notification ts=${Date.now()}, msg=${errMsg}`)
             }
         }
     )

@@ -1,25 +1,25 @@
-import { listCates } from "@api/sw/cate"
-import { getOption, setDarkMode as setOptionDarkMode } from "@api/sw/option"
+import { allCates } from '@/api/sw/cate'
+import { getOption, setOption } from "@api/sw/option"
 import { useLocalStorage, useProvide, useProvider, useRequest } from "@hooks"
 import { toMap } from "@util/array"
 import { isDarkMode, processDarkMode } from "@util/dark-mode"
 import { CATE_NOT_SET_ID } from "@util/site"
-import { reactive, type Reactive, ref, type Ref, toRaw, watch } from "vue"
+import { reactive, type Reactive, ref, type ShallowRef, toRaw, watch } from "vue"
 import { t } from "./locale"
 import type { PopupOption, PopupQuery } from './types'
 
 type PopupContextValue = {
     reload: () => void
-    darkMode: Ref<boolean>
+    darkMode: ShallowRef<boolean>
     setDarkMode: (val: boolean) => void
     query: Reactive<PopupQuery>
     option: Reactive<PopupOption>
-    cateNameMap: Ref<Record<number, string>>
+    cateNameMap: ShallowRef<Record<number, string>>
 }
 
 const NAMESPACE = '_'
 
-export const initPopupContext = (): Ref<number> => {
+export const initPopupContext = (): ShallowRef<number> => {
     const appKey = ref(Date.now())
     const reload = () => appKey.value = Date.now()
 
@@ -29,13 +29,12 @@ export const initPopupContext = (): Ref<number> => {
     }, { defaultValue: isDarkMode() })
 
     const setDarkMode = async (val: boolean) => {
-        const option: timer.option.DarkMode = val ? 'on' : 'off'
-        await setOptionDarkMode(option)
+        await setOption({ darkMode: val ? 'on' : 'off' })
         refreshDarkMode()
     }
 
     const { data: cateNameMap } = useRequest(async () => {
-        const categories = await listCates()
+        const categories = await allCates()
         const result = toMap(categories ?? [], c => c.id, c => c.name)
         result[CATE_NOT_SET_ID] = t(msg => msg.shared.cate.notSet)
         return result
@@ -43,7 +42,7 @@ export const initPopupContext = (): Ref<number> => {
 
     const query = initQuery()
     const option = initOption()
-    useProvide<PopupContextValue>(NAMESPACE, { reload, darkMode: darkMode as Ref<boolean>, setDarkMode, query, option, cateNameMap })
+    useProvide<PopupContextValue>(NAMESPACE, { reload, darkMode, setDarkMode, query, option, cateNameMap })
 
     return appKey
 }

@@ -11,14 +11,15 @@ import { sum } from "@util/array"
 import { calcTimeState, hasLimited, isEnabledAndEffective, matches } from "@util/limit"
 import { formatTimeYMD, MILL_PER_MINUTE } from "@util/time"
 import optionHolder from "../components/option-holder"
-import weekHelper from "../components/week-helper"
+import { getWeekStartTime } from '../components/week-helper'
 import whitelistHolder from "../whitelist/holder"
 
 export async function selectLimit(param?: timer.limit.Query): Promise<timer.limit.Item[]> {
     const { onlyEnabled, url, id } = param ?? {}
     const now = Date.now()
     const today = formatTimeYMD(now)
-    const [startDate, endDate] = await weekHelper.getWeekDateRange(now)
+    const startTime = await getWeekStartTime(now)
+    const startDate = formatTimeYMD(startTime)
 
     return (await db.all())
         .filter(item => !onlyEnabled || item.enabled)
@@ -28,7 +29,7 @@ export async function selectLimit(param?: timer.limit.Query): Promise<timer.limi
         .map(({ records, ...others }) => {
             const todayRec = records[today]
             const thisWeekRec = Object.entries(records)
-                .filter(([k]) => k >= startDate && k <= endDate)
+                .filter(([k]) => k >= startDate && k <= today)
                 .map(([, v]) => v)
             const weeklyWaste = sum(thisWeekRec.map(r => r.mill ?? 0))
             const weeklyDelayCount = sum(thisWeekRec.map(r => r.delay ?? 0))

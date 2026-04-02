@@ -1,5 +1,4 @@
 import { trySendMsg2Runtime } from '@api/sw/common'
-import { tryGetOption } from '@api/sw/option'
 import { judgeVerificationRequired, processVerification } from '@app/util/limit/index'
 import { TAG_NAME } from "@cs/limit/element"
 import { t } from "@cs/locale"
@@ -15,7 +14,7 @@ async function handleMore5Minutes(rule: timer.limit.Item | null, callback: () =>
     let promise: Promise<void> | undefined = undefined
     const ele = document.querySelector(TAG_NAME)?.shadowRoot?.querySelector('body')
     if (rule && await judgeVerificationRequired(rule)) {
-        const option = await tryGetOption()
+        const option = await trySendMsg2Runtime('option.get')
         if (!option) return callback()
         promise = processVerification(option, { appendTo: ele ?? undefined })
         promise ? promise.then(callback).catch(() => { }) : callback()

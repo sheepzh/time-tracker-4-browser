@@ -40,25 +40,23 @@ class Processor {
         }
     }
 
-    async doSend(): Promise<timer.common.Result<void>> {
+    async doSend(): Promise<string | undefined> {
         const option = await optionHolder.get()
         const {
             notificationCycle: cycle, notificationMethod: method,
             notificationEndpoint: endpoint, notificationAuthToken: authToken,
         } = option
-        if (cycle === 'none') return success(undefined)
+        if (cycle === 'none') return undefined
 
         const notifier = this.notifiers[method]
         const req: NotificationRequest = { cycle, method, endpoint, authToken }
         const data = await this.buildData(req)
 
         try {
-            const errMsg = await notifier.send(req, data)
-            return errMsg ? error(errMsg) : success(undefined)
+            return await notifier.send(req, data)
         } catch (e) {
             console.error("Error to send notification", e)
-            const msg = e instanceof Error ? e.message : String(e)
-            return error(msg)
+            return e instanceof Error ? e.message : String(e)
         }
     }
 

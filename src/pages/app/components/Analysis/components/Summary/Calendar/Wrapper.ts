@@ -4,21 +4,17 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { EchartsWrapper } from '@hooks'
+import { getWeekStartDay, getWeekStartTime } from '@api/sw/option'
 import { t } from '@app/locale'
-import { periodFormatter } from '@app/util/time'
 import { parseValueOfFormatter } from "@app/util/echarts"
+import { periodFormatter } from '@app/util/time'
+import { EchartsWrapper } from '@hooks'
 import { getRegularTextColor, getSecondaryTextColor } from '@pages/util/style'
-import { getWeekBounds, getWeekStartDay } from '@api/sw/option'
 import { groupBy, rotate, toMap } from "@util/array"
 import { formatTime, getAllDatesBetween, MILL_PER_WEEK, parseTime } from "@util/time"
 import type {
-    ComposeOption,
-    EffectScatterSeriesOption,
-    GridComponentOption,
-    TitleComponentOption,
-    TooltipComponentOption,
-    VisualMapComponentOption
+    ComposeOption, EffectScatterSeriesOption, GridComponentOption, TitleComponentOption, TooltipComponentOption,
+    VisualMapComponentOption,
 } from "echarts"
 import type { TopLevelFormatterParams } from "echarts/types/dist/shared"
 
@@ -158,7 +154,7 @@ class Wrapper extends EchartsWrapper<BizOption, EcOption> {
         const width = this.getDomWidth()
         const colNum = getWeekNum(width)
         const endTime = new Date()
-        const [startTime,] = await getWeekBounds(endTime.getTime() - MILL_PER_WEEK * (colNum - 1))
+        const startTime = await getWeekStartTime(endTime.getTime() - MILL_PER_WEEK * (colNum - 1))
         const allDates = getAllDatesBetween(startTime, endTime)
         const value = toMap(rows, r => r.date, r => r.focus)
         const data: _Value[] = []

@@ -1,4 +1,4 @@
-import { listCates } from "@api/sw/cate"
+import { allCates } from "@api/sw/cate"
 import { toMap } from '@util/array'
 import { CATE_NOT_SET_ID } from '@util/site'
 import { computed, reactive, watch, type Ref } from "vue"
@@ -22,7 +22,7 @@ type AppContextValue = {
 const NAMESPACE = '_'
 
 export const initAppContext = () => {
-    const { refresh: refreshCategories } = useRequest(() => listCates(), {
+    const { refresh: refreshCategories } = useRequest(() => allCates(), {
         onSuccess: categories => {
             category.all = categories
             const map = toMap(categories, c => c.id, c => c.name)

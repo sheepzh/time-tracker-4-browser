@@ -1,10 +1,10 @@
+import { sendMsg2Runtime } from '@/api/sw/common'
+import { selectAllSites } from "@api/sw/site"
 import { useCategory } from "@app/context"
-import { useManualRequest, useRequest, useState, useSwitch } from "@hooks"
 import { t } from "@app/locale"
 import { Check, Close, Delete, Edit } from "@element-plus/icons-vue"
+import { useManualRequest, useRequest, useState, useSwitch } from "@hooks"
 import Flex from "@pages/components/Flex"
-import { removeCate, saveCateName } from "@api/sw/cate"
-import { selectAllSites } from "@api/sw/site"
 import { stopPropagationAfter } from "@util/document"
 import { ElButton, ElInput, ElMessage, ElMessageBox } from "element-plus"
 import { defineComponent, nextTick, ref } from "vue"
@@ -16,19 +16,22 @@ const OptionItem = defineComponent<{ value: timer.site.Cate }>(props => {
     const [editingName, setEditingName] = useState(props.value.name)
     const inputRef = ref<HTMLInputElement>()
 
-    const { refresh: saveCate } = useManualRequest((name: string) => saveCateName(props.value.id, name), {
-        onSuccess: () => {
-            cate.refresh()
-            closeEditing()
-        }
-    })
+    const { refresh: saveCate } = useManualRequest(
+        (name: string) => sendMsg2Runtime('cate.change', { id: props.value.id, name }),
+        {
+            onSuccess: () => {
+                cate.refresh()
+                closeEditing()
+            }
+        },
+    )
 
     const onSaveClick = () => {
         const name = editingName.value?.trim?.()
         name ? saveCate(name) : ElMessage.warning("Name is blank")
     }
 
-    const { refresh: doRemoveCate } = useManualRequest(() => removeCate(props.value.id), {
+    const { refresh: doRemoveCate } = useManualRequest(() => sendMsg2Runtime('cate.delete', props.value.id), {
         onSuccess: () => {
             cate.refresh()
             ElMessage.success(t(msg => msg.operation.successMsg))

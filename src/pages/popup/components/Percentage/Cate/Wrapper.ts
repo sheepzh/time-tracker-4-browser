@@ -1,8 +1,8 @@
-import { EchartsWrapper } from '@hooks'
-import { t } from '@popup/locale'
-import { getInfoColor, getPrimaryTextColor } from "@pages/util/style"
-import { listCates } from "@api/sw/cate"
+import { allCates } from "@api/sw/cate"
 import { mergeDate } from "@api/sw/stat"
+import { EchartsWrapper } from '@hooks'
+import { getInfoColor, getPrimaryTextColor } from "@pages/util/style"
+import { t } from '@popup/locale'
 import { toMap } from "@util/array"
 import { CATE_NOT_SET_ID } from "@util/site"
 import { isCate } from "@util/stat"
@@ -91,7 +91,7 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
         const textColor = getPrimaryTextColor()
         const inactiveColor = getInfoColor()
 
-        const cates = await listCates() ?? []
+        const cates = await allCates() ?? []
         const cateNameMap = toMap(cates, c => c.id, c => c.name)
         cateNameMap[CATE_NOT_SET_ID] = t(msg => msg.shared.cate.notSet)
 

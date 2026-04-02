@@ -1,9 +1,9 @@
+import { sendMsg2Runtime } from '@/api/sw/common'
 import { useCategory } from "@app/context"
-import { useManualRequest, useState, useSwitch } from "@hooks"
 import { t } from "@app/locale"
 import { Check, Close, Plus } from "@element-plus/icons-vue"
+import { useManualRequest, useState, useSwitch } from "@hooks"
 import Flex from "@pages/components/Flex"
-import { addCate } from "@api/sw/cate"
 import { stopPropagationAfter } from "@util/document"
 import { ElButton, ElForm, ElFormItem, ElInput, ElMessage } from "element-plus"
 import { defineComponent, nextTick, ref } from "vue"
@@ -14,7 +14,7 @@ const SelectFooter = defineComponent(() => {
     const [name, setName] = useState<string>()
 
     const { refresh: saveCate, loading } = useManualRequest(
-        (name: string) => addCate(name),
+        (name: string) => sendMsg2Runtime('cate.add', name),
         {
             onSuccess() {
                 cate.refresh()

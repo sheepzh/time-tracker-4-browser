@@ -1,9 +1,5 @@
 type _TransmitValue =
-    | undefined
-    | string
-    | number
-    | boolean
-    | void
+    | undefined | string | number | boolean | void
     | { readonly [key: string]: _TransmitValue }
     | readonly _TransmitValue[]
 
@@ -33,31 +29,28 @@ declare namespace timer.mq {
         // Statistics
         & _MakeRegistry<'stat.today', string, core.Result | undefined>
         & _MakeRegistry<'stat.listSite', stat.SiteQuery | undefined, stat.SiteRow[]>
-        & _MakeRegistry<'stat.getSitePage', stat.SitePageQuery | undefined, common.PageResult<timer.stat.SiteRow>>
+        & _MakeRegistry<'stat.getSitePage', stat.SitePageQuery | undefined, common.PageResult<stat.SiteRow>>
         & _MakeRegistry<'stat.deleteSite', stat.SiteDeleteQuery>
         & _MakeRegistry<'stat.countSite', stat.SiteQuery | undefined, number>
         & _MakeRegistry<'stat.selectCate', stat.CateQuery | undefined, stat.CateRow[]>
-        & _MakeRegistry<'stat.selectCatePage', stat.CatePageQuery | undefined, common.PageResult<timer.stat.CateRow>>
+        & _MakeRegistry<'stat.selectCatePage', stat.CatePageQuery | undefined, common.PageResult<stat.CateRow>>
         & _MakeRegistry<'stat.countGroup', stat.GroupQuery | undefined, number>
         & _MakeRegistry<'stat.selectGroup', stat.GroupQuery | undefined, stat.GroupRow[]>
-        & _MakeRegistry<'stat.selectGroupPage', stat.GroupPageQuery | undefined, common.PageResult<timer.stat.GroupRow>>
+        & _MakeRegistry<'stat.selectGroupPage', stat.GroupPageQuery | undefined, common.PageResult<stat.GroupRow>>
         & _MakeRegistry<'stat.mergeDate', stat.SiteRow[], stat.SiteRow[]>
         & _MakeRegistry<'stat.batchDelete', stat.Row[]>
         // Category
         & _MakeRegistry<'cate.all', undefined, site.Cate[]>
         & _MakeRegistry<'cate.add', string, site.Cate>
-        & _MakeRegistry<'cate.saveName', { id: number; name: string }>
-        & _MakeRegistry<'cate.remove', number>
+        & _MakeRegistry<'cate.change', site.Cate>
+        & _MakeRegistry<'cate.delete', number>
         // Option
         & _MakeRegistry<'option.get', undefined, option.AllOption>
-        & _MakeRegistry<'option.set', Partial<timer.option.AllOption>>
-        & _MakeRegistry<'option.setDarkMode', Pick<timer.option.AppearanceOption, 'darkMode' | 'darkModeTimeStart' | 'darkModeTimeEnd'>>
-        & _MakeRegistry<'option.setLocale', option.LocaleOption>
-        & _MakeRegistry<'option.setBackupOption', Partial<timer.option.BackupOption>>
-        & _MakeRegistry<'option.migrateStorage', option.StorageType>
-        & _MakeRegistry<'option.testNotification', undefined, common.Result<void>>
-        & _MakeRegistry<'option.getWeekBounds', number, { start: number; end: number }>
-        & _MakeRegistry<'option.getWeekStartDay', undefined, number>
+        & _MakeRegistry<'option.set', Partial<option.AllOption>>
+        & _MakeRegistry<'option.changeStorage', option.StorageType>
+        & _MakeRegistry<'option.testNotification', undefined, string | undefined>
+        & _MakeRegistry<'option.weekStartDay', undefined, number>
+        & _MakeRegistry<'option.weekStartTime', number, number>
         // Meta
         & _MakeRegistry<'meta.saveFlag', ExtensionMetaFlag>
         & _MakeRegistry<'meta.getCid', undefined, string | undefined>
@@ -67,7 +60,7 @@ declare namespace timer.mq {
         // Site
         & _MakeRegistry<'site.runEnabled', string, boolean>
         & _MakeRegistry<'site.all', site.Query | undefined, site.SiteInfo[]>
-        & _MakeRegistry<'site.page', site.PageQuery | undefined, common.PageResult<timer.site.SiteInfo>>
+        & _MakeRegistry<'site.page', site.PageQuery | undefined, common.PageResult<site.SiteInfo>>
         & _MakeRegistry<'site.add', site.SiteInfo, common.Result<void>>
         & _MakeRegistry<'site.delete', site.SiteKey[]>
         & _MakeRegistry<'site.changeCate', site.ChangeCateParam>
@@ -82,7 +75,7 @@ declare namespace timer.mq {
         & _MakeRegistry<'limit.batchRemove', limit.Rule[]>
         & _MakeRegistry<'limit.batchUpdateEnabled', limit.Rule[]>
         & _MakeRegistry<'limit.updateDelay' | 'limit.updateLocked' | 'limit.update', limit.Rule>
-        & _MakeRegistry<'limit.create', MakeOptional<timer.limit.Rule, 'id'>, number>
+        & _MakeRegistry<'limit.create', MakeOptional<limit.Rule, 'id'>, number>
         & _MakeRegistry<'limit.listLimited' | 'limit.listEffective', string, limit.Item[]>
         & _MakeRegistry<'limit.hitVisit', limit.Item, boolean>
         & _MakeRegistry<'limit.delay', string>

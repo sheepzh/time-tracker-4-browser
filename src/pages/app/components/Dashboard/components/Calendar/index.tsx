@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { getWeekStartTime } from '@/api/sw/option'
 import { createTabAfterCurrent } from "@api/chrome/tab"
-import { getWeekBounds } from "@api/sw/option"
 import { selectSite } from '@api/sw/stat'
 import ChartTitle from '@app/components/Dashboard/ChartTitle'
 import { t } from "@app/locale"
@@ -36,15 +36,15 @@ type Result = BizOption & { yearAgo: Date }
 
 const fetchData = async (): Promise<Result> => {
     const endTime = new Date()
-    const yearAgo = new Date(endTime.getTime() - MILL_PER_DAY * 365)
-    const [startTime] = await getWeekBounds(yearAgo)
+    const yearAgo = endTime.getTime() - MILL_PER_DAY * 365
+    const startTime = await getWeekStartTime(yearAgo)
     const items = await selectSite({ date: cvtDateRange2Str([startTime, endTime]), sortKey: 'date' })
     const value = groupBy(
         items,
         i => i.date,
         list => sum(list?.map(i => i.focus ?? 0))
     ) as { [date: string]: number }
-    return { value, startTime, endTime, yearAgo }
+    return { value, startTime, endTime, yearAgo: new Date(yearAgo) }
 }
 
 /**

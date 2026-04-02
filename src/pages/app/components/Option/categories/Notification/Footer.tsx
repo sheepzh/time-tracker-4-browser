@@ -1,19 +1,20 @@
+import { sendMsg2Runtime } from '@api/sw/common'
 import { t } from '@app/locale'
 import { Operation } from '@element-plus/icons-vue'
 import Flex from '@pages/components/Flex'
-import { sendMsg2Runtime } from '@api/sw/common'
 import { ElButton, ElDivider, ElMessage } from 'element-plus'
 import type { FunctionalComponent } from 'vue'
 
 const Footer: FunctionalComponent<{}> = () => {
-    const handleTest = () => {
-        sendMsg2Runtime('option.testNotification').then(result => {
-            if (!result.success) return Promise.reject(new Error(result.errorMsg))
+    const handleTest = async () => {
+        try {
+            const errMsg = await sendMsg2Runtime('option.testNotification')
+            if (errMsg) throw new Error(errMsg)
             ElMessage.success('Valid!')
-        }).catch(e => {
+        } catch (e) {
             const msg = e instanceof Error ? e.message : String(e) ?? 'Unknown error'
             ElMessage.error(msg)
-        })
+        }
     }
 
     return <>

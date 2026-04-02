@@ -1,9 +1,14 @@
 import { locale } from "@i18n"
-import { formatTimeYMD, getWeekDay, MILL_PER_DAY } from "@util/time"
+import { getStartOfDay, getWeekDay, MILL_PER_DAY } from "@util/time"
 import optionHolder from './option-holder'
 
-function getRealWeekStart(weekStart: timer.option.WeekStartOption | undefined, locale: timer.Locale): number {
-    weekStart = weekStart ?? 'default'
+/**
+ * Week start
+ *
+ * @returns 0-6
+ */
+export async function getWeekStartDay(): Promise<number> {
+    const { weekStart } = await optionHolder.get()
     if (weekStart === 'default') {
         return locale === 'zh_CN' ? 0 : 6
     } else {
@@ -13,54 +18,25 @@ function getRealWeekStart(weekStart: timer.option.WeekStartOption | undefined, l
 
 /**
  * Get the start time and end time of this week
- * @param now the specific time
- * @param weekStart 0-6
- * @returns [startTime, endTime]
+ * 
+ * @param now the specific time to calculate
+ * @returns start time with milliseconds
  *
  * @since 0.6.0
  */
-function getWeekTime(now: number, weekStart: number): [number, number] {
+export async function getWeekStartTime(now: number): Promise<number> {
+    const weekStart = await getWeekStartDay()
     // Returns 0 - 6 means Monday to Sunday
     const weekDayNow = getWeekDay(new Date(now))
-    let start: number | undefined = undefined
+    let startDay: number
     if (weekDayNow === weekStart) {
-        start = now
+        startDay = now
     } else if (weekDayNow < weekStart) {
         const millDelta = (weekDayNow + 7 - weekStart) * MILL_PER_DAY
-        start = now - millDelta
+        startDay = now - millDelta
     } else {
         const millDelta = (weekDayNow - weekStart) * MILL_PER_DAY
-        start = now - millDelta
+        startDay = now - millDelta
     }
-    return [start, now]
+    return getStartOfDay(startDay)
 }
-
-class WeekHelper {
-
-    async getWeekDateRange(now: number): Promise<[startDate: string, endDateOrToday: string]> {
-        const { start, end } = await this.getWeekDate(now)
-        return [formatTimeYMD(start), formatTimeYMD(end)]
-    }
-
-    async getWeekDate(now: number): Promise<{ start: number, end: number }> {
-        const weekStart = await this.getRealWeekStart()
-        const [start, end] = getWeekTime(now, weekStart)
-        return { start, end }
-    }
-
-    private async getWeekStartOpt(): Promise<timer.option.WeekStartOption | undefined> {
-        return (await optionHolder.get()).weekStart
-    }
-
-    /**
-     * Week start
-     *
-     * @returns 0-6
-     */
-    async getRealWeekStart(): Promise<number> {
-        const weekStart = await this.getWeekStartOpt()
-        return getRealWeekStart(weekStart, locale)
-    }
-}
-
-export default new WeekHelper()
