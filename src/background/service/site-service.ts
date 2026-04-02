@@ -16,6 +16,7 @@ import statDatabase from '../database/stat-database'
 import { getPslSuffix } from '../psl'
 import CustomizedHostMergeRuler from './components/host-merge-ruler'
 import { slicePageResult } from "./components/page-info"
+import virtualSiteHolder from './components/virtual-site-holder'
 
 export async function saveAlias(key: timer.site.SiteKey, alias: string | undefined, noRewrite?: boolean) {
     const exist = await siteDatabase.get(key)
@@ -55,7 +56,13 @@ export async function addSite(siteInfo: timer.site.SiteInfo): Promise<timer.comm
     }
     if (!supportCategory(siteInfo)) siteInfo.cate = undefined
     await siteDatabase.save(siteInfo)
+    virtualSiteHolder.buildWith(siteInfo)
     return { success: true, data: undefined }
+}
+
+export async function removeSites(keys: timer.site.SiteKey[]): Promise<void> {
+    await siteDatabase.remove(keys)
+    keys.forEach(key => virtualSiteHolder.onDeleted(key))
 }
 
 export async function selectSitePage(param?: timer.site.PageQuery): Promise<timer.common.PageResult<timer.site.SiteInfo>> {
@@ -117,6 +124,18 @@ export async function searchSites(query: string | undefined): Promise<timer.site
     }
 }
 
+function cleanSearchQuery(query: string | undefined): string | undefined {
+    query = query?.trim?.()
+    if (!query) return undefined
+    try {
+        // Remove protocol and search params, only keep host and path for search
+        const u = new URL(query)
+        query = u.host + u.pathname
+    } catch { }
+    if (query.endsWith('/')) query += '**'
+    return query
+}
+
 /**
  * Query hosts from stat databases
  *
@@ -140,18 +159,6 @@ async function listHosts(filter: (host: string) => boolean): Promise<[normal: st
     })
 
     return [Array.from(normal), Array.from(merged)]
-}
-
-function cleanSearchQuery(query: string | undefined): string | undefined {
-    query = query?.trim?.()
-    if (!query) return undefined
-    try {
-        // Remove protocol and search params, only keep host and path for search
-        const u = new URL(query)
-        query = u.host + u.pathname
-    } catch { }
-    if (query.endsWith('/')) query += '**'
-    return query
 }
 
 export async function fillInitialAlias(keys: timer.site.SiteKey[]) {

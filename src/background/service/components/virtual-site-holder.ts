@@ -1,4 +1,4 @@
-import siteDatabase from "@db/site-database"
+import db from "@db/site-database"
 import { compileAntPattern } from '@util/pattern'
 
 /**
@@ -7,26 +7,20 @@ import { compileAntPattern } from '@util/pattern'
  * @since 1.6.0
  */
 class VirtualSiteHolder {
-    hostSiteRegMap: Record<string, RegExp> = {}
+    hostRegMap: Record<string, RegExp> = {}
 
     constructor() {
-        siteDatabase.select().then(sitesInfos => sitesInfos
-            .filter(s => s.type === 'virtual')
-            .forEach(site => this.updateRegularExp(site))
-        )
-        siteDatabase.addChangeListener(oldAndNew => oldAndNew.forEach(([oldVal, newVal]) => {
-            if (!newVal) {
-                // deleted
-                oldVal?.host && delete this.hostSiteRegMap[oldVal.host]
-            } else {
-                this.updateRegularExp(newVal)
-            }
-        }))
+        db.select().then(keys => keys.forEach(key => this.buildWith(key)))
     }
 
-    private updateRegularExp(siteInfo: timer.site.SiteInfo) {
-        const { host } = siteInfo
-        this.hostSiteRegMap[host] = compileAntPattern(host)
+    buildWith({ host, type }: timer.site.SiteKey) {
+        if (type !== 'virtual') return
+        this.hostRegMap[host] = compileAntPattern(host)
+    }
+
+    onDeleted({ host, type }: timer.site.SiteKey) {
+        if (type !== 'virtual') return
+        delete this.hostRegMap[host]
     }
 
     /**
@@ -36,7 +30,7 @@ class VirtualSiteHolder {
      * @returns virtual sites
      */
     findMatched(url: string): string[] {
-        return Object.entries(this.hostSiteRegMap)
+        return Object.entries(this.hostRegMap)
             .filter(([_, reg]) => reg.test(url))
             .map(([k]) => k)
     }

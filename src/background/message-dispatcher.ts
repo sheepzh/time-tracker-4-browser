@@ -24,6 +24,7 @@ import { setBackupOption, setDarkMode, setLocale } from "./service/option-servic
 import { selectPeriods } from "./service/period-service"
 import {
     addSite, batchChangeCate, fillInitialAlias, getInitialAlias, getSite, removeIconUrl,
+    removeSites,
     saveAlias,
     saveSiteRunState, searchSites, selectSitePage
 } from "./service/site-service"
@@ -87,7 +88,7 @@ class MessageDispatcher {
             .register('site.all', param => siteDatabase.select(param))
             .register('site.page', selectSitePage)
             .register('site.add', addSite)
-            .register('site.delete', keys => siteDatabase.remove(...keys))
+            .register('site.delete', removeSites)
             .register('site.changeCate', ({ cateId, keys }) => batchChangeCate(cateId, keys))
             .register('site.deleteIcon', removeIconUrl)
             .register('site.changeAlias', ({ key, alias }) => saveAlias(key, alias))
