@@ -5,10 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-import type { FrameRequest, FrameResponse } from "@popup/types"
-import { increasePopup } from "@api/sw/meta"
 import { getOption } from "@api/sw/option"
 import { initLocale } from "@i18n"
+import type { FrameRequest, FrameResponse } from "@popup/types"
 import { processDarkMode } from '@util/dark-mode'
 import "element-plus/theme-chalk/index.css"
 import { createApp } from "vue"
@@ -49,8 +48,6 @@ async function main() {
     const app = createApp(Main)
     initRouter(app)
     app.mount(el)
-
-    increasePopup()
 }
 
 main()

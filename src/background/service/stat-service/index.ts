@@ -113,14 +113,18 @@ export async function selectCate(param?: timer.stat.CateQuery): Promise<timer.st
 
     // Fill site info
     await fillSite(siteRows)
+    // Merge sites by date first
+    if (needMergeDate) siteRows = mergeDate(siteRows)
+
     const categories = await cateDatabase.listAll()
     let cateRows = mergeCate(siteRows, categories)
     // Filter
     cateRows = cateRows
         .filter(({ cateKey }) => !cateIds?.length || cateIds.includes(cateKey))
         .filter(({ cateName }) => !query || cateName?.includes(query))
-    // Merge by date
-    needMergeDate && (cateRows = mergeDate(cateRows))
+    // Merge cates by date again
+    if (needMergeDate) cateRows = mergeDate(cateRows)
+
     // Sort
     if (sortKey) {
         cateRows.sort((a, b) => compareSortVal(a[sortKey] ?? 0, b[sortKey] ?? 0, sortDirection))
@@ -179,7 +183,7 @@ export async function countGroup(param?: timer.stat.GroupQuery): Promise<number>
     return rows.length
 }
 
-export async function batchDelete(targets: timer.stat.Row[]) {
+export async function batchDelete(targets: timer.stat.StatKey[]) {
     if (!targets?.length) return
     const siteKeys: timer.core.RowKey[] = []
     const groupKeys: [groupId: number, date: string][] = []

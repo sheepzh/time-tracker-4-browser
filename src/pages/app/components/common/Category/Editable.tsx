@@ -34,7 +34,8 @@ const CategoryEditable = defineComponent<Props>(props => {
         },
     })
 
-    const handleEditClick = () => {
+    const handleEditClick = (ev: MouseEvent) => {
+        ev.stopImmediatePropagation()
         openEditing()
         nextTick(() => selectRef.value?.openOptions?.())
     }

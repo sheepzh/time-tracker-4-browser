@@ -21,24 +21,24 @@ type _MqHandler<R, C extends keyof R> = _MqResData<R, C> extends undefined
 
 declare namespace timer.mq {
     type _HandlerRegistry =
-        & _MakeRegistry<'cs.incVisitCount', { host: string; url: string }>
-        & _MakeRegistry<'cs.trackTime' | 'cs.trackRunTime', core.Event>
+        // Track event
+        & _MakeRegistry<'track.visit'>
+        & _MakeRegistry<'track.time' | 'track.runTime', core.Event>
         & _MakeRegistry<'cs.onInjected' | 'cs.openAnalysis'>
         & _MakeRegistry<'cs.idleChange', boolean>
         & _MakeRegistry<'cs.getAudible', undefined, boolean>
         // Statistics
         & _MakeRegistry<'stat.today', string, core.Result | undefined>
-        & _MakeRegistry<'stat.listSite', stat.SiteQuery | undefined, stat.SiteRow[]>
-        & _MakeRegistry<'stat.getSitePage', stat.SitePageQuery | undefined, common.PageResult<stat.SiteRow>>
+        & _MakeRegistry<'stat.sites', stat.SiteQuery | undefined, stat.SiteRow[]>
+        & _MakeRegistry<'stat.sitePage', stat.SitePageQuery | undefined, common.PageResult<stat.SiteRow>>
         & _MakeRegistry<'stat.deleteSite', stat.SiteDeleteQuery>
         & _MakeRegistry<'stat.countSite', stat.SiteQuery | undefined, number>
-        & _MakeRegistry<'stat.selectCate', stat.CateQuery | undefined, stat.CateRow[]>
-        & _MakeRegistry<'stat.selectCatePage', stat.CatePageQuery | undefined, common.PageResult<stat.CateRow>>
+        & _MakeRegistry<'stat.cates', stat.CateQuery | undefined, stat.CateRow[]>
+        & _MakeRegistry<'stat.catePage', stat.CatePageQuery | undefined, common.PageResult<stat.CateRow>>
+        & _MakeRegistry<'stat.groups', stat.GroupQuery | undefined, stat.GroupRow[]>
+        & _MakeRegistry<'stat.groupPage', stat.GroupPageQuery | undefined, common.PageResult<stat.GroupRow>>
         & _MakeRegistry<'stat.countGroup', stat.GroupQuery | undefined, number>
-        & _MakeRegistry<'stat.selectGroup', stat.GroupQuery | undefined, stat.GroupRow[]>
-        & _MakeRegistry<'stat.selectGroupPage', stat.GroupPageQuery | undefined, common.PageResult<stat.GroupRow>>
-        & _MakeRegistry<'stat.mergeDate', stat.SiteRow[], stat.SiteRow[]>
-        & _MakeRegistry<'stat.batchDelete', stat.Row[]>
+        & _MakeRegistry<'stat.batchDelete', stat.StatKey[]>
         // Category
         & _MakeRegistry<'cate.all', undefined, site.Cate[]>
         & _MakeRegistry<'cate.add', string, site.Cate>
@@ -52,11 +52,7 @@ declare namespace timer.mq {
         & _MakeRegistry<'option.weekStartDay', undefined, number>
         & _MakeRegistry<'option.weekStartTime', number, number>
         // Meta
-        & _MakeRegistry<'meta.saveFlag', ExtensionMetaFlag>
-        & _MakeRegistry<'meta.getCid', undefined, string | undefined>
-        & _MakeRegistry<'meta.increaseApp', string>
-        & _MakeRegistry<'meta.increasePopup'>
-        & _MakeRegistry<'meta.recommendRate', undefined, boolean>
+        & _MakeRegistry<'meta.installTs', undefined, number>
         // Site
         & _MakeRegistry<'site.runEnabled', string, boolean>
         & _MakeRegistry<'site.all', site.Query | undefined, site.SiteInfo[]>
@@ -94,7 +90,7 @@ declare namespace timer.mq {
         & _MakeRegistry<'backup.clear', string, { success: boolean; errorMsg?: string }>
         & _MakeRegistry<'backup.query', backup.RemoteQuery, backup.Row[]>
         & _MakeRegistry<'backup.getLastBackUp', backup.Type, { ts: number; msg?: string } | undefined>
-        & _MakeRegistry<'backup.listClients', undefined, { success: boolean; errorMsg?: string; data?: backup.Client[] }>
+        & _MakeRegistry<'backup.clients', undefined, (backup.Client & { current: boolean })[]>
         // Period
         & _MakeRegistry<'period.select', period.Query, period.Row[]>
         // Timeline

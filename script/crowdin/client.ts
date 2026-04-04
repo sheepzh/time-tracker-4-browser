@@ -79,8 +79,8 @@ class PaginationIterator<T> {
     private async processBuf() {
         const pagination: Pagination = { offset: this.offset, limit: this.limit }
         const list = await this.query(pagination)
-        const data = list?.data
-        if (!data?.length) {
+        const data = list.data
+        if (!data.length) {
             this.isEnd = true
         } else {
             this.buf = data.map(obj => obj.data)
@@ -230,7 +230,7 @@ export class CrowdinClient {
         for (const [path, value] of Object.entries(content)) {
             const string = existStringsKeyMap[path]
             const patch: PatchRequest[] = []
-            string?.text !== value && patch.push({
+            string.text !== value && patch.push({
                 op: 'replace',
                 path: '/text',
                 value: value
@@ -280,12 +280,11 @@ export class CrowdinClient {
             targetLanguageIds: [...ALL_CROWDIN_LANGUAGES],
             skipUntranslatedStrings: true,
         })
-        const buildId = buildRes?.data?.id
+        const buildId = buildRes.data.id
         while (true) {
             // Wait finished
             const res = await this.crowdin.translationsApi.downloadTranslations(PROJECT_ID, buildId)
-            const url = res?.data?.url
-            if (url) return url
+            return res.data.url
         }
     }
 }
@@ -296,7 +295,7 @@ export class CrowdinClient {
  * @returns client
  */
 export function getClientFromEnv(): CrowdinClient {
-    const envVar = process.env?.TIMER_CROWDIN_AUTH
+    const envVar = process.env.TIMER_CROWDIN_AUTH
     if (!envVar) {
         console.error("Failed to get the variable named [TIMER_CROWDIN_AUTH]")
         process.exit(1)

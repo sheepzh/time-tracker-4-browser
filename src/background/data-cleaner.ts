@@ -8,7 +8,7 @@ const START_DAY = keyOf(getBirthday())
 const KEEP_RANGE_DAYS = 366
 
 const cleanPeriodData = async () => {
-    const endDate = new Date().getTime() - MILL_PER_DAY * KEEP_RANGE_DAYS
+    const endDate = Date.now() - MILL_PER_DAY * KEEP_RANGE_DAYS
     await batchDeletePeriods(START_DAY, keyOf(endDate))
 }
 

@@ -84,7 +84,6 @@ export default class NormalTracker {
         const data: timer.core.Event = {
             start: lastTime,
             end: now,
-            url: location?.href,
             ignoreTabCheck: !!ignoreTabCheck
         }
         try {

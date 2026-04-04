@@ -10,7 +10,7 @@ import initBrowserAction from './browser-action'
 import versionManager from './version'
 
 async function onFirstInstall() {
-    updateInstallTime(new Date())
+    updateInstallTime(Date.now())
     !IS_E2E && createTabAfterCurrent(getGuidePageUrl())
 }
 

@@ -18,7 +18,7 @@ import { previewImport, processImportedData } from "./service/components/import-
 import optionHolder from "./service/components/option-holder"
 import { getWeekStartDay, getWeekStartTime } from "./service/components/week-helper"
 import { getTodayResult } from './service/item-service'
-import { getCid, getLastBackUp, increaseApp, increasePopup, recommendRate, saveFlag } from "./service/meta-service"
+import { getInstallTime, getLastBackUp } from "./service/meta-service"
 import notificationProcessor from './service/notification/processor'
 import { selectPeriods } from "./service/period-service"
 import {
@@ -32,7 +32,6 @@ import {
     selectCate, selectCatePage, selectGroup, selectGroupPage,
     selectSite, selectSitePage as selectStateSitePage
 } from "./service/stat-service"
-import { mergeDate } from "./service/stat-service/merge/date"
 import timelineThrottler from './service/throttler/timeline-throttler'
 import { listTimeline } from "./service/timeline-service"
 import whitelistHolder from './service/whitelist/holder'
@@ -58,7 +57,7 @@ class MessageDispatcher {
 
     register<C extends timer.mq.ReqCode>(code: C, handler: timer.mq.Handler<C>): MessageDispatcher {
         if (this.handlers[code]) {
-            throw new Error("Duplicate handler")
+            throw new Error(`Duplicate handler: code=${code}`)
         }
         this.handlers[code] = handler as unknown as timer.mq.Handler<timer.mq.ReqCode>
         return this
@@ -67,18 +66,17 @@ class MessageDispatcher {
     private initServiceHandlers() {
         this
             // Statistics
-            .register('stat.listSite', selectSite)
-            .register('stat.getSitePage', selectStateSitePage)
+            .register('stat.sites', selectSite)
+            .register('stat.sitePage', selectStateSitePage)
             .register('stat.countSite', countSite)
             .register('stat.deleteSite', param => 'host' in param
                 ? statDatabase.deleteByHost(param.host, param.date)
                 : statDatabase.deleteByGroup(param.groupId, param.date))
-            .register('stat.selectCate', selectCate)
-            .register('stat.selectCatePage', selectCatePage)
-            .register('stat.selectGroup', selectGroup)
-            .register('stat.selectGroupPage', selectGroupPage)
+            .register('stat.cates', selectCate)
+            .register('stat.catePage', selectCatePage)
+            .register('stat.groups', selectGroup)
+            .register('stat.groupPage', selectGroupPage)
             .register('stat.countGroup', countGroup)
-            .register('stat.mergeDate', mergeDate)
             .register('stat.batchDelete', batchDelete)
             .register('stat.today', getTodayResult)
             // Site management
@@ -107,11 +105,7 @@ class MessageDispatcher {
             .register('cate.change', ({ id, name }) => cateDatabase.update(id, name))
             .register('cate.delete', id => cateDatabase.delete(id))
             // Meta information
-            .register('meta.saveFlag', saveFlag)
-            .register('meta.getCid', getCid)
-            .register('meta.increaseApp', increaseApp)
-            .register('meta.increasePopup', increasePopup)
-            .register('meta.recommendRate', recommendRate)
+            .register('meta.installTs', getInstallTime)
             // Whitelist & Merge Rule
             .register('whitelist.contain', ({ host, url }) => whitelistHolder.contains(host, url))
             .register('whitelist.all', () => whitelistHolder.all())
@@ -127,7 +121,7 @@ class MessageDispatcher {
             .register('backup.clear', cid => backupProcessor.clear(cid))
             .register('backup.query', param => backupProcessor.query(param))
             .register('backup.getLastBackUp', type => getLastBackUp(type))
-            .register('backup.listClients', () => backupProcessor.listClients())
+            .register('backup.clients', () => backupProcessor.listClients())
             // Period & Timeline
             .register('period.select', selectPeriods)
             .register('timeline.list', listTimeline)

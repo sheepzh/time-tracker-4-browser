@@ -105,7 +105,7 @@ async function updateGist(token: string, browser: Browser, data: UserCount, gist
 function parseChrome(content: string): UserCount {
     const lines = content.split('\n')
     const result: Record<string, number> = {}
-    if (!(lines?.length > 2)) {
+    if (!(lines.length > 2)) {
         return result
     }
     lines.slice(2).forEach(line => {
@@ -124,7 +124,7 @@ function parseChrome(content: string): UserCount {
 function parseEdge(content: string): UserCount {
     const lines = content.split('\n')
     const result: Record<string, number> = {}
-    if (!(lines?.length > 1)) {
+    if (!(lines.length > 1)) {
         return result
     }
     lines.slice(1).forEach(line => {
@@ -145,7 +145,7 @@ function parseEdge(content: string): UserCount {
 function parseFirefox(content: string): UserCount {
     const lines = content.split('\n')
     const result: Record<string, number> = {}
-    if (!(lines?.length > 4)) {
+    if (!(lines.length > 4)) {
         return result
     }
     lines.slice(4).forEach(line => {

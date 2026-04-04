@@ -21,6 +21,6 @@ export function getLastBackUp(type: timer.backup.Type) {
     return sendMsg2Runtime('backup.getLastBackUp', type)
 }
 
-export function listBackupClients() {
-    return sendMsg2Runtime('backup.listClients')
+export function allBackupClients() {
+    return sendMsg2Runtime('backup.clients')
 }

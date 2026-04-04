@@ -42,11 +42,10 @@ class RunTimeTracker {
                 const event: timer.core.Event = {
                     start: lastTime,
                     end: now,
-                    url: this.url,
                     ignoreTabCheck: false,
                     host: this.host,
                 }
-                await trySendMsg2Runtime('cs.trackRunTime', event)
+                await trySendMsg2Runtime('track.runTime', event)
             }
             this.start = now
         } catch {

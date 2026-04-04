@@ -9,7 +9,7 @@ declare namespace timer.stat {
         groupKey: number
     }
     type TargetKey = SiteTarget | CateTarget | GroupTarget
-    type DateKey = { date?: string }
+    type DateKey = { date: string }
     type StatKey = TargetKey & DateKey
 
     type DateMergeExtend = {

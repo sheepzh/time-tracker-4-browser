@@ -15,18 +15,18 @@ const SITE_PREFIX = 'S'
 const CATE_PREFIX = 'C'
 
 const cvtTarget2Key = (target: AnalysisTarget | undefined): string => {
-    if (target?.type === 'site') {
-        return `${SITE_PREFIX}${identifySiteKey(target.key)}`
-    } else if (target?.type === 'cate') {
-        return `${CATE_PREFIX}${target.key}`
+    const { type, key } = target ?? {}
+    switch (type) {
+        case 'site': return `${SITE_PREFIX}${identifySiteKey(key)}`
+        case 'cate': return `${CATE_PREFIX}${key}`
+        default: return '-'
     }
-    return ''
 }
 
 const cvtKey2Target = (key: string | undefined): AnalysisTarget | undefined => {
     if (!key) return undefined
-    const prefix = key?.charAt?.(0)
-    const content = key?.substring(1)
+    const prefix = key.charAt(0)
+    const content = key.substring(1)
     if (prefix === SITE_PREFIX) {
         const key = parseSiteKeyFromIdentity(content)
         if (key) return { type: 'site', key }
@@ -96,14 +96,14 @@ const TargetSelect = defineComponent(() => {
 
     const [query, setQuery] = useDebounceState('', 50)
     const options = computed(() => {
-        const q = query.value?.trim?.()
+        const q = query.value.trim()
         let [cateItems, siteItems] = allItems.value
         if (q) {
             siteItems = siteItems.filter(item => {
                 const { host, alias } = (item.key as timer.site.SiteInfo) || {}
-                return host?.includes?.(q) || alias?.includes?.(q)
+                return host.includes(q) || alias?.includes(q)
             })
-            cateItems = cateItems.filter(item => item.label?.includes?.(q))
+            cateItems = cateItems.filter(item => item.label.includes(q))
         }
 
         let res: OptionType[] = []

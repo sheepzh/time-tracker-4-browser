@@ -1,5 +1,4 @@
 import { allCates } from "@api/sw/cate"
-import { mergeDate } from "@api/sw/stat"
 import { EchartsWrapper } from '@hooks'
 import { getInfoColor, getPrimaryTextColor } from "@pages/util/style"
 import { t } from '@popup/locale'
@@ -136,10 +135,7 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
             ...adaptDonutSeries(donutChart, selected ? '30%' : '55%', selected ? 0.3 : undefined),
         }]
         if (selected) {
-            let mergedRows = ((selected?.mergedRows || []) as unknown as timer.stat.SiteRow[]).sort(
-                (a, b) => (b[dimension] ?? 0) - (a[dimension] ?? 0),
-            )
-            mergedRows = await mergeDate(mergedRows)
+            let mergedRows = (selected.mergedRows ?? []).sort((a, b) => b[dimension] - a[dimension])
 
             const siteSeries = generateSiteSeriesOption(mergedRows, result, {
                 center: ['60%', '58%'],

@@ -41,7 +41,7 @@ function getOrSetFlag(): boolean {
 async function main() {
     // Execute in every injections
     const normalTracker = new NormalTracker({
-        onReport: data => trySendMsg2Runtime('cs.trackTime', data),
+        onReport: data => trySendMsg2Runtime('track.time', data),
         onResume: reason => reason === 'idle' && trySendMsg2Runtime('cs.idleChange', false),
         onPause: reason => reason === 'idle' && trySendMsg2Runtime('cs.idleChange', true),
     })
@@ -63,7 +63,7 @@ async function main() {
     processTimeline()
 
     // Increase visit count at the end
-    await trySendMsg2Runtime('cs.incVisitCount', { host, url })
+    await trySendMsg2Runtime('track.visit')
 }
 
 main()

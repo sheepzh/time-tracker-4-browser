@@ -1,13 +1,13 @@
-import { t } from '@popup/locale'
+import { rateClicked } from '@/pages/util/rate'
+import { createTab } from "@api/chrome/tab"
 import { Collection, MoreFilled } from '@element-plus/icons-vue'
+import { locale } from '@i18n'
 import Flex from '@pages/components/Flex'
 import Coffee from '@pages/icons/Coffee'
 import GitHub from '@pages/icons/Github'
 import Heart from '@pages/icons/Heart'
 import { getColor, type ColorVariant } from '@pages/util/style'
-import { createTab } from "@api/chrome/tab"
-import { saveFlag } from "@api/sw/meta"
-import { locale } from '@i18n'
+import { t } from '@popup/locale'
 import { BUY_ME_A_COFFEE_PAGE, CHANGE_LOG_PAGE, DONATION_PAGE, REVIEW_PAGE, SOURCE_CODE_PAGE } from "@util/constant/url"
 import { ElDropdown, ElDropdownItem, ElDropdownMenu, ElIcon } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
@@ -30,7 +30,7 @@ const ItemLink = ({ icon, text, iconColor }: ItemLinkProps) => (
 const MoreInfo = defineComponent<{}>(() => {
     const handleCmd = async (cmd: Command) => {
         if (cmd === 'rate') {
-            await saveFlag("rateOpen")
+            rateClicked()
             createTab(REVIEW_PAGE)
         } else if (cmd === 'coffee') {
             createTab(BUY_ME_A_COFFEE_PAGE)

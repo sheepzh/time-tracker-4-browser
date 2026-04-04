@@ -5,15 +5,15 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { selectSite } from "@api/sw/stat"
 import { useProvide, useProvider, useRequest } from '@hooks'
-import { mergeDate, selectSite } from "@api/sw/stat"
 import { cvtDateRange2Str, getDayLength } from "@util/time"
-import { computed, type Ref } from "vue"
+import { computed, type ShallowRef } from "vue"
 import { useHabitFilter } from "../context"
 
 type Context = {
-    rows: Ref<timer.stat.Row[]>
-    dateMergedRows: Ref<timer.stat.Row[]>
+    rows: ShallowRef<timer.stat.Row[]>
+    dateMergedRows: ShallowRef<timer.stat.Row[]>
 }
 
 const NAMESPACE = 'habitSite'
@@ -28,17 +28,15 @@ export const initProvider = () => {
 
     const dateRangeLength = computed(() => getDayLength(filter.dateRange?.[0], filter.dateRange?.[1]))
 
-    const { data: dateMergedRowsRaw } = useRequest(() => mergeDate(rows.value ?? []), {
-        deps: [() => rows.value],
+    const { data: dateMergedRows } = useRequest(() => selectSite({ date: cvtDateRange2Str(filter.dateRange), mergeDate: true }), {
+        deps: [() => filter.dateRange],
         defaultValue: [],
     })
-    const dateMergedRows = computed<timer.stat.Row[]>(() => (dateMergedRowsRaw.value ?? []) as timer.stat.Row[])
-    const rowsRef = computed<timer.stat.Row[]>(() => (rows.value ?? []) as timer.stat.Row[])
-    useProvide<Context>(NAMESPACE, { rows: rowsRef, dateMergedRows })
+    useProvide<Context>(NAMESPACE, { rows, dateMergedRows })
 
     return dateRangeLength
 }
 
-export const useRows = (): Ref<timer.stat.Row[]> => useProvider<Context, 'rows'>(NAMESPACE, "rows").rows
+export const useRows = (): ShallowRef<timer.stat.Row[]> => useProvider<Context, 'rows'>(NAMESPACE, "rows").rows
 
-export const useDateMergedRows = (): Ref<timer.stat.Row[]> => useProvider<Context, 'dateMergedRows'>(NAMESPACE, 'dateMergedRows').dateMergedRows
+export const useDateMergedRows = (): ShallowRef<timer.stat.Row[]> => useProvider<Context, 'dateMergedRows'>(NAMESPACE, 'dateMergedRows').dateMergedRows

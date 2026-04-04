@@ -5,12 +5,12 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { useRequest } from '@hooks'
+import { getOption } from '@api/sw/option'
 import { t } from '@app/locale'
 import { OPTION_ROUTE } from '@app/router/constants'
+import { useRequest } from '@hooks'
 import Flex from "@pages/components/Flex"
 import { getColor } from '@pages/util/style'
-import { getOption } from '@api/sw/option'
 import { getAppPageUrl } from '@util/constant/url'
 import { ElCard, ElLink, ElProgress, ElText } from "element-plus"
 import { computed, defineComponent, type StyleValue } from "vue"

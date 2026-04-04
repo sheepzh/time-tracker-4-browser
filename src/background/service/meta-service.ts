@@ -5,59 +5,60 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { IS_ANDROID, IS_FIREFOX } from '@/util/constant/environment'
 import db from "@db/meta-database"
-import { REVIEW_PAGE } from "@util/constant/url"
-import { getDayLength } from "@util/time"
+import { createArrayGuard, createObjectGuard, isString } from 'typescript-guard'
 
-async function getInstallTime() {
+export async function getInstallTime(): Promise<number> {
     const meta = await db.getMeta()
-    return meta.installTime ? new Date(meta.installTime) : undefined
+    return meta.installTime ?? Date.now()
 }
 
-export async function updateInstallTime(installTime: Date) {
+export async function updateInstallTime(ts: number) {
     const meta = await db.getMeta()
     if (meta.installTime) {
         // Must not rewrite
         return
     }
-    meta.installTime = installTime.getTime()
-    await db.update(meta)
-}
-
-export async function increaseApp(routePath: string) {
-    const meta = await db.getMeta()
-    const appCounter = meta.appCounter || {}
-    appCounter[routePath] = (appCounter[routePath] || 0) + 1
-    meta.appCounter = appCounter
-    await db.update(meta)
-}
-
-export async function increasePopup() {
-    const meta = await db.getMeta()
-    const popupCounter = meta.popupCounter || {}
-    popupCounter._total = (popupCounter._total || 0) + 1
-    meta.popupCounter = popupCounter
+    meta.installTime = ts
     await db.update(meta)
 }
 
 /**
  * @since 1.2.0
  */
-export async function getCid(): Promise<string | undefined> {
+export async function getCid(): Promise<string> {
     const meta = await db.getMeta()
-    return meta.cid
+    const exist = meta.cid
+    if (exist) return exist
+    const initial = `${getBrand()}-${Date.now()}`
+    meta.cid = initial
+    await db.update(meta)
+    return initial
 }
 
-/**
- * @since 1.2.0
- */
-export async function updateCid(newCid: string) {
-    const meta = await db.getMeta()
-    if (meta.cid) {
-        return
+// Only exists in chromium browsers
+type NavigatorUAData = {
+    brands: { brand: string }[]
+    platform: string
+}
+
+const hasUaData = createObjectGuard<{ userAgentData: NavigatorUAData }>({
+    userAgentData: createObjectGuard({
+        brands: createArrayGuard(createObjectGuard({ brand: isString })),
+        platform: isString,
+    }),
+})
+
+function getBrand() {
+    if (hasUaData(navigator)) {
+        const { userAgentData: { brands }, platform } = navigator
+        const brand = brands.map(e => e.brand)
+            .filter(brand => brand && brand !== "Chromium" && !brand.includes("Not"))[0]?.replace(' ', '-')
+        if (brand) return `${platform.toLowerCase()}-${brand.toLowerCase()}`
     }
-    meta.cid = newCid
-    await db.update(meta)
+    if (IS_FIREFOX) return IS_ANDROID ? 'firefox-android' : 'firefox'
+    return 'unknown'
 }
 
 /**
@@ -78,33 +79,4 @@ export async function updateBackUpTime(type: timer.backup.Type, time: number) {
 export async function getLastBackUp(type: timer.backup.Type): Promise<{ ts: number, msg?: string } | undefined> {
     const meta = await db.getMeta()
     return meta.backup?.[type]
-}
-
-/**
- * @since 2.2.0
- */
-export async function saveFlag(flag: timer.ExtensionMetaFlag) {
-    if (!flag) return
-    const meta = await db.getMeta()
-    if (!meta.flag) meta.flag = {}
-    meta.flag[flag] = true
-    await db.update(meta)
-}
-
-async function getFlag(flag: timer.ExtensionMetaFlag) {
-    if (!flag) return false
-    const meta = await db.getMeta()
-    return !!meta.flag?.[flag]
-}
-
-const INSTALL_DAY_MIN_LIMIT = 14
-
-export async function recommendRate(): Promise<boolean> {
-    if (!REVIEW_PAGE) return false
-    const installTime = await getInstallTime()
-    if (!installTime) return false
-    const installedDays = getDayLength(installTime, new Date())
-    if (installedDays < INSTALL_DAY_MIN_LIMIT) return false
-    const rateOpen = await getFlag("rateOpen")
-    return !rateOpen
 }

@@ -9,8 +9,8 @@ import {
 import { addLimitFocusTime, incLimitVisit } from '@service/limit-service'
 import periodThrottler from '@service/throttler/period-throttler'
 import whitelistHolder from "@service/whitelist/holder"
-import { IS_ANDROID } from "@util/constant/environment"
-import { extractHostname } from "@util/pattern"
+import { IS_ANDROID, IS_FIREFOX } from "@util/constant/environment"
+import { extractHostname, isFileUrl } from "@util/pattern"
 import badgeManager from "../badge-manager"
 
 async function handleTime(context: ItemIncContext, timeRange: [number, number], tabId: number | undefined): Promise<number> {
@@ -30,14 +30,18 @@ async function handleTime(context: ItemIncContext, timeRange: [number, number], 
     return focusTime
 }
 
-export async function handleTrackTimeEvent(event: timer.core.Event, senderTab: ChromeTab | undefined): Promise<void> {
-    const { url, start, end, ignoreTabCheck } = event
-    const { id: tabId, windowId, groupId } = senderTab ?? {}
+export async function handleTrackTimeEvent(event: timer.core.Event, url: string | undefined, tab: ChromeTab | undefined): Promise<void> {
+    if (!url) return
+    // not to process cs events from local files for FF
+    if (IS_FIREFOX && isFileUrl(url)) return
+
+    const { start, end, ignoreTabCheck } = event
+    const { id: tabId, windowId, groupId } = tab ?? {}
     if (!ignoreTabCheck) {
         if (await windowNotFocused(windowId)) return
         if (await tabNotActive(tabId)) return
     }
-    const { protocol, host } = extractHostname(url) || {}
+    const { protocol, host } = extractHostname(url)
     const option = await optionHolder.get()
 
     if (protocol === "file" && !option?.countLocalFiles) return
@@ -46,7 +50,7 @@ export async function handleTrackTimeEvent(event: timer.core.Event, senderTab: C
     await handleTime({ host, url, groupId }, [start, end], tabId)
     if (tabId) {
         const winTabs = await listTabs({ active: true, windowId })
-        const firstActiveTab = winTabs?.[0]
+        const firstActiveTab = winTabs[0]
         // Cause there is no way to determine whether this tab is selected in screen-split mode
         // So only show badge for first tab for screen-split mode
         // @see #246
@@ -88,10 +92,10 @@ async function handleVisit(context: ItemIncContext) {
     metLimits?.length && sendLimitedMessage(metLimits)
 }
 
-export async function handleIncVisitEvent(param: { host: string, url: string }, sender: ChromeMessageSender): Promise<void> {
-    const { host, url } = param
-    const { groupId } = sender?.tab ?? {}
-    const { protocol } = extractHostname(url)
+export async function incVisitCount(tab: ChromeTab | undefined): Promise<void> {
+    const { groupId, url } = tab ?? {}
+    if (!url) return
+    const { protocol, host } = extractHostname(url)
     const option = await optionHolder.get()
     if (protocol === "file" && !option.countLocalFiles) return
     await handleVisit({ host, url, groupId })

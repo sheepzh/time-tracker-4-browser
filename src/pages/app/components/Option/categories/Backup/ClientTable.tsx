@@ -5,18 +5,16 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { useRequest } from '@hooks'
+import { allBackupClients } from "@api/sw/backup"
 import { t } from '@app/locale'
 import { cvt2LocaleTime } from '@app/util/time'
 import { Loading, RefreshRight } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
-import { listBackupClients } from "@api/sw/backup"
-import { getCid } from "@api/sw/meta"
+import { useRequest } from '@hooks'
 import {
-    ElLink, ElMessage, ElRadio, ElTable, ElTableColumn, ElTag, useNamespace,
-    type RenderRowData,
+    ElLink, ElMessage, ElRadio, ElTable, ElTableColumn, ElTag, useNamespace, type RenderRowData,
 } from "element-plus"
-import { defineComponent, ref, StyleValue, toRaw } from "vue"
+import { defineComponent, ref, toRaw, type StyleValue } from "vue"
 
 const useStyle = () => {
     const radioNs = useNamespace('radio')
@@ -36,18 +34,10 @@ const formatTime = (value: timer.backup.Client): string => {
 }
 
 const _default = defineComponent<{ onSelect: ArgCallback<timer.backup.Client> }>(props => {
-    const { data: list, loading, refresh } = useRequest(async () => {
-        const { success, data, errorMsg } = (await listBackupClients()) || {}
-        if (!success) {
-            throw new Error(errorMsg)
-        }
-        return data
-    }, {
+    const { data: list, loading, refresh } = useRequest(allBackupClients, {
         defaultValue: [],
-        onError: e => ElMessage.error(typeof e === 'string' ? e : (e as Error).message || 'Unknown error...')
+        onError: e => ElMessage.error(e instanceof Error ? e.message : String(e ?? 'Unknown error...'))
     })
-
-    const { data: localCid } = useRequest(() => getCid())
 
     const selectedCid = ref<string>()
     const handleRowSelect = (row: timer.backup.Client) => {
@@ -100,10 +90,10 @@ const _default = defineComponent<{ onSelect: ArgCallback<timer.backup.Client> }>
                 align="center"
                 headerAlign="center"
             >
-                {({ row: client }: RenderRowData<timer.backup.Client>) => <>
+                {({ row: client }: RenderRowData<(timer.backup.Client & { current: boolean })>) => <>
                     {client.name || '-'}
                     <ElTag
-                        v-show={localCid.value === client?.id}
+                        v-show={client.current}
                         size="small" type="danger"
                         style={{ height: '20px', marginInline: '6px 0' } satisfies StyleValue}
                     >

@@ -1,21 +1,15 @@
 import { IS_ANDROID, IS_FIREFOX } from '@util/constant/environment'
-import { isFileUrl } from '@util/pattern'
 import type MessageDispatcher from "../message-dispatcher"
 import FileTracker from './file-tracker'
 import { initTabGroup } from './group'
-import { handleIncVisitEvent, handleTrackTimeEvent } from './normal'
+import { handleTrackTimeEvent, incVisitCount } from './normal'
 import { handleTrackRunTimeEvent } from './runtime'
 
 export default function initTrackServer(messageDispatcher: MessageDispatcher) {
     messageDispatcher
-        .register('cs.trackTime', (ev, sender) => {
-            // not to process cs events from local files for FF
-            if (IS_FIREFOX && isFileUrl(ev.url)) return
-
-            handleTrackTimeEvent(ev, sender.tab)
-        })
-        .register('cs.trackRunTime', handleTrackRunTimeEvent)
-        .register('cs.incVisitCount', handleIncVisitEvent)
+        .register('track.time', (ev, { tab, url }) => handleTrackTimeEvent(ev, url, tab))
+        .register('track.runTime', (ev, { url }) => handleTrackRunTimeEvent(ev, url))
+        .register('track.visit', (_, { tab }) => incVisitCount(tab))
 
     initTabGroup()
 

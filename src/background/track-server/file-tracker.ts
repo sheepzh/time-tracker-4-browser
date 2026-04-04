@@ -49,9 +49,8 @@ class FileTracker {
         const end = Date.now()
         this.enabled && handleTrackTimeEvent({
             host, start, end,
-            url: tab.url ?? '',
             ignoreTabCheck: false,
-        }, tab)
+        }, tab.url, tab)
         this.current.start = end
     }
 }
