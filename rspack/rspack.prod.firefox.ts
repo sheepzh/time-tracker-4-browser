@@ -22,9 +22,10 @@ const srcDir = [
     'package.json', 'package-lock.json',
     'tsconfig.json',
     'rspack',
-    'jest.config.ts',
+    'rstest.config.ts',
     'script',
-    ".gitignore",
+    'examples',
+    '.gitignore',
 ]
 const copyMapper = srcDir.map(p => { return { source: path.resolve(__dirname, '..', p), destination: path.resolve(sourceTempDir, p) } })
 

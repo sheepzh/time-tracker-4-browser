@@ -1,8 +1,7 @@
-import { useRequest } from '@hooks/useRequest'
-import { useWindowFocus } from '@hooks/useWindowFocus'
-import limitService from "@service/limit-service"
+import { selectLimits } from "@api/sw/limit"
 import { type App, inject, provide, type Ref, shallowRef, watch } from "vue"
-import { type LimitReason } from "../common"
+import type { LimitReason } from "../types"
+import { useRequest, useWindowFocus } from './hooks'
 
 const REASON_KEY = "display_reason"
 const RULE_KEY = "display_rule"
@@ -35,7 +34,7 @@ export const provideRule = () => {
         if (!windowFocus.value) return null
         const reasonId = reason.value?.id
         if (!reasonId) return null
-        const rules = await limitService.select({ id: reasonId, filterDisabled: false })
+        const rules = await selectLimits({ id: reasonId, filterDisabled: false })
         return rules?.[0]
     })
 

@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { fillExist } from "@service/components/import-processor"
-import { AUTHOR_EMAIL } from "@src/package"
+import { previewImportRows } from "@api/sw/import"
+import { AUTHOR_EMAIL } from "@/package"
 import { IS_WINDOWS } from "@util/constant/environment"
 import { extractHostname, isBrowserUrl } from "@util/pattern"
 import { formatTimeYMD, MILL_PER_SECOND } from "@util/time"
@@ -22,7 +22,6 @@ const throwError = () => { throw new Error("Failed to parse, please check your f
  * @returns row data
  */
 export async function parseFile(ext: OtherExtension, file: File): Promise<timer.imported.Data> {
-    // const worker = new Worker()
     let rows: timer.imported.Row[] = []
     let focus = false
     let time = false
@@ -36,7 +35,7 @@ export async function parseFile(ext: OtherExtension, file: File): Promise<timer.
         rows = await parseHistoryTrendsUnlimited(file)
         time = true
     }
-    await fillExist(rows)
+    rows = await previewImportRows(rows)
     return { rows, focus, time }
 }
 

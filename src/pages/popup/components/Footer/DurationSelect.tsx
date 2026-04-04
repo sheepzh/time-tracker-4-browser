@@ -1,7 +1,7 @@
+import { type PopupDuration } from '@popup/types'
 import { css } from '@emotion/css'
 import { t } from "@i18n"
 import calendarMessages from "@i18n/message/common/calendar"
-import { type PopupDuration } from '@popup/context'
 import { type CascaderNode, type CascaderOption, ElCascader, useNamespace } from "element-plus"
 import { computed, defineComponent } from "vue"
 

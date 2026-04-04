@@ -1,16 +1,23 @@
-import optionDatabase from '@db/option-database'
-import backupProcessor from "@service/backup/processor"
-import notificationProcessor from "@service/notification/processor"
 import { MILL_PER_MINUTE } from "@util/time"
 import alarmManager from "./alarm-manager"
-import type MessageDispatcher from './message-dispatcher'
+import backupProcessor from "./service/backup/processor"
+import optionHolder from './service/components/option-holder'
+import notificationProcessor from "./service/notification/processor"
 
 const BACKUP_ALARM_NAME = 'auto-backup-data'
 const NOTIFICATION_ALARM_NAME = 'notification-data'
 
-export async function initScheduler(dispatcher: MessageDispatcher): Promise<void> {
-    dispatcher.register('resetBackupScheduler', resetBackup)
-        .register('resetNotificationScheduler', resetNotification)
+const needResetBackup = (newVal: timer.option.AllOption, oldVal: timer.option.AllOption): boolean =>
+    newVal.autoBackUp !== oldVal.autoBackUp || newVal.autoBackUpInterval !== oldVal.autoBackUpInterval
+
+const needResetNotification = (newVal: timer.option.AllOption, oldVal: timer.option.AllOption): boolean =>
+    newVal.notificationCycle !== oldVal.notificationCycle || newVal.notificationOffset !== oldVal.notificationOffset
+
+export async function initScheduler(): Promise<void> {
+    optionHolder.addChangeListener((newVal, oldVal) => {
+        if (needResetBackup(newVal, oldVal)) resetBackup()
+        if (needResetNotification(newVal, oldVal)) resetNotification()
+    })
 
     const existBackup = await alarmManager.getAlarm(BACKUP_ALARM_NAME)
     !existBackup && await resetBackup()
@@ -21,7 +28,7 @@ export async function initScheduler(dispatcher: MessageDispatcher): Promise<void
 
 async function resetBackup(): Promise<void> {
     // MUST read latest option from database
-    const option = await optionDatabase.getOption()
+    const option = await optionHolder.get()
 
     await alarmManager.remove(BACKUP_ALARM_NAME)
 
@@ -68,7 +75,7 @@ const OFFSET_HANDLERS: Record<Exclude<timer.notification.Cycle, 'none'>, OffsetH
 async function resetNotification(): Promise<void> {
     await alarmManager.remove(NOTIFICATION_ALARM_NAME)
 
-    const option = await optionDatabase.getOption()
+    const option = await optionHolder.get()
     const { notificationCycle: cycle, notificationOffset: offset } = option
 
     if (cycle === 'none') return
@@ -77,9 +84,9 @@ async function resetNotification(): Promise<void> {
         NOTIFICATION_ALARM_NAME,
         () => OFFSET_HANDLERS[cycle](offset),
         async () => {
-            const result = await notificationProcessor.doSend()
-            if (!result.success) {
-                console.warn(`Failed to send notification ts=${Date.now()}, msg=${result.errorMsg}`)
+            const errMsg = await notificationProcessor.doSend()
+            if (errMsg) {
+                console.warn(`Failed to send notification ts=${Date.now()}, msg=${errMsg}`)
             }
         }
     )

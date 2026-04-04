@@ -1,22 +1,19 @@
-import type { ReportQueryParam } from "@app/components/Report/types"
-import { REPORT_ROUTE } from "@app/router/constants"
-import weekHelper from "@service/components/week-helper"
-import { selectCate, selectGroup, selectSite } from '@service/stat-service'
+import { getWeekStartTime } from "@api/sw/option"
+import { selectCate, selectGroup, selectSite } from '@api/sw/stat'
+import { REPORT_ROUTE, type ReportQuery } from "@app/router/constants"
+import type { PopupDuration, PopupQuery } from "@popup/types"
 import { isRemainHost } from "@util/constant/remain-host"
 import { getAppPageUrl } from "@util/constant/url"
 import { isSite } from "@util/stat"
-import { getMonthTime, MILL_PER_DAY } from "@util/time"
-import { type PopupDuration, type PopupQuery } from "./context"
+import { cvtDateRange2Str, getMonthTime, MILL_PER_DAY, type DateRange } from "@util/time"
 
-type DateRange = Date | [Date, Date] | undefined
-
-type DateRangeCalculator = (now: Date, num?: number) => Awaitable<DateRange>
+type DateRangeCalculator = (now: Date, num?: number) => Awaitable<[Date, Date] | Date | undefined>
 
 const DATE_RANGE_CALCULATORS: { [duration in PopupDuration]: DateRangeCalculator } = {
     today: now => now,
     yesterday: now => new Date(now.getTime() - MILL_PER_DAY),
     thisWeek: async now => {
-        const [start] = await weekHelper.getWeekDate(now)
+        const start = await getWeekStartTime(now)
         return [start, now]
     },
     thisMonth: now => [getMonthTime(now)[0], now],
@@ -24,9 +21,10 @@ const DATE_RANGE_CALCULATORS: { [duration in PopupDuration]: DateRangeCalculator
     allTime: () => undefined,
 }
 
-export const queryRows = async (param: PopupQuery): Promise<[rows: timer.stat.Row[], date: DateRange]> => {
+export const queryRows = async (param: PopupQuery): Promise<[rows: timer.stat.Row[], date: [Date, Date] | Date | undefined]> => {
     const { duration, durationNum, mergeMethod, dimension: sortKey } = param
-    const date = await DATE_RANGE_CALCULATORS[duration]?.(new Date(), durationNum)
+    const dateRange = await DATE_RANGE_CALCULATORS[duration]?.(new Date(), durationNum)
+    const date = cvtDateRange2Str(dateRange)
     const sortDirection: timer.common.SortDirection = 'DESC'
     let rows: timer.stat.Row[]
     if (mergeMethod === 'cate') {
@@ -40,11 +38,11 @@ export const queryRows = async (param: PopupQuery): Promise<[rows: timer.stat.Ro
             sortKey, sortDirection,
         })
     }
-    return [rows, date]
+    return [rows, dateRange]
 }
 
-function buildReportQuery(siteType: timer.site.Type, date: Date | [Date, Date?] | undefined, type: timer.core.Dimension): ReportQueryParam {
-    const query: ReportQueryParam = {}
+function buildReportQuery(siteType: timer.site.Type, date: DateRange | undefined, type: timer.core.Dimension): ReportQuery {
+    const query: ReportQuery = {}
     // Merge host
     siteType === 'merged' && (query.mm = 'domain')
     // Date
@@ -66,7 +64,11 @@ function buildReportQuery(siteType: timer.site.Type, date: Date | [Date, Date?] 
     return query
 }
 
-export function calJumpUrl(row: timer.stat.Row | undefined, date: Date | [Date, Date?] | undefined, type: timer.core.Dimension): string | undefined {
+export function calJumpUrl(
+    row: timer.stat.Row | undefined,
+    date: DateRange | undefined,
+    type: timer.core.Dimension,
+): string | undefined {
     if (!row) return
     if (isSite(row)) {
         const { siteKey: { host, type: siteType } } = row

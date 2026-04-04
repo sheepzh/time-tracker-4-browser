@@ -1,9 +1,7 @@
 import { getStepColors, tooltipDot } from "@app/util/echarts"
-import { EchartsWrapper } from "@hooks/useEcharts"
+import { EchartsWrapper } from "@hooks"
 import { generateSiteLabel } from "@util/site"
-import type { BarSeriesOption } from "echarts/charts"
-import type { GridComponentOption, TooltipComponentOption } from "echarts/components"
-import type { ComposeOption } from "echarts/core"
+import type { BarSeriesOption, ComposeOption, GridComponentOption, TooltipComponentOption } from "echarts"
 import { BizOption } from "../context"
 
 type EcOption = ComposeOption<

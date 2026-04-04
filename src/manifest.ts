@@ -11,10 +11,9 @@
  * @author zhy
  * @since 0.0.1
  */
-// Not use path alias in manifest.json
-import packageInfo from "./package"
-import { OPTION_ROUTE } from "./pages/app/router/constants"
-const { version, author: { email }, homepage } = packageInfo
+import packageJson from "../package.json"
+import { APP_OPTION_ROUTE } from "./shared/route"
+const { version, author: { email }, homepage } = packageJson
 
 const _default: chrome.runtime.ManifestV3 = {
     name: '__MSG_meta_marketName__',
@@ -74,7 +73,7 @@ const _default: chrome.runtime.ManifestV3 = {
     /**
      * @since 0.4.0
      */
-    options_page: 'static/app.html#' + OPTION_ROUTE
+    options_page: 'static/app.html#' + APP_OPTION_ROUTE
 }
 
 export default _default

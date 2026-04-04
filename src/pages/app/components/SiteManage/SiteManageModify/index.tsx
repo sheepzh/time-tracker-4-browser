@@ -4,15 +4,14 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { t } from "@app/locale"
-import siteDatabase from '@db/site-database'
+import { sendMsg2Runtime } from '@/api/sw/common'
+import CategorySelect from '@app/components/common/Category/Select'
+import { t } from '@app/locale'
 import { Check } from "@element-plus/icons-vue"
-import { useSwitch } from "@hooks"
-import { addSite } from "@service/site-service"
+import { useSwitch } from '@hooks'
 import { supportCategory } from "@util/site"
 import { ElButton, ElDialog, ElForm, ElFormItem, ElInput, ElMessage, type FormInstance, type FormItemRule } from "element-plus"
 import { computed, defineComponent, reactive, ref } from "vue"
-import CategorySelect from "../../common/category/CategorySelect"
 import HostSelect from "./HostSelect"
 
 export type ModifyInstance = {
@@ -51,18 +50,10 @@ function validateForm(form: FormInstance | undefined): Promise<boolean> {
 }
 
 async function handleAdd(siteInfo: timer.site.SiteInfo): Promise<boolean> {
-    const existed = await siteDatabase.exist(siteInfo)
-    if (existed) {
-        ElMessage({
-            type: 'warning',
-            message: t(msg => msg.siteManage.msg.hostExistWarn, { host: siteInfo.host }),
-            showClose: true,
-            duration: 1600
-        })
-    } else {
-        await addSite(siteInfo)
-    }
-    return !existed
+    const result = await sendMsg2Runtime('site.add', siteInfo)
+    if (result.success) return true
+    ElMessage.warning(result.errorMsg)
+    return false
 }
 
 const initData = (): _FormData => ({

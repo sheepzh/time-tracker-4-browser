@@ -6,7 +6,7 @@
  */
 
 import { useDialogSop } from '@app/components/common/DialogSop/context'
-import { t } from "@app/locale"
+import { t } from '@app/locale'
 import { Delete, WarnTriangleFilled } from "@element-plus/icons-vue"
 import Flex from "@pages/components/Flex"
 import { EXCLUDING_PREFIX } from '@util/constant/remain-host'

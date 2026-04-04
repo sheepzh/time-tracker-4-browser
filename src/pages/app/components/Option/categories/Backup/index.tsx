@@ -4,14 +4,14 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import { OptionItem, OptionLines, OptionTooltip } from '@app/components/Option/components'
+import { t } from '@app/locale'
 import {
     DEFAULT_VAULT as DEFAULT_OBSIDIAN_BUCKET,
     DEFAULT_ENDPOINT as DEFAULT_OBSIDIAN_ENDPOINT,
 } from "@api/obsidian"
-import { t } from "@app/locale"
 import { ElInput, ElSelect } from "element-plus"
 import { computed, defineComponent } from "vue"
-import { OptionItem, OptionLines, OptionTooltip } from '../../components'
 import type { CategoryInstance } from '../types'
 import AutoInput from "./AutoInput"
 import Footer from "./Footer"

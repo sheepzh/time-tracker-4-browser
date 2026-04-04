@@ -1,4 +1,5 @@
 import StoragePromise from "@db/common/storage-promise"
+import { rstest } from '@rstest/core'
 
 let store: Record<string, any> = {}
 
@@ -28,7 +29,7 @@ function resolveKey(key: string | Object | string[] | null) {
 }
 
 const sync = {
-    get: jest.fn((...args) => {
+    get: rstest.fn((...args) => {
         let id: string | string[] | Object
         let cb: (result: {}) => void
         let result: {} = {}
@@ -42,18 +43,18 @@ const sync = {
         }
         cb?.(result)
     }),
-    getBytesInUse: jest.fn(cb => cb && cb(0)),
-    set: jest.fn((payload, cb) => {
+    getBytesInUse: rstest.fn(cb => cb && cb(0)),
+    set: rstest.fn((payload, cb) => {
         Object.keys(payload).forEach((key) => (store[key] = payload[key]))
         cb?.()
     }),
-    remove: jest.fn((id, cb) => {
+    remove: rstest.fn((id, cb) => {
         const idType = typeof id
         const keys: string[] = idType === 'string' ? [id] : (Array.isArray(id) ? id : Object.keys(id))
         keys.forEach((key: string) => delete store[key])
         cb?.()
     }),
-    clear: jest.fn(cb => {
+    clear: rstest.fn(cb => {
         store = {}
         cb?.()
     })
@@ -64,9 +65,9 @@ const local = { ...sync, QUOTA_BYTES: 5 * 1024 * 1024 } as chrome.storage.LocalS
 const managed = sync
 
 const onChanged = {
-    addListener: jest.fn(),
-    removeListener: jest.fn(),
-    hasListener: jest.fn()
+    addListener: rstest.fn(),
+    removeListener: rstest.fn(),
+    hasListener: rstest.fn()
 } as unknown as typeof chrome.storage.onChanged
 
 export const mockStorage = () => {

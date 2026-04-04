@@ -5,10 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 
-import TimeFormatFilterItem from "@app/components/common/filter/TimeFormatFilterItem"
+import { useAnalysisTimeFormat } from "@app/components/Analysis/context"
+import TimeFormatFilterItem from '@app/components/common/filter/TimeFormatFilterItem'
 import Flex from "@pages/components/Flex"
 import { defineComponent } from "vue"
-import { useAnalysisTimeFormat } from "../../context"
 import TargetSelect from "./TargetSelect"
 
 const AnalysisFilter = defineComponent(() => {

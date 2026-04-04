@@ -6,15 +6,15 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { type I18nKey } from "@app/locale"
-import { ANALYSIS_ROUTE, MERGE_ROUTE } from "@app/router/constants"
+import { type I18nKey } from '@app/locale'
+import { ANALYSIS_ROUTE, MERGE_ROUTE } from '@app/router/constants'
 import { Aim, Connection, HelpFilled, Histogram, Memo, MoreFilled, Rank, SetUp, Stopwatch, Timer, View } from "@element-plus/icons-vue"
+import Trend from '@pages/icons/Trend'
 import { getGuidePageUrl } from "@util/constant/url"
 import { type Component } from 'vue'
 import About from "../icons/About"
 import Database from "../icons/Database"
 import Table from "../icons/Table"
-import Trend from "../icons/Trend"
 import Website from "../icons/Website"
 import Whitelist from "../icons/Whitelist"
 

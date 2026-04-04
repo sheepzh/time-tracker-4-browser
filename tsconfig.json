@@ -7,9 +7,9 @@
             "DOM"
         ],
         "types": [
-            "jest",
             "chrome",
-            "firefox-webext-browser"
+            "firefox-webext-browser",
+            "@rstest/core/globals"
         ],
         "jsx": "preserve",
         "jsxFactory": "h",
@@ -24,9 +24,11 @@
         "strictPropertyInitialization": true,
         "resolveJsonModule": true,
         "importHelpers": true,
-        "skipLibCheck": true,
         "moduleResolution": "bundler",
         "paths": {
+            "@/*": [
+                "./src/*"
+            ],
             "@api/*": [
                 "./src/api/*"
             ],
@@ -52,10 +54,10 @@
                 "./src/pages/*"
             ],
             "@db/*": [
-                "./src/database/*"
+                "./src/background/database/*"
             ],
             "@service/*": [
-                "./src/service/*"
+                "./src/background/service/*"
             ],
             "@util/*": [
                 "./src/util/*"
@@ -65,12 +67,6 @@
             ],
             "@i18n": [
                 "./src/i18n/index"
-            ],
-            "@src/*": [
-                "./src/*"
-            ],
-            "*": [
-                "./types/*"
             ]
         }
     },

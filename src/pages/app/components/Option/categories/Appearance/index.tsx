@@ -5,20 +5,19 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { OptionItem, OptionLines, OptionTag } from '@app/components/Option/components'
+import { useOption } from '@app/components/Option/useOption'
+import { useRequest } from '@hooks'
+import { type I18nKey, t, tWith } from '@app/locale'
 import { isSidePanelEnabled, setSidePanelEnabled, SIDE_PANEL_STATE_SUPPORTED_CONTROL } from '@api/chrome/sidePanel'
-import { type I18nKey, t, tWith } from "@app/locale"
-import { useRequest } from '@hooks/useRequest'
 import { ALL_LOCALES, localeSameAsBrowser } from "@i18n"
-import localeMessages from "@i18n/message/common/locale"
-import optionService from "@service/option-service"
+import localeMessages from "@i18n/message/locale"
 import { IS_ANDROID } from "@util/constant/environment"
 import { defaultAppearance } from "@util/constant/option"
-import { toggle } from "@util/dark-mode"
+import { processDarkMode } from '@util/dark-mode'
 import { ElColorPicker, ElMessageBox, ElSelect, ElSlider, ElSwitch, ElTag, type TagProps } from "element-plus"
 import { computed, defineComponent, type StyleValue } from "vue"
-import { OptionItem, OptionLines, OptionTag } from '../../components'
-import { useOption } from "../../useOption"
-import { CategoryInstance } from '../types'
+import type { CategoryInstance } from '../types'
 import DarkModeInput from "./DarkModeInput"
 
 const FOLLOW_BROWSER: I18nKey = msg => msg.option.followBrowser
@@ -51,7 +50,7 @@ const DEFAULT_SIDE_PANEL_ENABLED = true
 const _default = defineComponent((_props, ctx) => {
     const { option } = useOption<timer.option.AppearanceOption>({
         defaultValue: defaultAppearance, copy,
-        onChange: async val => optionService.isDarkMode(val).then(toggle)
+        onChange: processDarkMode,
     })
     const { data: sidePanelEnabled, refresh: refreshSidePanel } = useRequest(isSidePanelEnabled, {
         defaultValue: DEFAULT_SIDE_PANEL_ENABLED,

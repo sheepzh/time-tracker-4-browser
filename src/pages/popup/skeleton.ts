@@ -1,5 +1,5 @@
+import type { FrameRequest, FrameResponse } from "@popup/types"
 import { init as initTheme } from "@util/dark-mode"
-import { type FrameRequest, type FrameResponse } from "./message"
 import { injectSkeletonCss } from './style/skeleton'
 
 function injectFrame() {

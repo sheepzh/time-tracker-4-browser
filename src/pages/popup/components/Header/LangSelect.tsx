@@ -1,14 +1,13 @@
+import { sendMsg2Runtime } from '@/api/sw/common'
 import { createTab } from "@api/chrome/tab"
-import { useManualRequest } from "@hooks/useManualRequest"
-import { useRequest } from "@hooks/useRequest"
+import { getOption } from "@api/sw/option"
+import { useManualRequest, useRequest } from "@hooks"
 import { ALL_LOCALES, handleLocaleOption, localeSameAsBrowser, t } from "@i18n"
 import optionMessages from "@i18n/message/app/option"
-import localeMessages from "@i18n/message/common/locale"
+import localeMessages from "@i18n/message/locale"
 import Flex from "@pages/components/Flex"
 import { usePopupContext } from "@popup/context"
-import { t as tPopup } from "@popup/locale"
-import optionHolder from "@service/components/option-holder"
-import optionService from "@service/option-service"
+import { t as tPopup } from '@popup/locale'
 import { CROWDIN_HOMEPAGE } from "@util/constant/url"
 import { ElDropdown, ElDropdownItem, ElDropdownMenu, ElIcon, ElText } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
@@ -23,15 +22,15 @@ const SELECTED_STYLES: StyleValue = {
 
 const LangSelect = defineComponent(() => {
     const { data: current } = useRequest(async () => {
-        const option = await optionHolder.get()
+        const option = await getOption()
         return option?.locale
     })
 
     const { reload: reloadPopup } = usePopupContext()
 
     const { refresh: saveLocale } = useManualRequest(
-        async opt => {
-            await optionService.setLocale(opt)
+        async (opt: timer.option.LocaleOption) => {
+            await sendMsg2Runtime('option.set', { locale: opt })
             handleLocaleOption(opt)
         },
         { onSuccess: reloadPopup },

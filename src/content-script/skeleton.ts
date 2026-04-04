@@ -1,12 +1,10 @@
-import { trySendMsg2Runtime } from "@api/chrome/runtime"
+import { trySendMsg2Runtime } from '@api/sw/common'
 
 function awaitDocumentReady() {
     if (document.readyState === 'complete') {
         return Promise.resolve()
     } else {
-        return new Promise(resolve => {
-            document.addEventListener('DOMContentLoaded', resolve, { once: true })
-        })
+        return new Promise(resolve => document.addEventListener('DOMContentLoaded', resolve, { once: true }))
     }
 }
 

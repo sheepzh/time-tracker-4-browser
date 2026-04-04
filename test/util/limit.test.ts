@@ -1,7 +1,8 @@
 import {
     calcTimeState, cleanCond, dateMinute2Idx, hasLimited, hasWeeklyLimited, isEffective, isEnabledAndEffective,
     matchCond, matches, meetLimit, meetTimeLimit, period2Str
-} from "@util/limit"
+} from "@/util/limit"
+import { rstest } from '@rstest/core'
 
 describe('util/limit', () => {
     test('cleanCond', () => {
@@ -71,26 +72,25 @@ describe('util/limit', () => {
         expect(isEffective(undefined)).toBe(true)
         expect(isEffective([])).toBe(true)
 
-        Object.defineProperty(global, 'performance', { writable: true })
-        jest.useFakeTimers({ doNotFake: ['performance'] })
+        rstest.useFakeTimers({})
         const monday = new Date()
         monday.setFullYear(2025)
         monday.setMonth(0)
         monday.setDate(20)
-        jest.setSystemTime(monday)
+        rstest.setSystemTime(monday)
 
         expect(isEffective([1, 2])).toBe(false)
         expect(isEffective([0, 1, 2])).toBe(true)
+        rstest.useRealTimers()
     })
 
     test('isEffectiveAndEnabled', () => {
-        Object.defineProperty(global, 'performance', { writable: true })
-        jest.useFakeTimers({ doNotFake: ['performance'] })
+        rstest.useFakeTimers({})
         const monday = new Date()
         monday.setFullYear(2025)
         monday.setMonth(0)
         monday.setDate(20)
-        jest.setSystemTime(monday)
+        rstest.setSystemTime(monday)
 
         const rule = (weekdays: number[], enabled: boolean): timer.limit.Rule => ({
             id: 1, name: 'foobar',
@@ -102,6 +102,7 @@ describe('util/limit', () => {
         expect(isEnabledAndEffective(rule([0, 1, 2], true))).toBe(true)
         expect(isEnabledAndEffective(rule([0, 1, 2], false))).toBe(false)
         expect(isEnabledAndEffective(rule([1, 2], true))).toBe(false)
+        rstest.useRealTimers()
     })
 
     test('hasWeeklyLimited', () => {

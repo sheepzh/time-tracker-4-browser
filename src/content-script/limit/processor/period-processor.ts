@@ -1,16 +1,16 @@
-import { trySendMsg2Runtime } from "@api/chrome/runtime"
+import { trySendMsg2Runtime } from '@api/sw/common'
 import { date2Idx } from "@util/limit"
 import { MILL_PER_SECOND } from "@util/time"
-import { type LimitReason, type ModalContext, type Processor } from "../common"
+import type { LimitReason, ModalContext, Processor } from "../types"
 
-function processRule(rule: timer.limit.Rule, nowSeconds: number, context: ModalContext): NodeJS.Timeout[] {
+function processRule(rule: timer.limit.Rule, nowSeconds: number, context: ModalContext): ReturnType<typeof setTimeout>[] {
     const { cond, periods, id } = rule
     return periods?.flatMap?.(p => {
         const [s, e] = p
         const startSeconds = s * 60
         const endSeconds = (e + 1) * 60
         const reason: LimitReason = { id, cond, type: "PERIOD" }
-        const timers: NodeJS.Timeout[] = []
+        const timers: ReturnType<typeof setTimeout>[] = []
         if (nowSeconds < startSeconds) {
             timers.push(setTimeout(() => context.modal.addReason(reason), (startSeconds - nowSeconds) * MILL_PER_SECOND))
             timers.push(setTimeout(() => context.modal.removeReason(reason), (endSeconds - nowSeconds) * MILL_PER_SECOND))
@@ -24,13 +24,13 @@ function processRule(rule: timer.limit.Rule, nowSeconds: number, context: ModalC
 
 class PeriodProcessor implements Processor {
     private context: ModalContext
-    private timers: NodeJS.Timeout[] = []
+    private timers: ReturnType<typeof setTimeout>[] = []
 
     constructor(context: ModalContext) {
         this.context = context
     }
 
-    async handleMsg(code: timer.mq.ReqCode, data: timer.limit.Item[]): Promise<timer.mq.Response> {
+    async handleMsg(code: timer.tab.ReqCode, data: timer.limit.Item[]): Promise<timer.tab.Response<timer.tab.ReqCode>> {
         if (code === "limitChanged") {
             this.timers?.forEach(clearTimeout)
             await this.init0(data)
@@ -44,7 +44,7 @@ class PeriodProcessor implements Processor {
     }
 
     private async init0(rules?: timer.limit.Item[]) {
-        rules = rules ?? await trySendMsg2Runtime("cs.getRelatedRules", this.context.url)
+        rules = rules ?? await trySendMsg2Runtime("limit.listEffective", this.context.url)
         // Clear first
         this.context.modal.removeReasonsByType("PERIOD")
         const nowSeconds = date2Idx(new Date())

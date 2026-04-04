@@ -136,4 +136,10 @@ declare namespace timer.limit {
         // Minutes
         duration: number
     }
+
+    type Query = {
+        onlyEnabled?: boolean
+        id?: number
+        url?: string
+    }
 }

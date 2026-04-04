@@ -4,7 +4,7 @@ import { createLimitRule, fillTimeLimit } from "./common"
 let context: LaunchContext
 
 describe('Daily time limit', () => {
-    beforeEach(async () => context = await launchBrowser())
+    beforeEach(async () => { context = await launchBrowser() })
 
     afterEach(() => context.close())
 

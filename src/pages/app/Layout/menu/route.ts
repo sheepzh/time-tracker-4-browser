@@ -1,5 +1,5 @@
+import { type I18nKey, t } from '@app/locale'
 import { createTabAfterCurrent } from "@api/chrome/tab"
-import { type I18nKey, t } from "@app/locale"
 import { type Ref } from "vue"
 import { type Router } from "vue-router"
 import { type MenuItem, menuGroups } from "./item"

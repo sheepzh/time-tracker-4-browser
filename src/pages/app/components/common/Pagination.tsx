@@ -22,7 +22,7 @@ const Pagination = defineComponent<Props>(props => {
         <Flex justify="center" align="center">
             <ElPagination
                 disabled={props.disabled}
-                {...getPaginationIconProps() || {}}
+                {...getPaginationIconProps()}
                 pageSizes={[10, 20, 50]}
                 defaultCurrentPage={(props.defaultValue as timer.common.PageQuery)?.num}
                 defaultPageSize={(props.defaultValue as timer.common.PageQuery)?.size}

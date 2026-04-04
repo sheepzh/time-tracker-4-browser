@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { trySendMsg2Runtime } from "@api/chrome/runtime"
+import { trySendMsg2Runtime } from '@api/sw/common'
 import { formatPeriodCommon } from "@util/time"
 import { t } from "./locale"
 
@@ -13,9 +13,9 @@ import { t } from "./locale"
  * Print info of today
  */
 export default async function printInfo(host: string) {
-    const waste = await trySendMsg2Runtime<string, timer.core.Result>('cs.getTodayInfo', host)
-    if (!waste) return
-    const { time, focus } = waste
+    const data = await trySendMsg2Runtime('stat.today', host)
+    if (!data) return
+    const { time, focus } = data
 
     const param = {
         time: `${time ?? '-'}`,
