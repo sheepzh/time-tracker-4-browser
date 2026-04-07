@@ -36,7 +36,7 @@ type Props = ModelValue<Value> & {
 const ALL_PROPS: (keyof Props)[] = ["clearable", "disabledDate", "endPlaceholder", "modelValue", "onChange", "shortcuts", "startPlaceholder"]
 
 const ARROW_BTN_STYLE: StyleValue = {
-    padding: '8px 1px',
+    padding: '8px 5px',
 }
 
 const usePopperStyle = () => {
