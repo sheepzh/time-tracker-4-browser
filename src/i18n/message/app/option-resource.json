@@ -1562,6 +1562,7 @@
         "on": "Zawsze włączone",
         "off": "Zawsze wyłączone",
         "followBrowser": "Śledź przeglądarkę",
+        "permGrantConfirm": "Ta opcja wymaga odpowiednich uprawnień",
         "appearance": {
             "title": "Wygląd",
             "displayWhitelist": "{input} Wyświetlanie {whitelist} w {contextMenu}",
