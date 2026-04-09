@@ -1,7 +1,5 @@
 import { t } from '@app/locale'
-import { Check, Close } from '@element-plus/icons-vue'
-import Flex from '@pages/components/Flex'
-import { ElButton, ElDialog, ElInput, ElSelect, ElText, ElTimePicker } from 'element-plus'
+import { ElInput, ElMessage, ElSelect, ElTimePicker } from 'element-plus'
 import { computed, defineComponent, StyleValue } from 'vue'
 import { OptionItem, OptionLines } from '../../components'
 import type { CategoryInstance } from '../types'
@@ -28,19 +26,21 @@ const Notification = defineComponent((_, ctx) => {
     const { option, weekday, datetime, reset } = useNotification()
     const isNotNone = computed(() => option.notificationCycle !== 'none')
 
-    const {
-        confirmVisible, setConfirmVisible, granted, checkBeforeRequest, doRequest
-    } = usePermission()
+    const { checkRequest } = usePermission()
 
-    const onCycleChange = (val: timer.notification.Cycle) => {
-        const setVal = () => option.notificationCycle = val
-        val === 'none'
-            ? setVal()
-            // need to check the permission
-            : checkBeforeRequest(option.notificationMethod, setVal)
+    const onCycleChange = async (val: timer.notification.Cycle) => {
+        if (val === 'none') {
+            option.notificationCycle = val
+            return
+        }
+        const result = await checkRequest(option.notificationMethod)
+        result ? option.notificationCycle = val : ElMessage.info('Denied by user')
     }
 
-    const onMethodChange = (val: timer.notification.Method) => checkBeforeRequest(val, () => option.notificationMethod = val)
+    const onMethodChange = async (val: timer.notification.Method) => {
+        const result = await checkRequest(val)
+        result ? option.notificationMethod = val : ElMessage.info('Denied by user')
+    }
 
     ctx.expose({
         reset,
@@ -111,25 +111,6 @@ const Notification = defineComponent((_, ctx) => {
                 </>
             )}
             {isNotNone.value && <Footer />}
-            <ElDialog
-                width={400} closeOnPressEscape={false} closeOnClickModal={false}
-                modelValue={confirmVisible.value}
-                onUpdate:modelValue={setConfirmVisible}
-            >
-                <Flex column gap={20}>
-                    <ElText size='large'>
-                        {t(msg => msg.option.permGrantConfirm)}
-                    </ElText>
-                    <Flex justify='end'>
-                        <ElButton onClick={() => setConfirmVisible(false)} icon={Close}>
-                            {t(msg => msg.button.cancel)}
-                        </ElButton>
-                        <ElButton onClick={doRequest} icon={Check} type='primary'>
-                            {t(msg => msg.button.confirm)}
-                        </ElButton>
-                    </Flex>
-                </Flex>
-            </ElDialog>
         </OptionLines>
     )
 })
