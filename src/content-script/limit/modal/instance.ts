@@ -68,7 +68,7 @@ class ModalInstance implements MaskModal {
     url: string
     rootElement: RootElement | undefined
     iframe: HTMLIFrameElement | undefined
-    delayHandlers: (() => void)[] = [
+    delayHandlers: NoArgCallback[] = [
         () => trySendMsg2Runtime('limit.delay', this.url),
     ]
     reasons: LimitReason[] = []
@@ -79,20 +79,14 @@ class ModalInstance implements MaskModal {
     constructor(url: string) {
         (window as any)['__modal__'] = this
         this.url = url
-        this.bridge = new ModalBridge({
-            targetOrigin: MSG_ORIGIN,
-            peer: () => this.iframe?.contentWindow ?? null,
-            acceptFromPeer: ev => ev.source === this.iframe?.contentWindow,
-        })
-        this.bridge.register('visitTime', async () => this.reason?.getVisitTime?.() ?? 0)
+        this.bridge = new ModalBridge(MSG_ORIGIN, () => this.iframe?.contentWindow ?? undefined)
+            .register('visitTime', async () => this.reason?.getVisitTime?.() ?? 0)
+            .register('delay', () => this.delayHandlers.forEach(handler => handler()))
     }
 
     addReason(...reasons2Add: LimitReason[]): void {
-        reasons2Add = reasons2Add.filter(r => {
-            const anyExist = this.reasons?.some(reason => isSameReason(r, reason))
-            return !anyExist
-        })
-        if (!reasons2Add?.length) return
+        reasons2Add = reasons2Add.filter(r => !this.reasons.some(reason => isSameReason(r, reason)))
+        if (!reasons2Add.length) return
         this.reasons.push(...reasons2Add)
         // Sort
         this.reasons.sort((a, b) => TYPE_SORT[a.type] - TYPE_SORT[b.type])

@@ -27,20 +27,12 @@ const isRpcResponse = (payload: unknown): payload is RpcResponse<BridgeCode> => 
     return 'kind' in payload && payload.kind === 'response'
 }
 
-type ModalBridgeConfig = {
-    targetOrigin: string
-    peer: () => Window | null | undefined
-    acceptFromPeer: (ev: MessageEvent) => boolean
-}
-
 export class ModalBridge {
-    private readonly cfg: ModalBridgeConfig
     private readonly pendingCache = new Map<string, ArgCallback<RpcResponse<BridgeCode>>>()
     private readonly handlers = new Map<BridgeCode, BridgeHandler<BridgeCode>>()
     private readonly onMessageBound: (ev: MessageEvent) => void
 
-    constructor(cfg: ModalBridgeConfig) {
-        this.cfg = cfg
+    constructor(private origin: string, private peer: () => Window | undefined) {
         this.onMessageBound = this.onMessage.bind(this)
         window.addEventListener('message', this.onMessageBound)
     }
@@ -51,8 +43,9 @@ export class ModalBridge {
         this.handlers.clear()
     }
 
-    register<C extends BridgeCode>(code: C, handler: BridgeHandler<C>) {
+    register<C extends BridgeCode>(code: C, handler: BridgeHandler<C>): ModalBridge {
         this.handlers.set(code, handler as unknown as BridgeHandler<BridgeCode>)
+        return this
     }
 
     request<C extends BridgeCode>(code: C, req: BridgeRequest<C>): Promise<BridgeResponse<C>> {
@@ -73,11 +66,11 @@ export class ModalBridge {
     }
 
     private send<C extends BridgeCode>(payload: RpcRequest<C> | RpcResponse<C>): void {
-        this.cfg.peer()?.postMessage(payload, this.cfg.targetOrigin)
+        this.peer()?.postMessage(payload, this.origin)
     }
 
     private async onMessage(ev: MessageEvent) {
-        if (!this.cfg.acceptFromPeer(ev)) return
+        if (this.peer() !== ev.source) return
         const { data: payload } = ev
         if (isRpcRequest(payload)) {
             const { code, data: reqData, requestId } = payload

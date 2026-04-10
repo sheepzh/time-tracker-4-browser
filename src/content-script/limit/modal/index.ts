@@ -17,13 +17,8 @@ function parsePageUrl(): string {
 function main() {
     initDarkTheme()
 
+    const bridge = new ModalBridge('*', () => window.parent)
     const app = createApp(Main)
-    const bridge = new ModalBridge({
-        targetOrigin: '*',
-        peer: () => window.parent,
-        acceptFromPeer: ev => ev.source === window.parent,
-    })
-
     provideApp(app, bridge, parsePageUrl())
 
     const el = document.createElement('div')
