@@ -1,11 +1,11 @@
 import { css } from '@emotion/css'
 import { t } from "@i18n"
 import calendarMessages from "@i18n/message/common/calendar"
-import { type PopupDuration } from '@popup/context'
+import { type PopupDuration } from '@popup/types'
 import { type CascaderNode, type CascaderOption, ElCascader, useNamespace } from "element-plus"
 import { computed, defineComponent } from "vue"
 
-export const rangeLabel = (duration: PopupDuration, n?: string | number): string => {
+const rangeLabel = (duration: PopupDuration, n?: string | number): string => {
     return t(calendarMessages, {
         key: msg => msg.range[duration],
         param: n ? { n } : undefined,

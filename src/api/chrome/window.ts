@@ -1,17 +1,6 @@
 import { IS_ANDROID, IS_FIREFOX } from "@util/constant/environment"
 import { handleError } from "./common"
 
-export function listAllWindows(): Promise<chrome.windows.Window[]> {
-    if (IS_ANDROID) {
-        // windows API not supported on Firefox for Android
-        return Promise.resolve([])
-    }
-    return new Promise(resolve => chrome.windows.getAll(windows => {
-        handleError("listAllWindows")
-        resolve(windows || [])
-    }))
-}
-
 export function isNoneWindowId(windowId: number) {
     if (IS_ANDROID) {
         return false

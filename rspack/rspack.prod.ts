@@ -12,7 +12,7 @@ const marketPkgPath = path.resolve(__dirname, '..', 'market_packages')
 const normalZipFilePath = path.resolve(marketPkgPath, `${name}-${version}.mv3.zip`)
 const targetZipFilePath = path.resolve(marketPkgPath, `target.zip`)
 
-const filemanagerPlugin = new FileManagerPlugin({
+const fileManagerPlugin = new FileManagerPlugin({
     events: {
         // Archive at the end
         onEnd: [
@@ -34,7 +34,7 @@ const filemanagerPlugin = new FileManagerPlugin({
 
 const option = optionGenerator({ outputPath, manifest, mode: "production" })
 
-enhancePluginWith(option, filemanagerPlugin)
+enhancePluginWith(option, fileManagerPlugin)
 option.devtool = false
 
 export default option

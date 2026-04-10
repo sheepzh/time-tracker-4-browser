@@ -36,19 +36,15 @@ export const isNormalSite = (row: timer.stat.Row): row is timer.stat.SiteRow => 
     return 'siteKey' in row && row.siteKey.type === 'normal'
 }
 
-export const isMergedSite = (row: timer.stat.Row): row is timer.stat.SiteRow => {
-    return 'siteKey' in row && row.siteKey.type === 'merged'
-}
-
-export const isGroup = (row: timer.stat.Row): row is timer.stat.GroupRow => {
+export const isGroup = (row: timer.stat.StatKey): row is timer.stat.GroupRow => {
     return 'groupKey' in row
 }
 
-export const isSite = (row: timer.stat.Row): row is timer.stat.SiteRow => {
+export const isSite = (row: timer.stat.StatKey): row is timer.stat.SiteRow => {
     return 'siteKey' in row
 }
 
-export const isCate = (row: timer.stat.Row): row is timer.stat.CateRow => {
+export const isCate = (row: timer.stat.StatKey): row is timer.stat.CateRow => {
     return 'cateKey' in row
 }
 

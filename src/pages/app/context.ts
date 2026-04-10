@@ -1,8 +1,8 @@
-import { MediaSize, useMediaSize, useProvide, useProvider, useRequest } from "@hooks"
-import cateService from "@service/cate-service"
+import { allCates } from "@api/sw/cate"
 import { toMap } from '@util/array'
 import { CATE_NOT_SET_ID } from '@util/site'
-import { computed, reactive, watch, type Ref } from "vue"
+import { computed, reactive, watch } from "vue"
+import { MediaSize, useMediaSize, useProvide, useProvider, useRequest } from "./hooks"
 import { t } from './locale'
 
 type MenuLayout = 'nav' | 'sidebar'
@@ -16,13 +16,12 @@ interface CategoryInstance {
 
 type AppContextValue = {
     category: Readonly<CategoryInstance>
-    layout: Readonly<Ref<MenuLayout>>
 }
 
 const NAMESPACE = '_'
 
 export const initAppContext = () => {
-    const { refresh: refreshCategories } = useRequest(() => cateService.listAll(), {
+    const { refresh: refreshCategories } = useRequest(() => allCates(), {
         onSuccess: categories => {
             category.all = categories
             const map = toMap(categories, c => c.id, c => c.name)
@@ -39,11 +38,9 @@ export const initAppContext = () => {
         nameMap: {},
         refresh: refreshCategories,
     })
-    useProvide<AppContextValue>(NAMESPACE, { category, layout })
+    useProvide<AppContextValue>(NAMESPACE, { category })
 
     return { layout }
 }
 
 export const useCategory = () => useProvider<AppContextValue, "category">(NAMESPACE, "category").category
-
-export const useLayout = () => useProvider<AppContextValue, "layout">(NAMESPACE, "layout").layout

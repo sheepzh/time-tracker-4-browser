@@ -5,14 +5,13 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { getOption } from "@api/sw/option"
 import { initLocale } from "@i18n"
-import { increasePopup } from "@service/meta-service"
-import optionService from "@service/option-service"
-import { toggle } from "@util/dark-mode"
+import type { FrameRequest, FrameResponse } from "@popup/types"
+import { processDarkMode } from '@util/dark-mode'
 import "element-plus/theme-chalk/index.css"
 import { createApp } from "vue"
 import Main from "./Main"
-import { type FrameRequest, type FrameResponse } from "./message"
 import initRouter from "./router"
 import { injectGlobalCss } from "./style"
 
@@ -39,8 +38,7 @@ async function main() {
     await initLocale()
     injectGlobalCss()
 
-    const isDarkMode = await optionService.isDarkMode()
-    toggle(isDarkMode)
+    getOption().then(processDarkMode)
     await send2ParentWindow('themeInitialized')
 
     const el = document.createElement('div')
@@ -50,8 +48,6 @@ async function main() {
     const app = createApp(Main)
     initRouter(app)
     app.mount(el)
-
-    increasePopup()
 }
 
 main()

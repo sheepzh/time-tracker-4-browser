@@ -1,7 +1,8 @@
-import { useLocalStorage, useProvide, useProvider } from "@hooks"
+import { type ReportQuery } from '@app/router/constants'
+import { useLocalStorage, useProvide, useProvider } from '@hooks'
 import { reactive, type Reactive, ref, type Ref, toRaw, watch } from "vue"
 import { type RouteLocation, type Router, useRoute, useRouter } from "vue-router"
-import type { DisplayComponent, ReportFilterOption, ReportQueryParam, ReportSort } from "./types"
+import type { DisplayComponent, ReportFilterOption, ReportSort } from "./types"
 
 type Context = {
     filter: Reactive<ReportFilterOption>
@@ -17,7 +18,7 @@ type QueryPartial = PartialPick<ReportFilterOption, 'query' | 'dateRange' | 'mer
  * Init the query parameters
  */
 function parseQuery(route: RouteLocation, router: Router): [QueryPartial, ReportSort['prop'] | undefined] {
-    const routeQuery = route.query as unknown as ReportQueryParam
+    const routeQuery = route.query as ReportQuery
     const { q, mm, md, ds, de, sc } = routeQuery
     const dateStart = ds ? new Date(Number.parseInt(ds)) : undefined
     const dateEnd = de ? new Date(Number.parseInt(de)) : undefined
@@ -55,11 +56,12 @@ const cvtStorage2Filter = (storage: FilterStorageValue | undefined): ReportFilte
 
 const cvtFilter2Storage = (filter: ReportFilterOption): FilterStorageValue => {
     const { query, dateRange, mergeDate, siteMerge, cateIds, timeFormat } = filter
+    const [dateStart, dateEnd] = dateRange instanceof Date ? [dateRange,] : dateRange ?? []
     return {
         query,
         mergeDate, siteMerge,
-        dateStart: dateRange?.[0]?.getTime?.(),
-        dateEnd: dateRange?.[1]?.getTime?.(),
+        dateStart: dateStart?.getTime?.(),
+        dateEnd: dateEnd?.getTime?.(),
         cateIds, timeFormat,
     }
 }

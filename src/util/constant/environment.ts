@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getRuntimeId, getRuntimeName } from "@api/chrome/runtime"
+import { getRuntimeId, getRuntimeName } from "../../api/chrome/runtime"
 import { CHROME_ID, E2E_NAME, EDGE_ID, FIREFOX_ID } from "./meta"
 
 type BrowserEnv = 'unknown' | 'firefox' | 'edge' | 'opera' | 'safari' | 'chrome'
@@ -41,7 +41,7 @@ export const BROWSER_NAME = browser
 
 export const IS_FIREFOX = BROWSER_NAME === 'firefox'
 
-export const IS_EDGE = BROWSER_NAME === 'edge'
+const IS_EDGE = BROWSER_NAME === 'edge'
 
 export const IS_CHROME = BROWSER_NAME === 'chrome'
 

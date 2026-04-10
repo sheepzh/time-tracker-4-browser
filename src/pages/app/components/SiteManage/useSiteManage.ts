@@ -1,8 +1,8 @@
+import { selectSitePage } from '@api/sw/site'
 import {
     type RequestOption,
     useLocalStorage, useProvide, useProvider, useRequest, useState
 } from '@hooks'
-import { selectSitePage, type SiteQueryParam } from '@service/site-service'
 import { type Reactive, reactive, type ShallowRef, watch } from 'vue'
 
 type FilterOption = {
@@ -16,7 +16,7 @@ type CacheValue = {
 }
 
 type Context = {
-    pagination: ShallowRef<timer.common.PageResult<timer.site.SiteInfo> | undefined>
+    pagination: ShallowRef<timer.common.PageResult<timer.site.SiteInfo>>
     filter: Reactive<FilterOption>
     selected: ShallowRef<timer.site.SiteInfo[]>
     setSelected: ArgCallback<timer.site.SiteInfo[]>
@@ -36,9 +36,12 @@ export const initSiteManage = (loadingTarget: RequestOption<unknown, unknown[]>[
 
     const { data: pagination, refresh, loading } = useRequest(() => {
         const { query: fuzzyQuery, cateIds, types } = filter
-        const param: SiteQueryParam = { fuzzyQuery, cateIds, types }
-        return selectSitePage(param, page)
-    }, { loadingTarget, deps: [() => filter, () => page] })
+        return selectSitePage({ fuzzyQuery, cateIds, types }, page)
+    }, {
+        defaultValue: { list: [], total: 0 },
+        loadingTarget,
+        deps: [() => filter, () => page],
+    })
 
     useProvide<Context>(NAMESPACE, { pagination, filter, selected, setSelected, refresh })
 

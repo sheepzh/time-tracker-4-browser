@@ -1,4 +1,4 @@
-import { useXsState } from '@hooks/useMediaSize'
+import { useXsState } from "@hooks"
 import Flex from '@pages/components/Flex'
 import { ElLink } from "element-plus"
 import { defineComponent, h, useSlots } from "vue"
@@ -8,6 +8,7 @@ const _default = defineComponent<{ href?: string, icon?: JSX.Element }>(props =>
     const { icon, href } = props
     const { default: default_, } = useSlots()
     const isXs = useXsState()
+
     return () => (
         <ElLink href={href} target="_blank">
             {icon && !isXs.value && <Flex inline width=".8rem" height=".8rem" marginInline="0 4px">

@@ -11,7 +11,7 @@ import { defineComponent } from "vue"
 import Alert from "./components/Alert"
 import Footer from "./components/Footer"
 import Reason from "./components/Reason"
-import { provideRule } from "./context"
+import { provideRule } from './context'
 import "./style/element-base.css"
 import "./style/modal.css"
 

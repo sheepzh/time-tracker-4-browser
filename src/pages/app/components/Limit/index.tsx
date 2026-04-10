@@ -8,7 +8,7 @@
 import { useXsState } from '@hooks'
 import { defineComponent } from "vue"
 import ContentCard from '../common/ContentCard'
-import ContentContainer from "../common/ContentContainer"
+import ContentContainer from '../common/ContentContainer'
 import { Filter, List, Modify, Table, Test } from "./components"
 import { useLimitProvider } from "./context"
 

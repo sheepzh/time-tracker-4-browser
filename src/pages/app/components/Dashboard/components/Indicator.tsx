@@ -5,24 +5,24 @@
  * https://opensource.org/licenses/MIT
  */
 
-import NumberGrow from "@app/components/common/NumberGrow"
+import { groupBy, sum } from '@/util/array'
+import { selectPeriods } from "@api/sw/period"
+import { selectSite } from "@api/sw/stat"
 import { tN, type I18nKey } from "@app/locale"
-import periodDatabase from "@db/period-database"
 import { Sunrise } from "@element-plus/icons-vue"
 import { useRequest, useXsState } from "@hooks"
 import Flex from "@pages/components/Flex"
-import { selectSite } from "@service/stat-service"
-import { calcMostPeriodOf2Hours } from "@util/period"
-import { getStartOfDay, MILL_PER_DAY, MILL_PER_MINUTE } from "@util/time"
+import { getStartOfDay, MILL_PER_DAY, MILL_PER_HOUR, MILL_PER_MINUTE } from "@util/time"
 import { ElIcon, ElScrollbar } from "element-plus"
 import { computed, defineComponent, toRef, type VNode } from "vue"
+import NumberGrow from "./NumberGrow"
 
 type _Value = {
     installedDays?: number
     sites: number
     visits: number
     browsingTime: number
-    most2Hour: number
+    busiestClock: number | undefined
 }
 
 /**
@@ -33,25 +33,35 @@ function calculateInstallDays(installTime: Date, now: Date): number {
     return Math.round(deltaMills / MILL_PER_DAY)
 }
 
+function calcBusiestClock(rows: timer.period.Row[]): number | undefined {
+    const map = groupBy(rows,
+        ({ startTime }) => startTime - getStartOfDay(startTime),
+        list => sum(list.map(e => e.milliseconds))
+    )
+    const maxOffsetStr = Object.entries(map).sort((a, b) => b[1] - a[1])[0]?.[0]
+    if (maxOffsetStr === undefined) return undefined
+    console.log(map, maxOffsetStr, MILL_PER_HOUR, Number.parseInt(maxOffsetStr) / MILL_PER_HOUR)
+    return Math.floor(Number.parseInt(maxOffsetStr) / MILL_PER_HOUR)
+}
+
 async function query(): Promise<_Value> {
     const allData = await selectSite()
     const hostSet = new Set<string>()
     let visits = 0
     let browsingTime = 0
-    allData.forEach(({ siteKey, focus, time }) => {
-        const { host } = siteKey || {}
-        host && hostSet.add(host)
+    allData.forEach(({ siteKey: { host }, focus, time }) => {
+        hostSet.add(host)
         visits += time
         browsingTime += focus
     })
-    const periodInfos: timer.period.Result[] = await periodDatabase.getAll()
-    const most2Hour = calcMostPeriodOf2Hours(periodInfos)
+    const periods = await selectPeriods({ size: 8 })
+    const busiestClock = calcBusiestClock(periods)
 
     const result: _Value = {
-        sites: hostSet?.size || 0,
+        sites: hostSet.size,
         visits,
         browsingTime,
-        most2Hour
+        busiestClock,
     }
 
     // 2. if not exist, calculate from all data items
@@ -89,10 +99,10 @@ const IndicatorLabel = defineComponent<Props>(props => {
 }, { props: ['path', 'param', 'duration'] })
 
 const computeMost2HourParam = (value: _Value | undefined): { start: number, end: number } => {
-    const most2HourIndex = value?.most2Hour
-    const [start, end] = most2HourIndex === undefined || isNaN(most2HourIndex)
+    const { busiestClock } = value ?? {}
+    const [start, end] = busiestClock === undefined || isNaN(busiestClock)
         ? [0, 0]
-        : [most2HourIndex * 2, most2HourIndex * 2 + 2]
+        : [busiestClock, busiestClock + 2]
     return { start, end }
 }
 

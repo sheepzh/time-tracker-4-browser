@@ -1,12 +1,13 @@
+import { PopupMessage } from '@i18n/message/popup'
 import { type App } from "vue"
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from "vue-router"
 
 export const ROUTE_PERCENTAGE = 'percentage'
 const ROUTE_RANKING = 'ranking'
 
-export const POPUP_ROUTES = [ROUTE_PERCENTAGE, ROUTE_RANKING]
+type PopupRoute = keyof PopupMessage['footer']['route']
 
-export type PopupRoute = typeof POPUP_ROUTES[number]
+export const POPUP_ROUTES: PopupRoute[] = [ROUTE_PERCENTAGE, ROUTE_RANKING]
 
 const routes: RouteRecordRaw[] = [
     {

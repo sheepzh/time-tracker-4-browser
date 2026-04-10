@@ -5,7 +5,7 @@
 * https://opensource.org/licenses/MIT
 */
 
-import { CROWDIN_PROJECT_ID } from "@util/constant/url"
+import { CROWDIN_PROJECT_ID } from "../util/constant/url"
 import { fetchGet } from './http'
 
 /**
@@ -21,7 +21,7 @@ export type TranslationStatusInfo = {
     translationProgress: number
 }
 
-export type MemberInfo = {
+type MemberInfo = {
     username: string
     joinedAt: string
     avatarUrl: string
@@ -30,7 +30,7 @@ export type MemberInfo = {
 export async function getTranslationStatus(): Promise<TranslationStatusInfo[]> {
     const limit = 500
     const auth = `Bearer ${PUBLIC_TOKEN}`
-    const url = `https://api.crowdin.com/api/v2/projects/${CROWDIN_PROJECT_ID}/languages/progress?limit=${limit}`
+    const url = `https://api.crowdin.com/v2/projects/${CROWDIN_PROJECT_ID}/languages/progress?limit=${limit}`
     const response = await fetchGet(url, { headers: { "Authorization": auth } })
     const data: { data: { data: TranslationStatusInfo }[] } = await response.json()
     return data.data.map(i => i.data)
@@ -43,7 +43,7 @@ export async function getMembers(): Promise<MemberInfo[]> {
     const limit = 10
     let offset = 0
     while (true) {
-        const url = `https://api.crowdin.com/api/v2/projects/${CROWDIN_PROJECT_ID}/members?limit=${limit}&offset=${offset}`
+        const url = `https://api.crowdin.com/v2/projects/${CROWDIN_PROJECT_ID}/members?limit=${limit}&offset=${offset}`
         const response = await fetchGet(url, { headers: { "Authorization": auth } })
         const data: { data: { data: MemberInfo }[] } = await response.json()
         const newItems = data?.data?.map(i => i.data) ?? []

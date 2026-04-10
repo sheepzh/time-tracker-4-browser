@@ -5,14 +5,14 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { useXsState } from '@hooks'
 import { t } from "@app/locale"
 import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
 import { css } from '@emotion/css'
-import { useXsState } from '@hooks/useMediaSize'
-import { dateFormat } from "@i18n/element"
 import Flex from '@pages/components/Flex'
-import { getDatePickerIconSlots } from "@pages/element-ui/rtl"
-import type { ElDatePickerShortcut } from '@pages/types'
+import { getDatePickerIconSlots } from '@pages/element-ui/rtl'
+import { ElDatePickerShortcut } from '@pages/element-ui/types'
+import { dateFormat } from "@i18n/element"
 import { isRtl } from '@util/document'
 import { MILL_PER_DAY } from '@util/time'
 import { type DatePickerProps, ElButton, ElDatePicker, ElText, useNamespace } from "element-plus"
@@ -23,9 +23,7 @@ const clearShortcut = (): ElDatePickerShortcut => ({
     value: [new Date(0), new Date(0)],
 })
 
-type Value = [Date?, Date?]
-
-type Props = ModelValue<Value> & {
+type Props = ModelValue<[Date?, Date?]> & {
     disabledDate?: (date: Date) => boolean
     startPlaceholder?: string
     endPlaceholder?: string
@@ -108,12 +106,12 @@ const DefaultRange = defineComponent<Props>(props => {
     } = useRange(props)
 
     const innerVal = computed(() => {
-        const [start, end] = props.modelValue
+        const [start, end] = props.modelValue ?? []
         return start && end ? [start, end] : undefined
     })
 
     const handleUpdate = (innerVal: [Date, Date] | undefined) => {
-        let value: Value = innerVal ?? [undefined, undefined]
+        let value = innerVal ?? [undefined, undefined]
         if (innerVal?.[0].getTime() === 0 && innerVal[1].getTime() === 0) {
             // clear shortcuts
             value = [undefined, undefined]

@@ -27,7 +27,7 @@ export const colorVariant = (variant: Variant, effect?: 'dark' | 'light', level?
 
 export const colorUsage = (usage: ColorUsage) => `--el-${usage}-color`
 
-export const textColor = (variant: TextVariant) => `--el-text-color-${variant}`
+const textColor = (variant: TextVariant) => `--el-text-color-${variant}`
 
 export const getStyle = (
     element: HTMLElement,
@@ -74,4 +74,19 @@ export function getInfoColor(): string | undefined {
 
 export function getColor(variant: Variant): string | undefined {
     return getCssVariable(colorVariant(variant))
+}
+
+export const cvtGroupColor = (color?: `${chrome.tabGroups.Color}`): string => {
+    switch (color) {
+        case 'grey': return '#5F6369'
+        case 'blue': return '#1974E8'
+        case 'yellow': return '#F9AB03'
+        case 'red': return '#DA3025'
+        case 'green': return '#198139'
+        case 'pink': return '#D01984'
+        case 'purple': return '#A143F5'
+        case 'cyan': return '#027B84'
+        case 'orange': return '#FA913E'
+        case undefined: return '#000'
+    }
 }

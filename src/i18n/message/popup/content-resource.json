@@ -262,11 +262,7 @@
                 "allTime": "Wszystkie dane"
             },
             "saveAsImageTitle": "Podsumowanie",
-            "averageCount": "Średnio {value} razy co dzień",
-            "averageTime": "Średnio {value} razy dziennie",
-            "totalTime": "Ogółem {totalTime}",
-            "totalCount": "Razem: {totalCount}",
-            "otherLabel": "Pozostałe strony: {count}"
+            "totalTime": "Ogółem {totalTime}"
         },
         "ranking": {
             "includingCount": "Wliczając {siteCount} stron"

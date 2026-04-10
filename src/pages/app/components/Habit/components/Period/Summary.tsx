@@ -1,10 +1,10 @@
-import { GRID_CELL_STYLE } from "@app/components/common/grid"
-import { KanbanIndicatorCell } from "@app/components/common/kanban"
-import { t } from "@app/locale"
-import { periodFormatter } from "@app/util/time"
-import { useXsState } from "@hooks"
+import { averageByDay } from "@/background/util/period"
+import { GRID_CELL_STYLE } from '@app/components/common/grid'
+import { KanbanIndicatorCell } from '@app/components/common/kanban'
+import { t } from '@app/locale'
+import { periodFormatter } from '@app/util/time'
+import { useXsState } from '@hooks'
 import Flex from "@pages/components/Flex"
-import { averageByDay } from "@util/period"
 import { formatTime } from "@util/time"
 import { computed, defineComponent } from "vue"
 import { useHabitFilter } from "../context"
@@ -38,7 +38,7 @@ const computeSummary = (rows: timer.period.Row[], periodSize: number): Result =>
     rows.forEach(r => {
         if (r.milliseconds) {
             if (!idleStart || !idleEnd) return
-            const newEmptyTs = idleEnd.endTime.getTime() - idleStart.endTime.getTime()
+            const newEmptyTs = idleEnd.endTime - idleStart.endTime
             if (newEmptyTs > maxIdle[2]) {
                 maxIdle = [idleStart, idleEnd, newEmptyTs]
             }
@@ -54,7 +54,7 @@ const computeSummary = (rows: timer.period.Row[], periodSize: number): Result =>
     let idleLength = '-'
     let idlePeriod = ''
     if (start && end) {
-        idleLength = periodFormatter(end.endTime.getTime() - start.startTime.getTime(), { format: 'hour' })
+        idleLength = periodFormatter(end.endTime - start.startTime, { format: 'hour' })
         const format = t(msg => msg.calendar.simpleTimeFormat)
         const startTime = formatTime(start.startTime, format)
         const endTime = formatTime(end.endTime, format)

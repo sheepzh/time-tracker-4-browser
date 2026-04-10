@@ -8,15 +8,15 @@
 import { setBadgeBgColor, setBadgeText } from "@api/chrome/action"
 import { listTabs } from "@api/chrome/tab"
 import { getFocusedNormalWindowId } from "@api/chrome/window"
-import statDatabase from "@db/stat-database"
-import optionHolder from "@service/components/option-holder"
-import whitelistHolder from "@service/whitelist/holder"
 import { IS_ANDROID } from "@util/constant/environment"
 import { extractHostname, isBrowserUrl } from "@util/pattern"
 import { MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND } from "@util/time"
-import MessageDispatcher from "./message-dispatcher"
+import statDatabase from "./database/stat-database"
+import type MessageDispatcher from './message-dispatcher'
+import optionHolder from "./service/components/option-holder"
+import whitelistHolder from "./service/whitelist/holder"
 
-export type BadgeLocation = {
+type BadgeLocation = {
     /**
      * The tab id of badge text show display with
      */
@@ -38,11 +38,6 @@ function mill2Str(milliseconds: number) {
     } else {
         return `${(milliseconds / MILL_PER_HOUR).toFixed(1)}h`
     }
-}
-
-function setBadgeTextOfMills(milliseconds: number | undefined, tabId: number | undefined) {
-    const text = milliseconds === undefined ? '' : mill2Str(milliseconds)
-    setBadgeText(text, tabId)
 }
 
 async function findActiveTab(): Promise<BadgeLocation | undefined> {
@@ -70,28 +65,24 @@ async function clearAllBadge(): Promise<void> {
 
 type BadgeState = 'HIDDEN' | 'NOT_SUPPORTED' | 'PAUSED' | 'TIME' | 'WHITELIST'
 
-interface BadgeManager {
-    init(dispatcher: MessageDispatcher): void
-    updateFocus(location?: BadgeLocation): void
-}
-
-class DefaultBadgeManager {
+class BadgeManager {
     pausedTabId: number | undefined
     current: BadgeLocation | undefined
     visible: boolean | undefined
     state: BadgeState | undefined
 
     async init(messageDispatcher: MessageDispatcher) {
+        if (IS_ANDROID) return // do nothing on Android, since badge text is not supported
+
         const option = await optionHolder.get()
-        this.processOption(option)
-        optionHolder.addChangeListener(opt => this.processOption(opt))
+        await this.processOption(option)
+        optionHolder.addChangeListener(async opt => await this.processOption(opt))
         whitelistHolder.addPostHandler(() => this.render())
-        messageDispatcher
-            .register('cs.idleChange', (isIdle, sender) => {
-                const tabId = sender?.tab?.id
-                isIdle ? this.pause(tabId) : this.resume(tabId)
-            })
-        this.updateFocus()
+        messageDispatcher.register('cs.idleChange', (isIdle, sender) => {
+            const tabId = sender?.tab?.id
+            isIdle ? this.pause(tabId) : this.resume(tabId)
+        })
+        await this.updateFocus()
     }
 
     /**
@@ -99,16 +90,16 @@ class DefaultBadgeManager {
      */
     private async pause(tabId?: number) {
         this.pausedTabId = tabId
-        this.render()
+        await this.render()
     }
 
     /**
      * Show the badge text
      */
-    private resume(tabId?: number) {
+    private async resume(tabId?: number) {
         if (!this.pausedTabId || this.pausedTabId !== tabId) return
         this.pausedTabId = undefined
-        this.render()
+        await this.render()
     }
 
     async updateFocus(target?: BadgeLocation) {
@@ -116,53 +107,33 @@ class DefaultBadgeManager {
         await this.render()
     }
 
-    private processOption(option: timer.option.AppearanceOption) {
+    private async processOption(option: timer.option.AppearanceOption) {
         const { displayBadgeText, badgeBgColor } = option || {}
         const before = this.visible
         this.visible = !!displayBadgeText
-        !this.visible && before && clearAllBadge()
-        setBadgeBgColor(badgeBgColor)
+        !this.visible && before && await clearAllBadge()
+        await setBadgeBgColor(badgeBgColor)
     }
 
     private async render(): Promise<void> {
-        this.state = await this.processState()
+        const [nextState, badgeText] = await this.processState()
+        this.state = nextState
+        await setBadgeText(badgeText, this.current?.tabId)
     }
 
-    private async processState(): Promise<BadgeState> {
-        const { url, tabId, focus } = this.current || {}
-        if (!this.visible || !url) {
-            this.state !== 'HIDDEN' && setBadgeText('', tabId)
-            return 'HIDDEN'
-        }
-        if (isBrowserUrl(url)) {
-            this.state !== 'NOT_SUPPORTED' && setBadgeText('∅', tabId)
-            return 'NOT_SUPPORTED'
-        }
-        const host = extractHostname(url)?.host
-        if (whitelistHolder.contains(host, url)) {
-            this.state !== 'WHITELIST' && setBadgeText('W', tabId)
-            return 'WHITELIST'
-        }
-        if (this.pausedTabId === tabId) {
-            this.state !== 'PAUSED' && setBadgeText('P', tabId)
-            return 'PAUSED'
-        }
-        const milliseconds = focus || (host ? (await statDatabase.get(host, new Date())).focus : undefined)
-        setBadgeTextOfMills(milliseconds, tabId)
-        return 'TIME'
+    private async processState(): Promise<[BadgeState, text: string]> {
+        const { url, tabId, focus } = this.current ?? {}
+        if (!this.visible || !url) return ['HIDDEN', '']
+        if (isBrowserUrl(url)) return ['NOT_SUPPORTED', '∅']
+        const { host } = extractHostname(url)
+        if (whitelistHolder.contains(host, url)) return ['WHITELIST', 'W']
+        if (this.pausedTabId === tabId) return ['PAUSED', 'P']
+        const milliseconds = focus ?? (await statDatabase.get(host, new Date())).focus
+        const millText = mill2Str(milliseconds)
+        return ['TIME', millText]
     }
 }
 
-class SilentBadgeManager implements BadgeManager {
-    init(_dispatcher: MessageDispatcher): void {
-        // do nothing
-    }
-    updateFocus(_location?: BadgeLocation): void {
-        // do nothing
-    }
-}
+const badgeTextManager = new BadgeManager()
 
-// Don't display badge on Android
-const badgeManager: BadgeManager = IS_ANDROID ? new SilentBadgeManager() : new DefaultBadgeManager()
-
-export default badgeManager
+export default badgeTextManager

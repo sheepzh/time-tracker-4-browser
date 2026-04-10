@@ -1,6 +1,6 @@
 import { useDialogSop } from '@app/components/common/DialogSop/context'
-import { t } from "@app/locale"
-import { useXsState } from '@hooks/useMediaSize'
+import { t } from '@app/locale'
+import { useXsState } from '@hooks'
 import { ElCol, ElForm, ElFormItem, ElInput, ElRow, ElSelect, ElSwitch } from "element-plus"
 import { defineComponent } from "vue"
 import { ModifyForm } from './types'

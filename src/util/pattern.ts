@@ -47,10 +47,6 @@ export function isIpAndPort(host: string) {
     return reg.test(host)
 }
 
-export function isLocalhost(host: string) {
-    return host?.startsWith?.('localhost')
-}
-
 /**
  * Test whether the host is a valid host
  *
@@ -109,7 +105,7 @@ export function judgeVirtualFast(host: string): boolean {
     return host?.includes('/') || host?.includes('*')
 }
 
-export type HostInfo = {
+type HostInfo = {
     /**
      * Including port
      */

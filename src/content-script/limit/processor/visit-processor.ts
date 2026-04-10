@@ -1,8 +1,8 @@
-import { trySendMsg2Runtime } from "@api/chrome/runtime"
+import { trySendMsg2Runtime } from '@/api/sw/common'
 import NormalTracker from "@cs/tracker/normal"
 import { DELAY_MILL } from "@util/limit"
 import { MILL_PER_SECOND } from "@util/time"
-import { type ModalContext, type Processor } from "../common"
+import type { ModalContext, Processor } from '../types'
 
 class VisitProcessor implements Processor {
 
@@ -16,12 +16,12 @@ class VisitProcessor implements Processor {
         this.context = context
     }
 
-    async handleMsg(code: timer.mq.ReqCode): Promise<timer.mq.Response> {
+    async handleMsg(code: timer.tab.ReqCode): Promise<timer.tab.Response<timer.tab.ReqCode>> {
         if (code === "limitChanged") {
             this.initRules()
             return { code: "success" }
         } else if (code === "askVisitTime") {
-            return { code: "success", data: this.focusTime }
+            return { code: "success", data: this.focusTime } satisfies timer.tab.Response<'askVisitTime'>
         }
         return { code: "ignore" }
     }
@@ -50,7 +50,7 @@ class VisitProcessor implements Processor {
     }
 
     async initRules() {
-        this.rules = await trySendMsg2Runtime("cs.getRelatedRules", this.context.url) ?? []
+        this.rules = await trySendMsg2Runtime("limit.listEffective", this.context.url) ?? []
         this.context.modal.removeReasonsByType("VISIT")
     }
 

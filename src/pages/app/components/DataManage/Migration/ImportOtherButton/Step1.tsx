@@ -6,7 +6,7 @@
  */
 
 import { useDialogSop } from '@app/components/common/DialogSop/context'
-import { t } from "@app/locale"
+import { t } from '@app/locale'
 import { Document } from "@element-plus/icons-vue"
 import Flex from "@pages/components/Flex"
 import { ElButton, ElForm, ElFormItem, ElSelect } from "element-plus"

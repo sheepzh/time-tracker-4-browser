@@ -4,16 +4,16 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { t } from "@app/locale"
-import { processVerification } from "@app/util/limit"
+import { OptionItem, OptionLines } from '@app/components/Option/components'
+import { useOption } from "@app/components/Option/useOption"
+import { t } from '@app/locale'
 import { Edit } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
+import { processVerification } from "@app/util/limit/index"
 import { locale } from '@i18n'
 import { defaultLimit } from "@util/constant/option"
 import { ElButton, ElInput, ElInputNumber, ElMessage, ElMessageBox, ElSelect, ElSwitch, useNamespace } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
-import { OptionItem, OptionLines } from '../../components'
-import { useOption } from "../../useOption"
 import type { CategoryInstance } from '../types'
 import { usePswEdit } from "./usePswEdit"
 import { useVerify } from "./useVerify"

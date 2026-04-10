@@ -1,0 +1,22 @@
+{
+    "entry": [
+        "src/background/index.ts",
+        "src/pages/app/index.ts",
+        "src/pages/popup/{index,skeleton}.ts",
+        "src/pages/side/index.ts",
+        "src/content-script/{index,skeleton}.ts",
+        "src/content-script/limit/modal/index.ts",
+        "rspack/*.ts",
+        "script/user-chart/{add,render}.ts"
+    ],
+    "project": [
+        "src/**/*.{ts,tsx}",
+        "rspack/**/*.ts",
+        "script/**/*.ts",
+        "test/**/*.{ts,tsx}",
+        "test-e2e/**/*.{ts,tsx}"
+    ],
+    "rules": {
+        "dependencies": "off"
+    }
+}

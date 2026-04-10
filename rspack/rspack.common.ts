@@ -1,13 +1,14 @@
 import {
     CopyRspackPlugin, CssExtractRspackPlugin, DefinePlugin, HtmlRspackPlugin,
-    type Chunk, type Configuration,
-    type RspackPluginInstance,
-    type RuleSetRule
+    type Chunk, type Configuration, type Module, type RspackPluginInstance, type RuleSetRule
 } from "@rspack/core"
+import { default as VueBabelPluginJsx } from "@vue/babel-plugin-jsx"
 import path, { join } from "path"
 import postcssRTLCSS from 'postcss-rtlcss'
 import i18nChrome from "../src/i18n/chrome"
+import { compilerOptions } from "../tsconfig.json"
 import { GenerateJsonPlugin } from "./plugins/generate-json"
+import ImportCheckerPlugin, { isBgPath } from "./plugins/import-checker"
 
 export const MANIFEST_JSON_NAME = "manifest.json"
 
@@ -24,6 +25,7 @@ type EntryConfig = {
 
 const BACKGROUND = 'background'
 const CONTENT_SCRIPT = 'content_scripts'
+const CONTENT_SCRIPT_LIMIT = 'content_scripts_limit'
 const CONTENT_SCRIPT_SKELETON = 'content_scripts_skeleton'
 const POPUP = 'popup'
 
@@ -33,6 +35,9 @@ const entryConfigs: EntryConfig[] = [{
 }, {
     name: CONTENT_SCRIPT,
     path: './src/content-script',
+}, {
+    name: CONTENT_SCRIPT_LIMIT,
+    path: './src/content-script/limit/modal',
 }, {
     name: CONTENT_SCRIPT_SKELETON,
     path: './src/content-script/skeleton',
@@ -63,6 +68,8 @@ const chunkFilter = ({ name }: Chunk) => {
     return !name || ![BACKGROUND, CONTENT_SCRIPT, CONTENT_SCRIPT_SKELETON].includes(name)
 }
 
+const isBackgroundModule = (module: Module) => isBgPath(module.nameForCondition?.() ?? '')
+
 const staticOptions: Configuration = {
     entry() {
         const entry: Record<string, string> = {}
@@ -82,11 +89,27 @@ const staticOptions: Configuration = {
                             iterableIsArray: true,
                         },
                         plugins: [
-                            "@vue/babel-plugin-jsx",
+                            VueBabelPluginJsx,
                             "@emotion/babel-plugin",
                         ],
                     },
-                }, 'ts-loader'],
+                }, {
+                    loader: 'builtin:swc-loader',
+                    options: {
+                        jsc: {
+                            parser: {
+                                syntax: 'typescript',
+                                tsx: true,
+                            },
+                            transform: {
+                                react: {
+                                    runtime: 'preserve',
+                                },
+                            },
+                            target: compilerOptions.target,
+                        },
+                    },
+                }],
             }, {
                 test: /\.css$/,
                 use: [CssExtractRspackPlugin.loader, 'css-loader', POSTCSS_LOADER_CONF],
@@ -104,13 +127,19 @@ const staticOptions: Configuration = {
         splitChunks: {
             chunks: chunkFilter,
             cacheGroups: {
-                elementPlus: {
-                    name: 'element-plus',
-                    test: /[\\/]node_modules[\\/]element-plus[\\/]/,
+                /**
+                 * Exclude src/background from the default shared chunk group so those files are
+                 * never pulled into vendor/* (merging into entry name: 'background' panics in Rspack).
+                 */
+                default: {
+                    minChunks: 2,
+                    reuseExistingChunk: true,
+                    test: module => !isBackgroundModule(module),
                 },
                 defaultVendors: {
-                    filename: 'vendor/[name].js'
-                }
+                    test: /[\\/]node_modules[\\/]/,
+                    filename: 'vendor/[name].js',
+                },
             }
         },
     },
@@ -126,6 +155,7 @@ const generateOption = ({ outputPath, manifest, mode }: Option) => {
     const plugins = [
         ...generateJsonPlugins,
         new GenerateJsonPlugin(MANIFEST_JSON_NAME, manifest),
+        new ImportCheckerPlugin(),
         // copy static resources
         new CopyRspackPlugin({
             patterns: [
@@ -146,6 +176,17 @@ const generateOption = ({ outputPath, manifest, mode }: Option) => {
                 },
             },
             chunks: ['app'],
+        }),
+        new HtmlRspackPlugin({
+            filename: path.join('static', 'limit.html'),
+            title: 'Loading...',
+            chunks: [CONTENT_SCRIPT_LIMIT],
+            meta: {
+                viewport: {
+                    name: "viewport",
+                    content: 'width=device-width',
+                },
+            }
         }),
         new HtmlRspackPlugin({
             filename: path.join('static', 'popup.html'),
