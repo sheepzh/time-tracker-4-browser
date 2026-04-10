@@ -1,10 +1,10 @@
 import { getIconUrl } from "@api/chrome/runtime"
 import { getOption } from "@api/sw/option"
 import { t } from "@cs/locale"
+import { useRequest, useXsState } from "@hooks"
 import Box from '@pages/components/Box'
 import Flex from '@pages/components/Flex'
 import { defineComponent, type StyleValue } from "vue"
-import { useRequest, useXsState } from "../hooks"
 
 const IMG_STYLE: StyleValue = {
     width: '1.4em',

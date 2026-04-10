@@ -5,6 +5,7 @@ import {
 import { default as VueBabelPluginJsx } from "@vue/babel-plugin-jsx"
 import path, { join } from "path"
 import postcssRTLCSS from 'postcss-rtlcss'
+import ElementPlus from 'unplugin-element-plus/rspack'
 import i18nChrome from "../src/i18n/chrome"
 import { compilerOptions } from "../tsconfig.json"
 import { GenerateJsonPlugin } from "./plugins/generate-json"
@@ -122,23 +123,78 @@ const staticOptions: Configuration = {
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.css'],
         tsConfig: join(__dirname, '..', 'tsconfig.json'),
+        conditionNames: ['import', 'module', 'browser', 'default'],
+        alias: {
+            'element-plus/es/components/loading-service/style/css': 'element-plus/es/components/loading/style/css',
+            'element-plus/es/components/loading-directive/style/css': 'element-plus/es/components/loading/style/css',
+            'element-plus/es/components/auto-resizer/style/css': 'element-plus/es/components/table-v2/style/css',
+        },
     },
     optimization: {
         splitChunks: {
             chunks: chunkFilter,
+            maxInitialRequests: 30,
+            maxAsyncRequests: 30,
             cacheGroups: {
+                echarts: {
+                    test: /[\\/]node_modules[\\/]echarts[\\/]/,
+                    name: 'vendor/echarts',
+                    filename: 'vendor/echarts.js',
+                    priority: 40,
+                    reuseExistingChunk: true,
+                    enforce: true,
+                },
+                elementPlus: {
+                    test: /[\\/]node_modules[\\/]element-plus[\\/]/,
+                    name: 'vendor/element-plus',
+                    filename: 'vendor/element-plus.js',
+                    priority: 39,
+                    reuseExistingChunk: true,
+                    enforce: true,
+                },
+                elementIcons: {
+                    test: /[\\/]node_modules[\\/]@element-plus[\\/]icons-vue[\\/]/,
+                    name: 'vendor/el-icons',
+                    filename: 'vendor/el-icons.js',
+                    priority: 38,
+                    reuseExistingChunk: true,
+                    enforce: true,
+                },
+                vue: {
+                    test: /[\\/]node_modules[\\/](vue|@vue|vue-router|@vueuse)[\\/]/,
+                    name: 'vendor/vue',
+                    filename: 'vendor/vue.js',
+                    priority: 37,
+                    reuseExistingChunk: true,
+                    enforce: true,
+                },
+                dayjs: {
+                    test: /[\\/node_modules][\\/]dayjs[\\/]/,
+                    priority: 37,
+                    reuseExistingChunk: true,
+                    enforce: true,
+                },
+                memoizeOne: {
+                    test: /[\\/node_modules][\\/]memoize\\-one[\\/]/,
+                    priority: 37,
+                    reuseExistingChunk: true,
+                    enforce: true,
+                },
                 /**
                  * Exclude src/background from the default shared chunk group so those files are
                  * never pulled into vendor/* (merging into entry name: 'background' panics in Rspack).
                  */
                 default: {
                     minChunks: 2,
+                    priority: -20,
                     reuseExistingChunk: true,
                     test: module => !isBackgroundModule(module),
                 },
                 defaultVendors: {
                     test: /[\\/]node_modules[\\/]/,
                     filename: 'vendor/[name].js',
+                    priority: -10,
+                    reuseExistingChunk: true,
                 },
             }
         },
@@ -154,6 +210,7 @@ type Option = {
 const generateOption = ({ outputPath, manifest, mode }: Option) => {
     const plugins = [
         ...generateJsonPlugins,
+        ElementPlus({}),
         new GenerateJsonPlugin(MANIFEST_JSON_NAME, manifest),
         new ImportCheckerPlugin(),
         // copy static resources
@@ -165,7 +222,7 @@ const generateOption = ({ outputPath, manifest, mode }: Option) => {
                 }
             ]
         }),
-        new CssExtractRspackPlugin(),
+        new CssExtractRspackPlugin({ ignoreOrder: true }),
         new HtmlRspackPlugin({
             filename: path.join('static', 'app.html'),
             title: 'Loading...',

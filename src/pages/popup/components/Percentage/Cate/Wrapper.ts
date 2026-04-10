@@ -5,11 +5,11 @@ import { t } from '@popup/locale'
 import { toMap } from "@util/array"
 import { CATE_NOT_SET_ID } from "@util/site"
 import { isCate } from "@util/stat"
-import { type PieSeriesOption } from "echarts/charts"
 import type {
-    LegendComponentOption, TitleComponentOption, ToolboxComponentOption, TooltipComponentOption,
-} from "echarts/components"
-import { type ComposeOption, type ECElementEvent } from "echarts/core"
+    ComposeOption, LegendComponentOption, PieSeriesOption, TitleComponentOption, ToolboxComponentOption,
+    TooltipComponentOption,
+} from "echarts"
+import type { ECElementEvent } from "echarts/core"
 import {
     adaptDonutSeries, formatTooltip, generateSiteSeriesOption, generateTitleOption, generateToolboxOption,
     handleClick, isOther, type PieSeriesItemOption,

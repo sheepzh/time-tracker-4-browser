@@ -6,10 +6,10 @@
  */
 
 import { getOption } from "@api/sw/option"
+import { initEcharts } from "@app/echarts"
 import { initLocale } from "@i18n"
 import type { FrameRequest, FrameResponse } from "@popup/types"
 import { processDarkMode } from '@util/dark-mode'
-import "element-plus/theme-chalk/index.css"
 import { createApp } from "vue"
 import Main from "./Main"
 import initRouter from "./router"
@@ -36,6 +36,7 @@ function send2ParentWindow(data: any): Promise<void> {
 
 async function main() {
     await initLocale()
+    initEcharts()
     injectGlobalCss()
 
     getOption().then(processDarkMode)

@@ -78,7 +78,7 @@ class BadgeManager {
         await this.processOption(option)
         optionHolder.addChangeListener(async opt => await this.processOption(opt))
         whitelistHolder.addPostHandler(() => this.render())
-        messageDispatcher.register('cs.idleChange', (isIdle, sender) => {
+        messageDispatcher.register('cs.idleChanged', (isIdle, sender) => {
             const tabId = sender?.tab?.id
             isIdle ? this.pause(tabId) : this.resume(tabId)
         })

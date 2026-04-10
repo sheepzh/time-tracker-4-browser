@@ -1,6 +1,6 @@
 import { listTimeline } from '@/api/sw/timeline'
 import { getAllDatesBetween, getStartOfDay, MILL_PER_DAY } from '@/util/time'
-import { useProvide, useProvider, useRequest, useState } from '@app/hooks'
+import { useProvide, useProvider, useRequest, useState } from '@hooks'
 import { type ShallowRef } from 'vue'
 import { formatYAxis } from './common'
 

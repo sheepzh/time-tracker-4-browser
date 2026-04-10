@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { processImportedData } from '@/api/sw/import'
+import { importOther } from '@/api/sw/immigration'
 import DialogSop from '@app/components/common/DialogSop'
 import { initDialogSopContext } from '@app/components/common/DialogSop/context'
 import { t } from "@app/locale"
@@ -43,7 +43,7 @@ const _default = defineComponent(() => {
             if (!data) throw new Error(t(msg => msg.dataManage.importOther.fileNotSelected))
             const resolution = form.resolution
             if (!resolution) throw new Error(t(msg => msg.dataManage.importOther.conflictNotSelected))
-            await processImportedData({ data: toRaw(data), resolution })
+            await importOther({ data: toRaw(data), resolution })
             refreshMemory?.()
         },
     })

@@ -4,12 +4,12 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { previewBackupImport } from '@/api/sw/import'
+import { previewBackup } from '@/api/sw/backup'
+import { importOther } from '@/api/sw/immigration'
 import DialogSop from '@app/components/common/DialogSop'
 import { initDialogSopContext } from '@app/components/common/DialogSop/context'
 import { t } from "@app/locale"
 import { Files } from "@element-plus/icons-vue"
-import { processImportedData } from '@service/components/import-processor'
 import { BIRTHDAY, formatTimeYMD } from '@util/time'
 import { ElButton } from "element-plus"
 import { defineComponent, toRaw } from "vue"
@@ -26,7 +26,7 @@ async function fetchData(client: timer.backup.Client): Promise<timer.imported.Da
     const { id: specCid, maxDate, minDate } = client
     const start = minDate ?? BIRTHDAY
     const end = maxDate ?? formatTimeYMD(Date.now())
-    const rows = await previewBackupImport({ specCid, start, end })
+    const rows = await previewBackup({ specCid, start, end })
     return { rows, focus: true, time: true }
 }
 
@@ -46,7 +46,7 @@ const _default = defineComponent(() => {
             if (!resolution) throw new Error(t(msg => msg.dataManage.importOther.conflictNotSelected))
             const data = form.data
             if (!data) throw new Error(t(msg => msg.option.backup.clientTable.notSelected))
-            await processImportedData({ resolution, data: toRaw(data) })
+            await importOther({ resolution, data: toRaw(data) })
         },
     })
 

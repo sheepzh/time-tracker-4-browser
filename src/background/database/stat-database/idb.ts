@@ -63,6 +63,20 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
         }, 'readonly')
     }
 
+    batchSelect(keys: timer.core.RowKey[]): Promise<timer.core.Row[]> {
+        if (!keys.length) return Promise.resolve([])
+        return this.withStore(async store => {
+            const index = super.assertIndex(store, ['date', 'host'])
+            const out: timer.core.Row[] = []
+            for (const { host, date } of keys) {
+                const req = index.get([date, host])
+                const row = await req2Promise<StoredRow>(req) ?? zeroRow(host, date)
+                out.push(row)
+            }
+            return out
+        }, 'readonly')
+    }
+
     private judgeIndex(store: IDBObjectStore, cond: ProcessedCondition, expectGroup: boolean): IndexResult<IndexCoverage> {
         const keys = typeof cond.keys === 'string' ? [cond.keys] : cond.keys
         const {

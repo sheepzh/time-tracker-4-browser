@@ -42,8 +42,8 @@ async function main() {
     // Execute in every injections
     const normalTracker = new NormalTracker({
         onReport: data => trySendMsg2Runtime('track.time', data),
-        onResume: reason => reason === 'idle' && trySendMsg2Runtime('cs.idleChange', false),
-        onPause: reason => reason === 'idle' && trySendMsg2Runtime('cs.idleChange', true),
+        onResume: reason => reason === 'idle' && trySendMsg2Runtime('cs.idleChanged', false),
+        onPause: reason => reason === 'idle' && trySendMsg2Runtime('cs.idleChanged', true),
     })
     normalTracker.init()
     const runTimeTracker = new RunTimeTracker(url)

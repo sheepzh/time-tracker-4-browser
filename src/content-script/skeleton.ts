@@ -10,7 +10,7 @@ function awaitDocumentReady() {
 
 const main = async () => {
     await awaitDocumentReady()
-    trySendMsg2Runtime('cs.onInjected')
+    trySendMsg2Runtime('cs.injected')
 }
 
 main()

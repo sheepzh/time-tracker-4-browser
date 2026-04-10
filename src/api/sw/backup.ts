@@ -17,6 +17,10 @@ export function queryBackup(param: timer.backup.RemoteQuery) {
     return sendMsg2Runtime('backup.query', param)
 }
 
+export function previewBackup(param: timer.backup.RemoteQuery) {
+    return sendMsg2Runtime('backup.preview', param)
+}
+
 export function getLastBackUp(type: timer.backup.Type) {
     return sendMsg2Runtime('backup.lastTs', type)
 }

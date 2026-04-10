@@ -1,7 +1,7 @@
 import { selectLimits } from "@api/sw/limit"
+import { useRequest, useWindowFocus } from '@hooks'
 import { type App, inject, provide, ref, type ShallowRef, watch } from "vue"
 import { ModalBridge } from './bridge'
-import { useRequest, useWindowFocus } from './hooks'
 import type { LimitReasonData } from './types'
 
 const GLOBAL_KEY = "global"

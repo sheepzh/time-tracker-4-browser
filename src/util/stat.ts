@@ -1,3 +1,4 @@
+import { toMap } from './array'
 import { identifySiteKey } from "./site"
 
 /**
@@ -74,4 +75,15 @@ export const getGroupName = (groupMap: Record<string, chrome.tabGroups.TabGroup>
     const { groupKey } = row
     const title = groupMap[groupKey]?.title
     return title ?? `ID: ${groupKey}`
+}
+
+export const mergeWith = async <T extends timer.core.RowKey,>(
+    original: T[], exist: timer.core.Row[],
+    mergeFunc: (o: T, e: timer.core.Row | undefined) => Awaitable<void>,
+) => {
+    const keyOf = ({ date, host }: timer.core.RowKey) => `${date}${host}`
+    const existMap = toMap(exist, keyOf)
+    for (const o of original) {
+        await mergeFunc(o, existMap[keyOf(o)])
+    }
 }

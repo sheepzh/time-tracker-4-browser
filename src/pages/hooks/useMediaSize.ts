@@ -48,5 +48,10 @@ export const listenMediaSizeChange = () => {
     }
     processMediaSize()
     window.addEventListener('resize', processMediaSize)
-    window.addEventListener('unload', () => window.removeEventListener('resize', processMediaSize))
+    window.addEventListener('pagehide', () => window.removeEventListener('resize', processMediaSize))
+    window.addEventListener('pageshow', () => {
+        window.removeEventListener('resize', processMediaSize)
+        window.addEventListener('resize', processMediaSize)
+        processMediaSize()
+    })
 }

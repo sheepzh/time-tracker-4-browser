@@ -1,4 +1,4 @@
-import { BarChart, CustomChart, EffectScatterChart, HeatmapChart, LineChart, PieChart, ScatterChart } from "echarts/charts"
+import { BarChart, CustomChart, EffectScatterChart, LineChart, PieChart, ScatterChart } from "echarts/charts"
 import {
     AriaComponent,
     DataZoomComponent,
@@ -17,6 +17,6 @@ export const initEcharts = () => {
     use([
         CanvasRenderer,
         AriaComponent, GridComponent, TooltipComponent, TitleComponent, VisualMapComponent, LegendComponent, DataZoomComponent,
-        BarChart, PieChart, LineChart, HeatmapChart, ScatterChart, EffectScatterChart, CustomChart,
+        BarChart, PieChart, LineChart, ScatterChart, EffectScatterChart, CustomChart,
     ])
 }

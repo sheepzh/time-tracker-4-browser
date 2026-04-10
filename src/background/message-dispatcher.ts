@@ -13,8 +13,8 @@ import mergeRuleDatabase from "./database/merge-rule-database"
 import siteDatabase from './database/site-database'
 import statDatabase from './database/stat-database'
 import backupProcessor from "./service/backup/processor"
-import immigration from "./service/components/immigration"
-import { previewImport, processImportedData } from "./service/components/import-processor"
+import { exportData, importData, migrateStorage } from "./service/components/immigration"
+import { importOther, previewBackup } from "./service/components/import-processor"
 import optionHolder from "./service/components/option-holder"
 import { getWeekStartDay, getWeekStartTime } from "./service/components/week-helper"
 import { getTodayResult } from './service/item-service'
@@ -78,6 +78,7 @@ class MessageDispatcher {
             .register('stat.groupPage', selectGroupPage)
             .register('stat.countGroup', countGroup)
             .register('stat.batchDelete', batchDelete)
+            .register('item.batch', keys => statDatabase.batchSelect(keys))
             .register('stat.today', getTodayResult)
             // Site management
             .register('site.all', param => siteDatabase.select(param))
@@ -95,7 +96,7 @@ class MessageDispatcher {
             // Options
             .register('option.get', () => optionHolder.get())
             .register('option.set', val => optionHolder.set(val))
-            .register('option.changeStorage', type => immigration.migrateStorage(type))
+            .register('option.changeStorage', migrateStorage)
             .register('option.testNotification', () => notificationProcessor.doSend())
             .register('option.weekStartDay', getWeekStartDay)
             .register('option.weekStartTime', getWeekStartTime)
@@ -122,15 +123,15 @@ class MessageDispatcher {
             .register('backup.query', param => backupProcessor.query(param))
             .register('backup.lastTs', getLastBackUp)
             .register('backup.clients', () => backupProcessor.listClients())
+            .register('backup.preview', previewBackup)
             // Period & Timeline
             .register('period.list', selectPeriods)
             .register('timeline.list', listTimeline)
             .register('timeline.tick', ev => timelineThrottler.saveEvent(ev))
             // Data immigration
-            .register('import.preview', req => previewImport(req))
-            .register('import.processImportedData', processImportedData)
-            .register('immigration.importData', data => immigration.importData(data))
-            .register('immigration.exportData', () => immigration.exportData())
+            .register('immigration.import', importData)
+            .register('immigration.export', exportData)
+            .register('immigration.importOther', importOther)
             .register('memory.getUsedStorage', getUsedStorage)
     }
 

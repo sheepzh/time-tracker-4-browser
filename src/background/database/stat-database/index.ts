@@ -41,8 +41,12 @@ class StatDatabaseWrapper implements StateDatabaseComposite {
     })
     private current = () => this.holder.current
 
-    get(host: string, date: Date | string): Promise<timer.core.Row> {
+    get(host: string, date: Date): Promise<timer.core.Row> {
         return this.current().get(host, date)
+    }
+
+    batchSelect(keys: timer.core.RowKey[]): Promise<timer.core.Row[]> {
+        return this.current().batchSelect(keys)
     }
 
     select(condition?: StatCondition): Promise<timer.core.Row[]> {
@@ -88,7 +92,6 @@ class StatDatabaseWrapper implements StateDatabaseComposite {
     forceUpdateGroup(...rows: timer.core.Row[]): Promise<void> {
         return this.current().forceUpdateGroup(...rows)
     }
-
 
     async migrateStorage(type: timer.option.StorageType): Promise<[timer.core.Row[], timer.core.Row[]]> {
         const target = this.holder.get(type)

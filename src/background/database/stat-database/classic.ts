@@ -156,6 +156,18 @@ export class ClassicStatDatabase extends BaseDatabase implements StatDatabase {
         return { host, date: formatDateStr(date), ...result }
     }
 
+    async batchSelect(keys: timer.core.RowKey[]): Promise<timer.core.Row[]> {
+        if (!keys.length) return []
+        const storageKeys = keys.map(({ host, date }) => generateKey(host, date))
+        const items = await this.storage.get<Record<string, timer.core.Result>>(storageKeys)
+        return keys.map(({ host, date }, i) => {
+            const sk = storageKeys[i]
+            const exist = items[sk]
+            const result = exist ?? zeroResult()
+            return { host, date, ...result }
+        })
+    }
+
     /**
      * Delete by key
      *

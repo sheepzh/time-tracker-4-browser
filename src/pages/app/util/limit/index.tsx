@@ -1,5 +1,5 @@
 import { trySendMsg2Runtime } from '@api/sw/common'
-import { useCountDown } from "@hooks/useCount"
+import { useCountDown } from "@hooks"
 import { type I18nKey, type I18nResultItem, locale, t as t_, tN as tN_ } from "@i18n"
 import limitMessages, { type LimitMessage } from "@i18n/message/app/limit"
 import buttonMessages from "@i18n/message/common/button"

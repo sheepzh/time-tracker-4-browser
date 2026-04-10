@@ -24,9 +24,12 @@ declare namespace timer.mq {
         // Track event
         & _MakeRegistry<'track.visit'>
         & _MakeRegistry<'track.time' | 'track.runTime', core.Event>
-        & _MakeRegistry<'cs.onInjected' | 'cs.openAnalysis'>
-        & _MakeRegistry<'cs.idleChange', boolean>
+        // Content script events
+        & _MakeRegistry<'cs.injected'>
+        & _MakeRegistry<'cs.idleChanged', boolean>
+        // Content script API
         & _MakeRegistry<'cs.getAudible', undefined, boolean>
+        & _MakeRegistry<'cs.openAnalysis'>
         // Statistics
         & _MakeRegistry<'stat.today', string, core.Result | undefined>
         & _MakeRegistry<'stat.sites', stat.SiteQuery | undefined, stat.SiteRow[]>
@@ -39,6 +42,8 @@ declare namespace timer.mq {
         & _MakeRegistry<'stat.groupPage', stat.GroupPageQuery | undefined, common.PageResult<stat.GroupRow>>
         & _MakeRegistry<'stat.countGroup', stat.GroupQuery | undefined, number>
         & _MakeRegistry<'stat.batchDelete', stat.StatKey[]>
+        // Items
+        & _MakeRegistry<'item.batch', core.RowKey[], core.Row[]>
         // Category
         & _MakeRegistry<'cate.all', undefined, site.Cate[]>
         & _MakeRegistry<'cate.add', string, site.Cate>
@@ -95,10 +100,10 @@ declare namespace timer.mq {
         // Timeline
         & _MakeRegistry<'timeline.list', timeline.Query, timeline.Activity[]>
         & _MakeRegistry<'timeline.tick', timeline.Event>
-        & _MakeRegistry<'import.preview', imported.PreviewQuery, imported.Row[]>
-        & _MakeRegistry<'import.processImportedData', imported.ProcessQuery>
-        & _MakeRegistry<'immigration.importData', any>
-        & _MakeRegistry<'immigration.exportData', undefined, backup.ExportData>
+        & _MakeRegistry<'backup.preview', backup.RemoteQuery, imported.Row[]>
+        & _MakeRegistry<'immigration.importOther', imported.ProcessQuery>
+        & _MakeRegistry<'immigration.import', any>
+        & _MakeRegistry<'immigration.export', undefined, backup.ExportData>
         & _MakeRegistry<'memory.getUsedStorage', undefined, common.StorageUsage>
 
     type ReqCode = keyof _HandlerRegistry

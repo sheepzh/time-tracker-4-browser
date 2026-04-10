@@ -1,7 +1,5 @@
 import { injectGlobal } from '@emotion/css'
 import '@pages/element-ui/dark-theme.css'
-import "element-plus/theme-chalk/display.css"
-import 'element-plus/theme-chalk/index.css'
 import { injectEchartsCss } from './echarts'
 import { injectElementCss } from './element'
 

@@ -26,7 +26,7 @@ const handleOpenAnalysisPage = (sender: ChromeMessageSender) => {
 }
 
 const handleInjected = async (sender: ChromeMessageSender) => {
-    const tabId = sender?.tab?.id
+    const tabId = sender.tab?.id
     if (!tabId) return
     collectIconAndAlias(tabId)
     badgeManager.updateFocus()
@@ -42,7 +42,7 @@ export default function init(dispatcher: MessageDispatcher) {
     dispatcher
         // Judge is in whitelist
         .register('cs.openAnalysis', (_, sender) => handleOpenAnalysisPage(sender))
-        .register('cs.onInjected', (_, sender) => handleInjected(sender))
+        .register('cs.injected', (_, sender) => handleInjected(sender))
         // Get sites which need to count run time
         .register('cs.getAudible', async (_, sender) => !!sender.tab?.audible)
 }

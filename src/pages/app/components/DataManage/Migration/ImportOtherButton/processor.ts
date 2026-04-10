@@ -5,8 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { previewImportRows } from "@api/sw/import"
+import { batchGet } from '@/api/sw/item'
 import { AUTHOR_EMAIL } from "@/package"
+import { mergeWith } from '@/util/stat'
 import { IS_WINDOWS } from "@util/constant/environment"
 import { extractHostname, isBrowserUrl } from "@util/pattern"
 import { formatTimeYMD, MILL_PER_SECOND } from "@util/time"
@@ -14,13 +15,6 @@ import type { OtherExtension } from './types'
 
 const throwError = () => { throw new Error("Failed to parse, please check your file or contact the author via " + AUTHOR_EMAIL) }
 
-/**
- * Parse the content to rows
- *
- * @param type extension type
- * @param file selected file
- * @returns row data
- */
 export async function parseFile(ext: OtherExtension, file: File): Promise<timer.imported.Data> {
     let rows: timer.imported.Row[] = []
     let focus = false
@@ -35,7 +29,8 @@ export async function parseFile(ext: OtherExtension, file: File): Promise<timer.
         rows = await parseHistoryTrendsUnlimited(file)
         time = true
     }
-    rows = await previewImportRows(rows)
+    const exists = await batchGet(rows)
+    await mergeWith(rows, exists, (r, exist) => { r.exist = exist })
     return { rows, focus, time }
 }
 

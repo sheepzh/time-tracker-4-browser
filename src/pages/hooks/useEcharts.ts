@@ -7,7 +7,7 @@
  */
 import { getOption } from "@api/sw/option"
 import { processAnimation, processAria, processFont, processRtl } from "@util/echarts"
-import { type AriaComponentOption, type ComposeOption, SeriesOption, TitleComponentOption } from "echarts"
+import type { AriaComponentOption, ComposeOption, SeriesOption, TitleComponentOption } from "echarts"
 import { type ECharts, init } from "echarts/core"
 import { ElLoading } from "element-plus"
 import { type Ref, type WatchSource, isRef, onMounted, ref, watch } from "vue"

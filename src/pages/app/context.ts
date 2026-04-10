@@ -1,8 +1,8 @@
 import { allCates } from "@api/sw/cate"
+import { MediaSize, useMediaSize, useProvide, useProvider, useRequest } from "@hooks"
 import { toMap } from '@util/array'
 import { CATE_NOT_SET_ID } from '@util/site'
 import { computed, reactive, watch } from "vue"
-import { MediaSize, useMediaSize, useProvide, useProvider, useRequest } from "./hooks"
 import { t } from './locale'
 
 type MenuLayout = 'nav' | 'sidebar'
