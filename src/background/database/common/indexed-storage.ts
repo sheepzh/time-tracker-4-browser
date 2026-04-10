@@ -66,8 +66,8 @@ export async function iterateCursor<T = unknown>(
 type TransactionError = 'Connection' | 'StoreNotFound' | 'DataError' | 'Unknown'
 
 const detectTransactionError = (err: unknown): TransactionError => {
-    console.log(err)
     if (!(err instanceof DOMException)) {
+        console.warn("Non-DOMException error during transaction", err)
         return 'Unknown'
     }
     const { name } = err

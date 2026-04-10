@@ -89,7 +89,7 @@ async function handleVisit(context: ItemIncContext) {
     const { host, url } = context
     const metLimits = await incLimitVisit(host, url)
     // If time limited after this operation, send messages
-    metLimits?.length && sendLimitedMessage(metLimits)
+    metLimits.length && await sendLimitedMessage(metLimits)
 }
 
 export async function incVisitCount(tab: ChromeTab | undefined): Promise<void> {

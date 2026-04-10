@@ -1,8 +1,8 @@
 import { allCates } from '@/api/sw/cate'
+import { isDarkMode, processDarkMode } from "@/pages/util/dark-mode"
 import { getOption, setOption } from "@api/sw/option"
 import { useLocalStorage, useProvide, useProvider, useRequest } from "@hooks"
 import { toMap } from "@util/array"
-import { isDarkMode, processDarkMode } from "@util/dark-mode"
 import { CATE_NOT_SET_ID } from "@util/site"
 import { reactive, type Reactive, ref, type ShallowRef, toRaw, watch } from "vue"
 import { t } from "./locale"

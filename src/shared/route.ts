@@ -4,6 +4,11 @@ export type AppLimitQuery = {
 }
 
 export const APP_ANALYSIS_ROUTE = '/data/analysis'
+export type AppAnalysisQuery = Partial<timer.site.SiteKey> & {
+    cateId?: string
+    url?: string
+}
+
 export const APP_OPTION_ROUTE = '/additional/option'
 export const APP_REPORT_ROUTE = '/data/report'
 /**

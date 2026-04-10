@@ -1,5 +1,4 @@
-import { getOption } from '@api/sw/option'
-import { init as initTheme, processDarkMode } from '@util/dark-mode'
+import { initDarkTheme } from '@/pages/util/dark-mode'
 import { createApp } from 'vue'
 import Main from './Main'
 import { ModalBridge } from './bridge'
@@ -16,8 +15,7 @@ function parsePageUrl(): string {
 }
 
 function main() {
-    initTheme()
-    getOption().then(processDarkMode)
+    initDarkTheme()
 
     const app = createApp(Main)
     const bridge = new ModalBridge({

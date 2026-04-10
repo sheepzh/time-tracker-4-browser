@@ -22,14 +22,12 @@ type _MqHandler<R, C extends keyof R> = _MqResData<R, C> extends undefined
 declare namespace timer.mq {
     type _HandlerRegistry =
         // Track event
-        & _MakeRegistry<'track.visit'>
         & _MakeRegistry<'track.time' | 'track.runTime', core.Event>
         // Content script events
         & _MakeRegistry<'cs.injected'>
         & _MakeRegistry<'cs.idleChanged', boolean>
         // Content script API
         & _MakeRegistry<'cs.getAudible', undefined, boolean>
-        & _MakeRegistry<'cs.openAnalysis'>
         // Statistics
         & _MakeRegistry<'stat.today', string, core.Result | undefined>
         & _MakeRegistry<'stat.sites', stat.SiteQuery | undefined, stat.SiteRow[]>
@@ -80,7 +78,6 @@ declare namespace timer.mq {
         & _MakeRegistry<'limit.listLimited' | 'limit.listEffective', string, limit.Item[]>
         & _MakeRegistry<'limit.hitVisit', limit.Item, boolean>
         & _MakeRegistry<'limit.delay', string>
-        & _MakeRegistry<'limit.openRule', string>
         // Merge
         & _MakeRegistry<'merge.all', undefined, merge.Rule[]>
         & _MakeRegistry<'merge.remove', string>

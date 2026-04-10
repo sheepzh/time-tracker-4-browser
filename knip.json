@@ -4,7 +4,7 @@
         "src/pages/app/index.ts",
         "src/pages/popup/{index,skeleton}.ts",
         "src/pages/side/index.ts",
-        "src/content-script/{index,skeleton}.ts",
+        "src/content-script/index.ts",
         "src/content-script/limit/modal/index.ts",
         "rspack/*.ts",
         "script/user-chart/{add,render}.ts"

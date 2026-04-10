@@ -38,7 +38,7 @@ const _default: browser._manifest.WebExtensionManifest = {
                 "<all_urls>"
             ],
             js: [
-                "content_scripts_skeleton.js",
+                "content_scripts.js",
             ],
             run_at: "document_start"
         }

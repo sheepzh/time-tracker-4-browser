@@ -5,8 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { useLocalStorage, useProvide, useProvider, useRequest } from "@hooks"
+import { type AppAnalysisQuery } from '@/shared/route'
+import { extractHostname } from '@/util/pattern'
 import { selectCate, selectSite } from "@api/sw/stat"
+import { useLocalStorage, useProvide, useProvider, useRequest } from "@hooks"
 import { ref, watch, type Ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import type { AnalysisTarget } from "./types"
@@ -17,17 +19,14 @@ type Context = {
     rows: Ref<timer.stat.Row[]>
 }
 
-export type AnalysisQuery = Partial<timer.site.SiteKey> & {
-    cateId?: string
-}
-
 function parseQuery(): AnalysisTarget | undefined {
     // Process the query param
-    const query = useRoute().query as unknown as AnalysisQuery
+    const query = useRoute().query as unknown as AppAnalysisQuery
     useRouter().replace({ query: {} })
-    const { host, type: siteType, cateId } = query
+    const { host, type: siteType, cateId, url } = query
     if (cateId) return { type: 'cate', key: parseInt(cateId) }
     if (host && siteType) return { type: 'site', key: { host, type: siteType } }
+    if (url) return { type: 'site', key: { host: extractHostname(url).host, type: 'normal' } }
     return undefined
 }
 

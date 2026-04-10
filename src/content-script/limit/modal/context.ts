@@ -18,13 +18,7 @@ export const provideApp = (app: App<Element>, bridge: ModalBridge, url: string) 
     const reason = ref<LimitReasonData | undefined>()
     const visitTime = ref(0)
 
-    bridge.register('reason', async data => { reason.value = data })
-
-    const _unmount = app.unmount.bind(app)
-    app.unmount = () => {
-        bridge.dispose()
-        _unmount()
-    }
+    bridge.register('reason', data => { reason.value = data })
 
     const updateVisitTime = async () => {
         bridge.request('visitTime', undefined)
@@ -33,7 +27,14 @@ export const provideApp = (app: App<Element>, bridge: ModalBridge, url: string) 
     }
 
     watch(reason, updateVisitTime, { immediate: true })
-    window.setInterval(updateVisitTime, 1000)
+    const intervalId = window.setInterval(updateVisitTime, 1000)
+
+    const _unmount = app.unmount.bind(app)
+    app.unmount = () => {
+        bridge.dispose()
+        clearInterval(intervalId)
+        _unmount()
+    }
 
     app.provide<AppContext>(GLOBAL_KEY, { reason, visitTime, bridge, url })
 }

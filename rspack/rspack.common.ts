@@ -27,7 +27,6 @@ type EntryConfig = {
 const BACKGROUND = 'background'
 const CONTENT_SCRIPT = 'content_scripts'
 const CONTENT_SCRIPT_LIMIT = 'content_scripts_limit'
-const CONTENT_SCRIPT_SKELETON = 'content_scripts_skeleton'
 const POPUP = 'popup'
 
 const entryConfigs: EntryConfig[] = [{
@@ -39,9 +38,6 @@ const entryConfigs: EntryConfig[] = [{
 }, {
     name: CONTENT_SCRIPT_LIMIT,
     path: './src/content-script/limit/modal',
-}, {
-    name: CONTENT_SCRIPT_SKELETON,
-    path: './src/content-script/skeleton',
 }, {
     name: POPUP,
     path: './src/pages/popup',
@@ -66,7 +62,7 @@ const POSTCSS_LOADER_CONF: RuleSetRule['use'] = {
 }
 
 const chunkFilter = ({ name }: Chunk) => {
-    return !name || ![BACKGROUND, CONTENT_SCRIPT, CONTENT_SCRIPT_SKELETON].includes(name)
+    return !name || ![BACKGROUND, CONTENT_SCRIPT].includes(name)
 }
 
 const isBackgroundModule = (module: Module) => isBgPath(module.nameForCondition?.() ?? '')

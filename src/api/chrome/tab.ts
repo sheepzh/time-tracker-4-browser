@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { IS_MV3 } from '../../util/constant/environment'
+import { IS_MV3 } from '@util/constant/environment'
 import { handleError } from "./common"
 
 export function getTab(id: number): Promise<ChromeTab | undefined> {
@@ -15,25 +15,6 @@ export function getTab(id: number): Promise<ChromeTab | undefined> {
     return new Promise(resolve => chrome.tabs.get(id, tab => {
         handleError("getTab")
         resolve(tab)
-    }))
-}
-
-export function resetTabUrl(tabId: number, url: string): Promise<void> {
-    return new Promise(resolve => chrome.tabs.update(tabId, {
-        url: url,
-        highlighted: true,
-    }, () => resolve()))
-}
-
-export async function getRightOf(target: ChromeTab): Promise<ChromeTab | undefined> {
-    if (!target) return
-    const { windowId, index } = target
-    return new Promise(resolve => chrome.tabs.query({ windowId }, tabs => {
-        const rightTab = tabs
-            ?.sort?.((a, b) => (a?.index ?? -1) - (b?.index ?? -1))
-            ?.filter?.(t => t.index > index)
-            ?.[0]
-        resolve(rightTab)
     }))
 }
 

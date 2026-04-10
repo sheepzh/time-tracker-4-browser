@@ -4,8 +4,8 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import { type AppAnalysisQuery } from '@/shared/route'
 import { addWhitelist, listWhitelist, removeWhitelist } from "@api/sw/whitelist"
-import { AnalysisQuery } from '@app/components/Analysis/context'
 import PopupConfirmButton from '@app/components/common/PopupConfirmButton'
 import { computeDeleteConfirmMsg, handleDelete } from '@app/components/Report/common'
 import { useReportFilter } from '@app/components/Report/context'
@@ -70,7 +70,7 @@ const _default = defineComponent<Props>(({ onDelete }) => {
     const { refresh: onRemoveWhitelist } = useManualRequest(removeWhitelist, { onSuccess: onWhitelistSuccess })
 
     const jump2Analysis = (row: timer.stat.Row) => {
-        let query: AnalysisQuery
+        let query: AppAnalysisQuery
         if (isCate(row)) {
             query = { cateId: row.cateKey?.toString?.() }
         } else if (isSite(row)) {

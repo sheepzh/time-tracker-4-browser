@@ -37,7 +37,7 @@ const _default: chrome.runtime.ManifestV3 = {
                 "<all_urls>"
             ],
             js: [
-                "content_scripts_skeleton.js",
+                "content_scripts.js",
             ],
             run_at: "document_start"
         }
@@ -61,7 +61,6 @@ const _default: chrome.runtime.ManifestV3 = {
         resources: [
             'content_scripts.js',
             'content_scripts_limit.js',
-            'content_scripts.css',
             'vendor/*.js',
             'static/images/*',
             'static/popup.html',

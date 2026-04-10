@@ -5,11 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getOption } from "@api/sw/option"
+import { initDarkTheme } from "@/pages/util/dark-mode"
 import { listenMediaSizeChange } from "@hooks"
 import { initLocale } from "@i18n"
 import { createElApp } from "@pages/element-ui/app"
-import { init as initDarkMode, processDarkMode } from "@util/dark-mode"
 import { initEcharts } from "./echarts"
 import Main from "./Layout"
 import installRouter from "./router"
@@ -17,11 +16,8 @@ import { injectAppCss } from './styles/index'
 
 async function main() {
     injectAppCss()
-    // Init theme with cache first
-    initDarkMode()
+    initDarkTheme()
     listenMediaSizeChange()
-    // Calculate the latest mode
-    getOption().then(processDarkMode)
     await initLocale()
     initEcharts()
     const app = await createElApp(Main)

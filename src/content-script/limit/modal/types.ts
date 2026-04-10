@@ -14,4 +14,4 @@ export type BridgeRegistry =
 export type BridgeCode = keyof BridgeRegistry
 export type BridgeRequest<C extends BridgeCode> = BridgeRegistry[C]['req']
 export type BridgeResponse<C extends BridgeCode> = BridgeRegistry[C]['res']
-export type BridgeHandler<T extends BridgeCode> = (req: BridgeRequest<T>) => Promise<BridgeResponse<T>>
+export type BridgeHandler<T extends BridgeCode> = (req: BridgeRequest<T>) => Awaitable<BridgeResponse<T>>

@@ -5,6 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { processDarkMode } from '@/pages/util/dark-mode'
 import { isSidePanelEnabled, setSidePanelEnabled, SIDE_PANEL_STATE_SUPPORTED_CONTROL } from '@api/chrome/sidePanel'
 import { OptionItem, OptionLines, OptionTag } from '@app/components/Option/components'
 import { useOption } from '@app/components/Option/useOption'
@@ -14,7 +15,6 @@ import { ALL_LOCALES, localeSameAsBrowser } from "@i18n"
 import localeMessages from "@i18n/message/common/locale"
 import { IS_ANDROID } from "@util/constant/environment"
 import { defaultAppearance } from "@util/constant/option"
-import { processDarkMode } from '@util/dark-mode'
 import { ElColorPicker, ElMessageBox, ElSelect, ElSlider, ElSwitch, ElTag, type TagProps } from "element-plus"
 import { computed, defineComponent, type StyleValue } from "vue"
 import type { CategoryInstance } from '../types'

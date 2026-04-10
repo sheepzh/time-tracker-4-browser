@@ -5,6 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { getOption } from '@/api/sw/option'
+
 const THEME_ATTR = "data-theme"
 const DARK_VAL = "dark"
 const STORAGE_KEY = "isDark"
@@ -19,10 +21,11 @@ function toggle0(isDarkMode: boolean, el?: Element) {
 /**
  * Init from local storage
  */
-export function init(el?: Element) {
+export function initDarkTheme(el?: Element) {
     const val = isDarkMode()
     toggle0(val, el)
-    return val
+    // Calculate the latest mode
+    getOption().then(processDarkMode)
 }
 
 function calcDarkMode(option: timer.option.AppearanceOption): boolean {

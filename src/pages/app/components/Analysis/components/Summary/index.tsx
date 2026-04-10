@@ -26,7 +26,7 @@ function computeSummary(target: AnalysisTarget | undefined, rows: timer.stat.Row
     if (!target) return undefined
 
     const summary: Summary = { focus: 0, visit: 0, day: 0 }
-    summary.firstDay = rows[0].date
+    summary.firstDay = rows[0]?.date
     rows.forEach(({ focus, time: visit }) => {
         summary.focus += focus
         summary.visit += visit

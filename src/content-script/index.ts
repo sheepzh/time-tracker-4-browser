@@ -63,7 +63,7 @@ async function main() {
     processTimeline()
 
     // Increase visit count at the end
-    await trySendMsg2Runtime('track.visit')
+    await trySendMsg2Runtime('cs.injected')
 }
 
 main()

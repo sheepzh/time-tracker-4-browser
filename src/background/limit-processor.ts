@@ -5,15 +5,15 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { APP_LIMIT_ROUTE, type AppLimitQuery } from '@/shared/route'
-import { createTabAfterCurrent, getRightOf, listTabs, resetTabUrl, sendMsg2Tab } from "@api/chrome/tab"
-import { getAppPageUrl } from "@util/constant/url"
+import { listTabs, sendMsg2Tab } from "@api/chrome/tab"
 import { matches } from "@util/limit"
-import { isBrowserUrl } from "@util/pattern"
 import { getStartOfDay, MILL_PER_DAY, MILL_PER_SECOND } from "@util/time"
 import alarmManager from "./alarm-manager"
 import MessageDispatcher from "./message-dispatcher"
-import { batchRemoveLimitRules, batchUpdateEnabled, createLimitRule, getEffectiveRules, getLimitedRules, moreMinutes, noticeLimitChanged, selectLimit, updateDelay, updateLimitRule, updateLocked } from "./service/limit-service"
+import {
+    batchRemoveLimitRules, batchUpdateEnabled, createLimitRule, getEffectiveRules, getLimitedRules, moreMinutes,
+    noticeLimitChanged, selectLimit, updateDelay, updateLimitRule, updateLocked,
+} from "./service/limit-service"
 
 function processLimitWaking(rules: timer.limit.Item[], tab: ChromeTab): void {
     const { url, id: tabId } = tab
@@ -25,21 +25,6 @@ function processLimitWaking(rules: timer.limit.Item[], tab: ChromeTab): void {
     sendMsg2Tab(tabId, 'limitWaking', rules)
         .then(() => console.log(`Waked tab[id=${tab.id}]`))
         .catch(err => console.error(`Failed to wake with limit rule: rules=${JSON.stringify(rules)}, msg=${err.msg}`))
-}
-
-async function processOpenPage(limitedUrl: string, sender: ChromeMessageSender) {
-    const originTab = sender?.tab
-    if (!originTab) return
-    const realUrl = getAppPageUrl(APP_LIMIT_ROUTE, { url: encodeURI(limitedUrl) } satisfies AppLimitQuery)
-    const baseUrl = getAppPageUrl(APP_LIMIT_ROUTE)
-    const rightTab = await getRightOf(originTab)
-    const { id: rightId, url: rightUrl } = rightTab || {}
-    if (rightId && rightUrl && isBrowserUrl(rightUrl) && rightUrl.includes(baseUrl)) {
-        // Reset url
-        await resetTabUrl(rightId, realUrl)
-    } else {
-        await createTabAfterCurrent(realUrl, sender?.tab)
-    }
 }
 
 function initDailyBroadcast() {
@@ -88,6 +73,5 @@ export default function init(dispatcher: MessageDispatcher) {
         .register('limit.listLimited', getLimitedRules)
         .register('limit.listEffective', getEffectiveRules)
         .register('limit.hitVisit', processAskHitVisit)
-        .register('limit.openRule', processOpenPage)
         .register('limit.delay', processMoreMinutes)
 }

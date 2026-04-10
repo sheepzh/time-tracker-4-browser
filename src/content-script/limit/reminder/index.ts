@@ -1,5 +1,5 @@
+import { processDarkMode } from '@/pages/util/dark-mode'
 import { getOption } from '@api/sw/option'
-import { processDarkMode } from '@util/dark-mode'
 import { MILL_PER_MINUTE } from "@util/time"
 import { exitFullscreen } from "../common"
 import type { Processor } from '../types'

@@ -103,7 +103,7 @@ class BadgeManager {
     }
 
     async updateFocus(target?: BadgeLocation) {
-        this.current = target || await findActiveTab()
+        this.current = target ?? await findActiveTab()
         await this.render()
     }
 
