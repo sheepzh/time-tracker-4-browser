@@ -22,15 +22,12 @@ import { getInstallTime, getLastBackUp } from "./service/meta-service"
 import notificationProcessor from './service/notification/processor'
 import { selectPeriods } from "./service/period-service"
 import {
-    addSite, batchChangeCate, fillInitialAlias, getInitialAlias, getSite, removeIconUrl,
-    removeSites,
-    saveAlias,
-    saveSiteRunState, searchSites, selectSitePage
+    addSite, batchChangeCate, fillInitialAlias, getInitialAlias, getSite, removeIconUrl, removeSites, saveAlias,
+    saveSiteRunState, searchSites, selectSitePage,
 } from "./service/site-service"
 import {
-    batchDelete, countGroup, countSite,
-    selectCate, selectCatePage, selectGroup, selectGroupPage,
-    selectSite, selectSitePage as selectStateSitePage
+    batchDelete, countGroup, countSite, selectCate, selectCatePage, selectGroup, selectGroupPage, selectSite,
+    selectSitePage as selectStateSitePage,
 } from "./service/stat-service"
 import timelineThrottler from './service/throttler/timeline-throttler'
 import { listTimeline } from "./service/timeline-service"

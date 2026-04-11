@@ -23,7 +23,7 @@ type DateRecords = {
     }
 }
 
-type LimitRecord = timer.limit.Rule & {
+export type LimitRecord = timer.limit.Rule & {
     records: DateRecords
 }
 
@@ -159,6 +159,16 @@ function migrate(exist: Items, toMigrate: unknown) {
     })
 }
 
+function cvtRule2Item(rule: timer.limit.Rule): ItemValue {
+    const { id, name, cond, time, count, weekly, weeklyCount, visitTime, periods, enabled, locked, allowDelay, weekdays } = rule
+    return {
+        i: id, n: name, c: cond, t: time, ct: count, wt: weekly, wct: weeklyCount,
+        v: visitTime, p: periods,
+        e: !!enabled, l: !!locked, ad: !!allowDelay,
+        wd: weekdays,
+    }
+}
+
 /**
  * Time limit
  *
@@ -190,34 +200,28 @@ class LimitDatabase extends BaseDatabase implements BrowserMigratable<'__limit__
         return Object.values(items).map(cvtItem2Rec)
     }
 
-    async save(data: MakeOptional<timer.limit.Rule, 'id'>, rewrite?: boolean): Promise<number> {
+    async batchUpdate(rules: timer.limit.Rule[]): Promise<void> {
+        if (!rules.length) return
         const items = await this.getItems()
-        let {
-            id, name, weekdays,
-            enabled, locked, allowDelay,
-            cond,
-            time, count,
-            weekly, weeklyCount,
-            visitTime, periods,
-        } = data
-        if (!id) {
-            const lastId = Object.values(items)
-                .map(e => e.i)
-                .filter(i => !!i)
-                .sort((a, b) => b - a)?.[0] ?? 0
-            id = lastId + 1
-        }
-        const existItem = items[id]
-        if (existItem && !rewrite) return id
-        items[id] = {
-            // Can be overridden by existing
-            ...(existItem || {}),
-            i: id, n: name, c: cond, wd: weekdays,
-            e: !!enabled, l: locked, ad: !!allowDelay,
-            t: time, ct: count,
-            wt: weekly, wct: weeklyCount,
-            v: visitTime, p: periods,
-        }
+        rules.forEach(rule => {
+            const id = rule.id
+            const exist = items[id]
+            if (!exist) return
+            items[id] = { ...exist, ...cvtRule2Item(rule) }
+        })
+        await this.update(items)
+    }
+
+    async add(data: Omit<timer.limit.Rule, 'id'>): Promise<number> {
+        const items = await this.getItems()
+
+        const lastId = Object.values(items)
+            .map(e => e.i)
+            .filter(i => !!i)
+            .sort((a, b) => b - a)?.[0] ?? 0
+        const id = lastId + 1
+
+        items[id] = cvtRule2Item({ id, ...data })
         await this.update(items)
         return id
     }
@@ -225,6 +229,12 @@ class LimitDatabase extends BaseDatabase implements BrowserMigratable<'__limit__
     async remove(id: number): Promise<void> {
         const items = await this.getItems()
         delete items[id]
+        await this.update(items)
+    }
+
+    async batchRemove(ids: number[]): Promise<void> {
+        const items = await this.getItems()
+        ids.forEach(id => delete items[id])
         await this.update(items)
     }
 
@@ -308,7 +318,7 @@ class LimitDatabase extends BaseDatabase implements BrowserMigratable<'__limit__
                 allowDelay: row.allowDelay ?? false,
                 weekdays: row.weekdays ?? [],
             }
-            await this.save(toImport)
+            await this.add(toImport)
         }
     }
 

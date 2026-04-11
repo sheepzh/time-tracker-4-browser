@@ -49,8 +49,8 @@ export const provideRule = () => {
         if (!windowFocus.value) return undefined
         const reasonId = reason.value?.id
         if (!reasonId) return undefined
-        const rules = await selectLimits({ id: reasonId, filterDisabled: false })
-        return rules?.[0]
+        const rules = await selectLimits({ id: reasonId })
+        return rules[0] ?? undefined
     })
 
     watch([reason, windowFocus], refresh)

@@ -20,7 +20,7 @@ export async function importOther(query: timer.imported.ProcessQuery): Promise<v
 async function processOverwrite(data: timer.imported.Data): Promise<void> {
     const { rows, focus, time } = data
     const exist = await statDatabase.batchSelect(rows)
-    mergeWith(rows, exist, async (row, exist) => {
+    await mergeWith(rows, exist, async (row, exist) => {
         focus && exist?.focus && (row.focus = exist.focus)
         time && exist?.time && (row.time = exist.time)
         await statDatabase.forceUpdate(row)

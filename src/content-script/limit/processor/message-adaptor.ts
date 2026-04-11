@@ -49,17 +49,17 @@ class MessageAdaptor implements Processor {
     }
 
     async init(): Promise<void> {
-        this.initRules?.()
-        this.context.modal?.addDelayHandler(() => this.initRules())
+        this.initRules()
+        this.context.modal.addDelayHandler(() => this.initRules())
     }
 
     async initRules(): Promise<void> {
-        this.context.modal?.removeReasonsByType?.('DAILY', 'WEEKLY')
-        const limitedRules = await trySendMsg2Runtime('limit.listLimited', this.context.url)
+        this.context.modal.removeReasonsByType?.('DAILY', 'WEEKLY')
+        const limitedRules = await trySendMsg2Runtime('limit.list', { limited: true, url: this.context.url })
+        if (!limitedRules?.length) return
 
-        limitedRules
-            ?.flatMap?.(cvtItem2AddReason)
-            ?.forEach(reason => this.context.modal.addReason(reason))
+        const reasons = limitedRules.flatMap(cvtItem2AddReason)
+        this.context.modal.addReason(...reasons)
     }
 }
 

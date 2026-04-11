@@ -6,12 +6,12 @@
  */
 
 import { useDialogSop } from '@app/components/common/DialogSop/context'
+import type { ModifyForm } from '@app/components/Limit/types'
 import { t } from '@app/locale'
 import { useXsState } from '@hooks'
 import Flex from "@pages/components/Flex"
 import { ElForm, ElFormItem, ElInputNumber } from "element-plus"
 import { defineComponent } from "vue"
-import { ModifyForm } from '../types'
 import PeriodInput from "./PeriodInput"
 import TimeInput from "./TimeInput"
 

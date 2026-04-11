@@ -50,7 +50,7 @@ class VisitProcessor implements Processor {
     }
 
     async initRules() {
-        this.rules = await trySendMsg2Runtime("limit.listEffective", this.context.url) ?? []
+        this.rules = await trySendMsg2Runtime("limit.list", { effective: true, url: this.context.url }) ?? []
         this.context.modal.removeReasonsByType("VISIT")
     }
 

@@ -138,8 +138,13 @@ declare namespace timer.limit {
     }
 
     type Query = {
-        onlyEnabled?: boolean
         id?: number
         url?: string
+        // Only enabled rules
+        enabled?: boolean
+        // Only effective rules (should be enabled and meet effective conditions)
+        effective?: boolean
+        // Only effective and limited rules
+        limited?: boolean
     }
 }

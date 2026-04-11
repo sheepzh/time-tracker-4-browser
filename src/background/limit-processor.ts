@@ -11,20 +11,19 @@ import { getStartOfDay, MILL_PER_DAY, MILL_PER_SECOND } from "@util/time"
 import alarmManager from "./alarm-manager"
 import MessageDispatcher from "./message-dispatcher"
 import {
-    batchRemoveLimitRules, batchUpdateEnabled, createLimitRule, getEffectiveRules, getLimitedRules, moreMinutes,
-    noticeLimitChanged, selectLimit, updateDelay, updateLimitRule, updateLocked,
+    createLimitRule, moreMinutes, noticeLimitChanged, removeLimitRules, selectLimit, updateLimitRules,
 } from "./service/limit-service"
 
 function processLimitWaking(rules: timer.limit.Item[], tab: ChromeTab): void {
     const { url, id: tabId } = tab
     if (!url || !tabId) return
-    const anyMatch = rules.map(rule => matches(rule?.cond, url)).reduce((a, b) => a || b, false)
+    const anyMatch = rules.map(rule => matches(rule.cond, url)).reduce((a, b) => a || b, false)
     if (!anyMatch) {
         return
     }
     sendMsg2Tab(tabId, 'limitWaking', rules)
         .then(() => console.log(`Waked tab[id=${tab.id}]`))
-        .catch(err => console.error(`Failed to wake with limit rule: rules=${JSON.stringify(rules)}, msg=${err.msg}`))
+        .catch(err => console.error(`Failed to wake with limit rule: rules=${JSON.stringify(rules)}, msg=${err.message}`))
 }
 
 function initDailyBroadcast() {
@@ -64,14 +63,9 @@ export default function init(dispatcher: MessageDispatcher) {
 
     dispatcher
         .register('limit.list', selectLimit)
-        .register('limit.batchRemove', batchRemoveLimitRules)
-        .register('limit.batchUpdateEnabled', batchUpdateEnabled)
-        .register('limit.updateDelay', updateDelay)
-        .register('limit.updateLocked', updateLocked)
-        .register('limit.update', updateLimitRule)
+        .register('limit.delete', removeLimitRules)
+        .register('limit.update', updateLimitRules)
         .register('limit.create', createLimitRule)
-        .register('limit.listLimited', getLimitedRules)
-        .register('limit.listEffective', getEffectiveRules)
         .register('limit.hitVisit', processAskHitVisit)
         .register('limit.delay', processMoreMinutes)
 }

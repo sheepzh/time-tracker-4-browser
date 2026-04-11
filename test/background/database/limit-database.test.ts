@@ -7,7 +7,7 @@ describe('limit-database', () => {
     beforeAll(() => mockStorage())
 
     beforeEach(async () => chrome.storage.local.clear())
-    test('save, all, save no rewrite, remove', async () => {
+    test('save, all, remove', async () => {
         const toAdd: timer.limit.Rule = {
             id: 1,
             name: "foobar",
@@ -17,7 +17,7 @@ describe('limit-database', () => {
             allowDelay: false,
             locked: false,
         }
-        const id = await db.save(toAdd)
+        const id = await db.add(toAdd)
         let all: timer.limit.Rule[] = await db.all()
         expect(all.length).toEqual(1)
         let saved = all[0]
@@ -26,33 +26,19 @@ describe('limit-database', () => {
         expect(saved.name).toEqual(toAdd.name)
         expect(saved.enabled).toEqual(toAdd.enabled)
         expect(saved.allowDelay).toEqual(toAdd.allowDelay)
-        const toRewrite = {
-            id,
-            name: 'hahah',
-            cond: ['123'],
-            time: 21,
-            enabled: true,
-            allowDelay: false,
-            locked: false,
-        }
-        // Not rewrite
-        await db.save(toRewrite)
+
+        await db.remove(id + 1) // Not exist, no error throws
         all = await db.all()
-        saved = all[0]
-        expect(saved.cond).toEqual(toAdd.cond)
-        expect(saved.time).toEqual(toAdd.time)
-        expect(saved.name).toEqual(toAdd.name)
-        expect(saved.enabled).toEqual(toAdd.enabled)
-        expect(saved.allowDelay).toEqual(toAdd.allowDelay)
+        expect(all.length).toEqual(1)
 
         await db.remove(id)
-
-        expect((await db.all()).length).toEqual(0)
+        all = await db.all()
+        expect(all.length).toEqual(0)
     })
 
     test("update waste", async () => {
         const date = formatTimeYMD(new Date())
-        const id1 = await db.save({
+        const id1 = await db.add({
             name: "foobar",
             cond: ["a.*.com"],
             time: 21,
@@ -60,7 +46,7 @@ describe('limit-database', () => {
             allowDelay: false,
             locked: false,
         })
-        await db.save({
+        await db.add({
             name: "foobar",
             cond: ["*.b.com"],
             time: 20,
@@ -96,8 +82,8 @@ describe('limit-database', () => {
             enabled: false,
             locked: false,
         }
-        await db.save(cond1)
-        await db.save(cond2)
+        await db.add(cond1)
+        await db.add(cond2)
         const data2Import = await db.storage.get()
 
         // clear
@@ -132,7 +118,7 @@ describe('limit-database', () => {
             enabled: true,
             locked: false,
         }
-        const id = await db.save(data)
+        const id = await db.add(data)
         await db.updateDelay(id, true)
         await db.updateDelay(Number.MAX_VALUE, true)
         const all = await db.all()

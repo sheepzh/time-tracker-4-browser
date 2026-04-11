@@ -1,3 +1,4 @@
+import { addLimitFocusTime, incLimitVisit } from '@/background/service/limit-service'
 import { getTab, listTabs, sendMsg2Tab } from "@api/chrome/tab"
 import { getWindow } from "@api/chrome/window"
 import optionHolder from "@service/components/option-holder"
@@ -6,7 +7,6 @@ import {
     increaseVisit as increaseItemVisit,
     type ItemIncContext
 } from "@service/item-service"
-import { addLimitFocusTime, incLimitVisit } from '@service/limit-service'
 import periodThrottler from '@service/throttler/period-throttler'
 import whitelistHolder from "@service/whitelist/holder"
 import { IS_ANDROID, IS_FIREFOX } from "@util/constant/environment"

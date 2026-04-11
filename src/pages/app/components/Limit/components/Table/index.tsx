@@ -6,12 +6,13 @@
  */
 import { getWeekStartDay } from "@api/sw/option"
 import ColumnHeader from "@app/components/common/ColumnHeader"
+import { useLimitData } from "@app/components/Limit/context"
+import type { LimitInstance } from '@app/components/Limit/types'
 import { t } from '@app/locale'
 import { useLocalStorage, useRequest, useState } from '@hooks'
 import { isEffective } from "@util/limit"
 import { ElSwitch, ElTable, ElTableColumn, ElTag, type RenderRowData, type Sort, type TableInstance } from "element-plus"
 import { defineComponent, ref, watch } from "vue"
-import { useLimitData, type LimitInstance } from "../../context"
 import LimitOperationColumn from "./OperationColumn"
 import Rule from "./Rule"
 import Waste from "./Waste"

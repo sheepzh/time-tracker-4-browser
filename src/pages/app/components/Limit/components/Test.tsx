@@ -5,21 +5,21 @@
  * https://opensource.org/licenses/MIT
  */
 
-import AlertLines, { type AlertLinesProps } from '@app/components/common/AlertLines'
-import { useDebounce, useRequest, useState, useSwitch, useXsState } from '@hooks'
-import { t } from '@app/locale'
-import Flex from '@pages/components/Flex'
 import { selectLimits } from "@api/sw/limit"
+import AlertLines, { type AlertLinesProps } from '@app/components/common/AlertLines'
+import { t } from '@app/locale'
+import { useDebounce, useRequest, useState, useSwitch, useXsState } from '@hooks'
+import Flex from '@pages/components/Flex'
 import { ElDialog, ElInput } from "element-plus"
 import { defineComponent } from "vue"
-import { type TestInstance } from "../context"
+import type { TestInstance } from '../types'
 
 async function fetchResult(url: string | undefined): Promise<AlertLinesProps> {
     if (!url) {
         return { type: 'warning', title: msg => msg.limit.message.inputTestUrl }
     }
-    const matched = (await selectLimits({ url, filterDisabled: true })) ?? []
-    if (!matched?.length) {
+    const matched = await selectLimits({ url, enabled: true })
+    if (!matched.length) {
         return { type: 'info', title: msg => msg.limit.message.noRuleMatched }
     } else {
         return {

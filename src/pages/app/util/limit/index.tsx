@@ -4,7 +4,7 @@ import { type I18nKey, type I18nResultItem, locale, t as t_, tN as tN_ } from "@
 import limitMessages, { type LimitMessage } from "@i18n/message/app/limit"
 import buttonMessages from "@i18n/message/common/button"
 import { getCssVariable } from "@pages/util/style"
-import { dateMinute2Idx, hasLimited, isEnabledAndEffective } from "@util/limit"
+import { dateMinute2Idx, hasLimited, isEffective } from "@util/limit"
 import { ElMessage, ElMessageBox, type ElMessageBoxOptions, type InputType, useId } from "element-plus"
 import { defineComponent, onMounted, ref, type VNode } from "vue"
 import verificationProcessor from './processor'
@@ -20,7 +20,7 @@ const tN = (key: I18nKey<LimitMessage>, param?: any) => tN_<LimitMessage, VNode>
  */
 export async function judgeVerificationRequired(item: timer.limit.Item): Promise<boolean> {
     if (item.locked) return true
-    if (!isEnabledAndEffective(item)) return false
+    if (!item.enabled || !isEffective(item.weekdays)) return false
 
     const { visitTime, periods } = item
     // Daily or weekly

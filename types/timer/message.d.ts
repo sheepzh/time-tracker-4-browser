@@ -71,11 +71,9 @@ declare namespace timer.mq {
         & _MakeRegistry<'site.search', string | undefined, site.SiteInfo[]>
         // Time Limit
         & _MakeRegistry<'limit.list', limit.Query | undefined, limit.Item[]>
-        & _MakeRegistry<'limit.batchRemove', limit.Rule[]>
-        & _MakeRegistry<'limit.batchUpdateEnabled', limit.Rule[]>
-        & _MakeRegistry<'limit.updateDelay' | 'limit.updateLocked' | 'limit.update', limit.Rule>
-        & _MakeRegistry<'limit.create', MakeOptional<limit.Rule, 'id'>, number>
-        & _MakeRegistry<'limit.listLimited' | 'limit.listEffective', string, limit.Item[]>
+        & _MakeRegistry<'limit.delete', number[]>
+        & _MakeRegistry<'limit.update', limit.Rule[]>
+        & _MakeRegistry<'limit.create', Omit<limit.Rule, 'id'>, number>
         & _MakeRegistry<'limit.hitVisit', limit.Item, boolean>
         & _MakeRegistry<'limit.delay', string>
         // Merge

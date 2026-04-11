@@ -6,18 +6,13 @@
  */
 
 import { useDialogSop } from '@app/components/common/DialogSop/context'
+import type { ModifyForm } from '@app/components/Limit/types'
 import { t } from '@app/locale'
 import { Delete, WarnTriangleFilled } from "@element-plus/icons-vue"
 import Flex from "@pages/components/Flex"
 import { EXCLUDING_PREFIX } from '@util/constant/remain-host'
-import {
-    ElDivider, ElIcon,
-    ElLink,
-    ElScrollbar, ElText,
-    type ScrollbarInstance
-} from "element-plus"
+import { ElDivider, ElIcon, ElLink, ElScrollbar, ElText, type ScrollbarInstance } from "element-plus"
 import { defineComponent, ref } from "vue"
-import type { ModifyForm } from '../types'
 import SiteInput from './SiteInput'
 
 const _default = defineComponent(() => {
