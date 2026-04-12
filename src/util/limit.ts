@@ -121,17 +121,10 @@ export function hasWeeklyLimited(item: timer.limit.Item): boolean {
     return timeMeet || countMeet
 }
 
-export function isEnabledAndEffective(rule: timer.limit.Rule): boolean {
-    return !!rule?.enabled && isEffective(rule.weekdays)
-}
-
-export function isEffective(weekdays: timer.limit.Rule['weekdays']): boolean {
+export function isEffective(weekdays: timer.limit.Rule['weekdays'], weekday?: number): boolean {
     const weekdayLen = weekdays?.length
-    if (!weekdayLen || weekdayLen <= 0 || weekdayLen >= 7) {
-        return true
-    }
-    const weekday = getWeekDay(new Date())
-    return weekdays.includes(weekday)
+    if (!weekdayLen || weekdayLen <= 0 || weekdayLen >= 7) return true
+    return weekdays.includes(weekday ?? getWeekDay(new Date()))
 }
 
 const idx2Str = (time: number | undefined): string => {

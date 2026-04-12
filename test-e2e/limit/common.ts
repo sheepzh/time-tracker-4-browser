@@ -72,7 +72,7 @@ export async function fillTimeLimit(value: number | undefined, input: ElementHan
     await sleep(.2)
 }
 
-export async function fillVisitLimit(value: number, input: ElementHandle<HTMLInputElement>, page: Page) {
+async function fillVisitLimit(value: number, input: ElementHandle<HTMLInputElement>, page: Page) {
     await input.focus()
     await page.keyboard.press('Delete')
     await page.keyboard.type(`${value ?? 0}`)

@@ -5,16 +5,15 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { useProvide, useProvider, useRequest } from "@hooks"
-import { selectSite } from "@service/stat-service"
-import { mergeDate } from "@service/stat-service/merge/date"
-import { getDayLength } from "@util/time"
-import { computed, type Ref } from "vue"
+import { selectSite } from "@api/sw/stat"
+import { useProvide, useProvider, useRequest } from '@hooks'
+import { cvtDateRange2Str, getDayLength } from "@util/time"
+import { computed, type ShallowRef } from "vue"
 import { useHabitFilter } from "../context"
 
 type Context = {
-    rows: Ref<timer.stat.Row[]>
-    dateMergedRows: Ref<timer.stat.Row[]>
+    rows: ShallowRef<timer.stat.Row[]>
+    dateMergedRows: ShallowRef<timer.stat.Row[]>
 }
 
 const NAMESPACE = 'habitSite'
@@ -22,19 +21,22 @@ const NAMESPACE = 'habitSite'
 export const initProvider = () => {
     const filter = useHabitFilter()
 
-    const { data: rows } = useRequest(() => selectSite({ date: filter.dateRange }), {
+    const { data: rows } = useRequest(() => selectSite({ date: cvtDateRange2Str(filter.dateRange) }), {
         deps: [() => filter.dateRange],
         defaultValue: [],
     })
 
     const dateRangeLength = computed(() => getDayLength(filter.dateRange?.[0], filter.dateRange?.[1]))
 
-    const dateMergedRows = computed(() => mergeDate(rows.value ?? []))
+    const { data: dateMergedRows } = useRequest(() => selectSite({ date: cvtDateRange2Str(filter.dateRange), mergeDate: true }), {
+        deps: [() => filter.dateRange],
+        defaultValue: [],
+    })
     useProvide<Context>(NAMESPACE, { rows, dateMergedRows })
 
     return dateRangeLength
 }
 
-export const useRows = (): Ref<timer.stat.Row[]> => useProvider<Context, 'rows'>(NAMESPACE, "rows").rows
+export const useRows = (): ShallowRef<timer.stat.Row[]> => useProvider<Context, 'rows'>(NAMESPACE, "rows").rows
 
-export const useDateMergedRows = (): Ref<timer.stat.Row[]> => useProvider<Context, 'dateMergedRows'>(NAMESPACE, 'dateMergedRows').dateMergedRows
+export const useDateMergedRows = (): ShallowRef<timer.stat.Row[]> => useProvider<Context, 'dateMergedRows'>(NAMESPACE, 'dateMergedRows').dateMergedRows

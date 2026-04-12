@@ -5,21 +5,21 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { useXsState } from "@hooks"
+import { useXsState } from '@hooks'
 import { defineComponent } from "vue"
-import ContentContainer from "../common/ContentContainer"
+import ContentContainer from '../common/ContentContainer'
 import { initReportContext } from "./context"
-import ReportFilter from "./ReportFilter"
-import ReportList from "./ReportList"
-import ReportTable from "./ReportTable"
+import Filter from "./Filter"
+import List from "./List"
+import Table from "./Table"
 
 const _default = defineComponent(() => {
     const { comp } = initReportContext()
     const isXs = useXsState()
 
     return () => <ContentContainer v-slots={{
-        filter: () => <ReportFilter />,
-        default: () => isXs.value ? <ReportList ref={comp} /> : <ReportTable ref={comp} />
+        filter: () => <Filter />,
+        default: () => isXs.value ? <List ref={comp} /> : <Table ref={comp} />
     }} />
 })
 

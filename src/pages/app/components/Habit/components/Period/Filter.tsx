@@ -7,12 +7,12 @@
 
 import SelectFilterItem from '@app/components/common/filter/SelectFilterItem'
 import { t } from '@app/locale'
-import { type HabitMessage } from '@i18n/message/app/habit'
 import Flex from '@pages/components/Flex'
+import { type HabitMessage } from '@i18n/message/app/habit'
 import { ElRadioButton, ElRadioGroup } from 'element-plus'
 import { defineComponent } from 'vue'
-import { type ChartType } from './common'
 import { usePeriodFilter } from './context'
+import type { ChartType } from './types'
 
 // [value, label]
 type _SizeOption = [number, keyof HabitMessage['period']['sizes']]

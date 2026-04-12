@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { daysAgo, formatPeriod, formatPeriodCommon, formatTime, getMonthTime, getStartOfDay, isSameDay } from "@util/time"
+import { daysAgo, formatPeriod, formatPeriodCommon, formatTime, getMonthTime, getStartOfDay, isSameDay } from "../../src/util/time"
 
 test('time', () => {
     const dateStr = '2020/05/01 00:00:01'

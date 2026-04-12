@@ -207,7 +207,7 @@ async function handleCreateGist(req: IncomingMessage, res: ServerResponse) {
     sendJson(res, 201, gist)
 }
 
-function handleGetGist(req: IncomingMessage, res: ServerResponse, gistId: string) {
+function handleGetGist(res: ServerResponse, gistId: string) {
     const gist = gists.get(gistId)
     if (!gist) return notFound(res)
     sendJson(res, 200, gist)
@@ -269,7 +269,7 @@ function main() {
             const gistMatch = pathname.match(/^\/gists\/([^/]+)$/)
             if (gistMatch?.[1]) {
                 const gistId = gistMatch[1]
-                if (req.method === "GET") return handleGetGist(req, res, gistId)
+                if (req.method === "GET") return handleGetGist(res, gistId)
                 if (req.method === "POST") return await handleUpdateGist(req, res, gistId)
                 if (req.method === "PATCH") return await handleUpdateGist(req, res, gistId)
                 if (req.method === "DELETE") return handleDeleteGist(res, gistId)

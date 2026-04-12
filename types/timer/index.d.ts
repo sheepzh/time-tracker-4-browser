@@ -53,14 +53,8 @@ declare namespace timer {
         | 'mn'
         | 'hi'
 
-    type ExtensionMetaFlag = "rateOpen"
-
     type ExtensionMeta = {
         installTime?: number
-        appCounter?: { [routePath: string]: number }
-        popupCounter?: {
-            _total?: number
-        }
         /**
          * The id of this client
          *
@@ -80,7 +74,5 @@ declare namespace timer {
                 msg?: string
             }
         }
-        // Flags
-        flag?: Partial<Record<ExtensionMetaFlag, boolean>>
     }
 }

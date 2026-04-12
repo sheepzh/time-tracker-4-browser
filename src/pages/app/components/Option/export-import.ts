@@ -4,11 +4,11 @@
  * https://opensource.org/licenses/MIT
  */
 
-import optionHolder from "@service/components/option-holder"
+import { getOption, setOption } from "@api/sw/option"
 import { deserialize, exportJson } from "@util/file"
 import { mergeObject } from '@util/lang'
 
-export interface ExportedSettings {
+interface ExportedSettings {
     version: string
     timestamp: number
     settings: timer.option.AllOption
@@ -18,9 +18,9 @@ export interface ExportedSettings {
  * Export all settings to JSON file
  */
 export async function exportSettings(): Promise<void> {
-    const settings = await optionHolder.get()
+    const settings = await getOption()
     const exportData: ExportedSettings = {
-        version: '1.0',
+        version: chrome.runtime.getManifest().version,
         timestamp: Date.now(),
         settings,
     }
@@ -43,7 +43,7 @@ export async function importSettings(jsonString: string): Promise<void> {
     const validatedSettings = await validateAndMergeSettings(importData.settings)
 
     // Set the imported settings
-    await optionHolder.set(validatedSettings)
+    await setOption(validatedSettings as Partial<timer.option.AllOption>)
 }
 
 /**
@@ -51,10 +51,10 @@ export async function importSettings(jsonString: string): Promise<void> {
  */
 async function validateAndMergeSettings(importedSettings: Partial<timer.option.AllOption>): Promise<timer.option.AllOption> {
     // Get current user settings as defaults instead of default options
-    const defaults = await optionHolder.get()
+    const current = await getOption()
     // Delete client name
     delete importedSettings['clientName']
-    return mergeObject(defaults, importedSettings)
+    return mergeObject(current ?? {}, importedSettings) as timer.option.AllOption
 }
 
 /**

@@ -12,7 +12,7 @@ import Flex from "@pages/components/Flex"
 import { defineComponent } from "vue"
 import type { ImportForm } from './types'
 
-const _default = defineComponent<{}>((props, ctx) => {
+const _default = defineComponent<{}>(() => {
     const { form } = useDialogSop<ImportForm>()
 
     return () => (

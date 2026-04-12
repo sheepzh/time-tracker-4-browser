@@ -5,8 +5,12 @@
  * https://opensource.org/licenses/MIT
  */
 
-import type { PopupDuration } from '@popup/context'
 import resource from './content-resource.json'
+
+type PopupDuration =
+    | "today" | "yesterday" | "thisWeek" | "thisMonth"
+    | "lastDays"
+    | "allTime"
 
 export type ContentMessage = {
     percentage: {

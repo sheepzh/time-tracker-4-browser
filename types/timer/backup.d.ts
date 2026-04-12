@@ -46,7 +46,7 @@ declare namespace timer.backup {
          *
          * @param targetCid The client id, default value is the local one in context
          */
-        download(context: timer.backup.CoordinatorContext<Cache>, dateStart: Date, dateEnd: Date, targetCid?: string): Promise<timer.core.Row[]>
+        download(context: timer.backup.CoordinatorContext<Cache>, start: string, end: string, targetCid?: string): Promise<timer.core.Row[]>
         /**
          * Upload fragmented data to cloud
          * @param rows
@@ -88,27 +88,6 @@ declare namespace timer.backup {
         dirPath?: string
     }
 
-    /**
-     * Snapshot of last backup
-     */
-    type Snapshot = {
-        /**
-         * Timestamp
-         */
-        ts: number
-        /**
-         * The date of the ts
-         */
-        date: string
-    }
-
-    /**
-     * Snapshot cache
-     */
-    type SnapshotCache = Partial<{
-        [type in Type]: Snapshot
-    }>
-
     type MetaCache = Partial<Record<Type, unknown>>
 
     type RowExtend = {
@@ -120,6 +99,13 @@ declare namespace timer.backup {
          * The name of client where the remote data is stored
          */
         cname?: string
+    }
+
+    type RemoteQuery = {
+        start: string
+        end: string
+        specCid?: string
+        excludeLocal?: boolean
     }
 
     type Row = core.Row & RowExtend
@@ -139,7 +125,5 @@ declare namespace timer.backup {
         __merge__?: timer.merge.Rule[]
         __whitelist__?: string[]
         __cate__?: timer.site.Cate[]
-        // Legacy data before v4.0.0
-        [key: string]: unknown
     }
 }

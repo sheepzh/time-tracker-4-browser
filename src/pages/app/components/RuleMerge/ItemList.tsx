@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { t } from "@app/locale"
-import mergeRuleDatabase from "@db/merge-rule-database"
-import { useManualRequest, useRequest } from "@hooks"
+import { addMergeRule, removeMergeRule, selectAllMergeRules } from "@api/sw/merge"
+import { t } from '@app/locale'
+import { useManualRequest, useRequest } from '@hooks'
 import Flex from "@pages/components/Flex"
 import { ElMessage, ElMessageBox } from "element-plus"
 import { defineComponent, ref } from "vue"
@@ -15,18 +15,18 @@ import AddButton from './components/AddButton'
 import Item, { type ItemInstance } from './components/Item'
 
 const _default = defineComponent(() => {
-    const { data: items, refresh } = useRequest(() => mergeRuleDatabase.selectAll())
+    const { data: items, refresh } = useRequest(() => selectAllMergeRules())
     const handleSucc = () => {
         ElMessage.success(t(msg => msg.operation.successMsg))
         refresh()
     }
     const { refreshAsync: remove } = useManualRequest(
-        (origin: string) => mergeRuleDatabase.remove(origin),
+        (origin: string) => removeMergeRule(origin),
         { onSuccess: handleSucc },
     )
     const { refresh: update } = useManualRequest(async (origin: string, merged: string | number) => {
-        await mergeRuleDatabase.remove(origin)
-        await mergeRuleDatabase.add({ origin, merged })
+        await removeMergeRule(origin)
+        await addMergeRule({ origin, merged })
     }, { onSuccess: handleSucc })
 
     const itemRefs = ref<ItemInstance[]>([])
@@ -48,7 +48,7 @@ const _default = defineComponent(() => {
     }
 
     const { refresh: add } = useManualRequest(
-        (rule: timer.merge.Rule) => mergeRuleDatabase.add(rule),
+        (rule: timer.merge.Rule) => addMergeRule(rule),
         { onSuccess: handleSucc }
     )
 

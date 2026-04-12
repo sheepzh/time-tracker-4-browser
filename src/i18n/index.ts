@@ -5,23 +5,22 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getUILanguage } from "@api/chrome/i18n"
-import optionHolder from "@service/components/option-holder"
-import { setDir, setLocale } from "@util/document"
+import { getUILanguage } from "../api/chrome/i18n"
+import { getOption } from '../api/sw/option'
+import { setDir, setLocale } from "../util/document"
 import { ALL_LOCALES as _ALL_LOCALES } from "./message/merge"
 
 /**
  * Not to import this one if not necessary
  */
 export type FakedLocale = timer.Locale
+
 /**
  * @since 0.2.2
  */
-export const FEEDBACK_LOCALE: timer.Locale = "en"
+const FEEDBACK_LOCALE: timer.Locale = "en"
 
 export const ALL_LOCALES: timer.Locale[] = _ALL_LOCALES
-
-export const defaultLocale: timer.Locale = "zh_CN"
 
 // Standardize the locale code according to the Chrome locale code
 const chrome2I18n: { [key: string]: timer.Locale } = {
@@ -65,22 +64,22 @@ const translationChrome2I18n: { [key: string]: timer.TranslatingLocale } = {
  * Codes returned by getUILanguage() are defined by Chrome browser
  * @see https://github.com/unicode-cldr/cldr-localenames-modern/blob/master/main/en/languages.json
  * But supported locale codes in Chrome extension
- * @see https://developer.chrome.com/docs/extensions/reference/api/i18n#locales
+ * @see https://developer.chrome.com/docs/extensions/reference/i18n#locales
  *
  * They are different, so translate
  */
-export function chromeLocale2ExtensionLocale(chromeLocale: string): timer.Locale {
-    if (!chromeLocale) {
-        return defaultLocale
-    }
+function chromeLocale2ExtensionLocale(chromeLocale: string): timer.Locale {
+    if (!chromeLocale) return FEEDBACK_LOCALE
     const code2 = chromeLocale.substring(0, 2)
     return chrome2I18n[chromeLocale] ?? chrome2I18n[code2] ?? FEEDBACK_LOCALE
 }
 
+const browserUiLocale: timer.Locale = chromeLocale2ExtensionLocale(getUILanguage())
+
 /**
  * @since 0.9.0
  */
-export let localeSameAsBrowser: timer.Locale = chromeLocale2ExtensionLocale(getUILanguage())
+export const localeSameAsBrowser: timer.Locale = browserUiLocale
 
 /**
  * @since 1.5.0
@@ -96,7 +95,7 @@ export function isTranslatingLocale(): boolean {
 /**
  * Real locale with locale option
  */
-export let locale: timer.Locale = localeSameAsBrowser
+export let locale: timer.Locale = browserUiLocale
 
 export function cvtOption2Locale(option: timer.option.LocaleOption): timer.Locale {
     if (!option || option === 'default') {
@@ -117,8 +116,8 @@ export function handleLocaleOption(option: timer.option.LocaleOption) {
  * @since 0.8.0
  */
 export async function initLocale() {
-    const option = await optionHolder.get()
-    handleLocaleOption(option?.locale)
+    const option = await getOption()
+    handleLocaleOption(option.locale)
 }
 
 function tryGetOriginalI18nVal<MessageType>(
@@ -133,7 +132,7 @@ function tryGetOriginalI18nVal<MessageType>(
     }
 }
 
-export function getI18nVal<MessageType>(
+function getI18nVal<MessageType>(
     messages: Messages<MessageType>,
     keyPath: I18nKey<MessageType>,
     specLocale?: timer.Locale
@@ -144,7 +143,7 @@ export function getI18nVal<MessageType>(
     return typeof result === 'string' ? result : JSON.stringify(result)
 }
 
-export type TranslateProps<MessageType> = {
+type TranslateProps<MessageType> = {
     key: I18nKey<MessageType>,
     param?: { [key: string]: string | number }
 }
@@ -184,7 +183,7 @@ const findParamAndReplace = <Node,>(resultArr: I18nResultItem<Node>[], [key, val
     return temp
 }
 
-export type NodeTranslateProps<MessageType, Node> = {
+type NodeTranslateProps<MessageType, Node> = {
     key: I18nKey<MessageType>,
     param: { [key: string]: I18nResultItem<Node> }
 }

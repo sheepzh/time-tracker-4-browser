@@ -1,7 +1,7 @@
 import { t } from "@app/locale"
 import { Back, Check, Close } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
-import { useXsState } from '@hooks/index'
+import { useXsState } from '@hooks'
 import Box from "@pages/components/Box"
 import Flex from "@pages/components/Flex"
 import { type ButtonProps, DialogProps, ElButton, ElDialog, ElDivider, ElStep, ElSteps, ElText, useNamespace } from "element-plus"

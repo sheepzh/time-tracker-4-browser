@@ -10,7 +10,7 @@ const normalZipFilePath = path.resolve(__dirname, '..', 'market_packages', `${na
 
 const options = generateOption({ outputPath, manifest, mode: "production" })
 
-const filemanagerPlugin = new FileManagerPlugin({
+const fileManagerPlugin = new FileManagerPlugin({
     events: {
         // Archive at the end
         onEnd: [
@@ -25,7 +25,7 @@ const filemanagerPlugin = new FileManagerPlugin({
 })
 
 const { plugins = [] } = options
-plugins.push(filemanagerPlugin)
+plugins.push(fileManagerPlugin)
 options.plugins = plugins
 
 export default options

@@ -6,7 +6,7 @@
  */
 
 import { onBeforeMount, ref, type Ref, watch } from "vue"
-import { useState } from "."
+import { useState } from "./useState"
 
 const getInitialValue = <T>(key: string, defaultValue?: T): T | undefined => {
     if (!key) return defaultValue

@@ -5,16 +5,16 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { computeRingText, type RingValue, type ValueFormatter } from "@app/components/Analysis/util"
+import { useXsState } from '@hooks'
 import { tN, type I18nKey } from "@app/locale"
 import { BottomRight, InfoFilled, TopRight } from "@element-plus/icons-vue"
-import { useXsState } from '@hooks/useMediaSize'
 import Box from "@pages/components/Box"
 import Flex from "@pages/components/Flex"
 import { colorVariant, getCssVariable } from '@pages/util/style'
 import { range } from "@util/array"
 import { ElIcon, ElTooltip } from "element-plus"
 import { computed, defineComponent, type CSSProperties } from "vue"
+import type { RingValue, ValueFormatter } from './types'
 
 const SubVal = defineComponent<{ value: string }>(props => {
     return () => (
@@ -57,6 +57,26 @@ const ComparisonIcon = defineComponent<{ value: RingValue }>(props => {
     const comp = computed(() => computeComparison(props.value))
     return () => renderIcons(comp.value)
 }, { props: ['value'] })
+
+
+/**
+ * Compute ring text
+ *
+ * @param ring ring value
+ * @param formatter formatter
+ * @returns text or '-'
+ */
+function computeRingText(ring: RingValue, formatter?: ValueFormatter): string | undefined {
+    const [current, last] = ring
+    if (current === undefined && last === undefined) {
+        // return undefined if both are undefined
+        return undefined
+    }
+    const delta = (current ?? 0) - (last ?? 0)
+    let result = formatter ? formatter(delta) : delta?.toString()
+    delta >= 0 && (result = '+' + result)
+    return result
+}
 
 const RingLine = defineComponent<{ value: RingValue, formatter?: ValueFormatter }>(props => {
     const text = computed(() => computeRingText(props.value, props.formatter))
