@@ -24,7 +24,7 @@ type TransmitParam<TForm extends Record<string, unknown>> = {
     target: number
 }
 
-export type DialogSopInitOptions<TForm extends Record<string, unknown>> = {
+type DialogSopInitOptions<TForm extends Record<string, unknown>> = {
     stepCount: number
     init: () => TForm
     onNext?: (p: TransmitParam<TForm>) => Awaitable<void>

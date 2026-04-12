@@ -1,6 +1,6 @@
-import { t, tN, type I18nKey } from "@app/locale"
+import { MediaSize, useMediaSize } from '@hooks'
+import { t, tN, type I18nKey } from '@app/locale'
 import { css } from '@emotion/css'
-import { MediaSize, useMediaSize } from '@hooks/useMediaSize'
 import Flex from "@pages/components/Flex"
 import { colorVariant } from '@pages/util/style'
 import { ElTag, useNamespace } from "element-plus"

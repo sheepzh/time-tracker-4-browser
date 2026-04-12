@@ -41,7 +41,7 @@ export const BROWSER_NAME = browser
 
 export const IS_FIREFOX = BROWSER_NAME === 'firefox'
 
-export const IS_EDGE = BROWSER_NAME === 'edge'
+const IS_EDGE = BROWSER_NAME === 'edge'
 
 export const IS_CHROME = BROWSER_NAME === 'chrome'
 

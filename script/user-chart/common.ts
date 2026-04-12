@@ -1,5 +1,5 @@
 import { findTarget, type Gist } from "@api/gist"
-import { exitWith } from "../util/process"
+import { exitWith } from '../util/process'
 
 export type Browser =
     | 'chrome'

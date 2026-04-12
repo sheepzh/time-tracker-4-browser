@@ -5,17 +5,17 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { t } from "@app/locale"
+import { changeCateOfSites, deleteSites } from "@api/sw/site"
+import { t } from '@app/locale'
 import { Check, Close, WarnTriangleFilled } from "@element-plus/icons-vue"
-import { useState, useSwitch } from "@hooks"
+import { useState, useSwitch } from '@hooks'
 import Flex from "@pages/components/Flex"
-import { batchSaveSiteCate, removeSites } from "@service/site-service"
 import { supportCategory } from "@util/site"
 import { ElButton, ElDialog, ElForm, ElFormItem, ElMessage, ElMessageBox } from "element-plus"
 import { computed, defineComponent, markRaw, ref, type VNode } from "vue"
-import ContentContainer from "../common/ContentContainer"
-import Pagination from "../common/Pagination"
-import CategorySelect from "../common/category/CategorySelect"
+import Category from '../common/Category'
+import ContentContainer from '../common/ContentContainer'
+import Pagination from '../common/Pagination'
 import SiteManageFilter from "./SiteManageFilter"
 import Modify, { type ModifyInstance } from './SiteManageModify'
 import SiteManageTable from "./SiteManageTable"
@@ -46,10 +46,9 @@ export default defineComponent(() => {
 
     const onCateChangeConfirm = async () => {
         const cateId = batchCate.value
-        if (!cateId) {
-            return ElMessage.warning("Category not selected")
-        }
-        await batchSaveSiteCate(cateId, cateSupported.value)
+        if (!cateId) return ElMessage.warning("Category not selected")
+
+        await changeCateOfSites(cateId, ...cateSupported.value)
         ElMessage.success(t(msg => msg.operation.successMsg))
         closeCateChange()
         refresh()
@@ -68,7 +67,7 @@ export default defineComponent(() => {
             }
         ).then(async () => {
             const need2Clear = cateSupported.value?.filter(s => s.cate)
-            need2Clear?.length && await batchSaveSiteCate(undefined, need2Clear)
+            need2Clear?.length && await changeCateOfSites(undefined, ...need2Clear)
             ElMessage.success(t(msg => msg.operation.successMsg))
             refresh()
         }).catch(() => { })
@@ -87,7 +86,7 @@ export default defineComponent(() => {
                 icon: markRaw(WarnTriangleFilled),
             }
         ).then(async () => {
-            await removeSites(...(selected.value ?? []))
+            await deleteSites(...(selected.value ?? []))
             ElMessage.success(t(msg => msg.operation.successMsg))
             refresh()
         }).catch(() => { })
@@ -111,7 +110,7 @@ export default defineComponent(() => {
                     <Pagination
                         disabled={loading.value}
                         defaultValue={page}
-                        total={pagination.value?.total || 0}
+                        total={pagination.value?.total ?? 0}
                         onChange={val => { page.num = val.num, page.size = val.size }}
                     />
                 </Flex>
@@ -126,7 +125,7 @@ export default defineComponent(() => {
                     default: () => <>
                         <ElForm>
                             <ElFormItem label={t(msg => msg.siteManage.cate.name)} required>
-                                <CategorySelect modelValue={batchCate.value} onChange={setBatchCate} />
+                                <Category.Select modelValue={batchCate.value} onChange={setBatchCate} />
                             </ElFormItem>
                         </ElForm>
                     </>,

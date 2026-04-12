@@ -1,19 +1,15 @@
-import { EchartsWrapper } from "@hooks/useEcharts"
+import { allCates } from "@api/sw/cate"
+import { EchartsWrapper } from '@hooks'
 import { getInfoColor, getPrimaryTextColor } from "@pages/util/style"
-import { t } from "@popup/locale"
-import cateService from "@service/cate-service"
-import { mergeDate } from "@service/stat-service/merge/date"
+import { t } from '@popup/locale'
 import { toMap } from "@util/array"
 import { CATE_NOT_SET_ID } from "@util/site"
 import { isCate } from "@util/stat"
-import { type PieSeriesOption } from "echarts/charts"
-import {
-    type LegendComponentOption,
-    type TitleComponentOption,
-    type ToolboxComponentOption,
-    type TooltipComponentOption,
-} from "echarts/components"
-import { type ComposeOption, type ECElementEvent } from "echarts/core"
+import type {
+    ComposeOption, LegendComponentOption, PieSeriesOption, TitleComponentOption, ToolboxComponentOption,
+    TooltipComponentOption,
+} from "echarts"
+import type { ECElementEvent } from "echarts/core"
 import {
     adaptDonutSeries, formatTooltip, generateSiteSeriesOption, generateTitleOption, generateToolboxOption,
     handleClick, isOther, type PieSeriesItemOption,
@@ -94,7 +90,7 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
         const textColor = getPrimaryTextColor()
         const inactiveColor = getInfoColor()
 
-        const cates = await cateService.listAll()
+        const cates = await allCates() ?? []
         const cateNameMap = toMap(cates, c => c.id, c => c.name)
         cateNameMap[CATE_NOT_SET_ID] = t(msg => msg.shared.cate.notSet)
 
@@ -107,7 +103,7 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
             textStyle: { color: textColor },
             pageTextStyle: { color: textColor },
             inactiveColor,
-            data: rows.filter(isCate).map(({ cateKey }) => ({ name: cateNameMap[cateKey] ?? `${cateKey}`, cateKey })),
+            data: rows.filter(isCate).map(({ cateKey }) => ({ name: String(cateNameMap[cateKey] ?? cateKey), cateKey })),
         }
 
         const series: PieSeriesOption[] = [{
@@ -119,7 +115,7 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
             data: rows.filter(isCate).map(row => ({
                 value: row[dimension], row,
                 selected: row.cateKey === selected?.cateKey,
-                name: cateNameMap[row.cateKey ?? ''],
+                name: String(cateNameMap[row.cateKey ?? ''] ?? ''),
             } satisfies PieSeriesItemOption)),
             emphasis: {
                 itemStyle: {
@@ -139,8 +135,7 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
             ...adaptDonutSeries(donutChart, selected ? '30%' : '55%', selected ? 0.3 : undefined),
         }]
         if (selected) {
-            let mergedRows = (selected?.mergedRows || []).sort((a, b) => (b[dimension] ?? 0) - (a[dimension] ?? 0))
-            mergedRows = mergeDate(mergedRows)
+            let mergedRows = (selected.mergedRows ?? []).sort((a, b) => b[dimension] - a[dimension])
 
             const siteSeries = generateSiteSeriesOption(mergedRows, result, {
                 center: ['60%', '58%'],
@@ -163,7 +158,7 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
             series.push(siteSeries)
         }
 
-        const titleSuffix = this.selectedCache && this.selectedCache !== CATE_NOT_SET_ID ? cateNameMap[this.selectedCache] : undefined
+        const titleSuffix: string | undefined = this.selectedCache && this.selectedCache !== CATE_NOT_SET_ID ? cateNameMap[this.selectedCache] : undefined
         const option: EcOption = {
             title: generateTitleOption(result, titleSuffix),
             legend,

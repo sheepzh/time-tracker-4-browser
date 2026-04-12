@@ -1,11 +1,11 @@
-import { Compilation, Compiler, sources } from '@rspack/core'
+import { Compilation, type Compiler, type RspackPluginInstance, sources } from '@rspack/core'
 
 type GenerateJsonPluginOptions = {
     data: unknown
     outputPath: string
 }
 
-export class GenerateJsonPlugin {
+export class GenerateJsonPlugin implements RspackPluginInstance {
     private options: GenerateJsonPluginOptions
 
     constructor(outputPath: string, data: unknown) {

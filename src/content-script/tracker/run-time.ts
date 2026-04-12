@@ -1,4 +1,6 @@
-import { onRuntimeMessage, trySendMsg2Runtime } from "@api/chrome/runtime"
+import { extractHostname } from '@/util/pattern'
+import { onTabMessage } from "@api/chrome/runtime"
+import { trySendMsg2Runtime } from '@api/sw/common'
 
 class RunTimeTracker {
     private start: number = Date.now()
@@ -14,7 +16,7 @@ class RunTimeTracker {
     init(): void {
         this.fetchSite()
 
-        onRuntimeMessage<void, void>(async req => {
+        onTabMessage(async req => {
             if (req.code === 'siteRunChange') {
                 this.fetchSite()
                 return { code: 'success' }
@@ -26,8 +28,9 @@ class RunTimeTracker {
     }
 
     private async fetchSite() {
-        const site: timer.site.SiteKey | undefined = await trySendMsg2Runtime('cs.getRunSites', this.url)
-        this.host = site?.host
+        const { host } = extractHostname(this.url)
+        const enabled = await trySendMsg2Runtime('site.runEnabled', host)
+        this.host = enabled ? host : undefined
     }
 
     private async collect() {
@@ -39,11 +42,10 @@ class RunTimeTracker {
                 const event: timer.core.Event = {
                     start: lastTime,
                     end: now,
-                    url: this.url,
                     ignoreTabCheck: false,
                     host: this.host,
                 }
-                await trySendMsg2Runtime('cs.trackRunTime', event)
+                await trySendMsg2Runtime('track.runTime', event)
             }
             this.start = now
         } catch {

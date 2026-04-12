@@ -4,7 +4,7 @@ import { removeAllWhitelist } from './whitelist.test'
 
 const USE_HEADLESS_PUPPETEER = !!process.env['USE_HEADLESS_PUPPETEER']
 
-export interface HostProxy {
+type HostProxy = {
     host: string
     target: string
 }
@@ -142,6 +142,6 @@ export const MOCK_HOST = "127.0.0.1:12345"
 
 export const MOCK_URL = "http://" + MOCK_HOST
 
-export const MOCK_HOST_2 = "127.0.0.1:12346"
+const MOCK_HOST_2 = "127.0.0.1:12346"
 
 export const MOCK_URL_2 = "http://" + MOCK_HOST_2

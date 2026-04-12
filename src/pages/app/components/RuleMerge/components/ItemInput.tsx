@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { t } from "@app/locale"
+import { t } from '@app/locale'
 import { Check, Close } from "@element-plus/icons-vue"
-import { useShadow } from "@hooks"
+import { useShadow } from '@hooks'
 import Box from "@pages/components/Box"
 import { LOCAL_HOST_PATTERN } from "@util/constant/remain-host"
 import { tryParseInteger } from "@util/number"

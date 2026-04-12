@@ -1,4 +1,4 @@
-import { t } from "@popup/locale"
+import { t } from '@popup/locale'
 import { POPUP_ROUTES } from "@popup/router"
 import { ElRadioButton, ElRadioGroup } from "element-plus"
 import { computed, defineComponent } from "vue"

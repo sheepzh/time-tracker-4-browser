@@ -5,17 +5,17 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { createLimit, updateLimits } from '@/api/sw/limit'
 import DialogSop from '@app/components/common/DialogSop'
 import { initDialogSopContext } from '@app/components/common/DialogSop/context'
-import { t } from "@app/locale"
-import limitService from "@service/limit-service"
+import { useLimitData } from "@app/components/Limit/context"
+import type { ModifyForm, ModifyInstance } from '@app/components/Limit/types'
+import { t } from '@app/locale'
 import { range } from '@util/array'
 import { computed, defineComponent, ref, toRaw } from "vue"
-import { type ModifyInstance, useLimitData } from "../../context"
 import Step1 from './Step1'
 import Step2 from './Step2'
 import Step3 from './Step3'
-import { ModifyForm } from './types'
 
 type Mode = "create" | "modify"
 
@@ -83,7 +83,7 @@ const _default = defineComponent((_, ctx) => {
                     // Object to array
                     periods: periods?.map(i => ([i?.[0], i?.[1]] satisfies Vector<number>)),
                 } satisfies timer.limit.Rule
-                await limitService.update(saved)
+                await updateLimits([saved])
             } else {
                 const toCreate = {
                     cond, enabled, name, time, weekly, visitTime, weekdays, count, weeklyCount,
@@ -91,7 +91,7 @@ const _default = defineComponent((_, ctx) => {
                     periods: periods?.map(i => ([i?.[0], i?.[1]] satisfies Vector<number>)),
                     allowDelay: false, locked: false,
                 } satisfies MakeOptional<timer.limit.Rule, 'id'>
-                const id = await limitService.create(toCreate)
+                const id = await createLimit(toCreate)
                 saved = { ...toCreate, id }
             }
             refresh?.()

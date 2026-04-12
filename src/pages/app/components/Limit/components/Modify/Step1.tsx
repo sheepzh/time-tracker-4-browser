@@ -1,9 +1,9 @@
 import { useDialogSop } from '@app/components/common/DialogSop/context'
-import { t } from "@app/locale"
-import { useXsState } from '@hooks/useMediaSize'
+import { ModifyForm } from '@app/components/Limit/types'
+import { t } from '@app/locale'
+import { useXsState } from '@hooks'
 import { ElCol, ElForm, ElFormItem, ElInput, ElRow, ElSelect, ElSwitch } from "element-plus"
 import { defineComponent } from "vue"
-import { ModifyForm } from './types'
 
 const _default = defineComponent(() => {
     const { form: data } = useDialogSop<ModifyForm>()

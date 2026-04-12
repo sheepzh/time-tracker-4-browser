@@ -5,6 +5,18 @@
  * https://opensource.org/licenses/MIT
  */
 
+export function groupBy<T, R>(
+    arr: T[],
+    keyFunc: (e: T, idx: number) => string | undefined | null,
+    downstream: (grouped: T[], key: string) => R
+): Record<string, R>
+
+export function groupBy<T, R>(
+    arr: T[],
+    keyFunc: (e: T, idx: number) => number,
+    downstream: (grouped: T[], key: string) => R
+): Record<number, R>
+
 /**
  * Group by
  *
@@ -130,23 +142,4 @@ export function range(len: number): number[] {
         arr.push(i)
     }
     return arr
-}
-
-export function containsAny<T>(arr1: T[], arr2: T[]): boolean {
-    if (!arr1?.length || !arr2?.length) return false
-
-    return !!arr1.find(e => arr2.includes(e))
-}
-
-export function joinAny<T = any>(arr: T[], separator: T): T[] {
-    if (!arr.length) return [separator]
-
-    return arr.reduce<T[]>(
-        (arr, e) => {
-            arr.length && arr.push(separator)
-            arr.push(e)
-            return arr
-        },
-        [],
-    )
 }

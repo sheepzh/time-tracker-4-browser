@@ -4,18 +4,18 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import PopupConfirmButton from "@app/components/common/PopupConfirmButton"
-import { t } from "@app/locale"
+import { deleteSites } from '@/api/sw/site'
+import PopupConfirmButton from '@app/components/common/PopupConfirmButton'
+import { t } from '@app/locale'
 import { Delete } from "@element-plus/icons-vue"
-import { useRequest } from '@hooks'
-import { removeSites } from "@service/site-service"
+import { useManualRequest } from '@hooks'
 import { ElTableColumn, type RenderRowData } from "element-plus"
 import { defineComponent } from "vue"
 import { useSiteManageTable } from '../../useSiteManage'
 
 const OperationColumn = defineComponent<{}>(() => {
     const { refresh } = useSiteManageTable()
-    const { refresh: handleConfirm } = useRequest(removeSites, { onSuccess: refresh })
+    const { refresh: doDelete } = useManualRequest<[timer.site.SiteKey], void>(deleteSites, { onSuccess: refresh })
     return () => (
         <ElTableColumn
             width={150}
@@ -28,7 +28,7 @@ const OperationColumn = defineComponent<{}>(() => {
                         buttonType="danger"
                         buttonText={t(msg => msg.button.delete)}
                         confirmText={t(msg => msg.siteManage.deleteConfirmMsg, { host: row.host })}
-                        onConfirm={() => handleConfirm(row)}
+                        onConfirm={() => doDelete(row)}
                     />
                 )}
         />

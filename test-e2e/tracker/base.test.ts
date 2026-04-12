@@ -5,7 +5,7 @@ import { createWhitelist } from "../common/whitelist.test"
 let context: LaunchContext
 
 describe('Tracking', () => {
-    beforeEach(async () => context = await launchBrowser())
+    beforeEach(async () => { context = await launchBrowser() })
 
     afterEach(() => context.close())
 

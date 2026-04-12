@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getRegularTextColor } from "@pages/util/style"
+import { getRegularTextColor } from '@pages/util/style'
 import { formatTimeYMD, getDayLength, isSameDay } from "@util/time"
 import { type TitleComponentOption } from "echarts/components"
 

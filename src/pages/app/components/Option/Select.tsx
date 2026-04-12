@@ -1,6 +1,6 @@
 import { ElCard, ElOption, ElSelect } from "element-plus"
 import { defineComponent, h, useSlots } from "vue"
-import ContentContainer from "../common/ContentContainer"
+import ContentContainer from '../common/ContentContainer'
 import { useCategory } from "./useCategory"
 
 const _default = defineComponent(() => {

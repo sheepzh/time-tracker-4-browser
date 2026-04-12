@@ -1,6 +1,6 @@
 import { useLocalStorage, useProvide, useProvider, useRequest } from "@hooks"
-import { selectSitePage, type SiteQuery } from "@service/stat-service"
-import { MILL_PER_DAY } from "@util/time"
+import { selectSitePage } from "@api/sw/stat"
+import { MILL_PER_DAY, cvtDateRange2Str } from "@util/time"
 import { reactive, toRaw, watch, type Reactive, type Ref } from "vue"
 
 export type BizOption = {
@@ -35,14 +35,15 @@ export const initProvider = () => {
     const { data: value } = useRequest(async () => {
         const now = new Date()
         const startTime: Date = new Date(now.getTime() - MILL_PER_DAY * filter.dayNum)
-        const query: SiteQuery = {
-            date: [startTime, now],
+        const query: timer.stat.SiteQuery = {
+            date: cvtDateRange2Str([startTime, now]),
             sortKey: "time",
             sortDirection: 'DESC',
             mergeDate: true,
         }
         const SIZE = filter.topK
-        const top = (await selectSitePage(query, { num: 1, size: SIZE })).list
+        const pageResult = await selectSitePage({ num: 1, size: SIZE, ...query })
+        const top = pageResult?.list ?? []
         const data: BizOption[] = top.map(({ time, siteKey, alias }) => ({
             name: alias ?? siteKey?.host ?? '',
             host: siteKey?.host ?? '',

@@ -115,23 +115,29 @@ export function distinctSites(list: timer.site.SiteKey[]): timer.site.SiteKey[] 
 }
 
 export class SiteMap<T> {
-    private innerMap: Record<string, [timer.site.SiteKey, T | undefined]>
+    private innerMap: Record<string, [timer.site.SiteKey, T]>
 
     constructor() {
         this.innerMap = {}
     }
 
-    public put(site: timer.site.SiteKey, t: T | undefined): void {
+    static identify<T extends timer.site.SiteKey>(data: T[]): SiteMap<T> {
+        const map = new SiteMap<T>()
+        data.forEach(item => map.put(item, item))
+        return map
+    }
+
+    public put(site: timer.site.SiteKey, t: T): void {
         const key = identifySiteKey(site)
         this.innerMap[key] = [site, t]
     }
 
-    public get(site: timer.site.SiteKey): T | undefined {
+    public get(site: timer.site.SiteKey): T | null {
         const key = identifySiteKey(site)
-        return this.innerMap[key]?.[1]
+        return this.innerMap[key]?.[1] ?? null
     }
 
-    public map<R>(mapper: (key: timer.site.SiteKey, value: T | undefined) => R): R[] {
+    public map<R>(mapper: (key: timer.site.SiteKey, value: T) => R): R[] {
         return Object.values(this.innerMap).map(([site, val]) => mapper?.(site, val))
     }
 
@@ -143,7 +149,7 @@ export class SiteMap<T> {
         return Object.values(this.innerMap).map(v => v[0])
     }
 
-    public forEach(func: (k: timer.site.SiteKey, v: T | undefined, idx: number) => void) {
+    public forEach(func: (k: timer.site.SiteKey, v: T, idx: number) => void) {
         if (!func) return
         Object.values(this.innerMap).forEach(([k, v], idx) => func(k, v, idx))
     }

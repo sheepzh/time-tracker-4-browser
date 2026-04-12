@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { useXsState } from '@hooks/useMediaSize'
+import { useXsState } from '@hooks'
 import Flex from "@pages/components/Flex"
 import { computed, defineComponent } from "vue"
 import ChartTitle from "../../ChartTitle"
