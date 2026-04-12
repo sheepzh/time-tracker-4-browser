@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { createLimit, updateLimits } from '@/api/sw/limit'
+import { addLimit, updateLimits } from '@/api/sw/limit'
 import DialogSop from '@app/components/common/DialogSop'
 import { initDialogSopContext } from '@app/components/common/DialogSop/context'
 import { useLimitData } from "@app/components/Limit/context"
@@ -91,7 +91,7 @@ const _default = defineComponent((_, ctx) => {
                     periods: periods?.map(i => ([i?.[0], i?.[1]] satisfies Vector<number>)),
                     allowDelay: false, locked: false,
                 } satisfies MakeOptional<timer.limit.Rule, 'id'>
-                const id = await createLimit(toCreate)
+                const id = await addLimit(toCreate)
                 saved = { ...toCreate, id }
             }
             refresh?.()

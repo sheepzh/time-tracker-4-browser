@@ -1,4 +1,4 @@
-import { allCates } from "@api/sw/cate"
+import { listAllCategories } from "@api/sw/cate"
 import { EchartsWrapper } from '@hooks'
 import { getInfoColor, getPrimaryTextColor } from "@pages/util/style"
 import { t } from '@popup/locale'
@@ -90,7 +90,7 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
         const textColor = getPrimaryTextColor()
         const inactiveColor = getInfoColor()
 
-        const cates = await allCates() ?? []
+        const cates = await listAllCategories()
         const cateNameMap = toMap(cates, c => c.id, c => c.name)
         cateNameMap[CATE_NOT_SET_ID] = t(msg => msg.shared.cate.notSet)
 

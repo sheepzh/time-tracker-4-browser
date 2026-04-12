@@ -7,7 +7,7 @@
 
 import { type AppAnalysisQuery } from '@/shared/route'
 import { extractHostname } from '@/util/pattern'
-import { selectCate, selectSite } from "@api/sw/stat"
+import { listCateStats, listSiteStats } from "@api/sw/stat"
 import { useLocalStorage, useProvide, useProvider, useRequest } from "@hooks"
 import { ref, watch, type Ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
@@ -35,10 +35,10 @@ async function queryRows(target: AnalysisTarget | undefined): Promise<(timer.sta
     if (!key) return []
 
     if (type === 'cate') {
-        return (await selectCate({ cateIds: [key], sortKey: 'date' })) ?? []
+        return await listCateStats({ cateIds: [key], sortKey: 'date' })
     } else if (type === 'site') {
-        const { host, type: siteType } = key ?? {}
-        return (await selectSite({ host, mergeHost: siteType === 'merged', sortKey: 'date' })) ?? []
+        const { host, type: siteType } = key
+        return await listSiteStats({ host, mergeHost: siteType === 'merged', sortKey: 'date' })
     } else {
         // Not supported yet
         return []

@@ -1,5 +1,5 @@
 import { getWeekStartTime } from "@api/sw/option"
-import { selectCate, selectGroup, selectSite } from '@api/sw/stat'
+import { listCateStats, listGroupStats, listSiteStats } from '@api/sw/stat'
 import { REPORT_ROUTE, type ReportQuery } from "@app/router/constants"
 import type { PopupDuration, PopupQuery } from "@popup/types"
 import { isRemainHost } from "@util/constant/remain-host"
@@ -28,11 +28,11 @@ export const queryRows = async (param: PopupQuery): Promise<[rows: timer.stat.Ro
     const sortDirection: timer.common.SortDirection = 'DESC'
     let rows: timer.stat.Row[]
     if (mergeMethod === 'cate') {
-        rows = await selectCate({ date, mergeDate: true, sortKey, sortDirection })
+        rows = await listCateStats({ date, mergeDate: true, sortKey, sortDirection })
     } else if (mergeMethod === 'group') {
-        rows = await selectGroup({ date, mergeDate: true, sortKey, sortDirection })
+        rows = await listGroupStats({ date, mergeDate: true, sortKey, sortDirection })
     } else {
-        rows = await selectSite({
+        rows = await listSiteStats({
             date, mergeDate: true,
             mergeHost: mergeMethod === 'domain',
             sortKey, sortDirection,

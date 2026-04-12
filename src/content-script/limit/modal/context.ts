@@ -1,4 +1,4 @@
-import { selectLimits } from "@api/sw/limit"
+import { listLimits } from "@api/sw/limit"
 import { useRequest, useWindowFocus } from '@hooks'
 import { type App, inject, provide, ref, type ShallowRef, watch } from "vue"
 import { ModalBridge } from './bridge'
@@ -49,7 +49,7 @@ export const provideRule = () => {
         if (!windowFocus.value) return undefined
         const reasonId = reason.value?.id
         if (!reasonId) return undefined
-        const rules = await selectLimits({ id: reasonId })
+        const rules = await listLimits({ id: reasonId })
         return rules[0] ?? undefined
     })
 

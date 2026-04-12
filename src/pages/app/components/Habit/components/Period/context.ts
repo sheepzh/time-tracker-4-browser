@@ -6,7 +6,7 @@
  */
 
 import { keyOf, MAX_PERIOD_ORDER } from "@/background/util/period"
-import { selectPeriods } from '@api/sw/period'
+import { listPeriods } from '@api/sw/period'
 import { useLocalStorage, useProvide, useProvider, useRequest } from '@hooks'
 import { getDayLength, MILL_PER_DAY } from "@util/time"
 import { computed, reactive, toRaw, watch, type Reactive, type Ref } from "vue"
@@ -55,8 +55,8 @@ export const initProvider = () => {
         const { curr: currRange, prev: prevRange } = periodRange.value || {}
         const periodSize = filter.periodSize
         const [curr, prev] = await Promise.all([
-            selectPeriods({ range: currRange, size: periodSize }),
-            selectPeriods({ range: prevRange, size: periodSize }),
+            listPeriods({ range: currRange, size: periodSize }),
+            listPeriods({ range: prevRange, size: periodSize }),
         ])
         return { curr, prev }
     }, {

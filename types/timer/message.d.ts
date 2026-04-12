@@ -56,9 +56,10 @@ declare namespace timer.mq {
         & _MakeRegistry<'option.weekStartTime', number, number>
         // Meta
         & _MakeRegistry<'meta.installTs', undefined, number>
+        & _MakeRegistry<'meta.usedStorage', undefined, common.StorageUsage>
         // Site
         & _MakeRegistry<'site.runEnabled', string, boolean>
-        & _MakeRegistry<'site.all', site.Query | undefined, site.SiteInfo[]>
+        & _MakeRegistry<'site.list', site.Query | undefined, site.SiteInfo[]>
         & _MakeRegistry<'site.page', site.PageQuery | undefined, common.PageResult<site.SiteInfo>>
         & _MakeRegistry<'site.add', site.SiteInfo, common.Result<void>>
         & _MakeRegistry<'site.delete', site.SiteKey[]>
@@ -73,16 +74,16 @@ declare namespace timer.mq {
         & _MakeRegistry<'limit.list', limit.Query | undefined, limit.Item[]>
         & _MakeRegistry<'limit.delete', number[]>
         & _MakeRegistry<'limit.update', limit.Rule[]>
-        & _MakeRegistry<'limit.create', Omit<limit.Rule, 'id'>, number>
+        & _MakeRegistry<'limit.add', Omit<limit.Rule, 'id'>, number>
         & _MakeRegistry<'limit.hitVisit', limit.Item, boolean>
         & _MakeRegistry<'limit.delay', string>
         // Merge
         & _MakeRegistry<'merge.all', undefined, merge.Rule[]>
-        & _MakeRegistry<'merge.remove', string>
+        & _MakeRegistry<'merge.delete', string>
         & _MakeRegistry<'merge.add', merge.Rule>
         // Whitelist
         & _MakeRegistry<'whitelist.all', undefined, string[]>
-        & _MakeRegistry<'whitelist.add' | 'whitelist.remove', string>
+        & _MakeRegistry<'whitelist.add' | 'whitelist.delete', string>
         & _MakeRegistry<'whitelist.contain', { host: string; url: string }, boolean>
         // Backup
         & _MakeRegistry<'backup.sync' | 'backup.checkAuth', undefined, string | undefined>
@@ -99,7 +100,6 @@ declare namespace timer.mq {
         & _MakeRegistry<'immigration.importOther', imported.ProcessQuery>
         & _MakeRegistry<'immigration.import', any>
         & _MakeRegistry<'immigration.export', undefined, backup.ExportData>
-        & _MakeRegistry<'memory.getUsedStorage', undefined, common.StorageUsage>
 
     type ReqCode = keyof _HandlerRegistry
 

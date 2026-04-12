@@ -4,8 +4,8 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { saveAlias } from '@api/sw/site'
-import { selectCate, selectGroup, selectSite } from "@api/sw/stat"
+import { changeSiteAlias } from '@api/sw/site'
+import { listCateStats, listGroupStats, listSiteStats } from "@api/sw/stat"
 import ContentCard from '@app/components/common/ContentCard'
 import Editable from '@app/components/common/Editable'
 import Pagination from '@app/components/common/Pagination'
@@ -33,10 +33,10 @@ import TimeColumn from "./columns/TimeColumn"
 import VisitColumn from "./columns/VisitColumn"
 
 async function handleAliasChange(key: timer.site.SiteKey, newAlias: string | undefined, data: timer.stat.Row[]) {
-    newAlias = await saveAlias(key, newAlias)
-    data?.filter(isSite)
-        ?.filter(item => siteEqual(item.siteKey, key))
-        ?.forEach(item => item.alias = newAlias)
+    newAlias = await changeSiteAlias(key, newAlias)
+    data.filter(isSite)
+        .filter(item => siteEqual(item.siteKey, key))
+        .forEach(item => item.alias = newAlias)
 }
 
 type ColumnVisible = Record<'index' | 'date' | 'site' | 'cate' | 'group', boolean>
@@ -72,22 +72,22 @@ const _default = defineComponent((_, ctx) => {
         const date = cvtDateRange2Str(dateRange)
         let rows: timer.stat.Row[] = []
         if (siteMerge === 'group') {
-            rows = await selectGroup({ date, query })
+            rows = await listGroupStats({ date, query })
         } else if (siteMerge === 'cate') {
-            rows = await selectCate({ date, query, cateIds, inclusiveRemote })
+            rows = await listCateStats({ date, query, cateIds, inclusiveRemote })
         } else {
             const param: timer.stat.SiteQuery = {
                 date, query, cateIds, inclusiveRemote,
                 mergeHost: siteMerge === 'domain',
             }
-            rows = await selectSite(param)
+            rows = await listSiteStats(param)
         }
         const visit = sum(rows.map(e => e.time))
         const focus = sum(rows.map(e => e.focus))
         return { visit, focus }
     }, { defaultValue: { visit: 0, focus: 0 } })
 
-    const runColVisible = computed(() => !!data.value?.list?.find(r => r.run))
+    const runColVisible = computed(() => data.value.list.some(r => r.run))
     // Query data if document become visible
     const docVisible = useDocumentVisibility()
     watch(docVisible, () => docVisible.value && refresh())
@@ -111,7 +111,7 @@ const _default = defineComponent((_, ctx) => {
                 <Flex flex={1} height={0}>
                     <ElTable
                         ref={table}
-                        data={data.value?.list}
+                        data={data.value.list}
                         border fit highlightCurrentRow
                         height="100%"
                         defaultSort={sort.value}
@@ -129,7 +129,7 @@ const _default = defineComponent((_, ctx) => {
                                 v-slots={({ row }: { row: timer.stat.Row }) => (
                                     <Editable
                                         modelValue={getAlias(row)}
-                                        onChange={newAlias => 'siteKey' in row && handleAliasChange(row.siteKey, newAlias, data.value?.list ?? [])}
+                                        onChange={newAlias => 'siteKey' in row && handleAliasChange(row.siteKey, newAlias, data.value.list)}
                                     />
                                 )}
                             />
@@ -162,7 +162,7 @@ const _default = defineComponent((_, ctx) => {
                     <Pagination
                         disabled={loading.value}
                         defaultValue={page.value}
-                        total={data.value?.total || 0}
+                        total={data.value.total}
                         onChange={setPage}
                     />
                 </Flex>

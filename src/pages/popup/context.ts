@@ -1,10 +1,10 @@
-import { allCates } from '@/api/sw/cate'
+import { listAllCategories } from '@/api/sw/cate'
 import { isDarkMode, processDarkMode } from "@/pages/util/dark-mode"
 import { getOption, setOption } from "@api/sw/option"
 import { useLocalStorage, useProvide, useProvider, useRequest } from "@hooks"
 import { toMap } from "@util/array"
 import { CATE_NOT_SET_ID } from "@util/site"
-import { reactive, type Reactive, ref, type ShallowRef, toRaw, watch } from "vue"
+import { reactive, ref, type ShallowRef, toRaw, watch } from "vue"
 import { t } from "./locale"
 import type { PopupOption, PopupQuery } from './types'
 
@@ -12,8 +12,8 @@ type PopupContextValue = {
     reload: () => void
     darkMode: ShallowRef<boolean>
     setDarkMode: (val: boolean) => void
-    query: Reactive<PopupQuery>
-    option: Reactive<PopupOption>
+    query: PopupQuery
+    option: PopupOption
     cateNameMap: ShallowRef<Record<number, string>>
 }
 
@@ -34,8 +34,8 @@ export const initPopupContext = (): ShallowRef<number> => {
     }
 
     const { data: cateNameMap } = useRequest(async () => {
-        const categories = await allCates()
-        const result = toMap(categories ?? [], c => c.id, c => c.name)
+        const categories = await listAllCategories()
+        const result = toMap(categories, c => c.id, c => c.name)
         result[CATE_NOT_SET_ID] = t(msg => msg.shared.cate.notSet)
         return result
     }, { defaultValue: {} })

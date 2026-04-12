@@ -7,7 +7,7 @@
 
 import { getWeekStartTime } from '@/api/sw/option'
 import { createTabAfterCurrent } from "@api/chrome/tab"
-import { selectSite } from '@api/sw/stat'
+import { listSiteStats } from '@api/sw/stat'
 import ChartTitle from '@app/components/Dashboard/ChartTitle'
 import { t } from "@app/locale"
 import { REPORT_ROUTE, type ReportQuery } from '@app/router/constants'
@@ -38,12 +38,8 @@ const fetchData = async (): Promise<Result> => {
     const endTime = new Date()
     const yearAgo = endTime.getTime() - MILL_PER_DAY * 365
     const startTime = await getWeekStartTime(yearAgo)
-    const items = await selectSite({ date: cvtDateRange2Str([startTime, endTime]), sortKey: 'date' })
-    const value = groupBy(
-        items,
-        i => i.date,
-        list => sum(list?.map(i => i.focus ?? 0))
-    ) as { [date: string]: number }
+    const items = await listSiteStats({ date: cvtDateRange2Str([startTime, endTime]), sortKey: 'date' })
+    const value = groupBy(items, i => i.date, list => sum(list.map(i => i.focus)))
     return { value, startTime, endTime, yearAgo: new Date(yearAgo) }
 }
 

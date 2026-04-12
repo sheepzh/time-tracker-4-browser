@@ -1,4 +1,4 @@
-import { selectSite } from "@api/sw/stat"
+import { listSiteStats } from "@api/sw/stat"
 import { useRequest } from "@hooks"
 import Flex from '@pages/components/Flex'
 import { formatTime, formatTimeYMD } from "@util/time"
@@ -12,7 +12,7 @@ const _default = defineComponent<{}>(() => {
     const date = ref(new Date())
     const query = ref('')
 
-    const { data, refresh, loading } = useRequest(() => selectSite({
+    const { data, refresh, loading } = useRequest(() => listSiteStats({
         date: formatTimeYMD(date.value),
         query: query.value,
         sortKey: 'focus',

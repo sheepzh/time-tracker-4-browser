@@ -1,4 +1,4 @@
-import { listTimeline } from '@/api/sw/timeline'
+import { sendMsg2Runtime } from '@/api/sw/common'
 import { getAllDatesBetween, getStartOfDay, MILL_PER_DAY } from '@/util/time'
 import { useProvide, useProvider, useRequest, useState } from '@hooks'
 import { type ShallowRef } from 'vue'
@@ -23,7 +23,7 @@ export const initTimelineContext = () => {
     const dates = getAllDatesBetween(new Date(start), new Date(), formatYAxis)
     const [merge, setMerge] = useState<timer.timeline.MergeMethod>('none')
     const { data: activities } = useRequest(
-        () => listTimeline({ start, merge: merge.value }),
+        () => sendMsg2Runtime('timeline.list', { start, merge: merge.value }),
         {
             deps: [merge],
             defaultValue: [],

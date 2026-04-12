@@ -1,13 +1,7 @@
 import { sendMsg2Runtime } from "./common"
 
-export function selectAllMergeRules() {
-    return sendMsg2Runtime('merge.all')
-}
+export const listAllMergeRules = () => sendMsg2Runtime('merge.all')
 
-export function removeMergeRule(origin: string) {
-    return sendMsg2Runtime('merge.remove', origin)
-}
+export const deleteMergeRule = (origin: string) => sendMsg2Runtime('merge.delete', origin)
 
-export function addMergeRule(rule: timer.merge.Rule) {
-    return sendMsg2Runtime('merge.add', rule)
-}
+export const addMergeRule = (rule: timer.merge.Rule) => sendMsg2Runtime('merge.add', rule)

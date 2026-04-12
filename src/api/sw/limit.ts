@@ -1,17 +1,9 @@
 import { sendMsg2Runtime } from "./common"
 
-export function selectLimits(query?: timer.limit.Query) {
-    return sendMsg2Runtime('limit.list', query)
-}
+export const listLimits = (query?: timer.limit.Query) => sendMsg2Runtime('limit.list', query)
 
-export function deleteLimits(ids: number[]) {
-    return sendMsg2Runtime('limit.delete', ids)
-}
+export const deleteLimits = (ids: number[]) => sendMsg2Runtime('limit.delete', ids)
 
-export function updateLimits(rules: timer.limit.Rule[]) {
-    return sendMsg2Runtime('limit.update', rules)
-}
+export const updateLimits = (rules: timer.limit.Rule[]) => sendMsg2Runtime('limit.update', rules)
 
-export function createLimit(rule: Omit<timer.limit.Rule, 'id'>) {
-    return sendMsg2Runtime('limit.create', rule)
-}
+export const addLimit = (rule: Omit<timer.limit.Rule, 'id'>) => sendMsg2Runtime('limit.add', rule)

@@ -1,5 +1,7 @@
 import { getGroup } from "@api/chrome/tabGroups"
-import { batchDelete, countGroupByIds, countSiteByHosts, deleteSiteByGroup, deleteSiteByHost } from "@api/sw/stat"
+import {
+    batchDeleteStats, countGroupStatsByIds, countSiteStatsByHosts, deleteSiteStatByGroup, deleteSiteStatByHost,
+} from "@api/sw/stat"
 import { type I18nKey, t } from '@app/locale'
 import { DeleteFilled } from "@element-plus/icons-vue"
 import { isGroup, isNormalSite, isSite } from "@util/stat"
@@ -31,8 +33,8 @@ async function computeBatchDeleteMsg(selected: timer.stat.Row[], mergeDate: bool
         // All the items
         const [start, end] = dateRange instanceof Date ? [dateRange,] : dateRange ?? []
         const date: [string?, string?] = [start && formatTimeYMD(start), end && formatTimeYMD(end)]
-        const siteCount = hosts.length ? await countSiteByHosts(hosts, date) : 0
-        const groupCount = groupIds.length ? await countGroupByIds(groupIds, date) : 0
+        const siteCount = hosts.length ? await countSiteStatsByHosts(hosts, date) : 0
+        const groupCount = groupIds.length ? await countGroupStatsByIds(groupIds, date) : 0
         count2Delete = siteCount + groupCount
     }
     const i18nParam: Record<string, string | number | undefined> = {
@@ -107,12 +109,12 @@ async function deleteBatch(selected: timer.stat.Row[], mergeDate: boolean, dateR
         // Delete according to the date range
         const date = cvtDateRange2Str(dateRange)
         for (const row of selected) {
-            isNormalSite(row) && await deleteSiteByHost(row.siteKey.host, date)
-            isGroup(row) && await deleteSiteByGroup(row.groupKey, date)
+            isNormalSite(row) && await deleteSiteStatByHost(row.siteKey.host, date)
+            isGroup(row) && await deleteSiteStatByGroup(row.groupKey, date)
         }
     } else {
         // If not merge date, batch delete
-        await batchDelete(selected)
+        await batchDeleteStats(selected)
     }
 }
 

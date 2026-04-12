@@ -1,13 +1,13 @@
 import { type ReportQuery } from '@app/router/constants'
 import { useLocalStorage, useProvide, useProvider } from '@hooks'
-import { reactive, type Reactive, ref, type Ref, toRaw, watch } from "vue"
+import { reactive, ref, type ShallowRef, toRaw, watch } from "vue"
 import { type RouteLocation, type Router, useRoute, useRouter } from "vue-router"
 import type { DisplayComponent, ReportFilterOption, ReportSort } from "./types"
 
 type Context = {
-    filter: Reactive<ReportFilterOption>
-    sort: Ref<ReportSort>
-    comp: Ref<DisplayComponent | undefined>
+    filter: ReportFilterOption
+    sort: ShallowRef<ReportSort>
+    comp: ShallowRef<DisplayComponent | undefined>
 }
 
 const NAMESPACE = 'report'
@@ -90,8 +90,8 @@ export const initReportContext = () => {
     return context
 }
 
-export const useReportFilter = (): Reactive<ReportFilterOption> => useProvider<Context, 'filter'>(NAMESPACE, "filter").filter
+export const useReportFilter = (): ReportFilterOption => useProvider<Context, 'filter'>(NAMESPACE, "filter").filter
 
-export const useReportSort = (): Ref<ReportSort> => useProvider<Context, 'sort'>(NAMESPACE, 'sort').sort
+export const useReportSort = (): ShallowRef<ReportSort> => useProvider<Context, 'sort'>(NAMESPACE, 'sort').sort
 
 export const useReportComponent = () => useProvider<Context, 'comp'>(NAMESPACE, 'comp').comp

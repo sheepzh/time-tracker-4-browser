@@ -8,7 +8,7 @@
 import { log } from '@/common/logger'
 import { onRuntimeMessage } from "@api/chrome/runtime"
 import cateDatabase from './database/cate-database'
-import { getUsedStorage } from "./database/memory-detector"
+import { getUsedStorage } from './database/memory-detector'
 import mergeRuleDatabase from "./database/merge-rule-database"
 import siteDatabase from './database/site-database'
 import statDatabase from './database/stat-database'
@@ -78,7 +78,7 @@ class MessageDispatcher {
             .register('item.batch', keys => statDatabase.batchSelect(keys))
             .register('stat.today', getTodayResult)
             // Site management
-            .register('site.all', param => siteDatabase.select(param))
+            .register('site.list', param => siteDatabase.select(param))
             .register('site.page', selectSitePage)
             .register('site.add', addSite)
             .register('site.delete', removeSites)
@@ -104,14 +104,15 @@ class MessageDispatcher {
             .register('cate.delete', id => cateDatabase.delete(id))
             // Meta information
             .register('meta.installTs', getInstallTime)
+            .register('meta.usedStorage', getUsedStorage)
             // Whitelist & Merge Rule
             .register('whitelist.contain', ({ host, url }) => whitelistHolder.contains(host, url))
             .register('whitelist.all', () => whitelistHolder.all())
             .register('whitelist.add', white => whitelistHolder.add(white))
-            .register('whitelist.remove', white => whitelistHolder.remove(white))
+            .register('whitelist.delete', white => whitelistHolder.remove(white))
             // Merge rule
             .register('merge.all', () => mergeRuleDatabase.selectAll())
-            .register('merge.remove', origin => mergeRuleDatabase.remove(origin))
+            .register('merge.delete', origin => mergeRuleDatabase.remove(origin))
             .register('merge.add', rule => mergeRuleDatabase.add(rule))
             // Backup
             .register('backup.sync', () => backupProcessor.syncData())
@@ -129,7 +130,6 @@ class MessageDispatcher {
             .register('immigration.import', importData)
             .register('immigration.export', exportData)
             .register('immigration.importOther', importOther)
-            .register('memory.getUsedStorage', getUsedStorage)
     }
 
     private async handle(message: timer.mq.Request<timer.mq.ReqCode>, sender: ChromeMessageSender): Promise<timer.mq.Response<timer.mq.ReqCode>> {

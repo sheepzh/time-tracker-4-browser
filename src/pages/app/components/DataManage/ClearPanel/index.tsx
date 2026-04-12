@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { batchDeleteStats, listGroupStats, listSiteStats } from "@api/sw/stat"
 import { t } from "@app/locale"
-import { batchDelete, selectGroup, selectSite } from "@api/sw/stat"
 import { cvtDateRange2Str, getBirthday, MILL_PER_DAY, MILL_PER_SECOND } from "@util/time"
 import { ElCard, ElMessage, ElMessageBox } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
@@ -87,10 +87,9 @@ const _default = defineComponent(() => {
             ElMessage.warning(t(msg => msg.dataManage.paramError))
             return
         }
-        const [siteRows, groupRows] = await Promise.all([
-            selectSite(q),
-            selectGroup(q),
-        ])
+        const siteRows = await listSiteStats(q)
+        const groupRows = await listGroupStats(q)
+
         const count = siteRows.length + groupRows.length
         if (!count) return
 
@@ -99,7 +98,7 @@ const _default = defineComponent(() => {
             cancelButtonText: t(msg => msg.button.cancel),
             confirmButtonText: t(msg => msg.button.confirm),
         }).then(async () => {
-            await batchDelete([...siteRows, ...groupRows])
+            await batchDeleteStats([...siteRows, ...groupRows])
             ElMessage.success(t(msg => msg.operation.successMsg))
             refreshMemory?.()
         }).catch(() => { })

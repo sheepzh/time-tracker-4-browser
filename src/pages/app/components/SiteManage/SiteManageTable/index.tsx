@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { changeSiteRun, removeIconUrl } from '@api/sw/site'
+import { changeSiteRun, deleteSiteIcon } from '@api/sw/site'
 import Category from '@app/components/common/Category'
 import HostAlert from '@app/components/common/HostAlert'
 import { t } from '@app/locale'
@@ -20,7 +20,7 @@ const _default = defineComponent<{}>(() => {
     const { setSelected, refresh, pagination } = useSiteManageTable()
 
     const handleIconError = async (row: timer.site.SiteInfo) => {
-        await removeIconUrl(row)
+        await deleteSiteIcon(row)
         row.iconUrl = undefined
     }
 

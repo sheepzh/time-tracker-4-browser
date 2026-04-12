@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 import { type AppAnalysisQuery } from '@/shared/route'
-import { addWhitelist, listWhitelist, removeWhitelist } from "@api/sw/whitelist"
+import { addWhitelist, deleteWhitelist, listWhitelist } from "@api/sw/whitelist"
 import PopupConfirmButton from '@app/components/common/PopupConfirmButton'
 import { computeDeleteConfirmMsg, handleDelete } from '@app/components/Report/common'
 import { useReportFilter } from '@app/components/Report/context'
@@ -67,7 +67,7 @@ const _default = defineComponent<Props>(({ onDelete }) => {
         ElMessage.success(t(msg => msg.operation.successMsg))
     }
     const { refresh: onAddWhitelist } = useManualRequest(addWhitelist, { onSuccess: onWhitelistSuccess })
-    const { refresh: onRemoveWhitelist } = useManualRequest(removeWhitelist, { onSuccess: onWhitelistSuccess })
+    const { refresh: onRemoveWhitelist } = useManualRequest(deleteWhitelist, { onSuccess: onWhitelistSuccess })
 
     const jump2Analysis = (row: timer.stat.Row) => {
         let query: AppAnalysisQuery

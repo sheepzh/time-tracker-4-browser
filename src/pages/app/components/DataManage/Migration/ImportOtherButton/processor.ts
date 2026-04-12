@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { batchGet } from '@/api/sw/item'
+import { sendMsg2Runtime } from '@/api/sw/common'
 import { AUTHOR_EMAIL } from "@/package"
 import { mergeWith } from '@/util/stat'
 import { IS_WINDOWS } from "@util/constant/environment"
@@ -29,7 +29,7 @@ export async function parseFile(ext: OtherExtension, file: File): Promise<timer.
         rows = await parseHistoryTrendsUnlimited(file)
         time = true
     }
-    const exists = await batchGet(rows)
+    const exists = await sendMsg2Runtime('item.batch', rows)
     await mergeWith(rows, exists, (r, exist) => { r.exist = exist })
     return { rows, focus, time }
 }

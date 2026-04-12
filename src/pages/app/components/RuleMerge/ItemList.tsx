@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { addMergeRule, removeMergeRule, selectAllMergeRules } from "@api/sw/merge"
+import { addMergeRule, deleteMergeRule, listAllMergeRules } from "@api/sw/merge"
 import { t } from '@app/locale'
 import { useManualRequest, useRequest } from '@hooks'
 import Flex from "@pages/components/Flex"
@@ -15,17 +15,14 @@ import AddButton from './components/AddButton'
 import Item, { type ItemInstance } from './components/Item'
 
 const _default = defineComponent(() => {
-    const { data: items, refresh } = useRequest(() => selectAllMergeRules())
+    const { data: items, refresh } = useRequest(listAllMergeRules, { defaultValue: [] })
     const handleSucc = () => {
         ElMessage.success(t(msg => msg.operation.successMsg))
         refresh()
     }
-    const { refreshAsync: remove } = useManualRequest(
-        (origin: string) => removeMergeRule(origin),
-        { onSuccess: handleSucc },
-    )
+    const { refreshAsync: remove } = useManualRequest(deleteMergeRule, { onSuccess: handleSucc })
     const { refresh: update } = useManualRequest(async (origin: string, merged: string | number) => {
-        await removeMergeRule(origin)
+        await deleteMergeRule(origin)
         await addMergeRule({ origin, merged })
     }, { onSuccess: handleSucc })
 
@@ -38,7 +35,7 @@ const _default = defineComponent(() => {
     }
 
     async function handleChange(origin: string, merged: string | number, index: number): Promise<void> {
-        const hasDuplicate = items.value?.find((o, i) => o.origin === origin && i !== index)
+        const hasDuplicate = items.value.some((o, i) => o.origin === origin && i !== index)
         if (hasDuplicate) {
             ElMessage.warning(t(msg => msg.mergeRule.duplicateMsg, { origin }))
             itemRefs.value?.[index]?.forceEdit?.()
@@ -53,7 +50,7 @@ const _default = defineComponent(() => {
     )
 
     const handleAdd = async (origin: string, merged: string | number): Promise<boolean> => {
-        const alreadyExist = !!items.value?.find(item => item.origin === origin)
+        const alreadyExist = items.value.some(item => item.origin === origin)
         if (alreadyExist) {
             ElMessage.warning(t(msg => msg.mergeRule.duplicateMsg, { origin }))
             return false
@@ -71,7 +68,7 @@ const _default = defineComponent(() => {
 
     return () => (
         <Flex gap={10} wrap justify="space-between">
-            {items.value?.map((item, idx) =>
+            {items.value.map((item, idx) =>
                 <Item
                     ref={() => itemRefs.value[idx]}
                     origin={item.origin}

@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { addWhitelist, listWhitelist, removeWhitelist } from "@api/sw/whitelist"
+import { addWhitelist, deleteWhitelist, listWhitelist } from "@api/sw/whitelist"
 import { t } from '@app/locale'
 import Flex from "@pages/components/Flex"
 import { ElMessage, ElMessageBox } from "element-plus"
@@ -14,16 +14,16 @@ import WhiteItem from './WhiteItem'
 
 const _default = defineComponent(() => {
     const whitelist = reactive<string[]>([])
-    onBeforeMount(() => listWhitelist().then(l => whitelist.push(...(l ?? []))))
+    onBeforeMount(() => listWhitelist().then(l => whitelist.push(...l)))
 
     const handleChanged = async (val: string, index: number): Promise<boolean> => {
-        const duplicate = whitelist.find((white, i) => white === val && i !== index)
+        const duplicate = whitelist.some((white, i) => white === val && i !== index)
         if (duplicate) {
             ElMessage.warning(t(msg => msg.whitelist.duplicateMsg))
             // Reopen
             return false
         }
-        await removeWhitelist(whitelist[index])
+        await deleteWhitelist(whitelist[index])
         await addWhitelist(val)
         whitelist[index] = val
         ElMessage.success(t(msg => msg.operation.successMsg))
@@ -54,7 +54,7 @@ const _default = defineComponent(() => {
         const confirmTitle = t(msg => msg.operation.confirmTitle)
         ElMessageBox
             .confirm(confirmMsg, confirmTitle, { dangerouslyUseHTMLString: true })
-            .then(() => removeWhitelist(whiteItem))
+            .then(() => deleteWhitelist(whiteItem))
             .then(() => {
                 ElMessage.success(t(msg => msg.operation.successMsg))
                 const index = whitelist.indexOf(whiteItem)

@@ -1,43 +1,31 @@
 import { sendMsg2Runtime } from "./common"
 
-export function selectAllSites(param?: timer.site.Query) {
-    return sendMsg2Runtime('site.all', param)
-}
+export const listSites = (param?: timer.site.Query) => sendMsg2Runtime('site.list', param)
 
-export function selectSitePage(param?: timer.site.Query, page?: timer.common.PageQuery) {
+export function getSitePage(param?: timer.site.Query, page?: timer.common.PageQuery) {
     return sendMsg2Runtime('site.page', { ...param, ...page })
 }
 
-export function deleteSites(...keys: timer.site.SiteKey[]) {
-    return sendMsg2Runtime('site.delete', keys)
-}
+export const deleteSites = (...keys: timer.site.SiteKey[]) => sendMsg2Runtime('site.delete', keys)
 
-export function changeCateOfSites(cateId: number | undefined, ...keys: timer.site.SiteKey[]) {
+export function changeSitesCate(cateId: number | undefined, ...keys: timer.site.SiteKey[]) {
     return sendMsg2Runtime('site.changeCate', { keys, cateId })
 }
 
-export function removeIconUrl(key: timer.site.SiteKey) {
-    return sendMsg2Runtime('site.deleteIcon', key)
-}
+export const deleteSiteIcon = (key: timer.site.SiteKey) => sendMsg2Runtime('site.deleteIcon', key)
 
-export async function saveAlias(key: timer.site.SiteKey, alias: string | undefined): Promise<string | undefined> {
+export async function changeSiteAlias(key: timer.site.SiteKey, alias: string | undefined): Promise<string | undefined> {
     const trimmed = alias?.trim() || undefined
     await sendMsg2Runtime('site.changeAlias', { key, alias: trimmed })
     return trimmed
 }
 
-export async function fillInitialAlias(keys: timer.site.SiteKey[]) {
-    return sendMsg2Runtime('site.fillAlias', keys)
-}
+export const fillInitialAlias = (keys: timer.site.SiteKey[]) => sendMsg2Runtime('site.fillAlias', keys)
 
-export async function getInitialAlias(host: string) {
-    return sendMsg2Runtime('site.initialAlias', host)
-}
+export const getInitialAlias = (host: string) => sendMsg2Runtime('site.initialAlias', host)
 
 export function changeSiteRun(key: timer.site.SiteKey, enabled: boolean) {
     return sendMsg2Runtime('site.changeRun', { key, enabled })
 }
 
-export function searchSite(query?: string) {
-    return sendMsg2Runtime('site.search', query)
-}
+export const searchSite = (query?: string) => sendMsg2Runtime('site.search', query)

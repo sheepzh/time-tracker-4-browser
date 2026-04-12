@@ -77,22 +77,22 @@ const _default = defineComponent(() => {
     const data = usePeriodValue()
     const filter = usePeriodFilter()
     const globalFilter = useHabitFilter()
-    const summary = computed(() => computeSummary(data.value?.curr, filter.periodSize))
+    const summary = computed(() => computeSummary(data.value.curr, filter.periodSize))
     const isXs = useXsState()
 
     return () => (
         <Flex column gap={1} flex={isXs.value ? undefined : 1}>
             <KanbanIndicatorCell
                 mainName={t(msg => msg.habit.period.busiest)}
-                mainValue={summary.value?.favorite?.period}
+                mainValue={summary.value.favorite.period}
                 subTips={msg => msg.habit.common.focusAverage}
-                subValue={periodFormatter(summary.value?.favorite?.average, { format: globalFilter.timeFormat })}
+                subValue={periodFormatter(summary.value.favorite.average, { format: globalFilter.timeFormat })}
                 containerStyle={GRID_CELL_STYLE}
             />
             <KanbanIndicatorCell
                 mainName={t(msg => msg.habit.period.idle)}
-                mainValue={summary.value?.longestIdle?.length}
-                subTips={() => summary.value?.longestIdle?.period}
+                mainValue={summary.value.longestIdle.length}
+                subTips={() => summary.value.longestIdle.period}
                 containerStyle={GRID_CELL_STYLE}
             />
         </Flex>

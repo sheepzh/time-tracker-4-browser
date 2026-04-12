@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { changeCateOfSites, deleteSites } from "@api/sw/site"
+import { changeSitesCate, deleteSites } from "@api/sw/site"
 import { t } from '@app/locale'
 import { Check, Close, WarnTriangleFilled } from "@element-plus/icons-vue"
 import { useState, useSwitch } from '@hooks'
@@ -29,15 +29,15 @@ export default defineComponent(() => {
     } = initSiteManage(() => loadingTarget.value?.el as HTMLElement | undefined)
     const modify = ref<ModifyInstance>()
 
-    const cateSupported = computed(() => selected?.value?.filter(supportCategory) || [])
+    const cateSupported = computed(() => selected.value.filter(supportCategory))
     const [showCateChange, openCateChange, closeCateChange] = useSwitch(false)
     const [batchCate, setBatchCate] = useState<number>()
 
     const handleChangeCate = () => {
-        if (!selected.value?.length) {
+        if (!selected.value.length) {
             return ElMessage.info(t(msg => msg.siteManage.msg.noSelected))
         }
-        if (!cateSupported.value?.length) {
+        if (!cateSupported.value.length) {
             return ElMessage.info(t(msg => msg.siteManage.msg.noSupported))
         }
         setBatchCate()
@@ -48,14 +48,14 @@ export default defineComponent(() => {
         const cateId = batchCate.value
         if (!cateId) return ElMessage.warning("Category not selected")
 
-        await changeCateOfSites(cateId, ...cateSupported.value)
+        await changeSitesCate(cateId, ...cateSupported.value)
         ElMessage.success(t(msg => msg.operation.successMsg))
         closeCateChange()
         refresh()
     }
 
     const handleDisassociate = () => {
-        if (!selected.value?.length) {
+        if (!selected.value.length) {
             return ElMessage.info(t(msg => msg.siteManage.msg.noSelected))
         }
         ElMessageBox.confirm(
@@ -66,15 +66,15 @@ export default defineComponent(() => {
                 closeOnClickModal: true,
             }
         ).then(async () => {
-            const need2Clear = cateSupported.value?.filter(s => s.cate)
-            need2Clear?.length && await changeCateOfSites(undefined, ...need2Clear)
+            const need2Clear = cateSupported.value.filter(s => s.cate)
+            need2Clear.length && await changeSitesCate(undefined, ...need2Clear)
             ElMessage.success(t(msg => msg.operation.successMsg))
             refresh()
         }).catch(() => { })
     }
 
     const handleBatchDelete = () => {
-        if (!selected.value?.length) {
+        if (!selected.value.length) {
             return ElMessage.info(t(msg => msg.siteManage.msg.noSelected))
         }
         ElMessageBox.confirm(
@@ -110,7 +110,7 @@ export default defineComponent(() => {
                     <Pagination
                         disabled={loading.value}
                         defaultValue={page}
-                        total={pagination.value?.total ?? 0}
+                        total={pagination.value.total}
                         onChange={val => { page.num = val.num, page.size = val.size }}
                     />
                 </Flex>

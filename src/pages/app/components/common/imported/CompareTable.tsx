@@ -95,7 +95,7 @@ const BASE_COLUMNS: Column[] = [
 const _default = defineComponent<Props>((props) => {
     const data = toRef(props, 'data')
     const [sort, setSort] = useState<SortInfo>({ order: TableV2SortOrder.ASC, key: 'date' })
-    const list = computed(() => computeList(sort.value, data.value?.rows))
+    const list = computed(() => computeList(sort.value, data.value.rows))
     const columns = computed(() => {
         const value = [...BASE_COLUMNS]
         const { focus, time } = data.value

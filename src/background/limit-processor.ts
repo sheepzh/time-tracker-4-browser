@@ -65,7 +65,7 @@ export default function init(dispatcher: MessageDispatcher) {
         .register('limit.list', selectLimit)
         .register('limit.delete', removeLimitRules)
         .register('limit.update', updateLimitRules)
-        .register('limit.create', createLimitRule)
+        .register('limit.add', createLimitRule)
         .register('limit.hitVisit', processAskHitVisit)
         .register('limit.delay', processMoreMinutes)
 }

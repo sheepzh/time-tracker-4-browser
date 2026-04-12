@@ -1,4 +1,4 @@
-import { allCates } from "@api/sw/cate"
+import { listAllCategories } from "@api/sw/cate"
 import { MediaSize, useMediaSize, useProvide, useProvider, useRequest } from "@hooks"
 import { toMap } from '@util/array'
 import { CATE_NOT_SET_ID } from '@util/site'
@@ -21,7 +21,7 @@ type AppContextValue = {
 const NAMESPACE = '_'
 
 export const initAppContext = () => {
-    const { refresh: refreshCategories } = useRequest(() => allCates(), {
+    const { refresh: refreshCategories } = useRequest(listAllCategories, {
         onSuccess: categories => {
             category.all = categories
             const map = toMap(categories, c => c.id, c => c.name)

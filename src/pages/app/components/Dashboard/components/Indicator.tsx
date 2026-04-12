@@ -6,8 +6,8 @@
  */
 
 import { groupBy, sum } from '@/util/array'
-import { selectPeriods } from "@api/sw/period"
-import { selectSite } from "@api/sw/stat"
+import { listPeriods } from "@api/sw/period"
+import { listSiteStats } from "@api/sw/stat"
 import { tN, type I18nKey } from "@app/locale"
 import { Sunrise } from "@element-plus/icons-vue"
 import { useRequest, useXsState } from "@hooks"
@@ -45,7 +45,7 @@ function calcBusiestClock(rows: timer.period.Row[]): number | undefined {
 }
 
 async function query(): Promise<_Value> {
-    const allData = await selectSite()
+    const allData = await listSiteStats()
     const hostSet = new Set<string>()
     let visits = 0
     let browsingTime = 0
@@ -54,7 +54,7 @@ async function query(): Promise<_Value> {
         visits += time
         browsingTime += focus
     })
-    const periods = await selectPeriods({ size: 8 })
+    const periods = await listPeriods({ size: 8 })
     const busiestClock = calcBusiestClock(periods)
 
     const result: _Value = {
@@ -65,7 +65,7 @@ async function query(): Promise<_Value> {
     }
 
     // 2. if not exist, calculate from all data items
-    const firstDate = allData.map(a => a.date).filter(d => d?.length === 8).sort()[0]
+    const firstDate = allData.map(a => a.date).filter(d => d.length === 8).sort()[0]
     if (firstDate) {
         const year = parseInt(firstDate.substring(0, 4))
         const month = parseInt(firstDate.substring(4, 6)) - 1

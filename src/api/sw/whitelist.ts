@@ -1,13 +1,7 @@
 import { sendMsg2Runtime } from "./common"
 
-export function listWhitelist() {
-    return sendMsg2Runtime('whitelist.all')
-}
+export const listWhitelist = () => sendMsg2Runtime('whitelist.all')
 
-export function addWhitelist(white: string) {
-    return sendMsg2Runtime('whitelist.add', white)
-}
+export const addWhitelist = (white: string) => sendMsg2Runtime('whitelist.add', white)
 
-export function removeWhitelist(white: string) {
-    return sendMsg2Runtime('whitelist.remove', white)
-}
+export const deleteWhitelist = (white: string) => sendMsg2Runtime('whitelist.delete', white)

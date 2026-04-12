@@ -6,20 +6,19 @@
  */
 
 import { useManualRequest } from '@/pages/hooks'
-import { fillInitialAlias, getInitialAlias, saveAlias } from "@api/sw/site"
+import { changeSiteAlias, fillInitialAlias, getInitialAlias } from "@api/sw/site"
 import Editable from "@app/components/common/Editable"
+import { useSiteManageTable } from '@app/components/SiteManage/useSiteManage'
 import { t } from '@app/locale'
 import { MagicStick } from "@element-plus/icons-vue"
 import Flex from "@pages/components/Flex"
 import { identifySiteKey } from "@util/site"
 import { ElIcon, ElMessage, ElPopconfirm, ElTableColumn, ElText } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
-import { useSiteManageTable } from '../../useSiteManage'
 
 const AliasColumn = defineComponent<{}>(() => {
     const { pagination, refresh } = useSiteManageTable()
-
-    const { refresh: doChange } = useManualRequest((row, alias) => saveAlias(row, alias), { onSuccess: refresh })
+    const { refresh: doChange } = useManualRequest(changeSiteAlias, { onSuccess: refresh })
 
     const handleBatchGenerate = async () => {
         let { list } = pagination.value
@@ -63,7 +62,7 @@ const AliasColumn = defineComponent<{}>(() => {
                     key={`${identifySiteKey(row)}_${row.alias}`}
                     modelValue={row.alias}
                     initialValue={() => genInitialAlias(row)}
-                    onChange={val => doChange(val, row)}
+                    onChange={val => doChange(row, val)}
                 />
             }}
         />

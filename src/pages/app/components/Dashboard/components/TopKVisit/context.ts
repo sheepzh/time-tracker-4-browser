@@ -1,7 +1,7 @@
+import { getSiteStatPage } from "@api/sw/stat"
 import { useLocalStorage, useProvide, useProvider, useRequest } from "@hooks"
-import { selectSitePage } from "@api/sw/stat"
-import { MILL_PER_DAY, cvtDateRange2Str } from "@util/time"
-import { reactive, toRaw, watch, type Reactive, type Ref } from "vue"
+import { cvtDateRange2Str, MILL_PER_DAY } from "@util/time"
+import { reactive, type ShallowRef, toRaw, watch } from "vue"
 
 export type BizOption = {
     name: string
@@ -20,8 +20,8 @@ export type TopKFilterOption = {
 }
 
 type Context = {
-    value: Ref<BizOption[]>
-    filter: Reactive<TopKFilterOption>
+    value: ShallowRef<BizOption[]>
+    filter: TopKFilterOption
 }
 
 const NAMESPACE = 'dashboardTopKVisit'
@@ -42,12 +42,10 @@ export const initProvider = () => {
             mergeDate: true,
         }
         const SIZE = filter.topK
-        const pageResult = await selectSitePage({ num: 1, size: SIZE, ...query })
-        const top = pageResult?.list ?? []
-        const data: BizOption[] = top.map(({ time, siteKey, alias }) => ({
-            name: alias ?? siteKey?.host ?? '',
-            host: siteKey?.host ?? '',
-            alias,
+        const { list: top } = await getSiteStatPage({ num: 1, size: SIZE, ...query })
+        const data: BizOption[] = top.map(({ time, siteKey: { host }, alias }) => ({
+            name: alias ?? host,
+            host, alias,
             value: time,
         }))
         for (let realSize = top.length; realSize < SIZE; realSize++) {

@@ -1,4 +1,4 @@
-import { changeCateOfSites } from '@/api/sw/site'
+import { changeSitesCate } from '@/api/sw/site'
 import { useCategory } from "@app/context"
 import { Edit } from "@element-plus/icons-vue"
 import { useManualRequest, useSwitch } from "@hooks"
@@ -25,7 +25,7 @@ const CategoryEditable = defineComponent<Props>(props => {
 
     const { refresh: doSave } = useManualRequest(async (cateId: number | string | undefined) => {
         const realCateId = typeof cateId === 'string' ? parseInt(cateId) : cateId
-        await changeCateOfSites(realCateId, props.siteKey)
+        await changeSitesCate(realCateId, props.siteKey)
         return realCateId
     }, {
         onSuccess(realCateId) {

@@ -1,16 +1,16 @@
-import { deleteLimits, selectLimits, updateLimits } from "@api/sw/limit"
+import { deleteLimits, listLimits, updateLimits } from "@api/sw/limit"
 import { t } from '@app/locale'
 import type { LimitQuery } from '@app/router/constants'
 import { useDocumentVisibility, useManualRequest, useProvide, useProvider, useRequest } from '@hooks'
 import { ElMessage, ElMessageBox } from "element-plus"
-import { computed, reactive, ref, toRaw, watch, type Reactive, type Ref } from "vue"
+import { computed, reactive, ref, toRaw, watch, type ShallowRef } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { verifyCanModify } from "./common"
 import type { LimitFilterOption, LimitInstance, ModifyInstance, TestInstance } from "./types"
 
 type Context = {
-    filter: Reactive<LimitFilterOption>
-    list: Ref<timer.limit.Item[]>
+    filter: LimitFilterOption
+    list: ShallowRef<timer.limit.Item[]>
     refresh: NoArgCallback
     deleteRow: ArgCallback<timer.limit.Item>
     batchDelete: NoArgCallback
@@ -22,7 +22,7 @@ type Context = {
     modify: (item: timer.limit.Item) => void
     create: () => void
     test: () => void
-    empty: Ref<boolean>
+    empty: ShallowRef<boolean>
 }
 
 const NAMESPACE = 'limit'
@@ -38,7 +38,7 @@ export const useLimitProvider = () => {
     const filter = reactive<LimitFilterOption>({ url: initialUrl(), enabled: false })
 
     const { data: list, refresh, loading } = useRequest(
-        () => selectLimits({ enabled: filter.enabled, url: filter.url }),
+        () => listLimits({ enabled: filter.enabled, url: filter.url }),
         {
             defaultValue: [],
             deps: [() => filter.url, () => filter.enabled],
@@ -145,20 +145,17 @@ export const useLimitProvider = () => {
     const empty = computed(() => !loading.value && !(list.value?.length))
 
     useProvide<Context>(NAMESPACE, {
-        filter,
-        list: list as Ref<timer.limit.Item[]>, empty, refresh,
-        deleteRow,
+        filter, list, empty, refresh,
+        deleteRow, modify, create, test, changeEnabled, changeDelay, changeLocked,
         batchDelete: () => selectedAndThen(handleBatchDelete),
         batchEnable: () => selectedAndThen(handleBatchEnable),
         batchDisable: () => selectedAndThen(handleBatchDisable),
-        changeEnabled, changeDelay, changeLocked,
-        modify, create, test,
     })
 
     return { modifyInst, testInst, inst }
 }
 
-export const useLimitFilter = (): Reactive<LimitFilterOption> => useProvider<Context, 'filter'>(NAMESPACE, "filter").filter
+export const useLimitFilter = (): LimitFilterOption => useProvider<Context, 'filter'>(NAMESPACE, "filter").filter
 
 export const useLimitData = () => useProvider<Context, 'list' | 'refresh' | 'deleteRow' | 'changeEnabled' | 'changeDelay' | 'changeLocked'>(
     NAMESPACE, 'list', 'refresh', 'deleteRow', 'changeEnabled', 'changeDelay', 'changeLocked'

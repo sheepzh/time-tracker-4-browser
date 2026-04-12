@@ -1,6 +1,6 @@
-import { useScrollRequest } from '@hooks'
 import { t } from '@app/locale'
 import { css } from '@emotion/css'
+import { useScrollRequest } from '@hooks'
 import { getHost } from "@util/stat"
 import { ElCard, useNamespace } from "element-plus"
 import { defineComponent, ref } from "vue"
@@ -46,12 +46,12 @@ const _default = defineComponent<{}>((_, ctx) => {
     const selected = ref<number[]>([])
 
     ctx.expose({
-        getSelected: () => selected.value?.map(idx => data.value?.[idx])?.filter(i => !!i) ?? [],
+        getSelected: () => selected.value.map(idx => data.value[idx]).filter(i => !!i),
         refresh: reset,
     } satisfies DisplayComponent)
 
     const handleSelectedChange = (val: boolean, idx: number) => {
-        const newSelected = selected.value?.filter(v => v !== idx) || []
+        const newSelected = selected.value.filter(v => v !== idx)
         val && newSelected.push(idx)
         return selected.value = newSelected
     }
@@ -64,7 +64,7 @@ const _default = defineComponent<{}>((_, ctx) => {
                 v-infinite-scroll={loadMoreAsync}
                 infinite-scroll-disabled={end.value || loading.value}
             >
-                {data.value?.map((row, idx) => (
+                {data.value.map((row, idx) => (
                     <ElCard>
                         <Item
                             key={`row-${getHost(row)}-${idx}`}

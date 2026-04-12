@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { selectLimits } from "@api/sw/limit"
+import { listLimits } from "@api/sw/limit"
 import AlertLines, { type AlertLinesProps } from '@app/components/common/AlertLines'
 import { t } from '@app/locale'
 import { useDebounce, useRequest, useState, useSwitch, useXsState } from '@hooks'
@@ -18,7 +18,7 @@ async function fetchResult(url: string | undefined): Promise<AlertLinesProps> {
     if (!url) {
         return { type: 'warning', title: msg => msg.limit.message.inputTestUrl }
     }
-    const matched = await selectLimits({ url, enabled: true })
+    const matched = await listLimits({ url, enabled: true })
     if (!matched.length) {
         return { type: 'info', title: msg => msg.limit.message.noRuleMatched }
     } else {

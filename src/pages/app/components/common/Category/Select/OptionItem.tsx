@@ -1,5 +1,5 @@
 import { sendMsg2Runtime } from '@/api/sw/common'
-import { selectAllSites } from "@api/sw/site"
+import { listSites } from "@api/sw/site"
 import { useCategory } from "@app/context"
 import { t } from "@app/locale"
 import { Check, Close, Delete, Edit } from "@element-plus/icons-vue"
@@ -37,7 +37,7 @@ const OptionItem = defineComponent<{ value: timer.site.Cate }>(props => {
             ElMessage.success(t(msg => msg.operation.successMsg))
         }
     })
-    const { data: relatedSites, loading: queryingSites } = useRequest(() => selectAllSites({ cateIds: props.value?.id }))
+    const { data: relatedSites, loading: queryingSites } = useRequest(() => listSites({ cateIds: props.value?.id }))
 
     const onRemoveClick = (e: MouseEvent) => {
         e.stopPropagation()
