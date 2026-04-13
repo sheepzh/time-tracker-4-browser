@@ -14,4 +14,9 @@ declare namespace timer.imported {
     } & {
         rows: Row[]
     }
+
+    type ProcessQuery = {
+        data: Data
+        resolution: ConflictResolution
+    }
 }

@@ -5,10 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { t } from "@app/locale"
+import { getOption } from '@api/sw/option'
+import { t } from '@app/locale'
 import { OPTION_ROUTE } from '@app/router/constants'
-import optionDatabase from '@db/option-database'
-import { useRequest } from '@hooks/useRequest'
+import { useRequest } from '@hooks'
 import Flex from "@pages/components/Flex"
 import { getColor } from '@pages/util/style'
 import { getAppPageUrl } from '@util/constant/url'
@@ -41,7 +41,7 @@ const totalTitle = (totalMb: number) => totalMb
 
 const _default = defineComponent(() => {
     const { memory } = useDataMemory()
-    const { data: option } = useRequest(() => optionDatabase.getOption())
+    const { data: option } = useRequest(getOption)
     const usedMb = computed(() => byte2Mb(memory.value?.used))
     const totalMb = computed(() => byte2Mb(memory.value?.total))
     const percentage = computed(() => memory.value?.total ? Math.round(memory.value?.used * 10000.0 / memory.value.total) / 100 : 0)

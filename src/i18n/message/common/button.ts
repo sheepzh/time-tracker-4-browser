@@ -19,7 +19,7 @@ export type ButtonMessage = {
     cancel: string
     previous: string
     next: string
-    okey: string
+    okay: string
     dont: string
     operation: string
     configuration: string

@@ -1,8 +1,8 @@
 import limitMessages, { type LimitMessage } from "../app/limit"
 import menuMessages, { type MenuMessage } from "../app/menu"
-import calendarMessages, { type CalendarMessage } from "../common/calendar"
-import metaMessages, { type MetaMessage } from "../common/meta"
+import calendarMessages, { type CalendarMessage } from "../calendar"
 import { merge, type MessageRoot } from "../merge"
+import metaMessages, { type MetaMessage } from "../meta"
 import consoleMessages, { type ConsoleMessage } from "./console"
 import modalMessages, { type ModalMessage } from "./modal"
 

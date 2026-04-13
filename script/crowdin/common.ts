@@ -52,22 +52,6 @@ const OPTIONAL_PLACEHOLDER: Record<timer.OptionalLocale, 0> = {
 
 export const ALL_TRANS_LOCALES = Object.keys(OPTIONAL_PLACEHOLDER) as timer.OptionalLocale[]
 
-const CROWDIN_I18N_MAP: Record<CrowdinLanguage, timer.OptionalLocale> = {
-    "zh-CN": 'zh_CN',
-    ja: 'ja',
-    'zh-TW': 'zh_TW',
-    'pt-PT': 'pt_PT',
-    uk: 'uk',
-    'es-ES': 'es',
-    de: 'de',
-    fr: 'fr',
-    ru: 'ru',
-    ar: 'ar',
-    tr: 'tr',
-    pl: 'pl',
-    it: 'it',
-}
-
 const I18N_CROWDIN_MAP: Record<timer.OptionalLocale, CrowdinLanguage> = {
     zh_CN: 'zh-CN',
     ja: 'ja',
@@ -86,8 +70,6 @@ const I18N_CROWDIN_MAP: Record<timer.OptionalLocale, CrowdinLanguage> = {
 
 export const crowdinLangOf = (locale: timer.OptionalLocale): CrowdinLanguage => I18N_CROWDIN_MAP[locale]
 
-export const localeOf = (crowdinLang: CrowdinLanguage) => CROWDIN_I18N_MAP[crowdinLang]
-
 const IGNORED_FILE: Partial<{ [dir in Dir]: string[] }> = {
     common: [
         // Strings for market
@@ -101,7 +83,7 @@ export function isIgnored(dir: Dir, fileName: string) {
     return !!IGNORED_FILE[dir]?.includes(fileName)
 }
 
-export const MSG_BASE = path.join(__dirname, '..', '..', 'src', 'i18n', 'message')
+const MSG_BASE = path.join(__dirname, '..', '..', 'src', 'i18n', 'message')
 export const RSC_FILE_SUFFIX = "-resource.json"
 
 /**

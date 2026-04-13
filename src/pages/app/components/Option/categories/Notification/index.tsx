@@ -1,7 +1,7 @@
+import { OptionItem, OptionLines } from '@app/components/Option/components'
 import { t } from '@app/locale'
 import { ElInput, ElMessage, ElSelect, ElTimePicker } from 'element-plus'
 import { computed, defineComponent, StyleValue } from 'vue'
-import { OptionItem, OptionLines } from '../../components'
 import type { CategoryInstance } from '../types'
 import Footer from './Footer'
 import { useNotification } from './useNotification'
@@ -94,7 +94,7 @@ const Notification = defineComponent((_, ctx) => {
                             size="small"
                             style={{ width: "400px" } satisfies StyleValue}
                             onInput={val => option.notificationEndpoint = val}
-                            placeholder="https://example.com/api/notification"
+                            placeholder="https://example.com/notification"
                         />
                     </OptionItem>
                     <OptionItem label="Security Token {input}">

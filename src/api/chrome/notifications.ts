@@ -1,7 +1,7 @@
 import { IS_MV3 } from "@util/constant/environment"
 import { handleError } from "./common"
 
-export type NotificationTopic = 'time'
+type NotificationTopic = 'time'
 
 export async function createNotification(
     topic: NotificationTopic,
@@ -23,20 +23,3 @@ export async function createNotification(
     }
 }
 
-export async function clearNotification(notificationId: string): Promise<boolean> {
-    if (IS_MV3) {
-        try {
-            await chrome.notifications.clear(notificationId)
-            return true
-        } catch {
-            return false
-        }
-    } else {
-        return new Promise(resolve => {
-            chrome.notifications.clear(notificationId, (wasCleared) => {
-                handleError('clearNotification')
-                resolve(wasCleared)
-            })
-        })
-    }
-}

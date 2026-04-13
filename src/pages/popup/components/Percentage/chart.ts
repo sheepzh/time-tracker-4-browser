@@ -1,16 +1,15 @@
 import { createTab } from "@api/chrome/tab"
 import { getCssVariable, getInfoColor, getPrimaryTextColor, getSecondaryTextColor } from "@pages/util/style"
 import { calJumpUrl } from "@popup/common"
-import { t } from "@popup/locale"
+import { t } from '@popup/locale'
 import { sum, toMap } from "@util/array"
 import { IS_SAFARI } from "@util/constant/environment"
 import { isRtl } from "@util/document"
 import { generateSiteLabel } from "@util/site"
 import { getGroupName, isGroup, isSite } from "@util/stat"
 import { formatPeriodCommon, formatTime, parseTime } from "@util/time"
-import { type PieSeriesOption } from "echarts/charts"
-import { type TitleComponentOption, type ToolboxComponentOption } from "echarts/components"
-import { type CallbackDataParams, type TopLevelFormatterParams } from "echarts/types/dist/shared"
+import type { PieSeriesOption, TitleComponentOption, ToolboxComponentOption } from "echarts"
+import type { CallbackDataParams, TopLevelFormatterParams } from "echarts/types/dist/shared"
 import { type PercentageResult } from "./query"
 
 function combineDate(start: Date, end: Date, format: string): string {

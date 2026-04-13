@@ -1,10 +1,11 @@
-import { launchBrowser, type LaunchContext, MOCK_URL, sleep } from "../common/base"
-import { createLimitRule, fillTimeLimit } from "./common"
+import { launchBrowser, type LaunchContext } from '../common/base'
+import { MOCK_URL, sleep } from '../common/util'
+import { createLimitRule, fillTimeLimit, isLimitModalVisible, waitForLimitFrame } from "./common"
 
 let context: LaunchContext
 
 describe('Daily time limit', () => {
-    beforeEach(async () => context = await launchBrowser())
+    beforeEach(async () => { context = await launchBrowser() })
 
     afterEach(() => context.close())
 
@@ -41,9 +42,13 @@ describe('Daily time limit', () => {
         await sleep(2.1)
 
         // 4. Limited
-        const { name, time } = await testPage.evaluate(async () => {
-            const shadow = document.querySelector('extension-time-tracker-overlay')
-            const descEl = shadow?.shadowRoot?.querySelector('#app .el-descriptions:not([style*="display: none"])')
+        const limitFrame = await waitForLimitFrame(testPage)
+        await limitFrame.waitForFunction(() => {
+            const td = document.querySelector('#app .el-descriptions:not([style*="display: none"]) tr td:nth-child(2)')
+            return td?.textContent && td.textContent !== '-'
+        }, { timeout: 5000 })
+        const { name, time } = await limitFrame.evaluate(() => {
+            const descEl = document.querySelector('#app .el-descriptions:not([style*="display: none"])')
             const trs = descEl?.querySelectorAll('tr')
             const name = trs?.[0]?.querySelector('td:nth-child(2)')?.textContent
             const timeStr = trs?.[3]?.querySelector('td:nth-child(2) .el-tag--danger')?.textContent
@@ -79,11 +84,7 @@ describe('Daily time limit', () => {
         // 7. Modal disappear
         await testPage.bringToFront()
         await sleep(.5)
-        const modalExist = await testPage.evaluate(() => {
-            const shadow = document.querySelector('extension-time-tracker-overlay')
-            if (!shadow) return false
-            return !!shadow.shadowRoot!.querySelector('body:not([style*="display: none"])')
-        })
+        const modalExist = await isLimitModalVisible(testPage)
         expect(modalExist).toBeFalsy()
     }, 60000)
 })

@@ -6,7 +6,7 @@
  */
 
 import { useDialogSop } from '@app/components/common/DialogSop/context'
-import { t } from "@app/locale"
+import { t } from '@app/locale'
 import { Document } from "@element-plus/icons-vue"
 import Flex from "@pages/components/Flex"
 import { ElButton, ElForm, ElFormItem, ElSelect } from "element-plus"
@@ -27,7 +27,7 @@ const OTHER_FILE_FORMAT: { [ext in OtherExtension]: string } = {
 
 const ALL_TYPES: OtherExtension[] = Object.keys(OTHER_NAMES) as OtherExtension[]
 
-const _default = defineComponent<{}>((_, ctx) => {
+const _default = defineComponent<{}>(() => {
     const { form } = useDialogSop<ImportForm>()
     const fileInput = ref<HTMLInputElement>()
 

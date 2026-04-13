@@ -1,5 +1,5 @@
-import { judgeVerificationRequired, processVerification } from "@app/util/limit"
-import limitService from "@service/limit-service"
+import { listLimits } from "@api/sw/limit"
+import { judgeVerificationRequired, processVerification } from "@app/util/limit/index"
 import { ref } from "vue"
 
 export const useVerify = (option: timer.option.LimitOption) => {
@@ -7,12 +7,10 @@ export const useVerify = (option: timer.option.LimitOption) => {
 
     const verify = async (): Promise<void> => {
         if (verified.value) return
-        const items = await limitService.select()
-        const triggerResults = await Promise.all((items || []).map(judgeVerificationRequired))
-        const anyTrigger = triggerResults.some(t => !!t)
-        if (anyTrigger) {
-            await processVerification(option)
-        }
+        const items = await listLimits()
+        const triggerResults = await Promise.all(items.map(judgeVerificationRequired))
+        const anyTrigger = triggerResults.some(t => t)
+        if (anyTrigger) await processVerification(option)
         verified.value = true
     }
 

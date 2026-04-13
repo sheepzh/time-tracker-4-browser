@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { allMatch, anyMatch, average, groupBy, rotate, sum, toMap } from "@util/array"
+import { allMatch, anyMatch, groupBy, rotate, sum, toMap } from "@util/array"
 
 describe("util/array", () => {
 
@@ -43,16 +43,10 @@ describe("util/array", () => {
 
     test("sum", () => {
         let arr: number[] = [1, 2, 3, 4]
-        expect(10).toEqual(sum(arr))
+        expect(sum(arr)).toEqual(10)
 
         arr = []
-        expect(0).toEqual(sum(arr))
-    })
-
-    test("average", () => {
-        expect(average([10, 1])).toEqual(11 / 2)
-        expect(average([])).toBeNull()
-        expect(average([0])).toEqual(0)
+        expect(sum(arr)).toEqual(0)
     })
 
     test("allMatch", () => {

@@ -1,6 +1,6 @@
 import { ElScrollbar } from 'element-plus'
 import { type FunctionalComponent, type StyleValue } from "vue"
-import ContentContainer from "../common/ContentContainer"
+import ContentContainer from '../common/ContentContainer'
 import Description from "./Description"
 
 const About: FunctionalComponent = () => (

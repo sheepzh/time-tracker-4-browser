@@ -1,10 +1,11 @@
-import { launchBrowser, type LaunchContext, MOCK_URL, sleep } from "../common/base"
-import { createLimitRule } from "./common"
+import { launchBrowser, type LaunchContext } from '../common/base'
+import { MOCK_URL, sleep } from '../common/util'
+import { createLimitRule, isLimitModalVisible, waitForLimitFrame } from "./common"
 
 let context: LaunchContext
 
 describe('Daily time limit', () => {
-    beforeEach(async () => context = await launchBrowser())
+    beforeEach(async () => { context = await launchBrowser() })
 
     afterEach(() => context.close())
 
@@ -36,13 +37,16 @@ describe('Daily time limit', () => {
 
         // Waiting for limit message handling
         await sleep(2)
-        const { name, count } = await testPage.evaluate(async () => {
-            const shadow = document.querySelector('extension-time-tracker-overlay')
-            if (!shadow) return {}
-            const descEl = shadow!.shadowRoot!.querySelector('#app .el-descriptions:not([style*="display: none"])')
-            const trs = descEl!.querySelectorAll('tr')
-            const name = trs[0].querySelector('td:nth-child(2)')!.textContent
-            const count = trs[3].querySelector('td:nth-child(2) .el-tag--danger')!.textContent
+        const limitFrame = await waitForLimitFrame(testPage)
+        await limitFrame.waitForFunction(() => {
+            const td = document.querySelector('#app .el-descriptions:not([style*="display: none"]) tr td:nth-child(2)')
+            return td?.textContent && td.textContent !== '-'
+        }, { timeout: 5000 })
+        const { name, count } = await limitFrame.evaluate(() => {
+            const descEl = document.querySelector('#app .el-descriptions:not([style*="display: none"])')
+            const trs = descEl?.querySelectorAll('tr')
+            const name = trs?.[0]?.querySelector('td:nth-child(2)')?.textContent
+            const count = trs?.[3]?.querySelector('td:nth-child(2) .el-tag--danger')?.textContent
             return { name, count }
         })
 
@@ -68,11 +72,7 @@ describe('Daily time limit', () => {
         // 5. The modal disappear
         await testPage.bringToFront()
         await sleep(.5)
-        const modalExist = await testPage.evaluate(() => {
-            const shadow = document.querySelector('extension-time-tracker-overlay')
-            if (!shadow) return false
-            return !!shadow!.shadowRoot!.querySelector('body:not([style*="display: none"])')
-        })
+        const modalExist = await isLimitModalVisible(testPage)
         expect(modalExist).toBeFalsy()
     }, 60000)
 })

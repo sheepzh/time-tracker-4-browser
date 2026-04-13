@@ -5,21 +5,20 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { useLocalStorage, useProvide, useProvider, useRequest } from "@hooks"
-import { merge } from "@service/components/period-calculator"
-import periodService from "@service/period-service"
-import { keyOf, MAX_PERIOD_ORDER } from "@util/period"
+import { keyOf, MAX_PERIOD_ORDER } from "@/background/util/period"
+import { listPeriods } from '@api/sw/period'
+import { useLocalStorage, useProvide, useProvider, useRequest } from '@hooks'
 import { getDayLength, MILL_PER_DAY } from "@util/time"
 import { computed, reactive, toRaw, watch, type Reactive, type Ref } from "vue"
 import { useHabitFilter } from "../context"
-import type { FilterOption } from "./common"
+import type { FilterOption } from "./types"
 
 type Value = {
     curr: timer.period.Row[]
     prev: timer.period.Row[]
 }
 
-export type PeriodRange = {
+type PeriodRange = {
     curr: timer.period.KeyRange
     prev: timer.period.KeyRange
 }
@@ -41,12 +40,6 @@ const computeRange = (filterDateRange: [Date, Date]): PeriodRange => {
     }
 }
 
-const fetchRows = async (range: timer.period.KeyRange, periodSize: number) => {
-    const results = await periodService.listBetween({ periodRange: range })
-    const [start, end] = range || []
-    return merge(results, { start, end, periodSize })
-}
-
 const NAMESPACE = 'habitPeriod'
 
 export const initProvider = () => {
@@ -62,8 +55,8 @@ export const initProvider = () => {
         const { curr: currRange, prev: prevRange } = periodRange.value || {}
         const periodSize = filter.periodSize
         const [curr, prev] = await Promise.all([
-            fetchRows(currRange, periodSize),
-            fetchRows(prevRange, periodSize),
+            listPeriods({ range: currRange, size: periodSize }),
+            listPeriods({ range: prevRange, size: periodSize }),
         ])
         return { curr, prev }
     }, {

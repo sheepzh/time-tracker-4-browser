@@ -5,18 +5,14 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { t } from "@app/locale"
 import { getStepColors } from "@app/util/echarts"
+import { EchartsWrapper } from '@hooks'
+import { t } from '@app/locale'
 import { periodFormatter } from "@app/util/time"
-import { EchartsWrapper } from "@hooks/useEcharts"
 import { generateSiteLabel } from "@util/site"
 import { identifyTargetKey, isSite } from "@util/stat"
-import {
-    type BarSeriesOption,
-    type ComposeOption,
-    type GridComponentOption,
-    type TitleComponentOption,
-    type TooltipComponentOption,
+import type {
+    BarSeriesOption, ComposeOption, GridComponentOption, TitleComponentOption, TooltipComponentOption,
 } from "echarts"
 import { type TopLevelFormatterParams } from "echarts/types/dist/shared"
 import { type SeriesDataItem, generateTitleOption } from "../common"
@@ -59,7 +55,7 @@ function mergeDate(origin: timer.stat.Row[]): timer.stat.Row[] {
     const map: Record<
         string,
         | MakeRequired<timer.stat.SiteRow | timer.stat.CateRow, 'mergedDates' | 'mergedRows'>
-        | MakeRequired<timer.stat.GroupRow, 'mergedDates'>
+        | MakeRequired<timer.stat.GroupRow, 'mergedDates' | 'mergedRows'>
     > = {}
     origin.forEach(ele => {
         const { date = '', focus, time } = ele
