@@ -10,7 +10,7 @@ let context: LaunchContext
 
 describe('Backup with gist', () => {
     beforeEach(async () => {
-        context = await launchBrowser({ proxies: [{ host: 'api.github.com', target: GIST_MOCK_ORIGIN }] })
+        context = await launchBrowser({ bgProxies: [{ host: 'api.github.com', target: GIST_MOCK_ORIGIN }] })
     })
 
     afterEach(() => context.close())

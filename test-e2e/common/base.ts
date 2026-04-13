@@ -1,4 +1,4 @@
-import { type Browser, launch, type Page, type Target } from "puppeteer"
+import { type Browser, type CDPSession, launch, type Page, type Target } from "puppeteer"
 import { E2E_OUTPUT_PATH } from "../../rspack/constant"
 import { removeAllWhitelist } from './whitelist'
 
@@ -9,11 +9,18 @@ type HostProxy = {
     target: string
 }
 
-const setupProxies = async (target: Target, proxies: HostProxy[]) => {
-    const session = await target.createCDPSession()
-    await session.send('Fetch.enable', {
-        patterns: [{ urlPattern: '*', requestStage: 'Request' }],
-    })
+async function setupBgProxies(target: Target, proxies: HostProxy[]): Promise<CDPSession | undefined> {
+    if (target.type() !== 'service_worker') return
+    let session: CDPSession | undefined
+    try {
+        session = await target.createCDPSession()
+        await session.send('Fetch.enable', {
+            patterns: proxies.map(p => ({ urlPattern: `*://${p.host}/*`, requestStage: 'Request' as const })),
+        })
+    } catch {
+        // Target may have been closed before the session was ready
+        return
+    }
     session.on('Fetch.requestPaused', async event => {
         const { requestId, request: { url: originUrl } } = event
         try {
@@ -34,13 +41,7 @@ const setupProxies = async (target: Target, proxies: HostProxy[]) => {
             } catch { /* ignore */ }
         }
     })
-}
-
-async function applyProxies(browser: Browser, proxies: HostProxy[]): Promise<void> {
-    for (const target of browser.targets()) {
-        await setupProxies(target, proxies)
-    }
-    browser.on('targetcreated', target => setupProxies(target, proxies))
+    return session
 }
 
 export interface LaunchContext {
@@ -57,10 +58,30 @@ export interface LaunchContext {
 }
 
 class LaunchContextWrapper implements LaunchContext {
+    private readonly cdpSessions: CDPSession[] = []
+    private onTargetCreated?: (target: Target) => void
+
     constructor(readonly browser: Browser, readonly extensionId: string) { }
 
-    close(): Promise<void> {
-        return this.browser.close()
+    async applyBgProxies(proxies: HostProxy[]): Promise<void> {
+        for (const target of this.browser.targets()) {
+            const s = await setupBgProxies(target, proxies)
+            if (s) this.cdpSessions.push(s)
+        }
+        this.onTargetCreated = (target: Target) => {
+            setupBgProxies(target, proxies)
+                .then(s => { if (s) this.cdpSessions.push(s) })
+                .catch(() => { /* ignore */ })
+        }
+        this.browser.on('targetcreated', this.onTargetCreated)
+    }
+
+    async close(): Promise<void> {
+        if (this.onTargetCreated) {
+            this.browser.off('targetcreated', this.onTargetCreated)
+        }
+        for (const s of this.cdpSessions) await s.detach().catch(() => { })
+        await this.browser.close()
     }
 
     async openAppPage(route: string): Promise<Page> {
@@ -86,11 +107,11 @@ class LaunchContextWrapper implements LaunchContext {
 
 type BrowserOptions = {
     dirPath?: string
-    proxies?: HostProxy[]
+    bgProxies?: HostProxy[]
 }
 
 export async function launchBrowser(options?: BrowserOptions): Promise<LaunchContext> {
-    const { dirPath = E2E_OUTPUT_PATH, proxies } = options ?? {}
+    const { dirPath = E2E_OUTPUT_PATH, bgProxies } = options ?? {}
     const args = [
         `--disable-extensions-except=${dirPath}`,
         `--load-extension=${dirPath}`,
@@ -99,7 +120,7 @@ export async function launchBrowser(options?: BrowserOptions): Promise<LaunchCon
     ]
     // GitHub-hosted runners use a small /dev/shm; Chrome can crash or hang without this flag.
     if (process.env['GITHUB_ACTIONS'] === 'true') {
-        args.push('--disable-dev-shm-usage')
+        args.push('--disable-gpu', '--disable-dev-shm-usage')
     }
     // Test with large screen
     USE_HEADLESS_PUPPETEER && args.push('--window-size=1880,1000')
@@ -119,7 +140,7 @@ export async function launchBrowser(options?: BrowserOptions): Promise<LaunchCon
 
     const context = new LaunchContextWrapper(browser, extensionId)
 
-    proxies?.length && await applyProxies(browser, proxies)
+    if (bgProxies?.length) await context.applyBgProxies(bgProxies)
 
     // remove whitelist added by service_worker
     await removeAllWhitelist(context)
