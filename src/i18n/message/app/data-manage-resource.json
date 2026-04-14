@@ -238,10 +238,10 @@
         "totalMemoryAlert": "Le navigateur fournit {size}Mo pour stocker des données locales pour chaque extension",
         "totalMemoryAlert1": "Impossible de déterminer la mémoire maximale disponible autorisée par le navigateur",
         "usedMemoryAlert": "{size}Mo sont actuellement utilisés",
-        "idbAlert": "Déplacer les données de suivi vers \"IndexedDB\" pour réduire l'utilisation du stockage",
+        "idbAlert": "Déplacer les données de suivi vers IndexedDB pour réduire l'utilisation du stockage",
         "operationAlert": "Vous pouvez supprimer ces données sans importance afin de réduire l'utilisation de la mémoire",
         "filterItems": "Filtrer les données",
-        "filterFocus": "Le temps de navigation de la journée est compris entre {start} secondes et {end} secondes",
+        "filterFocus": "Le temps de navigation de la journée est compris entre {start} et {end} secondes",
         "filterTime": "Le nombre de visites du jour se situe entre {start} et {end}",
         "filterDate": "Enregistré entre {picker}",
         "importOther": {

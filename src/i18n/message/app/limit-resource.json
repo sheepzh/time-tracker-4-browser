@@ -417,7 +417,7 @@
     },
     "fr": {
         "filterDisabled": "Activé uniquement",
-        "wildcardTip": "Vous pouvez utiliser des wildcards pour correspondre à des sous-domaines ou sous-pages, et utiliser le \"+\" comme préfixe pour exclure des sous-pages !",
+        "wildcardTip": "Vous pouvez utiliser des caractères génériques pour cibler des sous-domaines ou des sous-pages, et le préfixe \"+\" pour en exclure !",
         "emptyTips": "Cliquez ici pour créer une règle !",
         "item": {
             "name": "Nom de règle",
@@ -432,7 +432,7 @@
             "enabled": "Activé",
             "locked": "Verrouillé",
             "effectiveDay": "Effectif le",
-            "delayAllowed": "Plus de 5 minutes",
+            "delayAllowed": "Retardable",
             "delayAllowedInfo": "Si le délai est écoulé, autorisez un délai temporaire de 5 minutes",
             "visits": "visites",
             "or": "ou",
@@ -449,7 +449,7 @@
         "message": {
             "noUrl": "Aucune URL de restriction configurée",
             "noRule": "Aucune règle remplie",
-            "deleteConfirm": "Voulez-vous supprimer la règle [{name}]?",
+            "deleteConfirm": "Voulez-vous supprimer la règle [{name}] ?",
             "lockConfirm": "Si verrouillé, toutes les opérations nécessiteront une vérification, même si la règle n'est pas activée.",
             "inputTestUrl": "Veuillez entrer le lien URL à tester en premier",
             "noRuleMatched": "L'URL ne correspond à aucune règle",

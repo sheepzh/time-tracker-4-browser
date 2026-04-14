@@ -203,8 +203,8 @@
         "indicator": {
             "installedDays": "Installé depuis {number} jours",
             "visitCount": "{site} sites visités {visit} fois",
-            "browsingTime": "Parcouru pendant {minute} minutes",
-            "mostUse": "Navigation favorite entre {start} et {end}"
+            "browsingTime": "Visité pendant {minute} minutes",
+            "mostUse": "Navigation la plus fréquente entre {start} et {end} heure"
         },
         "monthOnMonth": {
             "title": "Tendance mensuelle du temps de navigation"

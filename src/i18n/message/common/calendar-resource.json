@@ -204,6 +204,7 @@
             "everyday": "Quotidien",
             "thisWeek": "Cette semaine",
             "thisMonth": "Ce mois-ci",
+            "lastWeek": "Dernière semaine",
             "lastDays": "{n} derniers jours",
             "tillYesterday": "Jusqu'à hier",
             "tillDaysAgo": "Jusqu'à {n} jours",
