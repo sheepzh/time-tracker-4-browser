@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { useProvide, useProvider } from "@hooks"
+import { useProvide, useProvider } from '@hooks'
 import { daysAgo } from "@util/time"
 import { reactive, Reactive } from "vue"
 

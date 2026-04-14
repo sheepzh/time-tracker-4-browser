@@ -6,14 +6,14 @@
  */
 
 /**
- * Build the manifest.json in chrome extension directory via this file
+ * Build the manifest.json in Firefox extension directory via this file
  *
  * @author zhy
  * @since 0.0.1
  */
-// Not use path alias in manifest.json
-import packageInfo from "./package"
-const { version, author: { name: authorName }, homepage } = packageInfo
+import packageJson from "../package.json"
+
+const { version, author: { name: authorName }, homepage } = packageJson
 
 const _default: browser._manifest.WebExtensionManifest = {
     name: '__MSG_meta_marketName__',
@@ -38,7 +38,7 @@ const _default: browser._manifest.WebExtensionManifest = {
                 "<all_urls>"
             ],
             js: [
-                "content_scripts_skeleton.js",
+                "content_scripts.js",
             ],
             run_at: "document_start"
         }

@@ -13,7 +13,7 @@ import { defineComponent, nextTick, ref, type StyleValue, toRef, useSlots } from
 
 type Props = {
     modelValue: string | undefined
-    initialValue?: string
+    initialValue?: string | (() => (Awaitable<string | undefined>))
     onChange?: (newVal: string | undefined) => void
 }
 
@@ -37,10 +37,20 @@ const Editable = defineComponent<Props>(props => {
         closeEditing()
         props.onChange?.(inputVal.value?.trim())
     }
+
+    const resetWithInitial = async () => {
+        const initial = props.initialValue
+        if (typeof initial === 'string') {
+            setInputVal(initial)
+        } else if (typeof initial === 'function') {
+            const initialValue = await initial()
+            setInputVal(initialValue)
+        }
+    }
+
     const handleEdit = () => {
         openEditing()
-        const initial = props.initialValue
-        !input.value && initial && setInputVal(initial)
+        resetWithInitial()
         nextTick(() => input.value?.focus?.())
     }
     const { label: labelSlot } = useSlots()

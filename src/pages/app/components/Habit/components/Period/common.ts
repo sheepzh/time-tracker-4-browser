@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { t } from "@app/locale"
+import { t } from '@app/locale'
 import { formatTime } from "@util/time"
 import { type GridComponentOption } from "echarts/components"
 
@@ -16,13 +16,6 @@ export const generateGridOption = (): GridComponentOption => {
         left: 40,
         right: 20,
     }
-}
-
-export type ChartType = 'average' | 'trend' | 'stack'
-
-export type FilterOption = {
-    periodSize: number
-    chartType: ChartType
 }
 
 const MONTHS = t(msg => msg.calendar.months).split('|')

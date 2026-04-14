@@ -1,38 +1,27 @@
-import { Compilation, Compiler, sources } from '@rspack/core'
+import { Compilation, type Compiler, type RspackPluginInstance, sources } from '@rspack/core'
 
-type GenerateJsonPluginOptions = {
-    data: unknown
-    outputPath: string
-}
+export class GenerateJsonPlugin implements RspackPluginInstance {
+    private static readonly NAME = 'GenerateJsonPlugin'
 
-export class GenerateJsonPlugin {
-    private options: GenerateJsonPluginOptions
-
-    constructor(outputPath: string, data: unknown) {
+    constructor(private outputPath: string, private data: unknown) {
         if (!data || typeof data !== 'object') {
             throw new Error('Invalid data option')
         }
-        if (!outputPath?.endsWith('.json')) {
+        if (!outputPath.endsWith('.json')) {
             throw new Error('outputPath must be .json file')
         }
-
-        this.options = { outputPath, data }
     }
 
     apply(compiler: Compiler) {
-        compiler.hooks.thisCompilation.tap('GenerateJsonPlugin', (compilation) => {
+        compiler.hooks.thisCompilation.tap(GenerateJsonPlugin.NAME, compilation => {
             compilation.hooks.processAssets.tap({
-                name: 'GenerateJsonPlugin',
+                name: GenerateJsonPlugin.NAME,
                 stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONS,
             }, () => {
                 try {
-                    const json = JSON.stringify(this.options.data)
-
-                    compilation.emitAsset(this.options.outputPath, {
-                        source: () => json,
-                        size: () => json.length
-                    } as sources.Source)
-
+                    const json = JSON.stringify(this.data)
+                    const raw = new sources.RawSource(json)
+                    compilation.emitAsset(this.outputPath, raw)
                 } catch (e) {
                     compilation.errors.push(new Error(`[SimpleWriteJson] ${(e as Error)?.message}`))
                 }

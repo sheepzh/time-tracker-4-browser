@@ -6,12 +6,12 @@
  */
 
 import { useDialogSop } from '@app/components/common/DialogSop/context'
-import { t } from "@app/locale"
+import { t } from '@app/locale'
 import { ElAlert } from "element-plus"
 import { defineComponent, toRaw } from "vue"
 import type { ClearForm } from './types'
 
-const _default = defineComponent<{}>(props => {
+const _default = defineComponent<{}>(() => {
     const { form } = useDialogSop<ClearForm>()
     return () => (
         <ElAlert type="success" closable={false}>

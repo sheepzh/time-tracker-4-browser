@@ -3,7 +3,7 @@
  *
  * Testing with server implemented by https://github.com/svtslv/webdav-cli
  */
-import { encode } from '@util/base64'
+import { encode } from '../util/base64'
 import { fetchDelete, fetchGet } from './http'
 
 // Only support password for now

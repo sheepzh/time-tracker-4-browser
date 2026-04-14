@@ -1,14 +1,13 @@
 /**
  * Build psl tree
  */
+import { type PslTree } from '@/background/psl'
 import { fetchGet } from '@api/http'
-import { type PslTree } from '@util/psl'
 import { writeFileSync } from 'fs'
 import path from 'path'
-import punycode from "punycode"
 
 const LIST_URL = "https://publicsuffix.org/list/effective_tld_names.dat"
-const JSON_PATH = path.join(__dirname, "..", "src", "util", "psl", "rules.json")
+const JSON_PATH = path.join(__dirname, "..", "src", "background", "psl", "rules.json")
 
 const downloadList = async (): Promise<string> => {
     const response = await fetchGet(LIST_URL)
@@ -18,7 +17,7 @@ const downloadList = async (): Promise<string> => {
 const parse = (tree: PslTree, parts: string[], index: number) => {
     if (index < 0) return
     const part = parts[index]
-    const ascii = punycode.toASCII(part)
+    const ascii = new URL(`http://${part}`).hostname
     let node = tree[ascii]
     if (index === 0) {
         if (!node) tree[ascii] = 1
@@ -57,7 +56,5 @@ async function main() {
 
     writeFileSync(JSON_PATH, JSON.stringify(tree, null, 4), { encoding: "utf-8" })
 }
-
-
 
 main()

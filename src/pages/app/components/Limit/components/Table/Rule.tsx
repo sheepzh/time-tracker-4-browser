@@ -1,4 +1,4 @@
-import { t } from "@app/locale"
+import { t } from '@app/locale'
 import Flex from "@pages/components/Flex"
 import { period2Str } from '@util/limit'
 import { formatPeriodCommon, MILL_PER_SECOND } from '@util/time'

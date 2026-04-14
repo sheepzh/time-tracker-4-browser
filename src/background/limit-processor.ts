@@ -5,41 +5,25 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { createTabAfterCurrent, getRightOf, listTabs, resetTabUrl, sendMsg2Tab } from "@api/chrome/tab"
-import { LIMIT_ROUTE } from "@app/router/constants"
-import limitService from "@service/limit-service"
-import { getAppPageUrl } from "@util/constant/url"
+import { listTabs, sendMsg2Tab } from "@api/chrome/tab"
 import { matches } from "@util/limit"
-import { isBrowserUrl } from "@util/pattern"
 import { getStartOfDay, MILL_PER_DAY, MILL_PER_SECOND } from "@util/time"
 import alarmManager from "./alarm-manager"
 import MessageDispatcher from "./message-dispatcher"
+import {
+    createLimitRule, moreMinutes, noticeLimitChanged, removeLimitRules, selectLimit, updateLimitRules,
+} from "./service/limit-service"
 
 function processLimitWaking(rules: timer.limit.Item[], tab: ChromeTab): void {
     const { url, id: tabId } = tab
     if (!url || !tabId) return
-    const anyMatch = rules.map(rule => matches(rule?.cond, url)).reduce((a, b) => a || b, false)
+    const anyMatch = rules.map(rule => matches(rule.cond, url)).reduce((a, b) => a || b, false)
     if (!anyMatch) {
         return
     }
     sendMsg2Tab(tabId, 'limitWaking', rules)
         .then(() => console.log(`Waked tab[id=${tab.id}]`))
-        .catch(err => console.error(`Failed to wake with limit rule: rules=${JSON.stringify(rules)}, msg=${err.msg}`))
-}
-
-async function processOpenPage(limitedUrl: string, sender: ChromeMessageSender) {
-    const originTab = sender?.tab
-    if (!originTab) return
-    const realUrl = getAppPageUrl(LIMIT_ROUTE, { url: encodeURI(limitedUrl) })
-    const baseUrl = getAppPageUrl(LIMIT_ROUTE)
-    const rightTab = await getRightOf(originTab)
-    const { id: rightId, url: rightUrl } = rightTab || {}
-    if (rightId && rightUrl && isBrowserUrl(rightUrl) && rightUrl.includes(baseUrl)) {
-        // Reset url
-        await resetTabUrl(rightId, realUrl)
-    } else {
-        await createTabAfterCurrent(realUrl, sender?.tab)
-    }
+        .catch(err => console.error(`Failed to wake with limit rule: rules=${JSON.stringify(rules)}, msg=${err.message}`))
 }
 
 function initDailyBroadcast() {
@@ -47,12 +31,12 @@ function initDailyBroadcast() {
     alarmManager.setWhen(
         'limit-daily-broadcast',
         () => getStartOfDay(new Date()) + MILL_PER_DAY,
-        () => limitService.broadcastRules(),
+        noticeLimitChanged,
     )
 }
 
 const processMoreMinutes = async (url: string) => {
-    const rules = await limitService.moreMinutes(url)
+    const rules = await moreMinutes(url)
 
     const tabs = await listTabs({ status: 'complete' })
     tabs.forEach(tab => processLimitWaking(rules, tab))
@@ -76,10 +60,12 @@ const processAskHitVisit = async (item: timer.limit.Item) => {
 
 export default function init(dispatcher: MessageDispatcher) {
     initDailyBroadcast()
+
     dispatcher
-        .register<string>('openLimitPage', processOpenPage)
-        // More minutes
-        .register<string>('cs.moreMinutes', processMoreMinutes)
-        // Judge any tag hit the time limit per visit
-        .register<timer.limit.Item, boolean>("askHitVisit", processAskHitVisit)
+        .register('limit.list', selectLimit)
+        .register('limit.delete', removeLimitRules)
+        .register('limit.update', updateLimitRules)
+        .register('limit.add', createLimitRule)
+        .register('limit.hitVisit', processAskHitVisit)
+        .register('limit.delay', processMoreMinutes)
 }

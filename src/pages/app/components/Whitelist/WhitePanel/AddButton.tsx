@@ -4,8 +4,8 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { t } from "@app/locale"
-import { useState, useSwitch } from "@hooks"
+import { useState, useSwitch } from '@hooks'
+import { t } from '@app/locale'
 import { ElButton } from "element-plus"
 import { defineComponent, StyleValue } from "vue"
 import WhiteInput from './WhiteInput'

@@ -14,7 +14,7 @@ And [Chrome Extension Development Documentation](https://developer.chrome.com/do
 
 Some free open source tools are also integrated:
 
--   Testing tool [jest](https://jestjs.io/docs/getting-started)
+-   Testing tool [Rstest](https://rstest.rs)
 -   End-to-end integration testing [puppeteer](https://developer.chrome.com/docs/extensions/how-to/test/puppeteer)
 -   I18N tool [Crowdin](https://crowdin.com/project/timer-chrome-edge-firefox)
 

@@ -5,11 +5,11 @@
  * https://opensource.org/licenses/MIT
  */
 
-import DateRangeFilterItem from "@app/components/common/filter/DateRangeFilterItem"
-import TimeFormatFilterItem from "@app/components/common/filter/TimeFormatFilterItem"
-import { t } from "@app/locale"
+import DateRangeFilterItem from '@app/components/common/filter/DateRangeFilterItem'
+import TimeFormatFilterItem from '@app/components/common/filter/TimeFormatFilterItem'
+import { t } from '@app/locale'
 import Flex from "@pages/components/Flex"
-import type { ElDatePickerShortcut } from '@pages/types'
+import { ElDatePickerShortcut } from '@pages/element-ui/types'
 import { daysAgo, MILL_PER_DAY } from "@util/time"
 import { defineComponent } from "vue"
 import { useHabitFilter } from "./context"

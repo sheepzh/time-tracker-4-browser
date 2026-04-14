@@ -1,5 +1,17 @@
-import { ElementHandle, type Page } from "puppeteer"
-import { sleep } from "../common/base"
+import { ElementHandle, type Frame, type Page } from "puppeteer"
+import { sleep } from "../common/util"
+
+export async function waitForLimitFrame(page: Page, timeout = 5000): Promise<Frame> {
+    return page.waitForFrame(f => f.url().includes('limit.html'), { timeout })
+}
+
+export async function isLimitModalVisible(page: Page): Promise<boolean> {
+    return await page.evaluate(() => {
+        const overlay = document.querySelector('extension-time-tracker-overlay') as HTMLElement | null
+        if (!overlay) return false
+        return overlay.style.visibility !== 'hidden'
+    })
+}
 
 export async function createLimitRule(rule: timer.limit.Rule, page: Page) {
     const createButton = await page.$('.el-card:first-child .el-button:last-child')
@@ -72,7 +84,7 @@ export async function fillTimeLimit(value: number | undefined, input: ElementHan
     await sleep(.2)
 }
 
-export async function fillVisitLimit(value: number, input: ElementHandle<HTMLInputElement>, page: Page) {
+async function fillVisitLimit(value: number, input: ElementHandle<HTMLInputElement>, page: Page) {
     await input.focus()
     await page.keyboard.press('Delete')
     await page.keyboard.type(`${value ?? 0}`)
