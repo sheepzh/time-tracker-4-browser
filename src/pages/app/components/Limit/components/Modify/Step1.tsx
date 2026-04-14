@@ -1,5 +1,5 @@
 import { useDialogSop } from '@app/components/common/DialogSop/context'
-import { ModifyForm } from '@app/components/Limit/types'
+import type { ModifyForm } from '@app/components/Limit/types'
 import { t } from '@app/locale'
 import { useXsState } from '@hooks'
 import { ElCol, ElForm, ElFormItem, ElInput, ElRow, ElSelect, ElSwitch } from "element-plus"

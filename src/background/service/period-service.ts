@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { after, compare, getDateString } from "@/background/util/period"
+import { after, compare, getDateString } from "@/util/period"
 import db from "@db/period-database"
 import { merge } from "./components/period-calculator"
 

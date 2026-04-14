@@ -1,4 +1,4 @@
-import { averageByDay } from "@/background/util/period"
+import { averageByDay } from "@/util/period"
 import { GRID_CELL_STYLE } from '@app/components/common/grid'
 import { KanbanIndicatorCell } from '@app/components/common/kanban'
 import { t } from '@app/locale'

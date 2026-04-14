@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { keyOf, MAX_PERIOD_ORDER } from "@/background/util/period"
+import { keyOf, MAX_PERIOD_ORDER } from "@/util/period"
 import { listPeriods } from '@api/sw/period'
 import { useLocalStorage, useProvide, useProvider, useRequest } from '@hooks'
 import { getDayLength, MILL_PER_DAY } from "@util/time"

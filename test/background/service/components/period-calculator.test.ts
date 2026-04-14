@@ -1,4 +1,4 @@
-import { keyOf, MINUTE_PER_PERIOD } from '@/background/util/period'
+import { keyOf, MINUTE_PER_PERIOD } from '@/util/period'
 import { calculate, merge } from "@service/components/period-calculator"
 import { MILL_PER_DAY } from "@util/time"
 

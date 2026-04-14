@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { after, compare, indexOf, keyOf, rowOf, startOfKey } from "@/background/util/period"
+import { after, compare, indexOf, keyOf, rowOf, startOfKey } from "@/util/period"
 import { sum } from "@util/array"
 
 /**

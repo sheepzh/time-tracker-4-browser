@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { MILL_PER_DAY, MILL_PER_MINUTE } from "../../util/time"
+import { MILL_PER_DAY, MILL_PER_MINUTE } from "./time"
 
 export const MINUTE_PER_PERIOD = 15
 const PERIOD_PER_DATE = 24 * 60 / MINUTE_PER_PERIOD

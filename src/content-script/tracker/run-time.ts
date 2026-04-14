@@ -29,6 +29,7 @@ class RunTimeTracker {
 
     private async fetchSite() {
         const { host } = extractHostname(this.url)
+        if (!host) return
         const enabled = await trySendMsg2Runtime('site.runEnabled', host)
         this.host = enabled ? host : undefined
     }
