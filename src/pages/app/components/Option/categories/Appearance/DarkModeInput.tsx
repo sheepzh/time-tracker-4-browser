@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { t } from "@app/locale"
+import { t } from '@app/locale'
 import { ElSelect, ElTimePicker } from "element-plus"
 import { computed, defineComponent, StyleValue } from "vue"
 

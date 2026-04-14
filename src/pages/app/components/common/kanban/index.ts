@@ -5,8 +5,5 @@
  * https://opensource.org/licenses/MIT
  */
 
-import Card from "./Card"
-import IndicatorCell from "./IndicatorCell"
-
-export const KanbanIndicatorCell = IndicatorCell
-export const KanbanCard = Card
+export { default as KanbanCard } from "./Card"
+export { default as KanbanIndicatorCell } from "./IndicatorCell"

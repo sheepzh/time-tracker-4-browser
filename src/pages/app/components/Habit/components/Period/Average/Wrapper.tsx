@@ -4,17 +4,13 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import { averageByDay, MINUTE_PER_PERIOD } from "@/util/period"
 import { t } from "@app/locale"
 import { getCompareColor, tooltipDot, tooltipFlexLine, tooltipSpaceLine } from "@app/util/echarts"
-import { EchartsWrapper } from "@hooks/useEcharts"
-import { getPrimaryTextColor } from "@pages/util/style"
-import { averageByDay, MINUTE_PER_PERIOD } from "@util/period"
+import { EchartsWrapper } from "@hooks"
+import { getPrimaryTextColor } from '@pages/util/style'
 import { formatPeriodCommon, MILL_PER_MINUTE } from "@util/time"
-import {
-    type BarSeriesOption,
-    type ComposeOption,
-    type GridComponentOption, type TooltipComponentOption
-} from "echarts"
+import type { BarSeriesOption, ComposeOption, GridComponentOption, TooltipComponentOption } from "echarts"
 import { type TopLevelFormatterParams } from "echarts/types/dist/shared"
 import { generateGridOption } from "../common"
 

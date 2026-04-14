@@ -5,14 +5,13 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getVersion } from '@api/chrome/runtime'
-import { t } from "@app/locale"
+import { useCached, useState } from '@hooks'
+import { t } from '@app/locale'
 import { Expand, Fold } from '@element-plus/icons-vue'
 import { css } from '@emotion/css'
-import { useCached } from '@hooks/useCached'
-import { useState } from '@hooks/useState'
 import Flex from '@pages/components/Flex'
 import { colorVariant } from '@pages/util/style'
+import { getVersion } from '@api/chrome/runtime'
 import { ElCollapseTransition, ElIcon, ElMenu, ElMenuItem, ElMenuItemGroup, ElScrollbar, ElText, ElTooltip, useNamespace } from "element-plus"
 import { defineComponent, h, nextTick, onMounted, type Ref, ref, type StyleValue, watch } from "vue"
 import { type Router, useRouter } from "vue-router"

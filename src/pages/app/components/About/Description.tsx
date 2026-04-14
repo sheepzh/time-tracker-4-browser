@@ -1,11 +1,12 @@
-import { t } from "@app/locale"
+import packageInfo, { AUTHOR_EMAIL } from "@/package"
+import { rateClicked } from '@/pages/util/rate'
+import { t } from '@app/locale'
 import { css } from '@emotion/css'
-import { MediaSize, useMediaSize } from "@hooks"
+import { MediaSize, useMediaSize } from '@hooks'
 import { locale } from "@i18n"
 import Flex from "@pages/components/Flex"
-import { Coffee, GitHub } from '@pages/util/icon'
-import { saveFlag } from "@service/meta-service"
-import packageInfo, { AUTHOR_EMAIL } from "@src/package"
+import Coffee from '@pages/icons/Coffee'
+import GitHub from '@pages/icons/Github'
 import {
     BUY_ME_A_COFFEE_PAGE,
     CHANGE_LOG_PAGE,
@@ -165,7 +166,7 @@ const _default = defineComponent<{}>(() => {
                     <ElText size="large">
                         🌟&ensp;
                         {t(msg => msg.about.text.greet)}&ensp;
-                        <a href={REVIEW_PAGE || CHROME_HOMEPAGE} target="_blank" onClick={() => saveFlag("rateOpen")}>
+                        <a href={REVIEW_PAGE || CHROME_HOMEPAGE} target="_blank" onClick={rateClicked}>
                             {t(msg => msg.about.text.rate)}
                         </a>
                     </ElText>

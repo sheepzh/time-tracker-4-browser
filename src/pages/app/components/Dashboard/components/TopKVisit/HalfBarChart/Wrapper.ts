@@ -1,13 +1,8 @@
-import { getSeriesPalette, tooltipDot } from "@app/util/echarts"
-import { EchartsWrapper } from "@hooks/useEcharts"
-import { getPrimaryTextColor } from "@pages/util/style"
+import { getSeriesPalette, tooltipDot } from '@app/util/echarts'
+import { EchartsWrapper } from "@hooks"
+import { getPrimaryTextColor } from '@pages/util/style'
 import { generateSiteLabel } from "@util/site"
-import {
-    type ComposeOption,
-    type GridComponentOption,
-    type PieSeriesOption,
-    type TooltipComponentOption,
-} from "echarts"
+import type { ComposeOption, GridComponentOption, PieSeriesOption, TooltipComponentOption } from "echarts"
 import { BizOption } from "../context"
 
 type EcOption = ComposeOption<

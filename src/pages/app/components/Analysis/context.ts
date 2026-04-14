@@ -5,8 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { type AppAnalysisQuery } from '@/shared/route'
+import { extractHostname } from '@/util/pattern'
+import { listCateStats, listSiteStats } from "@api/sw/stat"
 import { useLocalStorage, useProvide, useProvider, useRequest } from "@hooks"
-import { selectCate, selectSite } from "@service/stat-service"
 import { ref, watch, type Ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import type { AnalysisTarget } from "./types"
@@ -17,17 +19,14 @@ type Context = {
     rows: Ref<timer.stat.Row[]>
 }
 
-export type AnalysisQuery = Partial<timer.site.SiteKey> & {
-    cateId?: string
-}
-
 function parseQuery(): AnalysisTarget | undefined {
     // Process the query param
-    const query = useRoute().query as unknown as AnalysisQuery
+    const query = useRoute().query as unknown as AppAnalysisQuery
     useRouter().replace({ query: {} })
-    const { host, type: siteType, cateId } = query
+    const { host, type: siteType, cateId, url } = query
     if (cateId) return { type: 'cate', key: parseInt(cateId) }
     if (host && siteType) return { type: 'site', key: { host, type: siteType } }
+    if (url) return { type: 'site', key: { host: extractHostname(url).host, type: 'normal' } }
     return undefined
 }
 
@@ -36,10 +35,10 @@ async function queryRows(target: AnalysisTarget | undefined): Promise<(timer.sta
     if (!key) return []
 
     if (type === 'cate') {
-        return selectCate({ cateIds: [key], sortKey: 'date' })
+        return await listCateStats({ cateIds: [key], sortKey: 'date' })
     } else if (type === 'site') {
-        const { host, type: siteType } = key ?? {}
-        return selectSite({ host, mergeHost: siteType === 'merged', sortKey: 'date' })
+        const { host, type: siteType } = key
+        return await listSiteStats({ host, mergeHost: siteType === 'merged', sortKey: 'date' })
     } else {
         // Not supported yet
         return []

@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import FIFOCache from "@util/fifo-cache"
+import FIFOCache from "../util/fifo-cache"
 import { fetchGet, fetchGetWithTry, fetchPost } from "./http"
 
 type BaseFile = {

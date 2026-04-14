@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { t } from "@app/locale"
+import { t } from '@app/locale'
 import { Delete, EditPen } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
 import Flex from "@pages/components/Flex"

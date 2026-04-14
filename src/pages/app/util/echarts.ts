@@ -2,6 +2,7 @@ import { getCssVariable } from "@pages/util/style"
 import { range } from "@util/array"
 import { addVector, multiTuple, subVector } from "@util/tuple"
 import { type LinearGradientObject } from "echarts"
+import type { TopLevelFormatterParams } from "echarts/types/dist/shared"
 
 const splitVectors = (vectorRange: Tuple<Vector<number>, 2>, count: number, gradientFactor?: number): Vector<number>[] => {
     gradientFactor = gradientFactor ?? 1.3
@@ -103,4 +104,14 @@ export const tooltipSpaceLine = (height?: number): string => {
 
 export const getPieBorderColor = (): string | undefined => {
     return getCssVariable('--echarts-pie-border-color')
+}
+
+export function parseValueOfFormatter(params: TopLevelFormatterParams) {
+    const param = Array.isArray(params) ? params[0] : params
+    const { data } = param
+    if (typeof data === 'object' && data !== null) {
+        return 'value' in data ? data.value : undefined
+    }
+
+    return undefined
 }

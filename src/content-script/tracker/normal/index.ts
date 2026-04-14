@@ -38,7 +38,7 @@ class TrackContext {
     }
 }
 
-export type NormalTrackerOption = {
+type NormalTrackerOption = {
     onReport: (ev: timer.core.Event) => Promise<void>
     onResume?: (reason: StateChangeReason) => void
     onPause?: (reason: StateChangeReason) => void
@@ -84,7 +84,6 @@ export default class NormalTracker {
         const data: timer.core.Event = {
             start: lastTime,
             end: now,
-            url: location?.href,
             ignoreTabCheck: !!ignoreTabCheck
         }
         try {

@@ -5,13 +5,13 @@
  * https://opensource.org/licenses/MIT
  */
 
-import buttonMessages, { type ButtonMessage } from "@i18n/message/common/button"
-import calendarMessages, { type CalendarMessage } from "@i18n/message/common/calendar"
-import itemMessages, { type ItemMessage } from "@i18n/message/common/item"
-import metaMessages, { type MetaMessage } from "@i18n/message/common/meta"
-import sharedMessages, { type SharedMessage } from "@i18n/message/common/shared"
-import baseMessages, { type BaseMessage } from "../common/base"
+import baseMessages, { type BaseMessage } from "../base"
+import buttonMessages, { type ButtonMessage } from "../button"
+import calendarMessages, { type CalendarMessage } from "../common/calendar"
+import metaMessages, { type MetaMessage } from "../common/meta"
+import sharedMessages, { type SharedMessage } from '../common/shared'
 import limitModalMessages, { type ModalMessage } from "../cs/modal"
+import itemMessages, { type ItemMessage } from "../item"
 import { merge, type MessageRoot } from "../merge"
 import aboutMessages, { type AboutMessage } from "./about"
 import analysisMessages, { type AnalysisMessage } from "./analysis"

@@ -6,7 +6,7 @@
  */
 import { ElScrollbar } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
-import ContentContainer, { FilterContainer } from "../common/ContentContainer"
+import ContentContainer, { FilterContainer } from '../common/ContentContainer'
 import AnalysisFilter from "./components/AnalysisFilter"
 import Summary from "./components/Summary"
 import Trend from "./components/Trend"

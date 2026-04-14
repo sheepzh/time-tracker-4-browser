@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { t } from "@app/locale"
+import { sendMsg2Runtime } from '@api/sw/common'
+import { t } from '@app/locale'
 import { Upload } from "@element-plus/icons-vue"
-import immigration from '@service/components/immigration'
 import { deserialize } from "@util/file"
 import { ElButton, ElLoading, ElMessage } from "element-plus"
 import { defineComponent, ref } from "vue"
@@ -22,10 +22,8 @@ async function handleFileSelected(fileInput: HTMLInputElement | undefined, callb
     const file: File = files[0]
     const fileText = await file.text()
     const data = deserialize(fileText)
-    if (!data) {
-        ElMessage.error(t(msg => msg.dataManage.importError))
-    }
-    await immigration.importData(data)
+    if (!data) return ElMessage.error(t(msg => msg.dataManage.importError))
+    await sendMsg2Runtime('immigration.import', data)
     loading.close()
     callback?.()
     ElMessage.success(t(msg => msg.operation.successMsg))

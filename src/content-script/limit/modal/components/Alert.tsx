@@ -1,10 +1,9 @@
 import { getIconUrl } from "@api/chrome/runtime"
+import { getOption } from "@api/sw/option"
 import { t } from "@cs/locale"
-import { useXsState } from '@hooks/useMediaSize'
-import { useRequest } from "@hooks/useRequest"
+import { useRequest, useXsState } from "@hooks"
 import Box from '@pages/components/Box'
 import Flex from '@pages/components/Flex'
-import optionHolder from "@service/components/option-holder"
 import { defineComponent, type StyleValue } from "vue"
 
 const IMG_STYLE: StyleValue = {
@@ -16,8 +15,8 @@ const IMG_STYLE: StyleValue = {
 const _default = defineComponent(() => {
     const defaultPrompt = t(msg => msg.modal.defaultPrompt)
     const { data: prompt } = useRequest(async () => {
-        const option = await optionHolder.get()
-        return option?.limitPrompt || defaultPrompt
+        const option = await getOption()
+        return option?.limitPrompt ?? defaultPrompt
     }, { defaultValue: defaultPrompt })
 
     const isXs = useXsState()

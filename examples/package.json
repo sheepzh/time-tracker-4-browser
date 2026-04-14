@@ -1,5 +1,5 @@
 {
-    "name": "@timer/examples",
+    "name": "@tt4b/examples",
     "version": "1.0.0",
     "private": true,
     "description": "Standalone examples package for local/e2e servers",

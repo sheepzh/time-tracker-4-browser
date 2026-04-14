@@ -5,6 +5,18 @@
  * https://opensource.org/licenses/MIT
  */
 
+export function groupBy<T, R>(
+    arr: T[],
+    keyFunc: (e: T, idx: number) => string | undefined | null,
+    downstream: (grouped: T[], key: string) => R
+): Record<string, R>
+
+export function groupBy<T, R>(
+    arr: T[],
+    keyFunc: (e: T, idx: number) => number,
+    downstream: (grouped: T[], key: string) => R
+): Record<number, R>
+
 /**
  * Group by
  *
@@ -107,15 +119,6 @@ export function sum(arr: number[]): number {
     return arr?.reduce?.((a, b) => (a ?? 0) + (b ?? 0), 0) ?? 0
 }
 
-/**
- * @since 2.1.0
- * @returns null if arr is empty or null
- */
-export function average(arr: number[]): number | null {
-    if (!arr?.length) return null
-    return sum(arr) / arr.length
-}
-
 export function allMatch<T>(arr: T[], predicate: (t: T) => boolean): boolean {
     return !arr?.filter?.(e => !predicate?.(e))?.length
 }
@@ -130,23 +133,4 @@ export function range(len: number): number[] {
         arr.push(i)
     }
     return arr
-}
-
-export function containsAny<T>(arr1: T[], arr2: T[]): boolean {
-    if (!arr1?.length || !arr2?.length) return false
-
-    return !!arr1.find(e => arr2.includes(e))
-}
-
-export function joinAny<T = any>(arr: T[], separator: T): T[] {
-    if (!arr.length) return [separator]
-
-    return arr.reduce<T[]>(
-        (arr, e) => {
-            arr.length && arr.push(separator)
-            arr.push(e)
-            return arr
-        },
-        [],
-    )
 }

@@ -12,7 +12,7 @@ export const DEFAULT_VAULT = "vault"
 export const INVALID_AUTH_CODE = 40101
 export const NOT_FOUND_CODE = 40400
 
-export type ObsidianResult<T> = {
+type ObsidianResult<T> = {
     message?: string
     errorCode?: number
 } & T

@@ -1605,30 +1605,23 @@
                 "label": "Tryb ciemny {input}",
                 "timed": "Czas na"
             },
-            "animationDuration": "Długość trwania początkowej animacji wykresu {input}",
-            "sidePanel": "{input} - czy włączyć panel boczny"
+            "animationDuration": "Długość trwania początkowej animacji wykresu {input}"
         },
         "tracking": {
             "title": "Monitorowanie",
             "autoPauseTrack": "{input} Wstrzymaj monitorowanie, jeżeli nie wykryto aktywności {info} przez {maxTime}",
             "noActivityInfo": "Mysz i klawiatura są nieaktywne, nie są w trybie pełnoekranowym i nie ma dźwięku",
-            "countLocalFiles": "{input} Śledzenie czasu, kiedy przeglądarka odczytuje {localFileTime} {info}",
             "localFileTime": "pliki lokalne",
-            "localFilesInfo": "Obsługuje pliki takich typów jak PDF, obrazy, txt lub JSON.",
-            "countTabGroup": "{input} Śledzenie czasu w grupach kart {info}",
             "tabGroupInfo": "Po usunięciu grupy tagów, dane również zostaną usunięte.",
             "fileAccessDisabled": "Dostęp do adresów URL plików jest obecnie niedozwolony. Proszę najpierw włączyć go na stronie zarządzania",
             "weekStart": "Pierwszy dzień tygodnia {input}",
             "weekStartAsNormal": "Normalnie",
-            "storage": "Przechowuj dane śledzenia w {input}",
-            "storageConfirm": "Czy chcesz zmienić typ pamięci na {type}?"
+            "storage": "Przechowuj dane śledzenia w {input}"
         },
         "limit": {
-            "prompt": "Wyświetlane zapytanie, gdy ograniczono {input}",
             "reminder": "Przypomnienie {input} {minInput} minut(y) przed limitem czasu",
             "level": {
                 "label": "Jak odblokować podczas ograniczenia {input}",
-                "nothing": "Zezwalaj na bezpośrednie odblokowanie na stronie administratora",
                 "password": "Musisz wprowadzić hasło, aby odblokować",
                 "verification": "Musisz wprowadzić kod weryfikacyjny, aby odblokować",
                 "passwordLabel": "Hasło odblokowujące {input}",
@@ -1647,31 +1640,24 @@
         },
         "backup": {
             "title": "Kopia zapasowa danych",
-            "type": "Zdalny typ: {input}",
             "client": "Nazwa klienta {input}",
             "meta": {
-                "gist": {
-                    "authInfo": "Wymagany jest przynajmniej  jeden token z gist"
-                },
                 "obsidian_local_rest_api": {
                     "endpointInfo": "Tylko HTTP jest dostępny, ponieważ CORS nie może być skonfigurowany dla stron rozszerzenia"
                 }
             },
             "label": {
                 "endpoint": "Adres punktu końcowego {info} {input}",
-                "path": "Ścieżka do folderu {input}",
                 "account": "Nazwa użytkownika {input}",
                 "password": "Hasło {input}"
             },
             "operation": "Kopia zapasowa",
             "download": {
                 "btn": "Pobierz",
-                "willDownload": "Do pobrania",
-                "confirmTip": "{size} części danych z [{clientName}] zostaną pobrane"
+                "willDownload": "Do pobrania"
             },
             "clear": {
-                "btn": "Wyczyść",
-                "confirmTip": "{rowCount} części danych dla stron {hostCount} śledzonych przez [{clientName}] zostaną usunięte!"
+                "btn": "Wyczyść"
             },
             "confirmStep": "Potwierdź dane",
             "clientTable": {
@@ -1687,8 +1673,7 @@
             }
         },
         "accessibility": {
-            "title": "Ułatwienia dostępu",
-            "chartDecal": "{input} - czy wyświetlić wykres typu decal"
+            "title": "Ułatwienia dostępu"
         },
         "notification": {
             "title": "Powiadomienie",

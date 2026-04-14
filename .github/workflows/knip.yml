@@ -1,0 +1,19 @@
+name: Knip
+on:
+    pull_request:
+concurrency:
+    group: knip-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+    cancel-in-progress: true
+jobs:
+    knip:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v6
+            - name: Use Node.js
+              uses: actions/setup-node@v6
+              with:
+                  node-version: "24"
+            - name: Install dependencies
+              run: npm install
+            - name: Run Knip
+              run: npx knip --treat-config-hints-as-errors

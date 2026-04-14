@@ -1,12 +1,12 @@
-import { createTabAfterCurrent } from "@api/chrome/tab"
-import AlertLines from '@app/components/common/AlertLines'
-import { t } from "@app/locale"
+import { t } from '@app/locale'
 import { Pointer } from "@element-plus/icons-vue"
 import Box from "@pages/components/Box"
+import { createTabAfterCurrent } from "@api/chrome/tab"
 import { CROWDIN_HOMEPAGE } from "@util/constant/url"
 import { ElButton, ElCard, ElScrollbar } from "element-plus"
 import type { FunctionalComponent, StyleValue } from "vue"
-import ContentContainer from "../common/ContentContainer"
+import AlertLines from '../common/AlertLines'
+import ContentContainer from '../common/ContentContainer'
 import MemberList from "./MemberList"
 import ProgressList from "./ProgressList"
 

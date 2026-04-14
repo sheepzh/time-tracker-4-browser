@@ -1,15 +1,6 @@
 import type {
-    AriaComponentOption,
-    BarSeriesOption,
-    ComposeOption,
-    GridComponentOption,
-    LegendComponentOption,
-    LineSeriesOption,
-    PieSeriesOption,
-    ScatterSeriesOption,
-    TitleComponentOption,
-    ToolboxComponentOption,
-    VisualMapComponentOption,
+    AriaComponentOption, BarSeriesOption, ComposeOption, GridComponentOption, LegendComponentOption, LineSeriesOption,
+    PieSeriesOption, ScatterSeriesOption, TitleComponentOption, ToolboxComponentOption, VisualMapComponentOption,
 } from "echarts"
 import type { AxisBaseOption } from 'echarts/types/src/coord/axisCommonTypes.js'
 import { isRtl } from "./document"

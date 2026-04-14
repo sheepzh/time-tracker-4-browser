@@ -61,15 +61,6 @@ export type LimitMessage = {
     reminder: string
 }
 
-export const verificationMessages: Messages<LimitMessage["verification"]> = {
-    en: resource.en?.verification,
-    zh_CN: resource.zh_CN?.verification,
-    zh_TW: resource.zh_TW?.verification,
-    ja: resource.ja?.verification,
-    pt_PT: resource.pt_PT?.verification,
-    uk: resource.uk?.verification,
-}
-
 const _default: Messages<LimitMessage> = resource
 
 export default _default

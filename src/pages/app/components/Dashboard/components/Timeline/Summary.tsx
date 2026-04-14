@@ -6,37 +6,33 @@ import { groupBy } from '@util/array'
 import { MILL_PER_HOUR, MILL_PER_MINUTE } from '@util/time'
 import { ElIcon, ElRate, ElText, ElTooltip } from 'element-plus'
 import { computed, defineComponent } from 'vue'
-
-type AnalysisResult = {
-    busy: number
-    focus: number
-}
+import { useTimelineContext } from './context'
 
 const MAX_SCORE = 5
 
-const defaultResult = (): AnalysisResult => ({
+const defaultResult = (): { busy: number, focus: number } => ({
     busy: 1,
     focus: 1,
 })
 
-const computeSessionScore = (ticks: timer.timeline.Tick[], hourCount: number) => {
+const computeSessionScore = (activities: timer.timeline.Activity[], hourCount: number) => {
     let continuousSessions = 0
-    let currentSession: timer.timeline.Tick[] = []
+    let currentSession: timer.timeline.Activity[] = []
 
-    ticks.sort((a, b) => a.start - b.start).forEach(currentTick => {
+    activities.sort((a, b) => a.start - b.start).forEach(current => {
         if (!currentSession.length) {
-            currentSession.push(currentTick)
+            currentSession.push(current)
             return
         }
 
-        const prevTick = currentSession[currentSession.length - 1]
-        const gap = currentTick.start - (prevTick.start + prevTick.duration)
+        const prev = currentSession[currentSession.length - 1]
+        const gap = current.start - (prev.start + prev.duration)
 
         if (gap <= MILL_PER_MINUTE * 3) {
-            currentSession.push(currentTick)
+            currentSession.push(current)
         } else {
             if (currentSession.length > 1) continuousSessions++
-            currentSession = [currentTick]
+            currentSession = [current]
         }
     })
 
@@ -46,31 +42,31 @@ const computeSessionScore = (ticks: timer.timeline.Tick[], hourCount: number) =>
     return Math.min(sessionDensity, MAX_SCORE)
 }
 
-const analyze = (ticks: timer.timeline.Tick[]): AnalysisResult => {
-    if (!ticks.length) return defaultResult()
+const analyze = (activities: timer.timeline.Activity[]): { busy: number, focus: number } => {
+    if (!activities.length) return defaultResult()
 
-    const minTime = ticks.map(t => t.start).sort((a, b) => a - b)[0]!
-    const maxTime = ticks.map(t => t.start + t.duration).sort((a, b) => b - a)[0]!
+    const minTime = activities.map(t => t.start).sort((a, b) => a - b)[0]!
+    const maxTime = activities.map(t => t.start + t.duration).sort((a, b) => b - a)[0]!
     const totalRange = maxTime - minTime
-    const totalActiveTime = ticks.reduce((sum, tick) => sum + tick.duration, 0)
+    const totalActiveTime = activities.reduce((sum, s) => sum + s.duration, 0)
 
-    // { hourStart: hosts }
-    const hourlyData = groupBy(ticks,
+    // { hourStart: distinct series keys } — same merge dimension as the chart
+    const hourlyData = groupBy(activities,
         t => Math.floor(t.start / MILL_PER_HOUR) * MILL_PER_HOUR,
-        l => new Set(l.map(t => t.host)),
+        l => new Set(l.map(t => t.seriesKey)),
     )
 
-    // busyScore = timeDensity * 0.6 + hostCountPerHour * 0.4
+    // busyScore = timeDensity * 0.6 + seriesCountPerHour * 0.4
     const timeDensity = totalActiveTime / totalRange
     const timeDensityScore = Math.min(timeDensity / 0.3, MAX_SCORE)
-    const maxHostCount = Object.values(hourlyData).map(hosts => hosts.size).sort((a, b) => b - a)[0]!
-    const hostMaxScore = Math.min(maxHostCount / 4, MAX_SCORE)
-    const busy = timeDensityScore * 0.6 + hostMaxScore * 0.4
+    const maxSeriesCount = Object.values(hourlyData).map(keys => keys.size).sort((a, b) => b - a)[0]!
+    const seriesMaxScore = Math.min(maxSeriesCount / 4, MAX_SCORE)
+    const busy = timeDensityScore * 0.6 + seriesMaxScore * 0.4
 
     // focusScore = duration * 0.7 + session * 0.3
-    const avgDuration = totalActiveTime / ticks.length
+    const avgDuration = totalActiveTime / activities.length
     const avgDurationScore = Math.min(avgDuration / (2 * MILL_PER_MINUTE), MAX_SCORE)
-    const sessionScore = computeSessionScore(ticks, Object.keys(hourlyData).length)
+    const sessionScore = computeSessionScore(activities, Object.keys(hourlyData).length)
     const focus = avgDurationScore * 0.7 + sessionScore * 0.3
 
     return { busy, focus }
@@ -95,23 +91,24 @@ const Score = defineComponent<{ score: number, label: string, desc: string }>(pr
     )
 }, { props: ['desc', 'label', 'score'] })
 
-const Summary = defineComponent<{ data: timer.timeline.Tick[] }>(props => {
-    const ticks = computed(() => analyze(props.data))
+const Summary = defineComponent<{}>(() => {
+    const { activities } = useTimelineContext()
+    const scores = computed(() => analyze(activities.value))
 
     return () => (
         <Flex column justify='center' gap={30} height='100%'>
             <Score
-                score={ticks.value.busy}
+                score={scores.value.busy}
                 label={t(msg => msg.dashboard.timeline.busyScore)}
                 desc={t(msg => msg.dashboard.timeline.busyScoreDesc)}
             />
             <Score
-                score={ticks.value.focus}
+                score={scores.value.focus}
                 label={t(msg => msg.dashboard.timeline.focusScore)}
                 desc={t(msg => msg.dashboard.timeline.focusScoreDesc)}
             />
         </Flex>
     )
-}, { props: ['data'] })
+})
 
 export default Summary

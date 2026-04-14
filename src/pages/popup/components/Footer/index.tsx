@@ -1,11 +1,11 @@
-import { useSiteMerge } from '@hooks/useSiteMerge'
-import Flex from "@pages/components/Flex"
-import DurationSelect from "@popup/components/Footer/DurationSelect"
 import { useQuery } from "@popup/context"
-import { t } from "@popup/locale"
+import { useSiteMerge } from '@hooks'
+import { t } from '@popup/locale'
+import Flex from "@pages/components/Flex"
 import { ALL_DIMENSIONS } from "@util/stat"
 import { ElSelect, ElText } from "element-plus"
 import { defineComponent } from "vue"
+import DurationSelect from "./DurationSelect"
 import Menu from "./Menu"
 
 const Footer = defineComponent(() => {
