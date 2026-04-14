@@ -5,16 +5,11 @@
  * https://opensource.org/licenses/MIT
  */
 import { getSeriesPalette } from "@app/util/echarts"
-import { periodFormatter } from "@app/util/time"
-import { EchartsWrapper } from "@hooks/useEcharts"
-import { getPrimaryTextColor } from "@pages/util/style"
+import { EchartsWrapper } from "@hooks"
+import { periodFormatter } from '@app/util/time'
+import { getPrimaryTextColor } from '@pages/util/style'
 import { formatTime } from "@util/time"
-import {
-    type BarSeriesOption,
-    type ComposeOption,
-    type GridComponentOption,
-    type TooltipComponentOption,
-} from "echarts"
+import type { BarSeriesOption, ComposeOption, GridComponentOption, TooltipComponentOption } from "echarts"
 import type { TopLevelFormatterParams } from "echarts/types/dist/shared"
 import { formatXAxisTime, generateGridOption } from "../common"
 
@@ -49,8 +44,8 @@ function formatTimeOfEcharts(params: TopLevelFormatterParams, timeFormat: timer.
 type BarItem = Exclude<BarSeriesOption["data"], undefined>[number]
 
 const cvt2Item = (row: timer.period.Row): BarItem => {
-    const startTime = row.startTime.getTime()
-    const endTime = row.endTime.getTime()
+    const startTime = row.startTime
+    const endTime = row.endTime
     const time = (startTime + endTime) / 2
     const milliseconds = row.milliseconds
     return [time, milliseconds, startTime, endTime]

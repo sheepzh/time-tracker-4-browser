@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { useXsState } from '@hooks'
 import { I18nKey, t } from '@app/locale'
-import { useXsState } from '@hooks/useMediaSize'
 import { ElCard } from "element-plus"
 import { defineComponent, h, useSlots, type StyleValue } from "vue"
 

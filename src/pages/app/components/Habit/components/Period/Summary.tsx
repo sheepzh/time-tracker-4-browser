@@ -1,10 +1,10 @@
-import { GRID_CELL_STYLE } from "@app/components/common/grid"
-import { KanbanIndicatorCell } from "@app/components/common/kanban"
-import { t } from "@app/locale"
-import { periodFormatter } from "@app/util/time"
-import { useXsState } from "@hooks"
+import { averageByDay } from "@/util/period"
+import { GRID_CELL_STYLE } from '@app/components/common/grid'
+import { KanbanIndicatorCell } from '@app/components/common/kanban'
+import { t } from '@app/locale'
+import { periodFormatter } from '@app/util/time'
+import { useXsState } from '@hooks'
 import Flex from "@pages/components/Flex"
-import { averageByDay } from "@util/period"
 import { formatTime } from "@util/time"
 import { computed, defineComponent } from "vue"
 import { useHabitFilter } from "../context"
@@ -38,7 +38,7 @@ const computeSummary = (rows: timer.period.Row[], periodSize: number): Result =>
     rows.forEach(r => {
         if (r.milliseconds) {
             if (!idleStart || !idleEnd) return
-            const newEmptyTs = idleEnd.endTime.getTime() - idleStart.endTime.getTime()
+            const newEmptyTs = idleEnd.endTime - idleStart.endTime
             if (newEmptyTs > maxIdle[2]) {
                 maxIdle = [idleStart, idleEnd, newEmptyTs]
             }
@@ -54,7 +54,7 @@ const computeSummary = (rows: timer.period.Row[], periodSize: number): Result =>
     let idleLength = '-'
     let idlePeriod = ''
     if (start && end) {
-        idleLength = periodFormatter(end.endTime.getTime() - start.startTime.getTime(), { format: 'hour' })
+        idleLength = periodFormatter(end.endTime - start.startTime, { format: 'hour' })
         const format = t(msg => msg.calendar.simpleTimeFormat)
         const startTime = formatTime(start.startTime, format)
         const endTime = formatTime(end.endTime, format)
@@ -77,22 +77,22 @@ const _default = defineComponent(() => {
     const data = usePeriodValue()
     const filter = usePeriodFilter()
     const globalFilter = useHabitFilter()
-    const summary = computed(() => computeSummary(data.value?.curr, filter.periodSize))
+    const summary = computed(() => computeSummary(data.value.curr, filter.periodSize))
     const isXs = useXsState()
 
     return () => (
         <Flex column gap={1} flex={isXs.value ? undefined : 1}>
             <KanbanIndicatorCell
                 mainName={t(msg => msg.habit.period.busiest)}
-                mainValue={summary.value?.favorite?.period}
+                mainValue={summary.value.favorite.period}
                 subTips={msg => msg.habit.common.focusAverage}
-                subValue={periodFormatter(summary.value?.favorite?.average, { format: globalFilter.timeFormat })}
+                subValue={periodFormatter(summary.value.favorite.average, { format: globalFilter.timeFormat })}
                 containerStyle={GRID_CELL_STYLE}
             />
             <KanbanIndicatorCell
                 mainName={t(msg => msg.habit.period.idle)}
-                mainValue={summary.value?.longestIdle?.length}
-                subTips={() => summary.value?.longestIdle?.period}
+                mainValue={summary.value.longestIdle.length}
+                subTips={() => summary.value.longestIdle.period}
                 containerStyle={GRID_CELL_STYLE}
             />
         </Flex>

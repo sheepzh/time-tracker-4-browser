@@ -5,8 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { fillExist } from "@service/components/import-processor"
-import { AUTHOR_EMAIL } from "@src/package"
+import { sendMsg2Runtime } from '@/api/sw/common'
+import { AUTHOR_EMAIL } from "@/package"
+import { mergeWith } from '@/util/stat'
 import { IS_WINDOWS } from "@util/constant/environment"
 import { extractHostname, isBrowserUrl } from "@util/pattern"
 import { formatTimeYMD, MILL_PER_SECOND } from "@util/time"
@@ -14,15 +15,7 @@ import type { OtherExtension } from './types'
 
 const throwError = () => { throw new Error("Failed to parse, please check your file or contact the author via " + AUTHOR_EMAIL) }
 
-/**
- * Parse the content to rows
- *
- * @param type extension type
- * @param file selected file
- * @returns row data
- */
 export async function parseFile(ext: OtherExtension, file: File): Promise<timer.imported.Data> {
-    // const worker = new Worker()
     let rows: timer.imported.Row[] = []
     let focus = false
     let time = false
@@ -36,7 +29,8 @@ export async function parseFile(ext: OtherExtension, file: File): Promise<timer.
         rows = await parseHistoryTrendsUnlimited(file)
         time = true
     }
-    await fillExist(rows)
+    const exists = await sendMsg2Runtime('item.batch', rows)
+    await mergeWith(rows, exists, (r, exist) => { r.exist = exist })
     return { rows, focus, time }
 }
 

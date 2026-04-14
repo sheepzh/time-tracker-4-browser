@@ -5,11 +5,13 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { type PopupRoute } from '@popup/router'
 import resource from './footer-resource.json'
 
 export type FooterMessage = {
-    route: Record<PopupRoute, string>
+    route: {
+        percentage: string
+        ranking: string
+    }
 }
 
 const footerMessages = resource satisfies Messages<FooterMessage>

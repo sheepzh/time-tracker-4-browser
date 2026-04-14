@@ -5,12 +5,12 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getIconUrl } from "@api/chrome/runtime"
-import { t } from "@app/locale"
+import { useSwitch } from '@hooks'
+import { t } from '@app/locale'
 import { CloseBold, Link, Menu } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
-import { useSwitch } from "@hooks"
 import Flex from '@pages/components/Flex'
+import { getIconUrl } from "@api/chrome/runtime"
 import { ElBreadcrumb, ElBreadcrumbItem, ElIcon, ElMenu, ElMenuItem, useNamespace } from "element-plus"
 import { defineComponent, h, onBeforeMount, ref, watch } from "vue"
 import { useRouter } from "vue-router"

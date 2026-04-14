@@ -1,0 +1,63 @@
+import CategoryEditable from "@app/components/common/Category/Editable"
+import TooltipSiteList from "@app/components/Report/components/TooltipSiteList"
+import { useCategory } from '@app/context'
+import { t } from '@app/locale'
+import Flex from "@pages/components/Flex"
+import { CATE_NOT_SET_ID } from "@util/site"
+import { getRelatedCateId, identifyStatKey, isCate, isGroup, isSite } from "@util/stat"
+import { Effect, ElTableColumn, ElText, ElTooltip, type RenderRowData } from "element-plus"
+import { defineComponent } from "vue"
+
+const renderMerged = (cateId: number, categories: timer.site.Cate[], merged: timer.stat.SiteRow[]) => {
+    const [cateName, isNotSet] = CATE_NOT_SET_ID === cateId
+        ? [t(msg => msg.shared.cate.notSet), true]
+        : [categories.find(c => c.id === cateId)?.name, false]
+
+    return cateName ? (
+        <ElTooltip
+            effect={Effect.LIGHT}
+            offset={10}
+            placement="left"
+            popperStyle={{ paddingInlineEnd: 0 }}
+            v-slots={{
+                content: () => <TooltipSiteList modelValue={merged} />,
+                default: () => (
+                    <ElText size="small" type={isNotSet ? 'info' : 'primary'}>
+                        {cateName}
+                    </ElText>
+                ),
+            }}
+        />
+    ) : null
+}
+
+type Props = {
+    onChange: (key: timer.site.SiteKey, newCate: number | undefined) => void,
+}
+
+const CateColumn = defineComponent<Props>(props => {
+    const cate = useCategory()
+    return () => cate.enabled ? (
+        <ElTableColumn label={t(msg => msg.siteManage.column.cate)} minWidth={140}>
+            {({ row }: RenderRowData<timer.stat.Row>) => {
+                if (!row || isGroup(row)) return
+                const { mergedRows } = row
+                const cateId = getRelatedCateId(row)
+                return (
+                    <Flex key={`${identifyStatKey(row)}_${cateId}`} justify="center">
+                        {isCate(row) && renderMerged(row.cateKey, cate.all, (mergedRows ?? []) as timer.stat.SiteRow[])}
+                        {isSite(row) && (
+                            <CategoryEditable
+                                siteKey={row.siteKey}
+                                modelValue={cateId}
+                                onChange={newCateId => props.onChange(row.siteKey, newCateId)}
+                            />
+                        )}
+                    </Flex>
+                )
+            }}
+        </ElTableColumn>
+    ) : null
+}, { props: ['onChange'] })
+
+export default CateColumn

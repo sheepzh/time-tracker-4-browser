@@ -17,14 +17,6 @@ function initOpenLog() {
     } catch (ignored) { }
 }
 
-function updateLocalStorage(openState: boolean) {
-    try {
-        openState
-            ? localStorage.setItem(STORAGE_KEY, STORAGE_VAL)
-            : localStorage.removeItem(STORAGE_KEY)
-    } catch (ignored) { }
-}
-
 initOpenLog()
 
 /**
@@ -33,20 +25,4 @@ initOpenLog()
  */
 export function log(...args: any) {
     OPEN_LOG && console.log(...args)
-}
-
-/**
- * @since 0.0.4
- */
-export function openLog(): string {
-    updateLocalStorage(OPEN_LOG = true)
-    return 'Opened the log manually.'
-}
-
-/**
- * @since 0.0.8
- */
-export function closeLog(): string {
-    updateLocalStorage(OPEN_LOG = false)
-    return 'Closed the log manually.'
 }

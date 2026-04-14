@@ -3,13 +3,13 @@
         "module": "esnext",
         "target": "esnext",
         "lib": [
-            "ES2023",
+            "ESNext",
             "DOM"
         ],
         "types": [
-            "jest",
             "chrome",
-            "firefox-webext-browser"
+            "firefox-webext-browser",
+            "@rstest/core/globals"
         ],
         "jsx": "preserve",
         "jsxFactory": "h",
@@ -18,15 +18,15 @@
         "esModuleInterop": true,
         "sourceMap": true,
         "strict": true,
-        "noImplicitAny": true,
-        "strictNullChecks": true,
-        "strictFunctionTypes": true,
-        "strictPropertyInitialization": true,
         "resolveJsonModule": true,
-        "importHelpers": true,
-        "skipLibCheck": true,
         "moduleResolution": "bundler",
+        "isolatedModules": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
         "paths": {
+            "@/*": [
+                "./src/*"
+            ],
             "@api/*": [
                 "./src/api/*"
             ],
@@ -52,10 +52,13 @@
                 "./src/pages/*"
             ],
             "@db/*": [
-                "./src/database/*"
+                "./src/background/database/*"
             ],
             "@service/*": [
-                "./src/service/*"
+                "./src/background/service/*"
+            ],
+            "@polyfill": [
+                "./src/background/polyfill/index"
             ],
             "@util/*": [
                 "./src/util/*"
@@ -65,12 +68,6 @@
             ],
             "@i18n": [
                 "./src/i18n/index"
-            ],
-            "@src/*": [
-                "./src/*"
-            ],
-            "*": [
-                "./types/*"
             ]
         }
     },

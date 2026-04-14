@@ -1,12 +1,12 @@
+import { listSiteStats } from "@api/sw/stat"
+import ChartTitle from "@app/components/Dashboard/ChartTitle"
 import { t } from "@app/locale"
-import { useEcharts } from "@hooks/useEcharts"
+import { useEcharts } from "@hooks"
 import Flex from "@pages/components/Flex"
-import { selectSite } from "@service/stat-service"
 import { groupBy, sum } from "@util/array"
 import DateIterator from "@util/date-iterator"
-import { MILL_PER_DAY } from "@util/time"
+import { cvtDateRange2Str, MILL_PER_DAY } from "@util/time"
 import { defineComponent } from "vue"
-import ChartTitle from "../../ChartTitle"
 import Wrapper from "./Wrapper"
 
 const PERIOD_WIDTH = 30
@@ -37,9 +37,9 @@ const fetchData = async (): Promise<[thisMonth: Row[], lastMonth: Row[]]> => {
 
     // Query with alias
     // @since 1.1.8
-    const lastPeriodItems = await selectSite({ date: [lastPeriodStart, lastPeriodEnd] })
+    const lastPeriodItems = await listSiteStats({ date: cvtDateRange2Str([lastPeriodStart, lastPeriodEnd]) })
     const lastRows = cvtRow(lastPeriodItems, lastPeriodStart, lastPeriodEnd)
-    const thisPeriodItems = await selectSite({ date: [thisPeriodStart, thisPeriodEnd] })
+    const thisPeriodItems = await listSiteStats({ date: cvtDateRange2Str([thisPeriodStart, thisPeriodEnd]) })
     const thisRows = cvtRow(thisPeriodItems, thisPeriodStart, thisPeriodEnd)
     return [lastRows, thisRows]
 }

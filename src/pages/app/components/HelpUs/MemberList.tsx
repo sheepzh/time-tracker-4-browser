@@ -5,11 +5,11 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getMembers } from "@api/crowdin"
-import { t } from "@app/locale"
-import { useRequest } from "@hooks"
+import { useRequest } from '@hooks'
+import { t } from '@app/locale'
 import Box from "@pages/components/Box"
 import Flex from "@pages/components/Flex"
+import { getMembers } from "@api/crowdin"
 import { ElDivider } from "element-plus"
 import { defineComponent } from "vue"
 

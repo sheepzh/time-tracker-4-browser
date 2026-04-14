@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { daysAgo, formatPeriod, formatPeriodCommon, formatTime, getMonthTime, getStartOfDay, isSameDay } from "@util/time"
+import { daysAgo, formatPeriodCommon, formatTime, getMonthTime, getStartOfDay, isSameDay } from "../../src/util/time"
 
 test('time', () => {
     const dateStr = '2020/05/01 00:00:01'
@@ -22,14 +22,6 @@ test('time', () => {
 })
 
 test('format', () => {
-    const msg = {
-        dayMsg: '{day}天{hour}时{minute}分{second}秒',
-        hourMsg: '{hour}时{minute}分{second}秒',
-        minuteMsg: '{minute}分{second}秒',
-        secondMsg: '{second}秒'
-    }
-    expect(formatPeriod(86400 * 1000, msg)).toEqual('1天0时0分0秒')
-    expect(formatPeriod(3666 * 1000, msg)).toEqual('1时1分6秒')
     expect(formatPeriodCommon(86400 * 1000)).toEqual('1d 0h 0m 0s')
     expect(formatPeriodCommon(3666 * 1000)).toEqual('1h 1m 6s')
     expect(formatPeriodCommon(1)).toEqual('0s')

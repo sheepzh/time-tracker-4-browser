@@ -18,26 +18,7 @@ export function getTab(id: number): Promise<ChromeTab | undefined> {
     }))
 }
 
-export function resetTabUrl(tabId: number, url: string): Promise<void> {
-    return new Promise(resolve => chrome.tabs.update(tabId, {
-        url: url,
-        highlighted: true,
-    }, () => resolve()))
-}
-
-export async function getRightOf(target: ChromeTab): Promise<ChromeTab | undefined> {
-    if (!target) return
-    const { windowId, index } = target
-    return new Promise(resolve => chrome.tabs.query({ windowId }, tabs => {
-        const rightTab = tabs
-            ?.sort?.((a, b) => (a?.index ?? -1) - (b?.index ?? -1))
-            ?.filter?.(t => t.index > index)
-            ?.[0]
-        resolve(rightTab)
-    }))
-}
-
-export function getCurrentTab(): Promise<ChromeTab | undefined> {
+function getCurrentTab(): Promise<ChromeTab | undefined> {
     return new Promise(resolve => chrome.tabs.getCurrent(tab => {
         handleError("getCurrentTab")
         resolve(tab)
@@ -82,27 +63,33 @@ export function listTabs(query?: chrome.tabs.QueryInfo): Promise<ChromeTab[]> {
     }))
 }
 
-export function sendMsg2Tab<T = any, R = any>(tabId: number, code: timer.mq.ReqCode, data?: T): Promise<R> {
-    const request: timer.mq.Request<T> = { code, data }
+export function sendMsg2Tab<C extends timer.tab.ReqCode>(tabId: number, code: C, data?: timer.tab.ReqData<C>): Promise<timer.tab.ResData<C> | undefined> {
+    const request: timer.tab.Request<C> = { code, data: data as timer.tab.ReqData<C> }
     return new Promise((resolve, reject) => {
         const timeout = setTimeout(() => reject('sendMsg2Tab timeout'), 2000)
-        chrome.tabs.sendMessage<timer.mq.Request<T>, timer.mq.Response>(tabId, request, response => {
+        chrome.tabs.sendMessage<timer.tab.Request<C>, timer.tab.Response<C>>(tabId, request, response => {
             const sendError = handleError('sendMsg2Tab')
             clearTimeout(timeout)
-            const resCode = response?.code
-            resCode === 'success' && resolve(response.data)
-            reject(new Error(response?.msg ?? sendError ?? 'Unknown error'))
+            if (response?.code === 'success') {
+                resolve(response.data as timer.tab.ResData<C> | undefined)
+                return
+            }
+            if (response?.code === 'fail') {
+                reject(new Error(response.msg ?? sendError ?? 'Unknown error'))
+                return
+            }
+            reject(new Error(sendError ?? 'Unknown error'))
         })
     })
 }
 
-export async function trySendMsg2Tab<T = any, R = any>(
+export async function trySendMsg2Tab<C extends timer.tab.ReqCode>(
     tabId: number,
-    code: timer.mq.ReqCode,
-    data?: T
-): Promise<R | undefined> {
+    code: C,
+    data?: timer.tab.ReqData<C>
+): Promise<timer.tab.ResData<C> | undefined> {
     try {
-        return await sendMsg2Tab<T, R>(tabId, code, data)
+        return await sendMsg2Tab(tabId, code, data)
     } catch (e) {
         console.warn(`Errored to send message to tab: tabId=${tabId}, code=${code}, data=${JSON.stringify(data)}`, e)
         return Promise.resolve(undefined)

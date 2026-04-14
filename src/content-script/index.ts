@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { trySendMsg2Runtime } from "@api/chrome/runtime"
+import { trySendMsg2Runtime } from '@api/sw/common'
 import { initLocale } from "@i18n"
 import processLimit from "./limit"
 import printInfo from "./printer"
@@ -41,9 +41,9 @@ function getOrSetFlag(): boolean {
 async function main() {
     // Execute in every injections
     const normalTracker = new NormalTracker({
-        onReport: data => trySendMsg2Runtime('cs.trackTime', data),
-        onResume: reason => reason === 'idle' && trySendMsg2Runtime('cs.idleChange', false),
-        onPause: reason => reason === 'idle' && trySendMsg2Runtime('cs.idleChange', true),
+        onReport: data => trySendMsg2Runtime('track.time', data),
+        onResume: reason => reason === 'idle' && trySendMsg2Runtime('cs.idleChanged', false),
+        onPause: reason => reason === 'idle' && trySendMsg2Runtime('cs.idleChanged', true),
     })
     normalTracker.init()
     const runTimeTracker = new RunTimeTracker(url)
@@ -53,18 +53,17 @@ async function main() {
     if (getOrSetFlag()) return
     if (!host) return
 
-    const isWhitelist = await trySendMsg2Runtime('cs.isInWhitelist', { host, url })
+    const isWhitelist = await trySendMsg2Runtime('whitelist.contain', { host, url })
     if (isWhitelist) return
 
     await initLocale()
-    const needPrintInfo = await trySendMsg2Runtime('cs.printTodayInfo')
-    !!needPrintInfo && printInfo(host)
+    printInfo(host)
     await processLimit(url)
 
     processTimeline()
 
     // Increase visit count at the end
-    await trySendMsg2Runtime('cs.incVisitCount', { host, url })
+    await trySendMsg2Runtime('cs.injected')
 }
 
 main()
