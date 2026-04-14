@@ -150,10 +150,11 @@
         "run": "Durée d'exécution",
         "time": "Visites",
         "operation": {
-            "add2Whitelist": "Whitelist",
+            "add2Whitelist": "Liste blanche",
             "analysis": "Analyser",
             "deleteConfirmMsgAll": "Tous les enregistrements de {url} seront supprimés",
             "deleteConfirmMsgRange": "Les enregistrements de {url} entre {start} et {end} seront supprimés",
+            "deleteConfirmMsg": "L'enregistrement des visites pour [{url}] du [{date}] seront supprimés",
             "exportWholeData": "Exporter",
             "importWholeData": "Importer",
             "importOtherData": "Depuis d'autres extensions"

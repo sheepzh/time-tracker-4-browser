@@ -1041,11 +1041,12 @@
         "on": "Toujours activé",
         "off": "Toujours éteint",
         "followBrowser": "Suivre le navigateur",
+        "permGrantConfirm": "Cette fonctionnalité nécessite des autorisations appropriées",
         "appearance": {
             "title": "Apparence",
             "displayWhitelist": "{input} S'il faut afficher là {whitelist} dans {contextMenu}",
-            "whitelistItem": "whitelist related shortcuts",
-            "contextMenu": "le menu contextuel.",
+            "whitelistItem": "raccourcis liés à la liste blanche",
+            "contextMenu": "le menu contextuel",
             "displayBadgeText": "{input} S'il faut afficher là {timeInfo} dans {icon}",
             "badgeBgColor": "La couleur de fond du texte sur l'icône {input}",
             "icon": "l'icône de l'extension",
@@ -1076,9 +1077,11 @@
             "localFilesInfo": "Prend en charge les fichiers de types tels que PDF, image, txt et json.",
             "countTabGroup": "{input} Suivre le temps des groupes d'onglets {info}",
             "tabGroupInfo": "Lorsque vous supprimez un groupe d'onglets, les données seront également supprimées.",
-            "fileAccessDisabled": "L'accès aux URL des fichiers n'est actuellement pas autorisé. Veuillez d'abord l'activer dans la page de gestion.",
+            "fileAccessDisabled": "L'accès aux URL des fichiers n'est actuellement pas autorisé. Veuillez d'abord l'activer dans la page de gestion",
             "weekStart": "Le premier jour de chaque semaine {input}",
-            "weekStartAsNormal": "Comme d'habitude"
+            "weekStartAsNormal": "Comme d'habitude",
+            "storage": "Stocker les données de suivi dans {input}",
+            "storageConfirm": "Voulez-vous changer le type de stockage en {type} ?"
         },
         "limit": {
             "prompt": "Invite affichée en cas de restriction {input}",
@@ -1146,6 +1149,22 @@
         "accessibility": {
             "title": "Accessibilité",
             "chartDecal": "{input} S'il faut afficher l'autocollant de la carte"
+        },
+        "notification": {
+            "title": "Notification",
+            "cycle": {
+                "label": "Cycle des notifications {input}",
+                "daily": "Quotidien",
+                "weekly": "Hebdomadaire"
+            },
+            "method": {
+                "label": "Méthode de notification {input}",
+                "browser": "Navigateur Web",
+                "callback": {
+                    "label": "HTTP Callback",
+                    "url": "Callback URL {input}"
+                }
+            }
         },
         "resetButton": "Réinitialiser",
         "resetSuccess": "Remise à zéro avec succès !",
