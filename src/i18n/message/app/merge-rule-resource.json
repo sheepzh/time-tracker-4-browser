@@ -160,11 +160,11 @@
         "addConfirmMsg": "Les règles de fusion personnalisées seront définies pour {origin}",
         "infoAlertTitle": "Vous pouvez définir les règles de fusion lorsque vous comptez des sites sur cette page",
         "infoAlert0": "Cliquez sur le bouton [Nouveau], les boîtes de saisie du site source et le site de fusion sera affiché, remplissez et enregistrez la règle",
-        "infoAlert1": "Le site d'origine peut être rempli avec un site spécifique ou une expression régulière, telle que www.baidu.com, *.baidu.com, *.google.com.*, pour déterminer quels sites correspondront à cette règle lors de la fusion.",
+        "infoAlert1": "Le site d'origine peut être rempli avec un site spécifique ou une expression régulière, telle que www.baidu.com, *.baidu.com, *.google.com.*, pour déterminer quels sites correspondront à cette règle lors de la fusion",
         "infoAlert2": "Le site fusionné peut être rempli avec un site spécifique, un numéro ou vide",
         "infoAlert3": "Un nombre signifie le niveau du site fusionné. Par exemple, il existe une règle '*.*.edu.cn >>> 3', alors 'www.hust.edu.cn' sera fusionné avec 'hust.edu.cn'",
         "infoAlert4": "Vide signifie que le site d'origine ne sera pas fusionné",
-        "infoAlert5": "Si aucune règle ne correspond, le niveau par défaut sera celui d'avant {psl}.",
+        "infoAlert5": "Si aucune règle ne correspond, le niveau par défaut sera celui d'avant {psl}",
         "tagResult": {
             "blank": "Non Fusionner",
             "level": "Garder le niveau {level}"
