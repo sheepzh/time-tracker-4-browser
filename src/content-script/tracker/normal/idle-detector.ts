@@ -1,5 +1,6 @@
-import { onRuntimeMessage, trySendMsg2Runtime } from '@api/chrome/runtime'
-import optionHolder from "@service/components/option-holder"
+import { onTabMessage } from '@api/chrome/runtime'
+import { trySendMsg2Runtime } from '@api/sw/common'
+import { getOption } from '@api/sw/option'
 
 export default class IdleDetector {
     fullScreen: boolean = false
@@ -12,7 +13,7 @@ export default class IdleDetector {
 
     lastActiveTime: number = Date.now()
     userActive: boolean = true
-    pauseTimeout: NodeJS.Timeout | undefined
+    pauseTimeout: ReturnType<typeof setTimeout> | undefined
 
     onIdle: () => void
     onActive: () => void
@@ -33,15 +34,11 @@ export default class IdleDetector {
     }
 
     private async init() {
-        const option = await optionHolder.get()
-
-        this.processOption(option)
-        this.resetTimeout()
-
-        optionHolder.addChangeListener(opt => {
-            this.processOption(opt)
-            this.resetTimeout()
-        })
+        this.reset()
+        document.addEventListener('visibilitychange', () => document.visibilityState === 'visible' && this.reset())
+        const pollInterval = setInterval(() => this.reset(), 60_000)
+        const stopPoll = () => clearInterval(pollInterval)
+        window.addEventListener('beforeunload', stopPoll)
 
         const handleActive = () => {
             this.lastActiveTime = Date.now()
@@ -49,15 +46,14 @@ export default class IdleDetector {
             if (!this.needTimeout()) return
 
             if (!this.pauseTimeout) {
-                // Paused, so activate
-                this.onActive?.()
+                this.onActive()
                 this.resetTimeout()
             }
         }
 
         window.addEventListener('mousedown', handleActive)
         window.addEventListener('mousemove', handleActive)
-        window.addEventListener('keypress', handleActive)
+        window.addEventListener('keydown', handleActive)
         window.addEventListener('scroll', handleActive)
         window.addEventListener('wheel', handleActive)
         document?.addEventListener('fullscreenchange', () => {
@@ -66,7 +62,7 @@ export default class IdleDetector {
         })
 
         trySendMsg2Runtime('cs.getAudible').then(val => this.audible = !!val)
-        onRuntimeMessage(async req => {
+        onTabMessage(async req => {
             const { code, data } = req
             if (code !== 'syncAudible' || typeof data !== 'boolean') return { code: 'ignore' }
             this.audible = !!data
@@ -74,13 +70,16 @@ export default class IdleDetector {
         })
     }
 
-    private processOption(option: timer.option.TrackingOption) {
-        this.autoPauseTracking = !!option?.autoPauseTracking
-        this.autoPauseInterval = option?.autoPauseInterval * 1000
+    private reset() {
+        getOption().then(({ autoPauseTracking, autoPauseInterval }) => {
+            this.autoPauseTracking = autoPauseTracking
+            this.autoPauseInterval = autoPauseInterval * 1000
+
+            this.resetTimeout()
+        }).catch(() => { })
     }
 
     private resetTimeout() {
-
         if (!!this.pauseTimeout) {
             clearTimeout(this.pauseTimeout)
             this.pauseTimeout = undefined
@@ -104,8 +103,7 @@ export default class IdleDetector {
         if (!this.needTimeout()) return
 
         if (this.isIdle()) {
-            // Idle interval meets
-            this.onIdle?.()
+            this.onIdle()
         } else {
             this.resetTimeout()
         }

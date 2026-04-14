@@ -7,7 +7,7 @@
 import { useDialogSop } from '@app/components/common/DialogSop/context'
 import CompareTable from "@app/components/common/imported/CompareTable"
 import ResolutionRadio from "@app/components/common/imported/ResolutionRadio"
-import { t } from "@app/locale"
+import { t } from '@app/locale'
 import Flex from "@pages/components/Flex"
 import { ElAlert } from "element-plus"
 import { defineComponent } from "vue"

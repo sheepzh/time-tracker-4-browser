@@ -5,13 +5,13 @@
  * https://opensource.org/licenses/MIT
  */
 
-import HostAlert from "@app/components/common/HostAlert"
 import { type I18nKey, t } from "@app/locale"
-import { cvt2LocaleTime, periodFormatter } from "@app/util/time"
+import { cvt2LocaleTime, periodFormatter } from '@app/util/time'
 import { useState } from "@hooks"
 import Box from "@pages/components/Box"
 import { type Column, ElAutoResizer, ElTableV2, type SortBy, TableV2SortOrder } from "element-plus"
 import { computed, defineComponent, toRef } from "vue"
+import HostAlert from "../HostAlert"
 
 type SortInfo = SortBy & {
     key: keyof timer.imported.Row
@@ -95,7 +95,7 @@ const BASE_COLUMNS: Column[] = [
 const _default = defineComponent<Props>((props) => {
     const data = toRef(props, 'data')
     const [sort, setSort] = useState<SortInfo>({ order: TableV2SortOrder.ASC, key: 'date' })
-    const list = computed(() => computeList(sort.value, data.value?.rows))
+    const list = computed(() => computeList(sort.value, data.value.rows))
     const columns = computed(() => {
         const value = [...BASE_COLUMNS]
         const { focus, time } = data.value

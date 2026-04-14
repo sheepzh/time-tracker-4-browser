@@ -1,50 +1,47 @@
-import { type Browser, launch, type Page, type Target } from "puppeteer"
+import { type Browser, type CDPSession, launch, type Page, type Target } from "puppeteer"
 import { E2E_OUTPUT_PATH } from "../../rspack/constant"
-import { removeAllWhitelist } from './whitelist.test'
+import { removeAllWhitelist } from './whitelist'
 
 const USE_HEADLESS_PUPPETEER = !!process.env['USE_HEADLESS_PUPPETEER']
 
-export interface HostProxy {
+type HostProxy = {
     host: string
     target: string
 }
 
-const setupProxies = async (target: Target, proxies: HostProxy[]) => {
+async function setupBgProxies(target: Target, proxies: HostProxy[]): Promise<CDPSession | undefined> {
+    if (target.type() !== 'service_worker') return
+    let session: CDPSession | undefined
     try {
-        const session = await target.createCDPSession()
+        session = await target.createCDPSession()
         await session.send('Fetch.enable', {
-            patterns: [{ urlPattern: '*', requestStage: 'Request' }],
-        })
-        session.on('Fetch.requestPaused', async (event: { requestId: string; request: { url: string } }) => {
-            try {
-                const requestUrl = new URL(event.request.url)
-                const proxy = proxies.find(p => requestUrl.hostname === p.host || requestUrl.host === p.host)
-                if (proxy) {
-                    const targetUrl = new URL(proxy.target)
-                    requestUrl.protocol = targetUrl.protocol
-                    requestUrl.hostname = targetUrl.hostname
-                    requestUrl.port = targetUrl.port
-                    await session.send('Fetch.continueRequest', {
-                        requestId: event.requestId,
-                        url: requestUrl.toString(),
-                    })
-                } else {
-                    await session.send('Fetch.continueRequest', { requestId: event.requestId })
-                }
-            } catch {
-                try { await session.send('Fetch.continueRequest', { requestId: event.requestId }) } catch { /* ignore */ }
-            }
+            patterns: proxies.map(p => ({ urlPattern: `*://${p.host}/*`, requestStage: 'Request' as const })),
         })
     } catch {
-        // not all targets support CDP sessions (e.g. browser target)
+        // Target may have been closed before the session was ready
+        return
     }
-}
-
-async function applyProxies(browser: Browser, proxies: HostProxy[]): Promise<void> {
-    for (const target of browser.targets()) {
-        await setupProxies(target, proxies)
-    }
-    browser.on('targetcreated', target => setupProxies(target, proxies))
+    session.on('Fetch.requestPaused', async event => {
+        const { requestId, request: { url: originUrl } } = event
+        try {
+            const url = new URL(originUrl)
+            const proxy = proxies.find(p => url.hostname === p.host || url.host === p.host)
+            if (!proxy) {
+                await session.send('Fetch.continueRequest', { requestId })
+                return
+            }
+            const targetUrl = new URL(proxy.target)
+            url.protocol = targetUrl.protocol
+            url.hostname = targetUrl.hostname
+            url.port = targetUrl.port
+            await session.send('Fetch.continueRequest', { requestId, url: String(url) })
+        } catch {
+            try {
+                await session.send('Fetch.continueRequest', { requestId })
+            } catch { /* ignore */ }
+        }
+    })
+    return session
 }
 
 export interface LaunchContext {
@@ -61,16 +58,30 @@ export interface LaunchContext {
 }
 
 class LaunchContextWrapper implements LaunchContext {
-    browser: Browser
-    extensionId: string
+    private readonly cdpSessions: CDPSession[] = []
+    private onTargetCreated?: (target: Target) => void
 
-    constructor(browser: Browser, extensionId: string) {
-        this.browser = browser
-        this.extensionId = extensionId
+    constructor(readonly browser: Browser, readonly extensionId: string) { }
+
+    async applyBgProxies(proxies: HostProxy[]): Promise<void> {
+        for (const target of this.browser.targets()) {
+            const s = await setupBgProxies(target, proxies)
+            if (s) this.cdpSessions.push(s)
+        }
+        this.onTargetCreated = (target: Target) => {
+            setupBgProxies(target, proxies)
+                .then(s => { if (s) this.cdpSessions.push(s) })
+                .catch(() => { /* ignore */ })
+        }
+        this.browser.on('targetcreated', this.onTargetCreated)
     }
 
-    close(): Promise<void> {
-        return this.browser.close()
+    async close(): Promise<void> {
+        if (this.onTargetCreated) {
+            this.browser.off('targetcreated', this.onTargetCreated)
+        }
+        for (const s of this.cdpSessions) await s.detach().catch(() => { })
+        await this.browser.close()
     }
 
     async openAppPage(route: string): Promise<Page> {
@@ -82,9 +93,7 @@ class LaunchContextWrapper implements LaunchContext {
 
     async newPage(url?: string): Promise<Page> {
         const page = await this.browser.newPage()
-        if (url) {
-            await page.goto(url, { waitUntil: 'domcontentloaded' })
-        }
+        url && await page.goto(url, { waitUntil: 'domcontentloaded' })
         return page
     }
 
@@ -98,23 +107,28 @@ class LaunchContextWrapper implements LaunchContext {
 
 type BrowserOptions = {
     dirPath?: string
-    proxies?: HostProxy[]
+    bgProxies?: HostProxy[]
 }
 
 export async function launchBrowser(options?: BrowserOptions): Promise<LaunchContext> {
-    const { dirPath = E2E_OUTPUT_PATH, proxies } = options ?? {}
+    const { dirPath = E2E_OUTPUT_PATH, bgProxies } = options ?? {}
     const args = [
         `--disable-extensions-except=${dirPath}`,
         `--load-extension=${dirPath}`,
         '--start-maximized',
         '--no-sandbox',
     ]
+    // GitHub-hosted runners use a small /dev/shm; Chrome can crash or hang without this flag.
+    if (process.env['GITHUB_ACTIONS'] === 'true') {
+        args.push('--disable-gpu', '--disable-dev-shm-usage')
+    }
     // Test with large screen
     USE_HEADLESS_PUPPETEER && args.push('--window-size=1880,1000')
 
     const browser = await launch({
         defaultViewport: null,
         headless: USE_HEADLESS_PUPPETEER,
+        enableExtensions: true,
         args,
     })
     const serviceWorker = await browser.waitForTarget(target => target.type() === 'service_worker')
@@ -126,22 +140,10 @@ export async function launchBrowser(options?: BrowserOptions): Promise<LaunchCon
 
     const context = new LaunchContextWrapper(browser, extensionId)
 
-    proxies?.length && await applyProxies(browser, proxies)
+    if (bgProxies?.length) await context.applyBgProxies(bgProxies)
 
     // remove whitelist added by service_worker
     await removeAllWhitelist(context)
 
     return context
 }
-
-export function sleep(seconds: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, seconds * 1000))
-}
-
-export const MOCK_HOST = "127.0.0.1:12345"
-
-export const MOCK_URL = "http://" + MOCK_HOST
-
-export const MOCK_HOST_2 = "127.0.0.1:12346"
-
-export const MOCK_URL_2 = "http://" + MOCK_HOST_2

@@ -2,7 +2,6 @@ declare namespace timer.core {
     type Event = {
         start: number
         end: number
-        url: string
         ignoreTabCheck: boolean
         /**
          * Used for run time tracking

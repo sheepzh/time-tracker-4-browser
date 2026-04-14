@@ -1,6 +1,6 @@
-import { trySendMsg2Runtime } from "@api/chrome/runtime"
+import { trySendMsg2Runtime } from '@/api/sw/common'
 import { hasDailyLimited, hasWeeklyLimited, matches } from "@util/limit"
-import { type LimitReason, type ModalContext, type Processor } from "../common"
+import type { LimitReason, ModalContext, Processor } from '../types'
 
 const cvtItem2AddReason = (item: timer.limit.Item): LimitReason[] => {
     const { cond, allowDelay, id, delayCount, weeklyDelayCount } = item
@@ -25,11 +25,11 @@ class MessageAdaptor implements Processor {
         this.context = context
     }
 
-    handleMsg(code: timer.mq.ReqCode, data: unknown): timer.mq.Response | Promise<timer.mq.Response> {
+    handleMsg(code: timer.tab.ReqCode, data: unknown): Awaitable<timer.tab.Response<timer.tab.ReqCode>> {
         let items = data as timer.limit.Item[]
         if (code === "limitTimeMeet") {
             if (!items?.length) {
-                return { code: "fail" }
+                return { code: "fail", msg: "No items" }
             }
             items.filter(item => matches(item?.cond, this.context.url))
                 .flatMap(cvtItem2AddReason)
@@ -49,17 +49,17 @@ class MessageAdaptor implements Processor {
     }
 
     async init(): Promise<void> {
-        this.initRules?.()
-        this.context.modal?.addDelayHandler(() => this.initRules())
+        this.initRules()
+        this.context.modal.addDelayHandler(() => this.initRules())
     }
 
     async initRules(): Promise<void> {
-        this.context.modal?.removeReasonsByType?.('DAILY', 'WEEKLY')
-        const limitedRules = await trySendMsg2Runtime<string, timer.limit.Item[]>('cs.getLimitedRules', this.context.url)
+        this.context.modal.removeReasonsByType?.('DAILY', 'WEEKLY')
+        const limitedRules = await trySendMsg2Runtime('limit.list', { limited: true, url: this.context.url })
+        if (!limitedRules?.length) return
 
-        limitedRules
-            ?.flatMap?.(cvtItem2AddReason)
-            ?.forEach(reason => this.context.modal.addReason(reason))
+        const reasons = limitedRules.flatMap(cvtItem2AddReason)
+        this.context.modal.addReason(...reasons)
     }
 }
 

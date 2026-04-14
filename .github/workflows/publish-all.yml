@@ -28,6 +28,9 @@ jobs:
             - name: Build for Firefox
               run: npm run build:firefox
 
+            - name: Source package
+              run: bash script/source-archive.sh
+
             - name: Check file sizes
               run: |
                   # Check Chrome/Edge package size

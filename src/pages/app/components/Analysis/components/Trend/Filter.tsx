@@ -7,7 +7,7 @@
 
 import DateRangeFilterItem from '@app/components/common/filter/DateRangeFilterItem'
 import { t } from "@app/locale"
-import type { ElDatePickerShortcut } from '@pages/types'
+import type { ElDatePickerShortcut } from "@pages/element-ui/types"
 import { daysAgo } from "@util/time"
 import { defineComponent } from "vue"
 import { useAnalysisTrendDateRange } from "./context"

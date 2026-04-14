@@ -20,7 +20,7 @@ type Meta = MetaBase & {
  *
  * @since 0.8.0
  */
-export type LocaleMessages =
+type LocaleMessages =
     {
         [locale in timer.Locale]: Meta
     } & {

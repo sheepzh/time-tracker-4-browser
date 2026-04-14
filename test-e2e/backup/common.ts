@@ -1,6 +1,7 @@
 import type { ElementHandle, Page } from 'puppeteer'
-import { type LaunchContext, sleep } from '../common/base'
+import { type LaunchContext } from '../common/base'
 import { waitForMessage, waitForSuccMessage } from '../common/message'
+import { sleep } from '../common/util'
 
 const typeNames: Record<timer.backup.Type, string> = {
     gist: 'gist',

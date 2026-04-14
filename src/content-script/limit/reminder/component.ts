@@ -1,5 +1,5 @@
-import { getIconUrl } from "@api/chrome/runtime"
 import { t } from "@cs/locale"
+import { getIconUrl } from "@api/chrome/runtime"
 
 const containerStyle = (dark: boolean): Partial<CSSStyleDeclaration> => ({
     position: 'fixed',

@@ -1,5 +1,5 @@
+import { useXsState } from '@hooks'
 import { css } from '@emotion/css'
-import { useXsState } from '@hooks/useMediaSize'
 import Flex from "@pages/components/Flex"
 import { colorUsage, colorVariant } from '@pages/util/style'
 import { computed, defineComponent, h, StyleValue, useSlots } from "vue"

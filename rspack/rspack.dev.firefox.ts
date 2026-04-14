@@ -8,7 +8,7 @@ manifest.browser_specific_settings = {
     ...manifest.browser_specific_settings,
     gecko: {
         ...manifest.browser_specific_settings?.gecko,
-        id: 'timer@zhy',
+        id: 'tt4b@zhy',
     }
 }
 

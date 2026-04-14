@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-import EditableTag, { type EditableTagProps } from "@app/components/common/EditableTag"
-import { useShadow, useSwitch } from "@hooks"
+import EditableTag, { type EditableTagProps } from '@app/components/common/EditableTag'
+import { useShadow, useSwitch } from '@hooks'
 import { EXCLUDING_PREFIX } from '@util/constant/remain-host'
 import { judgeVirtualFast } from "@util/pattern"
 import { computed, defineComponent } from "vue"

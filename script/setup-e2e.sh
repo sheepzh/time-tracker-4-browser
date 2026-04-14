@@ -204,11 +204,6 @@ build_e2e_output() {
     build_npm_script "dev:e2e" "dist_e2e" true
 }
 
-# Build production output (optional)
-build_production_output() {
-    build_npm_script "build" "dist_prod" false
-}
-
 is_port_open() {
     local port=$1
     lsof -nP -iTCP:"$port" -sTCP:LISTEN > /dev/null 2>&1
@@ -313,7 +308,6 @@ show_usage() {
     echo "  --init, -i           Initialize e2e environment (install dependencies if not installed)"
     echo "  --upgrade, -u        Upgrade e2e dependencies (http-server, pm2)"
     echo "  --build, -b          Build e2e output (runs 'npm run dev:e2e')"
-    echo "  --build-prod         Also build production output (runs 'npm run build')"
     echo "  --start-servers, -s  Start test servers (12345/12346) and gist mock server (12347)"
     echo "  --all, -a            Run all steps (init + build + build-prod)"
     echo "  --help, -h           Show this help message"
@@ -332,7 +326,6 @@ main() {
     local do_init=false
     local do_upgrade=false
     local do_build=false
-    local do_build_prod=false
     local do_start_servers=false
 
     # Parse arguments
@@ -350,10 +343,6 @@ main() {
                 do_build=true
                 shift
                 ;;
-            --build-prod)
-                do_build_prod=true
-                shift
-                ;;
             --start-servers|-s)
                 do_start_servers=true
                 shift
@@ -361,7 +350,6 @@ main() {
             --all|-a)
                 do_init=true
                 do_build=true
-                do_build_prod=true
                 do_start_servers=true
                 shift
                 ;;
@@ -377,7 +365,7 @@ main() {
         esac
     done
 
-    if [ "$do_init" = false ] && [ "$do_upgrade" = false ] && [ "$do_build" = false ] && [ "$do_build_prod" = false ] && [ "$do_start_servers" = false ]; then
+    if [ "$do_init" = false ] && [ "$do_upgrade" = false ] && [ "$do_build" = false ] && [ "$do_start_servers" = false ]; then
         show_usage
         exit 0
     fi
@@ -415,10 +403,6 @@ main() {
 
     if [ "$do_build" = true ]; then
         build_e2e_output
-    fi
-
-    if [ "$do_build_prod" = true ]; then
-        build_production_output
     fi
 
     if [ "$do_start_servers" = true ]; then

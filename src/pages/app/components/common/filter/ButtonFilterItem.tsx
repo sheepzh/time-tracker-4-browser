@@ -4,8 +4,8 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import { useXsState } from '@hooks'
 import { type I18nKey, t } from '@app/locale'
-import { useXsState } from '@hooks/useMediaSize'
 import { type ButtonProps, ElButton } from "element-plus"
 import { defineComponent } from "vue"
 

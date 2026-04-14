@@ -21,7 +21,7 @@ type Props = {
 
 const PopupConfirmButton: FunctionalComponent<Props> = props => (
     <ElPopconfirm
-        confirmButtonText={t(msg => msg.button.okey)}
+        confirmButtonText={t(msg => msg.button.okay)}
         cancelButtonText={t(msg => msg.button.dont)}
         title={props.confirmText}
         width={300}
