@@ -5,9 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { listTabs, trySendMsg2Tab } from "@api/chrome/tab"
-import { isNoneWindowId, onNormalWindowFocusChanged } from "@api/chrome/window"
-import { isBrowserUrl } from "@util/pattern"
+import { trySendMsg2Tab } from "@api/chrome/tab"
 import badgeTextManager from "./badge-manager"
 import initCsHandler from "./content-script-handler"
 import initDataCleaner from "./data-cleaner"
@@ -52,14 +50,3 @@ new TabListener()
 
 // Start message dispatcher
 messageDispatcher.start()
-
-// Listen window focus changed
-onNormalWindowFocusChanged(async windowId => {
-    if (isNoneWindowId(windowId)) return
-    const tabs = await listTabs({ windowId, active: true })
-    tabs.forEach(tab => {
-        const { url, id: tabId } = tab
-        if (!url || isBrowserUrl(url) || !tabId) return
-        badgeTextManager.updateFocus({ url, tabId })
-    })
-})

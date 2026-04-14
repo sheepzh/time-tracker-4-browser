@@ -7,7 +7,7 @@
 
 import { setBadgeBgColor, setBadgeText } from "@api/chrome/action"
 import { listTabs } from "@api/chrome/tab"
-import { getFocusedNormalWindowId } from "@api/chrome/window"
+import { getFocusedNormalWindowId, isNoneWindowId, onWindowFocusChanged } from "@api/chrome/window"
 import { IS_ANDROID } from "@util/constant/environment"
 import { extractHostname, isBrowserUrl } from "@util/pattern"
 import { MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND } from "@util/time"
@@ -25,7 +25,6 @@ type BadgeLocation = {
      * The url of tab
      */
     url: string
-    focus?: number
 }
 
 function mill2Str(milliseconds: number) {
@@ -40,14 +39,11 @@ function mill2Str(milliseconds: number) {
     }
 }
 
-async function findActiveTab(): Promise<BadgeLocation | undefined> {
-    const windowId = await getFocusedNormalWindowId()
-    if (!windowId) {
-        return undefined
-    }
-    const tabs = await listTabs({ active: true, windowId })
-    // Fix #131
-    // Edge will return two active tabs, including the new tab with url 'edge://newtab/', GG
+async function findActiveTab(windowId?: number): Promise<BadgeLocation | undefined> {
+    windowId ??= await getFocusedNormalWindowId()
+    if (isNoneWindowId(windowId)) return undefined
+    const tabs = await listTabs({ windowId, active: true })
+    // Fix #131 — Edge can return two active tabs (e.g. edge://newtab/).
     for (const { id: tabId, url } of tabs) {
         if (!tabId || !url || isBrowserUrl(url)) continue
         return { tabId, url }
@@ -58,46 +54,41 @@ async function findActiveTab(): Promise<BadgeLocation | undefined> {
 async function clearAllBadge(): Promise<void> {
     const tabs = await listTabs()
     if (!tabs?.length) return
-    for (const tab of tabs) {
-        await setBadgeText('', tab?.id)
-    }
+    for (const { id } of tabs) id != null && await setBadgeText('', id)
 }
 
-type BadgeState = 'HIDDEN' | 'NOT_SUPPORTED' | 'PAUSED' | 'TIME' | 'WHITELIST'
-
 class BadgeManager {
-    pausedTabId: number | undefined
-    current: BadgeLocation | undefined
-    visible: boolean | undefined
-    state: BadgeState | undefined
+    private pausedTabId: number | undefined
+    private current: BadgeLocation | undefined
+    private visible = false
 
     async init(messageDispatcher: MessageDispatcher) {
         if (IS_ANDROID) return // do nothing on Android, since badge text is not supported
 
         const option = await optionHolder.get()
         await this.processOption(option)
-        optionHolder.addChangeListener(async opt => await this.processOption(opt))
-        whitelistHolder.addPostHandler(() => this.render())
+        optionHolder.addChangeListener(opt => { void this.processOption(opt) })
+        whitelistHolder.addPostHandler(() => { void this.render() })
         messageDispatcher.register('cs.idleChanged', (isIdle, sender) => {
             const tabId = sender?.tab?.id
-            isIdle ? this.pause(tabId) : this.resume(tabId)
+            void (isIdle ? this.pause(tabId) : this.resume(tabId))
+        })
+        onWindowFocusChanged(async windowId => {
+            const target = await findActiveTab(windowId)
+            await this.updateFocus(target)
         })
         await this.updateFocus()
     }
 
-    /**
-     * Hide the badge text
-     */
     private async pause(tabId?: number) {
+        if (typeof tabId !== 'number') return
         this.pausedTabId = tabId
         await this.render()
     }
 
-    /**
-     * Show the badge text
-     */
     private async resume(tabId?: number) {
-        if (!this.pausedTabId || this.pausedTabId !== tabId) return
+        if (typeof this.pausedTabId !== 'number') return
+        if (typeof tabId !== 'number' || this.pausedTabId !== tabId) return
         this.pausedTabId = undefined
         await this.render()
     }
@@ -108,29 +99,28 @@ class BadgeManager {
     }
 
     private async processOption(option: timer.option.AppearanceOption) {
-        const { displayBadgeText, badgeBgColor } = option || {}
+        const { displayBadgeText, badgeBgColor } = option ?? {}
         const before = this.visible
         this.visible = !!displayBadgeText
-        !this.visible && before && await clearAllBadge()
+        if (!this.visible && before) await clearAllBadge()
         await setBadgeBgColor(badgeBgColor)
+        if (before !== this.visible) await this.render()
     }
 
     private async render(): Promise<void> {
-        const [nextState, badgeText] = await this.processState()
-        this.state = nextState
+        const badgeText = await this.resolveBadgeText()
         await setBadgeText(badgeText, this.current?.tabId)
     }
 
-    private async processState(): Promise<[BadgeState, text: string]> {
-        const { url, tabId, focus } = this.current ?? {}
-        if (!this.visible || !url) return ['HIDDEN', '']
-        if (isBrowserUrl(url)) return ['NOT_SUPPORTED', '∅']
+    private async resolveBadgeText(): Promise<string> {
+        if (!this.current || !this.visible) return ''
+        const { url, tabId } = this.current
+        if (isBrowserUrl(url)) return '∅'
         const { host } = extractHostname(url)
-        if (whitelistHolder.contains(host, url)) return ['WHITELIST', 'W']
-        if (this.pausedTabId === tabId) return ['PAUSED', 'P']
-        const milliseconds = focus ?? (await statDatabase.get(host, new Date())).focus
-        const millText = mill2Str(milliseconds)
-        return ['TIME', millText]
+        if (whitelistHolder.contains(host, url)) return 'W'
+        if (this.pausedTabId === tabId) return 'P'
+        const { focus } = await statDatabase.get(host, new Date())
+        return mill2Str(focus)
     }
 }
 

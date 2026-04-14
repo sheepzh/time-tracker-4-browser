@@ -57,6 +57,9 @@
             "@service/*": [
                 "./src/background/service/*"
             ],
+            "@polyfill": [
+                "./src/background/polyfill/index"
+            ],
             "@util/*": [
                 "./src/util/*"
             ],
