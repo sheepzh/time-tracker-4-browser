@@ -1044,10 +1044,10 @@
         "permGrantConfirm": "Cette fonctionnalité nécessite des autorisations appropriées",
         "appearance": {
             "title": "Apparence",
-            "displayWhitelist": "{input} S'il faut afficher là {whitelist} dans {contextMenu}",
+            "displayWhitelist": "{input} S'il faut afficher les {whitelist} dans {contextMenu}",
             "whitelistItem": "raccourcis liés à la liste blanche",
             "contextMenu": "le menu contextuel",
-            "displayBadgeText": "{input} S'il faut afficher là {timeInfo} dans {icon}",
+            "displayBadgeText": "{input} S'il faut afficher {timeInfo} dans {icon}",
             "badgeBgColor": "La couleur de fond du texte sur l'icône {input}",
             "icon": "l'icône de l'extension",
             "badgeTextContent": "le temps de navigation du site actuel",
@@ -1057,7 +1057,7 @@
                 "reloadButton": "Redémarrer"
             },
             "printInConsole": {
-                "label": "{input} S'il faut imprimer {info} dans là {console}",
+                "label": "{input} S'il faut afficher {info} dans la {console}",
                 "console": "console",
                 "info": "le nombre de visites du site actuel aujourd'hui"
             },
@@ -1072,7 +1072,7 @@
             "title": "Statistiques",
             "autoPauseTrack": "{input} Pause de suivi si aucune activité n'a détecté {info} pour {maxTime}",
             "noActivityInfo": "La souris et le clavier sont inactifs, pas en plein écran, et il n'y a pas de son joué",
-            "countLocalFiles": "{input} S'il faut compter le temps jusqu'à {localFileTime} {info} dans le navigateur",
+            "countLocalFiles": "{input} S'il faut compter le temps passé à {localFileTime} {info} dans le navigateur",
             "localFileTime": "lire un fichier local",
             "localFilesInfo": "Prend en charge les fichiers de types tels que PDF, image, txt et json.",
             "countTabGroup": "{input} Suivre le temps des groupes d'onglets {info}",
@@ -1087,7 +1087,7 @@
             "prompt": "Invite affichée en cas de restriction {input}",
             "reminder": "{input} Rappel {minInput} minutes avant la fin du temps",
             "level": {
-                "label": "Comment déverrouiller en étant restreint {input}",
+                "label": "Comment déverrouiller en étant limité {input}",
                 "nothing": "Autoriser le déverrouillage direct sur la page d'administration",
                 "password": "Vous devez entrer le mot de passe pour déverrouiller",
                 "verification": "Vous devez entrer le code de vérification pour déverrouiller",
@@ -1107,7 +1107,7 @@
         },
         "backup": {
             "title": "Sauvegarde des données",
-            "type": "Type distant {input}",
+            "type": "Choix de la sauvegarde {input}",
             "client": "Nom du client {input}",
             "meta": {
                 "gist": {
@@ -1148,7 +1148,7 @@
         },
         "accessibility": {
             "title": "Accessibilité",
-            "chartDecal": "{input} S'il faut afficher l'autocollant de la carte"
+            "chartDecal": "{input} afficher les motifs de la carte"
         },
         "notification": {
             "title": "Notification",
