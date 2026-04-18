@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { after, compare, indexOf, keyOf, rowOf, startOfKey } from "@/util/period"
 import { sum } from "@util/array"
+import { after, compare, indexOf, keyOf, rowOf, startOfKey } from "@util/period"
 
 /**
  * @param timestamp current ts

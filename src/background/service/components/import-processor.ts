@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { mergeWith } from '@/util/stat'
 import statDatabase from "@db/stat-database"
+import { mergeWith } from '@util/stat'
 import backupProcessor from "../backup/processor"
 
 export async function importOther(query: timer.imported.ProcessQuery): Promise<void> {

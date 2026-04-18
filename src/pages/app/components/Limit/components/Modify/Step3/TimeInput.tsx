@@ -198,7 +198,7 @@ const TimeInput = defineComponent<TimeInputProps>(props => {
                         prefixIcon={Clock}
                         modelValue={inputText.value}
                         inputStyle={{ cursor: 'pointer' }}
-                        style={{ '--el-date-editor-width': '160px' }}
+                        style={{ '--el-date-editor-width': '170px' }}
                         size={isXs.value ? 'small' : undefined}
                         readonly
                         v-slots={{

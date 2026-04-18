@@ -5,12 +5,12 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { useManualRequest } from '@/pages/hooks'
 import { changeSiteAlias, fillInitialAlias, getInitialAlias } from "@api/sw/site"
 import Editable from "@app/components/common/Editable"
 import { useSiteManageTable } from '@app/components/SiteManage/useSiteManage'
 import { t } from '@app/locale'
 import { MagicStick } from "@element-plus/icons-vue"
+import { useManualRequest } from '@hooks'
 import Flex from "@pages/components/Flex"
 import { identifySiteKey } from "@util/site"
 import { ElIcon, ElMessage, ElPopconfirm, ElTableColumn, ElText } from "element-plus"

@@ -2,23 +2,14 @@ import { processDarkMode } from '@/pages/util/dark-mode'
 import { getOption } from '@api/sw/option'
 import { MILL_PER_MINUTE } from "@util/time"
 import { exitFullscreen } from "../common"
-import type { Processor } from '../types'
 import { createComponent } from "./component"
 
-class Reminder implements Processor {
+class Reminder {
     private id = 0
     private el: HTMLElement | undefined
     private darkMode: boolean = false
 
-    handleMsg(code: timer.tab.ReqCode, data: unknown): Awaitable<timer.tab.Response<timer.tab.ReqCode>> {
-        if (code !== 'limitReminder') {
-            return { code: 'ignore' }
-        }
-        this.show(data as timer.limit.ReminderInfo)
-        return { code: 'success' }
-    }
-
-    private async show(data: timer.limit.ReminderInfo) {
+    public async show(data: timer.limit.ReminderInfo) {
         if (!document?.body || this.el) return
 
         await exitFullscreen()

@@ -1,3 +1,5 @@
+import { getOption } from '@/api/sw/option'
+import { DEFAULT_LIMIT } from '@/util/constant/option'
 import { deleteLimits, listLimits, updateLimits } from "@api/sw/limit"
 import { t } from '@app/locale'
 import type { LimitQuery } from '@app/router/constants'
@@ -23,6 +25,7 @@ type Context = {
     create: () => void
     test: () => void
     empty: ShallowRef<boolean>
+    delayDuration: ShallowRef<number>
 }
 
 const NAMESPACE = 'limit'
@@ -43,6 +46,11 @@ export const useLimitProvider = () => {
             defaultValue: [],
             deps: [() => filter.url, () => filter.enabled],
         },
+    )
+
+    const { data: delayDuration } = useRequest(
+        () => getOption().then(o => o.limitDelayDuration),
+        { defaultValue: DEFAULT_LIMIT.limitDelayDuration },
     )
 
     // Query data if the window become visible
@@ -145,7 +153,7 @@ export const useLimitProvider = () => {
     const empty = computed(() => !loading.value && !(list.value?.length))
 
     useProvide<Context>(NAMESPACE, {
-        filter, list, empty, refresh,
+        filter, list, empty, refresh, delayDuration,
         deleteRow, modify, create, test, changeEnabled, changeDelay, changeLocked,
         batchDelete: () => selectedAndThen(handleBatchDelete),
         batchEnable: () => selectedAndThen(handleBatchEnable),
@@ -166,3 +174,5 @@ export const useLimitBatch = () => useProvider<Context, 'batchDelete' | 'batchEn
 )
 
 export const useLimitAction = () => useProvider<Context, 'test' | 'modify' | 'create' | 'empty'>(NAMESPACE, 'modify', 'test', 'create', 'empty')
+
+export const useDelayDuration = () => useProvider<Context, 'delayDuration'>(NAMESPACE, 'delayDuration').delayDuration

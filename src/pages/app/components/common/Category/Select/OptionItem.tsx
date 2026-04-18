@@ -1,4 +1,4 @@
-import { sendMsg2Runtime } from '@/api/sw/common'
+import { sendMsg2Runtime } from '@api/sw/common'
 import { listSites } from "@api/sw/site"
 import { useCategory } from "@app/context"
 import { t } from "@app/locale"

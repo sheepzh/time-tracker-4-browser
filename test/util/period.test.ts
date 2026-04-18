@@ -1,6 +1,6 @@
-// import { compare, copyKeyWith, keyOf } from "@/util/period"
+// import { compare, copyKeyWith, keyOf } from "@util/period"
 
-import { compare, keyOf } from '@/util/period'
+import { compare, keyOf } from '@util/period'
 
 test('test1', () => {
     const key1 = keyOf(new Date(), 0)

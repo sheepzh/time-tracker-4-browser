@@ -1,4 +1,4 @@
-import { trySendMsg2Runtime } from '@/api/sw/common'
+import { trySendMsg2Runtime } from '@api/sw/common'
 import { date2Idx } from "@util/limit"
 import { MILL_PER_SECOND } from "@util/time"
 import type { LimitReason, ModalContext, Processor } from '../types'
@@ -24,20 +24,13 @@ function processRule(rule: timer.limit.Rule, nowSeconds: number, context: ModalC
 }
 
 class PeriodProcessor implements Processor {
-    private context: ModalContext
     private timers: ReturnType<typeof setTimeout>[] = []
 
-    constructor(context: ModalContext) {
-        this.context = context
-    }
+    constructor(private readonly context: ModalContext) { }
 
-    async handleMsg(code: timer.tab.ReqCode, data: timer.limit.Item[]): Promise<timer.tab.Response<timer.tab.ReqCode>> {
-        if (code === "limitChanged") {
-            this.timers.forEach(clearTimeout)
-            await this.init0(data)
-            return { code: "success" }
-        }
-        return { code: "ignore" }
+    async onLimitChanged(data: timer.limit.Item[]): Promise<void> {
+        this.timers.forEach(clearTimeout)
+        await this.init0(data)
     }
 
     init(): Promise<void> {

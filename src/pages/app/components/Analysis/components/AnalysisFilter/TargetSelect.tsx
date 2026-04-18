@@ -19,7 +19,7 @@ const cvtTarget2Key = (target: AnalysisTarget | undefined): string => {
     switch (type) {
         case 'site': return `${SITE_PREFIX}${identifySiteKey(key)}`
         case 'cate': return `${CATE_PREFIX}${key}`
-        default: return '-'
+        default: return ''
     }
 }
 
@@ -128,6 +128,9 @@ const TargetSelect = defineComponent(() => {
     const ns = useNamespace('select')
     const select = ref<InstanceType<typeof ElSelectV2>>()
     onMounted(() => {
+        // Do nothing if target selected
+        if (target.value) return
+
         let el = select.value?.$el
         if (!(el instanceof HTMLElement)) return
         el.click()
@@ -150,7 +153,7 @@ const TargetSelect = defineComponent(() => {
             filterMethod={setQuery}
             style={{ width: '240px' } as StyleValue}
             defaultFirstOption
-            options={options.value ?? []}
+            options={options.value}
             fitInputWidth={false}
             v-slots={({ item }: any) => {
                 const target = (item as any).data as TargetItem

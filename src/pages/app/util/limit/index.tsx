@@ -1,11 +1,12 @@
 import { trySendMsg2Runtime } from '@api/sw/common'
+import { css } from '@emotion/css'
 import { useCountDown } from "@hooks"
 import { type I18nKey, type I18nResultItem, locale, t as t_, tN as tN_ } from "@i18n"
 import limitMessages, { type LimitMessage } from "@i18n/message/app/limit"
 import buttonMessages from "@i18n/message/common/button"
 import { getCssVariable } from "@pages/util/style"
 import { dateMinute2Idx, hasLimited, isEffective } from "@util/limit"
-import { ElMessage, ElMessageBox, type ElMessageBoxOptions, type InputType, useId } from "element-plus"
+import { ElMessage, ElMessageBox, type InputType, useId, useNamespace } from "element-plus"
 import { defineComponent, onMounted, ref, type VNode } from "vue"
 import verificationProcessor from './processor'
 
@@ -18,13 +19,13 @@ const tN = (key: I18nKey<LimitMessage>, param?: any) => tN_<LimitMessage, VNode>
  *
  * @returns T/F
  */
-export async function judgeVerificationRequired(item: timer.limit.Item): Promise<boolean> {
+export async function judgeVerificationRequired(item: timer.limit.Item, delayDuration: number): Promise<boolean> {
     if (item.locked) return true
     if (!item.enabled || !isEffective(item.weekdays)) return false
 
     const { visitTime, periods } = item
     // Daily or weekly
-    if (hasLimited(item)) return true
+    if (hasLimited(item, delayDuration)) return true
     // Period
     if (periods?.length) {
         const idx = dateMinute2Idx(new Date())
@@ -81,6 +82,18 @@ const AnswerCanvas = defineComponent(((props: { text: string }) => {
     )
 }), { props: ['text'] })
 
+// Fix some style missing in limit modal with postcss processor
+const INPUT_NS = useNamespace('input')
+const MODAL_CLS = css`
+    & .${INPUT_NS.e('inner')} {
+        background: 0;
+    }
+`
+const MSG_CLS = css`
+    left: 50%;
+    transform: translate(-50%);
+`
+
 /**
  * NOT TO return Promise.resolve()
  *
@@ -89,12 +102,10 @@ const AnswerCanvas = defineComponent(((props: { text: string }) => {
  * @returns null if verification not required,
  *          or promise with resolve invoked only if verification code or password correct
  */
-export async function processVerification(option: timer.option.LimitOption, context?: { appendTo: Exclude<ElMessageBoxOptions['appendTo'], string> }): Promise<void> {
+export async function processVerification(option: timer.option.LimitOption): Promise<void> {
     const { limitLevel, limitPassword, limitVerifyDifficulty } = option
-    const { appendTo } = context || {}
     if (limitLevel === "strict") {
         return new Promise(() => ElMessageBox({
-            appendTo,
             boxType: 'alert',
             type: 'warning',
             title: '',
@@ -133,7 +144,6 @@ export async function processVerification(option: timer.option.LimitOption, cont
 
     const okBtnTxt = t_(buttonMessages, { key: msg => msg.okay })
     const msgData = ElMessageBox({
-        appendTo,
         autofocus: true,
         boxType: 'prompt',
         type: 'warning',
@@ -146,18 +156,19 @@ export async function processVerification(option: timer.option.LimitOption, cont
         confirmButtonText: countdown ? btnText(countdown) : okBtnTxt,
         confirmButtonClass: okBtnClz,
         buttonSize: "small",
+        modalClass: MODAL_CLS,
     })
 
-    let cleanCountdown = countdown ? useCountDown({
+    const cleanCountdown = countdown ? useCountDown({
         countdown,
         onComplete: () => {
-            const btn = (appendTo ?? document).querySelector(`.${okBtnClz}`)
+            const btn = document.querySelector(`.${okBtnClz}`)
             if (!btn) return
             ElMessage.warning(t(msg => msg.message.timeout))
             btn.remove()
         },
         onTick: (val: number) => {
-            const btnSpan = (appendTo ?? document).querySelector(`.${okBtnClz} span`)
+            const btnSpan = document.querySelector(`.${okBtnClz} span`)
             if (!btnSpan) return
             btnSpan.textContent = btnText(Math.floor(val / 1000))
         },
@@ -166,12 +177,12 @@ export async function processVerification(option: timer.option.LimitOption, cont
     return new Promise(resolve => {
         msgData.then(data => {
             // Double check
-            const btn = (appendTo ?? document).querySelector(`.${okBtnClz}`)
+            const btn = document.querySelector(`.${okBtnClz}`)
             if (!btn) return
             if (typeof data === 'string') return
             const { value } = data
             if (value === answerValue) return resolve()
-            ElMessage.error({ appendTo, message: incorrectMessage })
+            ElMessage.error({ message: incorrectMessage, customClass: MSG_CLS })
         }).catch(() => cleanCountdown?.())
     })
 }

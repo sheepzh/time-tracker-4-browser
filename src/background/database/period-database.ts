@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getDateString, keyOf } from "@/util/period"
+import { getDateString, keyOf } from "@util/period"
 import BaseDatabase from "./common/base-database"
 import { REMAIN_WORD_PREFIX } from "./common/constant"
 

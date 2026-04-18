@@ -1,5 +1,5 @@
-import { keyOf } from '@/util/period'
 import db from "@db/period-database"
+import { keyOf } from '@util/period'
 import { formatTimeYMD } from "@util/time"
 import { mockStorage } from "../../__mock__/storage"
 

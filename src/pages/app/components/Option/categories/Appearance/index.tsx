@@ -14,7 +14,7 @@ import { useRequest } from '@hooks'
 import { ALL_LOCALES, localeSameAsBrowser } from "@i18n"
 import localeMessages from "@i18n/message/common/locale"
 import { IS_ANDROID } from "@util/constant/environment"
-import { defaultAppearance } from "@util/constant/option"
+import { DEFAULT_APPEARANCE } from "@util/constant/option"
 import { ElColorPicker, ElMessageBox, ElSelect, ElSlider, ElSwitch, ElTag, type TagProps } from "element-plus"
 import { computed, defineComponent, type StyleValue } from "vue"
 import type { CategoryInstance } from '../types'
@@ -43,13 +43,12 @@ function copy(target: timer.option.AppearanceOption, source: timer.option.Appear
     target.chartAnimationDuration = source.chartAnimationDuration
 }
 
-const DEFAULT_ANIMA_DURATION = defaultAppearance().chartAnimationDuration
 const DEFAULT_SIDE_PANEL_ENABLED = true
 
 
 const _default = defineComponent((_props, ctx) => {
     const { option } = useOption<timer.option.AppearanceOption>({
-        defaultValue: defaultAppearance, copy,
+        defaultValue: DEFAULT_APPEARANCE, copy,
         onChange: processDarkMode,
     })
     const { data: sidePanelEnabled, refresh: refreshSidePanel } = useRequest(isSidePanelEnabled, {
@@ -63,7 +62,7 @@ const _default = defineComponent((_props, ctx) => {
     ctx.expose({
         reset() {
             handleSidePanelChange(DEFAULT_SIDE_PANEL_ENABLED)
-            copy(option, defaultAppearance())
+            copy(option, DEFAULT_APPEARANCE)
         }
     } satisfies CategoryInstance)
 
@@ -85,7 +84,7 @@ const _default = defineComponent((_props, ctx) => {
     const animaDurationTagType = computed<TagProps['type']>(() => {
         const val = option.chartAnimationDuration
         if (!val) return 'info'
-        if (val > DEFAULT_ANIMA_DURATION) return 'warning'
+        if (val > DEFAULT_APPEARANCE.chartAnimationDuration) return 'warning'
         return 'primary'
     })
 
@@ -177,7 +176,7 @@ const _default = defineComponent((_props, ctx) => {
             )}
             <OptionItem
                 label={msg => msg.option.appearance.animationDuration}
-                defaultValue={`${DEFAULT_ANIMA_DURATION}ms`}
+                defaultValue={`${DEFAULT_APPEARANCE.chartAnimationDuration}ms`}
             >
                 <ElSlider
                     modelValue={option.chartAnimationDuration}

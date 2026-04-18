@@ -1,18 +1,18 @@
-import { defaultAccessibility } from "@util/constant/option"
+import { DEFAULT_ACCESSIBILITY } from "@util/constant/option"
 import { ElSwitch } from "element-plus"
 import { defineComponent } from "vue"
 import { OptionItem } from '../components'
 import { useOption } from "../useOption"
 import type { CategoryInstance } from './types'
 
-function copy(target: timer.option.AccessibilityOption, source: timer.option.AccessibilityOption) {
+function copy(target: timer.option.AccessibilityOption, source: Readonly<timer.option.AccessibilityOption>) {
     target.chartDecal = source.chartDecal
 }
 
 const _default = defineComponent((_, ctx) => {
-    const { option } = useOption({ defaultValue: defaultAccessibility, copy })
+    const { option } = useOption({ defaultValue: DEFAULT_ACCESSIBILITY, copy })
     ctx.expose({
-        reset: () => copy(option, defaultAccessibility())
+        reset: () => copy(option, DEFAULT_ACCESSIBILITY)
     } satisfies CategoryInstance)
     return () => (
         <OptionItem label={msg => msg.option.accessibility.chartDecal} defaultValue={false}>

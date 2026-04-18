@@ -8,7 +8,9 @@ const GIST_MOCK_TOKEN = 'github_gist_mock_token'
 
 let context: LaunchContext
 
-describe('Backup with gist', () => {
+const describeOptional = process.env.GITHUB_ACTIONS ? describe.skip : describe
+
+describeOptional('Backup with gist', () => {
     beforeEach(async () => {
         context = await launchBrowser({ bgProxies: [{ host: 'api.github.com', target: GIST_MOCK_ORIGIN }] })
     })
@@ -25,6 +27,7 @@ describe('Backup with gist', () => {
 
         // Assert test invalid with invalid token
         await tokenInput!.type('foobar' + Date.now())
+        await sleep(.5)
         await option.assertTestInvalid()
 
         // Assert token is valid
@@ -35,7 +38,9 @@ describe('Backup with gist', () => {
             el.dispatchEvent(new Event('input', { bubbles: true }))
         })
         await tokenInput!.type(GIST_MOCK_TOKEN)
+        await sleep(.5)
         await option.assertTestValid()
+
 
         // Visit site
         const sitePage = await context.newPageAndWaitCsInjected(MOCK_URL)

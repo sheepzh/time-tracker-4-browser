@@ -8,10 +8,12 @@ export type LimitReason =
     }
 
 export interface MaskModal {
+    readonly reasons: LimitReason[]
+
     addReason(...reasons: LimitReason[]): void
     removeReason(...reasons: LimitReason[]): void
     removeReasonsByType(...types: timer.limit.ReasonType[]): void
-    addDelayHandler(handler: () => void): void
+    addDelayHandler(handler: NoArgCallback): void
 }
 
 export type ModalContext = {
@@ -20,6 +22,6 @@ export type ModalContext = {
 }
 
 export interface Processor {
-    handleMsg(code: timer.tab.ReqCode, data: unknown): Awaitable<timer.tab.Response<timer.tab.ReqCode>>
-    init(): void | Promise<void>
+    init(): Awaitable<void>
+    onLimitChanged(items: timer.limit.Item[]): void
 }

@@ -1,4 +1,4 @@
-import cateDatabase from '@/background/database/cate-database'
+import cateDatabase from '@db/cate-database'
 import { batchChangeCate } from '@service/site-service'
 import type { Migrator } from "./types"
 

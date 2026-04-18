@@ -1,5 +1,5 @@
-import { sendMsg2Runtime } from '@/api/sw/common'
 import { createTab } from "@api/chrome/tab"
+import { sendMsg2Runtime } from '@api/sw/common'
 import { getOption } from "@api/sw/option"
 import { useManualRequest, useRequest } from "@hooks"
 import { ALL_LOCALES, handleLocaleOption, localeSameAsBrowser, t } from "@i18n"

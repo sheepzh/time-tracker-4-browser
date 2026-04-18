@@ -1,9 +1,9 @@
-import { t } from '@/pages/app/locale'
-import { CATE_NOT_SET_ID } from '@/util/site'
+import { t } from '@app/locale'
 import { getSeriesPalette, tooltipDot } from '@app/util/echarts'
 import { EchartsWrapper } from '@hooks'
 import { getPrimaryTextColor } from '@pages/util/style'
 import { groupBy, toMap } from '@util/array'
+import { CATE_NOT_SET_ID } from '@util/site'
 import {
     formatPeriodCommon, getStartOfDay, MILL_PER_DAY, MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND
 } from '@util/time'

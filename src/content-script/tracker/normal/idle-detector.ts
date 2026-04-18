@@ -1,4 +1,3 @@
-import { onTabMessage } from '@api/chrome/runtime'
 import { trySendMsg2Runtime } from '@api/sw/common'
 import { getOption } from '@api/sw/option'
 
@@ -15,13 +14,9 @@ export default class IdleDetector {
     userActive: boolean = true
     pauseTimeout: ReturnType<typeof setTimeout> | undefined
 
-    onIdle: () => void
-    onActive: () => void
-
-    constructor({ onIdle, onActive }: { onIdle: () => void, onActive: () => void }) {
+    constructor(private readonly onIdle: NoArgCallback, private readonly onActive: NoArgCallback) {
         this.onIdle = onIdle
         this.onActive = onActive
-        this.init()
     }
 
     needTimeout(): boolean {
@@ -33,7 +28,7 @@ export default class IdleDetector {
         return this.lastActiveTime + this.autoPauseInterval <= Date.now()
     }
 
-    private async init() {
+    async init() {
         this.reset()
         document.addEventListener('visibilitychange', () => document.visibilityState === 'visible' && this.reset())
         const pollInterval = setInterval(() => this.reset(), 60_000)
@@ -62,12 +57,6 @@ export default class IdleDetector {
         })
 
         trySendMsg2Runtime('cs.getAudible').then(val => this.audible = !!val)
-        onTabMessage(async req => {
-            const { code, data } = req
-            if (code !== 'syncAudible' || typeof data !== 'boolean') return { code: 'ignore' }
-            this.audible = !!data
-            return { code: 'success' }
-        })
     }
 
     private reset() {

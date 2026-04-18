@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getWeekStartTime } from '@/api/sw/option'
 import { createTabAfterCurrent } from "@api/chrome/tab"
+import { getWeekStartTime } from '@api/sw/option'
 import { listSiteStats } from '@api/sw/stat'
 import ChartTitle from '@app/components/Dashboard/ChartTitle'
 import { t } from "@app/locale"

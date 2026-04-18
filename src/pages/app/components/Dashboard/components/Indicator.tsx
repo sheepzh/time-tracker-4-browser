@@ -5,13 +5,13 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { groupBy, sum } from '@/util/array'
 import { listPeriods } from "@api/sw/period"
 import { listSiteStats } from "@api/sw/stat"
 import { tN, type I18nKey } from "@app/locale"
 import { Sunrise } from "@element-plus/icons-vue"
 import { useRequest, useXsState } from "@hooks"
 import Flex from "@pages/components/Flex"
+import { groupBy, sum } from '@util/array'
 import { getStartOfDay, MILL_PER_DAY, MILL_PER_HOUR, MILL_PER_MINUTE } from "@util/time"
 import { ElIcon, ElScrollbar } from "element-plus"
 import { computed, defineComponent, toRef, type VNode } from "vue"
@@ -40,7 +40,6 @@ function calcBusiestClock(rows: timer.period.Row[]): number | undefined {
     )
     const maxOffsetStr = Object.entries(map).sort((a, b) => b[1] - a[1])[0]?.[0]
     if (maxOffsetStr === undefined) return undefined
-    console.log(map, maxOffsetStr, MILL_PER_HOUR, Number.parseInt(maxOffsetStr) / MILL_PER_HOUR)
     return Math.floor(Number.parseInt(maxOffsetStr) / MILL_PER_HOUR)
 }
 

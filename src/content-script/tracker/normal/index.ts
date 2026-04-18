@@ -1,3 +1,4 @@
+import type { AudibleChangeHandler } from '@cs/types'
 import IdleDetector from "./idle-detector"
 
 const INTERVAL = 1000
@@ -7,20 +8,18 @@ type StateChangeReason = 'visible' | 'idle' | 'initial'
 class TrackContext {
     docVisible: boolean = false
     idleDetector: IdleDetector
-    onPause: (reason: StateChangeReason) => void
-    onResume: (reason: StateChangeReason) => void
 
-    constructor({ onPause, onResume }: { onPause: (reason: StateChangeReason) => void, onResume: (reason: StateChangeReason) => void }) {
-        this.onPause = onPause
-        this.onResume = onResume
-
+    constructor(
+        private readonly onPause: ArgCallback<StateChangeReason>,
+        private readonly onResume: ArgCallback<StateChangeReason>,
+    ) {
         this.detectDocVisible()
         document?.addEventListener('visibilitychange', () => this.detectDocVisible())
 
-        this.idleDetector = new IdleDetector({
-            onIdle: () => this.onPause?.('idle'),
-            onActive: () => this.docVisible && this.onResume?.('idle')
-        })
+        this.idleDetector = new IdleDetector(
+            () => this.onPause('idle'),
+            () => this.docVisible && this.onResume('idle'),
+        )
     }
 
     private detectDocVisible() {
@@ -47,25 +46,24 @@ type NormalTrackerOption = {
 /**
  * Normal tracker
  */
-export default class NormalTracker {
-    context: TrackContext | undefined
+export default class NormalTracker implements AudibleChangeHandler {
+    context: TrackContext
     start: number = Date.now()
-    option: NormalTrackerOption
 
-    constructor(option: NormalTrackerOption) {
-        this.option = option
+    constructor(private readonly option: NormalTrackerOption) {
+        this.context = new TrackContext(
+            reason => this.pause(reason),
+            reason => this.resume(reason),
+        )
     }
 
     init() {
         // Resume if idle before reloading
         this.resume('idle')
+        this.context.idleDetector.init()
 
-        this.context = new TrackContext({
-            onPause: reason => this.pause(reason),
-            onResume: reason => this.resume(reason),
-        })
         setInterval(() => {
-            if (!this.context?.isActive()) return
+            if (!this.context.isActive()) return
 
             this.collect()
         }, INTERVAL)
@@ -101,5 +99,9 @@ export default class NormalTracker {
         this.option?.onResume?.(reason)
 
         this.start = Date.now()
+    }
+
+    onAudibleChange(audible: boolean) {
+        this.context.idleDetector.audible = audible
     }
 }
