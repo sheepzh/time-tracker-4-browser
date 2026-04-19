@@ -36,7 +36,8 @@ function mill2Str(milliseconds: number) {
         // no more than 1 hour
         return `${Math.round(milliseconds / MILL_PER_MINUTE)}m`
     } else {
-        return `${(milliseconds / MILL_PER_HOUR).toFixed(1)}h`
+        const hours = milliseconds / MILL_PER_HOUR
+        return hours < 10 ? `${hours.toFixed(1)}h` : `${Math.round(hours)}h`
     }
 }
 
