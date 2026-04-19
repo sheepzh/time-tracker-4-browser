@@ -21,7 +21,7 @@ class OptionDatabase extends BaseDatabase {
 
     async getOption(): Promise<timer.option.AllOption> {
         const option = await this.storage.getOne<timer.option.AllOption>(DB_KEY)
-        return mergeObject(defaultOption(), option)
+        return mergeObject<timer.option.AllOption>(defaultOption(), option)
     }
 
     async setOption(option: timer.option.AllOption): Promise<void> {

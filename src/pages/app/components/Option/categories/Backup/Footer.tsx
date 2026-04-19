@@ -12,7 +12,7 @@ import { css } from '@emotion/css'
 import { useManualRequest, useRequest } from "@hooks"
 import Flex from "@pages/components/Flex"
 import { formatTime } from "@util/time"
-import { ElButton, ElDivider, ElLoading, ElMessage, ElText, useNamespace } from "element-plus"
+import { ElButton, ElDivider, ElMessage, ElText, useNamespace } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
 import Clear from "./Clear"
 import Download from "./Download"
@@ -24,18 +24,6 @@ const useStyle = () => {
             margin-inline-start: 0px;
         }
     `
-}
-
-async function handleTest() {
-    const loading = ElLoading.service({ text: "Please wait...." })
-    try {
-        const errorMsg = await checkAuth()
-        errorMsg
-            ? ElMessage.error(errorMsg)
-            : ElMessage.success("Valid!")
-    } finally {
-        loading.close()
-    }
 }
 
 const TIME_FORMAT = t(msg => msg.calendar.timeFormat)
@@ -53,6 +41,11 @@ const _default = defineComponent<{ type: timer.backup.Type }>(props => {
             ElMessage.success('Successfully!')
             refreshLastTime()
         },
+    })
+
+    const { refresh: handleTest } = useManualRequest(checkAuth, {
+        loadingText: "Please wait....",
+        onSuccess: err => err ? ElMessage.error(err) : ElMessage.success("Valid!"),
     })
 
     const footerCls = useStyle()

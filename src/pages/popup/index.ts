@@ -35,7 +35,7 @@ function send2ParentWindow(data: any): Promise<void> {
 }
 
 async function main() {
-    await initLocale()
+    initLocale()
     initEcharts()
     injectGlobalCss()
 

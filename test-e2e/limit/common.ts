@@ -6,10 +6,14 @@ export async function waitForLimitFrame(page: Page, timeout = 5000): Promise<Fra
 }
 
 export async function isLimitModalVisible(page: Page): Promise<boolean> {
-    return await page.evaluate(() => {
-        const overlay = document.querySelector('extension-time-tracker-overlay') as HTMLElement | null
+    await page.waitForSelector('extension-time-tracker-overlay', { timeout: 3000 })
+    return await page.evaluate(async () => {
+        const overlay = document.querySelector('extension-time-tracker-overlay')
         if (!overlay) return false
-        return overlay.style.visibility !== 'hidden'
+        const iframe = overlay.shadowRoot?.firstElementChild
+        return iframe instanceof HTMLIFrameElement
+            && iframe.style.visibility !== 'hidden'
+            && iframe.style.display !== 'none'
     })
 }
 
@@ -88,4 +92,11 @@ async function fillVisitLimit(value: number, input: ElementHandle<HTMLInputEleme
     await input.focus()
     await page.keyboard.press('Delete')
     await page.keyboard.type(`${value ?? 0}`)
+}
+
+export async function clickDelay(testPage: Page) {
+    const limitFrame = await waitForLimitFrame(testPage)
+    const moreBtn = await limitFrame.waitForSelector('.el-button--primary')
+    await moreBtn!.click()
+    await sleep(.8)
 }

@@ -3,9 +3,10 @@ import { judgeVerificationRequired, processVerification } from "@app/util/limit/
 
 const batchJudge = async (items: timer.limit.Item[]): Promise<boolean> => {
     if (!items?.length) return false
+    const { limitDelayDuration } = await getOption()
     for (const item of items) {
         if (!item) continue
-        const needVerify = await judgeVerificationRequired(item)
+        const needVerify = await judgeVerificationRequired(item, limitDelayDuration)
         if (needVerify) return true
     }
     return false

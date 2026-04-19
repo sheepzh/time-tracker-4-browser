@@ -5,12 +5,12 @@
  * https://opensource.org/licenses/MIT
  */
 
-import cateDb from "@/background/database/cate-database"
-import { toMap } from '@/util/array'
-import { CATE_NOT_SET_ID } from '@/util/site'
+import cateDb from "@db/cate-database"
 import mergeDb from '@db/merge-rule-database'
 import siteDb from "@db/site-database"
 import db from "@db/timeline-database"
+import { toMap } from '@util/array'
+import { CATE_NOT_SET_ID } from '@util/site'
 import CustomizedHostMergeRuler from './components/host-merge-ruler'
 
 export async function listTimeline(query: timer.timeline.Query): Promise<timer.timeline.Activity[]> {

@@ -73,6 +73,7 @@ export type OptionMessage = {
             pswFormLabel: string
             pswFormAgain: string
         }
+        delayDuration: string
     }
     backup: {
         title: string

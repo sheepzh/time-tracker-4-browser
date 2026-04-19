@@ -1,4 +1,4 @@
-import { sendMsg2Runtime } from '@/api/sw/common'
+import { sendMsg2Runtime } from '@api/sw/common'
 import { useCategory } from "@app/context"
 import { t } from "@app/locale"
 import { Check, Close, Plus } from "@element-plus/icons-vue"

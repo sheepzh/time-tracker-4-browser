@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { IS_ANDROID, IS_FIREFOX } from '@/util/constant/environment'
 import db from "@db/meta-database"
+import { IS_ANDROID, IS_FIREFOX } from '@util/constant/environment'
 import { createArrayGuard, createObjectGuard, isString } from 'typescript-guard'
 
 export async function getInstallTime(): Promise<number> {

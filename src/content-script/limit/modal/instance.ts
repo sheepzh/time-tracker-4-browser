@@ -1,9 +1,9 @@
-import { trySendMsg2Runtime } from '@/api/sw/common'
 import { getRuntimeId, getUrl } from '@api/chrome/runtime'
+import { trySendMsg2Runtime } from '@api/sw/common'
 import { exitFullscreen, isSameReason } from '../common'
-import { createRootElement, TAG_NAME, type RootElement } from '../element'
 import type { LimitReason, MaskModal } from '../types'
 import { ModalBridge } from './bridge'
+import { createRootElement, TAG_NAME, type RootElement } from './element'
 import type { LimitReasonData } from './types'
 
 const MODAL_URL = getUrl('static/limit.html')
@@ -80,7 +80,7 @@ class ModalInstance implements MaskModal {
         (window as any)['__modal__'] = this
         this.url = url
         this.bridge = new ModalBridge(MSG_ORIGIN, () => this.iframe?.contentWindow ?? undefined)
-            .register('visitTime', async () => this.reason?.getVisitTime?.() ?? 0)
+            .register('visitTime', () => this.reason?.getVisitTime?.() ?? 0)
             .register('delay', () => this.delayHandlers.forEach(handler => handler()))
     }
 
@@ -103,21 +103,20 @@ class ModalInstance implements MaskModal {
     }
 
     removeReasonsByType(...types: timer.limit.ReasonType[]): void {
-        if (!types?.length) return
-        this.reasons = this.reasons?.filter(r => !types?.includes(r.type))
+        if (!types.length) return
+        this.reasons = this.reasons.filter(r => !types.includes(r.type))
         this.refresh()
     }
 
-    addDelayHandler(handler: () => void): void {
-        if (!handler) return
-        if (this.delayHandlers?.includes(handler)) return
-        this.delayHandlers?.push(handler)
+    addDelayHandler(handler: NoArgCallback): void {
+        if (this.delayHandlers.includes(handler)) return
+        this.delayHandlers.push(handler)
     }
 
     private refresh() {
+        // Change reason in new microtask
         setTimeout(() => {
-            // update vue ref in another micro task
-            const reason = this.reasons?.[0]
+            const reason = this.reasons[0]
             reason ? this.show(reason) : this.hide()
         })
     }
@@ -168,20 +167,20 @@ class ModalInstance implements MaskModal {
         this.rootElement && (this.rootElement.style.visibility = 'visible')
         this.setReason(reason)
         this.screenLocker.lock()
-        this.iframe && (this.iframe.style.display = 'block')
+        this.iframe && (this.iframe.style.visibility = 'visible')
     }
 
     private hide() {
         this.rootElement && (this.rootElement.style.visibility = 'hidden')
         this.screenLocker.unlock()
-        this.iframe && (this.iframe.style.display = 'none')
+        this.iframe && (this.iframe.style.visibility = 'hidden')
         this.setReason(undefined)
     }
 
     private setReason(reason: LimitReason | undefined) {
         if (!this.iframe?.contentWindow) return
         this.reason = reason
-        this.bridge.request('reason', extractReason(reason))
+        this.bridge.request('reason', extractReason(reason)).catch(() => { })
     }
 }
 

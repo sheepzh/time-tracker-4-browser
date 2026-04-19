@@ -11,28 +11,19 @@ export function getIconUrl(): string {
     return getUrl('static/images/icon.png')
 }
 
-export function onTabMessage(handler: ChromeTabMessageHandler): void {
-    // Be careful!!!
-    // Can't use await/async in callback parameter
-    chrome.runtime.onMessage.addListener((message: timer.tab.Request<timer.tab.ReqCode>, sender: chrome.runtime.MessageSender, sendResponse: timer.tab.Callback<timer.tab.ReqCode>) => {
-        handler(message, sender).then((response: timer.tab.Response<timer.tab.ReqCode>) => {
-            if (response.code === 'ignore') return
-            sendResponse(response)
-        })
-        // 'return true' will force chrome to wait for the response processed in the above promise.
-        // @see https://github.com/mozilla/webextension-polyfill/issues/130
-        return true
-    })
-}
-
 export function onRuntimeMessage(handler: ChromeMessageHandler): void {
     // Be careful!!!
     // Can't use await/async in callback parameter
     chrome.runtime.onMessage.addListener((message: timer.mq.Request<timer.mq.ReqCode>, sender: chrome.runtime.MessageSender, sendResponse: timer.mq.Callback<timer.mq.ReqCode>) => {
-        handler(message, sender).then((response: timer.mq.Response<timer.mq.ReqCode>) => {
-            if (response.code === 'ignore') return
-            sendResponse(response)
-        })
+        void handler(message, sender)
+            .then((response: timer.mq.Response<timer.mq.ReqCode>) => {
+                sendResponse(response)
+            })
+            .catch((err: unknown) => {
+                const msg = err instanceof Error ? err.message : String(err)
+                console.error('onRuntimeMessage handler error', err)
+                sendResponse({ code: 'fail', msg })
+            })
         // 'return true' will force chrome to wait for the response processed in the above promise.
         // @see https://github.com/mozilla/webextension-polyfill/issues/130
         return true

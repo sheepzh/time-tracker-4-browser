@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { after, compare, getDateString } from "@/util/period"
 import db from "@db/period-database"
+import { after, compare, getDateString } from "@util/period"
 import { merge } from "./components/period-calculator"
 
 function dateStrBetween(startDate: timer.period.Key, endDate: timer.period.Key): string[] {

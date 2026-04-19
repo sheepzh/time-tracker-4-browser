@@ -1,5 +1,5 @@
-import { listAllCategories } from '@/api/sw/cate'
 import { isDarkMode, processDarkMode } from "@/pages/util/dark-mode"
+import { listAllCategories } from '@api/sw/cate'
 import { getOption, setOption } from "@api/sw/option"
 import { useLocalStorage, useProvide, useProvider, useRequest } from "@hooks"
 import { toMap } from "@util/array"

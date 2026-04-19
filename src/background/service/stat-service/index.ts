@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-import cateDatabase from "@/background/database/cate-database"
 import { listAllGroups } from "@api/chrome/tabGroups"
+import cateDatabase from "@db/cate-database"
 import siteDatabase from "@db/site-database"
 import statDatabase, { type StatCondition } from "@db/stat-database"
 import { toMap } from "@util/array"

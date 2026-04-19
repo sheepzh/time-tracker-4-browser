@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { importOther } from '@/api/sw/immigration'
+import { importOther } from '@api/sw/immigration'
 import DialogSop from '@app/components/common/DialogSop'
 import { initDialogSopContext } from '@app/components/common/DialogSop/context'
 import { t } from "@app/locale"

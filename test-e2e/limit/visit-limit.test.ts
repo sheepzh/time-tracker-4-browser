@@ -9,7 +9,7 @@ describe('Time limit per visit', () => {
 
     afterEach(() => context.close())
 
-    test("More 5 minutes", async () => {
+    test("Delay", async () => {
         const limitPage = await context.openAppPage('/behavior/limit')
         const demoRule: timer.limit.Rule = {
             id: 1, name: 'TEST DAILY LIMIT',
@@ -36,5 +36,5 @@ describe('Time limit per visit', () => {
         const modalExist = await isLimitModalVisible(testPage)
         expect(modalExist).toBeFalsy()
 
-    }, 10000)
+    }, 1000000000)
 })

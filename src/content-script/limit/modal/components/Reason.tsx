@@ -37,11 +37,18 @@ const TimeDescriptions = defineComponent({
         dataLabel: String,
     },
     setup(props) {
-        const { reason, url } = useApp()
+        const { reason, url, delayDuration } = useApp()
         const rule = useRule()
         const { style, size } = useDescriptions()
 
-        const timeLimited = computed(() => meetTimeLimit(props.time ?? 0, props.waste ?? 0, !!reason.value?.allowDelay, reason.value?.delayCount ?? 0))
+        const timeLimited = computed(() => meetTimeLimit(
+            { wasted: props.waste ?? 0, maxLimit: (props.time ?? 0) * MILL_PER_SECOND },
+            {
+                count: reason.value?.delayCount ?? 0,
+                duration: delayDuration.value,
+                allow: !!reason.value?.allowDelay,
+            },
+        ))
         const visitLimited = computed(() => meetLimit(props.count ?? 0, props.visit ?? 0))
 
         return () => (

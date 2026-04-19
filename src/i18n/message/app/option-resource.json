@@ -351,7 +351,8 @@
                 "strictContent": "When you select this option, if a site triggers daily limit, you will not be allowed to manually unblock it other than waiting until the next day. If rules are not set up properly, they can very well hinder your routines!",
                 "pswFormLabel": "Password",
                 "pswFormAgain": "Re-enter"
-            }
+            },
+            "delayDuration": "Delay for {input} minutes per time"
         },
         "backup": {
             "title": "Data Backup",

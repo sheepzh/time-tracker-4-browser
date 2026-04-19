@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { addLimit, updateLimits } from '@/api/sw/limit'
+import { addLimit, updateLimits } from '@api/sw/limit'
 import DialogSop from '@app/components/common/DialogSop'
 import { initDialogSopContext } from '@app/components/common/DialogSop/context'
 import { useLimitData } from "@app/components/Limit/context"

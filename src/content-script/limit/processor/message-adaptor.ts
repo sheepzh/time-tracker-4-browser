@@ -1,51 +1,29 @@
-import { trySendMsg2Runtime } from '@/api/sw/common'
+import { trySendMsg2Runtime } from '@api/sw/common'
 import { hasDailyLimited, hasWeeklyLimited, matches } from "@util/limit"
 import type { LimitReason, ModalContext, Processor } from '../types'
 
-const cvtItem2AddReason = (item: timer.limit.Item): LimitReason[] => {
+const cvtItem2AddReason = (item: timer.limit.Item, delayDuration: number): LimitReason[] => {
     const { cond, allowDelay, id, delayCount, weeklyDelayCount } = item
     const reasons2Add: LimitReason[] = []
-    hasDailyLimited(item) && reasons2Add.push({ type: "DAILY", cond, allowDelay, id, delayCount })
-    hasWeeklyLimited(item) && reasons2Add.push({ type: 'WEEKLY', cond, allowDelay, id, delayCount: weeklyDelayCount })
+    hasDailyLimited(item, delayDuration) && reasons2Add.push({ type: "DAILY", cond, allowDelay, id, delayCount })
+    hasWeeklyLimited(item, delayDuration) && reasons2Add.push({ type: 'WEEKLY', cond, allowDelay, id, delayCount: weeklyDelayCount })
     return reasons2Add
 }
 
-const cvtItem2RemoveReason = (item: timer.limit.Item): LimitReason[] => {
-    const { cond, allowDelay, id, delayCount, weeklyDelayCount } = item
-    const reasons2Remove: LimitReason[] = []
-    !hasDailyLimited(item) && reasons2Remove.push({ type: 'DAILY', cond, allowDelay, id, delayCount })
-    !hasWeeklyLimited(item) && reasons2Remove.push({ type: 'WEEKLY', cond, allowDelay, id, delayCount: weeklyDelayCount })
-    return reasons2Remove
-}
-
 class MessageAdaptor implements Processor {
-    private context: ModalContext
+    constructor(private readonly context: ModalContext, private readonly delayDuration: number) { }
 
-    constructor(context: ModalContext) {
-        this.context = context
+    onLimitChanged(items: timer.limit.Item[]): void {
+        this.context.modal.removeReasonsByType("DAILY", "WEEKLY")
+        items.flatMap(item => cvtItem2AddReason(item, this.delayDuration))
+            .forEach(reason => this.context.modal.addReason(reason))
     }
 
-    handleMsg(code: timer.tab.ReqCode, data: unknown): Awaitable<timer.tab.Response<timer.tab.ReqCode>> {
-        let items = data as timer.limit.Item[]
-        if (code === "limitTimeMeet") {
-            if (!items?.length) {
-                return { code: "fail", msg: "No items" }
-            }
-            items.filter(item => matches(item?.cond, this.context.url))
-                .flatMap(cvtItem2AddReason)
-                .forEach(reason => reason && this.context.modal.addReason(reason))
-            return { code: "success" }
-        } else if (code === "limitChanged") {
-            this.context.modal.removeReasonsByType("DAILY", "WEEKLY")
-            items?.flatMap(cvtItem2AddReason)
-                ?.forEach(reason => reason && this.context.modal.addReason(reason))
-            return { code: "success" }
-        } else if (code === "limitWaking") {
-            const reasons2Remove = items?.flatMap(cvtItem2RemoveReason)
-            reasons2Remove?.length && this.context.modal.removeReason(...reasons2Remove)
-            return { code: "success" }
-        }
-        return { code: "ignore" }
+    onLimitTimeMeet(items: timer.limit.Item[]): void {
+        if (!items.length) return
+        items.filter(({ cond }) => matches(cond, this.context.url))
+            .flatMap(item => cvtItem2AddReason(item, this.delayDuration))
+            .forEach(reason => this.context.modal.addReason(reason))
     }
 
     async init(): Promise<void> {
@@ -54,11 +32,11 @@ class MessageAdaptor implements Processor {
     }
 
     async initRules(): Promise<void> {
-        this.context.modal.removeReasonsByType?.('DAILY', 'WEEKLY')
+        this.context.modal.removeReasonsByType('DAILY', 'WEEKLY')
         const limitedRules = await trySendMsg2Runtime('limit.list', { limited: true, url: this.context.url })
         if (!limitedRules?.length) return
 
-        const reasons = limitedRules.flatMap(cvtItem2AddReason)
+        const reasons = limitedRules.flatMap(item => cvtItem2AddReason(item, this.delayDuration))
         this.context.modal.addReason(...reasons)
     }
 }

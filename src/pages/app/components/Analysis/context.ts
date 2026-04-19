@@ -6,9 +6,9 @@
  */
 
 import { type AppAnalysisQuery } from '@/shared/route'
-import { extractHostname } from '@/util/pattern'
 import { listCateStats, listSiteStats } from "@api/sw/stat"
 import { useLocalStorage, useProvide, useProvider, useRequest } from "@hooks"
+import { extractHostname } from '@util/pattern'
 import { ref, watch, type Ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import type { AnalysisTarget } from "./types"

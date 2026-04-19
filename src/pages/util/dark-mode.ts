@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getOption } from '@/api/sw/option'
+import { getOption } from '@api/sw/option'
 
 const THEME_ATTR = "data-theme"
 const DARK_VAL = "dark"

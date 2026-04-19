@@ -110,6 +110,10 @@ declare namespace timer.option {
 
     type LimitOption = {
         /**
+         * Delay duration, minutes
+         */
+        limitDelayDuration: number
+        /**
          * Motto displayed when restricted
          */
         limitPrompt?: string

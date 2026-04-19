@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { checkAuth } from '@/api/sw/backup'
+import { checkAuth } from '@api/sw/backup'
 import { t } from '@app/locale'
 import { UploadFilled } from "@element-plus/icons-vue"
 import { useRequest } from '@hooks'

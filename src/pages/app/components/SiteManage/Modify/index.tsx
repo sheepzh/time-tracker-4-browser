@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { sendMsg2Runtime } from '@/api/sw/common'
+import { sendMsg2Runtime } from '@api/sw/common'
 import CategorySelect from '@app/components/common/Category/Select'
 import { t } from '@app/locale'
 import { Check } from "@element-plus/icons-vue"

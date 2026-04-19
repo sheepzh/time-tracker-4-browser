@@ -7,16 +7,14 @@ import { ElTag } from "element-plus"
 import { computed, defineComponent } from "vue"
 
 type Props = {
-    time?: number
-    waste: number
+    time: Parameters<typeof meetTimeLimit>[0]
+    delay: Parameters<typeof meetTimeLimit>[1]
     count?: number
     visit?: number
-    delayCount?: number
-    allowDelay?: boolean
 }
 
 const Waste = defineComponent<Props>(props => {
-    const timeType = computed(() => meetTimeLimit(props.time, props.waste, props.allowDelay, props.delayCount) ? 'danger' : 'info')
+    const timeType = computed(() => meetTimeLimit(props.time, props.delay) ? 'danger' : 'info')
     const visitType = computed(() => meetLimit(props.count, props.visit) ? 'danger' : 'info')
 
     return () => (
@@ -24,13 +22,13 @@ const Waste = defineComponent<Props>(props => {
             <div>
                 <TooltipWrapper
                     trigger="hover"
-                    usePopover={props.allowDelay && !!props.time}
+                    usePopover={props.delay.allow && !!props.time}
                     placement="top"
                     v-slots={{
-                        content: () => `${t(msg => msg.limit.item.delayCount)}: ${props.delayCount ?? 0}`,
+                        content: () => `${t(msg => msg.limit.item.delayCount)}: ${props.delay.count}`,
                         default: () => (
                             <ElTag size="small" type={timeType.value}>
-                                {formatPeriodCommon(props.waste)}
+                                {formatPeriodCommon(props.time.wasted)}
                             </ElTag>
                         ),
                     }}
@@ -43,6 +41,6 @@ const Waste = defineComponent<Props>(props => {
             </div>
         </Flex>
     )
-}, { props: ['time', 'waste', 'count', 'visit', 'allowDelay', 'delayCount'] })
+}, { props: ['time', 'delay', 'count', 'visit'] })
 
 export default Waste

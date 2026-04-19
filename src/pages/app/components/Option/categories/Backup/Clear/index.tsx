@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { clearBackup, queryBackup } from '@/api/sw/backup'
+import { clearBackup, queryBackup } from '@api/sw/backup'
 import DialogSop from "@app/components/common/DialogSop"
 import { initDialogSopContext } from '@app/components/common/DialogSop/context'
 import { t } from '@app/locale'
