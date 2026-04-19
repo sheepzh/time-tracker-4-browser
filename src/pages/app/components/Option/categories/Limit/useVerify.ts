@@ -8,7 +8,8 @@ export const useVerify = (option: timer.option.LimitOption) => {
     const verify = async (): Promise<void> => {
         if (verified.value) return
         const items = await listLimits()
-        const triggerResults = await Promise.all(items.map(judgeVerificationRequired))
+        const delayDuration = option.limitDelayDuration
+        const triggerResults = await Promise.all(items.map(item => judgeVerificationRequired(item, delayDuration)))
         const anyTrigger = triggerResults.some(t => t)
         if (anyTrigger) await processVerification(option)
         verified.value = true

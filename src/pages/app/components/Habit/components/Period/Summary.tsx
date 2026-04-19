@@ -1,10 +1,10 @@
-import { averageByDay } from "@/util/period"
 import { GRID_CELL_STYLE } from '@app/components/common/grid'
 import { KanbanIndicatorCell } from '@app/components/common/kanban'
 import { t } from '@app/locale'
 import { periodFormatter } from '@app/util/time'
 import { useXsState } from '@hooks'
 import Flex from "@pages/components/Flex"
+import { averageByDay } from "@util/period"
 import { formatTime } from "@util/time"
 import { computed, defineComponent } from "vue"
 import { useHabitFilter } from "../context"

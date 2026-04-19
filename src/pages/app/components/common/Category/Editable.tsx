@@ -1,4 +1,4 @@
-import { changeSitesCate } from '@/api/sw/site'
+import { changeSitesCate } from '@api/sw/site'
 import { useCategory } from "@app/context"
 import { Edit } from "@element-plus/icons-vue"
 import { useManualRequest, useSwitch } from "@hooks"

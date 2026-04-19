@@ -1,29 +1,18 @@
-import { extractHostname } from '@/util/pattern'
-import { onTabMessage } from "@api/chrome/runtime"
 import { trySendMsg2Runtime } from '@api/sw/common'
+import { extractHostname } from '@util/pattern'
+import Dispatcher from '../dispatcher'
 
 class RunTimeTracker {
     private start: number = Date.now()
-    private url: string
     // Real host, including builtin hosts
     private host: string | undefined
 
-    constructor(url: string) {
-        this.url = url
-        this.start = Date.now()
+    constructor(private readonly url: string) {
     }
 
-    init(): void {
+    init(dispatcher: Dispatcher): void {
         this.fetchSite()
-
-        onTabMessage(async req => {
-            if (req.code === 'siteRunChange') {
-                this.fetchSite()
-                return { code: 'success' }
-            }
-            return { code: 'ignore' }
-        })
-
+        dispatcher.register('siteRunChange', () => void this.fetchSite())
         setInterval(() => this.collect(), 1000)
     }
 

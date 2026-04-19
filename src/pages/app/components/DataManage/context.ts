@@ -1,4 +1,4 @@
-import { sendMsg2Runtime } from '@/api/sw/common'
+import { sendMsg2Runtime } from '@api/sw/common'
 import { useProvide, useProvider, useRequest } from '@hooks'
 import { type ShallowRef } from "vue"
 

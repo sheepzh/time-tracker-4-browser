@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { deleteSites } from '@/api/sw/site'
+import { deleteSites } from '@api/sw/site'
 import PopupConfirmButton from '@app/components/common/PopupConfirmButton'
 import { t } from '@app/locale'
 import { Delete } from "@element-plus/icons-vue"

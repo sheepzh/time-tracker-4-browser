@@ -1,18 +1,10 @@
-import {
-    calcTimeState, cleanCond, dateMinute2Idx, hasLimited, hasWeeklyLimited, isEffective,
-    matchCond, matches, meetLimit, meetTimeLimit, period2Str
-} from "@/util/limit"
 import { rstest } from '@rstest/core'
+import {
+    dateMinute2Idx, hasLimited, hasWeeklyLimited, isEffective, matchCond, matches, meetLimit, meetTimeLimit,
+    period2Str,
+} from "@util/limit"
 
 describe('util/limit', () => {
-    test('cleanCond', () => {
-        expect(cleanCond('https://github.com?a=2')).toEqual('github.com')
-        expect(cleanCond('https://github.com/?a=2')).toEqual('github.com')
-        expect(cleanCond('*://github.com/?a=2')).toEqual('github.com')
-        expect(cleanCond('www.github.com/sheepzh/?a=2')).toEqual('www.github.com/sheepzh')
-        expect(cleanCond('https://')).toBeUndefined()
-    })
-
     test('matches', () => {
         const cond = ['www.baidu.com', '*.google.com', 'github.com/sheepzh', '+github.com/sheepzh/time-tracker-4-browser', '+www.bilibili.com/cheese', '*.bilibili.com*']
 
@@ -47,12 +39,14 @@ describe('util/limit', () => {
     })
 
     test('meetTimeLimit', () => {
-        expect(meetTimeLimit(undefined, undefined, undefined, undefined)).toBe(false)
+        const delay5 = { duration: 5, allow: false as boolean, count: 0 }
 
-        expect(meetTimeLimit(1, 1001, undefined, undefined)).toBe(true)
-        expect(meetTimeLimit(1, 1001, true, undefined)).toBe(true)
-        expect(meetTimeLimit(1, 1001, true, 1)).toBe(false)
-        expect(meetTimeLimit(1, (1 + 60 * 5) * 1000 + 1, true, 1)).toBe(true)
+        expect(meetTimeLimit({ wasted: 0, maxLimit: 0 }, { ...delay5, allow: false })).toBe(false)
+
+        expect(meetTimeLimit({ wasted: 1001, maxLimit: 1 }, { ...delay5, allow: false })).toBe(true)
+        expect(meetTimeLimit({ wasted: 1001, maxLimit: 1 }, { duration: 5, allow: true, count: 0 })).toBe(true)
+        expect(meetTimeLimit({ wasted: 1001, maxLimit: 1 }, { duration: 5, allow: true, count: 1 })).toBe(false)
+        expect(meetTimeLimit({ wasted: (1 + 60 * 5) * 1000 + 1, maxLimit: 1 }, { duration: 5, allow: true, count: 1 })).toBe(true)
     })
 
     test('period2Str', () => {
@@ -101,66 +95,19 @@ describe('util/limit', () => {
             locked: false,
         }
 
-        expect(hasWeeklyLimited(item)).toBe(false)
+        expect(hasWeeklyLimited(item, 5)).toBe(false)
 
         item.weekly = 299
-        expect(hasWeeklyLimited(item)).toBe(false)
+        expect(hasWeeklyLimited(item, 5)).toBe(false)
 
         item.weeklyWaste = 299 * 1000 + 1
-        expect(hasWeeklyLimited(item)).toBe(true)
+        expect(hasWeeklyLimited(item, 5)).toBe(true)
 
         item.weeklyDelayCount = 1
-        expect(hasWeeklyLimited(item)).toBe(true)
+        expect(hasWeeklyLimited(item, 5)).toBe(true)
 
         item.allowDelay = true
-        expect(hasWeeklyLimited(item)).toBe(false)
-    })
-
-    test('calcTimeState', () => {
-        const item: timer.limit.Item = {
-            id: 1,
-            name: 'foobar',
-            cond: [],
-            time: 10,
-            weekly: 10,
-            waste: 0,
-            visit: 0,
-            delayCount: 0,
-            weeklyWaste: 0,
-            weeklyVisit: 0,
-            weeklyDelayCount: 0,
-            enabled: true,
-            allowDelay: false,
-            locked: false,
-        }
-        const duration = 1000
-
-        type LimitState = 'NORMAL' | 'REMINDER' | 'LIMITED'
-
-        const assert = (daily: LimitState, weekly: LimitState) => {
-            const res = calcTimeState(item, duration)
-            expect(res?.daily).toBe(daily)
-            expect(res?.weekly).toBe(weekly)
-        }
-
-        item.waste = 9000
-        assert('NORMAL', 'NORMAL')
-
-        item.waste = 9001
-        assert('REMINDER', 'NORMAL')
-
-        item.waste = 10001
-        assert('LIMITED', 'NORMAL')
-
-        item.allowDelay = true
-        item.delayCount = 1
-
-        item.weeklyWaste = 9000
-        assert('NORMAL', 'NORMAL')
-        item.weeklyWaste = 9001
-        assert('NORMAL', 'REMINDER')
-        item.weeklyWaste = 10001
-        assert('NORMAL', 'LIMITED')
+        expect(hasWeeklyLimited(item, 5)).toBe(false)
     })
 
     test('hasLimit', () => {
@@ -182,7 +129,7 @@ describe('util/limit', () => {
                 locked: false,
             }
             setup(item)
-            expect(hasLimited(item)).toBe(limited)
+            expect(hasLimited(item, 5)).toBe(limited)
         }
 
         assert(item => item.waste = 1000, false)

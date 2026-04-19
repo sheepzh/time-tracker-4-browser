@@ -1,4 +1,4 @@
-import { keyOf } from "@/util/period"
+import { keyOf } from "@util/period"
 import { getBirthday, getStartOfDay, MILL_PER_DAY } from "@util/time"
 import alarmManager from "./alarm-manager"
 import { batchDeletePeriods } from "./service/period-service"

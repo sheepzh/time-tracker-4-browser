@@ -1,6 +1,7 @@
 import { listLimits } from "@api/sw/limit"
+import { getOption } from '@api/sw/option'
 import { useDocumentVisibility, useRequest } from '@hooks'
-import { type App, inject, provide, ref, type ShallowRef, watch } from "vue"
+import { type App, inject, provide, ref, type Ref, type ShallowRef, watch } from "vue"
 import { ModalBridge } from './bridge'
 import type { LimitReasonData } from './types'
 
@@ -12,11 +13,14 @@ type AppContext = {
     visitTime: ShallowRef<number>
     bridge: ModalBridge
     url: string
+    delayDuration: Ref<number>
 }
 
 export const provideApp = (app: App<Element>, bridge: ModalBridge, url: string) => {
     const reason = ref<LimitReasonData | undefined>()
     const visitTime = ref(0)
+    const delayDuration = ref(5)
+    getOption().then(({ limitDelayDuration }) => delayDuration.value = limitDelayDuration).catch(() => { })
 
     bridge.register('reason', data => { reason.value = data })
 
@@ -36,7 +40,7 @@ export const provideApp = (app: App<Element>, bridge: ModalBridge, url: string) 
         _unmount()
     }
 
-    app.provide<AppContext>(GLOBAL_KEY, { reason, visitTime, bridge, url })
+    app.provide<AppContext>(GLOBAL_KEY, { reason, visitTime, bridge, url, delayDuration })
 }
 
 export const useApp = () => inject(GLOBAL_KEY) as AppContext

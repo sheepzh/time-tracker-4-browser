@@ -1,5 +1,5 @@
-import { keyOf, MINUTE_PER_PERIOD } from '@/util/period'
 import { calculate, merge } from "@service/components/period-calculator"
+import { keyOf, MINUTE_PER_PERIOD } from '@util/period'
 import { MILL_PER_DAY } from "@util/time"
 
 const PERIOD_PER_DATE = 24 * 60 / MINUTE_PER_PERIOD

@@ -5,11 +5,11 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { sendMsg2Runtime } from '@/api/sw/common'
 import { AUTHOR_EMAIL } from "@/package"
-import { mergeWith } from '@/util/stat'
+import { sendMsg2Runtime } from '@api/sw/common'
 import { IS_WINDOWS } from "@util/constant/environment"
 import { extractHostname, isBrowserUrl } from "@util/pattern"
+import { mergeWith } from '@util/stat'
 import { formatTimeYMD, MILL_PER_SECOND } from "@util/time"
 import type { OtherExtension } from './types'
 

@@ -16,8 +16,7 @@
             "enabled": "启用",
             "locked": "锁定",
             "effectiveDay": "生效日期",
-            "delayAllowed": "可延时",
-            "delayAllowedInfo": "上网时间超过限制时，点击【再看 5 分钟】短暂延时。如果关闭该功能则不能延时。",
+            "allowDelay": "可延时",
             "visits": "次访问",
             "or": "或者",
             "notEffective": "未生效"
@@ -68,8 +67,7 @@
             "enabled": "是否啟用",
             "locked": "已鎖定",
             "effectiveDay": "生效日期",
-            "delayAllowed": "允許延遲",
-            "delayAllowedInfo": "當使用時間超過限制時，可點擊【再看5分鐘】暫時延長。若關閉此功能則無法延時。",
+            "allowDelay": "允許延遲",
             "visits": "次造訪",
             "or": "或",
             "notEffective": "未生效"
@@ -121,8 +119,7 @@
             "enabled": "Enabled",
             "locked": "Locked",
             "effectiveDay": "Effective On",
-            "delayAllowed": "Delayable",
-            "delayAllowedInfo": "If it times out, allow a temporary delay of 5 minutes",
+            "allowDelay": "Allow Delay",
             "visits": "visits",
             "or": "or",
             "notEffective": "Not effective"
@@ -172,8 +169,6 @@
             "period": "許可されない期間",
             "enabled": "有效",
             "effectiveDay": "発効日",
-            "delayAllowed": "さらに5分間閲覧する",
-            "delayAllowedInfo": "時間が経過した場合は、一時的に5分遅らせることができます",
             "visits": "訪問数",
             "or": "や",
             "notEffective": "効果がない"
@@ -223,8 +218,7 @@
             "enabled": "Ativo",
             "locked": "Bloqueado",
             "effectiveDay": "Dias de aplicação",
-            "delayAllowed": "Permitir atraso",
-            "delayAllowedInfo": "Se expirar, permite um atraso temporário de 5 minutos",
+            "allowDelay": "Permitir atraso",
             "visits": "visitas",
             "or": "ou",
             "notEffective": "Não aplicável"
@@ -275,8 +269,6 @@
             "enabled": "Увімкнено",
             "locked": "Заблоковано",
             "effectiveDay": "Діє",
-            "delayAllowed": "Ще 5 хвилин",
-            "delayAllowedInfo": "Якщо час вичерпано, дозволити тимчасову затримку 5 хвилин",
             "visits": "відвідування",
             "or": "або",
             "notEffective": "Не застосовується"
@@ -327,8 +319,6 @@
             "enabled": "Habilitado",
             "locked": "Bloqueado",
             "effectiveDay": "En vigor él",
-            "delayAllowed": "Más de 5 minutos",
-            "delayAllowedInfo": "Si se pausa, permite un retraso temporal de 5 minutos",
             "visits": "visitas",
             "or": "o",
             "notEffective": "No efectivo"
@@ -379,8 +369,6 @@
             "enabled": "Aktiviert",
             "locked": "Gesperrt",
             "effectiveDay": "Wirksam auf",
-            "delayAllowed": "Weitere 5 Minuten",
-            "delayAllowedInfo": "Wenn es zu einer Zeitüberschreitung kommt, erlauben Sie eine vorübergehende Verzögerung von 5 Minuten",
             "visits": "Besuche",
             "or": "oder",
             "notEffective": "Nicht wirksam"
@@ -432,8 +420,7 @@
             "enabled": "Activé",
             "locked": "Verrouillé",
             "effectiveDay": "Effectif le",
-            "delayAllowed": "Retardable",
-            "delayAllowedInfo": "Si le délai est écoulé, autorisez un délai temporaire de 5 minutes",
+            "allowDelay": "Retardable",
             "visits": "visites",
             "or": "ou",
             "notEffective": "Non efficace"
@@ -485,8 +472,6 @@
             "enabled": "Включено",
             "locked": "Заблокировано",
             "effectiveDay": "Эффективный",
-            "delayAllowed": "Еще 5 минут",
-            "delayAllowedInfo": "Если время истекло, разрешите временную задержку 5 минут",
             "visits": "посещения",
             "or": "или",
             "notEffective": "Не активировано"
@@ -537,8 +522,6 @@
             "enabled": "مُمَكَّن",
             "locked": "مقفل",
             "effectiveDay": "ساري المفعول على",
-            "delayAllowed": "5 دقائق إضافية",
-            "delayAllowedInfo": "إذا انتهت المهلة، اسمح بتأخير مؤقت لمدة 5 دقائق",
             "visits": "الزيارات",
             "or": "أو",
             "notEffective": "غير فعال"
@@ -590,8 +573,7 @@
             "enabled": "Etkinleştirildi",
             "locked": "Kilitli",
             "effectiveDay": "Geçerli Olduğu Gün(ler)",
-            "delayAllowed": "Ertelenebilir",
-            "delayAllowedInfo": "Zaman aşımı olursa, 5 dakikalık geçici bir gecikmeye izin verin",
+            "allowDelay": "Ertelenebilir",
             "visits": "ziyaretler",
             "or": "yada",
             "notEffective": "Geçerli değil"
@@ -643,8 +625,7 @@
             "enabled": "Aktywne",
             "locked": "Zablokowany",
             "effectiveDay": "Aktywna w",
-            "delayAllowed": "Możliwe do przedłużenia",
-            "delayAllowedInfo": "Jeżeli limit zostanie osiągnięty, pozwól na przedłużenie go o 5 minut",
+            "allowDelay": "Możliwe do przedłużenia",
             "visits": "wizyt",
             "or": "lub",
             "notEffective": "Nieskuteczny"
@@ -695,8 +676,7 @@
             "enabled": "Attivata",
             "locked": "Bloccato",
             "effectiveDay": "Effettivo On",
-            "delayAllowed": "Ritardabile",
-            "delayAllowedInfo": "Se va in timeout, aspetta 5 minuti prima di riprovare",
+            "allowDelay": "Ritardabile",
             "visits": "visite",
             "or": "o",
             "notEffective": "Non valido"

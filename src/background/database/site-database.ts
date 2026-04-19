@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { toMap } from '@/util/array'
+import { toMap } from '@util/array'
 import { CATE_NOT_SET_ID } from "@util/site"
 import BaseDatabase from "./common/base-database"
 import { REMAIN_WORD_PREFIX } from "./common/constant"

@@ -4,8 +4,8 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { previewBackup } from '@/api/sw/backup'
-import { importOther } from '@/api/sw/immigration'
+import { previewBackup } from '@api/sw/backup'
+import { importOther } from '@api/sw/immigration'
 import DialogSop from '@app/components/common/DialogSop'
 import { initDialogSopContext } from '@app/components/common/DialogSop/context'
 import { t } from "@app/locale"

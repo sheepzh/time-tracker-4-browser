@@ -50,6 +50,7 @@ export class ModalBridge {
 
     request<C extends BridgeCode>(code: C, req: BridgeRequest<C>): Promise<BridgeResponse<C>> {
         const requestId = `${code}-${Date.now()}-${Math.random().toString(12).slice(2)}`
+        if (!this.peer()) return Promise.reject("Peer window is not available")
         return new Promise<BridgeResponse<C>>((resolve, reject) => {
             const t = window.setTimeout(() => {
                 this.pendingCache.delete(requestId)
@@ -66,7 +67,11 @@ export class ModalBridge {
     }
 
     private send<C extends BridgeCode>(payload: RpcRequest<C> | RpcResponse<C>): void {
-        this.peer()?.postMessage(payload, this.origin)
+        try {
+            this.peer()?.postMessage(payload, this.origin)
+        } catch {
+            // ignored
+        }
     }
 
     private async onMessage(ev: MessageEvent) {
@@ -75,10 +80,7 @@ export class ModalBridge {
         if (isRpcRequest(payload)) {
             const { code, data: reqData, requestId } = payload
             const handler = this.handlers.get(code)
-            if (!handler) {
-                // todo return error
-                return
-            }
+            if (!handler) return
             const data = await handler(reqData)
             this.send({ kind: 'response', requestId, code, data })
         } else if (isRpcResponse(payload)) {

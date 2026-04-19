@@ -1,8 +1,8 @@
 import { useOption } from '@app/components/Option/useOption'
-import { defaultNotification } from '@util/constant/option'
+import { DEFAULT_NOTIFICATION } from '@util/constant/option'
 import { computed } from 'vue'
 
-function copy(target: timer.option.NotificationOption, source: timer.option.NotificationOption) {
+function copy(target: timer.option.NotificationOption, source: Readonly<timer.option.NotificationOption>) {
     target.notificationCycle = source.notificationCycle
     target.notificationOffset = source.notificationOffset
     target.notificationMethod = source.notificationMethod
@@ -13,7 +13,7 @@ function copy(target: timer.option.NotificationOption, source: timer.option.Noti
 const MIN_PER_DAY = 24 * 60
 
 export const useNotification = () => {
-    const { option } = useOption<timer.option.NotificationOption>({ defaultValue: defaultNotification, copy })
+    const { option } = useOption<timer.option.NotificationOption>({ defaultValue: DEFAULT_NOTIFICATION, copy })
 
     const weekday = computed<number | null>({
         get() {
@@ -55,7 +55,7 @@ export const useNotification = () => {
     })
 
     const reset = () => {
-        option.notificationCycle = defaultNotification().notificationCycle
+        option.notificationCycle = DEFAULT_NOTIFICATION.notificationCycle
         // other fields needn't be reset
     }
 

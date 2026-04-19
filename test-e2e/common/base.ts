@@ -9,11 +9,10 @@ type HostProxy = {
     target: string
 }
 
-async function setupBgProxies(target: Target, proxies: HostProxy[]): Promise<CDPSession | undefined> {
-    if (target.type() !== 'service_worker') return
+async function setupBgProxies(serviceWorker: Target, proxies: HostProxy[]): Promise<CDPSession | undefined> {
     let session: CDPSession | undefined
     try {
-        session = await target.createCDPSession()
+        session = await serviceWorker.createCDPSession()
         await session.send('Fetch.enable', {
             patterns: proxies.map(p => ({ urlPattern: `*://${p.host}/*`, requestStage: 'Request' as const })),
         })
@@ -36,9 +35,7 @@ async function setupBgProxies(target: Target, proxies: HostProxy[]): Promise<CDP
             url.port = targetUrl.port
             await session.send('Fetch.continueRequest', { requestId, url: String(url) })
         } catch {
-            try {
-                await session.send('Fetch.continueRequest', { requestId })
-            } catch { /* ignore */ }
+            await session.send('Fetch.continueRequest', { requestId })
         }
     })
     return session
@@ -58,29 +55,14 @@ export interface LaunchContext {
 }
 
 class LaunchContextWrapper implements LaunchContext {
-    private readonly cdpSessions: CDPSession[] = []
-    private onTargetCreated?: (target: Target) => void
 
-    constructor(readonly browser: Browser, readonly extensionId: string) { }
-
-    async applyBgProxies(proxies: HostProxy[]): Promise<void> {
-        for (const target of this.browser.targets()) {
-            const s = await setupBgProxies(target, proxies)
-            if (s) this.cdpSessions.push(s)
-        }
-        this.onTargetCreated = (target: Target) => {
-            setupBgProxies(target, proxies)
-                .then(s => { if (s) this.cdpSessions.push(s) })
-                .catch(() => { /* ignore */ })
-        }
-        this.browser.on('targetcreated', this.onTargetCreated)
-    }
+    constructor(
+        readonly browser: Browser, readonly extensionId: string,
+        private cdpSession: CDPSession | undefined
+    ) { }
 
     async close(): Promise<void> {
-        if (this.onTargetCreated) {
-            this.browser.off('targetcreated', this.onTargetCreated)
-        }
-        for (const s of this.cdpSessions) await s.detach().catch(() => { })
+        this.cdpSession?.detach().catch(() => { })
         await this.browser.close()
     }
 
@@ -131,16 +113,13 @@ export async function launchBrowser(options?: BrowserOptions): Promise<LaunchCon
         enableExtensions: true,
         args,
     })
-    const serviceWorker = await browser.waitForTarget(target => target.type() === 'service_worker')
-    const url = serviceWorker.url()
-    let extensionId: string | undefined = url.split('/')[2]
-    if (!extensionId) {
-        throw new Error('Failed to detect extension id')
-    }
+    const sw = await browser.waitForTarget(target => target.type() === 'service_worker')
+    const url = sw.url()
+    let extensionId = url.split('/')[2]
+    if (!extensionId) throw new Error('Failed to detect extension id')
 
-    const context = new LaunchContextWrapper(browser, extensionId)
-
-    if (bgProxies?.length) await context.applyBgProxies(bgProxies)
+    const cdpSession = bgProxies?.length ? await setupBgProxies(sw, bgProxies) : undefined
+    const context = new LaunchContextWrapper(browser, extensionId, cdpSession)
 
     // remove whitelist added by service_worker
     await removeAllWhitelist(context)

@@ -13,7 +13,7 @@ import { injectGlobalCss } from './style'
 async function main() {
     initDarkTheme()
     injectGlobalCss()
-    await initLocale()
+    initLocale()
     const app = await createElApp(Main)
 
     const el = document.createElement('div')

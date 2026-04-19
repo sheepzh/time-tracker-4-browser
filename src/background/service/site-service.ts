@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { ALL_HOSTS as ALL_FILE_HOSTS, MERGED_HOST as MERGED_FILE_HOST } from '@/util/constant/remain-host'
 import { listTabs, sendMsg2Tab } from "@api/chrome/tab"
 import siteDatabase from "@db/site-database"
+import { ALL_HOSTS as ALL_FILE_HOSTS, MERGED_HOST as MERGED_FILE_HOST } from '@util/constant/remain-host'
 import { extractHostname, isValidVirtualHost, judgeVirtualFast } from "@util/pattern"
 import { SiteMap, supportCategory } from "@util/site"
 import { toUnicode as punyCode2Unicode } from "punycode"
