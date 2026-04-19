@@ -1,9 +1,8 @@
 import { listTabs } from '@api/chrome/tab'
+import { listSites } from '@api/sw/site'
 import { t } from '@app/locale'
 import { useDebounceState, useRequest } from '@hooks'
 import Flex from '@pages/components/Flex'
-import { selectAllSites } from '@service/site-service'
-import { cleanCond } from '@util/limit'
 import { extractHostname, isBrowserUrl } from '@util/pattern'
 import { ElMessage, ElSelectV2, ElText, useNamespace, type SelectV2Instance } from 'element-plus'
 import { computed, defineComponent, onMounted, ref, type StyleValue } from 'vue'
@@ -22,13 +21,25 @@ const fetchAllHosts = async () => {
             hostSet.add(host)
         }
     })
-    const sites = await selectAllSites({ types: ['normal', 'virtual'] })
+    const sites = await listSites({ types: ['normal', 'virtual'] })
     sites.forEach(({ host }) => hostSet.add(host))
     return Array.from(hostSet)
 }
 
+const cleanCond = (origin: string | undefined): string | undefined => {
+    if (!origin) return undefined
+
+    const startIdx = origin?.indexOf('//')
+    const endIdx = origin?.indexOf('?')
+    let res = origin.substring(startIdx === -1 ? 0 : startIdx + 2, endIdx === -1 ? undefined : endIdx)
+    while (res.endsWith('/')) {
+        res = res.substring(0, res.length - 1)
+    }
+    return res || undefined
+}
+
 const useUrlSelect = ({ onAdd }: Props) => {
-    const { data: allHosts } = useRequest(fetchAllHosts)
+    const { data: allHosts } = useRequest(fetchAllHosts, { defaultValue: [] })
     const [input, onFilter] = useDebounceState('', 50)
     const inputUrl = computed(() => {
         const clean = cleanCond(input.value)
@@ -43,9 +54,9 @@ const useUrlSelect = ({ onAdd }: Props) => {
         if (full) {
             result.push(full)
             domain && result.push(domain)
-            allHosts.value?.forEach(host => host.includes(full) && host !== full && host !== domain && result.push(host))
+            allHosts.value.forEach(host => host.includes(full) && host !== full && host !== domain && result.push(host))
         } else {
-            allHosts.value?.forEach(h => result.push(h))
+            allHosts.value.forEach(h => result.push(h))
         }
         return result.map(value => ({ value, label: value }))
     })

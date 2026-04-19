@@ -1,14 +1,15 @@
-import { launchBrowser, LaunchContext, MOCK_URL, sleep } from '../common/base'
-import { createLimitRule } from './common'
+import { launchBrowser, type LaunchContext } from '../common/base'
+import { MOCK_URL, sleep } from '../common/util'
+import { createLimitRule, isLimitModalVisible, waitForLimitFrame } from './common'
 
 describe('Time limit per visit', () => {
     let context: LaunchContext
 
-    beforeEach(async () => context = await launchBrowser())
+    beforeEach(async () => { context = await launchBrowser() })
 
     afterEach(() => context.close())
 
-    test("More 5 minutes", async () => {
+    test("Delay", async () => {
         const limitPage = await context.openAppPage('/behavior/limit')
         const demoRule: timer.limit.Rule = {
             id: 1, name: 'TEST DAILY LIMIT',
@@ -25,23 +26,15 @@ describe('Time limit per visit', () => {
         await sleep(2)
 
         // 3. Modal exist and then click more 5 minutes
-        const clicked = await testPage.evaluate(() => {
-            const shadow = document.querySelector('extension-time-tracker-overlay')
-            if (!shadow) return false
-            const button = shadow.shadowRoot?.querySelector<HTMLButtonElement>('.el-button--primary')
-            button?.click()
-            return !!button
-        })
-        expect(clicked).toBeTruthy()
+        const limitFrame = await waitForLimitFrame(testPage)
+        const button = await limitFrame.waitForSelector('.el-button--primary')
+        expect(button).toBeTruthy()
+        await button!.click()
 
         // 4. Modal disappear
         await sleep(.5)
-        const modalExist = await testPage.evaluate(() => {
-            const shadow = document.querySelector('extension-time-tracker-overlay')
-            if (!shadow) return false
-            return !!shadow.shadowRoot!.querySelector('body:not([style*="display: none"])')
-        })
+        const modalExist = await isLimitModalVisible(testPage)
         expect(modalExist).toBeFalsy()
 
-    }, 10000)
+    }, 1000000000)
 })

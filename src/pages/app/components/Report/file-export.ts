@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { type I18nKey, t } from "@app/locale"
-import { periodFormatter } from "@app/util/time"
+import { type I18nKey, t } from '@app/locale'
+import { periodFormatter } from '@app/util/time'
 import {
     exportCsv as exportCsv_,
     exportJson as exportJson_,
@@ -30,7 +30,8 @@ type ExportInfo = {
  * Compute the name of downloaded file
  */
 function computeFileName(filterParam: ReportFilterOption): string {
-    const { dateRange: [ds, de], siteMerge, mergeDate, timeFormat } = filterParam
+    const { dateRange, siteMerge, mergeDate, timeFormat } = filterParam
+    const [ds, de] = dateRange instanceof Date ? [dateRange,] : dateRange ?? []
     const parts = [
         t(msg => msg.report.exportFileName),
         ds && formatTimeYMD(ds),

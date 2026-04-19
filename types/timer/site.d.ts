@@ -29,4 +29,24 @@ declare namespace timer.site {
         id: number
         name: string
     }
+
+    type Query = {
+        fuzzyQuery?: string
+        cateIds?: Arrayable<number>
+        types?: Arrayable<timer.site.Type>
+    }
+
+    type PageQuery = Query & common.PageQuery
+
+    type ChangeCateParam = {
+        // Undefined means uncategorized
+        cateId: number | undefined
+        keys: SiteKey[]
+    }
+
+    type ChangeAliasParam = {
+        key: SiteKey
+        // Undefined means delete alias
+        alias: string | undefined
+    }
 }

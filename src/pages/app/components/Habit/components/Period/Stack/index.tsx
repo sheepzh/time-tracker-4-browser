@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { useEcharts } from "@hooks/useEcharts"
+import { useEcharts } from "@hooks"
 import { computed, defineComponent, type StyleValue } from "vue"
 import { useHabitFilter } from "../../context"
 import { usePeriodValue } from "../context"

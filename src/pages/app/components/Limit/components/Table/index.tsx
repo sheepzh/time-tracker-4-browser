@@ -4,20 +4,20 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import { getWeekStartDay } from "@api/sw/option"
 import ColumnHeader from "@app/components/common/ColumnHeader"
-import { t } from "@app/locale"
-import { useLocalStorage, useRequest, useState } from "@hooks"
-import weekHelper from "@service/components/week-helper"
+import { useDelayDuration, useLimitData } from "@app/components/Limit/context"
+import type { LimitInstance } from '@app/components/Limit/types'
+import { t } from '@app/locale'
+import { useLocalStorage, useRequest, useState } from '@hooks'
 import { isEffective } from "@util/limit"
+import { MILL_PER_SECOND } from "@util/time"
 import { ElSwitch, ElTable, ElTableColumn, ElTag, type RenderRowData, type Sort, type TableInstance } from "element-plus"
 import { defineComponent, ref, watch } from "vue"
-import { useLimitData, type LimitInstance } from "../../context"
 import LimitOperationColumn from "./OperationColumn"
 import Rule from "./Rule"
 import Waste from "./Waste"
 import Weekday from "./Weekday"
-
-export type LimitSortProp = keyof Pick<timer.limit.Item, 'name' | 'weekdays' | 'waste' | 'weeklyWaste'>
 
 const DEFAULT_SORT_COL = 'waste'
 
@@ -29,12 +29,13 @@ const sortByEffectiveDays = ({ weekdays: a }: timer.limit.Item, { weekdays: b }:
 
 const _default = defineComponent((_, ctx) => {
     const { data: weekStartName } = useRequest(async () => {
-        const offset = await weekHelper.getRealWeekStart()
+        const offset = await getWeekStartDay()
         const name = t(msg => msg.calendar.weekDays)?.split('|')?.[offset]
         return name || 'NaN'
     })
 
     const { list, changeEnabled, changeDelay, changeLocked } = useLimitData()
+    const delayDuration = useDelayDuration()
 
     const [cachedSort, setCachedSort] = useLocalStorage<Sort>(
         '__limit_sort_default__', { prop: DEFAULT_SORT_COL, order: 'descending' }
@@ -103,12 +104,10 @@ const _default = defineComponent((_, ctx) => {
             >
                 {({ row }: RenderRowData<timer.limit.Item>) => isEffective(row.weekdays) ? (
                     <Waste
-                        waste={row.waste}
-                        time={row.time}
-                        count={row.count}
-                        visit={row.visit}
-                        allowDelay={row.allowDelay}
-                        delayCount={row.delayCount}
+                        time={{ wasted: row.waste, maxLimit: (row.time ?? 0) * MILL_PER_SECOND }}
+                        delay={{ count: row.delayCount, duration: delayDuration.value, allow: !!row.allowDelay }}
+                        count={row.count ?? 0}
+                        visit={row.visit ?? 0}
                     />
                 ) : (
                     <ElTag type="info" size="small">
@@ -135,12 +134,10 @@ const _default = defineComponent((_, ctx) => {
                         weeklyDelayCount, allowDelay,
                     } }: RenderRowData<timer.limit.Item>) => (
                         <Waste
-                            time={weekly}
-                            waste={weeklyWaste}
-                            count={weeklyCount}
-                            visit={weeklyVisit}
-                            allowDelay={allowDelay}
-                            delayCount={weeklyDelayCount}
+                            time={{ wasted: weeklyWaste, maxLimit: (weekly ?? 0) * MILL_PER_SECOND }}
+                            delay={{ count: weeklyDelayCount, duration: delayDuration.value, allow: !!allowDelay }}
+                            count={weeklyCount ?? 0}
+                            visit={weeklyVisit ?? 0}
                         />
                     ),
                 }}
@@ -157,7 +154,7 @@ const _default = defineComponent((_, ctx) => {
                     )}
                 </ElTableColumn>
                 <ElTableColumn
-                    label={t(msg => msg.limit.item.delayAllowed)}
+                    label={t(msg => msg.limit.item.allowDelay)}
                     minWidth={80}
                     align="center"
                     fixed="right"

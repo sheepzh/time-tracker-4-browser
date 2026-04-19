@@ -2,7 +2,7 @@ import { t } from '@app/locale'
 import { useManualRequest, useProvide, useProvider } from "@hooks"
 import { mergeObject } from '@util/lang'
 import { ElMessage } from "element-plus"
-import { computed, nextTick, Reactive, reactive, ref, ShallowRef, type Ref } from "vue"
+import { computed, nextTick, reactive, ref, ShallowRef, type Reactive, type Ref } from "vue"
 
 type DialogSopContext<TForm extends Record<string, unknown>> = {
     visible: ShallowRef<boolean>
@@ -24,7 +24,7 @@ type TransmitParam<TForm extends Record<string, unknown>> = {
     target: number
 }
 
-export type DialogSopInitOptions<TForm extends Record<string, unknown>> = {
+type DialogSopInitOptions<TForm extends Record<string, unknown>> = {
     stepCount: number
     init: () => TForm
     onNext?: (p: TransmitParam<TForm>) => Awaitable<void>

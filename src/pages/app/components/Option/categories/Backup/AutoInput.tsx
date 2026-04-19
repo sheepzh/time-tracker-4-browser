@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { t, tN } from "@app/locale"
+import { t, tN } from '@app/locale'
 import { locale } from "@i18n"
 import localeMessages from "@i18n/message/common/locale"
 import { ElInputNumber, ElSwitch } from "element-plus"

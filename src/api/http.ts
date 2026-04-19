@@ -1,10 +1,5 @@
 type Option = Omit<RequestInit, "method" | "body">
 
-export type FetchResult<T> = {
-    data?: T
-    statusCode: number
-}
-
 export async function fetchGetWithTry(url: string, maxTry: number, option?: Option): Promise<Response> {
     let count = 0
     do {

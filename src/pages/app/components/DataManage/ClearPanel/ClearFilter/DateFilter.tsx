@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 import { t, tN } from "@app/locale"
+import { getDatePickerIconSlots } from '@pages/element-ui/rtl'
+import type { ElDatePickerShortcut } from '@pages/element-ui/types'
 import { dateFormat as elDateFormat } from "@i18n/element"
-import { getDatePickerIconSlots } from "@pages/element-ui/rtl"
-import type { ElDatePickerShortcut } from '@pages/types'
 import { formatTime, getBirthday, MILL_PER_DAY } from "@util/time"
 import { ElDatePicker } from "element-plus"
 import { defineComponent, type PropType, type StyleValue } from "vue"

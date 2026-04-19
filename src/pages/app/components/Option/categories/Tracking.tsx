@@ -5,14 +5,14 @@
  * https://opensource.org/licenses/MIT
  */
 import { hasPerm, requestPerm } from "@api/chrome/permission"
-import { isAllowedFileSchemeAccess, sendMsg2Runtime } from "@api/chrome/runtime"
-import { t } from "@app/locale"
-import { useManualRequest, useRequest } from "@hooks"
+import { isAllowedFileSchemeAccess } from "@api/chrome/runtime"
+import { sendMsg2Runtime } from '@api/sw/common'
+import { t } from '@app/locale'
+import { useManualRequest, useRequest } from '@hooks'
 import { locale } from "@i18n"
-import immigration from '@service/components/immigration'
 import { rotate } from "@util/array"
 import { IS_ANDROID, IS_FIREFOX } from "@util/constant/environment"
-import { defaultTracking } from "@util/constant/option"
+import { DEFAULT_TRACKING } from "@util/constant/option"
 import { MILL_PER_SECOND } from "@util/time"
 import { ElMessage, ElMessageBox, ElSelect, ElSwitch, ElTimePicker, ElTooltip } from "element-plus"
 import { computed, defineComponent } from "vue"
@@ -25,8 +25,6 @@ const ALL_STORAGES: Record<timer.option.StorageType, string> = {
     indexed_db: 'IndexedDB',
 }
 
-const DEFAULT_VALUE = defaultTracking()
-
 const weekStartOptionPairs: [[timer.option.WeekStartOption, string]] = [
     ['default', t(msg => msg.option.tracking.weekStartAsNormal)]
 ]
@@ -36,7 +34,7 @@ const allWeekDays = t(msg => msg.calendar.weekDays)
 rotate(allWeekDays, locale === 'zh_CN' ? 0 : 1, true)
 allWeekDays.forEach(weekDayInfo => weekStartOptionPairs.push(weekDayInfo))
 
-function copy(target: timer.option.TrackingOption, source: timer.option.TrackingOption) {
+function copy(target: timer.option.TrackingOption, source: Readonly<timer.option.TrackingOption>) {
     target.countLocalFiles = source.countLocalFiles
     target.countTabGroup = source.countTabGroup
     target.weekStart = source.weekStart
@@ -46,7 +44,7 @@ function copy(target: timer.option.TrackingOption, source: timer.option.Tracking
 }
 
 const _default = defineComponent((_props, ctx) => {
-    const { option } = useOption({ defaultValue: defaultTracking, copy })
+    const { option } = useOption<timer.option.TrackingOption>({ defaultValue: DEFAULT_TRACKING, copy })
     const { data: fileAccess } = useRequest(isAllowedFileSchemeAccess)
     const reset = () => {
         // Not to reset these fields
@@ -54,16 +52,19 @@ const _default = defineComponent((_props, ctx) => {
             autoPauseInterval: oldInterval,
             storage: oldStorage,
         } = option
-        copy(option, defaultTracking())
+        copy(option, DEFAULT_TRACKING)
         option.autoPauseInterval = oldInterval
         option.storage = oldStorage
     }
     ctx.expose({ reset } satisfies CategoryInstance)
 
-    const { refresh: changeStorageType, loading: storageMigrating } = useManualRequest(async (type: timer.option.StorageType) => {
-        await immigration.migrateStorage(type)
-        option.storage = type
-    }, { loadingText: 'Data migrating...' })
+    const { refresh: changeStorageType, loading: storageMigrating } = useManualRequest(
+        type => sendMsg2Runtime('option.changeStorage', type),
+        {
+            loadingText: 'Data migrating...',
+            onSuccess: (_, type) => option.storage = type,
+        }
+    )
 
     const handleChangeStorage = (type: timer.option.StorageType) => {
         const msg = t(msg => msg.option.tracking.storageConfirm, { type: ALL_STORAGES[type] })
@@ -109,14 +110,13 @@ const _default = defineComponent((_props, ctx) => {
             }
         }
         option.countTabGroup = val
-        val && sendMsg2Runtime("enableTabGroup")
     }
 
     return () => <OptionLines>
         {!IS_ANDROID && <>
             <OptionItem
                 label={msg => msg.option.tracking.autoPauseTrack}
-                defaultValue={DEFAULT_VALUE.autoPauseTracking}
+                defaultValue={DEFAULT_TRACKING.autoPauseTracking}
                 v-slots={{
                     info: () => <OptionTooltip>{t(msg => msg.option.tracking.noActivityInfo)}</OptionTooltip>,
                     maxTime: () => <ElTimePicker
@@ -136,7 +136,7 @@ const _default = defineComponent((_props, ctx) => {
             />
             <OptionItem
                 label={msg => msg.option.tracking.countLocalFiles}
-                defaultValue={DEFAULT_VALUE.countLocalFiles}
+                defaultValue={DEFAULT_TRACKING.countLocalFiles}
                 v-slots={{
                     info: () => <OptionTooltip>{t(msg => msg.option.tracking.localFilesInfo)}</OptionTooltip>,
                     localFileTime: () => <OptionTag>{t(msg => msg.option.tracking.localFileTime)}</OptionTag>,

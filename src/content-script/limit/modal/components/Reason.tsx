@@ -1,12 +1,11 @@
 import { t } from "@cs/locale"
-import { useXsState } from '@hooks/index'
-import { useRequest } from "@hooks/useRequest"
+import { useXsState } from '@hooks'
 import Flex from "@pages/components/Flex"
 import { matchCond, meetLimit, meetTimeLimit, period2Str } from "@util/limit"
 import { formatPeriodCommon, MILL_PER_SECOND } from "@util/time"
 import { ElDescriptions, ElDescriptionsItem, ElTag } from 'element-plus'
 import { computed, defineComponent, type StyleValue } from "vue"
-import { useGlobalParam, useReason, useRule } from "../context"
+import { useApp, useRule } from '../context'
 
 const useDescriptions = () => {
     const isXs = useXsState()
@@ -17,7 +16,7 @@ const useDescriptions = () => {
     return { style, size }
 }
 
-const renderBaseItems = (rule: timer.limit.Rule | null, url: string) => <>
+const renderBaseItems = (rule: timer.limit.Rule | undefined, url: string) => <>
     <ElDescriptionsItem label={t(msg => msg.limit.item.name)} labelAlign="right">
         {rule?.name ?? '-'}
     </ElDescriptionsItem>
@@ -38,12 +37,18 @@ const TimeDescriptions = defineComponent({
         dataLabel: String,
     },
     setup(props) {
+        const { reason, url, delayDuration } = useApp()
         const rule = useRule()
-        const reason = useReason()
-        const { url } = useGlobalParam()
         const { style, size } = useDescriptions()
 
-        const timeLimited = computed(() => meetTimeLimit(props.time ?? 0, props.waste ?? 0, !!reason.value?.allowDelay, reason.value?.delayCount ?? 0))
+        const timeLimited = computed(() => meetTimeLimit(
+            { wasted: props.waste ?? 0, maxLimit: (props.time ?? 0) * MILL_PER_SECOND },
+            {
+                count: reason.value?.delayCount ?? 0,
+                duration: delayDuration.value,
+                allow: !!reason.value?.allowDelay,
+            },
+        ))
         const visitLimited = computed(() => meetLimit(props.count ?? 0, props.visit ?? 0))
 
         return () => (
@@ -84,18 +89,9 @@ const TimeDescriptions = defineComponent({
 })
 
 const _default = defineComponent(() => {
-    const reason = useReason()
-    const rule = useRule()
-    const { url } = useGlobalParam()
+    const { reason, visitTime, url } = useApp()
     const type = computed(() => reason.value?.type)
-
-    const { data: browsingTime, refresh: refreshBrowsingTime } = useRequest(() => {
-        const { getVisitTime, type } = reason.value || {}
-        if (type !== 'VISIT') return
-        return getVisitTime?.() || 0
-    })
-
-    setInterval(refreshBrowsingTime, 1000)
+    const rule = useRule()
 
     const { style, size } = useDescriptions()
 
@@ -125,7 +121,7 @@ const _default = defineComponent(() => {
                     {formatPeriodCommon((rule.value?.visitTime ?? 0) * MILL_PER_SECOND) || '-'}
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.modal.browsingTime)} labelAlign="right">
-                    {browsingTime.value ? formatPeriodCommon(browsingTime.value) : '-'}
+                    {visitTime.value ? formatPeriodCommon(visitTime.value) : '-'}
                 </ElDescriptionsItem>
                 <ElDescriptionsItem
                     v-show={!!reason.value?.allowDelay || !!reason.value?.delayCount}

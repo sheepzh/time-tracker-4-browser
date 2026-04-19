@@ -5,14 +5,13 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { processDarkMode } from '@/pages/util/dark-mode'
+import { getOption } from "@api/sw/option"
+import { initEcharts } from "@app/echarts"
 import { initLocale } from "@i18n"
-import { increasePopup } from "@service/meta-service"
-import optionService from "@service/option-service"
-import { toggle } from "@util/dark-mode"
-import "element-plus/theme-chalk/index.css"
+import type { FrameRequest, FrameResponse } from "@popup/types"
 import { createApp } from "vue"
 import Main from "./Main"
-import { type FrameRequest, type FrameResponse } from "./message"
 import initRouter from "./router"
 import { injectGlobalCss } from "./style"
 
@@ -36,11 +35,11 @@ function send2ParentWindow(data: any): Promise<void> {
 }
 
 async function main() {
-    await initLocale()
+    initLocale()
+    initEcharts()
     injectGlobalCss()
 
-    const isDarkMode = await optionService.isDarkMode()
-    toggle(isDarkMode)
+    getOption().then(processDarkMode)
     await send2ParentWindow('themeInitialized')
 
     const el = document.createElement('div')
@@ -50,8 +49,6 @@ async function main() {
     const app = createApp(Main)
     initRouter(app)
     app.mount(el)
-
-    increasePopup()
 }
 
 main()

@@ -1,4 +1,4 @@
-import type { Compiler } from '@rspack/core'
+import type { Compiler, RspackPluginInstance } from '@rspack/core'
 import fs from 'fs'
 import JSZip from 'jszip'
 import path from 'path'
@@ -23,7 +23,8 @@ interface FileManagerOptions {
     context?: string
 }
 
-export class FileManagerPlugin {
+export class FileManagerPlugin implements RspackPluginInstance {
+    private static readonly NAME = 'FileManagerPlugin'
     private options: FileManagerOptions
     private outputPath: string
 
@@ -33,11 +34,11 @@ export class FileManagerPlugin {
     }
 
     apply(compiler: Compiler) {
-        compiler.hooks.afterEnvironment.tap('FileManagerPlugin', () => {
+        compiler.hooks.afterEnvironment.tap(FileManagerPlugin.NAME, () => {
             this.outputPath = compiler.options.output.path || 'dist'
         })
 
-        compiler.hooks.done.tapPromise('FileManagerPlugin', async () => {
+        compiler.hooks.done.tapPromise(FileManagerPlugin.NAME, async () => {
             if (this.options.events.onEnd) {
                 for (const op of this.options.events.onEnd) {
                     await this.processOperation(op)

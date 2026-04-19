@@ -28,12 +28,12 @@ async function processDirMessage(client: CrowdinClient, file: SourceFilesModel.F
         }
         const existList = await client.listTranslationByStringAndLang({ stringId: string.id, lang })
         // Deleted old translations different from current
-        const oldByOwner = existList?.filter(t => t?.user?.id === CROWDIN_USER_ID_OF_OWNER && t.text !== text)
+        const oldByOwner = existList.filter(t => t.user.id === CROWDIN_USER_ID_OF_OWNER && t.text !== text)
         for (const toDelete of oldByOwner || []) {
             await client.deleteTranslation(toDelete.id)
             console.log(`Deleted translation by owner: stringId=${string.id}, lang=${lang}, text=${toDelete.text}`)
         }
-        if (!existList?.find(t => t.text === text)) {
+        if (!existList.some(t => t.text === text)) {
             // Create new translation
             await client.createTranslation({ stringId: string.id, lang }, text)
             console.log(`Created trans: stringId=${string.id}, lang=${lang}, text=${text}`)

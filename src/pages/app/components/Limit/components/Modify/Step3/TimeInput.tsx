@@ -1,11 +1,9 @@
 import { CircleClose, Clock } from "@element-plus/icons-vue"
-import { useDebounceFn, useState, useXsState } from "@hooks"
-import { getStyle } from "@pages/util/style"
+import { useDebounceFn, useState, useXsState } from '@hooks'
+import { getStyle } from '@pages/util/style'
 import { range } from "@util/array"
 import {
-    Effect, ElIcon, ElInput, ElPopover, ElScrollbar,
-    type ScrollbarInstance,
-    useLocale, useNamespace
+    Effect, ElIcon, ElInput, ElPopover, ElScrollbar, type ScrollbarInstance, useLocale, useNamespace,
 } from "element-plus"
 import { computed, defineComponent, nextTick, onMounted, ref, Transition, watch } from "vue"
 
@@ -144,8 +142,6 @@ type TimeInputProps = {
 
 /**
  * Rewrite
- *
- * https://github.com/element-plus/element-plus/blob/dev/packages/components/time-picker/src/time-picker-com/panel-time-pick.vue
  */
 const TimeInput = defineComponent<TimeInputProps>(props => {
     const [popoverVisible, setPopoverVisible] = useState(false)
@@ -202,7 +198,7 @@ const TimeInput = defineComponent<TimeInputProps>(props => {
                         prefixIcon={Clock}
                         modelValue={inputText.value}
                         inputStyle={{ cursor: 'pointer' }}
-                        style={{ '--el-date-editor-width': '160px' }}
+                        style={{ '--el-date-editor-width': '170px' }}
                         size={isXs.value ? 'small' : undefined}
                         readonly
                         v-slots={{

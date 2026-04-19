@@ -5,16 +5,14 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { useCategory } from "@app/context"
-import { t } from "@app/locale"
-import { useRequest } from "@hooks"
+import { useAnalysisTarget } from "@app/components/Analysis/context"
+import { labelOfHostInfo } from "@app/components/Analysis/util"
+import { useCategory } from '@app/context'
+import { t } from '@app/locale'
 import Flex from "@pages/components/Flex"
-import { getSite } from '@service/site-service'
 import { CATE_NOT_SET_ID } from '@util/site'
 import { ElTag } from "element-plus"
-import { computed, defineComponent, type StyleValue, toRef } from "vue"
-import { useAnalysisTarget } from "../../context"
-import { labelOfHostInfo } from "../../util"
+import { computed, defineComponent, FunctionalComponent, type StyleValue } from "vue"
 
 const TITLE_STYLE: StyleValue = {
     fontSize: '26px',
@@ -34,21 +32,19 @@ const SUBTITLE_STYLE: StyleValue = {
     margin: 0,
 }
 
-const SiteInfo = defineComponent<{ value: timer.site.SiteKey }>(props => {
-    const key = toRef(props, 'value')
-    const { data: site } = useRequest(() => key.value ? getSite(key.value) : undefined, { deps: key })
-    const iconUrl = computed(() => site.value?.iconUrl)
-    const title = computed(() => site.value?.alias ?? labelOfHostInfo(site.value))
-    const subtitle = computed(() => site.value?.alias ? labelOfHostInfo(site.value) : undefined)
+const SiteInfo: FunctionalComponent<{ site: timer.site.SiteInfo }> = ({ site }) => {
+    const { iconUrl, alias } = site
+    const label = labelOfHostInfo(site)
+    const [title, subtitle] = alias ? [alias, label] : [label]
 
-    return () => (
+    return (
         <Flex width="100%" column align="center">
-            <img v-show={!!iconUrl.value} src={iconUrl.value} width={24} height={24} />
-            <h1 style={TITLE_STYLE}>{title.value}</h1>
-            {subtitle && <p style={SUBTITLE_STYLE}>{subtitle.value}</p>}
+            <img v-show={!!iconUrl} src={iconUrl} width={24} height={24} />
+            <h1 style={TITLE_STYLE}>{title}</h1>
+            {subtitle && <p style={SUBTITLE_STYLE}>{subtitle}</p>}
         </Flex>
     )
-}, { props: ['value'] })
+}
 
 const CateInfo = defineComponent<{ value: number }>(props => {
     const { all } = useCategory()
@@ -78,7 +74,7 @@ const TargetInfo = defineComponent(() => {
             padding="0 25px"
         >
             {!target.value && <h1 style={TITLE_STYLE}>{t(msg => msg.analysis.common.emptyDesc)}</h1>}
-            {target.value?.type === 'site' && <SiteInfo value={target.value?.key} />}
+            {target.value?.type === 'site' && <SiteInfo site={target.value?.key} />}
             {target.value?.type === 'cate' && <CateInfo value={target.value?.key} />}
         </Flex>
     )

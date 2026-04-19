@@ -4,16 +4,16 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { t } from "@app/locale"
+import { OptionItem, OptionLines } from '@app/components/Option/components'
+import { useOption } from "@app/components/Option/useOption"
+import { t } from '@app/locale'
 import { processVerification } from "@app/util/limit"
 import { Edit } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
 import { locale } from '@i18n'
-import { defaultLimit } from "@util/constant/option"
+import { DEFAULT_LIMIT } from "@util/constant/option"
 import { ElButton, ElInput, ElInputNumber, ElMessage, ElMessageBox, ElSelect, ElSwitch, useNamespace } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
-import { OptionItem, OptionLines } from '../../components'
-import { useOption } from "../../useOption"
 import type { CategoryInstance } from '../types'
 import { usePswEdit } from "./usePswEdit"
 import { useVerify } from "./useVerify"
@@ -50,19 +50,20 @@ const ALL_DIFF: timer.limit.VerificationDifficulty[] = [
     'disgusting',
 ]
 
-function copy(target: timer.option.LimitOption, source: timer.option.LimitOption) {
+function copy(target: timer.option.LimitOption, source: Readonly<timer.option.LimitOption>) {
     target.limitPrompt = source.limitPrompt
     target.limitLevel = source.limitLevel
     target.limitPassword = source.limitPassword
     target.limitVerifyDifficulty = source.limitVerifyDifficulty
     target.limitReminder = source.limitReminder
     target.limitReminderDuration = source.limitReminderDuration
+    target.limitDelayDuration = source.limitDelayDuration
 }
 
 function reset(target: timer.option.LimitOption) {
     const defaultValue: MakeOptional<
         timer.option.LimitOption, 'limitPassword' | 'limitVerifyDifficulty' | 'limitReminderDuration'
-    > = defaultLimit()
+    > = structuredClone(DEFAULT_LIMIT)
     // Not to reset limitPassword
     delete defaultValue.limitPassword
     // Not to reset difficulty
@@ -83,7 +84,7 @@ const confirm4Strict = async (): Promise<void> => {
 }
 
 const _default = defineComponent((_, ctx) => {
-    const { option } = useOption<timer.option.LimitOption>({ defaultValue: defaultLimit, copy })
+    const { option } = useOption<timer.option.LimitOption>({ defaultValue: DEFAULT_LIMIT, copy })
     const { verified, verify } = useVerify(option)
     const { modifyPsw } = usePswEdit({ reset: () => option.limitPassword })
 
@@ -91,36 +92,45 @@ const _default = defineComponent((_, ctx) => {
         reset: () => verify().then(() => reset(option)).catch(() => { })
     } satisfies CategoryInstance)
 
-    const handleLevelChange = async (val: timer.limit.RestrictionLevel) => {
-        try {
-            await verify()
+    const handleLevelChange = (val: timer.limit.RestrictionLevel) => {
+        verify().then(async () => {
             if (val === "strict") {
                 await confirm4Strict()
             } else if (val === "password") {
                 option.limitPassword = await modifyPsw()
             }
             option.limitLevel = val
-        } catch (e) {
-            console.warn("Failed to verify", e)
-        }
+        }).catch(e => console.warn("Failed to verify", e))
     }
 
     const handlePswEdit = async () => {
-        try {
-            await verify()
+        verify().then(async () => {
             option.limitPassword = await modifyPsw()
             ElMessage.success(t(msg => msg.operation.successMsg))
-        } catch (e) {
-            console.warn("Failed to verify", e)
-        }
+        }).catch(e => console.warn("Failed to verify", e))
+    }
+
+    const handleDurationChange = (val: number | undefined) => {
+        if (typeof val !== "number") return
+        verify()
+            .then(() => option.limitDelayDuration = val)
+            .catch(e => console.warn("Failed to verify", e))
     }
 
     const levelSelectStyle = useLevelSelectStyle()
 
     return () => <OptionLines>
+        <OptionItem label={msg => msg.option.limit.delayDuration} defaultValue={DEFAULT_LIMIT.limitDelayDuration}>
+            <ElInputNumber
+                modelValue={option.limitDelayDuration}
+                size="small" min={1} max={20}
+                style={{ width: "80px" } satisfies StyleValue}
+                onChange={handleDurationChange}
+            />
+        </OptionItem>
         <OptionItem
             label={msg => msg.option.limit.reminder}
-            defaultValue={t(msg => msg.option.no)}
+            defaultValue={false}
             v-slots={{
                 default: () => (
                     <ElSwitch
@@ -133,15 +143,15 @@ const _default = defineComponent((_, ctx) => {
                         disabled={!option.limitReminder}
                         modelValue={option.limitReminderDuration}
                         onChange={val => val && (option.limitReminderDuration = val)}
-                        min={1} max={20}
-                        size="small"
+                        min={1} max={20} size="small"
+                        style={{ width: "80px" } satisfies StyleValue}
                     />
                 ),
             }}
         />
         <OptionItem
             label={msg => msg.option.limit.level.label}
-            defaultValue={t(msg => msg.option.limit.level[defaultLimit().limitLevel])}
+            defaultValue={t(msg => msg.option.limit.level[DEFAULT_LIMIT.limitLevel])}
         >
             <ElSelect
                 modelValue={option.limitLevel}
@@ -170,7 +180,7 @@ const _default = defineComponent((_, ctx) => {
         <OptionItem
             v-show={option.limitLevel === "verification"}
             label={msg => msg.option.limit.level.verificationLabel}
-            defaultValue={t(msg => (msg.option.limit.level as any)[defaultLimit().limitVerifyDifficulty])}
+            defaultValue={t(msg => (msg.option.limit.level as any)[DEFAULT_LIMIT.limitVerifyDifficulty])}
         >
             <ElSelect
                 modelValue={option.limitVerifyDifficulty}

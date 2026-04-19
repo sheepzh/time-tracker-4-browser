@@ -1,5 +1,5 @@
-import { init as initTheme } from "@util/dark-mode"
-import { type FrameRequest, type FrameResponse } from "./message"
+import { initDarkTheme } from "@/pages/util/dark-mode"
+import type { FrameRequest, FrameResponse } from "@popup/types"
 import { injectSkeletonCss } from './style/skeleton'
 
 function injectFrame() {
@@ -23,7 +23,7 @@ function injectFrame() {
  */
 async function main() {
     // Calculate the latest mode
-    initTheme()
+    initDarkTheme()
     injectSkeletonCss()
     // Resize after init theme
     document.body.style.width = '766px'

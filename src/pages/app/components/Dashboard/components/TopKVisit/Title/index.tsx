@@ -1,6 +1,6 @@
+import { useXsState } from '@hooks'
 import { tN } from "@app/locale"
 import { css } from '@emotion/css'
-import { useXsState } from '@hooks/useMediaSize'
 import Flex from "@pages/components/Flex"
 import { ElIcon, ElRadioButton, ElRadioGroup, useNamespace } from "element-plus"
 import { defineComponent } from "vue"

@@ -47,7 +47,7 @@ export function formatTime(time: Date | number, cFormat?: string) {
     return timeStr
 }
 
-export function formatTimeYMD(time: Date | number) {
+export function formatTimeYMD(time: Date | number): string {
     return formatTime(time, '{y}{m}{d}')
 }
 
@@ -56,7 +56,7 @@ type PeriodMsgFormat = Record<'dayMsg' | 'hourMsg' | 'minuteMsg' | 'secondMsg', 
 /**
  * Format milliseconds for display
  */
-export function formatPeriod(milliseconds: number, message: PeriodMsgFormat): string {
+function formatPeriod(milliseconds: number, message: PeriodMsgFormat): string {
     const prefix = milliseconds < 0 ? '-' : ''
     milliseconds = Math.abs(milliseconds)
     const { dayMsg, hourMsg, minuteMsg, secondMsg } = message
@@ -206,6 +206,7 @@ export function getBirthday(): Date {
     date.setHours(0, 0, 0, 0)
     return date
 }
+
 export const BIRTHDAY = '20220303'
 
 /**
@@ -259,4 +260,17 @@ export function parseTime(dateStr: string | undefined): Date | undefined {
     result.setMonth(month - 1)
     result.setDate(date)
     return result
+}
+
+export type DateRange = Date | [Date?, Date?] | undefined
+
+export const cvtDateRange2Str = (range: DateRange): [string?, string?] | undefined => {
+    if (range === undefined) return undefined
+    if (range instanceof Date) {
+        // The same day
+        const date = formatTimeYMD(range)
+        return [date, date]
+    }
+    const [start, end] = range
+    return [start && formatTimeYMD(start), end && formatTimeYMD(end)]
 }

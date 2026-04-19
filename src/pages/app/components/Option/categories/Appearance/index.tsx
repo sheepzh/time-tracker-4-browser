@@ -5,20 +5,19 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { processDarkMode } from '@/pages/util/dark-mode'
 import { isSidePanelEnabled, setSidePanelEnabled, SIDE_PANEL_STATE_SUPPORTED_CONTROL } from '@api/chrome/sidePanel'
-import { type I18nKey, t, tWith } from "@app/locale"
-import { useRequest } from '@hooks/useRequest'
+import { OptionItem, OptionLines, OptionTag } from '@app/components/Option/components'
+import { useOption } from '@app/components/Option/useOption'
+import { type I18nKey, t, tWith } from '@app/locale'
+import { useRequest } from '@hooks'
 import { ALL_LOCALES, localeSameAsBrowser } from "@i18n"
 import localeMessages from "@i18n/message/common/locale"
-import optionService from "@service/option-service"
 import { IS_ANDROID } from "@util/constant/environment"
-import { defaultAppearance } from "@util/constant/option"
-import { toggle } from "@util/dark-mode"
+import { DEFAULT_APPEARANCE } from "@util/constant/option"
 import { ElColorPicker, ElMessageBox, ElSelect, ElSlider, ElSwitch, ElTag, type TagProps } from "element-plus"
 import { computed, defineComponent, type StyleValue } from "vue"
-import { OptionItem, OptionLines, OptionTag } from '../../components'
-import { useOption } from "../../useOption"
-import { CategoryInstance } from '../types'
+import type { CategoryInstance } from '../types'
 import DarkModeInput from "./DarkModeInput"
 
 const FOLLOW_BROWSER: I18nKey = msg => msg.option.followBrowser
@@ -44,14 +43,13 @@ function copy(target: timer.option.AppearanceOption, source: timer.option.Appear
     target.chartAnimationDuration = source.chartAnimationDuration
 }
 
-const DEFAULT_ANIMA_DURATION = defaultAppearance().chartAnimationDuration
 const DEFAULT_SIDE_PANEL_ENABLED = true
 
 
 const _default = defineComponent((_props, ctx) => {
     const { option } = useOption<timer.option.AppearanceOption>({
-        defaultValue: defaultAppearance, copy,
-        onChange: async val => optionService.isDarkMode(val).then(toggle)
+        defaultValue: DEFAULT_APPEARANCE, copy,
+        onChange: processDarkMode,
     })
     const { data: sidePanelEnabled, refresh: refreshSidePanel } = useRequest(isSidePanelEnabled, {
         defaultValue: DEFAULT_SIDE_PANEL_ENABLED,
@@ -64,7 +62,7 @@ const _default = defineComponent((_props, ctx) => {
     ctx.expose({
         reset() {
             handleSidePanelChange(DEFAULT_SIDE_PANEL_ENABLED)
-            copy(option, defaultAppearance())
+            copy(option, DEFAULT_APPEARANCE)
         }
     } satisfies CategoryInstance)
 
@@ -86,7 +84,7 @@ const _default = defineComponent((_props, ctx) => {
     const animaDurationTagType = computed<TagProps['type']>(() => {
         const val = option.chartAnimationDuration
         if (!val) return 'info'
-        if (val > DEFAULT_ANIMA_DURATION) return 'warning'
+        if (val > DEFAULT_APPEARANCE.chartAnimationDuration) return 'warning'
         return 'primary'
     })
 
@@ -178,7 +176,7 @@ const _default = defineComponent((_props, ctx) => {
             )}
             <OptionItem
                 label={msg => msg.option.appearance.animationDuration}
-                defaultValue={`${DEFAULT_ANIMA_DURATION}ms`}
+                defaultValue={`${DEFAULT_APPEARANCE.chartAnimationDuration}ms`}
             >
                 <ElSlider
                     modelValue={option.chartAnimationDuration}

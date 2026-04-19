@@ -1,11 +1,12 @@
-import { launchBrowser, type LaunchContext, MOCK_HOST, MOCK_URL, MOCK_URL_2, sleep } from "../common/base"
+import { launchBrowser, type LaunchContext } from '../common/base'
 import { readRecordsOfFirstPage } from "../common/record"
-import { createWhitelist } from "../common/whitelist.test"
+import { MOCK_HOST, MOCK_URL, MOCK_URL_2, sleep } from '../common/util'
+import { createWhitelist } from "../common/whitelist"
 
 let context: LaunchContext
 
 describe('Tracking', () => {
-    beforeEach(async () => context = await launchBrowser())
+    beforeEach(async () => { context = await launchBrowser() })
 
     afterEach(() => context.close())
 

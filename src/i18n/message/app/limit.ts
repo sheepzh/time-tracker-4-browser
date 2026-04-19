@@ -27,8 +27,7 @@ export type LimitMessage = {
         enabled: string
         locked: string
         effectiveDay: string
-        delayAllowed: string
-        delayAllowedInfo: string
+        allowDelay: string
         delayCount: string
         detail: string
         visits: string
@@ -59,15 +58,6 @@ export type LimitMessage = {
         confession: string
     }
     reminder: string
-}
-
-export const verificationMessages: Messages<LimitMessage["verification"]> = {
-    en: resource.en?.verification,
-    zh_CN: resource.zh_CN?.verification,
-    zh_TW: resource.zh_TW?.verification,
-    ja: resource.ja?.verification,
-    pt_PT: resource.pt_PT?.verification,
-    uk: resource.uk?.verification,
 }
 
 const _default: Messages<LimitMessage> = resource

@@ -1,14 +1,22 @@
-import itemService from '@service/item-service'
+import db from "@db/stat-database"
+import optionHolder from '../service/components/option-holder'
 
-function handleTabGroupRemove(group: chrome.tabGroups.TabGroup) {
-    itemService.deleteByGroup(group.id)
-}
+const handleRemove = (group: chrome.tabGroups.TabGroup) => db.deleteByGroup(group.id)
 
-export function handleTabGroupEnabled() {
+function handleTabGroupsEnabled(option: timer.option.TrackingOption) {
+    // Do nothing if not enabled
+    if (!option.countTabGroup) return
     try {
-        chrome.tabGroups.onRemoved.removeListener(handleTabGroupRemove)
-        chrome.tabGroups.onRemoved.addListener(handleTabGroupRemove)
+        chrome.tabGroups.onRemoved.removeListener(handleRemove)
+        chrome.tabGroups.onRemoved.addListener(handleRemove)
     } catch (e) {
         console.warn('failed to handle event: enableTabGroup', e)
     }
+}
+
+export async function initTabGroup() {
+    const option = await optionHolder.get()
+    handleTabGroupsEnabled(option)
+
+    optionHolder.addChangeListener(newVal => handleTabGroupsEnabled(newVal))
 }

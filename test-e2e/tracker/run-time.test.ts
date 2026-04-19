@@ -1,6 +1,7 @@
-import { launchBrowser, MOCK_HOST, MOCK_URL, sleep, type LaunchContext } from "../common/base"
+import { launchBrowser, type LaunchContext } from '../common/base'
 import { parseTime2Sec, readRecordsOfFirstPage } from "../common/record"
-import { createWhitelist } from "../common/whitelist.test"
+import { MOCK_HOST, MOCK_URL, sleep } from '../common/util'
+import { createWhitelist } from "../common/whitelist"
 
 let context: LaunchContext
 
@@ -17,7 +18,7 @@ async function clickRunTimeChange(siteHost: string): Promise<void> {
 }
 
 describe('Run time tracking', () => {
-    beforeEach(async () => context = await launchBrowser())
+    beforeEach(async () => { context = await launchBrowser() })
 
     afterEach(() => context.close())
 

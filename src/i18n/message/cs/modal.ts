@@ -2,7 +2,7 @@ import resource from './modal-resource.json'
 
 export type ModalMessage = {
     defaultPrompt: string
-    more5Minutes: string
+    delay: string
     browsingTime: string
     ruleDetail: string
 }
