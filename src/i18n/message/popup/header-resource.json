@@ -12,8 +12,10 @@
         "donutChart": "以圆环图显示"
     },
     "zh_TW": {
+        "rating": "送出評分",
         "showSiteName": "顯示網站名稱",
-        "showTopN": "顯示前{n}个"
+        "showTopN": "顯示前{n}个",
+        "donutChart": "以圓餅圖顯示"
     },
     "ja": {
         "showSiteName": "サイト名を表示",

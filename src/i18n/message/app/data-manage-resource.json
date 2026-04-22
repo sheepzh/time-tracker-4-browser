@@ -33,6 +33,7 @@
         "totalMemoryAlert": "瀏覽器為每個擴充功能提供 {size}MB 本地儲存空間",
         "totalMemoryAlert1": "無法取得瀏覽器允許的最大儲存空間",
         "usedMemoryAlert": "目前已使用 {size}MB",
+        "idbAlert": "將追蹤資料移到IndexedDB以釋放儲存空間",
         "operationAlert": "您可以刪除不重要的資料來釋放儲存空間",
         "filterItems": "資料篩選",
         "filterFocus": "當日瀏覽時間：{start}～{end} 秒",

@@ -67,7 +67,9 @@
         "clear": "清除",
         "enable": "啟用",
         "batchEnable": "批次啟用",
-        "batchDisable": "批次停用"
+        "batchDisable": "批量停用",
+        "collapse": "收合",
+        "expand": "展開"
     },
     "ja": {
         "create": "新規",

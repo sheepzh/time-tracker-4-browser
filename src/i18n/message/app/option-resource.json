@@ -171,11 +171,13 @@
                 "label": "深色模式 {input}",
                 "timed": "定時開啟"
             },
-            "animationDuration": "圖表動畫持續時間 {input}"
+            "animationDuration": "圖表動畫持續時間 {input}",
+            "sidePanel": "{input}是否開啟側邊面板"
         },
         "tracking": {
             "title": "統計設定",
             "autoPauseTrack": "{input} 若 {maxTime} 內無活動 {info} 則暫停追蹤",
+            "noActivityInfo": "滑鼠跟鍵盤非使用中，未處於全螢幕模式，且沒有聲音撥放中",
             "countLocalFiles": "{input} 是否統計瀏覽器 {localFileTime} {info}",
             "localFileTime": "讀取本機檔案時間",
             "localFilesInfo": "支援 PDF、圖片、txt 及 json 等格式",
@@ -183,7 +185,9 @@
             "tabGroupInfo": "刪除分頁群組時，相關的時間追蹤數據也會一併清除。",
             "fileAccessDisabled": "目前不允許存取檔案 URL，請至管理頁面啟用",
             "weekStart": "每週起始日 {input}",
-            "weekStartAsNormal": "依慣例"
+            "weekStartAsNormal": "依慣例",
+            "storage": "將追蹤資料儲存至{input}",
+            "storageConfirm": "您想將儲存格式改成{type}嗎？"
         },
         "limit": {
             "prompt": "限制時顯示提示文字 {input}",
@@ -251,6 +255,22 @@
         "accessibility": {
             "title": "無障礙設定",
             "chartDecal": "{input} 是否顯示圖表裝飾"
+        },
+        "notification": {
+            "title": "通知",
+            "cycle": {
+                "label": "通知頻率{input}",
+                "daily": "每日",
+                "weekly": "每週"
+            },
+            "method": {
+                "label": "通知方式 {input}",
+                "browser": "瀏覽器",
+                "callback": {
+                    "label": "HTTP 回應",
+                    "url": "回應 URL {input}"
+                }
+            }
         },
         "resetButton": "重設",
         "resetSuccess": "已恢復預設值！",
@@ -446,7 +466,8 @@
             "localFilesInfo": "PDF、画像、txt、jsonを含む",
             "fileAccessDisabled": "ファイル URL へのアクセスは現在許可されていません。まず管理ページで有効にしてください。",
             "weekStart": "週の最初の日 {input}",
-            "weekStartAsNormal": "いつものように"
+            "weekStartAsNormal": "いつものように",
+            "storageConfirm": "ストレージタイプを {type}に変更しますか？"
         },
         "limit": {
             "prompt": "制限時に表示されるプロンプト {input}",
@@ -514,6 +535,17 @@
         "accessibility": {
             "title": "ユーザー補助機能",
             "chartDecal": "{input} チャートデカールを表示するかどうか"
+        },
+        "notification": {
+            "title": "通知",
+            "cycle": {
+                "daily": "毎日",
+                "weekly": "毎週"
+            },
+            "method": {
+                "label": "通知方法{input}",
+                "browser": "ブラウザ"
+            }
         },
         "resetButton": "リセット",
         "resetSuccess": "デフォルトに正常にリセット",
