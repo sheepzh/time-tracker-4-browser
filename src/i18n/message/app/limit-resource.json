@@ -55,6 +55,7 @@
     "zh_TW": {
         "filterDisabled": "過濾無效規則",
         "wildcardTip": "你可以使用萬用字元來匹配子網域或子頁面，使用\"+\"作為前置詞來排除子頁面！",
+        "emptyTips": "點擊此處新增規則！",
         "item": {
             "name": "規則名稱",
             "condition": "限制網址",
