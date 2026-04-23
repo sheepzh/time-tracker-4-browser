@@ -23,6 +23,7 @@ const _default: browser._manifest.WebExtensionManifest = {
     default_locale: 'en',
     homepage_url: homepage,
     manifest_version: 2,
+    minimum_opera_version: '140',
     icons: {
         16: "static/images/icon-16.png",
         48: "static/images/icon-48.png",

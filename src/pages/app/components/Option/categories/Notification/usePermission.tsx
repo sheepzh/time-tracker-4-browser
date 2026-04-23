@@ -1,6 +1,5 @@
 import { hasPerm, requestPerm } from '@api/chrome/permission'
-import { BROWSER_MAJOR_VERSION, IS_FIREFOX } from '@util/constant/environment'
-import { ElMessageBox } from 'element-plus'
+import { IS_FIREFOX } from '@util/constant/environment'
 import { onBeforeMount, reactive } from 'vue'
 
 const DATA_PERM: browser._manifest.OptionalDataCollectionPermission = 'technicalAndInteraction'
@@ -20,18 +19,7 @@ const doRequestPerm = async (method: timer.notification.Method | undefined): Pro
 
     if (!IS_FIREFOX) return true
 
-    if (BROWSER_MAJOR_VERSION && BROWSER_MAJOR_VERSION >= 140) {
-        return await browser.permissions.request({ data_collection: [DATA_PERM] })
-    }
-
-    // Must use message box if firefox version <140
-    return new Promise(resolve => ElMessageBox.confirm(
-        "This option will transfer your local data to the callback endpoint you specify. Do you agree?",
-        {
-            confirmButtonText: "Yes, I agree",
-            cancelButtonText: "No, I don't agree",
-        },
-    ).then(() => resolve(true)).catch(() => resolve(false)))
+    return await browser.permissions.request({ data_collection: [DATA_PERM] })
 }
 
 const usePermission = () => {

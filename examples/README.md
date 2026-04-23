@@ -12,7 +12,7 @@ npm install
 ## Available scripts
 
 - `npm run start:gist` - start Gist mock server
-- `npm run start:notification` - start notification demo server
+- `npm run start:notification` - start notification demo server ([notification/README.md](notification/README.md))
 
 ## Environment variables
 

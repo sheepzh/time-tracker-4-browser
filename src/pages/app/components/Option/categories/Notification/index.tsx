@@ -1,5 +1,6 @@
 import { t } from '@app/locale'
-import { ElInput, ElMessage, ElSelect, ElTimePicker } from 'element-plus'
+import { QuestionFilled } from '@element-plus/icons-vue'
+import { ElIcon, ElInput, ElLink, ElMessage, ElSelect, ElTimePicker, ElTooltip } from 'element-plus'
 import { computed, defineComponent, StyleValue } from 'vue'
 import { OptionItem, OptionLines } from '../../components'
 import type { CategoryInstance } from '../types'
@@ -96,6 +97,14 @@ const Notification = defineComponent((_, ctx) => {
                             onInput={val => option.notificationEndpoint = val}
                             placeholder="https://example.com/api/notification"
                         />
+                        <ElTooltip content='Document' effect='light' placement='top'>
+                            <ElLink
+                                target='_blank' underline={false}
+                                href="https://github.com/sheepzh/time-tracker-4-browser/blob/main/examples/notification/README.md"
+                            >
+                                <ElIcon><QuestionFilled /></ElIcon>
+                            </ElLink>
+                        </ElTooltip>
                     </OptionItem>
                     <OptionItem label="Security Token {input}">
                         <ElInput
