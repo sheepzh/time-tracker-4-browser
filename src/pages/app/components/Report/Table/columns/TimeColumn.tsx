@@ -42,7 +42,7 @@ const TimeColumn = defineComponent<Props>(props => {
                     }}
                 />
             )}
-        </ElTableColumn >
+        </ElTableColumn>
     )
 }, { props: ['dimension'] })
 

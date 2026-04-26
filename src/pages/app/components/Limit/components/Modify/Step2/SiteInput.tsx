@@ -1,5 +1,6 @@
 import { listTabs } from '@api/chrome/tab'
 import { listSites } from '@api/sw/site'
+import { cleanCond } from '@app/components/Limit/common'
 import { t } from '@app/locale'
 import { useDebounceState, useRequest } from '@hooks'
 import Flex from '@pages/components/Flex'
@@ -24,18 +25,6 @@ const fetchAllHosts = async () => {
     const sites = await listSites({ types: ['normal', 'virtual'] })
     sites.forEach(({ host }) => hostSet.add(host))
     return Array.from(hostSet)
-}
-
-const cleanCond = (origin: string | undefined): string | undefined => {
-    if (!origin) return undefined
-
-    const startIdx = origin?.indexOf('//')
-    const endIdx = origin?.indexOf('?')
-    let res = origin.substring(startIdx === -1 ? 0 : startIdx + 2, endIdx === -1 ? undefined : endIdx)
-    while (res.endsWith('/')) {
-        res = res.substring(0, res.length - 1)
-    }
-    return res || undefined
 }
 
 const useUrlSelect = ({ onAdd }: Props) => {

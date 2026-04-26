@@ -1,11 +1,12 @@
 import { getWeekStartTime } from "@api/sw/option"
 import { listCateStats, listGroupStats, listSiteStats } from '@api/sw/stat'
 import { REPORT_ROUTE, type ReportQuery } from "@app/router/constants"
-import type { PopupDuration, PopupQuery } from "@popup/types"
+import type { PopupDuration, PopupMenu, PopupQuery } from "@popup/types"
 import { isRemainHost } from "@util/constant/remain-host"
 import { getAppPageUrl } from "@util/constant/url"
 import { isSite } from "@util/stat"
 import { cvtDateRange2Str, getMonthTime, MILL_PER_DAY, type DateRange } from "@util/time"
+import { createOptionalGuard, createStringUnionGuard } from 'typescript-guard'
 
 type DateRangeCalculator = (now: Date, num?: number) => Awaitable<[Date, Date] | Date | undefined>
 
@@ -82,3 +83,5 @@ export function calJumpUrl(
         return getAppPageUrl(REPORT_ROUTE, query)
     }
 }
+
+export const isMenu = createOptionalGuard(createStringUnionGuard<PopupMenu>('percentage', 'ranking', 'limit'))

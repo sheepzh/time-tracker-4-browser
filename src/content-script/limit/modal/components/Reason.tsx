@@ -57,7 +57,7 @@ const TimeDescriptions = defineComponent({
                 <ElDescriptionsItem label={props.ruleLabel} labelAlign="right">
                     <Flex gap={5} width={200}>
                         <ElTag v-show={!!props.time}>{formatPeriodCommon((props.time ?? 0) * MILL_PER_SECOND)}</ElTag>
-                        <ElTag v-show={!!props.count}>{`${props.count ?? 0} ${t(msg => msg.limit.item.visits)}`}</ElTag>
+                        {props.count && <ElTag>{t(msg => msg.shared.limit.visits, { n: props.count })}</ElTag>}
                     </Flex>
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={props.dataLabel} labelAlign="right">
@@ -72,7 +72,7 @@ const TimeDescriptions = defineComponent({
                             v-show={!!props.count || !!props.visit}
                             type={visitLimited.value ? 'danger' : 'info'}
                         >
-                            {`${props.visit ?? 0} ${t(msg => msg.limit.item.visits)}`}
+                            {t(msg => msg.shared.limit.visits, { n: props.visit ?? 0 })}
                         </ElTag>
                     </Flex>
                 </ElDescriptionsItem>
@@ -83,7 +83,7 @@ const TimeDescriptions = defineComponent({
                 >
                     {reason.value?.delayCount ?? 0}
                 </ElDescriptionsItem>
-            </ElDescriptions >
+            </ElDescriptions>
         )
     },
 })
@@ -103,7 +103,7 @@ const _default = defineComponent(() => {
                 count={rule.value?.count}
                 waste={rule.value?.waste}
                 visit={rule.value?.visit}
-                ruleLabel={t(msg => msg.limit.item.daily)}
+                ruleLabel={t(msg => msg.shared.limit.daily)}
                 dataLabel={t(msg => msg.calendar.range.today)}
             />
             <TimeDescriptions
@@ -112,7 +112,7 @@ const _default = defineComponent(() => {
                 count={rule.value?.weeklyCount}
                 waste={rule.value?.weeklyWaste}
                 visit={rule.value?.weeklyVisit}
-                ruleLabel={t(msg => msg.limit.item.weekly)}
+                ruleLabel={t(msg => msg.shared.limit.weekly)}
                 dataLabel={t(msg => msg.calendar.range.thisWeek)}
             />
             <ElDescriptions v-show={type.value === 'VISIT'} border column={1} style={style.value} size={size.value}>
@@ -131,7 +131,7 @@ const _default = defineComponent(() => {
             </ElDescriptions>
             <ElDescriptions v-show={type.value === 'PERIOD'} border column={1} style={style.value} size={size.value}>
                 {renderBaseItems(rule.value, url)}
-                <ElDescriptionsItem label={t(msg => msg.limit.item.period)} labelAlign="right">
+                <ElDescriptionsItem label={t(msg => msg.shared.limit.period)} labelAlign="right">
                     {rule.value?.periods?.length
                         ? <div>
                             {rule.value.periods.map(p => <span style={{ display: "block" }}>{period2Str(p)}</span>)}

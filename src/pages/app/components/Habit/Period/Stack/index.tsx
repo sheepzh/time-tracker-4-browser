@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { useHabitFilter } from "@app/components/Habit/context"
 import { useEcharts } from "@hooks"
 import { computed, defineComponent, type StyleValue } from "vue"
-import { useHabitFilter } from "../../context"
 import { usePeriodValue } from "../context"
 import Wrapper, { type BizOption } from "./Wrapper"
 

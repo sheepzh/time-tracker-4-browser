@@ -8,7 +8,7 @@
 import resource from './limit-resource.json'
 
 export type LimitMessage = {
-    filterDisabled: string
+    onlyEffective: string
     wildcardTip: string
     emptyTips: string
     step: {
@@ -19,18 +19,14 @@ export type LimitMessage = {
     item: {
         name: string
         condition: string
-        daily: string
-        weekly: string
         weekStartInfo: string
         visitTime: string
-        period: string
         enabled: string
         locked: string
         effectiveDay: string
         allowDelay: string
         delayCount: string
         detail: string
-        visits: string
         or: string
         notEffective: string
     }

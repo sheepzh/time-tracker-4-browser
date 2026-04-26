@@ -1,4 +1,4 @@
-import { initDarkTheme } from "@/pages/util/dark-mode"
+import { initDarkTheme } from "@pages/util/dark-mode"
 import type { FrameRequest, FrameResponse } from "@popup/types"
 import { injectSkeletonCss } from './style/skeleton'
 

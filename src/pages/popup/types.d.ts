@@ -24,3 +24,5 @@ export type PopupOption = {
     topN: number
     donutChart: boolean
 }
+
+export type PopupMenu = 'percentage' | 'ranking' | 'limit'

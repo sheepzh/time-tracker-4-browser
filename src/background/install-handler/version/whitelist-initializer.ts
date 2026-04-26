@@ -1,4 +1,4 @@
-import whitelistHolder from '../../service/whitelist/holder'
+import whitelistHolder from '@service/whitelist/holder'
 import type { Migrator } from "./types"
 
 export default class WhitelistInitializer implements Migrator {

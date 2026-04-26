@@ -1,11 +1,11 @@
 import { onPermRemoved } from "@api/chrome/permission"
 import db from "@db/option-database"
-import { defaultOption, type DefaultOption } from '@util/constant/option'
+import { defaultOption } from '@util/constant/option'
 
-type ChangeListener = (newVal: DefaultOption, oldVal: DefaultOption) => void
+type ChangeListener = (newVal: timer.option.DefaultOption, oldVal: timer.option.DefaultOption) => void
 
 class OptionHolder {
-    private value: DefaultOption | undefined
+    private value: timer.option.DefaultOption | undefined
     private listeners: ChangeListener[] = []
 
     constructor() {
@@ -14,13 +14,13 @@ class OptionHolder {
         })
     }
 
-    private async reset(): Promise<DefaultOption> {
+    private async reset(): Promise<timer.option.DefaultOption> {
         const latest = Object.assign(defaultOption(), await db.getOption())
         this.value = latest
         return latest
     }
 
-    async get(): Promise<DefaultOption> {
+    async get(): Promise<timer.option.DefaultOption> {
         return this.value ?? await this.reset()
     }
 

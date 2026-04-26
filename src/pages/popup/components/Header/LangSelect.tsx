@@ -78,7 +78,7 @@ const LangSelect = defineComponent(() => {
                             onClick={() => createTab(CROWDIN_HOMEPAGE)}
                             divided
                         >
-                            {tPopup(msg => msg.menu.helpUs)}
+                            {tPopup(msg => msg.base.helpUs)}
                         </ElDropdownItem>
                     </ElDropdownMenu>
                 )

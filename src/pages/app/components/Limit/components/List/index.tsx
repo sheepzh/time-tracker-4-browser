@@ -4,10 +4,10 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import { useLimitData } from "@app/components/Limit/context"
 import Flex from '@pages/components/Flex'
 import { ElScrollbar } from 'element-plus'
 import { defineComponent } from "vue"
-import { useLimitData } from "../../context"
 import Card from "./Card"
 
 const _default = defineComponent(() => {

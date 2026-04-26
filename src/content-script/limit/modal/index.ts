@@ -1,4 +1,4 @@
-import { initDarkTheme } from '@/pages/util/dark-mode'
+import { initDarkTheme } from '@pages/util/dark-mode'
 import 'element-plus/es/components/input/style/css'
 import 'element-plus/es/components/message/style/css'
 import { createApp } from 'vue'

@@ -1,4 +1,4 @@
-import { IS_ANDROID, IS_MV3 } from '../../util/constant/environment'
+import { IS_ANDROID, IS_MV3 } from '@util/constant/environment'
 import { handleError } from './common'
 
 // NOT SUPPORTED in Firefox

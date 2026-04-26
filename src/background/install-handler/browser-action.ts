@@ -11,7 +11,7 @@ import { getRuntimeId } from "@api/chrome/runtime"
 import { createTab } from "@api/chrome/tab"
 import { locale } from "@i18n"
 import { t2Chrome } from "@i18n/chrome/t"
-import { IS_ANDROID, IS_FIREFOX, IS_MV3, IS_SAFARI } from "@util/constant/environment"
+import { IS_ANDROID, IS_MV3, IS_SAFARI } from "@util/constant/environment"
 import {
     CHANGE_LOG_PAGE, GITHUB_ISSUE_ADD, SOURCE_CODE_PAGE, TU_CAO_PAGE,
     getAppPageUrl, getGuidePageUrl,
@@ -34,13 +34,6 @@ function titleOf(prefixEmoji: string, title: string) {
     } else {
         return `${prefixEmoji} ${title}`
     }
-}
-
-const sidebarProps: ChromeContextMenuCreateProps = {
-    id: getRuntimeId() + '_timer_menu_item_sidebar',
-    title: titleOf('🖱️', t2Chrome(msg => msg.base.sidebar)),
-    onclick: () => browser.sidebarAction.open(),
-    ...baseProps,
 }
 
 const allFunctionProps: ChromeContextMenuCreateProps = {
@@ -86,8 +79,6 @@ const changeLogProps: ChromeContextMenuCreateProps = {
 }
 
 function initBrowserAction() {
-    // Create sidebar item for Firefox
-    createContextMenu(IS_FIREFOX ? sidebarProps : allFunctionProps)
     createContextMenu(allFunctionProps)
     createContextMenu(optionPageProps)
     createContextMenu(repoPageProps)

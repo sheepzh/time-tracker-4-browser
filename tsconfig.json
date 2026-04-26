@@ -24,9 +24,6 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "paths": {
-            "@/*": [
-                "./src/*"
-            ],
             "@api/*": [
                 "./src/api/*"
             ],
@@ -41,9 +38,6 @@
             ],
             "@side/*": [
                 "./src/pages/side/*"
-            ],
-            "@hooks/*": [
-                "./src/pages/hooks/*"
             ],
             "@hooks": [
                 "./src/pages/hooks/index"
@@ -68,6 +62,9 @@
             ],
             "@i18n": [
                 "./src/i18n/index"
+            ],
+            "@/*": [
+                "./src/*"
             ]
         }
     },

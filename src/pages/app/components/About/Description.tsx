@@ -1,24 +1,14 @@
 import packageInfo, { AUTHOR_EMAIL } from "@/package"
-import { rateClicked } from '@/pages/util/rate'
 import { t } from '@app/locale'
 import { css } from '@emotion/css'
 import { MediaSize, useMediaSize } from '@hooks'
 import { locale } from "@i18n"
 import Flex from "@pages/components/Flex"
-import Coffee from '@pages/icons/Coffee'
-import GitHub from '@pages/icons/Github'
+import { Coffee, GitHub } from '@pages/icons'
+import { rateClicked } from '@pages/util/rate'
 import {
-    BUY_ME_A_COFFEE_PAGE,
-    CHANGE_LOG_PAGE,
-    CHROME_HOMEPAGE, EDGE_HOMEPAGE,
-    FEEDBACK_QUESTIONNAIRE,
-    FIREFOX_HOMEPAGE,
-    getHomepageWithLocale,
-    GITHUB_ISSUE_ADD,
-    HOMEPAGE,
-    LICENSE_PAGE, PRIVACY_PAGE,
-    REVIEW_PAGE,
-    SOURCE_CODE_PAGE,
+    BUY_ME_A_COFFEE_PAGE, CHANGE_LOG_PAGE, CHROME_HOMEPAGE, EDGE_HOMEPAGE, FEEDBACK_QUESTIONNAIRE, FIREFOX_HOMEPAGE,
+    getHomepageWithLocale, GITHUB_ISSUE_ADD, HOMEPAGE, LICENSE_PAGE, PRIVACY_PAGE, REVIEW_PAGE, SOURCE_CODE_PAGE,
 } from "@util/constant/url"
 import { type ComponentSize, ElCard, ElDescriptions, ElDescriptionsItem, ElDivider, ElText, useNamespace } from "element-plus"
 import { computed, defineComponent, reactive } from "vue"

@@ -5,10 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { processDarkMode } from '@/pages/util/dark-mode'
 import { getOption } from "@api/sw/option"
-import { initEcharts } from "@app/echarts"
 import { initLocale } from "@i18n"
+import { processDarkMode } from '@pages/util/dark-mode'
+import { initEcharts } from "@pages/util/echarts"
 import type { FrameRequest, FrameResponse } from "@popup/types"
 import { createApp } from "vue"
 import Main from "./Main"

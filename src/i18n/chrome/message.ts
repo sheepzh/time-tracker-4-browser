@@ -36,12 +36,13 @@ const placeholder: ChromeMessage = {
         marketName: '',
     },
     base: {
-        sidebar: '',
         allFunction: '',
         guidePage: '',
         changeLog: '',
         option: '',
         sourceCode: '',
+        limit: '',
+        helpUs: '',
     },
     contextMenus: {
         add2Whitelist: '',

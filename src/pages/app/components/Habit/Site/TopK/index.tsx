@@ -5,16 +5,16 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { useHabitFilter } from "@app/components/Habit/context"
 import { useEcharts } from '@hooks'
 import { computed, defineComponent } from "vue"
-import { useHabitFilter } from "../../context"
 import { useDateMergedRows } from "../context"
-import Wrapper, { type BizOption } from "./Wrapper"
+import Wrapper from "./Wrapper"
 
 const _default = defineComponent(() => {
     const rows = useDateMergedRows()
     const filter = useHabitFilter()
-    const bizOption = computed(() => ({ rows: rows.value, dateRange: filter.dateRange } as BizOption))
+    const bizOption = computed(() => ({ rows: rows.value, timeFormat: filter.timeFormat }))
     const { elRef } = useEcharts(Wrapper, bizOption, { manual: true })
 
     return () => <div style={{ width: '100%' }} ref={elRef} />

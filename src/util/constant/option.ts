@@ -5,9 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-type AppearanceRequired = MakeRequired<timer.option.AppearanceOption, 'darkModeTimeStart' | 'darkModeTimeEnd'>
-
-export const DEFAULT_APPEARANCE = {
+export const DEFAULT_APPEARANCE: timer.option.AppearanceRequired = {
     displayWhitelistMenu: false,
     // Change false to true @since 0.8.4
     displayBadgeText: true,
@@ -21,11 +19,9 @@ export const DEFAULT_APPEARANCE = {
     darkModeTimeEnd: 21600,
     // 1s
     chartAnimationDuration: 1000,
-} as const satisfies AppearanceRequired
+} as const
 
-type TrackingRequired = MakeRequired<timer.option.TrackingOption, 'weekStart'>
-
-export const DEFAULT_TRACKING = {
+export const DEFAULT_TRACKING: timer.option.TrackingRequired = {
     autoPauseTracking: false,
     // 10 minutes
     autoPauseInterval: 600,
@@ -33,20 +29,18 @@ export const DEFAULT_TRACKING = {
     countTabGroup: false,
     weekStart: 'default',
     storage: 'classic',
-} as const satisfies TrackingRequired
+} as const
 
-type LimitRequired = MakeRequired<timer.option.LimitOption, 'limitPassword' | 'limitVerifyDifficulty' | 'limitReminderDuration'>
-
-export const DEFAULT_LIMIT = {
+export const DEFAULT_LIMIT: timer.option.LimitRequired = {
     limitDelayDuration: 5,
     limitLevel: 'nothing',
     limitPassword: '',
     limitVerifyDifficulty: 'easy',
     limitReminder: false,
     limitReminderDuration: 5,
-} as const satisfies LimitRequired
+} as const
 
-export const DEFAULT_BACKUP = {
+export const DEFAULT_BACKUP: timer.option.BackupOption = {
     backupType: 'none',
     clientName: 'unknown',
     backupAuths: {},
@@ -54,22 +48,17 @@ export const DEFAULT_BACKUP = {
     backupExts: {},
     autoBackUp: false,
     autoBackUpInterval: 30,
-} as const satisfies timer.option.BackupOption
+} as const
 
-export const DEFAULT_ACCESSIBILITY = {
+export const DEFAULT_ACCESSIBILITY: timer.option.AccessibilityOption = {
     chartDecal: false
-} as const as timer.option.AccessibilityOption
+} as const
 
-export const DEFAULT_NOTIFICATION = {
+export const DEFAULT_NOTIFICATION: timer.option.NotificationOption = {
     notificationCycle: 'none',
     notificationMethod: 'browser',
     notificationOffset: 0,
-} as const satisfies timer.option.NotificationOption
-
-export type DefaultOption =
-    & AppearanceRequired & TrackingRequired & LimitRequired
-    & timer.option.BackupOption & timer.option.AccessibilityOption
-    & timer.option.NotificationOption
+} as const
 
 export const defaultOption = () => structuredClone({
     ...DEFAULT_APPEARANCE,
@@ -78,4 +67,4 @@ export const defaultOption = () => structuredClone({
     ...DEFAULT_LIMIT,
     ...DEFAULT_ACCESSIBILITY,
     ...DEFAULT_NOTIFICATION,
-}) satisfies DefaultOption
+}) satisfies timer.option.DefaultOption

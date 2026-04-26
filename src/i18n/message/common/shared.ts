@@ -8,6 +8,14 @@ export type SharedMessage = {
     cate: {
         notSet: string
     }
+    limit: {
+        limited: string
+        daily: string
+        weekly: string
+        period: string
+        visits: string
+    }
+    all: string
 }
 
 const sharedMessages = resource satisfies Messages<SharedMessage>

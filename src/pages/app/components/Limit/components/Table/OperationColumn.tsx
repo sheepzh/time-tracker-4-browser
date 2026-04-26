@@ -4,13 +4,13 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import { verifyCanModify } from "@app/components/Limit/common"
+import { useLimitAction, useLimitData } from "@app/components/Limit/context"
 import { t } from '@app/locale'
 import { Delete, Edit } from "@element-plus/icons-vue"
 import { locale } from "@i18n"
 import { ElButton, ElTableColumn, type RenderRowData } from "element-plus"
 import { defineComponent } from "vue"
-import { verifyCanModify } from "../../common"
-import { useLimitAction, useLimitData } from "../../context"
 
 const LOCALE_WIDTH: { [locale in timer.Locale]: number } = {
     en: 220,

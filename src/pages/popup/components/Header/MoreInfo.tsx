@@ -1,11 +1,9 @@
-import { rateClicked } from '@/pages/util/rate'
 import { createTab } from "@api/chrome/tab"
 import { Collection, MoreFilled } from '@element-plus/icons-vue'
 import { locale } from '@i18n'
 import Flex from '@pages/components/Flex'
-import Coffee from '@pages/icons/Coffee'
-import GitHub from '@pages/icons/Github'
-import Heart from '@pages/icons/Heart'
+import { Coffee, GitHub, Heart } from '@pages/icons'
+import { rateClicked } from '@pages/util/rate'
 import { getColor, type ColorVariant } from '@pages/util/style'
 import { t } from '@popup/locale'
 import { BUY_ME_A_COFFEE_PAGE, CHANGE_LOG_PAGE, DONATION_PAGE, REVIEW_PAGE, SOURCE_CODE_PAGE } from "@util/constant/url"
@@ -71,10 +69,10 @@ const MoreInfo = defineComponent<{}>(() => {
                                 <ItemLink icon={<Coffee />} text="Buy me a coffee" iconColor="warning" />
                             </ElDropdownItem>
                         )}
-                    </ElDropdownMenu >
+                    </ElDropdownMenu>
                 )
             }}>
-        </ElDropdown >
+        </ElDropdown>
     )
 })
 

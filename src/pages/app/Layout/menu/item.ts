@@ -9,7 +9,7 @@
 import { type I18nKey } from '@app/locale'
 import { ANALYSIS_ROUTE, MERGE_ROUTE } from '@app/router/constants'
 import { Aim, Connection, HelpFilled, Histogram, Memo, MoreFilled, Rank, SetUp, Stopwatch, Timer, View } from "@element-plus/icons-vue"
-import Trend from '@pages/icons/Trend'
+import { Trend } from '@pages/icons'
 import { getGuidePageUrl } from "@util/constant/url"
 import { type Component } from 'vue'
 import About from "../icons/About"
@@ -69,7 +69,7 @@ export const menuGroups = (): MenuGroup[] => [{
         route: '/behavior/habit',
         icon: Aim,
     }, {
-        title: msg => msg.menu.limit,
+        title: msg => msg.base.limit,
         route: '/behavior/limit',
         icon: Timer,
     }]
@@ -108,7 +108,7 @@ export const menuGroups = (): MenuGroup[] => [{
         index: '_guide',
         mobile: false,
     }, {
-        title: msg => msg.menu.helpUs,
+        title: msg => msg.base.helpUs,
         route: '/other/help',
         icon: HelpFilled,
         mobile: false,

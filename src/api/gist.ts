@@ -16,7 +16,7 @@ export type FileForm = BaseFile & {
     content: string
 }
 
-export type File = BaseFile & {
+type File = BaseFile & {
     type: string
     language: string
     raw_url: string

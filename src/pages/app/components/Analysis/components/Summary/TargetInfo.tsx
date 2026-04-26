@@ -10,6 +10,7 @@ import { labelOfHostInfo } from "@app/components/Analysis/util"
 import { useCategory } from '@app/context'
 import { t } from '@app/locale'
 import Flex from "@pages/components/Flex"
+import Img from '@pages/components/Img'
 import { CATE_NOT_SET_ID } from '@util/site'
 import { ElTag } from "element-plus"
 import { computed, defineComponent, FunctionalComponent, type StyleValue } from "vue"
@@ -39,7 +40,7 @@ const SiteInfo: FunctionalComponent<{ site: timer.site.SiteInfo }> = ({ site }) 
 
     return (
         <Flex width="100%" column align="center">
-            <img v-show={!!iconUrl} src={iconUrl} width={24} height={24} />
+            <Img src={iconUrl} size={24} />
             <h1 style={TITLE_STYLE}>{title}</h1>
             {subtitle && <p style={SUBTITLE_STYLE}>{subtitle}</p>}
         </Flex>

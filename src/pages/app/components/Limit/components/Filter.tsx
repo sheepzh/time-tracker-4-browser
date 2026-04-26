@@ -9,7 +9,7 @@ import { createTabAfterCurrent } from "@api/chrome/tab"
 import DropdownButton, { type DropdownButtonItem } from '@app/components/common/DropdownButton'
 import ButtonFilterItem from "@app/components/common/filter/ButtonFilterItem"
 import InputFilterItem from "@app/components/common/filter/InputFilterItem"
-import SwitchFilterItem from "@app/components/common/filter/SwitchFilterItem"
+import SwitchFilterItem from '@app/components/common/filter/SwitchFilterItem'
 import { t } from '@app/locale'
 import { OPTION_ROUTE } from '@app/router/constants'
 import { Delete, Open, Operation, Plus, SetUp, TurnOff, WarningFilled } from "@element-plus/icons-vue"
@@ -79,10 +79,10 @@ const _default = defineComponent(() => {
                 />
                 <SwitchFilterItem
                     v-show={!isXs.value}
-                    historyName="enabled"
-                    label={t(msg => msg.limit.filterDisabled)}
-                    defaultValue={filter.enabled}
-                    onChange={val => filter.enabled = val}
+                    historyName="effective"
+                    label={t(msg => msg.limit.onlyEffective)}
+                    defaultValue={filter.effective}
+                    onChange={val => filter.effective = val}
                 />
             </Flex>
             <Flex gap={10} align='center'>

@@ -1,6 +1,6 @@
-import { cvtGroupColor } from '@/pages/util/style'
 import { t } from '@app/locale'
 import { useTabGroups } from "@hooks"
+import { cvtGroupColor } from '@pages/util/style'
 import { isGroup } from "@util/stat"
 import { ElTableColumn, ElTag, type RenderRowData } from "element-plus"
 import { defineComponent, StyleValue } from "vue"

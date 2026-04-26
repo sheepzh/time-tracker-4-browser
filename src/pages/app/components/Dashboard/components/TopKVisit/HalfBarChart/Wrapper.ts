@@ -8,9 +8,7 @@ import { BizOption } from "../context"
 type EcOption = ComposeOption<
     | PieSeriesOption
     | GridComponentOption
-    | TooltipComponentOption
->
-
+    | TooltipComponentOption>
 const tooltipOption = (): EcOption['tooltip'] => (
     {
         show: true,

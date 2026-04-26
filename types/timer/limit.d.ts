@@ -147,4 +147,10 @@ declare namespace timer.limit {
         // Only effective and limited rules
         limited?: boolean
     }
+
+    type Summary = {
+        url: string
+        site: site.SiteInfo
+        items: timer.limit.Item[]
+    }
 }

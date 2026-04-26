@@ -6,6 +6,7 @@
  */
 
 import Flex from "@pages/components/Flex"
+import Img from '@pages/components/Img'
 import { IS_SAFARI } from "@util/constant/environment"
 import { isRemainHost } from "@util/constant/remain-host"
 import { ElLink } from "element-plus"
@@ -45,14 +46,12 @@ const HostAlert = defineComponent<Props>(props => {
                 >
                     {props.value?.host}
                 </ElLink>
-                {props.iconUrl &&
-                    <Flex align="center">
-                        <img src={props.iconUrl} width={12} height={12} />
-                    </Flex>
-                }
+                <Flex align="center">
+                    <Img src={props.iconUrl} size={12} />
+                </Flex>
             </Flex>
         )}
-    </div >
+    </div>
 }, { props: ['clickable', 'iconUrl', 'value'] })
 
 export default HostAlert

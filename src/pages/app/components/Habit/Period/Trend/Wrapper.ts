@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 import { getSeriesPalette } from "@app/util/echarts"
-import { EchartsWrapper } from "@hooks"
 import { periodFormatter } from '@app/util/time'
+import { EchartsWrapper } from "@hooks"
 import { getPrimaryTextColor } from '@pages/util/style'
 import { formatTime } from "@util/time"
 import type { BarSeriesOption, ComposeOption, GridComponentOption, TooltipComponentOption } from "echarts"

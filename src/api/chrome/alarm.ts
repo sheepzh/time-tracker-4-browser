@@ -1,4 +1,4 @@
-import { IS_MV3 } from '../../util/constant/environment'
+import { IS_MV3 } from '@util/constant/environment'
 import { handleError } from "./common"
 
 type AlarmHandler = (alarm: ChromeAlarm) => PromiseLike<void> | void

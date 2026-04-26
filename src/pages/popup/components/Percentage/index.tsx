@@ -1,7 +1,7 @@
 import { useRequest } from "@hooks"
+import { useOption, useQuery } from "@popup/context"
 import { ElCard } from "element-plus"
 import { defineComponent } from "vue"
-import { useOption, useQuery } from "../../context"
 import Cate from "./Cate"
 import { doQuery } from "./query"
 import Site from "./Site"

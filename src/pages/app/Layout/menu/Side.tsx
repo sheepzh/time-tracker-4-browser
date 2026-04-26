@@ -5,13 +5,13 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { useCached, useState } from '@hooks'
+import { getVersion } from '@api/chrome/runtime'
 import { t } from '@app/locale'
 import { Expand, Fold } from '@element-plus/icons-vue'
 import { css } from '@emotion/css'
+import { useCached, useState } from '@hooks'
 import Flex from '@pages/components/Flex'
 import { colorVariant } from '@pages/util/style'
-import { getVersion } from '@api/chrome/runtime'
 import { ElCollapseTransition, ElIcon, ElMenu, ElMenuItem, ElMenuItemGroup, ElScrollbar, ElText, ElTooltip, useNamespace } from "element-plus"
 import { defineComponent, h, nextTick, onMounted, type Ref, ref, type StyleValue, watch } from "vue"
 import { type Router, useRouter } from "vue-router"
@@ -133,7 +133,7 @@ const _default = defineComponent(() => {
                     </ElText>
                 </ElCollapseTransition>
             </Flex>
-        </Flex >
+        </Flex>
     )
 })
 

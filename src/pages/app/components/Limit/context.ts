@@ -2,11 +2,9 @@ import { getOption } from '@/api/sw/option'
 import { DEFAULT_LIMIT } from '@/util/constant/option'
 import { deleteLimits, listLimits, updateLimits } from "@api/sw/limit"
 import { t } from '@app/locale'
-import type { LimitQuery } from '@app/router/constants'
 import { useDocumentVisibility, useManualRequest, useProvide, useProvider, useRequest } from '@hooks'
 import { ElMessage, ElMessageBox } from "element-plus"
 import { computed, reactive, ref, toRaw, watch, type ShallowRef } from "vue"
-import { useRoute, useRouter } from "vue-router"
 import { verifyCanModify } from "./common"
 import type { LimitFilterOption, LimitInstance, ModifyInstance, TestInstance } from "./types"
 
@@ -30,21 +28,15 @@ type Context = {
 
 const NAMESPACE = 'limit'
 
-const initialUrl = () => {
-    // Init with url parameter
-    const { url } = useRoute().query as LimitQuery
-    useRouter().replace({ query: {} })
-    return url && decodeURIComponent(url)
-}
 
-export const useLimitProvider = () => {
-    const filter = reactive<LimitFilterOption>({ url: initialUrl(), enabled: false })
+export const useLimitProvider = (initialUrl: string | undefined) => {
+    const filter = reactive<LimitFilterOption>({ url: initialUrl, effective: false })
 
     const { data: list, refresh, loading } = useRequest(
-        () => listLimits({ enabled: filter.enabled, url: filter.url }),
+        () => listLimits({ url: filter.url, effective: filter.effective }),
         {
             defaultValue: [],
-            deps: [() => filter.url, () => filter.enabled],
+            deps: [() => filter.url, () => filter.effective],
         },
     )
 

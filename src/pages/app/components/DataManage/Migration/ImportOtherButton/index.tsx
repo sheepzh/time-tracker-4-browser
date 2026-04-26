@@ -8,12 +8,12 @@
 import { importOther } from '@api/sw/immigration'
 import DialogSop from '@app/components/common/DialogSop'
 import { initDialogSopContext } from '@app/components/common/DialogSop/context'
+import { useDataMemory } from '@app/components/DataManage/context'
 import { t } from "@app/locale"
 import { Upload } from "@element-plus/icons-vue"
 import Flex from '@pages/components/Flex'
 import { ElButton } from "element-plus"
 import { defineComponent, toRaw } from "vue"
-import { useDataMemory } from '../../context'
 import { parseFile } from './processor'
 import Step1 from './Step1'
 import Step2 from './Step2'
