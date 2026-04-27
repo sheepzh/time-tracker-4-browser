@@ -13,4 +13,6 @@ const Limit: FunctionalComponent<{}> = () => (
     </ElCard>
 )
 
+Limit.displayName = 'Limit'
+
 export default Limit
