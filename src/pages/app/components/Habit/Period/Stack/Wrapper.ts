@@ -1,7 +1,7 @@
-import { getLineSeriesPalette } from "@app/util/echarts"
-import { EchartsWrapper } from "@hooks"
 import { t } from '@app/locale'
+import { getLineSeriesPalette } from "@app/util/echarts"
 import { periodFormatter } from '@app/util/time'
+import { EchartsWrapper } from "@hooks"
 import { formatTime } from "@util/time"
 import type { ComposeOption, GridComponentOption, LineSeriesOption, TooltipComponentOption } from "echarts"
 import { type TopLevelFormatterParams } from "echarts/types/dist/shared"

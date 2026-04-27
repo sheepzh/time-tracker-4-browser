@@ -7,10 +7,10 @@
 import { ElScrollbar } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
 import ContentContainer, { FilterContainer } from '../common/ContentContainer'
-import HabitFilter from "./components/HabitFilter"
-import Period from "./components/Period"
-import Site from "./components/Site"
-import { initHabit } from "./components/context"
+import HabitFilter from "./HabitFilter"
+import Period from "./Period"
+import Site from "./Site"
+import { initHabit } from "./context"
 
 const _default = defineComponent(() => {
     initHabit()

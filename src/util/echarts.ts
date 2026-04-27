@@ -1,5 +1,5 @@
 import type {
-    AriaComponentOption, BarSeriesOption, ComposeOption, GridComponentOption, LegendComponentOption, LineSeriesOption,
+    AriaComponentOption, BarSeriesOption, ComposeOption, GaugeSeriesOption, GridComponentOption, LegendComponentOption, LineSeriesOption,
     PieSeriesOption, ScatterSeriesOption, TitleComponentOption, ToolboxComponentOption, VisualMapComponentOption,
 } from "echarts"
 import type { AxisBaseOption } from 'echarts/types/src/coord/axisCommonTypes.js'
@@ -56,7 +56,7 @@ const generateAriaOption = (chartDecal: boolean): AriaComponentOption => {
     }
 }
 
-type SupportedSeriesOption = PieSeriesOption | LineSeriesOption | BarSeriesOption | ScatterSeriesOption
+type SupportedSeriesOption = PieSeriesOption | LineSeriesOption | BarSeriesOption | ScatterSeriesOption | GaugeSeriesOption
 
 type GlobalEcOption = ComposeOption<
     | TitleComponentOption | GridComponentOption | LegendComponentOption | ToolboxComponentOption | VisualMapComponentOption
@@ -77,6 +77,7 @@ export const processFont = (toProcess: unknown, elFont: string) => {
         }
     })
     processArrayLike(series, s => {
+        if (!('label' in s)) return
         s.label = {
             ...s.label,
             fontFamily: s.label?.fontFamily ?? elFont,
@@ -118,6 +119,9 @@ export const processAnimation = (toProcess: unknown, duration: number) => {
         if (duration > 0) {
             s.animation = true
             s.animationDuration = duration
+            s.animationDurationUpdate = duration
+            s.animationEasing ??= 'cubicInOut'
+            s.animationEasingUpdate ??= 'cubicInOut'
         } else {
             s.animation = false
         }

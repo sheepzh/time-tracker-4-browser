@@ -45,7 +45,7 @@
         "duplicateMsg": "The rule already exists: {origin}",
         "addConfirmMsg": "Customized merge rules will be set for {origin}",
         "infoAlertTitle": "the merge rules when counting sites on this page",
-        "infoAlert0": "Click the [New One] button, the input boxes of the source site and the merge site will be displayed, fill in and save the rule",
+        "infoAlert0": "Click the [New] button, the input boxes of the source site and the merge site will be displayed, fill in and save the rule",
         "infoAlert1": "The original site can be filled with a specific site or regular expression, such as www.baidu.com, *.baidu.com, *.google.com.*, to determine which sites will match this rule while merging",
         "infoAlert2": "The merged site can be filled with a specific site, a number or blank",
         "infoAlert3": "A number means the level of merged site. For example, there is a rule '*.*.edu.cn >>> 3', then 'www.hust.edu.cn' will be merged to 'hust.edu.cn'",

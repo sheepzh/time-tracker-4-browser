@@ -30,7 +30,7 @@ export abstract class EchartsWrapper<BizOption, EchartsOption> {
      * true if need to clear all the before series when setOption
      */
     protected replaceSeries: boolean = false
-    private lastBizOption: BizOption | undefined
+    protected lastBizOption: BizOption | undefined
     /**
      * Fix the font family
      * @see https://github.com/sheepzh/time-tracker-4-browser/issues/623
@@ -60,9 +60,7 @@ export abstract class EchartsWrapper<BizOption, EchartsOption> {
     }
 
     protected async postChartOption(option: EchartsOption & BaseEchartsOption) {
-        const opt = await getOption()
-        const chartDecal = opt?.chartDecal ?? false
-        const chartAnimationDuration = opt?.chartAnimationDuration ?? 0
+        const { chartDecal, chartAnimationDuration } = await getOption()
         processAnimation(option, chartAnimationDuration)
         processAria(option, chartDecal)
         processRtl(option)

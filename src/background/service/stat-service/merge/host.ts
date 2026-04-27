@@ -1,6 +1,6 @@
 import mergeRuleDatabase from "@db/merge-rule-database"
+import CustomizedHostMergeRuler from "@service/components/host-merge-ruler"
 import { isNormalSite } from "@util/stat"
-import CustomizedHostMergeRuler from "../../components/host-merge-ruler"
 import { mergeResult } from "./common"
 
 export async function mergeHost(origin: timer.stat.SiteRow[]): Promise<timer.stat.SiteRow[]> {

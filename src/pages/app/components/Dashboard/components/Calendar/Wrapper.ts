@@ -4,12 +4,12 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { getStepColors } from '@app/util/echarts'
-import { EchartsWrapper } from "@hooks"
-import { t } from "@app/locale"
-import { cvt2LocaleTime } from '@app/util/time'
-import { getPrimaryTextColor } from '@pages/util/style'
 import { getWeekStartDay } from "@api/sw/option"
+import { t } from "@app/locale"
+import { getStepColors } from '@app/util/echarts'
+import { cvt2LocaleTime } from '@app/util/time'
+import { EchartsWrapper } from "@hooks"
+import { getPrimaryTextColor } from '@pages/util/style'
 import { groupBy, rotate } from "@util/array"
 import { formatPeriodCommon, getAllDatesBetween, MILL_PER_HOUR, MILL_PER_MINUTE } from "@util/time"
 import type {

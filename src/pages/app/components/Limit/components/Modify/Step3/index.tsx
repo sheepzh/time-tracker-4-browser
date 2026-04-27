@@ -24,7 +24,7 @@ const _default = defineComponent(() => {
     return () => (
         <Flex justify="center">
             <ElForm labelWidth={150} labelPosition='left'>
-                <ElFormItem label={t(msg => msg.limit.item.daily)}>
+                <ElFormItem label={t(msg => msg.shared.limit.daily)}>
                     <Flex gap={10} column={isXs.value}>
                         <TimeInput modelValue={data.time ?? 0} onChange={v => data.time = v} />
                         {!isXs.value && t(msg => msg.limit.item.or)}
@@ -34,11 +34,11 @@ const _default = defineComponent(() => {
                             modelValue={data.count}
                             onChange={v => data.count = v ?? 0}
                             size={isXs.value ? 'small' : undefined}
-                            v-slots={{ suffix: () => t(msg => msg.limit.item.visits) }}
+                            v-slots={{ suffix: () => t(msg => msg.shared.limit.visits, { n: '' }).trim() }}
                         />
                     </Flex>
                 </ElFormItem>
-                <ElFormItem label={t(msg => msg.limit.item.weekly)}>
+                <ElFormItem label={t(msg => msg.shared.limit.weekly)}>
                     <Flex gap={10} column={isXs.value}>
                         <TimeInput modelValue={data.weekly ?? 0} onChange={v => data.weekly = v} hourMax={MAX_HOUR_WEEKLY} />
                         {!isXs.value && t(msg => msg.limit.item.or)}
@@ -48,14 +48,14 @@ const _default = defineComponent(() => {
                             modelValue={data.weeklyCount}
                             onChange={v => data.weeklyCount = v ?? 0}
                             size={isXs.value ? 'small' : undefined}
-                            v-slots={{ suffix: () => t(msg => msg.limit.item.visits) }}
+                            v-slots={{ suffix: () => t(msg => msg.shared.limit.visits, { n: '' }).trim() }}
                         />
                     </Flex>
                 </ElFormItem>
                 <ElFormItem label={t(msg => msg.limit.item.visitTime)}>
                     <TimeInput modelValue={data.visitTime ?? 0} onChange={v => data.visitTime = v} />
                 </ElFormItem>
-                <ElFormItem label={t(msg => msg.limit.item.period)}>
+                <ElFormItem label={t(msg => msg.shared.limit.period)}>
                     <PeriodInput modelValue={data.periods ?? []} onChange={v => data.periods = v} />
                 </ElFormItem>
             </ElForm>

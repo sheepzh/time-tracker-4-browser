@@ -1,20 +1,42 @@
-import { isDarkMode, processDarkMode } from "@/pages/util/dark-mode"
 import { listAllCategories } from '@api/sw/cate'
+import { getLimitSummary } from '@api/sw/limit'
 import { getOption, setOption } from "@api/sw/option"
 import { useLocalStorage, useProvide, useProvider, useRequest } from "@hooks"
+import { isDarkMode, processDarkMode } from "@pages/util/dark-mode"
 import { toMap } from "@util/array"
 import { CATE_NOT_SET_ID } from "@util/site"
-import { reactive, ref, type ShallowRef, toRaw, watch } from "vue"
+import { computed, reactive, Ref, ref, type ShallowRef, toRaw, watch } from "vue"
+import { useRoute, useRouter } from 'vue-router'
+import { isMenu } from './common'
 import { t } from "./locale"
-import type { PopupOption, PopupQuery } from './types'
+import type { PopupMenu, PopupOption, PopupQuery } from './types'
 
 type PopupContextValue = {
     reload: () => void
     darkMode: ShallowRef<boolean>
-    setDarkMode: (val: boolean) => void
+    setDarkMode: ArgCallback<boolean>
     query: PopupQuery
     option: PopupOption
     cateNameMap: ShallowRef<Record<number, string>>
+    menu: ShallowRef<PopupMenu | undefined>
+    setMenu: ArgCallback<PopupMenu>
+    limitSummary: ShallowRef<timer.limit.Summary | undefined>
+    selectedLimit: Ref<number | undefined>
+}
+
+const initMenu = () => {
+    const [stored, setStored] = useLocalStorage<PopupMenu>('popup_menu', 'percentage')
+    const route = useRoute()
+    const router = useRouter()
+    const myRoute = computed(() => {
+        const menuMaybe = route.path.substring(1)
+        return isMenu(menuMaybe) ? menuMaybe : stored
+    })
+    const setMyRoute = (val: PopupMenu) => {
+        setStored(val)
+        router.push('/' + val)
+    }
+    return [myRoute, setMyRoute] as const
 }
 
 const NAMESPACE = '_'
@@ -42,7 +64,29 @@ export const initPopupContext = (): ShallowRef<number> => {
 
     const query = initQuery()
     const option = initOption()
-    useProvide<PopupContextValue>(NAMESPACE, { reload, darkMode, setDarkMode, query, option, cateNameMap })
+
+    const [menu, setMenu] = initMenu()
+
+    const { data: limitSummary } = useRequest(
+        () => menu.value === 'limit' ? getLimitSummary() : Promise.resolve(undefined),
+        {
+            deps: menu,
+            onSuccess(newVal) {
+                const newItems = newVal?.items ?? []
+                if (!newItems.some(i => i.id === selectedLimit.value)) {
+                    selectedLimit.value = newItems[0]?.id
+                }
+            }
+        },
+    )
+    const selectedLimit = ref<number>()
+
+    useProvide<PopupContextValue>(NAMESPACE, {
+        reload, darkMode, setDarkMode, query, option,
+        cateNameMap,
+        menu, setMenu,
+        limitSummary, selectedLimit
+    })
 
     return appKey
 }
@@ -82,3 +126,7 @@ export const useQuery = () => useProvider<PopupContextValue, 'query'>(NAMESPACE,
 export const useOption = () => useProvider<PopupContextValue, 'option'>(NAMESPACE, 'option').option
 
 export const useCateNameMap = () => useProvider<PopupContextValue, 'cateNameMap'>(NAMESPACE, 'cateNameMap')?.cateNameMap
+
+export const useMenu = () => useProvider<PopupContextValue, 'menu' | 'setMenu'>(NAMESPACE, 'menu', 'setMenu')
+
+export const useLimitSummary = () => useProvider<PopupContextValue, 'limitSummary' | 'selectedLimit'>(NAMESPACE, 'limitSummary', 'selectedLimit')

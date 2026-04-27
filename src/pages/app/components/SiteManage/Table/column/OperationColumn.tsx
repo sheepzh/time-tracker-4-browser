@@ -6,12 +6,12 @@
  */
 import { deleteSites } from '@api/sw/site'
 import PopupConfirmButton from '@app/components/common/PopupConfirmButton'
+import { useSiteManageTable } from '@app/components/SiteManage/useSiteManage'
 import { t } from '@app/locale'
 import { Delete } from "@element-plus/icons-vue"
 import { useManualRequest } from '@hooks'
 import { ElTableColumn, type RenderRowData } from "element-plus"
 import { defineComponent } from "vue"
-import { useSiteManageTable } from '../../useSiteManage'
 
 const OperationColumn = defineComponent<{}>(() => {
     const { refresh } = useSiteManageTable()

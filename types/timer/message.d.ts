@@ -48,7 +48,7 @@ declare namespace timer.mq {
         & _MakeRegistry<'cate.change', site.Cate>
         & _MakeRegistry<'cate.delete', number>
         // Option
-        & _MakeRegistry<'option.get', undefined, option.AllOption>
+        & _MakeRegistry<'option.get', undefined, option.DefaultOption>
         & _MakeRegistry<'option.set', Partial<option.AllOption>>
         & _MakeRegistry<'option.changeStorage', option.StorageType>
         & _MakeRegistry<'option.testNotification', undefined, string | undefined>
@@ -77,6 +77,7 @@ declare namespace timer.mq {
         & _MakeRegistry<'limit.add', Omit<limit.Rule, 'id'>, number>
         & _MakeRegistry<'limit.hitVisit', limit.Item, boolean>
         & _MakeRegistry<'limit.delay', string>
+        & _MakeRegistry<'limit.summary', undefined, limit.Summary | undefined>
         // Merge
         & _MakeRegistry<'merge.all', undefined, merge.Rule[]>
         & _MakeRegistry<'merge.delete', string>

@@ -36,7 +36,7 @@ const Waste = defineComponent<Props>(props => {
             </div>
             <div>
                 <ElTag size="small" type={visitType.value}>
-                    {props.visit ?? 0} {t(msg => msg.limit.item.visits)}
+                    {t(msg => msg.shared.limit.visits, { n: props.visit ?? 0 })}
                 </ElTag>
             </div>
         </Flex>

@@ -5,7 +5,6 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { processDarkMode } from '@/pages/util/dark-mode'
 import { isSidePanelEnabled, setSidePanelEnabled, SIDE_PANEL_STATE_SUPPORTED_CONTROL } from '@api/chrome/sidePanel'
 import { OptionItem, OptionLines, OptionTag } from '@app/components/Option/components'
 import { useOption } from '@app/components/Option/useOption'
@@ -13,6 +12,7 @@ import { type I18nKey, t, tWith } from '@app/locale'
 import { useRequest } from '@hooks'
 import { ALL_LOCALES, localeSameAsBrowser } from "@i18n"
 import localeMessages from "@i18n/message/common/locale"
+import { processDarkMode } from '@pages/util/dark-mode'
 import { IS_ANDROID } from "@util/constant/environment"
 import { DEFAULT_APPEARANCE } from "@util/constant/option"
 import { ElColorPicker, ElMessageBox, ElSelect, ElSlider, ElSwitch, ElTag, type TagProps } from "element-plus"

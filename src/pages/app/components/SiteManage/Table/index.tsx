@@ -9,6 +9,7 @@ import Category from '@app/components/common/Category'
 import HostAlert from '@app/components/common/HostAlert'
 import { t } from '@app/locale'
 import Flex from "@pages/components/Flex"
+import Img from '@pages/components/Img'
 import { ElSwitch, ElTable, ElTableColumn, type RenderRowData } from "element-plus"
 import { defineComponent } from "vue"
 import { useSiteManageTable } from '../useSiteManage'
@@ -58,7 +59,7 @@ const _default = defineComponent<{}>(() => {
                     if (!iconUrl) return ''
                     return (
                         <Flex align="center" justify="center">
-                            <img width={12} height={12} src={iconUrl} onError={() => handleIconError(row)} />
+                            <Img size={12} src={iconUrl} onError={() => handleIconError(row)} />
                         </Flex>
                     )
                 }}

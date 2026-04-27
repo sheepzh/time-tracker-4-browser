@@ -8,6 +8,7 @@
 import { addLimit, updateLimits } from '@api/sw/limit'
 import DialogSop from '@app/components/common/DialogSop'
 import { initDialogSopContext } from '@app/components/common/DialogSop/context'
+import { cleanCond } from '@app/components/Limit/common'
 import { useLimitData } from "@app/components/Limit/context"
 import type { ModifyForm, ModifyInstance } from '@app/components/Limit/types'
 import { t } from '@app/locale'
@@ -25,11 +26,11 @@ const STEP_TITLES = [
     t(msg => msg.limit.step.rule),
 ]
 
-const createInitial = (): ModifyForm => ({
+const createInitial = (url?: string): ModifyForm => ({
     name: `RULE-${new String(new Date().getTime() % 10000).padStart(4, '0')}`,
     time: 3600,
     weekly: 0,
-    cond: [],
+    cond: url ? [cleanCond(url)] : [],
     visitTime: 0,
     periods: [],
     enabled: true,
@@ -101,8 +102,8 @@ const _default = defineComponent((_, ctx) => {
     let modifyingItem: timer.limit.Rule | undefined = undefined
 
     ctx.expose({
-        create() {
-            open()
+        create(url?: string) {
+            open(createInitial(url))
             mode.value = 'create'
             modifyingItem = undefined
         },

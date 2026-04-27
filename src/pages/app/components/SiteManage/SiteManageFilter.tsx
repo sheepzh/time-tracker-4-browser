@@ -4,11 +4,11 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import { useCategory } from "@app/context"
 import { t } from '@app/locale'
 import { Connection, Delete, Grid, Plus } from "@element-plus/icons-vue"
 import Flex from "@pages/components/Flex"
 import { computed, defineComponent, watch } from "vue"
-import { useCategory } from "../../context"
 import DropdownButton, { type DropdownButtonItem } from '../common/DropdownButton'
 import ButtonFilterItem from "../common/filter/ButtonFilterItem"
 import CategoryFilter from '../common/filter/CategoryFilter'

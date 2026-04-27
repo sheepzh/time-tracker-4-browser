@@ -4,7 +4,7 @@ import { processVerification } from '@app/util/limit'
 import { t } from "@cs/locale"
 import { Plus, Timer } from "@element-plus/icons-vue"
 import Flex from '@pages/components/Flex'
-import Trend from "@pages/icons/Trend"
+import { Trend } from "@pages/icons"
 import { getAppPageUrl } from '@util/constant/url'
 import { meetTimeLimit } from '@util/limit'
 import { MILL_PER_SECOND } from '@util/time'

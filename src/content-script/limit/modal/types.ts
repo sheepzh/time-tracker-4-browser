@@ -2,11 +2,11 @@ import type { LimitReason } from '../types'
 
 export type LimitReasonData = Omit<LimitReason, 'getVisitTime'>
 
-export type MakeRegistry<Code extends string, Req = unknown, Res = unknown> = {
+type MakeRegistry<Code extends string, Req = unknown, Res = unknown> = {
     [K in Code]: { req: Req; res: Res }
 }
 
-export type BridgeRegistry =
+type BridgeRegistry =
     & MakeRegistry<'reason', LimitReasonData | undefined, void>
     & MakeRegistry<'visitTime', void, number>
     & MakeRegistry<'delay', void, void>

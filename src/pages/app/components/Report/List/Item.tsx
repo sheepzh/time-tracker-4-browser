@@ -1,10 +1,10 @@
 
 import HostAlert from '@app/components/common/HostAlert'
 import PopupConfirmButton from '@app/components/common/PopupConfirmButton'
-import { useTabGroups } from "@hooks"
 import { cvt2LocaleTime, periodFormatter } from '@app/util/time'
 import { Calendar, Delete, Mouse, QuartzWatch } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
+import { useTabGroups } from "@hooks"
 import Flex from '@pages/components/Flex'
 import TooltipWrapper from '@pages/components/TooltipWrapper'
 import { getComposition, isGroup, isNormalSite, isSite } from "@util/stat"
@@ -128,7 +128,7 @@ const _default = defineComponent<Props>(props => {
                     </ElTag>
                 </TooltipWrapper>
             </Flex>
-        </div >
+        </div>
     )
 }, { props: ['onDelete', 'onSelectedChange', 'value'] })
 

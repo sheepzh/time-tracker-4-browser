@@ -86,7 +86,7 @@ const TimelineChart = defineComponent<{}>(() => {
                         </ElRadioGroup>
                     </Flex>
                 </Flex>
-            </ChartTitle >
+            </ChartTitle>
             <div ref={elRef} style={{ flex: 1 }} />
         </Flex>
     )

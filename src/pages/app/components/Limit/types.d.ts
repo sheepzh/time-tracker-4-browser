@@ -1,10 +1,10 @@
 export type LimitFilterOption = {
     url: string | undefined
-    enabled: boolean
+    effective: boolean
 }
 
 export type ModifyInstance = {
-    create(): void
+    create(url?: string): void
     modify(row: timer.limit.Item): void
 }
 

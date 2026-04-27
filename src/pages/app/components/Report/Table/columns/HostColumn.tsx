@@ -45,7 +45,7 @@ const _default = defineComponent(() => {
                     />
                 </Flex>
             )}
-        </ElTableColumn >
+        </ElTableColumn>
     )
 })
 

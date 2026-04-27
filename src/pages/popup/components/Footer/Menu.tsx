@@ -1,23 +1,42 @@
+import { Histogram, PieChart, Timer } from '@element-plus/icons-vue'
+import { useMenu } from '@popup/context'
 import { t } from '@popup/locale'
-import { POPUP_ROUTES } from "@popup/router"
-import { ElRadioButton, ElRadioGroup } from "element-plus"
-import { computed, defineComponent } from "vue"
-import { useRoute, useRouter } from "vue-router"
+import type { PopupMenu } from '@popup/types'
+import { ElIcon, ElRadioButton, ElRadioGroup, ElTooltip } from "element-plus"
+import { type Component, defineComponent, h } from "vue"
+
+type MenuItem = {
+    icon: Component
+    route: PopupMenu
+    label: string
+}
+
+const createItems = (): MenuItem[] => [
+    {
+        route: 'percentage',
+        label: t(msg => msg.footer.route.percentage),
+        icon: PieChart,
+    }, {
+        route: 'ranking',
+        label: t(msg => msg.footer.route.ranking),
+        icon: Histogram,
+    }, {
+        route: 'limit',
+        label: t(msg => msg.base.limit),
+        icon: Timer,
+    }
+] as const
 
 const Menu = defineComponent(() => {
-    const route = useRoute()
+    const { menu, setMenu } = useMenu()
 
-    const current = computed(() => route.path?.substring?.(1))
-
-    const router = useRouter()
     return () => (
-        <ElRadioGroup
-            modelValue={current.value}
-            onChange={val => router.push('/' + val)}
-        >
-            {POPUP_ROUTES.map(route => (
+        <ElRadioGroup modelValue={menu.value} onChange={v => setMenu(v as PopupMenu)}>
+            {createItems().map(({ route, label, icon }) => (
                 <ElRadioButton value={route}>
-                    {t(msg => msg.footer.route[route])}
+                    <ElTooltip content={label}>
+                        <ElIcon>{h(icon)}</ElIcon>
+                    </ElTooltip>
                 </ElRadioButton>
             ))}
         </ElRadioGroup>

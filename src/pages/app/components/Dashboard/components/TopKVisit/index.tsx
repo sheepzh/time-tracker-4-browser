@@ -34,7 +34,7 @@ const _default = defineComponent(() => {
             <Flex column gap={4} height="100%">
                 <ChartTitle>
                     <Title />
-                </ChartTitle >
+                </ChartTitle>
                 <Flex flex={1}>
                     {chart.value}
                 </Flex>

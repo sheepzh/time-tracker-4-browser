@@ -1,6 +1,6 @@
 import rules from "./rules.json"
 
-export type PslNode = {
+type PslNode = {
     // Children <part>
     c?: PslTree
     // Is leaf

@@ -4,13 +4,8 @@ import { t } from "@cs/locale"
 import { useRequest, useXsState } from "@hooks"
 import Box from '@pages/components/Box'
 import Flex from '@pages/components/Flex'
-import { defineComponent, type StyleValue } from "vue"
-
-const IMG_STYLE: StyleValue = {
-    width: '1.4em',
-    height: '1.4em',
-    marginInlineEnd: '.4em',
-}
+import Img from '@pages/components/Img'
+import { defineComponent } from "vue"
 
 const _default = defineComponent(() => {
     const defaultPrompt = t(msg => msg.modal.defaultPrompt)
@@ -23,8 +18,8 @@ const _default = defineComponent(() => {
 
     return () => (
         <Flex marginBottom={80} column align='center'>
-            <Flex as='h2' align='center' lineHeight='2em'>
-                <img src={getIconUrl()} style={IMG_STYLE} />
+            <Flex as='h2' align='center' lineHeight='2em' gap='.4em'>
+                <Img src={getIconUrl()} style={{ width: '1.4em', height: '1.4em' }} />
                 <span>{t(msg => msg.meta.name)?.toUpperCase()}</span>
             </Flex>
             <Box
