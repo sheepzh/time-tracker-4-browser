@@ -4,14 +4,14 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { t } from "@app/locale"
+import { verifyCanModify } from "@app/components/Limit/common"
+import { useLimitAction, useLimitData } from "@app/components/Limit/context"
+import { t } from '@app/locale'
 import { Delete, EditPen } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
 import Flex from "@pages/components/Flex"
 import { ElButton, ElCard, ElDivider, ElMessageBox, ElTag, type TagProps, useNamespace } from "element-plus"
 import { defineComponent, type FunctionalComponent, type StyleValue } from "vue"
-import { verifyCanModify } from "../../common"
-import { useLimitAction, useLimitData } from "../../context"
 import Rule from "./Rule"
 
 type Props = {
@@ -104,7 +104,7 @@ const _default = defineComponent<Props>(props => {
                     </ElButton>
                 </Flex>
             </Flex>
-        </ElCard >
+        </ElCard>
     )
 }, { props: ['value'] })
 

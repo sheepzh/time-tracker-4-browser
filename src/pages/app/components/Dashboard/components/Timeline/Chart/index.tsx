@@ -8,18 +8,16 @@
 import ChartTitle from '@app/components/Dashboard/ChartTitle'
 import { t } from '@app/locale'
 import { Collection, Files, Link } from '@element-plus/icons-vue'
-import { useShadow } from '@hooks'
-import { useEcharts } from "@hooks/useEcharts"
+import { useEcharts } from '@hooks'
 import Flex from "@pages/components/Flex"
 import { type ECElementEvent, type ECharts } from "echarts/core"
 import { ElIcon, ElRadioButton, ElRadioGroup } from 'element-plus'
 import { computed, defineComponent } from "vue"
 import { type JSX } from 'vue/jsx-runtime'
-import { TIMELINE_DAY_COUNT } from '../constants'
-import Wrapper, { EcOption, type BizData } from './Wrapper'
-import { useMerge, type MergeMethod } from './useMerge'
+import { TIMELINE_DAY_COUNT, useTimelineContext } from '../context'
+import Wrapper, { BizData, EcOption } from './Wrapper'
 
-const CHART_CONFIG: Record<MergeMethod, JSX.Element | string> = {
+const CHART_CONFIG: Record<timer.timeline.MergeMethod, JSX.Element | string> = {
     none: <Files />,
     domain: <Link />,
     cate: <Collection />,
@@ -55,14 +53,9 @@ const handleClick = (inst: ECharts, ev: ECElementEvent) => {
     seriesNames2Toggle.forEach(name => inst.dispatchAction({ type: "legendToggleSelect", name }))
 }
 
-const TimelineChart = defineComponent<{ data: timer.timeline.Tick[] }>(props => {
-    const [myData] = useShadow(() => props.data)
-    const { merge, setMerge, activities, dates } = useMerge(myData)
-    const bizData = computed<BizData>(() => ({
-        activities: activities.value,
-        merge: merge.value,
-        dates,
-    }))
+const TimelineChart = defineComponent<{}>(() => {
+    const { dates, activities, merge, setMerge } = useTimelineContext()
+    const bizData = computed<BizData>(() => ({ dates, activities: activities.value, merge: merge.value }))
 
     const { elRef } = useEcharts(Wrapper, bizData, {
         afterInit: ew => {
@@ -80,7 +73,11 @@ const TimelineChart = defineComponent<{ data: timer.timeline.Tick[] }>(props => 
                         {t(msg => msg.dashboard.timeline.title, { n: TIMELINE_DAY_COUNT })}
                     </Flex>
                     <Flex align='center'>
-                        <ElRadioGroup size="small" modelValue={merge.value} onChange={setMerge}>
+                        <ElRadioGroup
+                            size="small"
+                            modelValue={merge.value}
+                            onChange={val => setMerge(val as timer.timeline.MergeMethod)}
+                        >
                             {Object.entries(CHART_CONFIG).map(([k, v]) => (
                                 <ElRadioButton value={k}>
                                     <ElIcon size={15}>{v}</ElIcon>
@@ -89,10 +86,10 @@ const TimelineChart = defineComponent<{ data: timer.timeline.Tick[] }>(props => 
                         </ElRadioGroup>
                     </Flex>
                 </Flex>
-            </ChartTitle >
+            </ChartTitle>
             <div ref={elRef} style={{ flex: 1 }} />
         </Flex>
     )
-}, { props: ['data'] })
+})
 
 export default TimelineChart

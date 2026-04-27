@@ -7,34 +7,26 @@
 
 import { listenMediaSizeChange } from "@hooks"
 import { initLocale } from "@i18n"
-import { initElementLocale } from "@i18n/element"
-import optionService from "@service/option-service"
-import { init as initTheme, toggle } from "@util/dark-mode"
-import { createApp, type App } from "vue"
-import '../../common/timer'
-import { initEcharts } from "./echarts"
+import { createElApp } from "@pages/element-ui/app"
+import { initDarkTheme } from "@pages/util/dark-mode"
+import { initEcharts } from "../util/echarts"
 import Main from "./Layout"
 import installRouter from "./router"
 import { injectAppCss } from './styles/index'
 
 async function main() {
     injectAppCss()
-    // Init theme with cache first
-    initTheme()
+    initDarkTheme()
     listenMediaSizeChange()
-    // Calculate the latest mode
-    optionService.isDarkMode().then(toggle)
-    await initLocale()
+    initLocale()
     initEcharts()
-    const app: App = createApp(Main)
+    const app = await createElApp(Main)
     installRouter(app)
 
     const el = document.createElement('div')
     document.body.append(el)
     el.id = 'app'
     app.mount(el)
-
-    await initElementLocale(app)
 }
 
 main()

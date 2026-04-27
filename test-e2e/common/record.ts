@@ -1,4 +1,4 @@
-import { LaunchContext } from "./base"
+import type { LaunchContext } from "./base"
 
 type RecordRow = {
     date: string

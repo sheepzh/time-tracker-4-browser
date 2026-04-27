@@ -4,10 +4,10 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { useXsState } from '@hooks/useMediaSize'
+import ChartTitle from "@app/components/Dashboard/ChartTitle"
+import { useXsState } from '@hooks'
 import Flex from "@pages/components/Flex"
 import { computed, defineComponent } from "vue"
-import ChartTitle from "../../ChartTitle"
 import BarChart from "./BarChart"
 import { initProvider } from "./context"
 import HalfBarChart from "./HalfBarChart"
@@ -34,7 +34,7 @@ const _default = defineComponent(() => {
             <Flex column gap={4} height="100%">
                 <ChartTitle>
                     <Title />
-                </ChartTitle >
+                </ChartTitle>
                 <Flex flex={1}>
                     {chart.value}
                 </Flex>

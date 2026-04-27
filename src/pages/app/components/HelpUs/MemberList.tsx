@@ -6,10 +6,11 @@
  */
 
 import { getMembers } from "@api/crowdin"
-import { t } from "@app/locale"
-import { useRequest } from "@hooks"
+import { t } from '@app/locale'
+import { useRequest } from '@hooks'
 import Box from "@pages/components/Box"
 import Flex from "@pages/components/Flex"
+import Img from '@pages/components/Img'
 import { ElDivider } from "element-plus"
 import { defineComponent } from "vue"
 
@@ -31,10 +32,8 @@ const _default = defineComponent(() => {
                         target="_blank"
                         style={idx === (arr.length - 1) ? { marginInlineEnd: 'auto' } : undefined}
                     >
-                        <img
-                            src={avatarUrl}
-                            alt={username}
-                            title={username}
+                        <Img
+                            src={avatarUrl} alt={username} title={username}
                             style={{ width: '60px', height: '60px', borderRadius: '30px' }}
                         />
                     </a>

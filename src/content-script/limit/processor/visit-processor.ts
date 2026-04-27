@@ -1,41 +1,35 @@
-import { trySendMsg2Runtime } from "@api/chrome/runtime"
+import { trySendMsg2Runtime } from '@api/sw/common'
 import NormalTracker from "@cs/tracker/normal"
-import { DELAY_MILL } from "@util/limit"
-import { MILL_PER_SECOND } from "@util/time"
-import { type ModalContext, type Processor } from "../common"
+import { MILL_PER_MINUTE, MILL_PER_SECOND } from "@util/time"
+import type { ModalContext, Processor } from '../types'
 
 class VisitProcessor implements Processor {
-
-    private context: ModalContext
     private focusTime: number = 0
     private rules: timer.limit.Rule[] = []
-    private tracker: NormalTracker | undefined
+    tracker: NormalTracker
     private delayCount: number = 0
 
-    constructor(context: ModalContext) {
-        this.context = context
+    constructor(private readonly context: ModalContext, private readonly delayDuration: number) {
+        this.tracker = new NormalTracker({
+            onReport: data => this.handleTracker(data),
+        })
     }
 
-    async handleMsg(code: timer.mq.ReqCode): Promise<timer.mq.Response> {
-        if (code === "limitChanged") {
-            this.initRules()
-            return { code: "success" }
-        } else if (code === "askVisitTime") {
-            return { code: "success", data: this.focusTime }
-        }
-        return { code: "ignore" }
+    onLimitChanged(_: timer.limit.Item[]): void {
+        this.initRules()
     }
 
-    hasLimited(rule: timer.limit.Rule): boolean {
-        const { visitTime } = rule || {}
+    private hasLimited(rule: timer.limit.Rule): boolean {
+        const { visitTime } = rule
         if (!visitTime) return false
-        return visitTime * MILL_PER_SECOND + this.delayCount * DELAY_MILL < this.focusTime
+        const afterDelayed = visitTime * MILL_PER_SECOND + this.delayCount * this.delayDuration * MILL_PER_MINUTE
+        return afterDelayed < this.focusTime
     }
 
-    async handleTracker(data: timer.core.Event) {
-        const diff = (data?.end ?? 0) - (data?.start ?? 0)
+    private async handleTracker({ start, end }: timer.core.Event) {
+        const diff = end - start
         this.focusTime += diff
-        this.rules?.forEach?.(rule => {
+        this.rules.forEach(rule => {
             if (!this.hasLimited(rule)) return
             const { id, cond, allowDelay } = rule
             this.context.modal.addReason({
@@ -49,22 +43,19 @@ class VisitProcessor implements Processor {
         })
     }
 
-    async initRules() {
-        this.rules = await trySendMsg2Runtime("cs.getRelatedRules", this.context.url) ?? []
+    private async initRules() {
+        this.rules = await trySendMsg2Runtime("limit.list", { effective: true, url: this.context.url }) ?? []
         this.context.modal.removeReasonsByType("VISIT")
     }
 
     async init(): Promise<void> {
-        this.tracker = new NormalTracker({
-            onReport: data => this.handleTracker(data),
-        })
         this.tracker.init()
         this.initRules()
-        this.context.modal.addDelayHandler(() => this.processMore5Minutes())
+        this.context.modal.addDelayHandler(() => this.processDelay())
     }
 
-    private processMore5Minutes() {
-        this.delayCount = (this.delayCount ?? 0) + 1
+    private processDelay() {
+        this.delayCount++
         this.context.modal.removeReasonsByType("VISIT")
     }
 }

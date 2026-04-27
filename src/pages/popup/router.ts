@@ -1,31 +1,34 @@
+import { useLocalStorage } from '@hooks'
 import { type App } from "vue"
-import { createRouter, createWebHashHistory, type RouteRecordRaw } from "vue-router"
+import { createRouter, createWebHashHistory, RouteRecordRedirect, type RouteRecordSingleView } from "vue-router"
+import type { PopupMenu } from './types'
 
-export const ROUTE_PERCENTAGE = 'percentage'
-const ROUTE_RANKING = 'ranking'
+type Path = `/${PopupMenu}`
+type MyRoute =
+    | (Omit<RouteRecordSingleView, 'path'> & { path: Path })
+    | (Omit<RouteRecordRedirect, 'redirect'> & { redirect: Path })
 
-export const POPUP_ROUTES = [ROUTE_PERCENTAGE, ROUTE_RANKING]
 
-export type PopupRoute = typeof POPUP_ROUTES[number]
-
-const routes: RouteRecordRaw[] = [
+const createRoutes = (stored: PopupMenu | undefined): MyRoute[] => [
     {
         path: '/',
-        redirect: '/' + ROUTE_PERCENTAGE,
+        redirect: stored ? `/${stored}` : '/percentage',
     }, {
-        path: '/' + ROUTE_PERCENTAGE,
+        path: '/percentage',
         component: () => import('./components/Percentage'),
     }, {
-        path: '/' + ROUTE_RANKING,
+        path: '/ranking',
         component: () => import('./components/Ranking'),
-    }
+    }, {
+        path: '/limit',
+        component: () => import('./components/Limit'),
+    },
 ]
 
 export default (app: App) => {
-    const router = createRouter({
-        history: createWebHashHistory(),
-        routes,
-    })
-
+    const [stored] = useLocalStorage<PopupMenu>('popup_menu')
+    const routes = createRoutes(stored)
+    const history = createWebHashHistory()
+    const router = createRouter({ routes, history })
     app.use(router)
 }

@@ -6,11 +6,10 @@
  */
 
 import { getVersion } from '@api/chrome/runtime'
-import { t } from "@app/locale"
+import { t } from '@app/locale'
 import { Expand, Fold } from '@element-plus/icons-vue'
 import { css } from '@emotion/css'
-import { useCached } from '@hooks/useCached'
-import { useState } from '@hooks/useState'
+import { useCached, useState } from '@hooks'
 import Flex from '@pages/components/Flex'
 import { colorVariant } from '@pages/util/style'
 import { ElCollapseTransition, ElIcon, ElMenu, ElMenuItem, ElMenuItemGroup, ElScrollbar, ElText, ElTooltip, useNamespace } from "element-plus"
@@ -134,7 +133,7 @@ const _default = defineComponent(() => {
                     </ElText>
                 </ElCollapseTransition>
             </Flex>
-        </Flex >
+        </Flex>
     )
 })
 

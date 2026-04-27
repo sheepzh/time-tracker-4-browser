@@ -5,9 +5,9 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import optionHolder from "@service/components/option-holder"
+import { getOption } from "@api/sw/option"
 import { processAnimation, processAria, processFont, processRtl } from "@util/echarts"
-import { type AriaComponentOption, type ComposeOption, SeriesOption, TitleComponentOption } from "echarts"
+import type { AriaComponentOption, ComposeOption, SeriesOption, TitleComponentOption } from "echarts"
 import { type ECharts, init } from "echarts/core"
 import { ElLoading } from "element-plus"
 import { type Ref, type WatchSource, isRef, onMounted, ref, watch } from "vue"
@@ -30,7 +30,7 @@ export abstract class EchartsWrapper<BizOption, EchartsOption> {
      * true if need to clear all the before series when setOption
      */
     protected replaceSeries: boolean = false
-    private lastBizOption: BizOption | undefined
+    protected lastBizOption: BizOption | undefined
     /**
      * Fix the font family
      * @see https://github.com/sheepzh/time-tracker-4-browser/issues/623
@@ -60,7 +60,7 @@ export abstract class EchartsWrapper<BizOption, EchartsOption> {
     }
 
     protected async postChartOption(option: EchartsOption & BaseEchartsOption) {
-        const { chartDecal, chartAnimationDuration } = await optionHolder.get() || {}
+        const { chartDecal, chartAnimationDuration } = await getOption()
         processAnimation(option, chartAnimationDuration)
         processAria(option, chartDecal)
         processRtl(option)

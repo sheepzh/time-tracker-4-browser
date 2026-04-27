@@ -1,15 +1,15 @@
 import { createTab } from "@api/chrome/tab"
-import { cvtGroupColor } from "@api/chrome/tabGroups"
-import TooltipWrapper from "@app/components/common/TooltipWrapper"
 import { Mouse, Timer } from "@element-plus/icons-vue"
-import { useTabGroups } from "@hooks/useTabGroups"
+import { useTabGroups } from "@hooks"
 import Flex from "@pages/components/Flex"
+import TooltipWrapper from '@pages/components/TooltipWrapper'
+import { cvtGroupColor } from '@pages/util/style'
 import { calJumpUrl } from "@popup/common"
 import { useCateNameMap, useQuery } from "@popup/context"
-import { t } from "@popup/locale"
+import { t } from '@popup/locale'
 import { isRemainHost } from "@util/constant/remain-host"
 import { getGroupName, getIconUrl, isCate, isGroup, isNormalSite, isSite } from "@util/stat"
-import { formatPeriodCommon } from "@util/time"
+import { DateRange, formatPeriodCommon } from "@util/time"
 import { ElAvatar, ElCard, ElIcon, ElLink, ElProgress, ElTag, ElText } from "element-plus"
 import { computed, defineComponent, type StyleValue } from "vue"
 
@@ -82,7 +82,7 @@ type ItemProps = {
     value: timer.stat.Row
     max?: number
     total?: number
-    date?: Date | [start: Date, end?: Date]
+    date?: DateRange
     displaySiteName?: boolean
     onJump?: NoArgCallback
 }
@@ -171,7 +171,7 @@ const Item = defineComponent<ItemProps>(props => {
                     </Flex>
                 </Flex>
             </Flex>
-        </ElCard >
+        </ElCard>
     )
 }, { props: ['date', 'displaySiteName', 'max', 'total', 'value', 'onJump'] })
 

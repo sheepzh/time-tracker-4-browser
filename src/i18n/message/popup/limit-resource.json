@@ -1,0 +1,15 @@
+{
+    "en": {
+        "noData": "No limit rule effective for this URL",
+        "newOne": "New One",
+        "timeUsed": "{percent} used",
+        "visitUsed": "{used} count visited",
+        "remain": "{remaining} remaining",
+        "noLimit": "No Limit",
+        "notHit": "Not in effect"
+    },
+    "zh_CN": {
+        "noLimit": "无限制",
+        "notHit": "未命中"
+    }
+}

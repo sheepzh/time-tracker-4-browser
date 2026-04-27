@@ -1,76 +1,78 @@
-import { trySendMsg2Runtime } from "@api/chrome/runtime"
-import Trend from "@app/Layout/icons/Trend"
-import { judgeVerificationRequired, processVerification } from "@app/util/limit"
-import { TAG_NAME } from "@cs/limit/element"
+import { APP_ANALYSIS_ROUTE, APP_LIMIT_ROUTE, AppLimitQuery, type AppAnalysisQuery } from '@/shared/route'
+import { trySendMsg2Runtime } from '@api/sw/common'
+import { processVerification } from '@app/util/limit'
 import { t } from "@cs/locale"
 import { Plus, Timer } from "@element-plus/icons-vue"
 import Flex from '@pages/components/Flex'
-import optionHolder from "@service/components/option-holder"
+import { Trend } from "@pages/icons"
+import { getAppPageUrl } from '@util/constant/url'
 import { meetTimeLimit } from '@util/limit'
+import { MILL_PER_SECOND } from '@util/time'
 import { ElButton } from "element-plus"
 import { computed, defineComponent } from "vue"
-import { useDelayHandler, useReason, useRule } from "../context"
-
-async function handleMore5Minutes(rule: timer.limit.Item | null, callback: () => void) {
-    let promise: Promise<void> | undefined = undefined
-    const ele = document.querySelector(TAG_NAME)?.shadowRoot?.querySelector('body')
-    if (rule && await judgeVerificationRequired(rule)) {
-        const option = await optionHolder.get()
-        promise = processVerification(option, { appendTo: ele ?? undefined })
-        promise ? promise.then(callback).catch(() => { }) : callback()
-    } else {
-        callback()
-    }
-}
+import { useApp, useRule } from '../context'
 
 const _default = defineComponent(() => {
-    const reason = useReason()
+    const { reason, visitTime: currVisitTime, bridge, url, delayDuration } = useApp()
+
+    const analysisUrl = getAppPageUrl(APP_ANALYSIS_ROUTE, { url } satisfies AppAnalysisQuery)
+    const ruleUrl = getAppPageUrl(APP_LIMIT_ROUTE, { url: encodeURI(url) } satisfies AppLimitQuery)
+
     const rule = useRule()
     const showDelay = computed(() => {
-        const { type, allowDelay, delayCount = 0 } = reason.value || {}
+        const reasonVal = reason.value
+        if (!reasonVal) return false
+        const { type, allowDelay, delayCount = 0 } = reasonVal
         if (!allowDelay) return false
 
-        const { time, weekly, visitTime, waste, weeklyWaste } = rule.value || {}
-        let realLimit = 0, realWaste = 0
+        const { time, weekly, visitTime, waste, weeklyWaste } = rule.value ?? {}
+        let maxLimitMs = 0, wasted = 0
         if (type === 'DAILY') {
-            realLimit = time ?? 0
-            realWaste = waste ?? 0
+            maxLimitMs = (time ?? 0) * MILL_PER_SECOND
+            wasted = waste ?? 0
         } else if (type === 'WEEKLY') {
-            realLimit = weekly ?? 0
-            realWaste = weeklyWaste ?? 0
+            maxLimitMs = (weekly ?? 0) * MILL_PER_SECOND
+            wasted = weeklyWaste ?? 0
         } else if (type === 'VISIT') {
-            realLimit = visitTime ?? 0
-            realWaste = reason.value?.getVisitTime?.() ?? 0
+            maxLimitMs = (visitTime ?? 0) * MILL_PER_SECOND
+            wasted = currVisitTime.value
         } else {
             return false
         }
-        return meetTimeLimit(realLimit, realWaste, allowDelay, delayCount)
+        return meetTimeLimit(
+            { wasted, maxLimit: maxLimitMs },
+            { count: delayCount, duration: delayDuration.value, allow: !!allowDelay },
+        )
     })
 
-    const delayHandler = useDelayHandler()
+    const handleDelay = async () => {
+        const option = await trySendMsg2Runtime('option.get')
+        try {
+            if (option) await processVerification(option)
+            await bridge.request('delay', undefined)
+        } catch {
+        }
+    }
 
     return () => (
         <Flex gap={10} marginBottom={60} justify='center'>
-            <ElButton
-                round
-                icon={Trend}
-                type="success"
-                onClick={() => trySendMsg2Runtime('cs.openAnalysis')}
-            >
-                {t(msg => msg.menu.siteAnalysis)}
-            </ElButton>
+            <a target='_blank' href={analysisUrl}>
+                <ElButton round icon={Trend} type="success">
+                    {t(msg => msg.menu.siteAnalysis)}
+                </ElButton>
+            </a>
             <ElButton
                 v-show={showDelay.value}
                 type="primary"
-                round
-                icon={Plus}
-                onClick={() => handleMore5Minutes(rule.value, delayHandler)}
+                round icon={Plus} onClick={handleDelay}
             >
-                {t(msg => msg.modal.more5Minutes)}
+                {t(msg => msg.modal.delay, { n: delayDuration.value })}
             </ElButton>
-            <ElButton round icon={Timer} onClick={() => trySendMsg2Runtime('cs.openLimit')}>
-                {t(msg => msg.modal.ruleDetail)}
-            </ElButton>
+            <a target='_blank' href={ruleUrl}>
+                <ElButton round icon={Timer}>
+                    {t(msg => msg.modal.ruleDetail)}
+                </ElButton>
+            </a>
         </Flex>
     )
 })

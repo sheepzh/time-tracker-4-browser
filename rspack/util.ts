@@ -1,4 +1,4 @@
-import { type RspackOptions, type RspackPluginInstance } from '@rspack/core'
+import type { RspackOptions, RspackPluginInstance } from '@rspack/core'
 
 export function enhancePluginWith(option: RspackOptions, ...toPush: RspackPluginInstance[]) {
     const { plugins = [] } = option

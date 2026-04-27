@@ -5,15 +5,14 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { t } from "@app/locale"
+import { checkAuth, getLastBackUp, syncData } from "@api/sw/backup"
+import { t } from '@app/locale'
 import { Operation, UploadFilled } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
-import { useManualRequest, useRequest, useState } from "@hooks"
+import { useManualRequest, useRequest } from "@hooks"
 import Flex from "@pages/components/Flex"
-import processor from "@service/backup/processor"
-import { getLastBackUp } from "@service/meta-service"
 import { formatTime } from "@util/time"
-import { ElButton, ElDivider, ElLoading, ElMessage, ElText, useNamespace } from "element-plus"
+import { ElButton, ElDivider, ElMessage, ElText, useNamespace } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
 import Clear from "./Clear"
 import Download from "./Download"
@@ -27,40 +26,26 @@ const useStyle = () => {
     `
 }
 
-async function handleTest() {
-    const loading = ElLoading.service({ text: "Please wait...." })
-    try {
-        const { errorMsg } = await processor.checkAuth()
-        if (!errorMsg) {
-            ElMessage.success("Valid!")
-        } else {
-            ElMessage.error(errorMsg)
-        }
-    } finally {
-        loading.close()
-    }
-}
-
 const TIME_FORMAT = t(msg => msg.calendar.timeFormat)
 
 const _default = defineComponent<{ type: timer.backup.Type }>(props => {
-    const [lastTime, setLastTime] = useState<number>()
 
-    useRequest(() => getLastBackUp(props.type).then(d => d?.ts), {
+    const { data: lastTime, refresh: refreshLastTime } = useRequest(() => getLastBackUp(props.type), {
         deps: () => props.type,
-        onSuccess: setLastTime,
     })
 
-    const { refresh: handleBackup } = useManualRequest(() => processor.syncData(), {
+    const { refresh: handleBackup } = useManualRequest(syncData, {
         loadingText: "Doing backup....",
-        onSuccess: ({ success, data, errorMsg }) => {
-            if (success) {
-                ElMessage.success('Successfully!')
-                setLastTime(data ?? Date.now())
-            } else {
-                ElMessage.error(errorMsg ?? 'Unknown error')
-            }
+        onSuccess: errorMsg => {
+            if (errorMsg) return ElMessage.error(errorMsg)
+            ElMessage.success('Successfully!')
+            refreshLastTime()
         },
+    })
+
+    const { refresh: handleTest } = useManualRequest(checkAuth, {
+        loadingText: "Please wait....",
+        onSuccess: err => err ? ElMessage.error(err) : ElMessage.success("Valid!"),
     })
 
     const footerCls = useStyle()

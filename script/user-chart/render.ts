@@ -13,9 +13,7 @@ import { filenameOf, getExistGist, validateTokenFromEnv, type Browser, type User
 type EcOption = ComposeOption<
     | LineSeriesOption
     | TitleComponentOption
-    | GridComponentOption
->
-
+    | GridComponentOption>
 const ALL_BROWSERS: Browser[] = ['firefox', 'chrome', 'edge']
 
 const POINT_COUNT = 500

@@ -6,12 +6,12 @@
  */
 
 import { useCached } from "@hooks"
-import { ElSelect } from "element-plus"
+import { ElSelect, SelectProps } from "element-plus"
 import { defineComponent, watch } from "vue"
 import { useRoute } from "vue-router"
 import { SELECT_WRAPPER_STYLE } from "./common"
 
-type Props = {
+type Props = Pick<SelectProps, "placeholder"> & {
     defaultValue?: string
     /**
      * Whether to save the value in the localStorage with {@param historyName}
@@ -27,12 +27,13 @@ const SelectFilterItem = defineComponent<Props>(props => {
     watch(data, val => props.onSelect?.(val))
     return () => (
         <ElSelect
+            placeholder={props.placeholder}
             modelValue={data.value}
             onChange={setter}
             style={SELECT_WRAPPER_STYLE}
             options={Object.entries(props.options).map(([value, label]) => ({ label, value }))}
         />
     )
-}, { props: ['defaultValue', 'historyName', 'options', 'onSelect'] })
+}, { props: ['defaultValue', 'historyName', 'options', 'onSelect', 'placeholder'] })
 
 export default SelectFilterItem

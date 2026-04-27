@@ -5,12 +5,12 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { clearBackup, queryBackup } from '@api/sw/backup'
 import DialogSop from "@app/components/common/DialogSop"
 import { initDialogSopContext } from '@app/components/common/DialogSop/context'
-import { t } from "@app/locale"
+import { t } from '@app/locale'
 import { Delete } from "@element-plus/icons-vue"
-import processor from '@service/backup/processor'
-import { BIRTHDAY, getBirthday, parseTime } from '@util/time'
+import { BIRTHDAY, formatTimeYMD } from '@util/time'
 import { ElButton } from "element-plus"
 import { defineComponent } from "vue"
 import ClientTable from '../ClientTable'
@@ -24,9 +24,9 @@ const STEP_TITLES = [
 
 async function fetchStatResult(client: timer.backup.Client): Promise<StatResult> {
     const { id: specCid, maxDate, minDate = BIRTHDAY } = client
-    const start = parseTime(minDate) ?? getBirthday()
-    const end = parseTime(maxDate) ?? new Date()
-    const remoteRows: timer.core.Row[] = await processor.query({ specCid, start, end })
+    const start = minDate ?? BIRTHDAY
+    const end = maxDate ?? formatTimeYMD(Date.now())
+    const remoteRows = await queryBackup({ specCid, start, end })
     const siteSet: Set<string> = new Set()
     remoteRows?.forEach(row => {
         const { host } = row || {}
@@ -49,8 +49,8 @@ const _default = defineComponent(() => {
         onFinish: async ({ form }) => {
             const cid = form.client?.id
             if (!cid) throw new Error(t(msg => msg.option.backup.clientTable.notSelected))
-            const result = await processor.clear(cid)
-            if (!result.success) throw new Error(result.errorMsg)
+            const errMsg = await clearBackup(cid)
+            if (errMsg) throw new Error(errMsg)
         },
     })
 

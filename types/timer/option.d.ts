@@ -73,6 +73,8 @@ declare namespace timer.option {
         chartAnimationDuration: number
     }
 
+    type AppearanceRequired = MakeRequired<timer.option.AppearanceOption, 'darkModeTimeStart' | 'darkModeTimeEnd'>
+
     type TrackingOption = {
         /**
          * Whether to pause tracking if no activity detected
@@ -108,7 +110,13 @@ declare namespace timer.option {
         storage: StorageType
     }
 
+    type TrackingRequired = MakeRequired<timer.option.TrackingOption, 'weekStart'>
+
     type LimitOption = {
+        /**
+         * Delay duration, minutes
+         */
+        limitDelayDuration: number
         /**
          * Motto displayed when restricted
          */
@@ -138,6 +146,8 @@ declare namespace timer.option {
          */
         limitReminderDuration?: number
     }
+
+    type LimitRequired = MakeRequired<timer.option.LimitOption, 'limitPassword' | 'limitVerifyDifficulty' | 'limitReminderDuration'>
 
     /**
      * The options of backup
@@ -206,6 +216,11 @@ declare namespace timer.option {
          */
         notificationAuthToken?: string
     }
+
+    export type DefaultOption =
+        & AppearanceRequired & TrackingRequired & LimitRequired
+        & timer.option.BackupOption & timer.option.AccessibilityOption
+        & timer.option.NotificationOption
 
     type AllOption =
         & AppearanceOption

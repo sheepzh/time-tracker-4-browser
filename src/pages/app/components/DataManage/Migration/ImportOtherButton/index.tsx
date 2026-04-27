@@ -5,15 +5,15 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { importOther } from '@api/sw/immigration'
 import DialogSop from '@app/components/common/DialogSop'
 import { initDialogSopContext } from '@app/components/common/DialogSop/context'
+import { useDataMemory } from '@app/components/DataManage/context'
 import { t } from "@app/locale"
 import { Upload } from "@element-plus/icons-vue"
 import Flex from '@pages/components/Flex'
-import { processImportedData } from '@service/components/import-processor'
 import { ElButton } from "element-plus"
-import { defineComponent } from "vue"
-import { useDataMemory } from "../../context"
+import { defineComponent, toRaw } from "vue"
 import { parseFile } from './processor'
 import Step1 from './Step1'
 import Step2 from './Step2'
@@ -43,7 +43,7 @@ const _default = defineComponent(() => {
             if (!data) throw new Error(t(msg => msg.dataManage.importOther.fileNotSelected))
             const resolution = form.resolution
             if (!resolution) throw new Error(t(msg => msg.dataManage.importOther.conflictNotSelected))
-            await processImportedData(data, resolution)
+            await importOther({ data: toRaw(data), resolution })
             refreshMemory?.()
         },
     })

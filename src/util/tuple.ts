@@ -39,9 +39,3 @@ export const multiTuple = <L extends number>(a: Vector<L>, multiFactor: number):
     return a?.map(v => (v ?? 0) * (multiFactor ?? 0)) as unknown as Vector<L>
 }
 
-/**
- * Divide tuple
- */
-export const divideTuple = <L extends number>(a: Vector<L>, divideFactor: number): Vector<L> => {
-    return a?.map(v => (v ?? 0) / (divideFactor ?? 0)) as unknown as Vector<L>
-}

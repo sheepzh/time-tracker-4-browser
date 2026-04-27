@@ -8,7 +8,7 @@
 import resource from './limit-resource.json'
 
 export type LimitMessage = {
-    filterDisabled: string
+    onlyEffective: string
     wildcardTip: string
     emptyTips: string
     step: {
@@ -19,19 +19,14 @@ export type LimitMessage = {
     item: {
         name: string
         condition: string
-        daily: string
-        weekly: string
         weekStartInfo: string
         visitTime: string
-        period: string
         enabled: string
         locked: string
         effectiveDay: string
-        delayAllowed: string
-        delayAllowedInfo: string
+        allowDelay: string
         delayCount: string
         detail: string
-        visits: string
         or: string
         notEffective: string
     }
@@ -59,15 +54,6 @@ export type LimitMessage = {
         confession: string
     }
     reminder: string
-}
-
-export const verificationMessages: Messages<LimitMessage["verification"]> = {
-    en: resource.en?.verification,
-    zh_CN: resource.zh_CN?.verification,
-    zh_TW: resource.zh_TW?.verification,
-    ja: resource.ja?.verification,
-    pt_PT: resource.pt_PT?.verification,
-    uk: resource.uk?.verification,
 }
 
 const _default: Messages<LimitMessage> = resource

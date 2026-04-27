@@ -5,46 +5,60 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { executeScript } from "@api/chrome/script"
-import { createTab } from "@api/chrome/tab"
-import { ANALYSIS_ROUTE, LIMIT_ROUTE } from "@app/router/constants"
-import optionHolder from "@service/components/option-holder"
-import limitService from "@service/limit-service"
-import { getSite } from "@service/site-service"
-import timelineThrottler from '@service/throttler/timeline-throttler'
-import whitelistHolder from "@service/whitelist/holder"
-import { getAppPageUrl } from "@util/constant/url"
-import { extractFileHost, extractHostname } from "@util/pattern"
+import { IS_ANDROID, IS_CHROME, IS_SAFARI } from "@util/constant/environment"
+import { extractHostname, isBrowserUrl, isHomepage } from "@util/pattern"
+import { extractSiteName } from "@util/site"
 import badgeManager from "./badge-manager"
-import { collectIconAndAlias } from "./icon-and-alias-collector"
 import MessageDispatcher from "./message-dispatcher"
+import { saveAlias, saveIconUrl } from "./service/site-service"
+import { incVisitCount } from './track-server/normal'
 
-const handleOpenAnalysisPage = (sender: ChromeMessageSender) => {
-    const { tab, url } = sender || {}
-    if (!url) return
-    const host = extractFileHost(url) || extractHostname(url)?.host
-    const newTabUrl = getAppPageUrl(ANALYSIS_ROUTE, { host })
-
-    const tabIndex = tab?.index
-    const newTabIndex = tabIndex ? tabIndex + 1 : undefined
-    createTab({ url: newTabUrl, index: newTabIndex })
+function isUrl(title: string) {
+    return title.startsWith('https://') || title.startsWith('http://') || title.startsWith('ftp://')
 }
 
-const handleOpenLimitPage = (sender: ChromeMessageSender) => {
-    const { tab, url } = sender || {}
-    if (!url) return
-    const newTabUrl = getAppPageUrl(LIMIT_ROUTE, { url })
-    const tabIndex = tab?.index
-    const newTabIndex = tabIndex ? tabIndex + 1 : undefined
-    createTab({ url: newTabUrl, index: newTabIndex })
+async function collectAlias(key: timer.site.SiteKey, tabTitle: string) {
+    if (!tabTitle) return
+    if (isUrl(tabTitle)) return
+    const siteName = extractSiteName(tabTitle, key.host)
+    siteName && await saveAlias(key, siteName, true)
+}
+
+/**
+ * Process the tab
+ */
+async function processTabInfo(tab: ChromeTab): Promise<void> {
+    let { favIconUrl, url, title } = tab
+    if (!url || !title) return
+    if (isBrowserUrl(url)) return
+    const hostInfo = extractHostname(url)
+    const host = hostInfo.host
+    if (!host) return
+    // localhost hosts with Chrome use cache, so keep the favIcon url undefined
+    IS_CHROME && /^localhost(:.+)?/.test(host) && (favIconUrl = undefined)
+    const siteKey: timer.site.SiteKey = { host, type: 'normal' }
+    favIconUrl && await saveIconUrl(siteKey, favIconUrl)
+    !IS_ANDROID
+        && !isBrowserUrl(url)
+        && isHomepage(url)
+        && await collectAlias(siteKey, title)
+}
+
+/**
+ * Collect the favicon of host
+ */
+const collectIconAndAlias = async (tab: ChromeTab) => {
+    if (IS_SAFARI || IS_ANDROID) return
+    processTabInfo(tab)
 }
 
 const handleInjected = async (sender: ChromeMessageSender) => {
-    const tabId = sender?.tab?.id
-    if (!tabId) return
-    collectIconAndAlias(tabId)
-    badgeManager.updateFocus()
-    executeScript(tabId, ['content_scripts.js'])
+    const { tab, url } = sender
+    if (!tab) return
+    await incVisitCount(tab)
+    await collectIconAndAlias(tab)
+    const tabId = tab.id
+    await badgeManager.updateFocus(tabId && url ? { tabId, url } : undefined)
 }
 
 /**
@@ -54,26 +68,7 @@ const handleInjected = async (sender: ChromeMessageSender) => {
  */
 export default function init(dispatcher: MessageDispatcher) {
     dispatcher
-        // Judge is in whitelist
-        .register<{ host?: string, url?: string }, boolean>('cs.isInWhitelist', ({ host, url } = {}) => !!host && !!url && whitelistHolder.contains(host, url))
-        // Need to print the information of today
-        .register<void, boolean>('cs.printTodayInfo', async () => {
-            const option = await optionHolder.get()
-            return !!option.printInConsole
-        })
-        .register<string, timer.limit.Item[]>('cs.getLimitedRules', url => limitService.getLimited(url))
-        .register<string, timer.limit.Item[]>('cs.getRelatedRules', url => limitService.getRelated(url))
-        .register<void, void>('cs.openAnalysis', (_, sender) => handleOpenAnalysisPage(sender))
-        .register<void, void>('cs.openLimit', (_, sender) => handleOpenLimitPage(sender))
-        .register<void, void>('cs.onInjected', async (_, sender) => handleInjected(sender))
+        .register('cs.injected', (_, sender) => handleInjected(sender))
         // Get sites which need to count run time
-        .register<string, timer.site.SiteKey | null>('cs.getRunSites', async url => {
-            const { host } = extractHostname(url) || {}
-            if (!host) return null
-            const site: timer.site.SiteKey = { host, type: 'normal' }
-            const exist = await getSite(site)
-            return exist?.run ? site : null
-        })
-        .register<void, boolean>('cs.getAudible', async (_, sender) => !!sender.tab?.audible)
-        .register<timer.timeline.Event, void>('cs.timelineEv', ev => timelineThrottler.saveEvent(ev))
+        .register('cs.getAudible', async (_, sender) => !!sender.tab?.audible)
 }

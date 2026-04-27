@@ -4,23 +4,19 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import { getWeekStartDay } from "@api/sw/option"
 import { t } from "@app/locale"
-import { getStepColors } from "@app/util/echarts"
-import { cvt2LocaleTime } from "@app/util/time"
-import { EchartsWrapper } from "@hooks/useEcharts"
-import { getPrimaryTextColor } from "@pages/util/style"
-import weekHelper from "@service/components/week-helper"
+import { getStepColors } from '@app/util/echarts'
+import { cvt2LocaleTime } from '@app/util/time'
+import { EchartsWrapper } from "@hooks"
+import { getPrimaryTextColor } from '@pages/util/style'
 import { groupBy, rotate } from "@util/array"
 import { formatPeriodCommon, getAllDatesBetween, MILL_PER_HOUR, MILL_PER_MINUTE } from "@util/time"
-import {
-    type ComposeOption,
-    type GridComponentOption,
-    type HeatmapSeriesOption,
-    type ScatterSeriesOption,
-    type TooltipComponentOption,
-    type VisualMapComponentOption,
+import type {
+    ComposeOption, GridComponentOption, HeatmapSeriesOption, ScatterSeriesOption, TooltipComponentOption,
+    VisualMapComponentOption,
 } from "echarts"
-import { TopLevelFormatterParams } from "echarts/types/dist/shared"
+import type { TopLevelFormatterParams } from "echarts/types/dist/shared"
 
 export type ChartValue = [
     x: number,
@@ -191,7 +187,7 @@ class Wrapper extends EchartsWrapper<BizOption, EcOption> {
             data.push([x, y, dailyMills, date])
         })
         const weekDays = (t(msg => msg.calendar.weekDays)?.split?.('|') || []).reverse()
-        const weekStart = await weekHelper.getRealWeekStart()
+        const weekStart = await getWeekStartDay()
         weekStart && rotate(weekDays, weekStart, true)
         return optionOf(data, weekDays, this.getDom())
     }

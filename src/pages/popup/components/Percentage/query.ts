@@ -1,8 +1,8 @@
-import { listAllGroups } from "@api/chrome/tabGroups"
 import { queryRows, } from "@popup/common"
-import type { PopupOption, PopupQuery } from "@popup/context"
-import { t } from "@popup/locale"
-import { getDayLength } from "@util/time"
+import { t } from '@popup/locale'
+import type { PopupOption, PopupQuery } from "@popup/types"
+import { listAllGroups } from "@api/chrome/tabGroups"
+import { getBirthday, getDayLength } from "@util/time"
 
 export type PercentageResult = {
     query: PopupQuery
@@ -59,7 +59,7 @@ export const doQuery = async (query: PopupQuery, option: PopupOption): Promise<P
         dates.forEach(d => allDatesSet.add(d))
     })
     const dateLength = allDatesSet.size > 0 ? allDatesSet.size
-        : (Array.isArray(date) ? getDayLength(date[0], date[1] ?? new Date()) : 1)
+        : (Array.isArray(date) ? getDayLength(date[0] ?? getBirthday(), date[1] ?? new Date()) : 1)
 
     return {
         query, rows,

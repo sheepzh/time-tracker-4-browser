@@ -5,11 +5,11 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { initAppContext } from "@app/context"
 import { css, injectGlobal } from '@emotion/css'
 import { ElAside, ElContainer, ElHeader, useNamespace } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
 import { RouterView } from "vue-router"
+import { initAppContext } from "../context"
 import HeadNav from "./menu/Nav"
 import SideMenu from "./menu/Side"
 

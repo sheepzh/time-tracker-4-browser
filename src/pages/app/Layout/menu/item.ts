@@ -6,15 +6,15 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { type I18nKey } from "@app/locale"
-import { ANALYSIS_ROUTE, MERGE_ROUTE } from "@app/router/constants"
+import { type I18nKey } from '@app/locale'
+import { ANALYSIS_ROUTE, MERGE_ROUTE } from '@app/router/constants'
 import { Aim, Connection, HelpFilled, Histogram, Memo, MoreFilled, Rank, SetUp, Stopwatch, Timer, View } from "@element-plus/icons-vue"
+import { Trend } from '@pages/icons'
 import { getGuidePageUrl } from "@util/constant/url"
 import { type Component } from 'vue'
 import About from "../icons/About"
 import Database from "../icons/Database"
 import Table from "../icons/Table"
-import Trend from "../icons/Trend"
 import Website from "../icons/Website"
 import Whitelist from "../icons/Whitelist"
 
@@ -32,7 +32,7 @@ export type MenuItem = {
     mobile?: boolean
 }
 
-export type MenuGroup = Omit<MenuItem, 'href' | 'route'> & {
+type MenuGroup = Omit<MenuItem, 'href' | 'route'> & {
     children: MenuItem[]
 }
 
@@ -69,7 +69,7 @@ export const menuGroups = (): MenuGroup[] => [{
         route: '/behavior/habit',
         icon: Aim,
     }, {
-        title: msg => msg.menu.limit,
+        title: msg => msg.base.limit,
         route: '/behavior/limit',
         icon: Timer,
     }]
@@ -108,7 +108,7 @@ export const menuGroups = (): MenuGroup[] => [{
         index: '_guide',
         mobile: false,
     }, {
-        title: msg => msg.menu.helpUs,
+        title: msg => msg.base.helpUs,
         route: '/other/help',
         icon: HelpFilled,
         mobile: false,

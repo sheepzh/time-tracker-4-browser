@@ -1,9 +1,8 @@
-import { trySendMsg2Runtime } from '@api/chrome/runtime'
-import { defaultNotification } from '@util/constant/option'
-import { computed, watch } from 'vue'
-import { useOption } from '../../useOption'
+import { useOption } from '@app/components/Option/useOption'
+import { DEFAULT_NOTIFICATION } from '@util/constant/option'
+import { computed } from 'vue'
 
-function copy(target: timer.option.NotificationOption, source: timer.option.NotificationOption) {
+function copy(target: timer.option.NotificationOption, source: Readonly<timer.option.NotificationOption>) {
     target.notificationCycle = source.notificationCycle
     target.notificationOffset = source.notificationOffset
     target.notificationMethod = source.notificationMethod
@@ -14,12 +13,7 @@ function copy(target: timer.option.NotificationOption, source: timer.option.Noti
 const MIN_PER_DAY = 24 * 60
 
 export const useNotification = () => {
-    const { option, loading } = useOption<timer.option.NotificationOption>({ defaultValue: defaultNotification, copy })
-
-    watch([
-        () => option.notificationCycle,
-        () => option.notificationOffset,
-    ], () => !loading.value && setTimeout(() => trySendMsg2Runtime('resetNotificationScheduler')))
+    const { option } = useOption<timer.option.NotificationOption>({ defaultValue: DEFAULT_NOTIFICATION, copy })
 
     const weekday = computed<number | null>({
         get() {
@@ -61,7 +55,7 @@ export const useNotification = () => {
     })
 
     const reset = () => {
-        option.notificationCycle = defaultNotification().notificationCycle
+        option.notificationCycle = DEFAULT_NOTIFICATION.notificationCycle
         // other fields needn't be reset
     }
 

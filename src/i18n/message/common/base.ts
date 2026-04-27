@@ -8,12 +8,13 @@
 import resource from './base-resource.json'
 
 export type BaseMessage = {
-    sidebar: string
     allFunction: string
     guidePage: string
     changeLog: string
     option: string
     sourceCode: string
+    limit: string
+    helpUs: string
 }
 
 /**

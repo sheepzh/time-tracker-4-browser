@@ -5,11 +5,11 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { MediaSize, useMediaSize } from '@hooks/useMediaSize'
+import { MediaSize, useMediaSize } from '@hooks'
 import Flex from "@pages/components/Flex"
 import { ElScrollbar } from 'element-plus'
 import { computed, defineComponent, type StyleValue } from "vue"
-import ContentContainer from "../common/ContentContainer"
+import ContentContainer from '../common/ContentContainer'
 import ClearPanel from './ClearPanel'
 import MemoryInfo from "./MemoryInfo"
 import Migration from "./Migration"
@@ -34,7 +34,7 @@ export default defineComponent(() => {
                     </Flex>
                     <ClearPanel />
                 </Flex>
-            </ContentContainer >
+            </ContentContainer>
         </ElScrollbar>
     )
 })

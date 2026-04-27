@@ -136,4 +136,21 @@ declare namespace timer.limit {
         // Minutes
         duration: number
     }
+
+    type Query = {
+        id?: number
+        url?: string
+        // Only enabled rules
+        enabled?: boolean
+        // Only effective rules (should be enabled and meet effective conditions)
+        effective?: boolean
+        // Only effective and limited rules
+        limited?: boolean
+    }
+
+    type Summary = {
+        url: string
+        site: site.SiteInfo
+        items: timer.limit.Item[]
+    }
 }

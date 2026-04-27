@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import FIFOCache from "@util/fifo-cache"
+import FIFOCache from "../util/fifo-cache"
 import { fetchGet, fetchGetWithTry, fetchPost } from "./http"
 
 type BaseFile = {
@@ -16,7 +16,7 @@ export type FileForm = BaseFile & {
     content: string
 }
 
-export type File = BaseFile & {
+type File = BaseFile & {
     type: string
     language: string
     raw_url: string

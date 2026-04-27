@@ -1,12 +1,11 @@
 import { t } from "@cs/locale"
-import { useXsState } from '@hooks/index'
-import { useRequest } from "@hooks/useRequest"
+import { useXsState } from '@hooks'
 import Flex from "@pages/components/Flex"
 import { matchCond, meetLimit, meetTimeLimit, period2Str } from "@util/limit"
 import { formatPeriodCommon, MILL_PER_SECOND } from "@util/time"
 import { ElDescriptions, ElDescriptionsItem, ElTag } from 'element-plus'
 import { computed, defineComponent, type StyleValue } from "vue"
-import { useGlobalParam, useReason, useRule } from "../context"
+import { useApp, useRule } from '../context'
 
 const useDescriptions = () => {
     const isXs = useXsState()
@@ -17,7 +16,7 @@ const useDescriptions = () => {
     return { style, size }
 }
 
-const renderBaseItems = (rule: timer.limit.Rule | null, url: string) => <>
+const renderBaseItems = (rule: timer.limit.Rule | undefined, url: string) => <>
     <ElDescriptionsItem label={t(msg => msg.limit.item.name)} labelAlign="right">
         {rule?.name ?? '-'}
     </ElDescriptionsItem>
@@ -38,12 +37,18 @@ const TimeDescriptions = defineComponent({
         dataLabel: String,
     },
     setup(props) {
+        const { reason, url, delayDuration } = useApp()
         const rule = useRule()
-        const reason = useReason()
-        const { url } = useGlobalParam()
         const { style, size } = useDescriptions()
 
-        const timeLimited = computed(() => meetTimeLimit(props.time ?? 0, props.waste ?? 0, !!reason.value?.allowDelay, reason.value?.delayCount ?? 0))
+        const timeLimited = computed(() => meetTimeLimit(
+            { wasted: props.waste ?? 0, maxLimit: (props.time ?? 0) * MILL_PER_SECOND },
+            {
+                count: reason.value?.delayCount ?? 0,
+                duration: delayDuration.value,
+                allow: !!reason.value?.allowDelay,
+            },
+        ))
         const visitLimited = computed(() => meetLimit(props.count ?? 0, props.visit ?? 0))
 
         return () => (
@@ -52,7 +57,7 @@ const TimeDescriptions = defineComponent({
                 <ElDescriptionsItem label={props.ruleLabel} labelAlign="right">
                     <Flex gap={5} width={200}>
                         <ElTag v-show={!!props.time}>{formatPeriodCommon((props.time ?? 0) * MILL_PER_SECOND)}</ElTag>
-                        <ElTag v-show={!!props.count}>{`${props.count ?? 0} ${t(msg => msg.limit.item.visits)}`}</ElTag>
+                        {props.count && <ElTag>{t(msg => msg.shared.limit.visits, { n: props.count })}</ElTag>}
                     </Flex>
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={props.dataLabel} labelAlign="right">
@@ -67,7 +72,7 @@ const TimeDescriptions = defineComponent({
                             v-show={!!props.count || !!props.visit}
                             type={visitLimited.value ? 'danger' : 'info'}
                         >
-                            {`${props.visit ?? 0} ${t(msg => msg.limit.item.visits)}`}
+                            {t(msg => msg.shared.limit.visits, { n: props.visit ?? 0 })}
                         </ElTag>
                     </Flex>
                 </ElDescriptionsItem>
@@ -78,24 +83,15 @@ const TimeDescriptions = defineComponent({
                 >
                     {reason.value?.delayCount ?? 0}
                 </ElDescriptionsItem>
-            </ElDescriptions >
+            </ElDescriptions>
         )
     },
 })
 
 const _default = defineComponent(() => {
-    const reason = useReason()
-    const rule = useRule()
-    const { url } = useGlobalParam()
+    const { reason, visitTime, url } = useApp()
     const type = computed(() => reason.value?.type)
-
-    const { data: browsingTime, refresh: refreshBrowsingTime } = useRequest(() => {
-        const { getVisitTime, type } = reason.value || {}
-        if (type !== 'VISIT') return
-        return getVisitTime?.() || 0
-    })
-
-    setInterval(refreshBrowsingTime, 1000)
+    const rule = useRule()
 
     const { style, size } = useDescriptions()
 
@@ -107,7 +103,7 @@ const _default = defineComponent(() => {
                 count={rule.value?.count}
                 waste={rule.value?.waste}
                 visit={rule.value?.visit}
-                ruleLabel={t(msg => msg.limit.item.daily)}
+                ruleLabel={t(msg => msg.shared.limit.daily)}
                 dataLabel={t(msg => msg.calendar.range.today)}
             />
             <TimeDescriptions
@@ -116,7 +112,7 @@ const _default = defineComponent(() => {
                 count={rule.value?.weeklyCount}
                 waste={rule.value?.weeklyWaste}
                 visit={rule.value?.weeklyVisit}
-                ruleLabel={t(msg => msg.limit.item.weekly)}
+                ruleLabel={t(msg => msg.shared.limit.weekly)}
                 dataLabel={t(msg => msg.calendar.range.thisWeek)}
             />
             <ElDescriptions v-show={type.value === 'VISIT'} border column={1} style={style.value} size={size.value}>
@@ -125,7 +121,7 @@ const _default = defineComponent(() => {
                     {formatPeriodCommon((rule.value?.visitTime ?? 0) * MILL_PER_SECOND) || '-'}
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.modal.browsingTime)} labelAlign="right">
-                    {browsingTime.value ? formatPeriodCommon(browsingTime.value) : '-'}
+                    {visitTime.value ? formatPeriodCommon(visitTime.value) : '-'}
                 </ElDescriptionsItem>
                 <ElDescriptionsItem
                     v-show={!!reason.value?.allowDelay || !!reason.value?.delayCount}
@@ -135,7 +131,7 @@ const _default = defineComponent(() => {
             </ElDescriptions>
             <ElDescriptions v-show={type.value === 'PERIOD'} border column={1} style={style.value} size={size.value}>
                 {renderBaseItems(rule.value, url)}
-                <ElDescriptionsItem label={t(msg => msg.limit.item.period)} labelAlign="right">
+                <ElDescriptionsItem label={t(msg => msg.shared.limit.period)} labelAlign="right">
                     {rule.value?.periods?.length
                         ? <div>
                             {rule.value.periods.map(p => <span style={{ display: "block" }}>{period2Str(p)}</span>)}

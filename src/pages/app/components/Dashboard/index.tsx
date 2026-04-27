@@ -6,15 +6,15 @@
  */
 
 import { t } from "@app/locale"
-import { MediaSize, useManualRequest, useMediaSize, useRequest, useXsState } from "@hooks"
+import { MediaSize, useMediaSize, useRequest, useXsState } from "@hooks"
 import { isTranslatingLocale, locale } from "@i18n"
 import Flex from "@pages/components/Flex"
-import { recommendRate, saveFlag } from "@service/meta-service"
+import { rateClicked, recommendRate } from '@pages/util/rate'
 import { REVIEW_PAGE } from "@util/constant/url"
 import { ElRow, ElScrollbar } from "element-plus"
 import { computed, defineComponent, type FunctionalComponent } from "vue"
 import { useRouter } from "vue-router"
-import ContentContainer from "../common/ContentContainer"
+import ContentContainer from '../common/ContentContainer'
 import Calendar from "./components/Calendar"
 import Indicator from "./components/Indicator"
 import MonthOnMonth from "./components/MonthOnMonth"
@@ -43,7 +43,10 @@ const _default = defineComponent(() => {
     const isNotEnOrZhCn = locale !== "en" && locale !== "zh_CN"
     const showHelp = isTranslatingLocale() || isNotEnOrZhCn
     const { data: showRate, refresh } = useRequest(recommendRate)
-    const { refresh: handleRate } = useManualRequest(() => saveFlag("rateOpen"), { onSuccess: refresh })
+    const onRateClicked = () => {
+        rateClicked()
+        refresh()
+    }
 
     const mediaSize = useMediaSize()
     const isXs = useXsState()
@@ -95,7 +98,7 @@ const _default = defineComponent(() => {
                             <a
                                 href={REVIEW_PAGE}
                                 target="_blank"
-                                onClick={handleRate}
+                                onClick={onRateClicked}
                                 style={{ color: 'inherit' }}
                             >
                                 {t(msg => msg.about.text.rate)}

@@ -1,12 +1,12 @@
+import { APP_LIMIT_ROUTE } from '@/shared/route'
 import { css } from '@emotion/css'
-import { useSwitch } from '@hooks/useSwitch'
+import { useSwitch } from '@hooks'
 import Flex from '@pages/components/Flex'
-import { useOption } from '@popup/context'
+import { useMenu, useOption } from '@popup/context'
 import { t, tN } from '@popup/locale'
-import { ROUTE_PERCENTAGE } from '@popup/router'
-import { ElCheckbox, ElIcon, ElInputNumber, ElPopover, ElText, useNamespace } from "element-plus"
+import { getAppPageUrl } from '@util/constant/url'
+import { ElCheckbox, ElIcon, ElInputNumber, ElLink, ElPopover, ElText, useNamespace } from "element-plus"
 import { computed, defineComponent, type StyleValue } from "vue"
-import { useRoute } from 'vue-router'
 
 const reference = () => (
     <ElIcon size="large" style={{ cursor: 'pointer' } satisfies StyleValue}>
@@ -18,8 +18,8 @@ const reference = () => (
 
 const Option = defineComponent(() => {
     const option = useOption()
-    const route = useRoute()
-    const isPercentage = computed(() => !!route.path?.endsWith(ROUTE_PERCENTAGE))
+    const { menu } = useMenu()
+    const isPercentage = computed(() => menu.value === 'percentage')
 
     const toggleName = () => {
         option.showName = !option.showName
@@ -47,7 +47,15 @@ const Option = defineComponent(() => {
         }
     `
 
-    return () => (
+    return () => menu.value === 'limit' ? (
+        <ElLink
+            href={getAppPageUrl(APP_LIMIT_ROUTE)}
+            target='_blank'
+            style={{ '--el-link-text-color': 'unset', '--el-link-hover-text-color': 'unset' }}
+        >
+            {reference()}
+        </ElLink>
+    ) : (
         <ElPopover
             visible={visible.value}
             placement='auto-end'

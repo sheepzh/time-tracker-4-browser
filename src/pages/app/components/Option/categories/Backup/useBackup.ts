@@ -1,7 +1,6 @@
-import { trySendMsg2Runtime } from '@api/chrome/runtime'
-import { defaultBackup } from "@util/constant/option"
-import { computed, watch } from "vue"
-import { useOption } from '../../useOption'
+import { useOption } from '@app/components/Option/useOption'
+import { DEFAULT_BACKUP } from "@util/constant/option"
+import { computed } from "vue"
 
 function copy(target: timer.option.BackupOption, source: timer.option.BackupOption) {
     target.backupType = source.backupType
@@ -14,18 +13,12 @@ function copy(target: timer.option.BackupOption, source: timer.option.BackupOpti
 }
 
 export const useBackup = () => {
-    const { option, loading } = useOption({ defaultValue: defaultBackup, copy })
-
-    watch([
-        () => option.autoBackUp,
-        () => option.autoBackUpInterval,
-    ], () => !loading.value && setTimeout(() => trySendMsg2Runtime('resetBackupScheduler')))
+    const { option } = useOption<timer.option.BackupOption>({ defaultValue: DEFAULT_BACKUP, copy })
 
     const reset = () => {
-        const defaultOption = defaultBackup()
         // Only reset type and auto flag
-        option.backupType = defaultOption.backupType
-        option.autoBackUp = defaultOption.autoBackUp
+        option.backupType = DEFAULT_BACKUP.backupType
+        option.autoBackUp = DEFAULT_BACKUP.autoBackUp
     }
 
     const auth = computed({

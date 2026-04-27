@@ -29,13 +29,6 @@ export const CHANGE_LOG_PAGE = 'https://github.com/sheepzh/time-tracker-4-browse
 export const GITHUB_ISSUE_ADD = 'https://github.com/sheepzh/time-tracker-4-browser/issues/new/choose'
 
 /**
- * Feedback powered by www.wjx.cn
- *
- * @since 0.1.6
- */
-export const ZH_FEEDBACK_PAGE = 'https://www.wjx.cn/vj/YFWwHUy.aspx'
-
-/**
  * Feedback powered by support.qq.com
  *
  * @since 0.8.5
@@ -115,23 +108,16 @@ export const CROWDIN_PROJECT_ID = 516822
  */
 export const CROWDIN_HOMEPAGE = 'https://crowdin.com/project/timer-chrome-edge-firefox'
 
-const webstorePages: Partial<Record<typeof BROWSER_NAME, [storePage: string, reviewPage: string]>> = {
-    firefox: [FIREFOX_HOMEPAGE, FIREFOX_HOMEPAGE + "/reviews"],
-    chrome: [CHROME_HOMEPAGE, CHROME_HOMEPAGE + "/reviews"],
-    edge: [EDGE_HOMEPAGE, EDGE_HOMEPAGE],
+const REVIEW_PAGES: Partial<Record<typeof BROWSER_NAME, string>> = {
+    firefox: FIREFOX_HOMEPAGE + "/reviews",
+    chrome: CHROME_HOMEPAGE + "/reviews",
+    edge: EDGE_HOMEPAGE,
 }
-
-const [webstorePage, reviewPage] = webstorePages[BROWSER_NAME] ?? [HOMEPAGE, CHROME_HOMEPAGE + "/reviews"]
-
-/**
- * @since 0.0.5
- */
-export const WEBSTORE_PAGE = webstorePage
 
 /**
  * @since 2.2.4
  */
-export const REVIEW_PAGE = reviewPage
+export const REVIEW_PAGE = REVIEW_PAGES[BROWSER_NAME] ?? CHROME_HOMEPAGE + "/reviews"
 
 /**
  * @since 3.7.13

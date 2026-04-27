@@ -7,13 +7,11 @@
         "dataClear": "数据管理",
         "behavior": "上网行为",
         "habit": "上网习惯",
-        "limit": "时间限制",
         "additional": "附加功能",
         "siteManage": "网站管理",
         "whitelist": "白名单管理",
         "mergeRule": "子域名合并",
         "other": "其他",
-        "helpUs": "帮助翻译",
         "about": "关于"
     },
     "zh_TW": {
@@ -24,13 +22,11 @@
         "dataClear": "儲存狀況",
         "behavior": "用戶行爲",
         "habit": "習慣分析",
-        "limit": "時間限制",
         "additional": "附加功能",
         "siteManage": "網站管理",
         "whitelist": "白名單",
         "mergeRule": "網站合併規則",
         "other": "其他",
-        "helpUs": "協助翻譯",
         "about": "關於"
     },
     "en": {
@@ -41,13 +37,11 @@
         "dataClear": "Storage",
         "behavior": "User Behavior",
         "habit": "Habits",
-        "limit": "Time Limit",
         "additional": "Additional Features",
         "siteManage": "Site Management",
         "whitelist": "Whitelist",
         "mergeRule": "Merge-site Rules",
         "other": "Other Features",
-        "helpUs": "Help Translation",
         "about": "About"
     },
     "ja": {
@@ -58,13 +52,11 @@
         "dataClear": "記憶状況",
         "behavior": "ユーザーの行動",
         "habit": "閲覧の習慣",
-        "limit": "時間制限",
         "additional": "その他の機能",
         "siteManage": "ウェブサイト管理",
         "whitelist": "Webホワイトリスト",
         "mergeRule": "ドメイン合併",
         "other": "その他の機能",
-        "helpUs": "協力する",
         "about": "について"
     },
     "pt_PT": {
@@ -75,13 +67,11 @@
         "dataClear": "Armazenamento",
         "behavior": "Comportamento",
         "habit": "Hábitos",
-        "limit": "Limite de Tempo",
         "additional": "Funcionalidades",
         "siteManage": "Gestão de Sites",
         "whitelist": "Lista Branca",
         "mergeRule": "Regras de Agrupamento",
         "other": "Outras Opções",
-        "helpUs": "Ajudar a Traduzir",
         "about": "Sobre"
     },
     "uk": {
@@ -92,13 +82,11 @@
         "dataClear": "Стан пам'яті",
         "behavior": "Поведінка",
         "habit": "Звички",
-        "limit": "Обмеження часу",
         "additional": "Додаткові функції",
         "siteManage": "Керування сайтами",
         "whitelist": "Білий список",
         "mergeRule": "Правила об'єднання сайтів",
         "other": "Інші функції",
-        "helpUs": "Допомогти нам",
         "about": "Про нас"
     },
     "es": {
@@ -109,13 +97,11 @@
         "dataClear": "Estado de la memoria",
         "behavior": "Comportamiento del usuario",
         "habit": "Hábitos",
-        "limit": "Límite de tiempo",
         "additional": "Funciones adicionales",
         "siteManage": "Gestión de sitios",
         "whitelist": "Lista blanca",
         "mergeRule": "Reglas de fusión de sitios",
         "other": "Otras Funciones",
-        "helpUs": "Ayúdanos",
         "about": "Acerca de"
     },
     "de": {
@@ -126,13 +112,11 @@
         "dataClear": "Speicherstatus",
         "behavior": "Nutzerverhalten",
         "habit": "Gewohnheit",
-        "limit": "Zeitlimit",
         "additional": "Zusatzfunktionen",
         "siteManage": "Websites",
         "whitelist": "Whitelist",
         "mergeRule": "Regeln zusammenführen",
         "other": "Andere Eigenschaften",
-        "helpUs": "Hilfe bei der Übersetzung",
         "about": "Über uns"
     },
     "fr": {
@@ -143,13 +127,11 @@
         "dataClear": "Situation de la mémoire",
         "behavior": "Comportement de l'utilisateur",
         "habit": "Habitudes",
-        "limit": "Limite de temps",
         "additional": "Fonctionnalités supplémentaires",
         "siteManage": "Gestion des sites",
         "whitelist": "Liste blanche",
         "mergeRule": "Fusionner les règles du site",
         "other": "Autres fonctionnalités",
-        "helpUs": "Aider à la traduction",
         "about": "À propos"
     },
     "ru": {
@@ -160,13 +142,11 @@
         "dataClear": "Память о ситуации",
         "behavior": "Поведение",
         "habit": "Привычки",
-        "limit": "Ограничение по времени",
         "additional": "Дополнительный",
         "siteManage": "Управление сайтом",
         "whitelist": "Белый список",
         "mergeRule": "Объединение сайтов",
         "other": "Другие особенности",
-        "helpUs": "Помогите перевести",
         "about": "О нас"
     },
     "ar": {
@@ -177,13 +157,11 @@
         "dataClear": "حالة الذاكرة",
         "behavior": "سلوك المستخدم",
         "habit": "العادات",
-        "limit": "المهلة",
         "additional": "ميزات إضافية",
         "siteManage": "أدوار النظام",
         "whitelist": "القائمة البيضاء",
         "mergeRule": "دمج قواعد الموقع",
         "other": "مميزات اخزي",
-        "helpUs": "ساعدني في التَّرْجَمَةً",
         "about": "حول"
     },
     "tr": {
@@ -194,13 +172,11 @@
         "dataClear": "Depolama",
         "behavior": "Kullanıcı Davranışları",
         "habit": "Alışkanlıklar",
-        "limit": "Zaman Sınırı",
         "additional": "Ek Özellikler",
         "siteManage": "Site Yönetimi",
         "whitelist": "Beyaz Liste",
         "mergeRule": "Birleştirme Kuralları",
         "other": "Diğer Özellikler",
-        "helpUs": "Çeviriye yardım et",
         "about": "Hakkımızda"
     },
     "pl": {
@@ -211,13 +187,11 @@
         "dataClear": "Pamięć",
         "behavior": "Zachowanie użytkownika",
         "habit": "Nawyki",
-        "limit": "Limit czasu",
         "additional": "Dodatkowe funkcje",
         "siteManage": "Zarządzanie stronami",
         "whitelist": "Whitelista",
         "mergeRule": "Reguły łączenia stron",
         "other": "Pozostałe funkcje",
-        "helpUs": "Pomóż w tłumaczeniu",
         "about": "O rozszerzeniu"
     },
     "it": {
@@ -228,12 +202,10 @@
         "dataClear": "Memoria",
         "behavior": "Comportamento Dell'Utente",
         "habit": "Abitudini",
-        "limit": "Limite di tempo",
         "additional": "Funzionalità aggiuntive",
         "siteManage": "Gestione del sito",
         "whitelist": "Whitelist",
         "other": "Altre funzioni",
-        "helpUs": "Aiuto Traduzione",
         "about": "Info su"
     }
 }

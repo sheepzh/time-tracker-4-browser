@@ -5,7 +5,6 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { increaseApp } from "@service/meta-service"
 import { type App } from "vue"
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from "vue-router"
 import { ANALYSIS_ROUTE, DASHBOARD_ROUTE, LIMIT_ROUTE, MERGE_ROUTE, OPTION_ROUTE, REPORT_ROUTE } from "./constants"
@@ -91,17 +90,4 @@ const router = createRouter({
     routes,
 })
 
-async function handleChange() {
-    await router.isReady()
-    const current = router.currentRoute.value.fullPath
-    current && increaseApp(current)
-    router.afterEach(async (to, from, failure: Error | void) => {
-        if (failure || to.fullPath === from.fullPath) return
-        await increaseApp(to.fullPath)
-    })
-}
-
-export default (app: App) => {
-    app.use(router)
-    handleChange()
-}
+export default (app: App) => app.use(router)

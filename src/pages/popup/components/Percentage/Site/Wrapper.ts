@@ -1,13 +1,10 @@
-import { EchartsWrapper } from "@hooks/useEcharts"
+import { EchartsWrapper } from '@hooks'
 import { getInfoColor, getPrimaryTextColor } from "@pages/util/style"
-import { type PieSeriesOption } from "echarts/charts"
-import {
-    type LegendComponentOption,
-    type TitleComponentOption,
-    type ToolboxComponentOption,
-    type TooltipComponentOption,
-} from "echarts/components"
-import { type ComposeOption, type ECElementEvent } from "echarts/core"
+import type {
+    ComposeOption, LegendComponentOption, PieSeriesOption, TitleComponentOption, ToolboxComponentOption,
+    TooltipComponentOption,
+} from "echarts"
+import type { ECElementEvent } from "echarts/core"
 import type { TopLevelFormatterParams } from "echarts/types/dist/shared"
 import {
     formatTooltip, generateSiteSeriesOption, generateTitleOption, generateToolboxOption, handleClick,
@@ -58,7 +55,7 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
         })
     }
 
-    protected generateOption(result: PercentageResult): EcOption | Promise<EcOption> {
+    protected generateOption(result: PercentageResult): Awaitable<EcOption> {
         this.resultCache = result
         if (!result) return {}
 

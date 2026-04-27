@@ -1,7 +1,7 @@
 import { IS_MV3 } from "@util/constant/environment"
 import { handleError } from "./common"
 
-export async function hasPerm(perm: chrome.runtime.ManifestPermissions): Promise<boolean> {
+export async function hasPerm(perm: chrome.runtime.ManifestPermission): Promise<boolean> {
     if (IS_MV3) {
         try {
             return await chrome.permissions.contains({ permissions: [perm] })
@@ -18,7 +18,7 @@ export async function hasPerm(perm: chrome.runtime.ManifestPermissions): Promise
     }
 }
 
-export async function requestPerm(perm: chrome.runtime.ManifestPermissions): Promise<boolean> {
+export async function requestPerm(perm: chrome.runtime.ManifestPermission): Promise<boolean> {
     if (IS_MV3) {
         try {
             return await chrome.permissions.request({ permissions: [perm] })

@@ -1,7 +1,7 @@
-import itemService from "@service/item-service"
 import whitelistHolder from "@service/whitelist/holder"
 import FIFOCache from '@util/fifo-cache'
 import { formatTimeYMD, getStartOfDay, MILL_PER_DAY } from "@util/time"
+import { addRunTime } from '../service/item-service'
 
 function splitRunTime(start: number, end: number): Record<string, number> {
     const res: Record<string, number> = {}
@@ -17,13 +17,13 @@ function splitRunTime(start: number, end: number): Record<string, number> {
 
 const RUN_TIME_END_CACHE = new FIFOCache<number>(500)
 
-export async function handleTrackRunTimeEvent(event: timer.core.Event): Promise<void> {
-    const { start, end, url, host } = event || {}
-    if (!host || !start || !end) return
+export async function handleTrackRunTimeEvent(event: timer.core.Event, url: string | undefined): Promise<void> {
+    const { start, end, host } = event
+    if (!host || !start || !end || !url) return
     if (whitelistHolder.contains(host, url)) return
     const realStart = Math.max(RUN_TIME_END_CACHE.get(host) ?? 0, start)
     const byDate = splitRunTime(realStart, end)
     if (!Object.keys(byDate).length) return
-    await itemService.addRunTime(host, byDate)
+    await addRunTime(host, byDate)
     RUN_TIME_END_CACHE.set(host, Math.max(end, realStart))
 }

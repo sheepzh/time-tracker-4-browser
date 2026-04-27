@@ -1,4 +1,4 @@
-import optionHolder from '@service/components/option-holder'
+import { getOption } from '@api/sw/option'
 import { computed } from 'vue'
 import { useRequest } from './useRequest'
 
@@ -7,7 +7,7 @@ type Options = {
 }
 
 export const useSiteMerge = ({ onGroupDisabled }: Options) => {
-    const { data: countTabGroup } = useRequest(() => optionHolder.get().then(o => o.countTabGroup), {
+    const { data: countTabGroup } = useRequest(() => getOption().then(o => o?.countTabGroup ?? false), {
         defaultValue: false,
         onSuccess: v => !v && onGroupDisabled?.()
     })

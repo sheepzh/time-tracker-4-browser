@@ -5,7 +5,9 @@
         "guidePage": "User Guide",
         "option": "Options",
         "sourceCode": "Source Code",
-        "changeLog": "Release Notes"
+        "changeLog": "Release Notes",
+        "limit": "Time Limit",
+        "helpUs": "Help Translation"
     },
     "zh_CN": {
         "sidebar": "侧边栏",
@@ -13,7 +15,9 @@
         "guidePage": "使用指南",
         "option": "设置",
         "sourceCode": "源代码",
-        "changeLog": "版本日志"
+        "changeLog": "版本日志",
+        "limit": "时间限制",
+        "helpUs": "帮助翻译"
     },
     "zh_TW": {
         "sidebar": "側邊欄",
@@ -21,7 +25,9 @@
         "guidePage": "使用指南",
         "option": "設定",
         "sourceCode": "原始碼",
-        "changeLog": "版本紀錄"
+        "changeLog": "版本紀錄",
+        "limit": "時間限制",
+        "helpUs": "協助翻譯"
     },
     "ja": {
         "sidebar": "サイドバー",
@@ -29,7 +35,9 @@
         "guidePage": "使い方ガイド",
         "option": "設定",
         "sourceCode": "ソースコード",
-        "changeLog": "リリースノート"
+        "changeLog": "リリースノート",
+        "limit": "時間制限",
+        "helpUs": "協力する"
     },
     "pt_PT": {
         "sidebar": "Barra Lateral",
@@ -37,7 +45,9 @@
         "guidePage": "Guia do Utilizador",
         "option": "Definições",
         "sourceCode": "Código Fonte",
-        "changeLog": "Notas de Lançamento"
+        "changeLog": "Notas de Lançamento",
+        "limit": "Limite de Tempo",
+        "helpUs": "Ajudar a Traduzir"
     },
     "uk": {
         "sidebar": "Бічна панель",
@@ -45,7 +55,9 @@
         "guidePage": "Посібник",
         "option": "Налаштування",
         "sourceCode": "Програмний код",
-        "changeLog": "Журнал змін"
+        "changeLog": "Журнал змін",
+        "limit": "Обмеження часу",
+        "helpUs": "Допомогти нам"
     },
     "es": {
         "sidebar": "Barra Lateral",
@@ -53,7 +65,9 @@
         "guidePage": "Guía de Usuario",
         "option": "Ajustes",
         "sourceCode": "Código Fuente",
-        "changeLog": "Notas de Versión"
+        "changeLog": "Notas de Versión",
+        "limit": "Límite de tiempo",
+        "helpUs": "Ayúdanos"
     },
     "de": {
         "sidebar": "Seitenleiste",
@@ -61,7 +75,9 @@
         "guidePage": "Benutzeranleitung",
         "option": "Einstellungen",
         "sourceCode": "Quellcode",
-        "changeLog": "Versionshinweise"
+        "changeLog": "Versionshinweise",
+        "limit": "Zeitlimit",
+        "helpUs": "Hilfe bei der Übersetzung"
     },
     "fr": {
         "sidebar": "Barre Latérale",
@@ -69,7 +85,9 @@
         "guidePage": "Guide d'Utilisation",
         "option": "Paramètres",
         "sourceCode": "Code Source",
-        "changeLog": "Notes de Version"
+        "changeLog": "Notes de Version",
+        "limit": "Limite de temps",
+        "helpUs": "Aider à la traduction"
     },
     "ru": {
         "sidebar": "Боковая панель",
@@ -77,7 +95,9 @@
         "guidePage": "Руководство",
         "option": "Настройки",
         "sourceCode": "Исходный код",
-        "changeLog": "Версионные изменения"
+        "changeLog": "Версионные изменения",
+        "limit": "Ограничение по времени",
+        "helpUs": "Помогите перевести"
     },
     "ar": {
         "sidebar": "الشريط الجانبي",
@@ -85,7 +105,9 @@
         "guidePage": "دليل الاستخدام",
         "option": "الإعدادات",
         "sourceCode": "الكود المصدري",
-        "changeLog": "ملاحظات الإصدار"
+        "changeLog": "ملاحظات الإصدار",
+        "limit": "المهلة",
+        "helpUs": "ساعدني في التَّرْجَمَةً"
     },
     "tr": {
         "sidebar": "Kenar Çubuğu",
@@ -93,7 +115,9 @@
         "guidePage": "Kullanım Kılavuzu",
         "option": "Seçenekler",
         "sourceCode": "Kaynak Kodu",
-        "changeLog": "Sürüm Notları"
+        "changeLog": "Sürüm Notları",
+        "limit": "Zaman Sınırı",
+        "helpUs": "Çeviriye yardım et"
     },
     "pl": {
         "sidebar": "Pasek boczny",
@@ -101,6 +125,12 @@
         "guidePage": "Podręcznik użytkownika",
         "option": "Ustawienia",
         "sourceCode": "Kod źródłowy",
-        "changeLog": "Lista Zmian"
+        "changeLog": "Lista Zmian",
+        "limit": "Limit czasu",
+        "helpUs": "Pomóż w tłumaczeniu"
+    },
+    "it": {
+        "limit": "Limite di tempo",
+        "helpUs": "Aiuto Traduzione"
     }
 }
