@@ -5,11 +5,11 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { GRID_CELL_STYLE } from "@app/components/common/grid"
+import { KanbanCard } from "@app/components/common/kanban"
 import { useXsState } from '@hooks'
 import Flex from "@pages/components/Flex"
 import { defineComponent } from "vue"
-import { GRID_CELL_STYLE } from "../../../common/grid"
-import { KanbanCard } from "../../../common/kanban"
 import Average from "./Average"
 import { initProvider } from "./context"
 import Filter from "./Filter"

@@ -34,7 +34,7 @@ export default defineComponent(() => {
                     </Flex>
                     <ClearPanel />
                 </Flex>
-            </ContentContainer >
+            </ContentContainer>
         </ElScrollbar>
     )
 })

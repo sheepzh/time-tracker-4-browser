@@ -1,6 +1,7 @@
 import limitMessages, { type LimitMessage } from "../app/limit"
 import menuMessages, { type MenuMessage } from "../app/menu"
 import calendarMessages, { type CalendarMessage } from "../calendar"
+import sharedMessages, { type SharedMessage } from '../common/shared'
 import { merge, type MessageRoot } from "../merge"
 import metaMessages, { type MetaMessage } from "../meta"
 import consoleMessages, { type ConsoleMessage } from "./console"
@@ -11,6 +12,7 @@ export type CsMessage = {
     modal: ModalMessage
     meta: MetaMessage
     limit: LimitMessage
+    shared: SharedMessage
     menu: MenuMessage
     calendar: CalendarMessage
 }
@@ -20,6 +22,7 @@ const CHILD_MESSAGES: MessageRoot<CsMessage> = {
     modal: modalMessages,
     meta: metaMessages,
     limit: limitMessages,
+    shared: sharedMessages,
     menu: menuMessages,
     calendar: calendarMessages,
 }

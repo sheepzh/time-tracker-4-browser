@@ -69,7 +69,7 @@ const CategoryEditable = defineComponent<Props>(props => {
                             <Edit />
                         </ElIcon>
                     </Flex>
-                </Flex >
+                </Flex>
             }
         </Flex>
         : false

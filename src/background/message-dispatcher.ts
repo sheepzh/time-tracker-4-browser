@@ -75,8 +75,8 @@ class MessageDispatcher {
             .register('stat.groupPage', selectGroupPage)
             .register('stat.countGroup', countGroup)
             .register('stat.batchDelete', batchDelete)
-            .register('item.batch', keys => statDatabase.batchSelect(keys))
             .register('stat.today', getTodayResult)
+            .register('item.batch', keys => statDatabase.batchSelect(keys))
             // Site management
             .register('site.list', param => siteDatabase.select(param))
             .register('site.page', selectSitePage)

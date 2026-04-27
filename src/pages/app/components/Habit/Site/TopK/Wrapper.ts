@@ -5,10 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getStepColors } from "@app/util/echarts"
-import { EchartsWrapper } from '@hooks'
 import { t } from '@app/locale'
+import { getStepColors } from "@app/util/echarts"
 import { periodFormatter } from "@app/util/time"
+import { EchartsWrapper } from '@hooks'
 import { generateSiteLabel } from "@util/site"
 import { identifyTargetKey, isSite } from "@util/stat"
 import type {

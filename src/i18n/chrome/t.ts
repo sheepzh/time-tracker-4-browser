@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { getMessage } from "@api/chrome/i18n"
 import { t } from ".."
-import { getMessage } from "../../api/chrome/i18n"
 import messages, { router, type ChromeMessage } from "./message"
 
 const keyPathOf = (key: (root: ChromeMessage) => string) => key(router)

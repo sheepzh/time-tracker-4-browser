@@ -21,7 +21,7 @@ export type GistData = {
 /**
  * Row stored in the gist
  */
-export type GistRow = {
+type GistRow = {
     [host: string]: [
         number,     // Visit count
         number,     // Browsing time

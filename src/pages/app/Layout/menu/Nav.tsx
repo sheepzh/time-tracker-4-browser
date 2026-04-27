@@ -5,12 +5,13 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { useSwitch } from '@hooks'
+import { getIconUrl } from "@api/chrome/runtime"
 import { t } from '@app/locale'
 import { CloseBold, Link, Menu } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
+import { useSwitch } from '@hooks'
 import Flex from '@pages/components/Flex'
-import { getIconUrl } from "@api/chrome/runtime"
+import Img from '@pages/components/Img'
 import { ElBreadcrumb, ElBreadcrumbItem, ElIcon, ElMenu, ElMenuItem, useNamespace } from "element-plus"
 import { defineComponent, h, onBeforeMount, ref, watch } from "vue"
 import { useRouter } from "vue-router"
@@ -72,7 +73,7 @@ const _default = defineComponent<{}>(() => {
             <Flex justify='space-between' align='center' height={HEADER_HEIGHT}>
                 <Flex gap={20} align='center'>
                     <ElIcon>
-                        <img width='32' height='32' src={getIconUrl()} />
+                        <Img size={32} src={getIconUrl()} />
                     </ElIcon>
                     <ElBreadcrumb separator="/">
                         <ElBreadcrumbItem>{t(msg => msg.meta.name)}</ElBreadcrumbItem>
@@ -92,9 +93,7 @@ const _default = defineComponent<{}>(() => {
                             index={item.index ?? item.route ?? item.href}
                             onClick={() => handleItemClick(item)}
                         >
-                            <ElIcon>
-                                {h(item.icon)}
-                            </ElIcon>
+                            <ElIcon>{h(item.icon)}</ElIcon>
                             <span>{t(item.title)}</span>
                             {!!item.href && <ElIcon size={12}><Link /></ElIcon>}
                         </ElMenuItem>

@@ -1,6 +1,6 @@
 import { getCompareColor, getDiffColor, tooltipDot } from "@app/util/echarts"
-import { EchartsWrapper } from "@hooks"
 import { cvt2LocaleTime } from '@app/util/time'
+import { EchartsWrapper } from "@hooks"
 import { formatPeriodCommon } from "@util/time"
 import type {
     BarSeriesOption, ComposeOption, GridComponentOption, LegendComponentOption, TooltipComponentOption,

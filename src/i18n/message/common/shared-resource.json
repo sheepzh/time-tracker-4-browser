@@ -12,7 +12,15 @@
         },
         "cate": {
             "notSet": "Not Set"
-        }
+        },
+        "limit": {
+            "limited": "Limited",
+            "daily": "Daily limit",
+            "weekly": "Weekly limit",
+            "period": "Blocked periods",
+            "visits": "{n} visits"
+        },
+        "all": "All"
     },
     "zh_CN": {
         "merge": {
@@ -27,6 +35,14 @@
         },
         "cate": {
             "notSet": "未分类"
+        },
+        "limit": {
+            "effective": "生效中",
+            "limited": "已受限",
+            "daily": "每日上限",
+            "weekly": "每周上限",
+            "period": "不可访问的时间段",
+            "visits": "{n}次访问"
         }
     },
     "ja": {
@@ -41,6 +57,12 @@
         },
         "cate": {
             "notSet": "未設定"
+        },
+        "limit": {
+            "daily": "1日の限度",
+            "weekly": "週間の限度",
+            "period": "許可されない期間",
+            "visits": "{n}訪問"
         }
     },
     "zh_TW": {
@@ -56,6 +78,12 @@
         },
         "cate": {
             "notSet": "未設定"
+        },
+        "limit": {
+            "daily": "每日上限",
+            "weekly": "每週上限",
+            "period": "限制時段",
+            "visits": "{n}次造訪"
         }
     },
     "pt_PT": {
@@ -71,6 +99,12 @@
         },
         "cate": {
             "notSet": "Não Definido"
+        },
+        "limit": {
+            "daily": "Limite diário",
+            "weekly": "Limite semanal",
+            "period": "Períodos bloqueados",
+            "visits": "{n} visitas"
         }
     },
     "uk": {
@@ -86,6 +120,20 @@
         },
         "cate": {
             "notSet": "Не встановлено"
+        },
+        "limit": {
+            "daily": "Денний ліміт",
+            "weekly": "Тижневий ліміт",
+            "period": "Недозволені періоди",
+            "visits": "{n} відвідування"
+        }
+    },
+    "it": {
+        "limit": {
+            "daily": "Limite giornaliero",
+            "weekly": "Limite settimanale",
+            "period": "Periodi bloccati",
+            "visits": "{n} visite"
         }
     },
     "es": {
@@ -101,6 +149,12 @@
         },
         "cate": {
             "notSet": "No establecido"
+        },
+        "limit": {
+            "daily": "Límite diario",
+            "weekly": "Límite semanal",
+            "period": "Periodos no permitidos",
+            "visits": "{n} visitas"
         }
     },
     "de": {
@@ -116,6 +170,12 @@
         },
         "cate": {
             "notSet": "Nicht festgelegt"
+        },
+        "limit": {
+            "daily": "Tägliches Limit",
+            "weekly": "Wöchentliches Limit",
+            "period": "Unzulässiger Zeitraum",
+            "visits": "{n} Besuche"
         }
     },
     "fr": {
@@ -131,6 +191,12 @@
         },
         "cate": {
             "notSet": "Non Défini"
+        },
+        "limit": {
+            "daily": "Limite quotidienne",
+            "weekly": "Limite hebdomadaire",
+            "period": "Périodes bloquées",
+            "visits": "{n} visites"
         }
     },
     "ru": {
@@ -146,6 +212,12 @@
         },
         "cate": {
             "notSet": "Не задано"
+        },
+        "limit": {
+            "daily": "Дневной лимит",
+            "weekly": "Недельный лимит",
+            "period": "Заблокированное время",
+            "visits": "{n} посещения"
         }
     },
     "ar": {
@@ -161,6 +233,12 @@
         },
         "cate": {
             "notSet": "غير مضبوط"
+        },
+        "limit": {
+            "daily": "الحد اليومي",
+            "weekly": "الحد الأسبوعي",
+            "period": "فترات محظورة",
+            "visits": "{n} زيارة"
         }
     },
     "tr": {
@@ -176,6 +254,12 @@
         },
         "cate": {
             "notSet": "Ayarlanmadı"
+        },
+        "limit": {
+            "daily": "Günlük limit",
+            "weekly": "Haftalık limit",
+            "period": "Engellenen periyotlar",
+            "visits": "{n} ziyaretler"
         }
     },
     "pl": {
@@ -191,6 +275,12 @@
         },
         "cate": {
             "notSet": "Nie ustawiono"
+        },
+        "limit": {
+            "daily": "Dzienny limit",
+            "weekly": "Limit tygodniowy",
+            "period": "Godziny blokowania",
+            "visits": "{n} wizyt"
         }
     }
 }

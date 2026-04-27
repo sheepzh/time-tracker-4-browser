@@ -1,23 +1,18 @@
 {
     "zh_CN": {
-        "filterDisabled": "过滤无效规则",
         "wildcardTip": "您可以使用通配符来匹配子域名或子页面，使用\"+\"作为前缀来排除子页面！",
         "emptyTips": "点击这里创建一条规则！",
         "item": {
             "name": "规则名称",
             "condition": "限制网址",
-            "daily": "每日上限",
-            "weekly": "每周上限",
             "weekStartInfo": "每周的第一天是【{weekStart}】，你可以在统计选项中修改该值",
             "delayCount": "延时次数",
             "detail": "规则详情",
             "visitTime": "单次访问最长时间",
-            "period": "不可访问的时间段",
             "enabled": "启用",
             "locked": "锁定",
             "effectiveDay": "生效日期",
             "allowDelay": "可延时",
-            "visits": "次访问",
             "or": "或者",
             "notEffective": "未生效"
         },
@@ -52,24 +47,19 @@
         "reminder": "距离时间限制不到 {min} 分钟！"
     },
     "zh_TW": {
-        "filterDisabled": "過濾無效規則",
         "wildcardTip": "你可以使用萬用字元來匹配子網域或子頁面，使用\"+\"作為前置詞來排除子頁面！",
         "emptyTips": "點擊此處新增規則！",
         "item": {
             "name": "規則名稱",
             "condition": "限制網址",
-            "daily": "每日上限",
-            "weekly": "每週上限",
             "weekStartInfo": "每週起始日為「{weekStart}」，您可於統計設定中調整",
             "delayCount": "延遲次數",
             "detail": "規則詳細內容",
             "visitTime": "單次造訪時長限制",
-            "period": "限制時段",
             "enabled": "是否啟用",
             "locked": "已鎖定",
             "effectiveDay": "生效日期",
             "allowDelay": "允許延遲",
-            "visits": "次造訪",
             "or": "或",
             "notEffective": "未生效"
         },
@@ -104,24 +94,20 @@
         "reminder": "距離時間限制僅剩 {min} 分鐘！"
     },
     "en": {
-        "filterDisabled": "Only enabled",
+        "onlyEffective": "Only Effective",
         "wildcardTip": "You can use wildcards to match subdomains or subpages, and use \"+\" as a prefix to exclude subpages!",
         "emptyTips": "Click here to create one rule!",
         "item": {
             "name": "Rule name",
             "condition": "Restricted URL",
-            "daily": "Daily limit",
-            "weekly": "Weekly limit",
             "weekStartInfo": "The first day of each week is {weekStart}, you can change this value in the tracking options",
             "delayCount": "Delay count",
             "detail": "Rule detail",
             "visitTime": "Time limit per visit",
-            "period": "Blocked periods",
             "enabled": "Enabled",
             "locked": "Locked",
             "effectiveDay": "Effective On",
             "allowDelay": "Allow Delay",
-            "visits": "visits",
             "or": "or",
             "notEffective": "Not effective"
         },
@@ -156,21 +142,16 @@
         "reminder": "Less than {min} minutes until the time limit!"
     },
     "ja": {
-        "filterDisabled": "有效",
         "wildcardTip": "ワイルドカードを使用してサブドメインまたはサブページに一致させることができ、「+」をプレフィックスとしてサブページを除外することができます！",
         "item": {
             "name": "規則名",
             "condition": "制限 URL",
-            "daily": "1日の限度",
-            "weekly": "週間の限度",
             "weekStartInfo": "各週の最初の日は「{weekStart}」, 統計オプションでこの値を変更することができます",
             "delayCount": "遅延回数",
             "detail": "規則明細",
             "visitTime": "訪問ごとの制限",
-            "period": "許可されない期間",
             "enabled": "有效",
             "effectiveDay": "発効日",
-            "visits": "訪問数",
             "or": "や",
             "notEffective": "効果がない"
         },
@@ -203,24 +184,19 @@
         "reminder": "制限時間まで {min} 分未満！"
     },
     "pt_PT": {
-        "filterDisabled": "Apenas ativos",
         "wildcardTip": "Pode usar wildcards para corresponder a subdomínios ou subpáginas, e usar o \"+\" como prefixo para excluir subpáginas!",
         "emptyTips": "Clica aqui para criar uma regra!",
         "item": {
             "name": "Nome da regra",
             "condition": "URL restrito",
-            "daily": "Limite diário",
-            "weekly": "Limite semanal",
             "weekStartInfo": "O primeiro dia da semana é {weekStart}. Pode alterar nas opções de estatísticas",
             "delayCount": "Atrasos permitidos",
             "detail": "Detalhe da regra",
             "visitTime": "Tempo limite por visita",
-            "period": "Períodos bloqueados",
             "enabled": "Ativo",
             "locked": "Bloqueado",
             "effectiveDay": "Dias de aplicação",
             "allowDelay": "Permitir atraso",
-            "visits": "visitas",
             "or": "ou",
             "notEffective": "Não aplicável"
         },
@@ -255,22 +231,17 @@
         "reminder": "Menos de {min} minutos até ao limite!"
     },
     "uk": {
-        "filterDisabled": "Лише увімкнені",
         "wildcardTip": "Можна використовувати символи підставлення для пошуку піддоменів або підсторінок, а \"+\" як префікс для виключення підсторінки!",
         "item": {
             "name": "Назва правила",
             "condition": "Обмежена URL-адреса",
-            "daily": "Денний ліміт",
-            "weekly": "Тижневий ліміт",
             "weekStartInfo": "Перший день кожного тижня {weekStart}. Ви можете змінити це значення у налаштуваннях статистики",
             "delayCount": "Лічильник затримок",
             "detail": "Подробиці правила",
             "visitTime": "Ліміт на відвідування",
-            "period": "Недозволені періоди",
             "enabled": "Увімкнено",
             "locked": "Заблоковано",
             "effectiveDay": "Діє",
-            "visits": "відвідування",
             "or": "або",
             "notEffective": "Не застосовується"
         },
@@ -305,22 +276,17 @@
         "reminder": "Менш як {min} хв до ліміту часу!"
     },
     "es": {
-        "filterDisabled": "Solo habilitados",
         "wildcardTip": "¡Puedes usar comodines para coincidir con subdominios o subpáginas, y usar el \"+\" como prefijo para excluir subpáginas!",
         "item": {
             "name": "Nombre de la regla",
             "condition": "URL restringida",
-            "daily": "Límite diario",
-            "weekly": "Límite semanal",
             "weekStartInfo": "El primer día de cada semana es {weekStart}, puedes cambiar este valor en las opciones de estadísticas",
             "delayCount": "Contador de retraso",
             "detail": "Detalle de la regla",
             "visitTime": "Límite por visita",
-            "period": "Periodos no permitidos",
             "enabled": "Habilitado",
             "locked": "Bloqueado",
             "effectiveDay": "En vigor él",
-            "visits": "visitas",
             "or": "o",
             "notEffective": "No efectivo"
         },
@@ -355,22 +321,17 @@
         "reminder": "¡Menos de {min} minutos hasta el límite de tiempo!"
     },
     "de": {
-        "filterDisabled": "Nur Aktivierte",
         "wildcardTip": "Sie können Platzhalter verwenden, um Subdomains oder Unterseiten zuzuordnen, und \"+\" als Präfix verwenden, um Unterseiten auszuschließen!",
         "item": {
             "name": "Regelname",
             "condition": "Eingeschränkte URL",
-            "daily": "Tägliches Limit",
-            "weekly": "Wöchentliches Limit",
             "weekStartInfo": "Der erste Tag jeder Woche ist {weekStart}, Sie können diesen Wert in den Statistikoptionen ändern",
             "delayCount": "Anzahl der Verspätungen",
             "detail": "Regeldetail",
             "visitTime": "Limit pro Besuch",
-            "period": "Unzulässiger Zeitraum",
             "enabled": "Aktiviert",
             "locked": "Gesperrt",
             "effectiveDay": "Wirksam auf",
-            "visits": "Besuche",
             "or": "oder",
             "notEffective": "Nicht wirksam"
         },
@@ -405,24 +366,19 @@
         "reminder": "Weniger als {min} Minuten bis zum Zeitlimit!"
     },
     "fr": {
-        "filterDisabled": "Activé uniquement",
         "wildcardTip": "Vous pouvez utiliser des caractères génériques pour cibler des sous-domaines ou des sous-pages, et le préfixe \"+\" pour en exclure !",
         "emptyTips": "Cliquez ici pour créer une règle !",
         "item": {
             "name": "Nom de règle",
             "condition": "URL restreinte",
-            "daily": "Limite quotidienne",
-            "weekly": "Limite hebdomadaire",
             "weekStartInfo": "Le premier jour de chaque semaine est {weekStart}, vous pouvez modifier cette valeur dans les options de statistiques",
             "delayCount": "Nombre de retards",
             "detail": "Détail des règles",
             "visitTime": "Limite par visite",
-            "period": "Périodes bloquées",
             "enabled": "Activé",
             "locked": "Verrouillé",
             "effectiveDay": "Effectif le",
             "allowDelay": "Retardable",
-            "visits": "visites",
             "or": "ou",
             "notEffective": "Non efficace"
         },
@@ -457,23 +413,18 @@
         "reminder": "Moins de {min} minutes jusqu'à la limite de temps !"
     },
     "ru": {
-        "filterDisabled": "Только включен",
         "wildcardTip": "Вы можете использовать шаблоны для совпадения с поддоменами или подстраницами, а также использовать «+» в качестве префикса, чтобы исключить подстраницы!",
         "emptyTips": "Нажмите здесь, чтобы создать новое правило!",
         "item": {
             "name": "Имя правила",
             "condition": "Ограниченный URL",
-            "daily": "Дневной лимит",
-            "weekly": "Недельный лимит",
             "weekStartInfo": "Первый день каждой недели {weekStart}, вы можете изменить это значение в настройках статистики",
             "delayCount": "Отложенный",
             "detail": "Детали правила",
             "visitTime": "Лимит за посещение",
-            "period": "Заблокированное время",
             "enabled": "Включено",
             "locked": "Заблокировано",
             "effectiveDay": "Эффективный",
-            "visits": "посещения",
             "or": "или",
             "notEffective": "Не активировано"
         },
@@ -508,22 +459,17 @@
         "reminder": "Осталось меньше чем {min} минут до конца лимита времени!"
     },
     "ar": {
-        "filterDisabled": "تم التمكين فقط",
         "wildcardTip": "يمكنك استخدام الرموز البديلة لتطابق النطاقات الفرعية أو الصفحات الفرعية، ويمكنك استخدام العلامة \"+\" كبادئة لاستبعاد الصفحات الفرعية！",
         "item": {
             "name": "اسم القاعدة",
             "condition": "عنوان URL مقيد",
-            "daily": "الحد اليومي",
-            "weekly": "الحد الأسبوعي",
             "weekStartInfo": "اليوم الأول من كل أسبوع هو: {weekStart}، يمكنك تغيير هذه القيمة في خيارات الإحصائيات",
             "delayCount": "عدد التأخير",
             "detail": "تفاصيل القاعدة",
             "visitTime": "الحد الزمني لكل زيارة",
-            "period": "فترات محظورة",
             "enabled": "مُمَكَّن",
             "locked": "مقفل",
             "effectiveDay": "ساري المفعول على",
-            "visits": "الزيارات",
             "or": "أو",
             "notEffective": "غير فعال"
         },
@@ -558,24 +504,19 @@
         "reminder": "أقل من {min} دقيقة على انتهاء الوقت المحدد!"
     },
     "tr": {
-        "filterDisabled": "Yalnızca etkinleştirilmiş",
         "wildcardTip": "Alt alan adlarını veya alt sayfaları eşleştirmek için joker karakterler kullanabilir ve alt sayfaları hariç tutmak için “+” ön ekini kullanabilirsiniz!",
         "emptyTips": "Bir kural oluşturmak için burayı tıklayın!",
         "item": {
             "name": "Kural adı",
             "condition": "Kısıtlanmış URL",
-            "daily": "Günlük limit",
-            "weekly": "Haftalık limit",
             "weekStartInfo": "Her haftanın ilk günü {weekStart}, bu değeri istatistik seçeneklerinden değiştirebilirsiniz",
             "delayCount": "Gecikme sayısı",
             "detail": "Kural detayı",
             "visitTime": "Ziyaret başına zaman sınırı",
-            "period": "Engellenen periyotlar",
             "enabled": "Etkinleştirildi",
             "locked": "Kilitli",
             "effectiveDay": "Geçerli Olduğu Gün(ler)",
             "allowDelay": "Ertelenebilir",
-            "visits": "ziyaretler",
             "or": "yada",
             "notEffective": "Geçerli değil"
         },
@@ -610,24 +551,19 @@
         "reminder": "Zaman sınırı dolmasına {min} dakikadan az kaldı!"
     },
     "pl": {
-        "filterDisabled": "Tylko aktywne",
         "wildcardTip": "Możesz używać symbolu \"*\", aby dopasowywać subdomeny lub podstrony, a także użyć znaku „+” jako prefiksu, aby wykluczyć podstrony!",
         "emptyTips": "Kliknij tutaj, aby utworzyć zasadę!",
         "item": {
             "name": "Nazwa zasady",
             "condition": "Limitowany URL",
-            "daily": "Dzienny limit",
-            "weekly": "Limit tygodniowy",
             "weekStartInfo": "Pierwszym dniem każdego tygodnia jest {weekStart}, możesz zmienić tę wartość w opcjach śledzenia",
             "delayCount": "Licznik opóźnień",
             "detail": "Szczegóły zasady",
             "visitTime": "Limit czasu na wizytę",
-            "period": "Godziny blokowania",
             "enabled": "Aktywne",
             "locked": "Zablokowany",
             "effectiveDay": "Aktywna w",
             "allowDelay": "Możliwe do przedłużenia",
-            "visits": "wizyt",
             "or": "lub",
             "notEffective": "Nieskuteczny"
         },
@@ -662,23 +598,18 @@
         "reminder": "Mniej niż {min} minut do osiągnięcia limitu!"
     },
     "it": {
-        "filterDisabled": "Solo Abilitati",
         "emptyTips": "Clicca qui per creare una regola!",
         "item": {
             "name": "Nome della regola",
             "condition": "Url Ristretto",
-            "daily": "Limite giornaliero",
-            "weekly": "Limite settimanale",
             "weekStartInfo": "Il primo giorno di ogni settimana è {weekStart}, puoi cambiare questo valore nelle opzioni di tracciamento",
             "delayCount": "Ritardo conteggio",
             "detail": "Dettagli regola",
             "visitTime": "Limite di tempo per visita",
-            "period": "Periodi bloccati",
             "enabled": "Attivata",
             "locked": "Bloccato",
             "effectiveDay": "Effettivo On",
             "allowDelay": "Ritardabile",
-            "visits": "visite",
             "or": "o",
             "notEffective": "Non valido"
         },

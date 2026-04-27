@@ -1,9 +1,9 @@
-import { cvtGroupColor } from '@/pages/util/style'
 import { createTab } from "@api/chrome/tab"
 import { Mouse, Timer } from "@element-plus/icons-vue"
 import { useTabGroups } from "@hooks"
 import Flex from "@pages/components/Flex"
 import TooltipWrapper from '@pages/components/TooltipWrapper'
+import { cvtGroupColor } from '@pages/util/style'
 import { calJumpUrl } from "@popup/common"
 import { useCateNameMap, useQuery } from "@popup/context"
 import { t } from '@popup/locale'
@@ -171,7 +171,7 @@ const Item = defineComponent<ItemProps>(props => {
                     </Flex>
                 </Flex>
             </Flex>
-        </ElCard >
+        </ElCard>
     )
 }, { props: ['date', 'displaySiteName', 'max', 'total', 'value', 'onJump'] })
 

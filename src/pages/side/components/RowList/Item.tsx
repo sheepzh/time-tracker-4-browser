@@ -1,5 +1,5 @@
-import Flex from "@pages/components/Flex"
 import { createTab } from "@api/chrome/tab"
+import Flex from "@pages/components/Flex"
 import { isRemainHost } from "@util/constant/remain-host"
 import { getAlias, getHost, isSite } from "@util/stat"
 import { formatPeriodCommon } from "@util/time"
@@ -14,7 +14,7 @@ const renderTitle = (siteName: string | undefined, host: string | undefined, han
     return (
         <ElTooltip content={tooltip} placement="top" offset={4}>
             {textNode}
-        </ElTooltip >
+        </ElTooltip>
     )
 }
 
@@ -96,7 +96,7 @@ const _default = defineComponent<Props>(props => {
                     <ElProgress percentage={rate.value} showText={false} />
                 </Flex>
             </Flex>
-        </ElCard >
+        </ElCard>
     )
 }, { props: ['value', 'max', 'total'] })
 

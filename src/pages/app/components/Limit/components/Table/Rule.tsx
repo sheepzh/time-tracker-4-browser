@@ -14,11 +14,12 @@ type TimeCountPairProps = {
 }
 
 const TimeCountPair: FunctionalComponent<TimeCountPairProps> = ({ time, count, label, type = DAILY_WEEKLY_TAG_TYPE }) => {
-    if (!time && !count) return null
+    const content = [
+        time && formatPeriodCommon(time * MILL_PER_SECOND, true),
+        count && t(msg => msg.shared.limit.visits, { n: count }),
+    ].filter(Boolean).join(` ${t(msg => msg.limit.item.or)} `)
 
-    const timeContent = time ? formatPeriodCommon(time * MILL_PER_SECOND, true) : null
-    const countContent = count ? `${count} ${t(msg => msg.limit.item.visits)}` : null
-    const content = [timeContent, countContent].filter(str => !!str).join(` ${t(msg => msg.limit.item.or)} `)
+    if (!content) return null
 
     return (
         <div>
@@ -32,7 +33,7 @@ const PeriodTag: FunctionalComponent<{ periods?: timer.limit.Period[], }> = ({ p
 
     return <>
         <div>
-            <ElTag size="small" type="info">{t(msg => msg.limit.item.period)}</ElTag>
+            <ElTag size="small" type="info">{t(msg => msg.shared.limit.period)}</ElTag>
         </div>
         <Flex justify="center" gap={4} wrap="wrap">
             {periods.map((p, idx) => <ElTag key={idx} size="small" type="info">{period2Str(p)}</ElTag>)}
@@ -48,12 +49,12 @@ const Rule = defineComponent<{ value: timer.limit.Item }>(props => {
             <TimeCountPair
                 time={row.value?.time}
                 count={row.value?.count}
-                label={t(msg => msg.limit.item.daily)}
+                label={t(msg => msg.shared.limit.daily)}
             />
             <TimeCountPair
                 time={row.value?.weekly}
                 count={row.value?.weeklyCount}
-                label={t(msg => msg.limit.item.weekly)}
+                label={t(msg => msg.shared.limit.weekly)}
             />
             <TimeCountPair
                 time={row.value?.visitTime}

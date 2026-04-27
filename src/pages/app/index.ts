@@ -5,11 +5,11 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { initDarkTheme } from "@/pages/util/dark-mode"
 import { listenMediaSizeChange } from "@hooks"
 import { initLocale } from "@i18n"
 import { createElApp } from "@pages/element-ui/app"
-import { initEcharts } from "./echarts"
+import { initDarkTheme } from "@pages/util/dark-mode"
+import { initEcharts } from "../util/echarts"
 import Main from "./Layout"
 import installRouter from "./router"
 import { injectAppCss } from './styles/index'

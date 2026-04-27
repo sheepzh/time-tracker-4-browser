@@ -6,7 +6,9 @@
  */
 
 import { listTabs, sendMsg2Tab } from "@api/chrome/tab"
+import { getSite } from '@service/site-service'
 import { matches } from "@util/limit"
+import { extractHostname } from '@util/pattern'
 import { getStartOfDay, MILL_PER_DAY } from "@util/time"
 import alarmManager from "./alarm-manager"
 import MessageDispatcher from "./message-dispatcher"
@@ -40,6 +42,20 @@ const processAskHitVisit = async (item: timer.limit.Item) => {
     return false
 }
 
+async function querySummary(): Promise<timer.limit.Summary | undefined> {
+    const tabs = await listTabs({ currentWindow: true, active: true })
+    if (tabs.length !== 1) return undefined
+    const [tab] = tabs
+    const url = tab.url
+    if (!url) return undefined
+
+    const { host } = extractHostname(url)
+    const site = await getSite({ host, type: 'normal' })
+    const items = await selectLimit({ url, effective: true })
+
+    return { url, site, items }
+}
+
 export default function init(dispatcher: MessageDispatcher) {
     initDailyBroadcast()
 
@@ -50,4 +66,5 @@ export default function init(dispatcher: MessageDispatcher) {
         .register('limit.add', createLimitRule)
         .register('limit.hitVisit', processAskHitVisit)
         .register('limit.delay', delayLimit)
+        .register('limit.summary', querySummary)
 }

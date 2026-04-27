@@ -7,8 +7,8 @@
 
 import type { DimensionEntry } from '@app/components/Analysis/types'
 import type { ValueFormatter } from '@app/components/common/kanban/types'
-import { EchartsWrapper } from '@hooks'
 import { getLineSeriesPalette, tooltipDot, tooltipFlexLine } from '@app/util/echarts'
+import { EchartsWrapper } from '@hooks'
 import { getRegularTextColor } from '@pages/util/style'
 import type {
     ComposeOption, GridComponentOption, LineSeriesOption, TitleComponentOption, TooltipComponentOption,

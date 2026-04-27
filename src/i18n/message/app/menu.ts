@@ -15,13 +15,11 @@ export type MenuMessage = {
     dataClear: string
     behavior: string
     habit: string
-    limit: string
     additional: string
     siteManage: string
     whitelist: string
     mergeRule: string
     other: string
-    helpUs: string
     about: string
 }
 

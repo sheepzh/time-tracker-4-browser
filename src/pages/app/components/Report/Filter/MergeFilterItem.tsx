@@ -1,7 +1,7 @@
 import { useCategory } from '@app/context'
-import { useSiteMerge } from '@hooks'
 import { t } from '@app/locale'
 import { Calendar, Collection, Link, Menu } from "@element-plus/icons-vue"
+import { useSiteMerge } from '@hooks'
 import Flex from "@pages/components/Flex"
 import { ElCheckboxButton, ElCheckboxGroup, ElIcon, ElText, ElTooltip } from "element-plus"
 import { computed, defineComponent, StyleValue } from "vue"
@@ -63,7 +63,7 @@ const MergeFilterItem = defineComponent<{}>(() => {
                     </ElCheckboxButton>
                 ))}
             </ElCheckboxGroup>
-        </Flex >
+        </Flex>
     )
 }, { props: ['hideCate'] })
 

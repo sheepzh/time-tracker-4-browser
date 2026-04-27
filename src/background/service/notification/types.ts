@@ -1,4 +1,4 @@
-export type Summary = {
+type Summary = {
     focus: number
     visit: number
     siteCount: number

@@ -71,7 +71,7 @@ const DurationSelect = defineComponent<Props>(props => {
                 const { label, value, level } = param?.node as CascaderNode || {}
                 return level === 2 ? value : label
             }}
-        </ElCascader >
+        </ElCascader>
     )
 }, { props: ['modelValue', 'onChange', 'reverse'] })
 
