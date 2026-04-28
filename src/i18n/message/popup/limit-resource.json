@@ -9,6 +9,11 @@
         "notHit": "Not in effect"
     },
     "zh_CN": {
+        "noData": "此URL无限制规则",
+        "newOne": "新建",
+        "timeUsed": "已使用 {percent}",
+        "visitUsed": "已使用 {used} 次",
+        "remain": "剩余 {remaining}",
         "noLimit": "无限制",
         "notHit": "未命中"
     }
