@@ -100,7 +100,7 @@ const generateOption = ({ entries, preEntries, title, valueFormatter }: BizOptio
             showSymbol: false,
             smooth: true,
             lineStyle: { width: prevExistData ? 0 : 1 },
-            color: PREV_COLOR.colorStops[0].color,
+            color: PREV_COLOR.colorStops?.[0]?.color,
             areaStyle: { opacity: .5, color: PREV_COLOR },
             emphasis: { focus: "self" },
         }, {
@@ -109,7 +109,7 @@ const generateOption = ({ entries, preEntries, title, valueFormatter }: BizOptio
             showSymbol: false,
             smooth: true,
             lineStyle: { width: thisExistData ? 0 : 1 },
-            color: THIS_COLOR.colorStops[0].color,
+            color: THIS_COLOR.colorStops[0]?.color,
             areaStyle: { color: THIS_COLOR },
             emphasis: { focus: "series" },
         }]

@@ -14,12 +14,10 @@ import { defineComponent, ref } from "vue"
 import { useDataMemory } from "../context"
 
 async function handleFileSelected(fileInput: HTMLInputElement | undefined, callback: () => void) {
-    const files = fileInput?.files
-    if (!files?.length) {
-        return
-    }
+    const file = fileInput?.files?.[0]
+    if (!file) return
+
     const loading = ElLoading.service({ fullscreen: true })
-    const file: File = files[0]
     const fileText = await file.text()
     const data = deserialize(fileText)
     if (!data) return ElMessage.error(t(msg => msg.dataManage.importError))

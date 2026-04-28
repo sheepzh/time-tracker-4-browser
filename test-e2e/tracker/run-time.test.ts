@@ -27,8 +27,8 @@ describe('Run time tracking', () => {
         await sleep(1.1)
         let records = await readRecordsOfFirstPage(context)
         let record = records[0]
-        expect(parseTime2Sec(record.time)).toBeGreaterThanOrEqual(1)
-        expect(record.runTime).toBeFalsy()
+        expect(parseTime2Sec(record?.time)).toBeGreaterThanOrEqual(1)
+        expect(record?.runTime).toBeFalsy()
 
         // 1. Enable run time tracking
         const enableTs = Date.now()
@@ -49,7 +49,7 @@ describe('Run time tracking', () => {
         await sleep(1)
 
         records = await readRecordsOfFirstPage(context)
-        const runTime2 = parseTime2Sec(records[0].runTime)
+        const runTime2 = parseTime2Sec(records[0]?.runTime)
         expect(runTime2).toBeGreaterThanOrEqual(runTime1 + 1)
         expect(runTime2).toBeLessThan((Date.now() - enableTs) / 1000)
 
@@ -59,7 +59,7 @@ describe('Run time tracking', () => {
         await emptyPage.bringToFront()
         await sleep(4)
         records = await readRecordsOfFirstPage(context)
-        const runTime3 = parseTime2Sec(records[0].runTime)
+        const runTime3 = parseTime2Sec(records[0]?.runTime)
         expect(runTime3).toBeLessThanOrEqual(Math.round((disableTs - enableTs) / 1000))
     }, 60000)
 
@@ -72,7 +72,7 @@ describe('Run time tracking', () => {
         await sleep(4)
 
         let records = await readRecordsOfFirstPage(context)
-        const runTime = parseTime2Sec(records[0].runTime)
+        const runTime = parseTime2Sec(records[0]?.runTime)
         expect(runTime).toBeTruthy()
         expect(runTime).toBeLessThanOrEqual((Date.now() - enableTs) / 1000 + 1)
 
@@ -83,7 +83,7 @@ describe('Run time tracking', () => {
         await sleep(2)
 
         records = await readRecordsOfFirstPage(context)
-        const runTime1 = parseTime2Sec(records[0].runTime)
+        const runTime1 = parseTime2Sec(records[0]?.runTime)
         expect(runTime1).toBeLessThan((disableTs - enableTs) / 1000 + 1)
     }, 60000)
 })

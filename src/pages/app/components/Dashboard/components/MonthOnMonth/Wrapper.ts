@@ -34,9 +34,9 @@ function optionOf(lastPeriodItems: Row[], thisPeriodItems: Row[], domWidth: numb
                 const [thisColor, lastColor] = params.map(v => v.color)
                 const { date: thisDate, total: thisVal } = thisItem || {}
                 const { date: lastDate, total: lastVal } = lastItem || {}
-                const lastStr = `${tooltipDot(lastColor as string)}&emsp;${cvt2LocaleTime(lastDate)}&emsp;<b>${formatPeriodCommon(lastVal)}</b>`
-                let thisStr = `${tooltipDot(thisColor as string)}&emsp;${cvt2LocaleTime(thisDate)}&emsp;<b>${formatPeriodCommon(thisVal)}</b>`
-                if (lastVal) {
+                const lastStr = `${tooltipDot(lastColor as string)}&emsp;${cvt2LocaleTime(lastDate)}&emsp;<b>${formatPeriodCommon(lastVal ?? 0)}</b>`
+                let thisStr = `${tooltipDot(thisColor as string)}&emsp;${cvt2LocaleTime(thisDate)}&emsp;<b>${formatPeriodCommon(thisVal ?? 0)}</b>`
+                if (lastVal && thisVal) {
                     const delta = (thisVal - lastVal) / lastVal * 100
                     let deltaStr = delta.toFixed(1) + '%'
                     if (delta >= 0) deltaStr = '+' + deltaStr
@@ -74,7 +74,7 @@ function optionOf(lastPeriodItems: Row[], thisPeriodItems: Row[], domWidth: numb
                 barCategoryGap: `${domWidth < 500 ? 30 : 55}%`,
                 itemStyle: { color: color1 },
                 data: thisPeriodItems.map((row, idx) => {
-                    const otherIsEmpty = lastPeriodItems[idx].total === 0
+                    const otherIsEmpty = !lastPeriodItems[idx]?.total
                     return {
                         value: row.total, row,
                         itemStyle: { borderRadius: otherIsEmpty ? 10 : [10, 10, 0, 0] },
@@ -86,7 +86,7 @@ function optionOf(lastPeriodItems: Row[], thisPeriodItems: Row[], domWidth: numb
                 type: 'bar',
                 itemStyle: { color: color2 },
                 data: lastPeriodItems.map((row, idx) => {
-                    const otherIsEmpty = thisPeriodItems[idx].total === 0
+                    const otherIsEmpty = !thisPeriodItems[idx]?.total
                     return {
                         value: -row.total, row,
                         itemStyle: { borderRadius: otherIsEmpty ? 10 : [0, 0, 10, 10] },

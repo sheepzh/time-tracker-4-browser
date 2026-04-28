@@ -44,9 +44,7 @@ const processAskHitVisit = async (item: timer.limit.Item) => {
 
 async function querySummary(): Promise<timer.limit.Summary | undefined> {
     const tabs = await listTabs({ currentWindow: true, active: true })
-    if (tabs.length !== 1) return undefined
-    const [tab] = tabs
-    const url = tab.url
+    const url = tabs[0]?.url
     if (!url) return undefined
 
     const { host } = extractHostname(url)

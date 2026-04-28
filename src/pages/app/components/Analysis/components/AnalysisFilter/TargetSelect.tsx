@@ -118,10 +118,8 @@ const TargetSelect = defineComponent(() => {
             label: t(msg => msg.analysis.target.site),
             options: siteItems.map(item => ({ value: cvtTarget2Key(item), label: item.label, data: item })),
         })
-        if (res.length === 1) {
-            // Single content, not use group
-            res = res[0].options
-        }
+        // Single content, not use group
+        if (res.length === 1) res = res[0]?.options ?? []
         return res
     })
 

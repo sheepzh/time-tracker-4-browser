@@ -156,10 +156,10 @@ describe('stat-database/classic', () => {
         const data = parseImportData(data2Import)
         expect(data.length).toEqual(1)
         const item = data[0]
-        expect(item.date).toEqual(now)
-        expect(item.host).toEqual(baidu)
-        expect(item.focus).toEqual(1)
-        expect(item.time).toEqual(1)
+        expect(item?.date).toEqual(now)
+        expect(item?.host).toEqual(baidu)
+        expect(item?.focus).toEqual(1)
+        expect(item?.time).toEqual(1)
     })
 
     test("parseImportData2", async () => {

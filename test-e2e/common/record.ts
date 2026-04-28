@@ -14,18 +14,18 @@ function readRecords(): RecordRow[] {
     const rows = document.querySelectorAll('.el-table .el-table__body-wrapper table tbody tr')
     return Array.from(rows).map(row => {
         const cells = row.querySelectorAll('td')
-        const date = cells[1].textContent ?? ''
-        const url = cells[2].textContent ?? ''
-        const name = cells[3].textContent ?? ''
-        const category = cells[4].textContent ?? ''
-        const time = cells[5].textContent ?? ''
+        const date = cells[1]?.textContent ?? ''
+        const url = cells[2]?.textContent ?? ''
+        const name = cells[3]?.textContent ?? ''
+        const category = cells[4]?.textContent ?? ''
+        const time = cells[5]?.textContent ?? ''
         let runTime: string | undefined = undefined, visit = ''
         if (cells?.length === 9) {
             // Including run time
-            runTime = cells[6].textContent ?? undefined
-            visit = cells[7].textContent ?? ''
+            runTime = cells[6]?.textContent ?? undefined
+            visit = cells[7]?.textContent ?? ''
         } else {
-            visit = cells[6].textContent ?? ''
+            visit = cells[6]?.textContent ?? ''
         }
         return { date, url, name, category, time, runTime, visit }
     })

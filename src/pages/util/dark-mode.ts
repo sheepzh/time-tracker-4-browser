@@ -13,8 +13,8 @@ const STORAGE_KEY = "isDark"
 const STORAGE_FLAG = "1"
 
 function toggle0(isDarkMode: boolean, el?: Element) {
-    el = el || document.getElementsByTagName("html")?.[0]
-    el.setAttribute(THEME_ATTR, isDarkMode ? DARK_VAL : "")
+    el ??= document.getElementsByTagName("html")?.[0]
+    el?.setAttribute(THEME_ATTR, isDarkMode ? DARK_VAL : "")
     localStorage.setItem(STORAGE_KEY, isDarkMode ? STORAGE_FLAG : '')
 }
 

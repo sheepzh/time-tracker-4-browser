@@ -5,18 +5,18 @@ export function encode(str: string): string {
     let result = ''
 
     for (let i = 0; i < bytes.length; i += 3) {
-        const byte1 = bytes[i]
-        const byte2 = bytes[i + 1] || 0
-        const byte3 = bytes[i + 2] || 0
+        const byte1 = bytes[i] ?? 0
+        const byte2 = bytes[i + 1] ?? 0
+        const byte3 = bytes[i + 2] ?? 0
 
         const char1 = byte1 >> 2
         const char2 = ((byte1 & 0x03) << 4) | (byte2 >> 4)
         const char3 = ((byte2 & 0x0F) << 2) | (byte3 >> 6)
         const char4 = byte3 & 0x3F
 
-        result += BASE64_CHARS[char1] + BASE64_CHARS[char2] +
-            (i + 1 < bytes.length ? BASE64_CHARS[char3] : '=') +
-            (i + 2 < bytes.length ? BASE64_CHARS[char4] : '=')
+        result += BASE64_CHARS.charAt(char1) + BASE64_CHARS.charAt(char2) +
+            (i + 1 < bytes.length ? BASE64_CHARS.charAt(char3) : '=') +
+            (i + 2 < bytes.length ? BASE64_CHARS.charAt(char4) : '=')
     }
 
     return result

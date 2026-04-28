@@ -87,6 +87,12 @@ export async function getSite(siteKey: timer.site.SiteKey): Promise<timer.site.S
     return info ?? siteKey
 }
 
+function moveToFront<T>(arr: T[], idx: number): T[] {
+    const item = arr[idx]
+    if (item === undefined) return arr
+    return [item, ...arr.slice(0, idx), ...arr.slice(idx + 1)]
+}
+
 export async function searchSites(query: string | undefined): Promise<timer.site.SiteInfo[]> {
     query = cleanSearchQuery(query)
     const filter = query ? (host: string) => host.includes(query) : () => true
@@ -105,22 +111,18 @@ export async function searchSites(query: string | undefined): Promise<timer.site
     const ranked = [...rows.filter(r => !r.alias), ...rows.filter(r => r.alias)]
 
     const hitIdx = ranked.findIndex(r => r.host === query)
-    if (hitIdx >= 0) {
-        const [same] = ranked.splice(hitIdx, 1)
-        return [same, ...ranked]
-    } else if (!query) {
-        return ranked
-    } else if (judgeVirtualFast(query) && isValidVirtualHost(query)) {
+    if (hitIdx >= 0) return moveToFront(ranked, hitIdx)
+    if (!query) return ranked
+
+    if (judgeVirtualFast(query) && isValidVirtualHost(query)) {
         return [{ host: query, type: 'virtual' }, ...ranked]
-    } else {
-        const { host } = extractHostname(query)
-        const hostIdx = ranked.findIndex(r => r.host === host)
-        if (hostIdx >= 0) {
-            const [same] = ranked.splice(hostIdx, 1)
-            return [same, ...ranked]
-        }
-        return [{ host, type: 'normal' }, ...ranked]
     }
+
+    const { host } = extractHostname(query)
+    const hostIdx = ranked.findIndex(r => r.host === host)
+    if (hostIdx >= 0) return moveToFront(ranked, hostIdx)
+
+    return [{ host, type: 'normal' }, ...ranked]
 }
 
 function cleanSearchQuery(query: string | undefined): string | undefined {

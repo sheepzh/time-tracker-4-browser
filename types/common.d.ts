@@ -26,12 +26,9 @@ type RequiredPick<T, K extends keyof T> = Required<Pick<T, K>>
  * @param E element
  * @param L length of tuple
  */
-declare type Tuple<E, L extends number, Arr = [E, ...Array<E>]> =
-    Pick<Arr, Exclude<keyof Arr, 'splice' | 'push' | 'pop' | 'shift' | 'unshift'>>
-    & {
-        readonly length: L
-        [I: number]: E
-    }
+declare type Tuple<E, L extends number, _Acc extends E[] = []> =
+    & (_Acc['length'] extends L ? _Acc : Tuple<E, L, [..._Acc, E]>)
+    & { readonly length: L }
 
 /**
  * Vector

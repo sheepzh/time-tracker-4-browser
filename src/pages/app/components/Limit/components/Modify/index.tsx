@@ -82,14 +82,14 @@ const _default = defineComponent((_, ctx) => {
                     ...modifyingItem,
                     cond, enabled, name, time, weekly, visitTime, weekdays, count, weeklyCount,
                     // Object to array
-                    periods: periods?.map(i => ([i?.[0], i?.[1]] satisfies Vector<number>)),
+                    periods: periods?.map(i => [i[0], i[1]] satisfies timer.limit.Period),
                 } satisfies timer.limit.Rule
                 await updateLimits([saved])
             } else {
                 const toCreate = {
                     cond, enabled, name, time, weekly, visitTime, weekdays, count, weeklyCount,
                     // Object to array
-                    periods: periods?.map(i => ([i?.[0], i?.[1]] satisfies Vector<number>)),
+                    periods: periods?.map(i => [i[0], i[1]] satisfies timer.limit.Period),
                     allowDelay: false, locked: false,
                 } satisfies MakeOptional<timer.limit.Rule, 'id'>
                 const id = await addLimit(toCreate)

@@ -229,15 +229,14 @@ export class CrowdinClient {
         console.log("Content length: " + Object.keys(content).length)
         for (const [path, value] of Object.entries(content)) {
             const string = existStringsKeyMap[path]
+            if (!string) continue
             const patch: PatchRequest[] = []
             string.text !== value && patch.push({
                 op: 'replace',
                 path: '/text',
                 value: value
             })
-            if (!patch.length) {
-                continue
-            }
+            if (!patch.length) continue
             console.log('Try to edit string: ' + string.identifier)
             await this.crowdin.sourceStringsApi.editString(PROJECT_ID, string.id, patch)
         }

@@ -50,27 +50,23 @@ const formatFocusTooltip = (params: TopLevelFormatterParams, format: timer.app.T
         </div>
     `
 }
+type MergeRow =
+    | MakeRequired<timer.stat.SiteRow | timer.stat.CateRow, 'mergedDates' | 'mergedRows'>
+    | MakeRequired<timer.stat.GroupRow, 'mergedDates' | 'mergedRows'>
 
 function mergeDate(origin: timer.stat.Row[]): timer.stat.Row[] {
-    const map: Record<
-        string,
-        | MakeRequired<timer.stat.SiteRow | timer.stat.CateRow, 'mergedDates' | 'mergedRows'>
-        | MakeRequired<timer.stat.GroupRow, 'mergedDates' | 'mergedRows'>
-    > = {}
+    const map: Record<string, MergeRow> = {}
     origin.forEach(ele => {
-        const { date = '', focus, time } = ele
+        const { date, focus, time } = ele
         const key = identifyTargetKey(ele)
-        let exist = map[key]
-        if (!exist) {
-            exist = map[key] = {
-                ...ele,
-                focus: 0,
-                time: 0,
-                mergedRows: [],
-                mergedDates: [],
-                composition: { focus: [], time: [], run: [] },
-            }
-        }
+        const exist: MergeRow = map[key] ?? (map[key] = {
+            ...ele,
+            focus: 0,
+            time: 0,
+            mergedRows: [],
+            mergedDates: [],
+            composition: { focus: [], time: [], run: [] },
+        })
         exist.focus += focus ?? 0
         exist.time += time ?? 0
         exist.mergedDates.push(date)
@@ -150,7 +146,7 @@ async function generateOption(rows: timer.stat.Row[] = [], timeFormat: timer.app
                 padding: [0, 4, 0, 0],
                 formatter: (params: TopLevelFormatterParams) => {
                     const param = Array.isArray(params) ? params[0] : params
-                    const { row } = (param.data || {}) as SeriesDataItem
+                    const { row } = (param?.data ?? {}) as SeriesDataItem
                     if (!isSite(row)) return ''
                     const { siteKey, alias } = row
                     return alias ?? siteKey.host

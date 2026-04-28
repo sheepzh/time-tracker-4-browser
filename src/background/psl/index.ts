@@ -47,6 +47,7 @@ export const getPsl = (origin: string): string | null => {
 
 const get0 = (tree: PslTree, parts: string[], index: number, chains: Chain[]) => {
     const part = parts[index]
+    if (!part) return
     let pslNode = tree[part]
     if (!pslNode && !tree[`!${part}`]) {
         pslNode = tree['*']

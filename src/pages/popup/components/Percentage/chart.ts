@@ -143,11 +143,10 @@ type ChartRow = timer.stat.Row | OtherRow
 export const isOther = (row: ChartRow): row is OtherRow => 'other' in row
 
 function cvt2ChartRows(rows: timer.stat.Row[], dimension: Exclude<timer.core.Dimension, 'run'>, itemCount: number): ChartRow[] {
-    rows = rows.filter(item => !!item[dimension]).sort((a, b) => (b[dimension] ?? 0) - (a[dimension] ?? 0))
+    const sorted = rows.filter(item => !!item[dimension]).sort((a, b) => (b[dimension] ?? 0) - (a[dimension] ?? 0))
     const popupRows: ChartRow[] = []
     const other: OtherRow = { focus: 0, time: 0, count: 0, other: true }
-    for (let i = 0; i < rows.length; i++) {
-        const row = rows[i]
+    sorted.forEach((row, i) => {
         if (i < itemCount) {
             popupRows.push(row)
         } else {
@@ -155,8 +154,8 @@ function cvt2ChartRows(rows: timer.stat.Row[], dimension: Exclude<timer.core.Dim
             other.time += row.time
             other.count++
         }
-    }
-    other.count && popupRows.push(other)
+    })
+    if (other.count) popupRows.push(other)
     return popupRows
 }
 

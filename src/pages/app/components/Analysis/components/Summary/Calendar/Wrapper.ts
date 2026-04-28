@@ -63,17 +63,13 @@ function getXAxisLabelMap(data: _Value[]): { [x: string]: string } {
     const xAndMonthMap = groupBy(data, e => e[0], grouped => new Set(grouped.map(a => a[3].substring(4, 6))))
     let lastMonth: string | undefined = undefined
     Object.entries(xAndMonthMap).forEach(([x, monthSet]) => {
-        if (monthSet.size != 1) {
-            return
-        }
+        if (monthSet.size != 1) return
         const currentMonth = Array.from(monthSet)[0]
-        if (currentMonth === lastMonth) {
-            return
-        }
+        if (!currentMonth || currentMonth === lastMonth) return
         lastMonth = currentMonth
         const monthNum = parseInt(currentMonth)
         const label = allMonthLabel[monthNum - 1]
-        result[x] = label
+        label && (result[x] = label)
     })
     return result
 }

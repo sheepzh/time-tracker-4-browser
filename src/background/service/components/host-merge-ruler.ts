@@ -81,12 +81,10 @@ export default class CustomizedHostMergeRuler {
      * @returns merged host
      */
     private mergeInner(origin: string): string {
-        let host = origin
+        let host: string | undefined = origin
         if (judgeVirtualFast(origin)) {
             host = origin.split('/')?.[0]
-            if (!host) {
-                return origin
-            }
+            if (!host) return origin
         }
         // First check the static rules
         let merged = this.noRegMergeRules[host]

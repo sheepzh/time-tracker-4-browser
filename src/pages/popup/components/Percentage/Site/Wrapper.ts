@@ -23,7 +23,7 @@ type EcOption = ComposeOption<
 const maxWidth = 750
 
 function calcPositionOfTooltip(container: HTMLElement, point: (number | string)[]) {
-    let p: number | string = point[0]
+    const p = point[0] ?? 0
     const pN: number = typeof p === 'number' ? p : Number.parseFloat(p)
     const tooltip = container.children.item(1) as HTMLDivElement
     let tooltipWidth = 0

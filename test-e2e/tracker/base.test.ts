@@ -16,11 +16,11 @@ describe('Tracking', () => {
         let records = await readRecordsOfFirstPage(context)
 
         expect(records.length).toEqual(1)
-        const { visit: visitStr, time: timeStr } = records[0]
+        const { visit: visitStr, time: timeStr } = records[0] ?? {}
         // 1 visit
         expect(visitStr).toEqual("1")
         // >= 2 s
-        const time = parseInt(timeStr.replace('s', '').trim())
+        const time = timeStr ? parseInt(timeStr.replace('s', '').trim()) : NaN
         expect(time >= 2)
 
         // Another page
@@ -39,11 +39,11 @@ describe('Tracking', () => {
         let records = await readRecordsOfFirstPage(context)
 
         expect(records.length).toEqual(1)
-        const { visit: visitStr, time: timeStr } = records[0]
+        const { visit: visitStr, time: timeStr } = records[0] ?? {}
         // 1 visit
         expect(visitStr).toEqual("1")
         // >= 2 s
-        const time = parseInt(timeStr.replace('s', '').trim())
+        const time = timeStr ? parseInt(timeStr.replace('s', '').trim()) : NaN
         expect(time >= 2)
 
         await createWhitelist(context, MOCK_HOST)
@@ -52,7 +52,7 @@ describe('Tracking', () => {
         await sleep(2)
         records = await readRecordsOfFirstPage(context)
         expect(records.length).toEqual(1)
-        expect(records[0].time).toEqual(timeStr)
-        expect(records[0].visit).toEqual("1")
+        expect(records[0]?.time).toEqual(timeStr)
+        expect(records[0]?.visit).toEqual("1")
     }, 60000)
 })

@@ -21,7 +21,7 @@ class UncommonChinese implements VerificationGenerator {
         while (answer.length < 3) {
             const idx = randomIntBetween(0, LENGTH)
             const ch = UNCOMMON_WORDS[idx]
-            if (!answer.includes(ch)) {
+            if (ch && !answer.includes(ch)) {
                 answer += ch
             }
         }

@@ -18,16 +18,13 @@ import { isRtl } from "./document"
  *
  * Parse the time to string
  */
-export function formatTime(time: Date | number, cFormat?: string) {
-    const format = cFormat || '{y}-{m}-{d} {h}:{i}:{s}'
+export function formatTime(time: Date | number, format?: string) {
+    format ??= '{y}-{m}-{d} {h}:{i}:{s}'
     let date: Date
     if (time instanceof Date) {
         date = time
     } else {
-        if ((typeof time === 'number') && (time.toString().length === 10)) {
-            time = time * 1000
-        }
-        date = new Date(time)
+        date = new Date(time.toString().length === 10 ? time * 1000 : time)
     }
     const formatObj: Record<string, number> = {
         y: date.getFullYear(),
@@ -40,6 +37,7 @@ export function formatTime(time: Date | number, cFormat?: string) {
     }
     const timeStr = format.replace(/{([ymdhisa])+}/g, (_result, key) => {
         const value = formatObj[key]
+        if (value === undefined) return key
         // Note: getDay() returns 0 on Sunday
         if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value] }
         return value.toString().padStart(2, '0')

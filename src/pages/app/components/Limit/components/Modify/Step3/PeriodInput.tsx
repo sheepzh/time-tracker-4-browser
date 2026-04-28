@@ -37,16 +37,17 @@ const insertPeriods = (periods: timer.limit.Period[], toInsert: timer.limit.Peri
     }
     for (let i = 0; i < len; i++) {
         const pre = periods[i]
+        if (!pre) continue
         const next = periods[i + 1]
         if (checkImpact(pre, toInsert)) {
             mergePeriod(pre, toInsert)
-            if (checkImpact(pre, next)) {
+            if (next && checkImpact(pre, next)) {
                 mergePeriod(pre, next)
                 periods.splice(i + 1, 1)
             }
             return
         }
-        if (checkImpact(toInsert, next)) {
+        if (next && checkImpact(toInsert, next)) {
             mergePeriod(next, toInsert)
             return
         }
@@ -111,15 +112,15 @@ const PeriodInput = defineComponent<ModelValue<timer.limit.Period[]>>(props => {
 
     const handleSave = () => {
         const val = range2Period(editingRange.value)
-        const oldPeriods = props.modelValue?.map(p => ([p?.[0], p?.[1]] satisfies Vector<number>)) || []
+        const oldPeriods = props.modelValue.map(p => [p[0], p[1]] satisfies timer.limit.Period)
         insertPeriods(oldPeriods, val)
         props.onChange?.(oldPeriods)
         closeEditing()
     }
 
     const handleDelete = (idx: number) => {
-        const newPeriods = props.modelValue?.filter((_, i) => i !== idx)
-            ?.map(p => ([p?.[0], p?.[1]] satisfies Vector<number>)) || []
+        const newPeriods = props.modelValue.filter((_, i) => i !== idx)
+            .map(p => [p[0], p[1]] satisfies timer.limit.Period)
         props.onChange?.(newPeriods)
     }
 

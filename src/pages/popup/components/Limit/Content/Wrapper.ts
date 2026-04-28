@@ -210,14 +210,16 @@ class Wrapper extends EchartsWrapper<timer.limit.Item, EcOption> {
 
         // Transparent pie as tooltip event layer (invisible, same ring area)
         type PieItem = { value: number; name: string; itemStyle: { color: string } }
-        const firstStart = blocked[0].start
-        const lastEnd = blocked[blocked.length - 1].end
+        const firstStart = blocked[0]?.start ?? 0
+        const lastEnd = blocked[blocked.length - 1]?.end ?? 0
         const startAngle = 90 - (lastEnd / MINUTES_PER_DAY) * 360
         const pieData: PieItem[] = [
             { value: MINUTES_PER_DAY - lastEnd + firstStart, name: '', itemStyle: { color: 'rgba(0,0,0,0)' } },
         ]
         for (let i = 0; i < blocked.length; i++) {
-            const { start, end } = blocked[i]
+            const item = blocked[i]
+            if (!item) continue
+            const { start, end } = item
             pieData.push({ value: end - start, name: `${fmt(start)} - ${fmt(end)}`, itemStyle: { color: 'rgba(0,0,0,0)' } })
             const nextStart = blocked[i + 1]?.start
             if (nextStart !== undefined && nextStart > end) {

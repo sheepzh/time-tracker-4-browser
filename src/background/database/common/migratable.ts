@@ -14,9 +14,9 @@ export const isLegacyVersion = (data: unknown): data is timer.backup.ExportData 
 
     const version = data.__meta__.version
     const match = version.match(/^(\d+)\.(\d+)\.(\d+)/)
-    if (!match) return true
-
-    const major = parseInt(match[1])
+    const majorStr = match?.[1]
+    if (!majorStr) return true
+    const major = parseInt(majorStr)
 
     return major < 4
 }
