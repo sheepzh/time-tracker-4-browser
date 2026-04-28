@@ -1,16 +1,18 @@
 name: Publish to Firefox Addon Store
-on: [workflow_dispatch]
+on: [ workflow_dispatch ]
 jobs:
     publish:
         runs-on: ubuntu-latest
+        env:
+            FF_MIN_VER: "140.0"
         steps:
             - uses: actions/checkout@v4
               with:
                   fetch-depth: 0
             - name: Setup NodeJS
-              uses: actions/setup-node@v4
+              uses: actions/setup-node@v6
               with:
-                  node-version: "v22"
+                  node-version: "v24"
             - name: Install dependencies
               run: npm install
             - name: Build
@@ -23,6 +25,7 @@ jobs:
                   addon-guid: "{a8cf72f7-09b7-4cd4-9aaa-7a023bf09916}"
                   xpi-path: market_packages/target.firefox.zip
                   source-file-path: market_packages/target.src.zip
-                  compatibility: firefox, android
+                  compatibility: "{\"firefox\": {\"min\": \"${{ env.FF_MIN_VER }}\"}, \"android\":
+                      {\"min\": \"${{ env.FF_MIN_VER}}\"}}"
                   jwt-issuer: ${{ secrets.FIREFOX_JWD_ISSUER }}
                   jwt-secret: ${{ secrets.FIREFOX_JWD_SECRET }}

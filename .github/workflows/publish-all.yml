@@ -1,9 +1,10 @@
 name: Publish Extension to All Stores
 
-on: [workflow_dispatch]
+on: [ workflow_dispatch ]
 
 env:
     MAX_PACKAGE_SIZE: 2621440 # 2.5MB in bytes
+    FF_MIN_VER: "140.0"
 
 jobs:
     build:
@@ -130,6 +131,7 @@ jobs:
                   addon-guid: "{a8cf72f7-09b7-4cd4-9aaa-7a023bf09916}"
                   xpi-path: target.firefox.zip
                   source-file-path: target.src.zip
-                  compatibility: firefox, android
+                  compatibility: "{\"firefox\": {\"min\": \"${{ env.FF_MIN_VER }}\"}, \"android\":
+                      {\"min\": \"${{ env.FF_MIN_VER}}\"}}"
                   jwt-issuer: ${{ secrets.FIREFOX_JWD_ISSUER }}
                   jwt-secret: ${{ secrets.FIREFOX_JWD_SECRET }}
