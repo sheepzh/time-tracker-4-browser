@@ -4,6 +4,12 @@ All notable changes to Time Tracker will be documented in this file.
 
 It is worth mentioning that the release time of each change refers to the time when the installation package is submitted to the webstore. It is about one week for Firefox to moderate packages, while only 1-2 days for Chrome and Edge.
 
+## [4.2.0] - 2026-04-28
+
+-  refactored basic architecture
+-  supported custom delay duration
+-  added time limit on the popup page
+
 ## [4.1.7] - 2026-04-23
 
 -  Dropped support for Firefox versions below 140
