@@ -285,7 +285,9 @@
     "pl": {
         "weekDays": "Pn|Wt|Śr|Cz|Pt|Sb|Nd",
         "months": "Sty|Lut|Mar|Kwi|Maj|Cze|Lip|Sie|Wrz|Paź|Lis|Gru",
-        "dateFormat": "{m}/{d}/{y}",
+        "dateFormat": "{d}/{m}/{y}",
+        "monthDateFormat": "{d}/{m}",
+        "timeFormat": "{d}/{m}/{y} {h}:{i}:{s}",
         "simpleTimeFormat": "{m}/{d} {h}:{i}",
         "label": {
             "startDate": "Data rozpoczęcia",

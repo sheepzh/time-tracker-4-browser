@@ -37,7 +37,6 @@
             "notSet": "未分类"
         },
         "limit": {
-            "effective": "生效中",
             "limited": "已受限",
             "daily": "每日上限",
             "weekly": "每周上限",
