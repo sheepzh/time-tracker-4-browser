@@ -5,7 +5,7 @@
         "timeUsed": "{percent} used",
         "visitUsed": "{used} count visited",
         "remain": "{remaining} remaining",
-        "noLimit": "No Limit",
+        "noLimit": "No limit",
         "notHit": "Not in effect"
     },
     "zh_CN": {

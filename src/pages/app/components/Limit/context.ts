@@ -2,9 +2,12 @@ import { getOption } from '@/api/sw/option'
 import { DEFAULT_LIMIT } from '@/util/constant/option'
 import { deleteLimits, listLimits, updateLimits } from "@api/sw/limit"
 import { t } from '@app/locale'
+import type { LimitQuery } from '@app/router/constants'
 import { useDocumentVisibility, useManualRequest, useProvide, useProvider, useRequest } from '@hooks'
+import { tryParseInteger } from '@util/number'
 import { ElMessage, ElMessageBox } from "element-plus"
-import { computed, reactive, ref, toRaw, watch, type ShallowRef } from "vue"
+import { computed, onMounted, reactive, ref, toRaw, watch, type ShallowRef } from "vue"
+import { useRoute, useRouter } from 'vue-router'
 import { verifyCanModify } from "./common"
 import type { LimitFilterOption, LimitInstance, ModifyInstance, TestInstance } from "./types"
 
@@ -28,8 +31,25 @@ type Context = {
 
 const NAMESPACE = 'limit'
 
+const initialQuery = () => {
+    const { url, action, id: idQuery } = useRoute().query as LimitQuery
+    useRouter().replace({ query: {} })
+    const [isNum, idMaybe] = idQuery ? tryParseInteger(idQuery) : [false, undefined]
+    return {
+        url: url && decodeURIComponent(url),
+        action,
+        id: isNum && !Number.isNaN(idMaybe) && idMaybe ? idMaybe : undefined,
+    }
+}
 
-export const useLimitProvider = (initialUrl: string | undefined) => {
+export const useLimitProvider = () => {
+    const { url, action, id } = initialQuery()
+    const initialUrl = action === 'create' ? undefined : url
+
+    if (action === 'create') {
+        onMounted(() => setTimeout(() => modifyInst.value?.create(url)))
+    }
+
     const filter = reactive<LimitFilterOption>({ url: initialUrl, effective: false })
 
     const { data: list, refresh, loading } = useRequest(
@@ -37,6 +57,11 @@ export const useLimitProvider = (initialUrl: string | undefined) => {
         {
             defaultValue: [],
             deps: [() => filter.url, () => filter.effective],
+            onSuccess: data => {
+                if (action !== 'modify') return
+                const target = data.find(i => i.id === id)
+                target && setTimeout(() => modifyInst.value?.modify(target))
+            }
         },
     )
 

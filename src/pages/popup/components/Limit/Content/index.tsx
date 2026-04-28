@@ -15,8 +15,8 @@ const Empty: FunctionalComponent<{}> = () => (
 )
 
 const Content = defineComponent<{}>(() => {
-    const { limitSummary: summary, selectedLimit } = useLimitSummary()
-    const item = computed(() => summary.value?.items.find(i => i.id === selectedLimit.value))
+    const { summary, selected } = useLimitSummary()
+    const item = computed(() => summary.value?.items.find(i => i.id === selected.value))
 
     return () => item.value ? <Chart item={item.value} /> : <Empty />
 })

@@ -50,7 +50,7 @@ const createInfo = (text: string, left: string): TitleComponentOption => {
         subtext: '',
         padding: 0,
         itemGap: 0,
-        textStyle: { color: textSecondary, fontSize: 14, overflow: 'break', width: 120 },
+        textStyle: { color: textSecondary, fontSize: 14, overflow: 'break', width: 140 },
     }
 }
 
@@ -64,8 +64,18 @@ type GaugeOptions = {
     color: string
 }
 
-const createGauge = ({ name, center, usage: { used, limit }, color }: GaugeOptions): GaugeSeriesOption => {
+const createGauge = (options: GaugeOptions): GaugeSeriesOption => {
+    const { name, center, usage: { used, limit }, color } = options
+
     const percent = limit ? clamp((used * 100) / limit, 0, 100) : 40
+    const percentText = `${percent.toFixed(1)}%`
+    const usedText = name === 'time'
+        ? formatPeriodCommon(used, true)
+        : t(msg => msg.shared.limit.visits, { n: used })
+    const progressText = name === 'time'
+        ? `${usedText}/${formatPeriodCommon(limit, true)}`
+        : t(msg => msg.shared.limit.visits, { n: `${used}/${limit}` })
+
     return {
         name,
         type: 'gauge',
@@ -86,7 +96,10 @@ const createGauge = ({ name, center, usage: { used, limit }, color }: GaugeOptio
             color: getSecondaryTextColor(),
             width: 100,
             overflow: 'break',
-            formatter: limit ? val => `${val.toFixed(1)}%` : () => t(msg => msg.limit.noLimit)
+            formatter: () => limit ? percentText : usedText,
+        },
+        tooltip: {
+            formatter: () => `${percentText}<br/>${progressText}`,
         },
         silent: false,
         axisLine: { lineStyle: { width: 8, color: [[1, GAUGE_BG_COLOR]] } },
@@ -127,10 +140,13 @@ class Wrapper extends EchartsWrapper<timer.limit.Item, EcOption> {
     }
 
     private builtLimitPart(time: [number, number | undefined], visit: [number, number | undefined], leftPos: string): ChartPart {
+        const noLimitText = t(msg => msg.limit.noLimit)
+
         const [timeUsed, timeLimit] = time
         const timeMax = timeLimit ? timeLimit * MILL_PER_SECOND : 0
-        const timeUsedText = formatPeriodCommon(timeUsed, true)
-        const timeLabel = timeMax ? `${timeUsedText} / ${formatPeriodCommon(timeMax, true)}` : timeUsedText
+        const timeLabel = timeMax
+            ? t(msg => msg.limit.remain, { remaining: formatPeriodCommon(timeMax - timeUsed, true) })
+            : noLimitText
         const timeOpts: GaugeOptions = {
             name: 'time', center: leftPos,
             usage: { limit: timeMax, used: timeUsed },
@@ -138,7 +154,9 @@ class Wrapper extends EchartsWrapper<timer.limit.Item, EcOption> {
         }
 
         const [visitUsed, visitLimit] = visit
-        const visitLabel = t(msg => msg.shared.limit.visits, { n: visitLimit ? `${visitUsed}/${visitLimit}` : visitUsed })
+        const visitLabel = visitLimit
+            ? t(msg => msg.shared.limit.visits, { n: `${visitUsed}/${visitLimit}` })
+            : noLimitText
         const visitOpts: GaugeOptions = {
             name: 'visit', center: leftPos,
             usage: { limit: visitLimit ?? 0, used: visitUsed ?? 0 },
@@ -227,7 +245,6 @@ class Wrapper extends EchartsWrapper<timer.limit.Item, EcOption> {
                     min: 0,
                     max: MINUTES_PER_DAY,
                     splitNumber: 4,
-
                     axisTick: {
                         splitNumber: 6,
                         length: 3,
@@ -257,7 +274,7 @@ class Wrapper extends EchartsWrapper<timer.limit.Item, EcOption> {
                     label: { show: false },
                     emphasis: { scale: false },
                     itemStyle: { borderWidth: 0 },
-                    tooltip: { formatter: (params: any) => (params as { name: string }).name || null },
+                    tooltip: { formatter: ({ name }) => name },
                     data: pieData.filter(d => d.value > 0),
                 } as PieSeriesOption,
             ],

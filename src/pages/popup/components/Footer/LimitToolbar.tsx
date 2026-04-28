@@ -1,6 +1,6 @@
 import { APP_LIMIT_ROUTE, AppLimitQuery } from '@/shared/route'
 import { createTab } from '@api/chrome/tab'
-import { Plus } from '@element-plus/icons-vue'
+import { Edit, Plus } from '@element-plus/icons-vue'
 import Flex from '@pages/components/Flex'
 import { useLimitSummary } from '@popup/context'
 import { t } from '@popup/locale'
@@ -18,11 +18,11 @@ const findHost = (url: string) => {
 }
 
 const LimitToolbar = defineComponent(() => {
-    const { limitSummary, selectedLimit } = useLimitSummary()
-    const items = computed(() => limitSummary.value?.items || [])
+    const { summary, selected, loading } = useLimitSummary()
+    const items = computed(() => summary.value?.items || [])
 
     const handleNew = async () => {
-        let url = limitSummary.value?.url
+        let url = summary.value?.url
         const query: AppLimitQuery = { action: 'create' }
         if (url && !isBrowserUrl(url)) {
             const host = findHost(url)
@@ -31,16 +31,30 @@ const LimitToolbar = defineComponent(() => {
         await createTab(getAppPageUrl(APP_LIMIT_ROUTE, query))
     }
 
+    const handleEdit = async () => {
+        if (!selected.value) return
+        const query: AppLimitQuery = { action: 'modify', id: String(selected.value) }
+        await createTab(getAppPageUrl(APP_LIMIT_ROUTE, query))
+    }
+
     return () => (
         <Flex gap={8} justify='end'>
-            {items.value.length ? (
-                <ElSelect
-                    modelValue={selectedLimit.value}
-                    onChange={val => typeof val === 'number' && (selectedLimit.value = val)}
-                    options={items.value.map(i => ({ value: i.id, label: i.name }))}
-                    style={{ width: '140px' } satisfies StyleValue}
-                />
-            ) : (
+            {!!items.value.length && (
+                <Flex gap={4}>
+                    <ElSelect
+                        modelValue={selected.value}
+                        onChange={val => typeof val === 'number' && (selected.value = val)}
+                        options={items.value.map(i => ({ value: i.id, label: i.name }))}
+                        style={{ width: '140px' } satisfies StyleValue}
+                    />
+                    <ElButton
+                        icon={Edit}
+                        onClick={handleEdit}
+                        style={{ width: '40px' } satisfies StyleValue}
+                    />
+                </Flex>
+            )}
+            {!loading.value && !items.value.length && (
                 <ElButton type='primary' icon={Plus} onClick={handleNew}>
                     {t(msg => msg.limit.newOne)}
                 </ElButton>

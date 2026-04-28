@@ -5,7 +5,7 @@ import Content from './Content'
 import Summary from './Summary'
 
 const Limit: FunctionalComponent<{}> = () => (
-    <ElCard style={{ width: '100%' } satisfies StyleValue}>
+    <ElCard shadow='never' style={{ width: '100%' } satisfies StyleValue}>
         <Flex column width='100%' height='100%'>
             <Summary />
             <Content />

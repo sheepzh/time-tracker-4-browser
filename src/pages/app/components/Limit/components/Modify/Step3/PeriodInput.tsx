@@ -5,10 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { useState, useSwitch, useXsState } from '@hooks'
 import { t } from '@app/locale'
 import { Check, Close, Plus } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
+import { useState, useSwitch, useXsState } from '@hooks'
 import Flex from "@pages/components/Flex"
 import { dateMinute2Idx, period2Str } from "@util/limit"
 import { MILL_PER_HOUR } from "@util/time"
@@ -71,6 +71,13 @@ const checkImpact = (p1: timer.limit.Period, p2: timer.limit.Period): boolean =>
 
 const rangeInitial = (): [Date, Date] => {
     const now = new Date()
+    if (now.getHours() >= 23) {
+        const start = new Date(now)
+        start.setHours(23, 0, 0, 0)
+        const end = new Date(now)
+        end.setHours(23, 59, 0, 0)
+        return [start, end]
+    }
     return [now, new Date(now.getTime() + MILL_PER_HOUR)]
 }
 

@@ -1,7 +1,8 @@
 export const APP_LIMIT_ROUTE = '/behavior/limit'
 export type AppLimitQuery = {
+    action?: 'create' | 'modify'
     url?: string
-    action?: 'create'
+    id?: string
 }
 
 export const APP_ANALYSIS_ROUTE = '/data/analysis'

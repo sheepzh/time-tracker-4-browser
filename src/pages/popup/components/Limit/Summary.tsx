@@ -7,7 +7,7 @@ import { computed, defineComponent, StyleValue } from 'vue'
 const TITLE_SIZE = 24
 
 const Summary = defineComponent<{}>(() => {
-    const { limitSummary: summary } = useLimitSummary()
+    const { summary } = useLimitSummary()
     const site = computed(() => {
         const site = summary.value?.site
         if (!site) return ''

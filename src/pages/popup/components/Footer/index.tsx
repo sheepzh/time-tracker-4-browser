@@ -9,10 +9,8 @@ const Footer = defineComponent(() => {
     const { menu } = useMenu()
 
     return () => (
-        <Flex justify="space-between" width="100%">
-            <Flex>
-                <Menu />
-            </Flex>
+        <Flex justify="space-between" marginBottom={2} marginInline={1}>
+            <Menu />
             <Transition name="el-fade-in" mode="out-in">
                 {menu.value === 'limit' ? <LimitToolbar /> : <DataToolbar />}
             </Transition>

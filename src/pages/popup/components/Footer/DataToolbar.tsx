@@ -31,7 +31,6 @@ const DataToolbar = defineComponent(() => {
                 />
             </Flex>
             <DurationSelect
-                reverse
                 modelValue={[query.duration, query.durationNum]}
                 onChange={([duration, durationNum]) => {
                     query.duration = duration

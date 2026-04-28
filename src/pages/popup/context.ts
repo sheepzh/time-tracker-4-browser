@@ -21,6 +21,7 @@ type PopupContextValue = {
     menu: ShallowRef<PopupMenu | undefined>
     setMenu: ArgCallback<PopupMenu>
     limitSummary: ShallowRef<timer.limit.Summary | undefined>
+    limitSummaryLoading: ShallowRef<boolean>
     selectedLimit: Ref<number | undefined>
 }
 
@@ -67,7 +68,7 @@ export const initPopupContext = (): ShallowRef<number> => {
 
     const [menu, setMenu] = initMenu()
 
-    const { data: limitSummary } = useRequest(
+    const { data: limitSummary, loading: limitSummaryLoading } = useRequest(
         () => menu.value === 'limit' ? getLimitSummary() : Promise.resolve(undefined),
         {
             deps: menu,
@@ -85,7 +86,7 @@ export const initPopupContext = (): ShallowRef<number> => {
         reload, darkMode, setDarkMode, query, option,
         cateNameMap,
         menu, setMenu,
-        limitSummary, selectedLimit
+        limitSummary, limitSummaryLoading, selectedLimit,
     })
 
     return appKey
@@ -129,4 +130,9 @@ export const useCateNameMap = () => useProvider<PopupContextValue, 'cateNameMap'
 
 export const useMenu = () => useProvider<PopupContextValue, 'menu' | 'setMenu'>(NAMESPACE, 'menu', 'setMenu')
 
-export const useLimitSummary = () => useProvider<PopupContextValue, 'limitSummary' | 'selectedLimit'>(NAMESPACE, 'limitSummary', 'selectedLimit')
+export const useLimitSummary = () => {
+    const { limitSummary: summary, limitSummaryLoading: loading, selectedLimit: selected } = useProvider<PopupContextValue, 'limitSummary' | 'limitSummaryLoading' | 'selectedLimit'>(
+        NAMESPACE, 'limitSummary', 'limitSummaryLoading', 'selectedLimit'
+    )
+    return { summary, loading, selected }
+}
