@@ -23,6 +23,7 @@
         "isolatedModules": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
+        "skipLibCheck": true,
         "paths": {
             "@api/*": [
                 "./src/api/*"
