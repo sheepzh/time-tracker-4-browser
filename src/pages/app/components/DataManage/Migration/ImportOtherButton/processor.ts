@@ -153,7 +153,7 @@ async function parseWebtimeTracker(file: File): Promise<timer.imported.Row[]> {
 function parseHistoryTrendsUnlimitedLine(line: string, data: { [dateAndHost: string]: number }) {
     const cells = line.split('\t')
     const url = cells[0]
-    if (!url || !isBrowserUrl(url)) return
+    if (!url || isBrowserUrl(url)) return
     const tsMaybe = cells?.[1]?.trim?.()
     if (tsMaybe && /^U\d{13,}(\.\d*)?$/.test(tsMaybe)) {
         // Backup data
