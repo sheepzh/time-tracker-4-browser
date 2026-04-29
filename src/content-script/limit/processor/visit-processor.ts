@@ -15,7 +15,7 @@ class VisitProcessor implements Processor {
         })
     }
 
-    onLimitChanged(_: timer.limit.Item[]): void {
+    onLimitChanged(): void {
         this.initRules()
     }
 

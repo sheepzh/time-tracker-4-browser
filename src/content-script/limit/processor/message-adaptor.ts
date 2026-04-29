@@ -13,10 +13,8 @@ const cvtItem2AddReason = (item: timer.limit.Item, delayDuration: number): Limit
 class MessageAdaptor implements Processor {
     constructor(private readonly context: ModalContext, private readonly delayDuration: number) { }
 
-    onLimitChanged(items: timer.limit.Item[]): void {
-        this.context.modal.removeReasonsByType("DAILY", "WEEKLY")
-        items.flatMap(item => cvtItem2AddReason(item, this.delayDuration))
-            .forEach(reason => this.context.modal.addReason(reason))
+    onLimitChanged(): void {
+        this.initRules()
     }
 
     onLimitTimeMeet(items: timer.limit.Item[]): void {
@@ -33,7 +31,7 @@ class MessageAdaptor implements Processor {
 
     async initRules(): Promise<void> {
         this.context.modal.removeReasonsByType('DAILY', 'WEEKLY')
-        const limitedRules = await trySendMsg2Runtime('limit.list', { limited: true, url: this.context.url })
+        const limitedRules = await trySendMsg2Runtime('limit.list', { limited: true, effective: true, url: this.context.url })
         if (!limitedRules?.length) return
 
         const reasons = limitedRules.flatMap(item => cvtItem2AddReason(item, this.delayDuration))

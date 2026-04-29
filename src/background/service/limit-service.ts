@@ -65,13 +65,10 @@ function cvtRecord2Item({ records, ...others }: LimitRecord, today: string, week
  * @param item
  */
 export async function noticeLimitChanged(): Promise<void> {
-    const effectiveItems = await selectLimit({ effective: true })
     const tabs = await listTabs()
     tabs.forEach(({ id, url }) => {
         if (!id || !url) return
-        const matched = effectiveItems.filter(({ cond }) => matches(cond, url))
-        if (!matched.length) return
-        sendMsg2Tab(id, 'limitChanged', matched).catch(err => console.warn(err.message))
+        sendMsg2Tab(id, 'limitChanged').catch(err => console.info(err?.message))
     })
 }
 

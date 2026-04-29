@@ -28,19 +28,16 @@ class PeriodProcessor implements Processor {
 
     constructor(private readonly context: ModalContext) { }
 
-    async onLimitChanged(data: timer.limit.Item[]): Promise<void> {
-        this.timers.forEach(clearTimeout)
-        await this.init0(data)
+    async onLimitChanged(): Promise<void> {
+        await this.init()
     }
 
-    init(): Promise<void> {
-        return this.init0()
-    }
-
-    private async init0(rules?: timer.limit.Item[]) {
-        rules = rules ?? await trySendMsg2Runtime('limit.list', { effective: true, url: this.context.url }) ?? []
+    async init(): Promise<void> {
         // Clear first
+        this.timers.forEach(clearTimeout)
         this.context.modal.removeReasonsByType("PERIOD")
+
+        const rules = await trySendMsg2Runtime('limit.list', { effective: true, url: this.context.url }) ?? []
         const nowSeconds = date2Idx(new Date())
         this.timers = rules.flatMap(r => processRule(r, nowSeconds, this.context))
     }

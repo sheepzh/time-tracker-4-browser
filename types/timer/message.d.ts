@@ -135,9 +135,10 @@ declare namespace timer.mq {
 declare namespace timer.tab {
     type _HandlerRegistry =
         & _MakeRegistry<'siteRunChange'>
-        & _MakeRegistry<'syncAudible', boolean, void>
-        & _MakeRegistry<'limitTimeMeet' | 'limitChanged', limit.Item[], void>
-        & _MakeRegistry<'limitReminder', limit.ReminderInfo, void>
+        & _MakeRegistry<'syncAudible', boolean>
+        & _MakeRegistry<'limitTimeMeet', limit.Item[]>
+        & _MakeRegistry<'limitChanged'>
+        & _MakeRegistry<'limitReminder', limit.ReminderInfo>
         & _MakeRegistry<'askVisitHit', number, boolean>
 
     type ReqCode = keyof _HandlerRegistry
