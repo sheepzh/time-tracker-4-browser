@@ -23,7 +23,8 @@ const _default = defineComponent(() => {
             // Reopen
             return false
         }
-        await deleteWhitelist(whitelist[index])
+        const exists = whitelist[index]
+        if (exists) await deleteWhitelist(exists)
         await addWhitelist(val)
         whitelist[index] = val
         ElMessage.success(t(msg => msg.operation.successMsg))

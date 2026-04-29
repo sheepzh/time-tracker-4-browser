@@ -13,7 +13,9 @@ import { mergeWith } from '@util/stat'
 import { formatTimeYMD, MILL_PER_SECOND } from "@util/time"
 import type { OtherExtension } from './types'
 
-const throwError = () => { throw new Error("Failed to parse, please check your file or contact the author via " + AUTHOR_EMAIL) }
+function throwError<T>(): T {
+    throw new Error("Failed to parse, please check your file or contact the author via " + AUTHOR_EMAIL)
+}
 
 export async function parseFile(ext: OtherExtension, file: File): Promise<timer.imported.Data> {
     let rows: timer.imported.Row[] = []
@@ -38,15 +40,13 @@ async function parseWebActivityTimeTracker(file: File): Promise<[timer.imported.
     const text = await file.text()
     if (isCsvFile(file)) {
         const lines = text.split('\n').map(line => line.trim()).filter(line => !!line).splice(1)
-        const rows = lines.map(line => {
+        const rows: timer.imported.Row[] = lines.map(line => {
             const [host, date, seconds] = line.split(',').map(cell => cell.trim())
-            if (!host || !date || (!seconds && seconds !== '0')) {
-                throwError()
-            }
-            const [year, month, day] = date.split('/')
-            !year || !month || !day && throwError()
+            if (!host || !date || (!seconds && seconds !== '0')) return throwError()
+            const [year, month, day] = date?.split('/') ?? []
+            if (!year || !month || !day) return throwError()
             const realDate = `${year}${month.length == 2 ? month : '0' + month}${day.length == 2 ? day : '0' + day}`
-            return { host, date: realDate, focus: parseInt(seconds) * MILL_PER_SECOND, time: 0 } satisfies timer.imported.Row
+            return { host, date: realDate, focus: parseInt(seconds) * MILL_PER_SECOND, time: 0 }
         })
         return [rows, false]
     } else if (isJsonFile(file)) {
@@ -133,15 +133,15 @@ async function parseWebtimeTracker(file: File): Promise<timer.imported.Row[]> {
         return rows
     } else if (isCsvFile(file)) {
         const lines = text.split('\n').map(line => line.trim()).filter(line => !!line)
-        const colHeaders = lines[0].split(',')
+        const colHeaders = lines[0]?.split(',') ?? []
         const rows: timer.imported.Row[] = []
         lines.slice(1).forEach(line => {
             const cells = line.split(',')
             const host = cells[0]
             if (!host) return
             for (let i = 1; i < colHeaders?.length; i++) {
-                const seconds = Number.parseInt(cells[i])
-                const date = cvtWebtimeTrackerDate(colHeaders[i])
+                const seconds = Number.parseInt(cells[i] ?? '')
+                const date = cvtWebtimeTrackerDate(colHeaders[i] ?? '')
                 seconds && date && rows.push({ host, date, focus: seconds * MILL_PER_SECOND, time: 0 })
             }
         })
@@ -153,9 +153,9 @@ async function parseWebtimeTracker(file: File): Promise<timer.imported.Row[]> {
 function parseHistoryTrendsUnlimitedLine(line: string, data: { [dateAndHost: string]: number }) {
     const cells = line.split('\t')
     const url = cells[0]
-    if (isBrowserUrl(url)) return
+    if (!url || isBrowserUrl(url)) return
     const tsMaybe = cells?.[1]?.trim?.()
-    if (/^U\d{13,}(\.\d*)?$/.test(tsMaybe)) {
+    if (tsMaybe && /^U\d{13,}(\.\d*)?$/.test(tsMaybe)) {
         // Backup data
         let date: string
         try {
@@ -170,9 +170,9 @@ function parseHistoryTrendsUnlimitedLine(line: string, data: { [dateAndHost: str
         data[key] = (data[key] ?? 0) + 1
     } else {
         // Analyze data
-        const host = cells[1]
-        const dateStr = cells[4]
-        const date = cvtWebtimeTrackerDate(dateStr?.substring(0, 10))
+        const host = cells[1] ?? ''
+        const dateStr = cells[4] ?? ''
+        const date = cvtWebtimeTrackerDate(dateStr.substring(0, 10))
         if (!host || !date) return
         const key = date + host
         data[key] = (data[key] ?? 0) + 1

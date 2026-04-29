@@ -27,10 +27,17 @@ export type BizOption = {
 
 function formatTimeOfEcharts(params: TopLevelFormatterParams, timeFormat: timer.app.TimeFormat): string {
     const format = Array.isArray(params) ? params[0] : params
-    const value = format.value as number[]
-    const milliseconds = value?.[1] ?? 0
-    const start = formatTime(value?.[2], '{m}-{d} {h}:{i}')
-    const end = formatTime(value?.[3], '{h}:{i}')
+    if (!format) return 'NaN'
+    const { value } = format
+    if (!Array.isArray(value)) return 'NaN'
+    const time = value?.[1] ?? 0
+    const startTs = value?.[2]
+    const endTs = value?.[3]
+    const start = typeof startTs === 'number' ? formatTime(startTs, '{m}-{d} {h}:{i}') : 'NaN'
+    const end = typeof endTs === 'number' ? formatTime(endTs, '{h}:{i}') : 'NaN'
+    const milliseconds = time instanceof Date
+        ? time.getTime()
+        : (typeof time === 'number' ? time : Number.parseInt(time))
     return `
         <div>${start}-${end}</div>
         <div>

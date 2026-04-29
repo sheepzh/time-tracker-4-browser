@@ -186,7 +186,7 @@ const _default = defineComponent((_props, ctx) => {
                     persistent={false}
                     style={{ width: '250px', display: 'inline-flex', marginInlineStart: '10px' } satisfies StyleValue}
                     formatTooltip={val => `${val}ms`}
-                    onUpdate:modelValue={val => option.chartAnimationDuration = Array.isArray(val) ? val[0] : val}
+                    onUpdate:modelValue={val => option.chartAnimationDuration = Array.isArray(val) ? (val[0] ?? 0) : val}
                 />
                 <ElTag
                     size="small"

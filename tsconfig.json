@@ -23,6 +23,8 @@
         "isolatedModules": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
+        "noImplicitAny": true,
+        "noUncheckedIndexedAccess": true,
         "skipLibCheck": true,
         "paths": {
             "@api/*": [

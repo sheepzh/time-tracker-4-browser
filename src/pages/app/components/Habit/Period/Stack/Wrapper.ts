@@ -22,9 +22,9 @@ const [COLOR] = getLineSeriesPalette()
 
 const formatTooltip = (params: TopLevelFormatterParams, timeFormat: timer.app.TimeFormat) => {
     const param = Array.isArray(params) ? params[0] : params
-    const [, total, , end] = param.data as number[]
+    const [, total, , end] = param?.data as number[]
     return `
-        <div>${formatTime(end, t(msg => msg.calendar.timeFormat))}</div>
+        <div>${end ? formatTime(end, t(msg => msg.calendar.timeFormat)) : ''}</div>
         <div><b>${periodFormatter(total, { format: timeFormat })}</b></div>
     `
 }

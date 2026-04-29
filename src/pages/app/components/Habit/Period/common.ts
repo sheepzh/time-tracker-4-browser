@@ -9,14 +9,12 @@ import { t } from '@app/locale'
 import { formatTime } from "@util/time"
 import { type GridComponentOption } from "echarts/components"
 
-export const generateGridOption = (): GridComponentOption => {
-    return {
-        top: 30,
-        bottom: 40,
-        left: 40,
-        right: 20,
-    }
-}
+export const generateGridOption = () => ({
+    top: 30,
+    bottom: 40,
+    left: 40,
+    right: 20,
+} satisfies GridComponentOption)
 
 const MONTHS = t(msg => msg.calendar.months).split('|')
 
@@ -26,9 +24,10 @@ export const formatXAxisTime = (time: number, idx: number): string => {
     const isStartOfMonth = dateStr === '01000000'
     const isStartOfDate = dateStr.endsWith('000000')
     if (idx === 0 || isStartOfMonth) {
-        return MONTHS[date.getMonth()]
+        const monthIdx = date.getMonth()
+        return MONTHS[monthIdx] ?? `${monthIdx + 1}`
     } else if (isStartOfDate) {
-        return date.getDate()?.toString?.()?.padStart(2, '0')
+        return date.getDate().toString().padStart(2, '0')
     } else {
         return formatTime(date, "{h}:{i}")
     }

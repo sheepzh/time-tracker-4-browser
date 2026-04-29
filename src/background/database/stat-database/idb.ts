@@ -87,18 +87,12 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
         } = cond
 
         if (expectGroup) {
-            if (keys?.length === 1) {
-                const groupId = parseInt(keys[0])
-                if (!isNaN(groupId)) {
-                    return {
-                        cursorReq: this.assertIndexCursor(store, 'groupId', IDBKeyRange.only(groupId)),
-                        coverage: { host: true }
-                    }
-                }
-            }
-
-            return {
-                cursorReq: this.assertIndexCursor(store, 'groupId', IDBKeyRange.lowerBound(0))
+            const groupId = keys?.length === 1 ? parseInt(keys[0] ?? 'NaN') : NaN
+            return isNaN(groupId) ? {
+                cursorReq: this.assertIndexCursor(store, 'groupId', IDBKeyRange.lowerBound(0)),
+            } : {
+                cursorReq: this.assertIndexCursor(store, 'groupId', IDBKeyRange.only(groupId)),
+                coverage: { host: true }
             }
         }
 

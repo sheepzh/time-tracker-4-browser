@@ -64,7 +64,7 @@ const computeSummary = (rows: timer.period.Row[], periodSize: number): Result =>
     return {
         favorite: {
             period: favoritePeriod,
-            average: favoriteRow?.milliseconds,
+            average: favoriteRow?.milliseconds ?? 0,
         },
         longestIdle: {
             length: idleLength,

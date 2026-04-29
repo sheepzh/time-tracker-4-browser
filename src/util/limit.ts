@@ -14,6 +14,7 @@ export function matches(cond: timer.limit.Item['cond'], url: string): boolean {
     let hit = false
     for (let i = cond.length - 1; i >= 0; i--) {
         const rule = cond[i]
+        if (rule === undefined) continue
         if (rule.startsWith(EXCLUDING_PREFIX)) {
             if (matchUrl(rule.slice(1), url)) return false
         } else {
@@ -32,6 +33,7 @@ export function matchCond(cond: timer.limit.Item['cond'], url: string): string[]
     const matchedNormalRules: string[] = []
     for (let i = cond.length - 1; i >= 0; i--) {
         const rule = cond[i]
+        if (rule === undefined) continue
         if (rule.startsWith(EXCLUDING_PREFIX)) {
             // Immediately return an empty array if an exclusion rule is hit
             if (matchUrl(rule.slice(1), url)) return []

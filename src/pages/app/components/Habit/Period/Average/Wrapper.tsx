@@ -69,9 +69,9 @@ const formatValueLine = (mill: number, range: timer.period.KeyRange, color: stri
 const formatTooltip = (params: TopLevelFormatterParams, biz: BizOption): string => {
     const { periodSize, prevRange, currRange } = biz
     if (!Array.isArray(params)) return ''
-    const [curr, prev] = params || []
+    const [curr, prev] = params ?? []
 
-    const idx = curr.dataIndex
+    const idx = curr?.dataIndex ?? 0
     const start = formatXAxis(idx, periodSize)
     const end = formatXAxis(idx + 1, periodSize)
 
@@ -83,7 +83,7 @@ const formatTooltip = (params: TopLevelFormatterParams, biz: BizOption): string 
             periodStr,
         )
 
-    const currLine = formatValueLine(curr.value as number, currRange, CURR_COLOR)
+    const currLine = formatValueLine(curr?.value as number ?? 0, currRange, CURR_COLOR)
     const prevLine = formatValueLine(-(prev?.value ?? 0 as number), prevRange, PREV_COLOR)
 
     return `${timeLine}${tooltipSpaceLine()}${currLine}${prevLine}`

@@ -20,12 +20,12 @@ const computeSessionScore = (activities: timer.timeline.Activity[], hourCount: n
     let currentSession: timer.timeline.Activity[] = []
 
     activities.sort((a, b) => a.start - b.start).forEach(current => {
-        if (!currentSession.length) {
+        const prev = currentSession[currentSession.length - 1]
+        if (!prev) {
             currentSession.push(current)
             return
         }
 
-        const prev = currentSession[currentSession.length - 1]
         const gap = current.start - (prev.start + prev.duration)
 
         if (gap <= MILL_PER_MINUTE * 3) {

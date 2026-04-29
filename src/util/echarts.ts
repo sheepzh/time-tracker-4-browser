@@ -4,6 +4,7 @@ import type {
 } from "echarts"
 import type { AxisBaseOption } from 'echarts/types/src/coord/axisCommonTypes.js'
 import { isRtl } from "./document"
+import { isTuple } from './tuple'
 
 export const processAria = (option: ComposeOption<AriaComponentOption>, chartDecal: boolean) => {
     if (!option) return
@@ -231,7 +232,7 @@ const swapPosition = (option: { left?: string | number, right?: string | number 
 }
 
 const swapBorderRadius = (option: number[]) => {
-    if (option?.length !== 4) return
+    if (!isTuple(option, 4)) return
 
     let t = option[0]
     option[0] = option[1]

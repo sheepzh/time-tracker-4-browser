@@ -7,8 +7,8 @@
 
 import { useAnalysisRows } from '@app/components/Analysis/context'
 import type { DimensionData, DimensionEntry } from '@app/components/Analysis/types'
-import { useProvide, useProvider } from '@hooks'
 import { cvt2LocaleTime } from '@app/util/time'
+import { useProvide, useProvider } from '@hooks'
 import { toMap } from "@util/array"
 import { daysAgo, getAllDatesBetween, getDayLength, MILL_PER_DAY } from "@util/time"
 import { computed, onMounted, ref, watch, type Ref } from "vue"
@@ -70,7 +70,8 @@ function computeIndicatorSet(
     const fullPeriodRow: Record<string, timer.stat.Row> = {}
     allDates.forEach(date => {
         const row = periodRowMap[date]
-        if (!(fullPeriodRow[date] = row)) return
+        if (!row) return
+        fullPeriodRow[date] = row
         const { focus, time: visit } = row
         focus > (focusMax.value ?? Number.MIN_SAFE_INTEGER) && (focusMax = { value: focus, date })
         visit > (visitMax.value ?? Number.MIN_SAFE_INTEGER) && (visitMax = { value: visit, date })

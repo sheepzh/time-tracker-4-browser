@@ -63,7 +63,7 @@ const formatTimeTooltip = (params: TopLevelFormatterParams, format: timer.app.Ti
             ? periodFormatter(value as number, { format })
             : (value as number)
         return tooltipFlexLine(
-            `<b>${tooltipDot(color?.colorStops?.[0]?.color)}&ensp;${valueStr}</b>`,
+            `<b>${tooltipDot(color?.colorStops?.[0]?.color ?? '#000')}&ensp;${valueStr}</b>`,
             seriesName,
         )
     }).join('')

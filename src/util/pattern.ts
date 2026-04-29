@@ -91,8 +91,8 @@ export function isValidVirtualHost(host: string) {
     const segments = host.split('/')
     // Can't be normal host
     if (segments.length === 1) return false
-    if (!isValidHost(segments[0])) return false
-    return true
+    const [seg] = segments
+    return seg && isValidHost(seg)
 }
 
 /**
@@ -119,21 +119,21 @@ export function extractHostname(url: string): HostInfo {
         return { host: fileHost, protocol: 'file' }
     }
 
-    let host: string
-    let protocol: string
+    let host: string | undefined
+    let protocol: string | undefined
     const indexOfDoubleSlashes = url.indexOf("//")
     if (indexOfDoubleSlashes > -1) {
         const splits = url.split('/')
         host = splits[2]
         protocol = splits[0]
-        protocol = protocol.substring(0, protocol.length - 1)
+        protocol = protocol?.substring(0, protocol.length - 1)
     } else {
         host = url.split('/')[0]
         protocol = ''
     }
-    host = host.split('?')[0]
+    host = host?.split('?')[0]
 
-    return { host, protocol }
+    return { host: host ?? '', protocol: protocol ?? '' }
 }
 
 const FILE_PREFIX = "file://"

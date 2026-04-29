@@ -39,17 +39,17 @@ const Divider: FunctionalComponent<{}> = () => {
 }
 
 const EffectiveDays: FunctionalComponent<{ weekdays?: number[] }> = ({ weekdays = [] }) => {
-    const weekdayNum = weekdays?.length
+    const weekdayNum = weekdays.length
+    const first = weekdays[0]
     let text: string = ''
     let type: TagProps['type'] | undefined = undefined
     if (!weekdayNum || weekdayNum === 7) {
         text = t(msg => msg.calendar.range.everyday)
         type = 'success'
-    } else if (weekdayNum === 1) {
-        text = ALL_WEEKDAYS[weekdays[0]]
-    } else {
-        const firstDay = ALL_WEEKDAYS[weekdays[0]]
-        text = `${firstDay}...${weekdayNum}`
+    } else if (first !== undefined && weekdayNum === 1) {
+        text = ALL_WEEKDAYS[first] ?? ''
+    } else if (first !== undefined) {
+        text = `${ALL_WEEKDAYS[first] ?? ''}...${weekdayNum}`
     }
 
     return <ElTag size="small" type={type}>{text}</ElTag>

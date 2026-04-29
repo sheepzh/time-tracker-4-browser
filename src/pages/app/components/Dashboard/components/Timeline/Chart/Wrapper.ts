@@ -83,14 +83,14 @@ const collectLegends = (activities: timer.timeline.Activity[], merge: timer.time
             displayName: merge === 'cate' && key === String(CATE_NOT_SET_ID)
                 ? t(msg => msg.shared.cate.notSet)
                 : keyNameMap[key],
-            color: colors[idx % colorLen],
-        }))
+            color: colors[idx % colorLen] ?? '#000',
+        } satisfies LegendInfo))
 }
 
 const renderItem: CustomSeriesRenderItem = (params, api) => {
     const categoryIndex = api.value(0)
-    const start = api.coord([api.value(1), categoryIndex])
-    const end = api.coord([api.value(2), categoryIndex])
+    const [sX = 0, sY = 0] = api.coord([api.value(1), categoryIndex])
+    const [eX = 0] = api.coord([api.value(2), categoryIndex])
 
     const size = api.size?.([0, 1])
     const height = ((Array.isArray(size) ? size[1] : size) ?? 0) * 0.6
@@ -98,10 +98,10 @@ const renderItem: CustomSeriesRenderItem = (params, api) => {
     const coordSys = params.coordSys as unknown as Cartesian2DCoordSys
 
     var rectShape = graphic.clipRectByRect({
-        x: start[0],
-        y: start[1] - height / 2,
-        width: end[0] - start[0],
-        height: height
+        x: sX,
+        y: sY - height / 2,
+        width: eX - sX,
+        height
     }, {
         x: coordSys.x,
         y: coordSys.y,
@@ -226,7 +226,7 @@ class Wrapper extends EchartsWrapper<BizData, EcOption> {
                 formatter: params => {
                     const color = (params as any)?.color ?? "#000"
                     const param = Array.isArray(params) ? params[0] : params
-                    const { value, seriesName } = param
+                    const { value, seriesName } = param ?? {}
                     const [_1, start, _2, duration] = value as MyValue
                     const startStr = formatStart(start)
                     const durStr = formatDuration(duration)

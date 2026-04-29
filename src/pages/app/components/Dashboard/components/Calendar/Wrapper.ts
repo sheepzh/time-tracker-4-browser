@@ -49,19 +49,15 @@ function getXAxisLabelMap(data: ChartValue[]): { [x: string]: string } {
     const result: Record<string, string> = {}
     // {[ x:string ]: Set<string> }
     const xAndMonthMap = groupBy(data, e => e[0], grouped => new Set(grouped.map(a => a[3].substring(4, 6))))
-    let lastMonth: string
+    let lastMonth: string | undefined
     Object.entries(xAndMonthMap).forEach(([x, monthSet]) => {
-        if (monthSet.size != 1) {
-            return
-        }
+        if (monthSet.size != 1) return
         const currentMonth = Array.from(monthSet)[0]
-        if (currentMonth === lastMonth) {
-            return
-        }
+        if (!currentMonth || currentMonth === lastMonth) return
         lastMonth = currentMonth
         const monthNum = parseInt(currentMonth)
         const label = allMonthLabel[monthNum - 1]
-        result[x] = label
+        label && (result[x] = label)
     })
     return result
 }
@@ -123,8 +119,8 @@ function optionOf(data: ChartValue[], weekDays: string[], dom: HTMLElement): EcO
             borderWidth: 0,
             formatter: (params: TopLevelFormatterParams) => {
                 const param = Array.isArray(params) ? params[0] : params
-                const { data } = param
-                const { value } = data as any
+                const { data } = param ?? {}
+                const { value } = data as any ?? {}
                 const [_1, _2, mills, date] = value
                 return mills ? formatTooltip(mills as number, date) : ''
             },

@@ -38,18 +38,18 @@ export function calculate(timestamp: number, milliseconds: number): timer.period
 }
 
 export function merge(periods: timer.period.Result[], size: number): timer.period.Row[] {
-    if (!periods?.length) return []
-
-    const rows: timer.period.Row[] = []
-
     periods = periods.sort(compare)
-    let start: timer.period.Key = periods[0]
-    const end: timer.period.Key = periods[periods.length - 1]
+    const first = periods[0]
+    const last = periods[periods.length - 1]
+    if (!first || !last) return []
 
     const map: Map<number, number> = new Map()
     periods.forEach(p => map.set(indexOf(p), p.milliseconds))
+
     let mills: number[] = []
-    for (; compare(start, end) <= 0; start = after(start, 1)) {
+    let start: timer.period.Key = first
+    const rows: timer.period.Row[] = []
+    for (; compare(start, last) <= 0; start = after(start, 1)) {
         mills.push(map.get(indexOf(start)) ?? 0)
         const isEndOfWindow = (start.order % size) === size - 1
         if (isEndOfWindow) {

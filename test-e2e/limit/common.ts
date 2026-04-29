@@ -1,4 +1,4 @@
-import { ElementHandle, type Frame, type Page } from "puppeteer"
+import type { ElementHandle, Frame, Page } from "puppeteer"
 import { sleep } from "../common/util"
 
 export async function waitForLimitFrame(page: Page, timeout = 5000): Promise<Frame> {
@@ -44,13 +44,13 @@ export async function createLimitRule(rule: timer.limit.Rule, page: Page) {
     // 3. Fill the rule
     await sleep(.1)
     const { time, weekly, visitTime, count, weeklyCount } = rule || {}
-    const timeInputs = await page.$$('.el-dialog .el-date-editor input')
-    await fillTimeLimit(time, timeInputs[0], page)
-    await fillTimeLimit(weekly, timeInputs[1], page)
-    await fillTimeLimit(visitTime, timeInputs[2], page)
-    const visitInputs = await page.$$('.el-dialog .el-input-number input')
-    await fillVisitLimit(count!, visitInputs[0], page)
-    await fillVisitLimit(weeklyCount!, visitInputs[1], page)
+    const [fstTime, secTime, trdTime] = await page.$$('.el-dialog .el-date-editor input')
+    fstTime && await fillTimeLimit(time, fstTime, page)
+    secTime && await fillTimeLimit(weekly, secTime, page)
+    trdTime && await fillTimeLimit(visitTime, trdTime, page)
+    const [fstVisit, secVisit] = await page.$$('.el-dialog .el-input-number input')
+    fstVisit && await fillVisitLimit(count!, fstVisit, page)
+    secVisit && await fillVisitLimit(weeklyCount!, secVisit, page)
 
     // 4. Save
     await sleep(.3)

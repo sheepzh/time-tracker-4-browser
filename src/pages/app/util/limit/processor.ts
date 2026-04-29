@@ -5,6 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { randomIntBetween } from "@util/number"
 import { ALL_GENERATORS } from "./generator"
 import type { VerificationContext, VerificationGenerator, VerificationPair } from "./types"
 
@@ -15,19 +16,14 @@ class VerificationProcessor {
         this.generators = ALL_GENERATORS
     }
 
-    generate(difficulty: timer.limit.VerificationDifficulty, locale: timer.Locale): VerificationPair | null {
+    generate(difficulty: timer.limit.VerificationDifficulty, locale: timer.Locale): VerificationPair | undefined {
         const context: VerificationContext = { difficulty, locale }
         const supported = this.generators.filter(g => g.supports(context))
-        const len = supported?.length
-        if (!len) {
-            return null
-        }
-        let generator = supported[0]
-        if (len > 1) {
-            const idx = Math.floor(Math.random() * supported.length)
-            generator = supported[idx]
-        }
-        return generator.generate(context)
+
+        if (!supported.length) return undefined
+
+        const generator = supported[randomIntBetween(0, supported.length)]
+        return generator?.generate(context)
     }
 }
 

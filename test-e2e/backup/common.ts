@@ -140,6 +140,7 @@ export class BackupOptionWrapper {
             const groups = matchRes.groups
             if (!groups) continue
             const { M, d, y, h, m, s } = groups
+            if (!y || !M || !d || !h || !m || !s) continue
             return new Date(
                 Number.parseInt(y), Number.parseInt(M) - 1, Number.parseInt(d),
                 Number.parseInt(h), Number.parseInt(m), Number.parseInt(s),

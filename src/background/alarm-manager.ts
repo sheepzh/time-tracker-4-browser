@@ -42,14 +42,11 @@ class AlarmManager {
                 return
             }
             const innerName = getOuterName(name)
-            const config: _AlarmConfig = this.alarms[innerName]
-            if (!config) {
-                // Not registered, or removed
-                return
-            }
+            const config = this.alarms[innerName]
+            if (!config) return
             // Handle alarm event
             try {
-                config.handler?.(alarm)
+                config.handler(alarm)
             } catch (e) {
                 console.info("Failed to handle alarm event", e)
             } finally {

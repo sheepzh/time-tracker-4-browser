@@ -96,7 +96,8 @@ export class ClassicStatDatabase extends BaseDatabase implements StatDatabase {
         const afterUpdated: Record<string, timer.core.Result> = {}
         Object.entries(keys).forEach(([host, key]) => {
             const item = data[host]
-            const exist: timer.core.Result = increase(item, items[key] as timer.core.Result)
+            if (!item) return
+            const exist = increase(item, items[key] as timer.core.Result | undefined)
             toUpdate[key] = afterUpdated[host] = exist
         })
         await this.storage.set(toUpdate)
@@ -162,7 +163,7 @@ export class ClassicStatDatabase extends BaseDatabase implements StatDatabase {
         const items = await this.storage.get<Record<string, timer.core.Result>>(storageKeys)
         return keys.map(({ host, date }, i) => {
             const sk = storageKeys[i]
-            const exist = items[sk]
+            const exist = sk ? items[sk] : undefined
             const result = exist ?? zeroResult()
             return { host, date, ...result }
         })

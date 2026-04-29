@@ -24,7 +24,6 @@ export function keyOf(time: Date | number, order?: number): timer.period.Key {
 }
 
 export function indexOf(key: timer.period.Key): number {
-    if (!key) return 0
     const { year, month, date, order } = key
     return (year << 18)
         | (month << 14)
@@ -91,6 +90,7 @@ export function averageByDay(data: timer.period.Row[], periodSize: number): time
     if (!data?.length) return []
     const rangeStart = data[0]?.startTime
     const rangeEnd = data[data.length - 1]?.endTime
+    if (!rangeStart || !rangeEnd) return []
     const dateNum = (rangeEnd - rangeStart) / MILL_PER_DAY
     const map = generateOrderMap(data, periodSize)
     return cvt2AverageResult(map, periodSize, dateNum)

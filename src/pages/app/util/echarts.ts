@@ -4,32 +4,32 @@ import { addVector, multiTuple, subVector } from "@util/tuple"
 import { type LinearGradientObject } from "echarts"
 import type { TopLevelFormatterParams } from "echarts/types/dist/shared"
 
-const splitVectors = (vectorRange: Tuple<Vector<number>, 2>, count: number, gradientFactor?: number): Vector<number>[] => {
-    gradientFactor = gradientFactor ?? 1.3
-    const segmentCount = count - 1
+const splitColorVectors = (vectorRange: Tuple<Vector<3>, 2>, count: number, gradientFactor?: number): Vector<3>[] => {
+    gradientFactor ??= 1.3
     const [v1, v2] = vectorRange
+    if (count === 1) return [v1]
+
     const delta = subVector(v2, v1)
-    const allVectors = range(segmentCount).map(idx => {
-        const growth = Math.pow(idx / count, gradientFactor)
-        return addVector(v1, multiTuple(delta, growth))
+    const last = count - 1
+
+    return range(count).map(i => {
+        const t = Math.pow(i / last, gradientFactor)
+        return addVector(v1, multiTuple(delta, t))
     })
-    allVectors.push(v2)
-    return allVectors
 }
 
 export const getStepColors = (count: number, gradientFactor?: number): string[] => {
     const p1 = getCssVariable('--echarts-step-color-1') ?? ''
     const p2 = getCssVariable('--echarts-step-color-2') ?? ''
-    if (!p1 || !p2) return [p1, p2].filter(s => !!s)
 
+    if (!p1 || !p2) return [p1, p2].filter(Boolean)
     if (count <= 0) return []
-    if (count === 1) return [p1]
-    if (count === 2) return [p1, p2]
 
     const c1 = cvtColor2Vector(p1)
     const c2 = cvtColor2Vector(p2)
-    const allVectors = splitVectors([c1, c2], count, gradientFactor)
-    return allVectors.map(([r, g, b]) => `rgb(${r.toFixed(1)}, ${g.toFixed(1)}, ${b.toFixed(1)})`)
+
+    return splitColorVectors([c1, c2], count, gradientFactor)
+        .map(v => `rgb(${v[0].toFixed(1)}, ${v[1].toFixed(1)}, ${v[2].toFixed(1)})`)
 }
 
 /**
@@ -108,10 +108,10 @@ export const getPieBorderColor = (): string | undefined => {
 
 export function parseValueOfFormatter(params: TopLevelFormatterParams) {
     const param = Array.isArray(params) ? params[0] : params
+    if (!param) return undefined
     const { data } = param
-    if (typeof data === 'object' && data !== null) {
-        return 'value' in data ? data.value : undefined
+    if (typeof data === 'object' && data !== null && 'value' in data) {
+        return data.value
     }
-
     return undefined
 }

@@ -10,7 +10,7 @@ import { allMatch, anyMatch, groupBy, rotate, sum, toMap } from "@util/array"
 describe("util/array", () => {
 
     test('group by', () => {
-        const arr = [
+        const arr: [number, number][] = [
             [1, 2],
             [1, 3],
             [2, 3],

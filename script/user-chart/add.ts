@@ -34,23 +34,16 @@ function parseArgv(): AddArgv {
     const argv = process.argv.slice(2)
     const [a0, a1] = argv
 
-    if (!a0) {
-        exitWith("add.ts [c/e/f] [file_name] OR add.ts auto [dir_path]")
-    }
+    if (!a0) return exitWith("add.ts [c/e/f] [file_name] OR add.ts auto [dir_path]")
 
     if (a0 === 'auto') {
-        if (!a1) exitWith("add.ts auto [dir_path]")
-        return { mode: 'auto', dirPath: a1 }
+        return a1 ? { mode: 'auto', dirPath: a1 } : exitWith("add.ts auto [dir_path]")
     }
 
-    if (!a1) {
-        exitWith("add.ts [c/e/f] [file_name] OR add.ts auto [dir_path]")
-    }
+    if (!a1) return exitWith("add.ts [c/e/f] [file_name] OR add.ts auto [dir_path]")
 
-    const browser: Browser = BROWSER_MAP[a0]
-    if (!browser) {
-        exitWith("add.ts [c/e/f] [file_name]")
-    }
+    const browser = BROWSER_MAP[a0]
+    if (!browser) return exitWith("add.ts [c/e/f] [file_name]")
 
     return { mode: 'manual', browser, fileName: a1 }
 }
@@ -64,7 +57,9 @@ function detectBrowser(fileName: string): Browser | null {
 
 function sortDataByKey(data: UserCount): UserCount {
     const sorted: UserCount = {}
-    Object.keys(data).sort().forEach(key => sorted[key] = data[key])
+    Object.entries(data)
+        .sort((a, b) => a[0].localeCompare(b[0]))
+        .forEach(([key, val]) => sorted[key] = val)
     return sorted
 }
 
@@ -91,11 +86,16 @@ async function updateGist(token: string, browser: Browser, data: UserCount, gist
     const filename = filenameOf(browser)
     // 1. merge
     const file = gist.files[filename]
-    const existData = (await getJsonFileContent<UserCount>(file!)) || {}
+    if (!file) {
+        exitWith(`Missing file in gist: ${filename}`)
+    }
+    const existData = (await getJsonFileContent<UserCount>(file)) || {}
     Object.entries(data).forEach(([key, val]) => existData[key] = val)
     // 2. sort by key
     const sorted: UserCount = {}
-    Object.keys(existData).sort().forEach(key => sorted[key] = existData[key])
+    Object.entries(existData)
+        .sort(([key1], [key2]) => key1.localeCompare(key2))
+        .forEach(([key, value]) => sorted[key] = value)
     const files: Record<string, FileForm> = {}
     files[filename] = { filename: filename, content: JSON.stringify(sorted, null, 2) }
     const gistForm: GistForm = { public: true, description, files }

@@ -60,8 +60,8 @@ describeOptional('Backup with gist', () => {
         const twiceRecords = await readRecordsOfFirstPage(context)
         expect(twiceRecords.length).toEqual(1)
         const after = twiceRecords[0]
-        expect(after.url).toEqual(original.url)
-        expect(after.visit).toEqual('2')
+        expect(after?.url).toEqual(original?.url)
+        expect(after?.visit).toEqual('2')
 
         // Clear data
         await option.clearData()

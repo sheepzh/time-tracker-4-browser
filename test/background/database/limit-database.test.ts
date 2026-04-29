@@ -20,12 +20,12 @@ describe('limit-database', () => {
         const id = await db.add(toAdd)
         let all: timer.limit.Rule[] = await db.all()
         expect(all.length).toEqual(1)
-        let saved = all[0]
-        expect(saved.cond).toEqual(toAdd.cond)
-        expect(saved.time).toEqual(toAdd.time)
-        expect(saved.name).toEqual(toAdd.name)
-        expect(saved.enabled).toEqual(toAdd.enabled)
-        expect(saved.allowDelay).toEqual(toAdd.allowDelay)
+        let { cond, time, name, enabled, allowDelay } = all[0] ?? {}
+        expect(cond).toEqual(toAdd.cond)
+        expect(time).toEqual(toAdd.time)
+        expect(name).toEqual(toAdd.name)
+        expect(enabled).toEqual(toAdd.enabled)
+        expect(allowDelay).toEqual(toAdd.allowDelay)
 
         await db.batchRemove([id + 1]) // Not exist, no error throws
         all = await db.all()
@@ -62,7 +62,7 @@ describe('limit-database', () => {
         const all = await db.all()
         const used = all.find(a => a.cond?.includes("a.*.com"))
         expect(used?.records?.[date]).toBeTruthy()
-        expect(used?.records?.[date].mill).toEqual(10)
+        expect(used?.records?.[date]?.mill).toEqual(10)
     })
 
     test("import data", async () => {

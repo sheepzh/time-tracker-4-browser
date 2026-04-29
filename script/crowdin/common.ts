@@ -180,6 +180,7 @@ function checkPlaceholder(translated: string, source: string) {
 
 function fillItem(fields: string[], index: number, obj: Record<string, any>, text: string) {
     const field = fields[index]
+    if (!field) return
     if (index === fields.length - 1) {
         obj[field] = text
         return
@@ -217,8 +218,5 @@ export function transMsg(message: any, prefix?: string): ItemSet {
 
 export async function checkMainBranch(client: CrowdinClient): Promise<SourceFilesModel.Branch> {
     const branch = await client.getMainBranch()
-    if (!branch) {
-        exitWith("Main branch is null")
-    }
-    return branch!
+    return branch ?? exitWith("Main branch is null")
 }

@@ -24,18 +24,16 @@ async function remoteSearch(query: string): Promise<SearchItem[]> {
     let exclude = false
     if (query?.startsWith(EXCLUDING_PREFIX)) {
         exclude = true
-        query = query.slice(1)
+        query = query.slice(EXCLUDING_PREFIX.length)
     }
     if (!query) return []
 
     const sites: SearchItem[] = await listSites({ fuzzyQuery: query })
     const idx = sites.findIndex(s => s.host === query)
 
-    const target: SearchItem = idx >= 0
-        // Move found item to the front
-        ? sites.splice(idx, 1)[0]
-        // Or create a new one if not found
-        : { host: query, type: judgeVirtualFast(query) ? 'virtual' : 'normal' }
+    const target: SearchItem = (idx >= 0 ? sites.splice(idx, 1)[0] : null)
+        ?? { host: query, type: judgeVirtualFast(query) ? 'virtual' : 'normal' }
+
     const result = [target, ...sites]
 
     result.forEach(s => s.exclude = exclude)
