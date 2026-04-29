@@ -23,5 +23,5 @@ export type ModalContext = {
 
 export interface Processor {
     init(): Awaitable<void>
-    onLimitChanged(items: timer.limit.Item[]): void
+    onLimitChanged(): void
 }

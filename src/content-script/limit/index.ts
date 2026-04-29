@@ -25,9 +25,9 @@ export default async function processLimit(url: string, dispatcher: Dispatcher) 
     const reminder = new Reminder()
 
     dispatcher
-        .register('limitChanged', items => processors.forEach(p => p.onLimitChanged(items)))
-        .register('limitTimeMeet', items => mesageAdaptor.onLimitTimeMeet(items))
-        .register('limitReminder', data => reminder.show(data))
+        .register('limitChanged', () => void processors.forEach(p => p.onLimitChanged()))
+        .register('limitTimeMeet', items => void mesageAdaptor.onLimitTimeMeet(items))
+        .register('limitReminder', data => void reminder.show(data))
         .register('askVisitHit', ruleId => modal.reasons.some(r => r.type === 'VISIT' && ruleId === r.id))
         .registerAudibleChange(visitProcessor.tracker)
 
