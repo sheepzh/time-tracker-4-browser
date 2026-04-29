@@ -114,7 +114,9 @@ function zoom<T>(data: T[], reduction: number): T[] {
     const newData: T[] = []
     while (i < data.length) {
         const item = data[i]
-        item && newData.push(item)
+        if (item !== undefined) {
+            newData.push(item)
+        }
         i += reduction
     }
     return newData
