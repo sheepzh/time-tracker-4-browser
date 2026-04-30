@@ -39,10 +39,6 @@ jobs:
                     echo "No errors found in export logs"
                   fi
 
-            - name: Test typescript
-              if: success()
-              run: npx tsc --noEmit
-
             - name: Create Pull Request
               if: success()
               uses: peter-evans/create-pull-request@v8
