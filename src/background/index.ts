@@ -6,6 +6,7 @@
  */
 
 import { trySendMsg2Tab } from "@api/chrome/tab"
+import { initBrowserAction, initSidePanel } from './action'
 import badgeTextManager from "./badge-manager"
 import initCsHandler from "./content-script-handler"
 import initDataCleaner from "./data-cleaner"
@@ -18,6 +19,12 @@ import initTrackServer from "./track-server"
 import initWhitelistMenuManager from "./whitelist-menu-manager"
 
 initAfterInstalled()
+
+// Initialize side panel
+initSidePanel()
+
+// Initialize context menu and icon action
+initBrowserAction()
 
 // Init data cleaner
 initDataCleaner()

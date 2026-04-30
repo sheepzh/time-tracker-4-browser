@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright (c) 2021-present Hengyang Zhang
  *
  * This software is released under the MIT License.
@@ -78,7 +78,7 @@ const changeLogProps: ChromeContextMenuCreateProps = {
     ...baseProps
 }
 
-function initBrowserAction() {
+export function initBrowserAction() {
     createContextMenu(allFunctionProps)
     createContextMenu(optionPageProps)
     createContextMenu(repoPageProps)
@@ -92,4 +92,11 @@ function initBrowserAction() {
     }
 }
 
-export default initBrowserAction
+export function initSidePanel() {
+    if (!IS_MV3) return
+    const sidePanel = chrome.sidePanel
+    // sidePanel not supported for Firefox
+    // Avoid `chrome.sidePanel.setOptions` to skip web-ext lint
+    if (!sidePanel?.setOptions) return
+    sidePanel.setOptions({ path: "/static/side.html" })
+}

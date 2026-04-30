@@ -3,10 +3,9 @@ import { onInstalled, setUninstallURL } from "@api/chrome/runtime"
 import { executeScript } from "@api/chrome/script"
 import { createTabAfterCurrent, listTabs } from "@api/chrome/tab"
 import { updateInstallTime } from "@service/meta-service"
-import { IS_E2E, IS_FROM_STORE, IS_MV3 } from "@util/constant/environment"
+import { IS_E2E, IS_FROM_STORE } from "@util/constant/environment"
 import { getGuidePageUrl, UNINSTALL_QUESTIONNAIRE } from "@util/constant/url"
 import { isBrowserUrl } from "@util/pattern"
-import initBrowserAction from './browser-action'
 import versionManager from './version'
 
 async function onFirstInstall() {
@@ -30,15 +29,6 @@ function initQuestionnaire() {
     }
 }
 
-function initSidePanel() {
-    if (!IS_MV3) return
-    const sidePanel = chrome.sidePanel
-    // sidePanel not supported for Firefox
-    // Avoid `chrome.sidePanel.setOptions` to skip web-ext lint
-    if (!sidePanel?.setOptions) return
-    sidePanel.setOptions({ path: "/static/side.html" })
-}
-
 export function initAfterInstalled() {
     onInstalled(async reason => {
         reason === "install" && await onFirstInstall()
@@ -46,10 +36,6 @@ export function initAfterInstalled() {
         initQuestionnaire()
         // Reload content-script
         IS_FROM_STORE && await reloadContentScript()
-        // Initialize side panel
-        initSidePanel()
-        // Initialize context menu
-        initBrowserAction()
         // Initialize with version
         versionManager.handle(reason)
     })
