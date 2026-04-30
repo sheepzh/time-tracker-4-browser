@@ -29,7 +29,7 @@ class Dispatcher {
             return true
         })
 
-        this.register('syncAudible', audible => this.audibleChangeHandlers.forEach(h => h.onAudibleChange(audible)))
+        this.register('syncAudible', audible => void this.audibleChangeHandlers.forEach(h => h.onAudibleChange(audible)))
     }
 
     register<Code extends timer.tab.ReqCode>(code: Code, handler: Handler<Code>): Dispatcher {
