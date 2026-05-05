@@ -6,9 +6,17 @@ import {
 
 describe('util/limit', () => {
     test('matches', () => {
-        const cond = ['www.baidu.com', '*.google.com', 'github.com/sheepzh', '+github.com/sheepzh/time-tracker-4-browser', '+www.bilibili.com/cheese', '*.bilibili.com*']
+        const cond = [
+            'www.baidu.com', '+www.baidu.com/**',
+            '*.google.com',
+            'github.com/sheepzh',
+            '+github.com/sheepzh/time-tracker-4-browser',
+            '+www.bilibili.com/cheese',
+            '*.bilibili.com*',
+        ]
 
         expect(matches(cond, 'https://www.baidu.com')).toBe(true)
+        expect(matches(cond, 'http://www.baidu.com/')).toBe(true)
         expect(matches(cond, 'http://hk.google.com')).toBe(true)
         expect(matches(cond, 'http://github.com/sheepzh/poetry')).toBe(true)
         expect(matches(cond, 'http://github.com/sheepzh/time-tracker-4-browser')).toBe(false)

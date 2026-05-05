@@ -1,8 +1,15 @@
 import { EXCLUDING_PREFIX } from './constant/remain-host'
 import { getWeekDay, MILL_PER_MINUTE, MILL_PER_SECOND } from "./time"
 
+const GLOBSTAR_TOKEN = `__GLOBSTAR${Math.random().toString(36).slice(2, 6)}__`
+
 const matchUrl = (cond: string, url: string): boolean => {
-    return new RegExp(`^.*//${cond.split('*').join('.*')}`).test(url)
+    const pattern = cond
+        .replace(/\*\*/g, GLOBSTAR_TOKEN)
+        .split('*')
+        .join('.*')
+        .replaceAll(GLOBSTAR_TOKEN, '.+')
+    return new RegExp(`^.*//${pattern}`).test(url)
 }
 
 /**
