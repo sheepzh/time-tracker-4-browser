@@ -50,7 +50,7 @@ class FileTracker {
         this.enabled && handleTrackTimeEvent({
             host, start, end,
             ignoreTabCheck: false,
-        }, tab.url, tab)
+        }, tab)
         this.current.start = end
     }
 }

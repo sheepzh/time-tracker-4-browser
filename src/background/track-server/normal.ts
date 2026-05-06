@@ -9,8 +9,8 @@ import {
 import { addLimitFocusTime, incLimitVisit } from '@service/limit-service'
 import periodThrottler from '@service/throttler/period-throttler'
 import whitelistHolder from "@service/whitelist/holder"
-import { IS_ANDROID, IS_FIREFOX } from "@util/constant/environment"
-import { extractHostname, isFileUrl } from "@util/pattern"
+import { IS_ANDROID } from "@util/constant/environment"
+import { extractHostname } from "@util/pattern"
 import badgeManager from "../badge-manager"
 
 async function handleTime(context: ItemIncContext, timeRange: [number, number], tabId: number | undefined): Promise<number> {
@@ -30,13 +30,11 @@ async function handleTime(context: ItemIncContext, timeRange: [number, number], 
     return focusTime
 }
 
-export async function handleTrackTimeEvent(event: timer.core.Event, url: string | undefined, tab: ChromeTab | undefined): Promise<void> {
+export async function handleTrackTimeEvent(event: timer.core.Event, tab: ChromeTab | undefined): Promise<void> {
+    const { id: tabId, windowId, groupId, url } = tab ?? {}
     if (!url) return
-    // not to process cs events from local files for FF
-    if (IS_FIREFOX && isFileUrl(url)) return
 
     const { start, end, ignoreTabCheck } = event
-    const { id: tabId, windowId, groupId } = tab ?? {}
     if (!ignoreTabCheck) {
         if (await windowNotFocused(windowId)) return
         if (await tabNotActive(tabId)) return
