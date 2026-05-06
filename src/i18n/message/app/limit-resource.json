@@ -144,6 +144,7 @@
     },
     "ja": {
         "wildcardTip": "ワイルドカードを使用してサブドメインまたはサブページに一致させることができ、「+」をプレフィックスとしてサブページを除外することができます！",
+        "emptyTips": "ここをクリックしてルールを一つ作成！",
         "item": {
             "name": "規則名",
             "condition": "制限 URL",
@@ -152,6 +153,7 @@
             "detail": "規則明細",
             "visitTime": "訪問ごとの制限",
             "enabled": "有效",
+            "locked": "ロック済み",
             "effectiveDay": "発効日",
             "or": "や",
             "notEffective": "効果がない"
@@ -170,7 +172,8 @@
             "deleteConfirm": "ルール [{name}] を削除しますか?",
             "inputTestUrl": "最初にテストする URL リンクを入力してください",
             "noRuleMatched": "URL がどのルールとも一致しません",
-            "rulesMatched": "URL は次のルールに一致します。"
+            "rulesMatched": "URL は次のルールに一致します。",
+            "timeout": "時間切れです！ XD"
         },
         "verification": {
             "inputTip": "ルールがトリガーされたかロックされました。続行するには、次の質問に対する回答を {second} 秒以内に入力してください: {prompt}",

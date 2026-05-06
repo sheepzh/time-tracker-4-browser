@@ -76,20 +76,23 @@
     },
     "ja": {
         "heatMap": {
-            "title0": "過去1年間に {hour} 時間以上オンラインで過ごした",
-            "title1": "過去 1 年間にオンラインで費やした時間は 1 時間未満"
+            "title0": "去年は {hour} 時間以上閲覧した",
+            "title1": "過去1年間の閲覧時間は1時間未満です"
         },
         "topK": {
             "title": "過去 {day} 日間に最も拜訪された TOP {k}"
         },
         "indicator": {
-            "installedDays": "使用 {number} 日",
+            "installedDays": "{number}日間使用しました",
             "visitCount": "{site} つのサイトへの合計 {visit} 回の拜訪",
             "browsingTime": "{minute} 分以上ウェブを閲覧する",
             "mostUse": "{start}:00 から {end}:00 までのお気に入りのインターネットアクセス"
         },
         "monthOnMonth": {
             "title": "閲覧時間の月間推移"
+        },
+        "timeline": {
+            "focusScore": "フォーカス度"
         }
     },
     "pt_PT": {

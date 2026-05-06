@@ -64,6 +64,7 @@
     },
     "ja": {
         "exportFileName": "私のウェブ時間データ",
+        "total": "合計訪問回数： {visit} 回、合計時間： {focus}",
         "batchDelete": {
             "noSelectedMsg": "最初にテーブルで削除する行にチェックマークを付けてください",
             "confirmMsg": "{date} の {example} のようなサイトの {count} レコードは削除されます！",
