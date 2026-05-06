@@ -51,6 +51,7 @@
                 "date": "日期",
                 "domain": "URL",
                 "cate": "カテゴリー",
+                "group": "タブグループ",
                 "notMerge": "不合并"
             }
         },
@@ -58,11 +59,13 @@
             "notSet": "未設定"
         },
         "limit": {
+            "limited": "制限あり",
             "daily": "1日の限度",
             "weekly": "週間の限度",
             "period": "許可されない期間",
             "visits": "{n}訪問"
-        }
+        },
+        "all": "すべて"
     },
     "zh_TW": {
         "merge": {

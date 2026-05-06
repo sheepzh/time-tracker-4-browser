@@ -546,7 +546,10 @@
             },
             "method": {
                 "label": "通知方法{input}",
-                "browser": "ブラウザ"
+                "browser": "ブラウザ",
+                "callback": {
+                    "label": "HTTP Callback"
+                }
             }
         },
         "resetButton": "リセット",

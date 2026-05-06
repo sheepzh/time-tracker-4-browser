@@ -108,7 +108,7 @@
             "conflictTip": "インポートされたデータがローカルデータと競合する場合の対処方法",
             "overwrite": "上書き",
             "accumulate": "累積する",
-            "imported": "輸入された",
+            "imported": "インポート済み",
             "local": "ローカル",
             "fileNotSelected": "ファイルが選択されていません",
             "conflictNotSelected": "競合する解像度が選択されていません"

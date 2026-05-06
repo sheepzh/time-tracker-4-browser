@@ -18,8 +18,10 @@
         "donutChart": "以圓餅圖顯示"
     },
     "ja": {
+        "rating": "評価を送信",
         "showSiteName": "サイト名を表示",
-        "showTopN": "トップ {n} を表示"
+        "showTopN": "トップ {n} を表示",
+        "donutChart": "ドーナツグラフとして表示"
     },
     "pt_PT": {
         "showSiteName": "Mostrar nome do site",

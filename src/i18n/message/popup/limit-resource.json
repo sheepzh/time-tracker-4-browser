@@ -16,5 +16,14 @@
         "remain": "剩余 {remaining}",
         "noLimit": "无限制",
         "notHit": "未命中"
+    },
+    "ja": {
+        "noData": "このURLには制限が適用されません",
+        "newOne": "追加",
+        "timeUsed": "{percent} 使用済み",
+        "visitUsed": "訪問回数{used}回",
+        "remain": "残り {remaining}",
+        "noLimit": "制限なし",
+        "notHit": "無効です"
     }
 }

@@ -73,6 +73,7 @@
     },
     "ja": {
         "create": "新規",
+        "add": "追加",
         "delete": "削除",
         "batchDelete": "一括削除",
         "modify": "編集",
@@ -83,12 +84,16 @@
         "cancel": "キャンセル",
         "previous": "戻る",
         "next": "次へ",
+        "okay": "OK",
         "dont": "いいえ",
         "operation": "操作",
         "configuration": "設定",
         "clear": "クリア",
+        "enable": "有効化",
         "batchEnable": "一括有効",
-        "batchDisable": "一括無効"
+        "batchDisable": "一括無効",
+        "collapse": "折りたたむ",
+        "expand": "展開"
     },
     "pt_PT": {
         "create": "Criar",
