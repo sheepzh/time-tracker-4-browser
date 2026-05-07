@@ -7,7 +7,7 @@
 
 import { setBadgeBgColor, setBadgeText } from "@api/chrome/action"
 import { listTabs } from "@api/chrome/tab"
-import { getFocusedNormalWindowId, isNoneWindowId, onWindowFocusChanged } from "@api/chrome/window"
+import { isNoneWindowId, onWindowFocusChanged, windowHolder } from "@api/chrome/window"
 import { IS_ANDROID } from "@util/constant/environment"
 import { extractHostname, isBrowserUrl } from "@util/pattern"
 import { MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND } from "@util/time"
@@ -41,7 +41,7 @@ function mill2Str(milliseconds: number) {
 }
 
 async function findActiveTab(windowId?: number): Promise<BadgeLocation | undefined> {
-    windowId ??= await getFocusedNormalWindowId()
+    windowId ??= windowHolder.getLatestFocusedId()
     if (isNoneWindowId(windowId)) return undefined
     const tabs = await listTabs({ windowId, active: true })
     // Fix #131 — Edge can return two active tabs (e.g. edge://newtab/).
