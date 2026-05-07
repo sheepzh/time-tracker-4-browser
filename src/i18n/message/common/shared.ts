@@ -15,7 +15,6 @@ export type SharedMessage = {
         period: string
         visits: string
     }
-    all: string
 }
 
 const sharedMessages = resource satisfies Messages<SharedMessage>

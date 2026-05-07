@@ -19,8 +19,7 @@
             "weekly": "Weekly limit",
             "period": "Blocked periods",
             "visits": "{n} visits"
-        },
-        "all": "All"
+        }
     },
     "zh_CN": {
         "merge": {
