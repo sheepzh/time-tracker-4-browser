@@ -1,10 +1,8 @@
-import { getTab, listTabs, sendMsg2Tab } from "@api/chrome/tab"
-import { getWindow } from "@api/chrome/window"
+import { listTabs, sendMsg2Tab } from "@api/chrome/tab"
+import { windowHolder } from '@api/chrome/window'
 import optionHolder from "@service/components/option-holder"
 import {
-    addFocusTime as addItemFocusTime,
-    increaseVisit as increaseItemVisit,
-    type ItemIncContext
+    addFocusTime as addItemFocusTime, increaseVisit as increaseItemVisit, type ItemIncContext,
 } from "@service/item-service"
 import { addLimitFocusTime, incLimitVisit } from '@service/limit-service'
 import periodThrottler from '@service/throttler/period-throttler'
@@ -31,13 +29,14 @@ async function handleTime(context: ItemIncContext, timeRange: [number, number], 
 }
 
 export async function handleTrackTimeEvent(event: timer.core.Event, tab: ChromeTab | undefined): Promise<void> {
-    const { id: tabId, windowId, groupId, url } = tab ?? {}
+    if (!tab) return
+    const { id: tabId, windowId, groupId, url, active } = tab
     if (!url) return
 
     const { start, end, ignoreTabCheck } = event
     if (!ignoreTabCheck) {
-        if (await windowNotFocused(windowId)) return
-        if (await tabNotActive(tabId)) return
+        if (windowNotFocused(windowId)) return
+        if (!active) return
     }
     const { protocol, host } = extractHostname(url)
     const option = await optionHolder.get()
@@ -56,22 +55,16 @@ export async function handleTrackTimeEvent(event: timer.core.Event, tab: ChromeT
     }
 }
 
-async function windowNotFocused(winId: number | undefined): Promise<boolean> {
+function windowNotFocused(winId: number | undefined): boolean {
     if (IS_ANDROID) return false
     if (!winId) return true
-    const window = await getWindow(winId)
+    const window = windowHolder.get(winId)
     return !window?.focused
-}
-
-async function tabNotActive(tabId: number | undefined): Promise<boolean> {
-    if (!tabId) return true
-    const tab = await getTab(tabId)
-    return !tab?.active
 }
 
 async function sendLimitedMessage(items: timer.limit.Item[]) {
     const tabs = await listTabs()
-    if (!tabs?.length) return
+    if (!tabs.length) return
     for (const tab of tabs) {
         try {
             const { id } = tab
