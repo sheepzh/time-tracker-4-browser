@@ -137,6 +137,8 @@
             "strictTip": "Triggered, no operation is allowed before release!",
             "incorrectPsw": "Incorrect password",
             "incorrectAnswer": "Incorrect answer",
+            "twoFaInputTip": "The rule has been triggered or locked. Enter the 6-digit code from your authenticator app to continue.",
+            "incorrect2fa": "Incorrect 2FA code",
             "pi": "{digitCount} digits from {startIndex} to {endIndex} of the decimal part of π",
             "confession": "Time is fleeting"
         },

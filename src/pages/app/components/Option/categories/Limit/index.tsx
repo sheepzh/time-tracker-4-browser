@@ -13,8 +13,9 @@ import { css } from '@emotion/css'
 import { locale } from '@i18n'
 import { DEFAULT_LIMIT } from "@util/constant/option"
 import { ElButton, ElInput, ElInputNumber, ElMessage, ElMessageBox, ElSelect, ElSwitch, useNamespace } from "element-plus"
-import { defineComponent, type StyleValue } from "vue"
+import { defineComponent, FunctionalComponent, type StyleValue } from "vue"
 import type { CategoryInstance } from '../types'
+import { use2faSetup } from './use2faSetup'
 import { usePswEdit } from "./usePswEdit"
 import { useVerify } from "./useVerify"
 
@@ -41,6 +42,7 @@ const ALL_LEVEL: timer.limit.RestrictionLevel[] = [
     'nothing',
     'verification',
     'password',
+    '2fa',
     'strict',
 ]
 
@@ -83,10 +85,21 @@ const confirm4Strict = async (): Promise<void> => {
     })
 }
 
+const TestButton: FunctionalComponent<{ onClick: NoArgCallback }> = props => (
+    <ElButton
+        size="small"
+        style={{ height: '28px', marginInlineStart: '5px' } satisfies StyleValue}
+        onClick={props.onClick}
+    >
+        {t(msg => msg.button.test)}
+    </ElButton>
+)
+
 const _default = defineComponent((_, ctx) => {
     const { option } = useOption<timer.option.LimitOption>({ defaultValue: DEFAULT_LIMIT, copy })
     const { verified, verify } = useVerify(option)
     const { modifyPsw } = usePswEdit({ reset: () => option.limitPassword })
+    const { setup2fa } = use2faSetup()
 
     ctx.expose({
         reset: () => verify().then(() => reset(option)).catch(() => { })
@@ -96,6 +109,8 @@ const _default = defineComponent((_, ctx) => {
         verify().then(async () => {
             if (val === "strict") {
                 await confirm4Strict()
+            } else if (val === '2fa') {
+                await setup2fa()
             } else if (val === "password") {
                 option.limitPassword = await modifyPsw()
             }
@@ -116,6 +131,8 @@ const _default = defineComponent((_, ctx) => {
             .then(() => option.limitDelayDuration = val)
             .catch(e => console.warn("Failed to verify", e))
     }
+
+    const handleTest = () => processVerification(option).then(() => ElMessage.success('Valid!')).catch(console.warn)
 
     const levelSelectStyle = useLevelSelectStyle()
 
@@ -161,6 +178,7 @@ const _default = defineComponent((_, ctx) => {
                 onChange={handleLevelChange}
                 options={ALL_LEVEL.map(value => ({ value, label: t(msg => msg.option.limit.level[value]) }))}
             />
+            {option.limitLevel === '2fa' && <TestButton onClick={handleTest} />}
         </OptionItem>
         <OptionItem
             v-show={option.limitLevel === "password"}
@@ -191,13 +209,7 @@ const _default = defineComponent((_, ctx) => {
                 }
                 options={ALL_DIFF.map(value => ({ value, label: t(msg => msg.option.limit.level.verificationDifficulty[value]) }))}
             />
-            <ElButton
-                size="small"
-                style={{ height: '28px', marginInlineStart: '5px' } satisfies StyleValue}
-                onClick={() => processVerification(option)}
-            >
-                {t(msg => msg.button.test)}
-            </ElButton>
+            <TestButton onClick={handleTest} />
         </OptionItem>
         <OptionItem label={msg => msg.option.limit.prompt}>
             <ElInput

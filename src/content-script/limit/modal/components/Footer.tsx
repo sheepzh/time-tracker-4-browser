@@ -1,4 +1,4 @@
-import { APP_ANALYSIS_ROUTE, APP_LIMIT_ROUTE, AppLimitQuery, type AppAnalysisQuery } from '@/shared/route'
+import { APP_ANALYSIS_ROUTE, APP_LIMIT_ROUTE, type AppAnalysisQuery, type AppLimitQuery } from '@/shared/route'
 import { trySendMsg2Runtime } from '@api/sw/common'
 import { processVerification } from '@app/util/limit'
 import { t } from "@cs/locale"

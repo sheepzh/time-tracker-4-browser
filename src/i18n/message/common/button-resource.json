@@ -21,7 +21,8 @@
         "batchEnable": "Batch Enable",
         "batchDisable": "Batch Disable",
         "collapse": "Collapse",
-        "expand": "Expand"
+        "expand": "Expand",
+        "copy": "Copy"
     },
     "zh_CN": {
         "create": "新建",

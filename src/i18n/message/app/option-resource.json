@@ -351,7 +351,12 @@
                 "strictTitle": "Operation confirm",
                 "strictContent": "When you select this option, if a site triggers daily limit, you will not be allowed to manually unblock it other than waiting until the next day. If rules are not set up properly, they can very well hinder your routines!",
                 "pswFormLabel": "Password",
-                "pswFormAgain": "Re-enter"
+                "pswFormAgain": "Re-enter",
+                "2fa": "Must use 2FA code to unlock",
+                "twoFaTitle": "Enable 2FA",
+                "twoFaScanHint": "Scan the QR code with an authenticator app or import the setup link into a password manager that supports TOTP.",
+                "twoFaCopyLink": "Copy link",
+                "twoFaVerifyLabel": "Enter the 6-digit code to verify"
             },
             "delayDuration": "Delay for {input} minutes per time"
         },

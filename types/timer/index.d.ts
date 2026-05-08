@@ -74,5 +74,15 @@ declare namespace timer {
                 msg?: string
             }
         }
+        /**
+         * Two-factor auth
+         */
+        twoFa?: timer.TwoFactorAuth
+    }
+
+    type TwoFactorAuth = {
+        secret: string
+        iv: string
+        salt: string
     }
 }

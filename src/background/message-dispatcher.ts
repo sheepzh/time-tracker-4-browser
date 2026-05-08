@@ -12,6 +12,7 @@ import { getUsedStorage } from './database/memory-detector'
 import mergeRuleDatabase from "./database/merge-rule-database"
 import siteDatabase from './database/site-database'
 import statDatabase from './database/stat-database'
+import { check2faCode, prepare2fa } from "./service/2fa-service"
 import backupProcessor from "./service/backup/processor"
 import { exportData, importData, migrateStorage } from "./service/components/immigration"
 import { importOther, previewBackup } from "./service/components/import-processor"
@@ -105,6 +106,8 @@ class MessageDispatcher {
             // Meta information
             .register('meta.installTs', getInstallTime)
             .register('meta.usedStorage', getUsedStorage)
+            .register('meta.prepare2fa', prepare2fa)
+            .register('meta.check2fa', check2faCode)
             // Whitelist & Merge Rule
             .register('whitelist.contain', ({ host, url }) => whitelistHolder.contains(host, url))
             .register('whitelist.all', () => whitelistHolder.all())

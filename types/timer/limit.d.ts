@@ -111,6 +111,8 @@ declare namespace timer.limit {
         | 'verification'
         // Not allowed to unlock manually
         | 'strict'
+        // Unlock with 2FA code
+        | '2fa'
     /**
      * @since 1.9.0
      */

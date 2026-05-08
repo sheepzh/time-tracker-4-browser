@@ -1,4 +1,4 @@
-import { trySendMsg2Runtime } from '@api/sw/common'
+import { sendMsg2Runtime, trySendMsg2Runtime } from '@api/sw/common'
 import { css } from '@emotion/css'
 import { useCountDown } from "@hooks"
 import { type I18nKey, type I18nResultItem, locale, t as t_, tN as tN_ } from "@i18n"
@@ -93,6 +93,9 @@ const MSG_CLS = css`
     left: 50%;
     transform: translate(-50%);
 `
+const okBtnTxt = t_(buttonMessages, { key: msg => msg.okay })
+
+const errMsg = (message: string) => ElMessage.error({ message, customClass: MSG_CLS })
 
 /**
  * NOT TO return Promise.resolve()
@@ -102,15 +105,17 @@ const MSG_CLS = css`
  * @returns null if verification not required,
  *          or promise with resolve invoked only if verification code or password correct
  */
-export async function processVerification(option: timer.option.LimitOption): Promise<void> {
+export function processVerification(option: timer.option.LimitOption): Promise<void> {
     const { limitLevel, limitPassword, limitVerifyDifficulty } = option
-    if (limitLevel === "strict") {
+    if (limitLevel === 'strict') {
         return new Promise(() => ElMessageBox({
             boxType: 'alert',
             type: 'warning',
             title: '',
             message: <div>{t(msg => msg.verification.strictTip)}</div>,
         }).catch(() => { }))
+    } else if (limitLevel === '2fa') {
+        return process2faVerification()
     }
     let inputType: InputType | undefined
     let answerValue: string | undefined
@@ -142,12 +147,10 @@ export async function processVerification(option: timer.option.LimitOption): Pro
     const okBtnClz = `limit-confirm-btn-${useId().value}`
     const btnText = (leftSec: number) => `${okBtnTxt} (${leftSec})`
 
-    const okBtnTxt = t_(buttonMessages, { key: msg => msg.okay })
     const msgData = ElMessageBox({
         autofocus: true,
         boxType: 'prompt',
         type: 'warning',
-        title: '',
         message: <div style={{ userSelect: 'none' }}>{messageNode}</div>,
         showInput: true,
         inputType,
@@ -182,7 +185,34 @@ export async function processVerification(option: timer.option.LimitOption): Pro
             if (typeof data === 'string') return
             const { value } = data
             if (value === answerValue) return resolve()
-            ElMessage.error({ message: incorrectMessage, customClass: MSG_CLS })
+            errMsg(incorrectMessage)
         }).catch(() => cleanCountdown?.())
     })
+}
+
+function process2faVerification(): Promise<void> {
+    return new Promise(resolve => ElMessageBox({
+        autofocus: true,
+        boxType: 'prompt',
+        type: 'warning',
+        message: t(msg => msg.verification.twoFaInputTip),
+        showInput: true,
+        showCancelButton: true,
+        showClose: false,
+        confirmButtonText: okBtnTxt,
+        buttonSize: 'small',
+        modalClass: MODAL_CLS,
+        beforeClose: (act, instance, done) => {
+            if (act !== 'confirm') return done()
+            const code = instance.inputValue.replace(/\s/g, '')
+            if (!/^\d{6}$/.test(code)) return errMsg('Invalid code format')
+            sendMsg2Runtime('meta.check2fa', code)
+                .then(ok => { if (!ok) throw new Error('Incorrect code') })
+                .then(() => {
+                    resolve()
+                    done()
+                })
+                .catch(e => errMsg(e instanceof Error ? e.message : e ?? 'Unknown error'))
+        },
+    }))
 }
