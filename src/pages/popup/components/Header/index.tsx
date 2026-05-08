@@ -1,12 +1,13 @@
-import { t } from '@popup/locale'
+import { createTab, listTabs, updateTab } from '@api/chrome/tab'
 import { View } from "@element-plus/icons-vue"
 import Flex from "@pages/components/Flex"
-import { createTab, listTabs, updateTab } from "@api/chrome/tab"
+import { t } from '@popup/locale'
 import { IS_ANDROID } from "@util/constant/environment"
 import { getAppPageUrl } from "@util/constant/url"
 import { ElLink } from "element-plus"
 import type { FunctionalComponent } from "vue"
 import DarkSwitch from "./DarkSwitch"
+import Donation from './Donation'
 import LangSelect from "./LangSelect"
 import Logo from "./Logo"
 import MoreInfo from './MoreInfo'
@@ -40,6 +41,7 @@ const Header: FunctionalComponent<{}> = () => (
                 <LangSelect />
                 <DarkSwitch />
                 <Option />
+                <Donation />
                 <MoreInfo />
             </Flex>
         </Flex>
