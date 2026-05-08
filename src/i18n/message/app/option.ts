@@ -72,6 +72,10 @@ export type OptionMessage = {
             strictContent: string
             pswFormLabel: string
             pswFormAgain: string
+            twoFaTitle: string
+            twoFaScanHint: string
+            twoFaCopyLink: string
+            twoFaVerifyLabel: string
         }
         delayDuration: string
     }

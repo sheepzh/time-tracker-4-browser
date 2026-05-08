@@ -3,7 +3,7 @@
  *
  * Testing with server implemented by https://github.com/svtslv/webdav-cli
  */
-import { encode } from '../util/base64'
+import { encodeBase64 } from '../util/encode'
 import { fetchDelete, fetchGet } from './http'
 
 // Only support password for now
@@ -22,7 +22,7 @@ const authHeaders = (auth: WebDAVAuth): Headers => {
     const type = auth?.type
     const headers = new Headers()
     if (type === 'password') {
-        headers.set('Authorization', `Basic ${encode(`${auth?.username}:${auth?.password}`)}`)
+        headers.set('Authorization', `Basic ${encodeBase64(`${auth?.username}:${auth?.password}`)}`)
     }
     return headers
 }

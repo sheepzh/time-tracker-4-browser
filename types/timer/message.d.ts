@@ -57,6 +57,8 @@ declare namespace timer.mq {
         // Meta
         & _MakeRegistry<'meta.installTs', undefined, number>
         & _MakeRegistry<'meta.usedStorage', undefined, common.StorageUsage>
+        & _MakeRegistry<'meta.check2fa', string, boolean>
+        & _MakeRegistry<'meta.prepare2fa', undefined, string>
         // Site
         & _MakeRegistry<'site.runEnabled', string, boolean>
         & _MakeRegistry<'site.list', site.Query | undefined, site.SiteInfo[]>

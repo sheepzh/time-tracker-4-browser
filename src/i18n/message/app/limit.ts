@@ -50,6 +50,8 @@ export type LimitMessage = {
         strictTip: string
         incorrectPsw: string
         incorrectAnswer: string
+        twoFaInputTip: string
+        incorrect2fa: string
         pi: string
         confession: string
     }
