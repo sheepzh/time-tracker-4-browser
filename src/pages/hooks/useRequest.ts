@@ -75,7 +75,7 @@ export function useRequest<P extends any[], T>(
             ts.value = Date.now()
             onSuccess?.(value, ...p)
         } catch (e) {
-            console.warn("Errored when requesting", e)
+            console.log("Errored when requesting", e)
             onError?.(e)
         } finally {
             loading.value = false

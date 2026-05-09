@@ -4,13 +4,12 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { verifyCanModify } from "@app/components/Limit/common"
-import { useLimitAction, useLimitData } from "@app/components/Limit/context"
+import { useLimitAction } from "@app/components/Limit/context"
 import { t } from '@app/locale'
 import { Delete, EditPen } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
 import Flex from "@pages/components/Flex"
-import { ElButton, ElCard, ElDivider, ElMessageBox, ElTag, type TagProps, useNamespace } from "element-plus"
+import { ElButton, ElCard, ElDivider, ElTag, type TagProps, useNamespace } from "element-plus"
 import { defineComponent, type FunctionalComponent, type StyleValue } from "vue"
 import Rule from "./Rule"
 
@@ -56,18 +55,7 @@ const EffectiveDays: FunctionalComponent<{ weekdays?: number[] }> = ({ weekdays 
 }
 
 const _default = defineComponent<Props>(props => {
-    const { deleteRow } = useLimitData()
-    const { modify } = useLimitAction()
-
-    const handleModify = () => verifyCanModify(props.value)
-        .then(() => modify(props.value))
-        .catch(() => {/** Do nothing */ })
-
-    const handleDelete = () => verifyCanModify(props.value)
-        .then(() => ElMessageBox.confirm(t(msg => msg.limit.message.deleteConfirm, { name: props.value.name })))
-        .then(() => deleteRow(props.value))
-        .catch(() => {/** Do nothing */ })
-
+    const { modify, remove } = useLimitAction()
     const clz = useStyle()
 
     return () => (
@@ -85,7 +73,7 @@ const _default = defineComponent<Props>(props => {
                         type='danger'
                         text
                         icon={Delete}
-                        onClick={handleDelete}
+                        onClick={() => remove(props.value)}
                     />
                 </Flex>
                 <Divider />
@@ -99,7 +87,7 @@ const _default = defineComponent<Props>(props => {
                 <Divider />
                 {/* Footer Button */}
                 <Flex justify='end'>
-                    <ElButton text icon={EditPen} onClick={handleModify} size='small'>
+                    <ElButton text icon={EditPen} onClick={() => modify(props.value)} size='small'>
                         {t(msg => msg.button.modify)}
                     </ElButton>
                 </Flex>

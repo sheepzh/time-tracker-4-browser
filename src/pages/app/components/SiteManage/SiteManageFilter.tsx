@@ -69,7 +69,7 @@ const _default = defineComponent<{
                 <MultiSelectFilterItem
                     placeholder={t(msg => msg.siteManage.column.type)}
                     options={ALL_TYPES.map(type => ({ value: type, label: t(msg => msg.siteManage.type[type].name) }))}
-                    defaultValue={filter.types}
+                    defaultValue={filter.types ?? []}
                     onChange={val => filter.types = val as timer.site.Type[]}
                 />
                 <CategoryFilter

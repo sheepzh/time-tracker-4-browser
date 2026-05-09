@@ -7,8 +7,8 @@
 
 import SelectFilterItem from '@app/components/common/filter/SelectFilterItem'
 import { t } from '@app/locale'
-import Flex from '@pages/components/Flex'
 import { type HabitMessage } from '@i18n/message/app/habit'
+import Flex from '@pages/components/Flex'
 import { ElRadioButton, ElRadioGroup } from 'element-plus'
 import { defineComponent } from 'vue'
 import { usePeriodFilter } from './context'
@@ -46,7 +46,7 @@ const _default = defineComponent(() => {
                 historyName='periodSize'
                 defaultValue={filter.periodSize?.toString?.()}
                 options={allOptions()}
-                onSelect={val => {
+                onChange={val => {
                     if (!val) return
                     const newPeriodSize = parseInt(val)
                     if (isNaN(newPeriodSize)) return

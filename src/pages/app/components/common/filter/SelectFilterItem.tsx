@@ -5,26 +5,17 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { useCached } from "@hooks"
 import { ElSelect, SelectProps } from "element-plus"
-import { defineComponent, watch } from "vue"
-import { useRoute } from "vue-router"
-import { SELECT_WRAPPER_STYLE } from "./common"
+import { defineComponent } from "vue"
+import { ALL_BASE_FILTER_PROPS, type BaseFilterProps, SELECT_WRAPPER_STYLE, useFilterState } from "./common"
 
-type Props = Pick<SelectProps, "placeholder"> & {
-    defaultValue?: string
-    /**
-     * Whether to save the value in the localStorage with {@param historyName}
-     */
-    historyName?: string
+type Props = BaseFilterProps<string | undefined> & Pick<SelectProps, "placeholder"> & {
     options: Record<string, string>
-    onSelect?: (val: string | undefined) => void
 }
 
 const SelectFilterItem = defineComponent<Props>(props => {
-    const cacheKey = props.historyName && `__filter_item_select_${useRoute().path}_${props.historyName}`
-    const { data, setter } = useCached(cacheKey, props.defaultValue)
-    watch(data, val => props.onSelect?.(val))
+    const [data, setter] = useFilterState('select', props)
+
     return () => (
         <ElSelect
             placeholder={props.placeholder}
@@ -34,6 +25,6 @@ const SelectFilterItem = defineComponent<Props>(props => {
             options={Object.entries(props.options).map(([value, label]) => ({ label, value }))}
         />
     )
-}, { props: ['defaultValue', 'historyName', 'options', 'onSelect', 'placeholder'] })
+}, { props: [...ALL_BASE_FILTER_PROPS, 'options', 'placeholder'] })
 
 export default SelectFilterItem

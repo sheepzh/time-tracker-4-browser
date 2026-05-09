@@ -16,18 +16,13 @@ const TIME_FORMAT_LABELS: { [key in timer.app.TimeFormat]: string } = {
     hour: t(msg => msg.timeFormat.hour)
 }
 
-type Props = {
-    modelValue: timer.app.TimeFormat
-    onChange: (val: timer.app.TimeFormat) => void
-}
-
-const _default = defineComponent<Props>(props => {
+const _default = defineComponent<ModelValue<timer.app.TimeFormat>>(props => {
     return () => (
         <SelectFilterItem
             historyName="timeFormat"
             defaultValue={props.modelValue}
             options={TIME_FORMAT_LABELS}
-            onSelect={val => props.onChange(val as timer.app.TimeFormat)}
+            onChange={val => val && props.onChange?.(val as timer.app.TimeFormat)}
         />
     )
 }, { props: ['modelValue', 'onChange'] })

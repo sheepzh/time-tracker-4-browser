@@ -9,7 +9,7 @@ export type ReportFilterOption = {
     query: string | undefined
     dateRange: DateRange
     mergeDate: boolean
-    siteMerge?: timer.stat.MergeMethod & ('cate' | 'domain' | 'group')
+    siteMerge?: Exclude<timer.stat.MergeMethod, 'date'>
     cateIds?: number[]
     /**
      * @since 1.1.7
