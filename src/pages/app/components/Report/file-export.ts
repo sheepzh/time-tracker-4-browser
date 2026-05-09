@@ -7,10 +7,7 @@
 
 import { type I18nKey, t } from '@app/locale'
 import { periodFormatter } from '@app/util/time'
-import {
-    exportCsv as exportCsv_,
-    exportJson as exportJson_,
-} from "@util/file"
+import { exportCsv as exportCsv_, exportJson as exportJson_ } from "@util/file"
 import { CATE_NOT_SET_ID } from "@util/site"
 import { getAlias, getGroupName, getHost, getRelatedCateId, isGroup } from "@util/stat"
 import { formatTimeYMD } from "@util/time"

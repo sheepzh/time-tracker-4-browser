@@ -5,33 +5,24 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { useCached } from "@hooks"
 import Flex from "@pages/components/Flex"
 import { ElSwitch, ElText } from "element-plus"
-import { defineComponent, watch } from "vue"
-import { useRoute } from "vue-router"
+import { defineComponent } from "vue"
+import { ALL_BASE_FILTER_PROPS, type BaseFilterProps, useFilterState } from './common'
 
-const _default = defineComponent({
-    emits: {
-        change: (_val: boolean) => true
-    },
-    props: {
-        label: String,
-        defaultValue: Boolean,
-        historyName: String,
-    },
-    setup(props, ctx) {
-        const cacheKey = props.historyName ? `__filter_item_switch_${useRoute().path}_${props.historyName}` : undefined
-        const { data, setter } = useCached(cacheKey, props.defaultValue)
-        watch(data, () => ctx.emit("change", !!data.value))
+type Props = BaseFilterProps<boolean> & {
+    label: string
+}
 
-        return () => (
-            <Flex gap={5} align="center">
-                <ElText tag="b" type="info">{props.label}</ElText>
-                <ElSwitch modelValue={data.value} onChange={val => setter(val as boolean)} />
-            </Flex>
-        )
-    }
-})
+const _default = defineComponent<Props>(props => {
+    const [data, setter] = useFilterState('switch', props)
+
+    return () => (
+        <Flex gap={5} align="center">
+            <ElText tag="b" type="info">{props.label}</ElText>
+            <ElSwitch modelValue={data.value} onChange={val => setter(val as boolean)} />
+        </Flex>
+    )
+}, { props: [...ALL_BASE_FILTER_PROPS, 'label'] })
 
 export default _default

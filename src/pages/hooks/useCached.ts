@@ -5,8 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { onBeforeMount, ref, type Ref, watch } from "vue"
-import { useState } from "./useState"
+import { ref, type Ref, watch } from "vue"
 
 const getInitialValue = <T>(key: string, defaultValue?: T): T | undefined => {
     if (!key) return defaultValue
@@ -28,29 +27,13 @@ const saveCache = <T>(key: string, val: T) => {
     }
 }
 
-export function useCached<T>(key: string, defaultValue: T, defaultFirst?: boolean): { data: Ref<T>, setter: (val: T) => void }
-export function useCached<T>(
-    key: string | undefined,
-    defaultValue?: T,
-    defaultFirst?: boolean,
-): { data: Ref<T | undefined>, setter: (val: T | undefined) => void }
-
-export function useCached<T>(
-    key: string | undefined,
-    defaultValue?: T,
-    defaultFirst?: boolean,
-) {
-    if (!key) {
-        const [data, setter] = useState(defaultValue)
-        return { data, setter }
-    }
-    const data: Ref<T | undefined> = ref<T>()
+export function useCached<T>(key: string, defaultValue: T): [data: Ref<T>, setter: ArgCallback<T>]
+export function useCached<T>(key: string, defaultValue?: T): [data: Ref<T | undefined>, setter: ArgCallback<T | undefined>]
+export function useCached<T>(key: string, defaultValue?: T) {
+    let cachedValue = getInitialValue(key, defaultValue)
+    let initial = cachedValue ?? defaultValue
+    const data = initial === undefined ? ref<T>() : ref<T>(initial)
     const setter = (val: T | undefined) => data.value = val
-    onBeforeMount(() => {
-        let cachedValue = getInitialValue(key, defaultValue)
-        let initial = defaultFirst ? defaultValue || cachedValue : cachedValue
-        setter(initial)
-    })
-    watch(data, () => saveCache(key, data.value))
-    return { data, setter }
+    watch(data, () => saveCache(key, data.value), { immediate: true })
+    return [data, setter]
 }

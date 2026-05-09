@@ -4,28 +4,50 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { getWeekStartDay } from "@api/sw/option"
+import { getOption, getWeekStartDay } from "@api/sw/option"
 import ColumnHeader from "@app/components/common/ColumnHeader"
-import { useDelayDuration, useLimitData } from "@app/components/Limit/context"
+import { useDelayDuration, useLimitAction, useLimitData } from "@app/components/Limit/context"
 import type { LimitInstance } from '@app/components/Limit/types'
 import { t } from '@app/locale'
-import { useLocalStorage, useRequest, useState } from '@hooks'
+import { Delete, Edit } from '@element-plus/icons-vue'
+import { useCached, useRequest } from '@hooks'
+import { locale } from '@i18n'
 import { isEffective } from "@util/limit"
 import { MILL_PER_SECOND } from "@util/time"
-import { ElSwitch, ElTable, ElTableColumn, ElTag, type RenderRowData, type Sort, type TableInstance } from "element-plus"
-import { defineComponent, ref, watch } from "vue"
-import LimitOperationColumn from "./OperationColumn"
+import {
+    ElButton, ElSwitch, ElTable, ElTableColumn, ElTag, type RenderRowData, type Sort, type TableInstance,
+} from "element-plus"
+import { defineComponent, ref } from "vue"
 import Rule from "./Rule"
 import Waste from "./Waste"
 import Weekday from "./Weekday"
 
-const DEFAULT_SORT_COL = 'waste'
-
-const sortMethodByNumVal = (key: keyof timer.limit.Item & 'waste' | 'weeklyWaste'): (a: timer.limit.Item, b: timer.limit.Item) => number => {
-    return ({ [key]: a }: timer.limit.Item, { [key]: b }: timer.limit.Item) => (a ?? 0) - (b ?? 0)
+const ACTION_WIDTH: { [locale in timer.Locale]: number } = {
+    en: 220,
+    zh_CN: 200,
+    ja: 200,
+    zh_TW: 200,
+    pt_PT: 250,
+    uk: 260,
+    es: 240,
+    de: 250,
+    fr: 230,
+    ru: 240,
+    ar: 220,
+    tr: 220,
+    pl: 220,
+    it: 220,
 }
 
-const sortByEffectiveDays = ({ weekdays: a }: timer.limit.Item, { weekdays: b }: timer.limit.Item) => (a?.length ?? 0) - (b?.length ?? 0)
+const DEFAULT_SORT_COL = 'waste'
+
+function createSorter(key: 'waste' | 'weeklyWaste') {
+    return (a: timer.limit.Item, b: timer.limit.Item) => a[key] - b[key]
+}
+
+function sortByEffectiveDays(a: timer.limit.Item, b: timer.limit.Item) {
+    return (a.weekdays?.length ?? 0) - (b.weekdays?.length ?? 0)
+}
 
 const _default = defineComponent((_, ctx) => {
     const { data: weekStartName } = useRequest(async () => {
@@ -35,16 +57,16 @@ const _default = defineComponent((_, ctx) => {
     })
 
     const { list, changeEnabled, changeDelay, changeLocked } = useLimitData()
+    const { modify, remove } = useLimitAction()
     const delayDuration = useDelayDuration()
 
-    const [cachedSort, setCachedSort] = useLocalStorage<Sort>(
-        '__limit_sort_default__', { prop: DEFAULT_SORT_COL, order: 'descending' }
-    )
-
-    const [sort, setSort] = useState(cachedSort)
-    watch(sort, () => setCachedSort(sort.value))
-
+    const [sort, setSort] = useCached<Sort>('__limit_sort_default__', { prop: DEFAULT_SORT_COL, order: 'descending' })
     const table = ref<TableInstance>()
+
+    const { data: lockVisible } = useRequest(async () => {
+        const option = await getOption()
+        return option.limitLevel !== 'nothing'
+    }, { defaultValue: false })
 
     ctx.expose({
         getSelected: () => table.value?.getSelectionRows?.() ?? []
@@ -97,7 +119,7 @@ const _default = defineComponent((_, ctx) => {
             <ElTableColumn
                 prop={DEFAULT_SORT_COL}
                 sortable
-                sortMethod={sortMethodByNumVal('waste')}
+                sortMethod={createSorter('waste')}
                 label={t(msg => msg.calendar.range.today)}
                 minWidth={90}
                 align="center"
@@ -120,7 +142,7 @@ const _default = defineComponent((_, ctx) => {
                 minWidth={110}
                 align="center"
                 sortable
-                sortMethod={sortMethodByNumVal('weeklyWaste')}
+                sortMethod={createSorter('weeklyWaste')}
                 v-slots={{
                     header: () => (
                         <ColumnHeader
@@ -163,18 +185,33 @@ const _default = defineComponent((_, ctx) => {
                         <ElSwitch size="small" modelValue={row.allowDelay} onChange={v => changeDelay(row, !!v)} />
                     )}
                 </ElTableColumn>
-                <ElTableColumn
-                    label={t(msg => msg.limit.item.locked)}
-                    minWidth={80}
-                    align="center"
-                    fixed="right"
-                >
-                    {({ row }: RenderRowData<timer.limit.Item>) => (
-                        <ElSwitch size="small" modelValue={row.locked} onChange={v => changeLocked(row, !!v)} />
-                    )}
-                </ElTableColumn>
+                {lockVisible.value && (
+                    <ElTableColumn
+                        label={t(msg => msg.limit.item.locked)}
+                        minWidth={80}
+                        align="center"
+                        fixed="right"
+                    >
+                        {({ row }: RenderRowData<timer.limit.Item>) => (
+                            <ElSwitch size="small" modelValue={row.locked} onChange={v => changeLocked(row, !!v)} />
+                        )}
+                    </ElTableColumn>
+                )}
             </ElTableColumn>
-            <LimitOperationColumn />
+            <ElTableColumn
+                label={t(msg => msg.button.operation)}
+                width={ACTION_WIDTH[locale]}
+                align="center"
+                fixed="right"
+                v-slots={({ row }: RenderRowData<timer.limit.Item>) => <>
+                    <ElButton type="danger" size="small" icon={Delete} onClick={() => remove(row)}>
+                        {t(msg => msg.button.delete)}
+                    </ElButton>
+                    <ElButton type="primary" size="small" icon={Edit} onClick={() => modify(row)}>
+                        {t(msg => msg.button.modify)}
+                    </ElButton>
+                </>}
+            />
         </ElTable>
     )
 })

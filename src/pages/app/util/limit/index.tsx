@@ -20,7 +20,6 @@ const tN = (key: I18nKey<LimitMessage>, param?: any) => tN_<LimitMessage, VNode>
  * @returns T/F
  */
 export async function judgeVerificationRequired(item: timer.limit.Item, delayDuration: number): Promise<boolean> {
-    if (item.locked) return true
     if (!item.enabled || !isEffective(item.weekdays)) return false
 
     const { visitTime, periods } = item

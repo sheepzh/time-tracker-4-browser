@@ -3,26 +3,26 @@ import { DEFAULT_LIMIT } from '@/util/constant/option'
 import { deleteLimits, listLimits, updateLimits } from "@api/sw/limit"
 import { t } from '@app/locale'
 import type { LimitQuery } from '@app/router/constants'
+import { judgeVerificationRequired, processVerification } from '@app/util/limit'
 import { useDocumentVisibility, useManualRequest, useProvide, useProvider, useRequest } from '@hooks'
 import { tryParseInteger } from '@util/number'
 import { ElMessage, ElMessageBox } from "element-plus"
 import { computed, onMounted, reactive, ref, toRaw, watch, type ShallowRef } from "vue"
 import { useRoute, useRouter } from 'vue-router'
-import { verifyCanModify } from "./common"
 import type { LimitFilterOption, LimitInstance, ModifyInstance, TestInstance } from "./types"
 
 type Context = {
     filter: LimitFilterOption
     list: ShallowRef<timer.limit.Item[]>
     refresh: NoArgCallback
-    deleteRow: ArgCallback<timer.limit.Item>
     batchDelete: NoArgCallback
     batchEnable: NoArgCallback
     batchDisable: NoArgCallback
     changeEnabled: (item: timer.limit.Item, val: boolean) => Promise<void>
     changeDelay: (item: timer.limit.Item, val: boolean) => Promise<void>
     changeLocked: (item: timer.limit.Item, val: boolean) => Promise<void>
-    modify: (item: timer.limit.Item) => void
+    modify: ArgCallback<timer.limit.Item>
+    remove: ArgCallback<timer.limit.Item>
     create: () => void
     test: () => void
     empty: ShallowRef<boolean>
@@ -40,6 +40,29 @@ const initialQuery = () => {
         action,
         id: isNum && !Number.isNaN(idMaybe) && idMaybe ? idMaybe : undefined,
     }
+}
+
+const batchJudge = async (items: timer.limit.Item[]): Promise<boolean> => {
+    if (!items?.length) return false
+    const { limitDelayDuration, limitLevel } = await getOption()
+    for (const item of items) {
+        if (!item) continue
+        let needVerify = await judgeVerificationRequired(item, limitDelayDuration)
+        // If locked and the level is not strict, verification is also required to modify the rule
+        if (limitLevel !== 'strict') needVerify ||= item.locked
+        if (needVerify) return true
+    }
+    return false
+}
+
+const verifyCanModify = async (...items: timer.limit.Item[]) => {
+    const needVerify = await batchJudge(items)
+    if (!needVerify) return
+
+    // Open delay for limited rules, so verification is required
+    const option = await getOption()
+    if (!option) return
+    await processVerification(option)
 }
 
 export const useLimitProvider = () => {
@@ -74,10 +97,10 @@ export const useLimitProvider = () => {
     const docVisible = useDocumentVisibility()
     watch(docVisible, () => docVisible.value && refresh())
 
-    const { refresh: deleteRow } = useManualRequest(async (row: timer.limit.Item) => {
+    const { refresh: remove } = useManualRequest(async (row: timer.limit.Item) => {
         await verifyCanModify(row)
         const message = t(msg => msg.limit.message.deleteConfirm, { name: row.name })
-        await ElMessageBox.confirm(message, { type: "warning" })
+        await ElMessageBox.confirm(message)
         await deleteLimits([row.id])
     }, {
         onSuccess() {
@@ -125,21 +148,20 @@ export const useLimitProvider = () => {
         .catch(() => { })
 
     const changeEnabled = async (row: timer.limit.Item, newVal: boolean) => {
-        const enabled = !!newVal
         try {
-            (row.locked || !enabled) && await verifyCanModify(row)
-            row.enabled = enabled
+            // Only verify when disabling, ignore lock state
+            !newVal && await verifyCanModify(row)
+            row.enabled = newVal
             await updateLimits([toRaw(row)])
         } catch (e) {
-            console.warn(e)
+            console.info(e)
         }
     }
 
     const changeDelay = async (row: timer.limit.Item, newVal: boolean) => {
-        const allowDelay = !!newVal
         try {
-            (row.locked || allowDelay) && await verifyCanModify(row)
-            row.allowDelay = allowDelay
+            (row.locked || newVal) && await verifyCanModify(row)
+            row.allowDelay = newVal
             await updateLimits([toRaw(row)])
         } catch (e) {
             console.warn(e)
@@ -164,14 +186,16 @@ export const useLimitProvider = () => {
 
     const modifyInst = ref<ModifyInstance>()
     const testInst = ref<TestInstance>()
-    const modify = (row: timer.limit.Item) => modifyInst.value?.modify?.(toRaw(row))
+    const modify = (row: timer.limit.Item) => verifyCanModify(row)
+        .then(() => modifyInst.value?.modify?.(toRaw(row)))
+        .catch(() => {/** Do nothing */ })
     const create = () => modifyInst.value?.create?.()
     const test = () => testInst.value?.show?.()
     const empty = computed(() => !loading.value && !(list.value?.length))
 
     useProvide<Context>(NAMESPACE, {
         filter, list, empty, refresh, delayDuration,
-        deleteRow, modify, create, test, changeEnabled, changeDelay, changeLocked,
+        remove, modify, create, test, changeEnabled, changeDelay, changeLocked,
         batchDelete: () => selectedAndThen(handleBatchDelete),
         batchEnable: () => selectedAndThen(handleBatchEnable),
         batchDisable: () => selectedAndThen(handleBatchDisable),
@@ -182,14 +206,14 @@ export const useLimitProvider = () => {
 
 export const useLimitFilter = (): LimitFilterOption => useProvider<Context, 'filter'>(NAMESPACE, "filter").filter
 
-export const useLimitData = () => useProvider<Context, 'list' | 'refresh' | 'deleteRow' | 'changeEnabled' | 'changeDelay' | 'changeLocked'>(
-    NAMESPACE, 'list', 'refresh', 'deleteRow', 'changeEnabled', 'changeDelay', 'changeLocked'
+export const useLimitData = () => useProvider<Context, 'list' | 'refresh' | 'changeEnabled' | 'changeDelay' | 'changeLocked'>(
+    NAMESPACE, 'list', 'refresh', 'changeEnabled', 'changeDelay', 'changeLocked'
 )
 
 export const useLimitBatch = () => useProvider<Context, 'batchDelete' | 'batchEnable' | 'batchDisable'>(
-    NAMESPACE, 'batchDelete', 'batchDisable', 'batchEnable'
+    NAMESPACE, 'batchDelete', 'batchEnable', 'batchDisable'
 )
 
-export const useLimitAction = () => useProvider<Context, 'test' | 'modify' | 'create' | 'empty'>(NAMESPACE, 'modify', 'test', 'create', 'empty')
+export const useLimitAction = () => useProvider<Context, 'test' | 'remove' | 'modify' | 'create' | 'empty'>(NAMESPACE, 'remove', 'modify', 'test', 'create', 'empty')
 
 export const useDelayDuration = () => useProvider<Context, 'delayDuration'>(NAMESPACE, 'delayDuration').delayDuration
