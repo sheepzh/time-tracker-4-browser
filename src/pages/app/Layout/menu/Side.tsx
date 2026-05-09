@@ -15,7 +15,7 @@ import { colorVariant } from '@pages/util/style'
 import { ElCollapseTransition, ElIcon, ElMenu, ElMenuItem, ElMenuItemGroup, ElScrollbar, ElText, ElTooltip, useNamespace } from "element-plus"
 import { defineComponent, h, nextTick, onMounted, type Ref, ref, type StyleValue, watch } from "vue"
 import { type Router, useRouter } from "vue-router"
-import { menuGroups, type MenuItem } from "./item"
+import { indexOfItem, menuGroups, type MenuItem } from "./item"
 import { handleClick, initTitle } from "./route"
 import { colorMenu } from './style'
 
@@ -57,7 +57,7 @@ const useStyle = () => {
 
 const renderItem = (item: MenuItem, router: Router, curr: Ref<string | undefined>) => (
     <ElMenuItem
-        index={item.index ?? item.route ?? item.href}
+        index={indexOfItem(item)}
         onClick={() => handleClick(item, router, curr)}
         v-slots={{
             default: () => <ElIcon size={18}>{h(item.icon)}</ElIcon>,
@@ -102,9 +102,10 @@ const _default = defineComponent(() => {
                 >
                     {collapsed.value
                         ? menus.flatMap(g => g.children).map(item => renderItem(item, router, curr))
-                        // Not export type of ElMenuItemGroup, so use h() directly
-                        : menus.map(({ children, title }) => h(ElMenuItemGroup, { title: t(title) },
-                            () => children.map(item => renderItem(item, router, curr))
+                        : menus.map(({ children, title }) => (
+                            <ElMenuItemGroup title={t(title)}>
+                                {children.map(item => renderItem(item, router, curr))}
+                            </ElMenuItemGroup>
                         ))}
                 </ElMenu>
             </ElScrollbar>

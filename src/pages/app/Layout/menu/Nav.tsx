@@ -7,7 +7,7 @@
 
 import { getIconUrl } from "@api/chrome/runtime"
 import { t } from '@app/locale'
-import { CloseBold, Link, Menu } from "@element-plus/icons-vue"
+import { CloseBold, Menu } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
 import { useSwitch } from '@hooks'
 import Flex from '@pages/components/Flex'
@@ -15,7 +15,7 @@ import Img from '@pages/components/Img'
 import { ElBreadcrumb, ElBreadcrumbItem, ElIcon, ElMenu, ElMenuItem, useNamespace } from "element-plus"
 import { defineComponent, h, onBeforeMount, ref, watch } from "vue"
 import { useRouter } from "vue-router"
-import { type MenuItem, navMenus } from "./item"
+import { indexOfItem, type MenuItem, navMenus } from "./item"
 import { handleClick, initTitle } from "./route"
 import { colorMenu } from './style'
 
@@ -44,7 +44,7 @@ const useStyle = () => {
 }
 
 const findTitle = (routePath: string, menus: MenuItem[]): string => {
-    const title = menus.find(v => routePath === v.route)?.title
+    const title = menus.find(v => 'route' in v && routePath === v.route)?.title
     return title ? t(title) : ''
 }
 
@@ -89,13 +89,9 @@ const _default = defineComponent<{}>(() => {
             <div class={menuWrapperCls} v-show={showMenu.value}>
                 <ElMenu>
                     {menus.map(item => (
-                        <ElMenuItem
-                            index={item.index ?? item.route ?? item.href}
-                            onClick={() => handleItemClick(item)}
-                        >
+                        <ElMenuItem index={indexOfItem(item)} onClick={() => handleItemClick(item)}>
                             <ElIcon>{h(item.icon)}</ElIcon>
                             <span>{t(item.title)}</span>
-                            {!!item.href && <ElIcon size={12}><Link /></ElIcon>}
                         </ElMenuItem>
                     ))}
                 </ElMenu>

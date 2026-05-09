@@ -18,12 +18,9 @@ import Table from "../icons/Table"
 import Website from "../icons/Website"
 import Whitelist from "../icons/Whitelist"
 
-export type MenuItem = {
+type MenuBase = {
     title: I18nKey
     icon: Component | string
-    route?: string
-    href?: string
-    index?: string
     /**
      * Whether to support mobile
      *
@@ -32,9 +29,17 @@ export type MenuItem = {
     mobile?: boolean
 }
 
-type MenuGroup = Omit<MenuItem, 'href' | 'route'> & {
+export type MenuItem = MenuBase & (
+    | { route: string }
+    | { href: string }
+)
+
+type MenuGroup = MenuBase & {
+    index: string
     children: MenuItem[]
 }
+
+export const indexOfItem = (item: MenuItem) => 'route' in item ? item.route : item.href
 
 /**
  * Menu items
@@ -105,7 +110,6 @@ export const menuGroups = (): MenuGroup[] => [{
         title: msg => msg.base.guidePage,
         href: getGuidePageUrl(),
         icon: Memo,
-        index: '_guide',
         mobile: false,
     }, {
         title: msg => msg.base.helpUs,
