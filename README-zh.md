@@ -4,6 +4,12 @@
 [![](https://img.shields.io/badge/license-Anti%20996-blue)](https://github.com/996icu/996.ICU)
 [![](https://img.shields.io/github/v/release/sheepzh/time-tracker-4-browser)](https://github.com/sheepzh/time-tracker-4-browser/releases)
 
+<p>
+  <a href="https://chromewebstore.google.com/detail/dkdhhcbjijekmneelocdllcldcpmekmm/reviews"><img src="https://developer.chrome.com/static/docs/webstore/branding/image/206x58-chrome-web-bcb82d15b2486.png" alt="Chrome Web Store" height="48"></a>
+  <a href="https://microsoftedge.microsoft.com/addons/detail/timer-running-browsin/fepjgblalcnepokjblgbgmapmlkgfahc"><img src="https://developer.microsoft.com/store/badges/images/English_get-it-from-MS.png" alt="Microsoft Store" height="48"></a>
+  <a href="https://addons.mozilla.org/zh-CN/firefox/addon/web%E6%99%82%E9%96%93%E7%B5%B1%E8%A8%88/reviews/"><img src="https://blog.mozilla.org/addons/files/2020/04/get-the-addon-fx-apr-2020.svg" alt="Firefox 附加组件" height="48"></a>
+</p>
+
 \[ 简体中文 | [English](./README.md) \]
 
 网费很贵是一款用于上网时间统计的浏览器插件，使用 rspack，TypeScript 和 Element-plus 进行开发。你可以在 Firefox，Chrome 和 Edge 中安装并使用它。

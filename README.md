@@ -4,6 +4,12 @@
 [![](https://img.shields.io/badge/license-Anti%20996-blue)](https://github.com/996icu/996.ICU)
 [![Crowdin](https://badges.crowdin.net/timer-chrome-edge-firefox/localized.svg)](https://crowdin.com/project/timer-chrome-edge-firefox)
 
+<p>
+  <a href="https://chromewebstore.google.com/detail/dkdhhcbjijekmneelocdllcldcpmekmm/reviews"><img src="https://developer.chrome.com/static/docs/webstore/branding/image/206x58-chrome-web-bcb82d15b2486.png" alt="Available in the Chrome Web Store" height="48"></a>
+  <a href="https://microsoftedge.microsoft.com/addons/detail/time-tracker-web-habit-/fepjgblalcnepokjblgbgmapmlkgfahc"><img src="https://developer.microsoft.com/store/badges/images/English_get-it-from-MS.png" alt="Get it from Microsoft" height="48"></a>
+  <a href="https://addons.mozilla.org/firefox/addon/besttimetracker/reviews/"><img src="https://blog.mozilla.org/addons/files/2020/04/get-the-addon-fx-apr-2020.svg" alt="Get the add-on" height="48"></a>
+</p>
+
 \[ English | [简体中文](./README-zh.md) \]
 
 Time Tracker is a browser extension to track the time you spent on all websites. It's built by rspack, TypeScript and Element-plus. And you can install it for Firefox, Chrome and Edge.
