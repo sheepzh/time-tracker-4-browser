@@ -4,7 +4,7 @@ All notable changes to Time Tracker will be documented in this file.
 
 It is worth mentioning that the release time of each change refers to the time when the installation package is submitted to the webstore. It is about one week for Firefox to moderate packages, while only 1-2 days for Chrome and Edge.
 
-## [4.2.4] - 2026-05-10
+## [4.3.0] - 2026-05-11
 
 -  Added two-factor authentication (2FA) for time limit verification
 -  Optimized the behavior of time limit verification
