@@ -270,18 +270,18 @@
             "focusAverage": "Tagesdurchschnitt {value}"
         },
         "period": {
-            "title": "Gewohnheiten jeden Augenblick",
-            "busiest": "Die geschäftigste Zeit des Tages",
-            "idle": "Längste Leerlaufzeit",
+            "title": "Nutzung nach Tageszeit",
+            "busiest": "Aktivste Tageszeit",
+            "idle": "Längste Ruhezeit",
             "chartType": {
-                "average": "Täglicher Durchschnitt",
+                "average": "Tagesdurchschnitt",
                 "trend": "Trend",
                 "stack": "Stapel"
             },
             "sizes": {
                 "fifteen": "Pro 15 Minuten",
                 "halfHour": "Pro halbe Stunde",
-                "hour": "Pro eine Stunde",
+                "hour": "Pro Stunde",
                 "twoHour": "Pro zwei Stunden"
             }
         },

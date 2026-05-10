@@ -46,7 +46,8 @@
         "batchEnable": "批量启用",
         "batchDisable": "批量禁用",
         "collapse": "折叠",
-        "expand": "展开"
+        "expand": "展开",
+        "copy": "复制"
     },
     "zh_TW": {
         "create": "新增",

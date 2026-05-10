@@ -66,7 +66,12 @@
                 "strictTitle": "危险操作",
                 "strictContent": "当您选择这个选项之后，如果某个站点触发了每日限制，除了等到第二天自动解锁以外，不允许您手动解锁。如果规则设置不当，很有可能会阻碍您的日常工作！",
                 "pswFormLabel": "解锁密码",
-                "pswFormAgain": "再次输入"
+                "pswFormAgain": "再次输入",
+                "2fa": "必须使用 2FA 解锁",
+                "twoFaTitle": "启用 2FA 验证",
+                "twoFaScanHint": "使用身份验证器应用扫描二维码或将设置链接导入支持TOTP的密码管理器。",
+                "twoFaCopyLink": "复制链接",
+                "twoFaVerifyLabel": "请输入您的身份程序里的 6 位编码以验证正确导入"
             },
             "delayDuration": "每次延迟 {input} 分钟"
         },
@@ -950,8 +955,8 @@
             "contextMenu": "Kontextmenü",
             "displayBadgeText": "{input} {timeInfo} in {icon} anzeigen",
             "badgeBgColor": "Die Hintergrundfarbe des Textes auf dem Symbol {input}",
-            "icon": "das Symbol der Erweiterung",
-            "badgeTextContent": "die Besuchszeit der aktuellen Webseite",
+            "icon": "Icon der Erweiterung",
+            "badgeTextContent": "Besuchszeit der aktuellen Webseite",
             "locale": {
                 "label": "Sprache {input}",
                 "changeConfirm": "Die Sprache wurde erfolgreich geändert. Bitte lade diese Seite neu!",

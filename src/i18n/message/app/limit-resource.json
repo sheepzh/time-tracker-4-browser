@@ -42,6 +42,8 @@
             "strictTip": "时限规则已触发，不允许手动解锁！",
             "incorrectPsw": "密码错误",
             "incorrectAnswer": "回答错误",
+            "twoFaInputTip": "规则已被触发或锁定。请从您的身份验证程序中输入6位数字代码以继续。",
+            "incorrect2fa": "2FA 验证码错误",
             "pi": "圆周率 π 的小数部分第 {startIndex} 位到第 {endIndex} 位的共 {digitCount} 位数字",
             "confession": "一寸光阴一寸金，寸金难买寸光阴"
         },
