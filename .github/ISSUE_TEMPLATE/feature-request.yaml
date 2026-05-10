@@ -19,6 +19,7 @@ body:
               - Chrome
               - Firefox
               - Edge
+              - Brave
               - Other
           default: 0
     - type: dropdown
