@@ -159,8 +159,8 @@
             "saveAsImageTitle": "Bildschirmfoto",
             "averageCount": "{value} mal pro Tag",
             "averageTime": "{value} pro Tag im Durchschnitt",
-            "totalTime": "Gesamt {totalTime}",
-            "totalCount": "Gesamt {totalCount} mal",
+            "totalTime": "Insgesamt {totalTime}",
+            "totalCount": "Insgesamt {totalCount} mal",
             "otherLabel": "{count} andere Websites"
         },
         "ranking": {

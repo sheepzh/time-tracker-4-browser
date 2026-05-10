@@ -69,19 +69,19 @@
     },
     "de": {
         "label": {
-            "name": "Namen",
+            "name": "Titel",
             "version": "Aktuelle Version",
             "website": "Offizielle Website",
             "installation": "Installation",
-            "thanks": "Dank",
+            "thanks": "Credits",
             "privacy": "Datenschutz",
             "license": "Lizenz",
-            "support": "Kundendienst"
+            "support": "Support"
         },
         "text": {
-            "greet": "Gefällt Ihnen die Erweiterung?",
-            "rate": "Mit 5 Sternen bewerten!",
-            "feedback": "Feedback willkommen!"
+            "greet": "Gefällt dir diese Erweiterung?",
+            "rate": "Bewerte uns mit 5 Sternen!",
+            "feedback": "Sag uns deine Meinung!"
         }
     },
     "ja": {
