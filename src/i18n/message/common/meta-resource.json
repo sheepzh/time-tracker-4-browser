@@ -1,12 +1,12 @@
 {
     "zh_CN": {
         "name": "网费很贵",
-        "marketName": "网费很贵 - 上网时间统计",
+        "marketName": "网费很贵 - 屏幕习惯分析 & 成瘾网站拦截",
         "description": "追踪网页时间，分析浏览习惯，防止网站沉迷，提高工作效率"
     },
     "zh_TW": {
         "name": "網費很貴",
-        "marketName": "網費很貴 - 上網時間統計",
+        "marketName": "網費很貴 - 螢幕習慣分析 & 成癮網站攔截",
         "description": "追蹤上網時間，分析瀏覽習慣，避免沉迷網站，提升工作效率"
     },
     "ja": {
@@ -32,7 +32,7 @@
     "es": {
         "name": "Rastreador de tiempo web",
         "marketName": "Rastreador de tiempo web - Creador de hábitos web",
-        "description": "Realice un seguimiento, analice sus hábitos y bloquee sitios adictivos"
+        "description": "Realice un seguimiento del tiempo, analice sus hábitos y bloquee sitios adictivos"
     },
     "de": {
         "name": "Zeiterfassung",
