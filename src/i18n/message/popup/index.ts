@@ -7,10 +7,10 @@
 
 import baseMessages, { type BaseMessage } from "../common/base"
 import calendarMessages, { type CalendarMessage } from "../common/calendar"
+import metaMessages, { type MetaMessage } from "../common/meta"
 import sharedMessages, { type SharedMessage } from "../common/shared"
 import itemMessages, { type ItemMessage } from "../item"
 import { merge, type MessageRoot } from "../merge"
-import metaMessages, { type MetaMessage } from "../meta"
 import contentMessages, { type ContentMessage } from "./content"
 import footerMessages, { type FooterMessage } from "./footer"
 import headerMessages, { type HeaderMessage } from "./header"
