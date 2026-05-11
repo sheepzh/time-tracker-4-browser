@@ -36,6 +36,9 @@ export type DataManageMessage = {
     } & {
         [resolution in timer.imported.ConflictResolution]: string
     }
+    exportData: string
+    restoreData: string
+    restoreFromOther: string
 }
 
 const _default: Messages<DataManageMessage> = resource

@@ -52,22 +52,18 @@ const _default = defineComponent(() => {
     })
 
     return () => (
-        <ElCard
-            style={{ width: '100%' } satisfies StyleValue}
-            bodyStyle={{ height: '100%', boxSizing: 'border-box' }}
-        >
-            <Flex column height='100%' align="center">
+        <ElCard style={{ width: '100%' } satisfies StyleValue}>
+            <Flex column width='100%' align="center" gap={16}>
                 <DataManageAlert
                     type={totalMb.value ? "info" : "warning"}
                     text={totalTitle(totalMb.value)}
                 />
-                <Flex flex={1} height={0}>
+                <Flex justify='center' align='center'>
                     <ElProgress
                         strokeWidth={10}
                         percentage={percentage.value}
                         type="circle"
                         color={color.value}
-                        style={{ display: 'flex', marginTop: '30px' } satisfies StyleValue}
                     />
                 </Flex>
                 <Flex justify='center' column gap={10}>
