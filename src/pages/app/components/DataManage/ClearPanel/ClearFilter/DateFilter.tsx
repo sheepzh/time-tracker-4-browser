@@ -10,14 +10,14 @@ import { getDatePickerIconSlots } from '@pages/element-ui/rtl'
 import type { ElDatePickerShortcut } from '@pages/element-ui/types'
 import { formatTime, getBirthday, MILL_PER_DAY } from "@util/time"
 import { ElDatePicker } from "element-plus"
-import { computed, defineComponent, type StyleValue } from "vue"
+import { defineComponent, type StyleValue } from "vue"
 
 type Props = ModelValue<[Date, Date] | undefined>
 const _default = defineComponent<Props>(props => {
     const birthday = getBirthday()
     const yesterday = Date.now() - MILL_PER_DAY
-    const daysBefore = (days: number) => new Date(yesterday - (days - 1) * MILL_PER_DAY)
-    const dateFormat = computed(() => t(msg => msg.calendar.dateFormat))
+    const daysBefore = (days: number) => new Date(Date.now() - days * MILL_PER_DAY)
+    const dateFormat = t(msg => msg.calendar.dateFormat)
     const shortcuts: ElDatePickerShortcut[] = [{
         text: t(msg => msg.calendar.range.tillYesterday),
         value: [birthday, daysBefore(1)],
@@ -38,8 +38,8 @@ const _default = defineComponent<Props>(props => {
                     onUpdate:modelValue={props.onChange}
                     size="small"
                     style={{ width: "250px" } satisfies StyleValue}
-                    startPlaceholder={formatTime(birthday, dateFormat.value)}
-                    endPlaceholder={formatTime(yesterday, dateFormat.value)}
+                    startPlaceholder={formatTime(birthday, dateFormat)}
+                    endPlaceholder={formatTime(yesterday, dateFormat)}
                     dateFormat={elDateFormat()}
                     type="daterange"
                     disabledDate={(date: Date) => date.getTime() > yesterday}
