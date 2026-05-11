@@ -37,12 +37,17 @@ const Migration = defineComponent(() => {
     })
 
     const { refresh: onFileSelected } = useManualRequest(async () => {
-        const file = fileInput.value?.files?.[0]
-        if (!file) throw new Error('No file selected')
-        const fileText = await file.text()
-        const data = deserialize(fileText)
-        if (!data) throw new Error(t(msg => msg.dataManage.importError))
-        await sendMsg2Runtime('immigration.import', data)
+        const input = fileInput.value
+        try {
+            const file = input?.files?.[0]
+            if (!file) throw new Error('No file selected')
+            const fileText = await file.text()
+            const data = deserialize(fileText)
+            if (!data) throw new Error(t(msg => msg.dataManage.importError))
+            await sendMsg2Runtime('immigration.import', data)
+        } finally {
+            if (input) input.value = ''
+        }
     }, {
         loadingOptions: { fullscreen: true },
         onSuccess: () => {
