@@ -83,7 +83,7 @@ export function useRequest<P extends any[], T>(
     const refresh = (...p: P) => { refreshAsync(...p) }
     if (!manual) {
         // If loading target specified, do first query after mounted
-        const hook = createLoading ? onMounted : onBeforeMount
+        const hook = option?.loadingTarget ? onMounted : onBeforeMount
         hook(() => refresh(...defaultParam))
     }
     if (deps && (!Array.isArray(deps) || deps?.length)) {
