@@ -153,7 +153,7 @@ const _default = defineComponent((_props, ctx) => {
             />
             <OptionItem
                 label={msg => msg.option.tracking.countTabGroup}
-                defaultValue={t(msg => msg.option.no)}
+                defaultValue={DEFAULT_TRACKING.countTabGroup}
                 v-slots={{
                     info: () => <OptionTooltip>{t(msg => msg.option.tracking.tabGroupInfo)}</OptionTooltip>,
                     default: () => <ElSwitch modelValue={option.countTabGroup} onChange={val => handleTabGroupChange(!!val)} />

@@ -1,6 +1,6 @@
-import { MediaSize, useMediaSize } from '@hooks'
 import { t, tN, type I18nKey } from '@app/locale'
 import { css } from '@emotion/css'
+import { MediaSize, useMediaSize } from '@hooks'
 import Flex from "@pages/components/Flex"
 import { colorVariant } from '@pages/util/style'
 import { ElTag, useNamespace } from "element-plus"
@@ -19,7 +19,7 @@ const computedDefValText = (defVal: Props['defaultValue']): string | number | un
         case 'undefined': return undefined
         case 'string':
         case 'number': return defVal
-        case 'boolean': return t(defVal ? msg => msg.option.yes : msg => msg.option.no)
+        case 'boolean': return t(msg => msg.option[defVal ? 'yes' : 'no'])
         default: return t(defVal)
     }
 }

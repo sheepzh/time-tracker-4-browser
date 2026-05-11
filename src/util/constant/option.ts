@@ -26,7 +26,7 @@ export const DEFAULT_TRACKING: timer.option.TrackingRequired = {
     // 10 minutes
     autoPauseInterval: 600,
     countLocalFiles: false,
-    countTabGroup: false,
+    countTabGroup: true,
     weekStart: 'default',
     storage: 'classic',
 } as const

@@ -115,7 +115,7 @@ const _default = defineComponent((_props, ctx) => {
             {!IS_ANDROID && <>
                 <OptionItem
                     label={msg => msg.option.appearance.displayWhitelist}
-                    defaultValue={t(msg => msg.option.yes)}
+                    defaultValue={DEFAULT_APPEARANCE.displayWhitelistMenu}
                     v-slots={{
                         whitelist: () => <OptionTag>{t(msg => msg.option.appearance.whitelistItem)}</OptionTag>,
                         contextMenu: () => <OptionTag>{t(msg => msg.option.appearance.contextMenu)}</OptionTag>,
@@ -128,7 +128,7 @@ const _default = defineComponent((_props, ctx) => {
                 </OptionItem>
                 <OptionItem
                     label={msg => msg.option.appearance.displayBadgeText}
-                    defaultValue={t(msg => msg.option.yes)}
+                    defaultValue={DEFAULT_APPEARANCE.displayBadgeText}
                     v-slots={{
                         timeInfo: () => <OptionTag>{t(msg => msg.option.appearance.badgeTextContent)}</OptionTag>,
                         icon: () => <OptionTag>{t(msg => msg.option.appearance.icon)}</OptionTag>,
@@ -151,7 +151,7 @@ const _default = defineComponent((_props, ctx) => {
                 </OptionItem>
                 <OptionItem
                     label={msg => msg.option.appearance.printInConsole.label}
-                    defaultValue={t(msg => msg.option.yes)}
+                    defaultValue={DEFAULT_APPEARANCE.printInConsole}
                     v-slots={{
                         console: () => <OptionTag>{t(msg => msg.option.appearance.printInConsole.console)}</OptionTag>,
                         info: () => <OptionTag>{t(msg => msg.option.appearance.printInConsole.info)}</OptionTag>,
