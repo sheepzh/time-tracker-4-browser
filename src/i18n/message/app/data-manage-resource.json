@@ -87,7 +87,10 @@
         "paramError": "The parameter is wrong, please check!",
         "deleteConfirm": "A total of {count} records have been filtered out. Do you want to delete them all?",
         "migrationAlert": "Migrate data between browsers using import and export",
-        "importError": "Wrong file extension"
+        "importError": "Wrong file extension",
+        "exportData": "Export data",
+        "restoreData": "Restore data",
+        "restoreFromOther": "Restore from {ext}"
     },
     "ja": {
         "totalMemoryAlert": "ブラウザは、データを保存するために各拡張機能に {size}MB のメモリを提供します",

@@ -24,12 +24,12 @@ export default defineComponent(() => {
         <ElScrollbar height="100%" style={{ width: '100%' } satisfies StyleValue}>
             <ContentContainer>
                 <Flex column gap={22}>
-                    <Flex gap={22} height={ltSm.value ? undefined : 300} column={ltSm.value}>
-                        <Flex height='100%' flex={5}>
-                            <MemoryInfo />
-                        </Flex>
-                        <Flex height='100%' flex={5}>
+                    <Flex gap={22} align='start' column={ltSm.value}>
+                        <Flex flex={5} width='100%' style={{ minWidth: 0 }}>
                             <Migration />
+                        </Flex>
+                        <Flex flex={5} width='100%' style={{ minWidth: 0 }}>
+                            <MemoryInfo />
                         </Flex>
                     </Flex>
                     <ClearPanel />
