@@ -1,15 +1,20 @@
+import { getIconUrl, getRuntimeName } from "@api/chrome/runtime"
 import { createTab } from "@api/chrome/tab"
+import { generateQrCanvas } from "@pages/util/qrcode"
 import { getCssVariable, getInfoColor, getPrimaryTextColor, getSecondaryTextColor } from "@pages/util/style"
 import { calJumpUrl } from "@popup/common"
 import { t } from '@popup/locale'
 import { sum, toMap } from "@util/array"
 import { IS_SAFARI } from "@util/constant/environment"
+import { INSTALL_PAGE } from "@util/constant/url"
 import { isRtl } from "@util/document"
 import { generateSiteLabel } from "@util/site"
 import { getGroupName, isGroup, isSite } from "@util/stat"
 import { formatPeriodCommon, formatTime, parseTime } from "@util/time"
 import type { PieSeriesOption, TitleComponentOption, ToolboxComponentOption } from "echarts"
+import type { ECharts } from "echarts/core"
 import type { CallbackDataParams, TopLevelFormatterParams } from "echarts/types/dist/shared"
+import { ElMessage } from "element-plus"
 import { type PercentageResult } from "./query"
 
 function combineDate(start: Date, end: Date, format: string): string {
@@ -22,10 +27,7 @@ function combineDate(start: Date, end: Date, format: string): string {
 
     const sy = start.getFullYear()
     const ey = end.getFullYear()
-    if (sy !== ey) {
-        // Different years
-        return normalStr
-    }
+    if (sy !== ey) return normalStr
 
     // The same years
     const execRes = /({d}|{m})[^{}]*({d}|{m})/.exec(format)
@@ -46,13 +48,13 @@ function formatDateStr(date: Date | [Date, Date?] | undefined, dataDate: [string
     const format = t(msg => msg.calendar.dateFormat)
 
     if (!date) {
-        date = dataDate?.map(parseTime) as [Date, Date]
+        const start = parseTime(dataDate[0])
+        const end = parseTime(dataDate[1])
+        date = start ? [start, end] : undefined
     }
     if (!date) return ''
-    if (!Array.isArray(date)) {
-        // Single day
-        return formatTime(date, format)
-    }
+    // Single day
+    if (!Array.isArray(date)) return formatTime(date, format)
 
     const [start, end] = date
     return end ? combineDate(start, end, format) : formatTime(start, format)
@@ -84,7 +86,7 @@ function calculateSubTitleText(result: PercentageResult): string {
     // Don't show averages for single-day durations (today/yesterday)
     const isSingleDay = duration === 'today' || duration === 'yesterday'
 
-    if (dateLength && dateLength > 0 && !isSingleDay) {  // Changed: removed dimension check
+    if (dateLength && dateLength > 0 && !isSingleDay) {
         if (dimension === 'focus') {
             // Average time per day
             const total = sum(rows.map(r => r?.focus ?? 0))
@@ -114,22 +116,151 @@ export function generateTitleOption(result: PercentageResult, suffix?: string): 
     }
 }
 
-export function generateToolboxOption(): ToolboxComponentOption {
+function snapshotChart(chart: ECharts, backgroundColor: string, connectedBackgroundColor: string): string {
+    const pixelRatio = 7
+    const isSvg = chart.getZr().painter.getType() === 'svg'
+    return chart.getConnectedDataURL({
+        type: isSvg ? 'svg' : 'png',
+        pixelRatio,
+        backgroundColor,
+        connectedBackgroundColor,
+        excludeComponents: ['toolbox'],
+    })
+}
+
+async function getIconDataUrl(): Promise<string> {
+    const res = await fetch(getIconUrl())
+    if (!res.ok) throw new Error(`Failed to fetch extension icon: ${res.status}`)
+    const blob = await res.blob()
+    const type = blob.type || 'image/png'
+    const bytes = new Uint8Array(await blob.arrayBuffer())
+    let binary = ''
+    for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]!)
+    return `data:${type};base64,${btoa(binary)}`
+}
+
+async function saveWithWatermark(instance: ECharts) {
+    const bgColor = getCssVariable('--el-card-bg-color', '.el-card')?.trim() ?? '#fff'
+    const footerBgColor = getCssVariable('--el-fill-color-light')?.trim() ?? bgColor
+    const textColor = getPrimaryTextColor()?.trim() ?? '#000'
+    const subTextColor = getSecondaryTextColor()?.trim() ?? '#888'
+
+    const chartDataUrl = snapshotChart(instance, bgColor, footerBgColor)
+
+    const chartImg = await new Promise<HTMLImageElement>((resolve, reject) => {
+        const img = new Image()
+        img.onload = () => resolve(img)
+        img.onerror = reject
+        img.src = chartDataUrl
+    })
+
+    const w = chartImg.width
+    const footerHeight = Math.round(w * 0.14)
+    const padding = Math.round(footerHeight * 0.15)
+    const qrSize = footerHeight - padding * 2
+    const nameFontSize = Math.round(footerHeight * 0.28)
+    const subFontSize = Math.round(footerHeight * 0.18)
+
+    const canvas = document.createElement('canvas')
+    canvas.width = w
+    canvas.height = chartImg.height + footerHeight
+    const ctx = canvas.getContext('2d')
+    if (!ctx) throw new Error('2D canvas context unavailable')
+
+    ctx.fillStyle = bgColor
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    ctx.drawImage(chartImg, 0, 0)
+
+    ctx.fillStyle = footerBgColor
+    ctx.fillRect(0, chartImg.height, w, footerHeight)
+
+    const footerTop = chartImg.height
+
+    const qrCanvas = generateQrCanvas({ text: INSTALL_PAGE, size: qrSize })
+    const qrX = w - padding - qrCanvas.width
+    const qrY = footerTop + Math.round((footerHeight - qrCanvas.height) / 2)
+    ctx.drawImage(qrCanvas, qrX, qrY)
+
+    const iconSize = Math.round(footerHeight * 0.5)
+    const iconY = footerTop + Math.round((footerHeight - iconSize) / 2)
+    const iconSrc = await getIconDataUrl()
+    const iconImg = await new Promise<HTMLImageElement>((resolve, reject) => {
+        const img = new Image()
+        img.onload = () => resolve(img)
+        img.onerror = reject
+        img.src = iconSrc
+    })
+    ctx.drawImage(iconImg, padding, iconY, iconSize, iconSize)
+
+    const textX = padding + iconSize + Math.round(footerHeight * 0.1)
+    ctx.textBaseline = 'middle'
+    ctx.fillStyle = textColor
+    ctx.font = `bold ${nameFontSize}px sans-serif`
+    ctx.fillText(getRuntimeName(), textX, footerTop + Math.round(footerHeight * 0.35))
+
+    ctx.font = `${subFontSize}px sans-serif`
+    ctx.fillStyle = subTextColor
+    const tipText = t(msg => msg.content.percentage.installTip)
+    ctx.fillText(tipText, textX, footerTop + Math.round(footerHeight * 0.68))
+
+    const link = document.createElement('a')
+    link.hidden = true
+    link.download = 'Time_Tracker_Percentage.png'
+    link.href = canvas.toDataURL('image/png')
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+}
+
+const MY_SAVE_ICON = `
+    path://M812.333229 702.996063c-46.845072 0-89.466408 18.430848-119.288544 51.132804
+    L319.564027 536.79845a103.801512 103.801512 0 0 0 0-51.132804l373.480658-215.858509
+    c29.822136 32.63796 72.443472 52.540716 119.288544 52.540716 90.87432-1.407912
+    159.094057-69.563652 160.501969-160.437972C971.491282 71.03556 903.271546 1.407912
+    812.333229 0c-90.87432 1.407912-160.437973 71.03556-161.90988 161.909881 0 9.91938
+    1.471908 19.83876 2.87982 29.822136L282.638335 404.774702A160.629961 160.629961 0 0 0
+    161.941879 350.698081C71.067558 352.169989 1.43991 420.453722 0.031998 511.328042
+    c1.407912 90.87432 71.03556 159.030061 161.909881 160.501969 46.845072 0 90.87432
+    -21.310668 120.696456-54.012625l370.664834 214.450597c-1.407912 9.983376-2.815824
+    19.83876-2.815824 31.230048 1.407912 90.87432 71.03556 159.094057 161.90988 160.501969
+    90.87432-1.407912 159.030061-69.563652 160.437973-160.501969-1.407912-90.87432
+    -69.563652-159.030061-160.501969-160.437972z
+`.replace(/\s+/g, ' ').trim()
+
+export function generateToolbox(getInstance: () => ECharts | undefined): ToolboxComponentOption {
+    const toolboxIconColor = getPrimaryTextColor()?.trim() ?? '#5c6b7a'
+
     return {
         show: true,
         top: 5,
         right: 5,
-        feature: {
-            saveAsImage: {
-                show: true,
-                title: t(msg => msg.content.percentage.saveAsImageTitle),
-                // file name
-                name: 'Time_Tracker_Percentage',
-                excludeComponents: ['toolbox'],
-                pixelRatio: 7,
-                backgroundColor: getCssVariable('--el-card-bg-color', '.el-card'),
+        iconStyle: {
+            color: toolboxIconColor,
+            borderColor: toolboxIconColor,
+            borderWidth: 0,
+        },
+        emphasis: {
+            iconStyle: {
+                color: toolboxIconColor,
+                borderColor: toolboxIconColor,
+                borderWidth: 0,
             },
-        }
+        },
+        feature: {
+            mySave: {
+                show: true,
+                title: t(msg => msg.content.percentage.shareTitle),
+                icon: MY_SAVE_ICON,
+                onclick: () => {
+                    const inst = getInstance()
+                    if (!inst) return
+                    inst && void saveWithWatermark(inst).catch(err => {
+                        console.info(err)
+                        ElMessage.error('Could not save the image.')
+                    })
+                },
+            },
+        },
     }
 }
 
@@ -184,17 +315,9 @@ const legend2LabelStyle = (legend: string): string => {
     return code.join('')
 }
 
-type CallbackFormat = {
-    name: string
-    value: number
-    data: PieSeriesItemOption
-    percent: number
-}
-
 function formatLabel(params: CallbackDataParams, groupMap: Record<number, chrome.tabGroups.TabGroup>): string {
-    const format = (Array.isArray(params) ? params[0] : params) as CallbackFormat
-    const { name, data } = format || {}
-    const { row } = (data as PieSeriesItemOption) || {}
+    const { name, data } = params
+    const { row } = data as PieSeriesItemOption ?? {}
 
     if (!row) return 'NaN'
     if (isOther(row)) {
@@ -218,7 +341,11 @@ type CustomOption = Pick<
     'center' | 'radius' | 'selectedMode' | 'minShowLabelAngle'
 >
 
-export function generateSiteSeriesOption(rows: timer.stat.Row[], result: PercentageResult, customOption: CustomOption): PieSeriesOption {
+export function generateSiteSeriesOption(
+    rows: timer.stat.Row[],
+    result: PercentageResult,
+    customOption: CustomOption,
+): PieSeriesOption {
     const { displaySiteName, query: { dimension }, itemCount, groups, donutChart } = result
     const groupMap = toMap(groups, g => g.id)
 
@@ -229,12 +356,14 @@ export function generateSiteSeriesOption(rows: timer.stat.Row[], result: Percent
         if (isOther(row)) {
             item.itemStyle = { color: getInfoColor() }
             item.name = t(msg => msg.content.percentage.otherLabel, { count: row.count })
-        } else if (isSite(row)) {
-            const { siteKey, alias, iconUrl } = row
-            const { host } = siteKey || {}
+        } else if (!isOther(row) && isSite(row as timer.stat.StatKey)) {
+            const { siteKey, alias, iconUrl } = row as timer.stat.SiteRow
+            const { host, type } = siteKey ?? {}
             const name = item.name = (displaySiteName ? (alias ?? host) : host) ?? ''
             const richValue: PieLabelRichValueOption = { ...BASE_LABEL_RICH_VALUE }
-            iconUrl && (richValue.backgroundColor = { image: iconUrl })
+            if (type === 'normal' && iconUrl && !IS_SAFARI) {
+                richValue.backgroundColor = { image: iconUrl }
+            }
             iconRich[legend2LabelStyle(name)] = richValue
         } else if (isGroup(row)) {
             item.name = getGroupName(groupMap, row)
@@ -299,7 +428,6 @@ function calcRealRadius(
     if (!radius) return radius
     if (Array.isArray(radius)) return radius
     if (typeof radius === 'number') return [radius * donutRadiusRatio, radius]
-    // String
     try {
         const percent = parseFloat(radius.replace('%', ''))
         const inner = percent * donutRadiusRatio
@@ -326,7 +454,7 @@ export function formatTooltip({ query, dateLength }: PercentageResult, params: T
     const { name, value, percent, data } = format ?? {}
     const { row } = data as PieSeriesItemOption
     const { dimension, duration } = query
-    const itemValue = typeof value === 'number' ? value as number : 0
+    const itemValue = typeof value === 'number' ? value : 0
     let valueLine = dimension === 'time' ? itemValue : formatPeriodCommon(itemValue)
     // Display percent only when query focus time
     dimension === 'focus' && (valueLine += ` (${percent}%)`)
@@ -340,7 +468,7 @@ export function formatTooltip({ query, dateLength }: PercentageResult, params: T
         // Don't show averages for single-day durations (today/yesterday)
         const isSingleDay = duration === 'today' || duration === 'yesterday'
 
-        if (dateLength && dateLength > 1 && !isSingleDay) {  // Changed: simplified condition
+        if (dateLength && dateLength > 1 && !isSingleDay) {
             averageLine = calculateAverageText(dimension, itemValue / dateLength)
         }
     }

@@ -12,6 +12,7 @@ import { BROWSER_MAJOR_VERSION, BROWSER_NAME } from "./environment"
 export const FIREFOX_HOMEPAGE = 'https://addons.mozilla.org/firefox/addon/besttimetracker'
 export const CHROME_HOMEPAGE = 'https://chromewebstore.google.com/detail/time-tracker/dkdhhcbjijekmneelocdllcldcpmekmm'
 export const EDGE_HOMEPAGE = 'https://microsoftedge.microsoft.com/addons/detail/timer-the-web-time-is-e/fepjgblalcnepokjblgbgmapmlkgfahc'
+export const INSTALL_PAGE = 'https://www.wfhg.cc/en/install'
 
 /**
  * @since 0.4.0

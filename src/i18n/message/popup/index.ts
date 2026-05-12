@@ -14,11 +14,10 @@ import { merge, type MessageRoot } from "../merge"
 import contentMessages, { type ContentMessage } from "./content"
 import footerMessages, { type FooterMessage } from "./footer"
 import headerMessages, { type HeaderMessage } from "./header"
-import limitMessages, { type LimitMessage } from './limit'
+
 
 export type PopupMessage = {
     content: ContentMessage
-    limit: LimitMessage
     item: ItemMessage
     meta: MetaMessage
     base: BaseMessage
@@ -30,7 +29,6 @@ export type PopupMessage = {
 
 const MESSAGE_ROOT: MessageRoot<PopupMessage> = {
     content: contentMessages,
-    limit: limitMessages,
     item: itemMessages,
     meta: metaMessages,
     base: baseMessages,

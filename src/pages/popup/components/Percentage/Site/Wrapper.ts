@@ -7,7 +7,7 @@ import type {
 import type { ECElementEvent } from "echarts/core"
 import type { TopLevelFormatterParams } from "echarts/types/dist/shared"
 import {
-    formatTooltip, generateSiteSeriesOption, generateTitleOption, generateToolboxOption, handleClick,
+    formatTooltip, generateSiteSeriesOption, generateTitleOption, generateToolbox, handleClick,
     type PieSeriesItemOption,
 } from "../chart"
 import { type PercentageResult } from "../query"
@@ -89,7 +89,7 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
                 inactiveColor,
             },
             series,
-            toolbox: generateToolboxOption(),
+            toolbox: generateToolbox(() => this.instance),
         }
         return options
     }

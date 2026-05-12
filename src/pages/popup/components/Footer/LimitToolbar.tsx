@@ -56,7 +56,7 @@ const LimitToolbar = defineComponent(() => {
             )}
             {!loading.value && !items.value.length && (
                 <ElButton type='primary' icon={Plus} onClick={handleNew}>
-                    {t(msg => msg.limit.newOne)}
+                    {t(msg => msg.content.limit.newOne)}
                 </ElButton>
             )}
         </Flex>

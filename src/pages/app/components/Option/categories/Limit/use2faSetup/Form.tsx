@@ -3,42 +3,9 @@ import { CopyDocument } from '@element-plus/icons-vue'
 import { useRequest, useState } from '@hooks'
 import Flex from '@pages/components/Flex'
 import Img from '@pages/components/Img'
+import { generateQrDataUrl } from '@pages/util/qrcode'
 import { ElButton, ElForm, ElFormItem, ElInput, ElMessage, ElText } from 'element-plus'
-import qrcode from 'qrcode-generator'
 import { computed, defineComponent, toRef, watch } from 'vue'
-
-function generateQrDataUrl(text: string): string {
-    const qr = qrcode(0, 'M')
-    qr.addData(text)
-    qr.make()
-
-    const margin = 1
-    const targetWidth = 200
-
-    const moduleCount = qr.getModuleCount()
-    const totalModules = moduleCount + margin * 2
-    const scale = Math.max(1, Math.floor(targetWidth / totalModules))
-    const canvasSize = totalModules * scale
-
-    const canvas = document.createElement('canvas')
-    canvas.width = canvasSize
-    canvas.height = canvasSize
-    const ctx = canvas.getContext('2d')
-    if (!ctx) throw new Error('Failed to create QR canvas context')
-
-    ctx.fillStyle = '#fff'
-    ctx.fillRect(0, 0, canvasSize, canvasSize)
-    ctx.fillStyle = '#000'
-
-    for (let row = 0; row < moduleCount; row++) {
-        for (let col = 0; col < moduleCount; col++) {
-            if (!qr.isDark(row, col)) continue
-            ctx.fillRect((col + margin) * scale, (row + margin) * scale, scale, scale)
-        }
-    }
-
-    return canvas.toDataURL('image/png')
-}
 
 function extractSecret(otpauth: string): string {
     const raw = new URL(otpauth).searchParams.get('secret')
@@ -65,7 +32,10 @@ const _default = defineComponent<{ otpauth: string }>((props, ctx) => {
     const [code, setCode] = useState('')
     watch(otpauth, () => setCode(''), { immediate: true })
 
-    const { data: qrData } = useRequest(() => generateQrDataUrl(otpauth.value), { deps: otpauth })
+    const { data: qrData } = useRequest(
+        () => generateQrDataUrl({ text: otpauth.value, size: 200 }),
+        { deps: otpauth },
+    )
     ctx.expose({
         getVerifyCode: () => code.value,
     } satisfies FormInstance)

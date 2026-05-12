@@ -140,12 +140,12 @@ class Wrapper extends EchartsWrapper<timer.limit.Item, EcOption> {
     }
 
     private builtLimitPart(time: [number, number | undefined], visit: [number, number | undefined], leftPos: string): ChartPart {
-        const noLimitText = t(msg => msg.limit.noLimit)
+        const noLimitText = t(msg => msg.content.limit.noLimit)
 
         const [timeUsed, timeLimit] = time
         const timeMax = timeLimit ? timeLimit * MILL_PER_SECOND : 0
         const timeLabel = timeMax
-            ? t(msg => msg.limit.remain, { remaining: formatPeriodCommon(timeMax - timeUsed, true) })
+            ? t(msg => msg.content.limit.remain, { remaining: formatPeriodCommon(timeMax - timeUsed, true) })
             : noLimitText
         const timeOpts: GaugeOptions = {
             name: 'time', center: leftPos,
@@ -230,7 +230,7 @@ class Wrapper extends EchartsWrapper<timer.limit.Item, EcOption> {
         const hitPeriod = blocked.find(({ start, end }) => nowMinutes >= start && nowMinutes < end)
         const infoText = hitPeriod
             ? `${fmt(hitPeriod.start)} - ${fmt(hitPeriod.end)}`
-            : t(msg => msg.limit.notHit)
+            : t(msg => msg.content.limit.notHit)
 
         return {
             titles: [

@@ -9,7 +9,6 @@
                 "lastDays": "近 {n} 天数据",
                 "allTime": "全部数据"
             },
-            "saveAsImageTitle": "保存",
             "averageCount": "平均每天 {value} 次",
             "averageTime": "平均每天 {value}",
             "totalTime": "共 {totalTime}",
@@ -18,6 +17,15 @@
         },
         "ranking": {
             "includingCount": "含 {siteCount} 个网站"
+        },
+        "limit": {
+            "noData": "此URL无限制规则",
+            "newOne": "新建",
+            "timeUsed": "已使用 {percent}",
+            "visitUsed": "已使用 {used} 次",
+            "remain": "剩余 {remaining}",
+            "noLimit": "无限制",
+            "notHit": "未命中"
         }
     },
     "zh_TW": {
@@ -30,7 +38,6 @@
                 "lastDays": "近{n}天紀錄",
                 "allTime": "全部紀錄"
             },
-            "saveAsImageTitle": "儲存圖片",
             "averageCount": "平均每日 {value} 次",
             "averageTime": "平均每日 {value}",
             "totalTime": "總計 {totalTime}",
@@ -51,7 +58,8 @@
                 "lastDays": "Last {n} days' data",
                 "allTime": "All data"
             },
-            "saveAsImageTitle": "Snapshot",
+            "shareTitle": "Share",
+            "installTip": "Scan to install",
             "averageCount": "{value} times per day on average",
             "averageTime": "{value} per day on average",
             "totalTime": "Total {totalTime}",
@@ -60,6 +68,15 @@
         },
         "ranking": {
             "includingCount": "Including {siteCount} sites"
+        },
+        "limit": {
+            "noData": "No limit rule effective for this URL",
+            "newOne": "New One",
+            "timeUsed": "{percent} used",
+            "visitUsed": "{used} count visited",
+            "remain": "{remaining} remaining",
+            "noLimit": "No limit",
+            "notHit": "Not in effect"
         }
     },
     "ja": {
@@ -72,7 +89,6 @@
                 "lastDays": "過去 {n} 日間のデータ",
                 "allTime": "すべてのデータ"
             },
-            "saveAsImageTitle": "スクリーンショット",
             "averageCount": "1日平均 {value} 回",
             "averageTime": "1日平均 {value}",
             "totalTime": "合計 {totalTime}",
@@ -81,6 +97,15 @@
         },
         "ranking": {
             "includingCount": "{siteCount} サイトを含む"
+        },
+        "limit": {
+            "noData": "このURLには制限が適用されません",
+            "newOne": "追加",
+            "timeUsed": "{percent} 使用済み",
+            "visitUsed": "訪問回数{used}回",
+            "remain": "残り {remaining}",
+            "noLimit": "制限なし",
+            "notHit": "無効です"
         }
     },
     "pt_PT": {
@@ -93,7 +118,6 @@
                 "lastDays": "Dados dos últimos {n} dias",
                 "allTime": "Todos os dados"
             },
-            "saveAsImageTitle": "Captura",
             "averageCount": "Média de {value} vezes por dia",
             "averageTime": "Média de {value} por dia",
             "totalTime": "Total: {totalTime}",
@@ -114,7 +138,6 @@
                 "lastDays": "Дані за минулі {n} днів",
                 "allTime": "Всі дані"
             },
-            "saveAsImageTitle": "Знімок",
             "averageCount": "{value} разів на день у середньому",
             "averageTime": "{value} на день у середньому",
             "totalTime": "Всього {totalTime}",
@@ -135,7 +158,6 @@
                 "lastDays": "Datos de los últimos {n} días",
                 "allTime": "Todos los datos"
             },
-            "saveAsImageTitle": "Captura de pantalla",
             "averageCount": "{value} veces al día en promedio",
             "averageTime": "{value} al día en promedio",
             "totalTime": "Total {totalTime}",
@@ -156,7 +178,6 @@
                 "lastDays": "Daten der letzten {n} Tage",
                 "allTime": "Alle Daten"
             },
-            "saveAsImageTitle": "Bildschirmfoto",
             "averageCount": "{value} mal pro Tag",
             "averageTime": "{value} pro Tag im Durchschnitt",
             "totalTime": "Insgesamt {totalTime}",
@@ -177,7 +198,6 @@
                 "lastDays": "Les données de ces {n} derniers jours",
                 "allTime": "Toutes les données"
             },
-            "saveAsImageTitle": "Capture d'écran",
             "averageCount": "{value} fois par jour en moyenne",
             "averageTime": "{value} par jour en moyenne",
             "totalTime": "{totalTime} au total",
@@ -198,7 +218,6 @@
                 "lastDays": "Данные за последние {n} дней",
                 "allTime": "Все данные"
             },
-            "saveAsImageTitle": "Снимок",
             "averageCount": "{value} раз в день в среднем",
             "averageTime": "{value} в день в среднем",
             "totalTime": "Всего {totalTime}",
@@ -219,7 +238,6 @@
                 "lastDays": "بيانات آخر {n} يوم",
                 "allTime": "كل البيانات"
             },
-            "saveAsImageTitle": "لقطة",
             "averageCount": "متوسط {value} زيارة يومياً",
             "averageTime": "متوسط {value} يومياً",
             "totalTime": "الإجمالي {totalTime}",
@@ -240,7 +258,6 @@
                 "lastDays": "Son {n} günün verileri",
                 "allTime": "Tüm Veriler"
             },
-            "saveAsImageTitle": "Grafiği İndir",
             "averageCount": "Günde ortalama {value} kez",
             "averageTime": "Günde ortalama {value}",
             "totalTime": "Toplam Zaman {totalTime}",
@@ -261,7 +278,6 @@
                 "lastDays": "Ostatnie dane z {n} dnia/i",
                 "allTime": "Wszystkie dane"
             },
-            "saveAsImageTitle": "Podsumowanie",
             "averageCount": "Średnio {value} razy co dzień",
             "averageTime": "Średnio {value} razy dziennie",
             "totalTime": "Ogółem {totalTime}",
@@ -282,7 +298,6 @@
                 "lastDays": "Ultimo {n} giorni dati",
                 "allTime": "Tutti i dati"
             },
-            "saveAsImageTitle": "Snapshot",
             "averageTime": "{value} al giorno in media",
             "totalTime": "Totale {totalTime}",
             "totalCount": "{totalCount} volte Totale"
