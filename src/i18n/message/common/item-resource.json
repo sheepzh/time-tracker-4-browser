@@ -11,10 +11,7 @@
             "analysis": "分析",
             "deleteConfirmMsgAll": "将删除 {url} 的所有访问记录",
             "deleteConfirmMsgRange": "将删除 {url} 在 {start} 至 {end} 期间的访问记录",
-            "deleteConfirmMsg": "将删除 {url} 在 {date} 的访问记录",
-            "exportWholeData": "导出数据",
-            "importWholeData": "导入数据",
-            "importOtherData": "导入其他插件数据"
+            "deleteConfirmMsg": "将删除 {url} 在 {date} 的访问记录"
         }
     },
     "zh_TW": {
@@ -29,10 +26,7 @@
             "analysis": "分析",
             "deleteConfirmMsgAll": "將刪除 {url} 的所有瀏覽紀錄",
             "deleteConfirmMsgRange": "將刪除 {url} 在 {start} 至 {end} 期間的瀏覽紀錄",
-            "deleteConfirmMsg": "將刪除 {url} 在 {date} 的瀏覽紀錄",
-            "exportWholeData": "匯出資料",
-            "importWholeData": "匯入資料",
-            "importOtherData": "匯入其他擴充功能資料"
+            "deleteConfirmMsg": "將刪除 {url} 在 {date} 的瀏覽紀錄"
         }
     },
     "en": {
@@ -47,10 +41,7 @@
             "analysis": "Analyze",
             "deleteConfirmMsgAll": "All visit records for [{url}] will be deleted",
             "deleteConfirmMsgRange": "Visit records for [{url}] between {start} and {end} will be deleted",
-            "deleteConfirmMsg": "Visit record for [{url}] of {date} will be deleted",
-            "exportWholeData": "Export",
-            "importWholeData": "Import",
-            "importOtherData": "Import from Extensions"
+            "deleteConfirmMsg": "Visit record for [{url}] of {date} will be deleted"
         }
     },
     "ja": {
@@ -65,10 +56,7 @@
             "analysis": "分析",
             "deleteConfirmMsgAll": "{url} の全ての訪問記録を削除します",
             "deleteConfirmMsgRange": "{url} の {start} から {end} までの訪問記録を削除します",
-            "deleteConfirmMsg": "{url} の {date} の訪問記録を削除します",
-            "exportWholeData": "エクスポート",
-            "importWholeData": "インポート",
-            "importOtherData": "拡張機能からインポート"
+            "deleteConfirmMsg": "{url} の {date} の訪問記録を削除します"
         }
     },
     "pt_PT": {
@@ -83,10 +71,7 @@
             "analysis": "Analisar",
             "deleteConfirmMsgAll": "Todos os registos de visitas de {url} serão eliminados",
             "deleteConfirmMsgRange": "Os registos de visitas de {url} entre {start} e {end} serão eliminados",
-            "deleteConfirmMsg": "O registo de visita de {url} de {date} será eliminado",
-            "exportWholeData": "Exportar",
-            "importWholeData": "Importar",
-            "importOtherData": "Importar de Extensões"
+            "deleteConfirmMsg": "O registo de visita de {url} de {date} será eliminado"
         }
     },
     "uk": {
@@ -101,10 +86,7 @@
             "analysis": "Аналіз",
             "deleteConfirmMsgAll": "Усі записи для {url} будуть видалені!",
             "deleteConfirmMsgRange": "Усі записи для {url} між {start} і {end} будуть видалені!",
-            "deleteConfirmMsg": "Запис для {url} {date} буде видалено!",
-            "exportWholeData": "Експортувати дані",
-            "importWholeData": "Імпортувати дані",
-            "importOtherData": "Імпорт з інших розширень"
+            "deleteConfirmMsg": "Запис для {url} {date} буде видалено!"
         }
     },
     "es": {
@@ -119,10 +101,7 @@
             "analysis": "Analizar",
             "deleteConfirmMsgAll": "Se eliminarán todos los registros de {url}",
             "deleteConfirmMsgRange": "Se eliminarán los registros de {url} entre {start} y {end}",
-            "deleteConfirmMsg": "Se eliminará el registro de {url} del {date}",
-            "exportWholeData": "Exportar",
-            "importWholeData": "Importar",
-            "importOtherData": "Importar de extensiones"
+            "deleteConfirmMsg": "Se eliminará el registro de {url} del {date}"
         }
     },
     "de": {
@@ -137,10 +116,7 @@
             "analysis": "Analyse",
             "deleteConfirmMsgAll": "Alle Datensätze von {url} werden gelöscht",
             "deleteConfirmMsgRange": "Alle Einträge von {url} zwischen {start} und {end} werden gelöscht",
-            "deleteConfirmMsg": "Der Eintrag von {url} am {date} wird gelöscht",
-            "exportWholeData": "Exportieren",
-            "importWholeData": "Importieren",
-            "importOtherData": "Aus Erweiterungen importieren"
+            "deleteConfirmMsg": "Der Eintrag von {url} am {date} wird gelöscht"
         }
     },
     "fr": {
@@ -155,10 +131,7 @@
             "analysis": "Analyser",
             "deleteConfirmMsgAll": "Tous les enregistrements de {url} seront supprimés",
             "deleteConfirmMsgRange": "Les enregistrements de {url} entre {start} et {end} seront supprimés",
-            "deleteConfirmMsg": "L'enregistrement des visites pour [{url}] du [{date}] seront supprimés",
-            "exportWholeData": "Exporter",
-            "importWholeData": "Importer",
-            "importOtherData": "Depuis d'autres extensions"
+            "deleteConfirmMsg": "L'enregistrement des visites pour [{url}] du [{date}] seront supprimés"
         }
     },
     "ru": {
@@ -173,10 +146,7 @@
             "analysis": "Анализ",
             "deleteConfirmMsgAll": "Все записи {url} будут удалены",
             "deleteConfirmMsgRange": "Записи {url} с {start} по {end} будут удалены",
-            "deleteConfirmMsg": "Запись {url} за {date} будет удалена",
-            "exportWholeData": "Экспорт",
-            "importWholeData": "Импорт",
-            "importOtherData": "Импорт из дополнений"
+            "deleteConfirmMsg": "Запись {url} за {date} будет удалена"
         }
     },
     "ar": {
@@ -191,10 +161,7 @@
             "analysis": "تحليل",
             "deleteConfirmMsgAll": "سيتم حذف جميع سجلات {url}",
             "deleteConfirmMsgRange": "سيتم حذف سجلات {url} بين {start} و{end}",
-            "deleteConfirmMsg": "سيتم حذف سجل {url} بتاريخ {date}",
-            "exportWholeData": "تصدير",
-            "importWholeData": "استيراد",
-            "importOtherData": "استيراد من إضافات أخرى"
+            "deleteConfirmMsg": "سيتم حذف سجل {url} بتاريخ {date}"
         }
     },
     "tr": {
@@ -209,10 +176,7 @@
             "analysis": "Analiz et",
             "deleteConfirmMsgAll": "[{url}] adresine ait tüm ziyaret kayıtları silinecektir",
             "deleteConfirmMsgRange": "{start} ile {end} arasındaki [{url}] ziyaret kayıtları silinecektir",
-            "deleteConfirmMsg": "{date} tarihindeki [{url}] için ziyaret kaydı silinecektir",
-            "exportWholeData": "Dışa Aktar",
-            "importWholeData": "İçe aktar",
-            "importOtherData": "Uzantılardan içe aktar"
+            "deleteConfirmMsg": "{date} tarihindeki [{url}] için ziyaret kaydı silinecektir"
         }
     },
     "pl": {
@@ -227,10 +191,7 @@
             "analysis": "Analizuj",
             "deleteConfirmMsgAll": "Wszystkie wpisy wizyt dla [{url}] zostaną usunięte",
             "deleteConfirmMsgRange": "Sprawdź wpisy dla [{url}] pomiędzy {start} a {end} zostaną usunięte",
-            "deleteConfirmMsg": "Wpis wizyt dla [{url}] z {date} zostanie usunięty",
-            "exportWholeData": "Eksportuj",
-            "importWholeData": "Importuj",
-            "importOtherData": "Importuj z rozszerzenia"
+            "deleteConfirmMsg": "Wpis wizyt dla [{url}] z {date} zostanie usunięty"
         }
     }
 }

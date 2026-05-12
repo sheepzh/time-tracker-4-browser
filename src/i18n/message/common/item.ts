@@ -17,9 +17,6 @@ export type ItemMessage = {
         deleteConfirmMsgRange: string
         deleteConfirmMsg: string
         analysis: string
-        exportWholeData: string
-        importWholeData: string
-        importOtherData: string
     }
 } & {
     [dimension in timer.core.Dimension]: string

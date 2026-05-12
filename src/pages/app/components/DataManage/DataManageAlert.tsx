@@ -8,15 +8,24 @@ type Props = {
 }
 
 const DataManageAlert = defineComponent<Props>(props => {
-    const text = computed(() => {
-        const text = props.text
-        return typeof text === 'string' ? text : t(text)
-    })
+    const message = computed(() =>
+        typeof props.text === 'string' ? props.text : t(props.text))
 
     return () => (
-        <ElAlert type={props.type ?? 'info'} closable={false} center>
-            {text.value}
-        </ElAlert>
+        <div
+            style={{
+                flexShrink: 0,
+                width: '100%',
+                minHeight: 52,
+                display: 'flex',
+                alignItems: 'center',
+                boxSizing: 'border-box',
+            }}
+        >
+            <ElAlert type={props.type ?? 'info'} closable={false} center style={{ width: '100%' }}>
+                {message.value}
+            </ElAlert>
+        </div>
     )
 }, { props: ['text', 'type'] })
 

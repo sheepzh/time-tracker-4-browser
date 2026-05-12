@@ -8,50 +8,35 @@
 import { tN } from "@app/locale"
 import { type DataManageMessage } from "@i18n/message/app/data-manage"
 import { ElInput } from "element-plus"
-import { defineComponent, type PropType, type Ref, ref, type StyleValue, watch } from "vue"
+import { defineComponent, type StyleValue } from "vue"
 
-const elInput = (ref: Ref<string | undefined>, placeholder: string) => (
+const elInput = (value: string | undefined, onChange: ArgCallback<string | undefined>, placeholder: string) => (
     <ElInput
         placeholder={placeholder}
         clearable
         size="small"
-        modelValue={ref.value}
-        onInput={val => ref.value = val?.trim()}
-        onClear={() => ref.value = undefined}
+        modelValue={value}
+        onInput={onChange}
+        onClear={() => onChange(undefined)}
         style={{ width: '60px' } satisfies StyleValue}
     />
 )
 
-const _default = defineComponent({
-    props: {
-        translateKey: {
-            type: String as PropType<keyof DataManageMessage>,
-            required: true,
-        },
-        defaultValue: {
-            type: Object as PropType<[string?, string?]>,
-            required: true,
-        },
-        lineNo: Number,
-    },
-    emits: {
-        change: (_val: [string?, string?]) => true,
-    },
-    setup(props, ctx) {
-        const start = ref(props.defaultValue[0])
-        const end = ref(props.defaultValue[1])
-        watch([start, end], () => ctx.emit("change", [start.value, end.value]))
+type Props = ModelValue<[string?, string?]> & {
+    i18nKey: keyof DataManageMessage
+    lineNo: number
+}
 
-        return () => (
-            <p>
-                <a style={{ marginInlineEnd: '10px' }}>{props.lineNo}.</a>
-                {tN(msg => msg.dataManage[props.translateKey], {
-                    start: elInput(start, '0'),
-                    end: elInput(end, '∞'),
-                })}
-            </p>
-        )
-    }
-})
+const _default = defineComponent<Props>(props => {
+    return () => (
+        <p>
+            <a style={{ marginInlineEnd: '10px' }}>{props.lineNo}.</a>
+            {tN(msg => msg.dataManage[props.i18nKey], {
+                start: elInput(props.modelValue[0], val => props.onChange?.([val, props.modelValue[1]]), '0'),
+                end: elInput(props.modelValue[1], val => props.onChange?.([props.modelValue[0], val]), '∞'),
+            })}
+        </p>
+    )
+}, { props: ['modelValue', 'onChange', 'lineNo', 'i18nKey'] })
 
 export default _default
