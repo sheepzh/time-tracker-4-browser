@@ -11,7 +11,7 @@ import type {
 } from "echarts"
 import type { ECElementEvent } from "echarts/core"
 import {
-    adaptDonutSeries, formatTooltip, generateSiteSeriesOption, generateTitleOption, generateToolboxOption,
+    adaptDonutSeries, formatTooltip, generateSiteSeriesOption, generateTitleOption, generateToolbox,
     handleClick, isOther, type PieSeriesItemOption,
 } from "../chart"
 import { type PercentageResult } from "../query"
@@ -167,7 +167,7 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
                 formatter: (params: any) => formatTooltip(result, params),
             },
             series,
-            toolbox: generateToolboxOption(),
+            toolbox: generateToolbox(() => this.instance),
         }
         return option
     }

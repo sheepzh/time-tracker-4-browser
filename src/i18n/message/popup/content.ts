@@ -15,7 +15,8 @@ type PopupDuration =
 export type ContentMessage = {
     percentage: {
         title: { [key in PopupDuration]: string }
-        saveAsImageTitle: string
+        shareTitle: string
+        installTip: string
         averageTime: string
         averageCount: string
         totalTime: string
@@ -24,6 +25,15 @@ export type ContentMessage = {
     }
     ranking: {
         includingCount: string
+    }
+    limit: {
+        noData: string
+        newOne: string
+        timeUsed: string
+        visitUsed: string
+        remain: string
+        noLimit: string
+        notHit: string
     }
 }
 

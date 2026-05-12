@@ -9,7 +9,7 @@ const Empty: FunctionalComponent<{}> = () => (
     <Flex column align="center" justify="center" height='100%' gap={20}>
         <ElResult
             icon='info'
-            title={t(msg => msg.limit.noData)}
+            title={t(msg => msg.content.limit.noData)}
         />
     </Flex>
 )
