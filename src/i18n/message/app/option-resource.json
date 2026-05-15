@@ -968,7 +968,8 @@
                 "info": "Die Anzahl der Besuche der aktuellen Website heute"
             },
             "darkMode": {
-                "label": "Dunkler Modus {input}"
+                "label": "Dunkler Modus {input}",
+                "timed": "Zeitsteuerung aktiv"
             },
             "animationDuration": "Die Dauer der ersten Animation des Diagramms {input}",
             "sidePanel": "{input} Ob das Seitenpanel aktiviert wird"
@@ -1007,8 +1008,14 @@
                 "strictTitle": "Operation bestätigen",
                 "strictContent": "Wenn Sie diese Option wählen, wenn eine Site Tageslimit auslöst, Sie dürfen die Blockierung nur bis zum nächsten Tag manuell entsperren. Wenn Regeln nicht richtig eingerichtet sind, können sie sehr gut Ihre Routinen behindern!",
                 "pswFormLabel": "Passwort",
-                "pswFormAgain": "Erneut eingeben"
-            }
+                "pswFormAgain": "Erneut eingeben",
+                "2fa": "Zum Entsperren ist ein 2FA‑Code erforderlich",
+                "twoFaTitle": "Zwei Faktor Authentifikation - 2FA nutzen",
+                "twoFaScanHint": "Scanne den QR‑Code mit einer Authentifikation‑App oder importiere den Einrichtungslink in einen TOTP‑fähigen Passwortmanager.",
+                "twoFaCopyLink": "Link kopieren",
+                "twoFaVerifyLabel": "Zur Bestätigung den 6‑stelligen Code eingeben"
+            },
+            "delayDuration": "Verzögerung für {input} Minuten pro Vorgang"
         },
         "backup": {
             "title": "Datensicherung",
@@ -1767,41 +1774,112 @@
     "it": {
         "yes": "Si",
         "no": "No",
+        "on": "Sempre acceso",
+        "off": "Sempre spento",
+        "followBrowser": "Segui browser",
+        "permGrantConfirm": "Questa funzione richiede autorizzazioni rilevanti",
         "appearance": {
             "title": "Apparenza",
             "displayWhitelist": "{input}  Se visualizzare {whitelist} in {contextMenu}",
+            "whitelistItem": "scorciatoie correlate alla whitelist",
+            "contextMenu": "il menu contestuale",
+            "displayBadgeText": "{input}  Se visualizzare {timeInfo} in {icon}",
+            "badgeBgColor": "Il colore di sfondo del testo sull'icona {input}",
+            "icon": "l'icona dell'estensione",
+            "badgeTextContent": "il tempo di navigazione del sito web corrente",
             "locale": {
                 "label": "Linguaggio {input}",
                 "changeConfirm": "La lingua è stata modificata con successo, si prega di aggiorna questa pagina!",
                 "reloadButton": "Aggiorna"
             },
             "printInConsole": {
-                "console": "console"
+                "label": "{input}  Se stampare {info} in {console}",
+                "console": "console",
+                "info": "il conteggio delle visite del sito attuale oggi"
             },
             "darkMode": {
-                "label": "Modalità oscura {input}"
-            }
+                "label": "Modalità oscura {input}",
+                "timed": "Sincronizzato"
+            },
+            "animationDuration": "La durata dell'animazione iniziale del grafico {input}",
+            "sidePanel": "{input} Se abilitare il pannello laterale"
         },
         "tracking": {
+            "title": "Tracciamento",
+            "autoPauseTrack": "{input} Pausa tracciamento se nessuna attività rilevata {info} per {maxTime}",
+            "noActivityInfo": "Il mouse e la tastiera sono inattivi, non in modalità a schermo intero, e non c'è suono in riproduzione",
+            "countLocalFiles": "{input}  Se tenere traccia del tempo in cui il browser legge {localFileTime} {info}",
+            "localFileTime": "file locali",
+            "localFilesInfo": "Supporta file di tipi come PDF, immagine, txt e json.",
+            "countTabGroup": "{input} Se tenere traccia dell'orario dei gruppi di schede {info}",
+            "tabGroupInfo": "Quando si elimina un gruppo di schede, anche i dati verranno eliminati.",
+            "fileAccessDisabled": "L'accesso agli URL dei file non è attualmente consentito. Si prega di attivarlo prima nella pagina di gestione",
+            "weekStart": "Il primo giorno di ogni settimana {input}",
+            "weekStartAsNormal": "Come Normale",
+            "storage": "Memorizza i dati di tracciamento in {input}",
             "storageConfirm": "Vuoi cambiare il tipo di storage in {type}?"
         },
+        "limit": {
+            "prompt": "Prompt mostrato quando riservato {input}",
+            "reminder": "{input} Promemoria {minInput} minuti prima che il tempo sia scaduto",
+            "level": {
+                "label": "Come sbloccare durante la limitazione {input}",
+                "nothing": "Consenti lo sblocco diretto nella pagina di amministrazione",
+                "password": "È necessario inserire la password per sbloccare",
+                "verification": "È necessario inserire il codice di verifica per sbloccare",
+                "passwordLabel": "Password per sbloccare {input}",
+                "verificationLabel": "La difficoltà del codice di verifica {input}",
+                "verificationDifficulty": {
+                    "easy": "Facile",
+                    "hard": "Difficile",
+                    "disgusting": "Disgustoso"
+                },
+                "strict": "Non consentire comunque lo sblocco",
+                "strictTitle": "Conferma operazione",
+                "strictContent": "Quando si seleziona questa opzione, se un sito attiva il limite giornaliero, non ti sarà permesso di sbloccare manualmente se non aspettare fino al giorno successivo. Se le regole non sono impostate correttamente, possono molto bene ostacolare le tue routine!",
+                "pswFormLabel": "Password",
+                "pswFormAgain": "Conferma",
+                "2fa": "È necessario utilizzare il codice 2FA per sbloccare",
+                "twoFaTitle": "Abilita 2FA",
+                "twoFaScanHint": "Scansiona il codice QR con un'app di autenticazione o importa il link di configurazione in un gestore di password che supporta TOTP.",
+                "twoFaCopyLink": "Copia link",
+                "twoFaVerifyLabel": "Inserisci il codice a 6 cifre da verificare"
+            },
+            "delayDuration": "Ritardo per {input} minuti per volta"
+        },
         "backup": {
+            "title": "Backup Dati",
+            "type": "Tipo remoto {input}",
             "client": "Nome dell' Cliente {input}",
+            "meta": {
+                "gist": {
+                    "authInfo": "È richiesto un token con almeno il permesso di gist"
+                },
+                "obsidian_local_rest_api": {
+                    "endpointInfo": "Solo HTTP è disponibile, poiché CORS non può essere configurato per le pagine di estensione"
+                }
+            },
             "label": {
+                "endpoint": "Indirizzo endpoint {info} {input}",
+                "path": "Il percorso della cartella {input}",
                 "account": "Nome Utente {input}",
                 "password": "Password {input}"
             },
             "operation": "Backup",
             "download": {
                 "btn": "Scarica",
-                "willDownload": "Da scaricare"
+                "willDownload": "Da scaricare",
+                "confirmTip": "{size} pezzi di dati da [{clientName}] verranno scaricati"
             },
             "clear": {
-                "btn": "Cancella"
+                "btn": "Cancella",
+                "confirmTip": "{rowCount} pezzi di dati per i siti {hostCount} tracciati da [{clientName}] verranno eliminati!"
             },
             "confirmStep": "Conferma i dati",
             "clientTable": {
                 "selectTip": "Seleziona cliente",
+                "dataRange": "Intervallo di dati",
+                "notSelected": "Client non selezionato",
                 "current": "Attuale"
             },
             "lastTimeTip": "L' Ultimo tempo di backup: {lastTime}",
@@ -1811,12 +1889,34 @@
             }
         },
         "accessibility": {
-            "title": "Accessibilità"
+            "title": "Accessibilità",
+            "chartDecal": "{input} Indica se visualizzare la decal del grafico"
+        },
+        "notification": {
+            "title": "Notifiche",
+            "cycle": {
+                "label": "Ciclo di notifica {input}",
+                "daily": "Giornaliero",
+                "weekly": "Settimanale"
+            },
+            "method": {
+                "label": "Metodo di notifica {input}",
+                "browser": "Browser",
+                "callback": {
+                    "label": "HTTP Callback",
+                    "url": "Callback URL {input}"
+                }
+            }
         },
         "resetButton": "Reset",
         "resetSuccess": "Reset completato!",
         "exportButton": "Impostazioni di esportazione",
         "importButton": "Impostazioni di importazione",
+        "exportSuccess": "Impostazioni esportate con successo",
+        "importSuccess": "Impostazioni importate con successo",
+        "importError": "Importazione non riuscita: file delle impostazioni non valido",
+        "importConfirm": "Impostazioni importate con successo, aggiorna la pagina per applicare le modifiche!",
+        "reloadButton": "Aggiorna",
         "defaultValue": "Default: {default}"
     }
 }

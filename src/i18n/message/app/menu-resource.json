@@ -198,13 +198,14 @@
         "dashboard": "Dashboard",
         "data": "Miei Dati",
         "dataReport": "Record",
-        "siteAnalysis": "Analiso Sito",
+        "siteAnalysis": "Analisi Sito",
         "dataClear": "Memoria",
         "behavior": "Comportamento Dell'Utente",
         "habit": "Abitudini",
         "additional": "Funzionalità aggiuntive",
         "siteManage": "Gestione del sito",
         "whitelist": "Whitelist",
+        "mergeRule": "Raggruppa regole dei siti",
         "other": "Altre funzioni",
         "about": "Info su"
     }

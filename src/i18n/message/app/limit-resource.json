@@ -264,7 +264,7 @@
         "message": {
             "noUrl": "Не заповнена обмежена URL-адреса",
             "noRule": "Не заповнено жодного правила",
-            "deleteConfirm": "Ви дійсно хочете видалити правило {cond}?",
+            "deleteConfirm": "Ви дійсно хочете видалити правило {name}?",
             "lockConfirm": "Якщо заблоковано, всі операції потребують перевірки, навіть якщо правило не спрацьовує.",
             "inputTestUrl": "Спочатку введіть URL-адресу посилання для перевірки",
             "noRuleMatched": "URL не відповідає жодному правилу",
@@ -309,7 +309,7 @@
         "message": {
             "noUrl": "URL restringida sin completar",
             "noRule": "No hay reglas llenadas",
-            "deleteConfirm": "¿Deseas eliminar la regla de {cond}?",
+            "deleteConfirm": "¿Deseas eliminar la regla dé {name}?",
             "lockConfirm": "Si está bloqueado, todas las operaciones requerirán verificación incluso si no se activa la regla.",
             "inputTestUrl": "Por favor, introduce primero el enlace URL a ser probado",
             "noRuleMatched": "La URL no sigue ninguna regla",
@@ -329,7 +329,9 @@
         "reminder": "¡Menos de {min} minutos hasta el límite de tiempo!"
     },
     "de": {
+        "onlyEffective": "Nur wirksam",
         "wildcardTip": "Sie können Platzhalter verwenden, um Subdomains oder Unterseiten zuzuordnen, und \"+\" als Präfix verwenden, um Unterseiten auszuschließen!",
+        "emptyTips": "Klicke hier, um eine Regel zu erstellen!",
         "item": {
             "name": "Regelname",
             "condition": "Eingeschränkte URL",
@@ -340,6 +342,7 @@
             "enabled": "Aktiviert",
             "locked": "Gesperrt",
             "effectiveDay": "Wirksam auf",
+            "allowDelay": "Verzögerung zulassen",
             "or": "oder",
             "notEffective": "Nicht wirksam"
         },
@@ -368,6 +371,8 @@
             "strictTip": "Die Limit-Regel wurde bereits ausgelöst und eine manuelle Entsperrung ist nicht zulässig!",
             "incorrectPsw": "Falsches Passwort",
             "incorrectAnswer": "Falsche Antwort",
+            "twoFaInputTip": "Die Regel wurde ausgelöst oder gesperrt. Geben Sie den 6-stelligen Code aus Ihrer Authentifizierungs-App ein, um fortzufahren.",
+            "incorrect2fa": "Falscher 2FA-Code",
             "pi": "{digitCount} Ziffern von {startIndex} bis {endIndex} des Dezimalteils von π",
             "confession": "Zeit vergeht"
         },
@@ -421,6 +426,7 @@
         "reminder": "Moins de {min} minutes jusqu'à la limite de temps !"
     },
     "ru": {
+        "onlyEffective": "Только эффективный режим",
         "wildcardTip": "Вы можете использовать шаблоны для совпадения с поддоменами или подстраницами, а также использовать «+» в качестве префикса, чтобы исключить подстраницы!",
         "emptyTips": "Нажмите здесь, чтобы создать новое правило!",
         "item": {
@@ -433,6 +439,7 @@
             "enabled": "Включено",
             "locked": "Заблокировано",
             "effectiveDay": "Эффективный",
+            "allowDelay": "Разрешить задержку",
             "or": "или",
             "notEffective": "Не активировано"
         },
@@ -461,6 +468,8 @@
             "strictTip": "Ограниченное правило уже было вызвано и разблокировка вручную запрещена!",
             "incorrectPsw": "Неправильный пароль",
             "incorrectAnswer": "Неправильный ответ",
+            "twoFaInputTip": "Правило было вызвано или заблокировано. Введите 6-значный код из вашего приложения-аутентификатора, чтобы продолжить.",
+            "incorrect2fa": "Неверный код двухфакторной авторизации",
             "pi": "{digitCount} цифр от {startIndex} до {endIndex} десятичной части числа π",
             "confession": "Время быстротечно"
         },
@@ -606,10 +615,12 @@
         "reminder": "Mniej niż {min} minut do osiągnięcia limitu!"
     },
     "it": {
+        "onlyEffective": "Solo Efficace",
+        "wildcardTip": "Puoi usare caratteri jolly per abbinare sotto-domini o sotto-pagine, e usare \"+\" come prefisso per escludere le sotto-pagine!",
         "emptyTips": "Clicca qui per creare una regola!",
         "item": {
             "name": "Nome della regola",
-            "condition": "Url Ristretto",
+            "condition": "URL Ristretto",
             "weekStartInfo": "Il primo giorno di ogni settimana è {weekStart}, puoi cambiare questo valore nelle opzioni di tracciamento",
             "delayCount": "Ritardo conteggio",
             "detail": "Dettagli regola",
@@ -641,11 +652,15 @@
         },
         "verification": {
             "inputTip": "La regola è stata attivata o bloccata. Per continuare, inserisci la risposta alla seguente domanda entro {second} secondi: {prompt}",
-            "inputTip2": "La regola è stata attivata o bloccata. Per continuare, inseriscila così com'è entro  {second} secondi: {answer}",
+            "inputTip2": "La regola è stata attivata o bloccata. Per continuare, inseriscila così com'è entro {second} secondi: {answer}",
+            "pswInputTip": "La regola è stata attivata o bloccata. Per continuare, inserisci la password",
             "strictTip": "Attivato, nessuna operazione è consentita prima del rilascio!",
             "incorrectPsw": "Password non e corretta",
             "incorrectAnswer": "Risposta sbagliata",
-            "pi": "{digitCount} cifre da {startIndex} a {endIndex} della parte decimale di π"
+            "twoFaInputTip": "La regola è stata attivata o bloccata. Inserisci il codice a 6 cifre dall'app di autenticazione per continuare.",
+            "incorrect2fa": "Codice 2FA non valido",
+            "pi": "{digitCount} cifre da {startIndex} a {endIndex} della parte decimale di π",
+            "confession": "Il tempo è fugace"
         },
         "reminder": "Meno di {min} minuti fino al limite!"
     }
