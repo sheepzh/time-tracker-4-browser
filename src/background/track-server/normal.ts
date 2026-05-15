@@ -20,9 +20,9 @@ async function handleTime(context: ItemIncContext, timeRange: [number, number], 
     // 2. Process limit
     const { limited, reminder } = await addLimitFocusTime(host, url, focusTime)
     // If time limited after this operation, send messages
-    limited?.length && sendLimitedMessage(limited)
+    limited.length && void sendLimitedMessage(limited)
     // If need to reminder, send messages
-    reminder?.items?.length && tabId && sendMsg2Tab(tabId, 'limitReminder', reminder)
+    reminder?.items?.length && tabId && void sendMsg2Tab(tabId, 'limitReminder', reminder)
     // 3. Add period time
     periodThrottler.add(start, focusTime)
     return focusTime
@@ -39,19 +39,23 @@ export async function handleTrackTimeEvent(event: timer.core.Event, tab: ChromeT
         if (!active) return
     }
     const { protocol, host } = extractHostname(url)
-    const option = await optionHolder.get()
 
-    if (protocol === "file" && !option?.countLocalFiles) return
+    const { countLocalFiles } = await optionHolder.get()
+    if (protocol === "file" && !countLocalFiles) return
+
     if (whitelistHolder.contains(host, url)) return
 
     await handleTime({ host, url, groupId }, [start, end], tabId)
     if (tabId) {
-        const winTabs = await listTabs({ active: true, windowId })
-        const firstActiveTab = winTabs[0]
-        // Cause there is no way to determine whether this tab is selected in screen-split mode
-        // So only show badge for first tab for screen-split mode
-        // @see #246
-        firstActiveTab?.id === tabId && badgeManager.updateFocus({ tabId, url })
+        if (!ignoreTabCheck) {
+            // Cause there is no way to determine whether this tab is selected in screen-split mode
+            // So only show badge for first tab for screen-split mode
+            // @see #246
+            const winTabs = await listTabs({ active: true, windowId })
+            const firstActiveTab = winTabs[0]
+            if (firstActiveTab?.id !== tabId) return
+        }
+        void badgeManager.updateFocus({ tabId, url })
     }
 }
 
