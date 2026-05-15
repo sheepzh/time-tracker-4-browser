@@ -79,7 +79,7 @@ export async function removeLimitRules(ids: number[]): Promise<void> {
 }
 
 type IncreaseResult = {
-    limited?: timer.limit.Item[]
+    limited: timer.limit.Item[]
     reminder?: timer.limit.ReminderInfo
 }
 
@@ -91,7 +91,7 @@ type IncreaseResult = {
  * @returns the rules is limit cause of this operation
  */
 export async function addLimitFocusTime(host: string, url: string, focusTime: number): Promise<IncreaseResult> {
-    if (whitelistHolder.contains(host, url)) return {}
+    if (whitelistHolder.contains(host, url)) return { limited: [] }
 
     const allEffective = await selectLimit({ url, effective: true })
 
