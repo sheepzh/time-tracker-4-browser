@@ -92,7 +92,7 @@ export const RSC_FILE_SUFFIX = "-resource.json"
  * @param dir the directory of messages
  * @returns
  */
-export async function readAllMessages(dir: Dir): Promise<Record<string, Messages<any>>> {
+export async function readAllMessages(dir: Dir): Promise<Record<string, Messages<Record<string, unknown>>>> {
     const dirPath = path.join(MSG_BASE, dir)
 
     const files = fs.readdirSync(dirPath)
@@ -101,7 +101,7 @@ export async function readAllMessages(dir: Dir): Promise<Record<string, Messages
         if (!file.endsWith(RSC_FILE_SUFFIX)) {
             return
         }
-        const message = (await import(`@i18n/message/${dir}/${file}`))?.default as Messages<any>
+        const message = (await import(`@i18n/message/${dir}/${file}`))?.default as Messages<Record<string, unknown>>
         const name = file.replace(RSC_FILE_SUFFIX, '')
         message && (result[name] = message)
         return
@@ -110,10 +110,10 @@ export async function readAllMessages(dir: Dir): Promise<Record<string, Messages
 }
 
 /**
- * Merge crowdin message into locale resource json files
+ * Merge crowdin message into locale resource JSON files
  *
  * @param dir dir
- * @param filename the name of json file
+ * @param filename the name of JSON file
  * @param messages crowdin messages
  */
 export async function mergeMessage(
@@ -123,7 +123,7 @@ export async function mergeMessage(
 ): Promise<void> {
     const dirPath = path.join(MSG_BASE, dir)
     const filePath = path.join(dirPath, filename)
-    const existMessages = (await import(`@i18n/message/${dir}/${filename}`))?.default as Messages<any>
+    const existMessages = (await import(`@i18n/message/${dir}/${filename}`))?.default as Messages<Record<string, unknown>>
     if (!existMessages) {
         logError(`Failed to find local code: dir=${dir}, filename=${filename}`)
         return
@@ -155,22 +155,22 @@ export async function mergeMessage(
 }
 
 function logError(msg: string) {
-    console.error(`[CROWDIN-ERROR] ${msg}`)
+    console.error(`\x1b[31m[CROWDIN-ERROR]\x1b[0m ${msg}`)
 }
 
 function checkPlaceholder(translated: string, source: string) {
     const allSourcePlaceholders =
-        Array.from(source.matchAll(/\{(.*?)\}/g))
+        Array.from(source.matchAll(/\{(.*?)}/g))
             .map(matched => matched[1])
             .sort()
     const allTranslatedPlaceholders =
-        Array.from(translated.matchAll(/\{(.*?)\}/g))
+        Array.from(translated.matchAll(/\{(.*?)}/g))
             .map(matched => matched[1])
             .sort()
     if (allSourcePlaceholders.length != allTranslatedPlaceholders.length) {
         return false
     }
-    for (let i = 0; i++; i < allSourcePlaceholders.length) {
+    for (let i = 0; i < allSourcePlaceholders.length; i++) {
         if (allSourcePlaceholders[i] !== allTranslatedPlaceholders[i]) {
             return false
         }
@@ -220,3 +220,5 @@ export async function checkMainBranch(client: CrowdinClient): Promise<SourceFile
     const branch = await client.getMainBranch()
     return branch ?? exitWith("Main branch is null")
 }
+
+
