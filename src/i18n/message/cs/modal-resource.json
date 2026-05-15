@@ -76,5 +76,11 @@
         "delay": "jeszcze {n} minut",
         "browsingTime": "Czas przeglądania",
         "ruleDetail": "Szczegóły zasad"
+    },
+    "it": {
+        "defaultPrompt": "Questa pagina è stata bloccata!",
+        "delay": "{n} altri minuti",
+        "browsingTime": "Tempo di navigazione",
+        "ruleDetail": "Dettagli regola"
     }
 }

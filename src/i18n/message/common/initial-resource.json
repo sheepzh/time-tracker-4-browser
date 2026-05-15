@@ -102,5 +102,13 @@
             "pic": "Zdjęcia",
             "txt": "Tekst"
         }
+    },
+    "it": {
+        "localFile": {
+            "json": "JSON",
+            "pdf": "PDF",
+            "pic": "Immagini",
+            "txt": "Testo"
+        }
     }
 }

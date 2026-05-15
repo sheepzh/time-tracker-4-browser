@@ -130,6 +130,12 @@
         "helpUs": "Pomóż w tłumaczeniu"
     },
     "it": {
+        "sidebar": "Barra laterale",
+        "allFunction": "Tutte le funzionalità",
+        "guidePage": "Guida per l'utente",
+        "option": "Opzioni",
+        "sourceCode": "Codice sorgente",
+        "changeLog": "Note di Rilascio",
         "limit": "Limite di tempo",
         "helpUs": "Aiuto Traduzione"
     }

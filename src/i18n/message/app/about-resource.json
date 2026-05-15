@@ -70,17 +70,17 @@
     "de": {
         "label": {
             "name": "Titel",
-            "version": "Aktuelle Version",
+            "version": "Version",
             "website": "Offizielle Website",
             "installation": "Installation",
-            "thanks": "Credits",
+            "thanks": "Danksagungen",
             "privacy": "Datenschutz",
             "license": "Lizenz",
             "support": "Support"
         },
         "text": {
             "greet": "Gefällt dir diese Erweiterung?",
-            "rate": "Bewerte uns mit 5 Sternen!",
+            "rate": "Bewerte uns mit 5 Sternen, um uns zu unterstützen!",
             "feedback": "Sag uns deine Meinung!"
         }
     },

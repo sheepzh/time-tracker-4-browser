@@ -555,6 +555,7 @@
     },
     "it": {
         "deleteConfirmMsg": "{host} sarà eliminato",
+        "genAliasConfirmMsg": "Indica se completare automaticamente i nomi dei siti nei batch?",
         "column": {
             "type": "Site Type",
             "alias": "Nome del sito",
@@ -567,16 +568,20 @@
                 "info": "statistiche in base al nome dominio"
             },
             "merged": {
-                "name": "uniti"
+                "name": "uniti",
+                "info": "fonde le statistiche di più nomi di dominio correlati, e le regole di fusione possono essere personalizzate"
             },
             "virtual": {
-                "name": "virtuale"
+                "name": "virtuale",
+                "info": "conta qualsiasi URL in formato Ant Pattern, è possibile aggiungere un sito personalizzato nell'angolo in alto a destra"
             }
         },
         "cate": {
             "name": "Nome",
+            "relatedMsg": "Questa categoria è stata associata ai siti {siteCount} e non può essere eliminata",
             "removeConfirm": "Confermi di voler eliminare la categoria: {category}?",
-            "batchChange": "Cambia categorie"
+            "batchChange": "Cambia categorie",
+            "batchDisassociate": "Dissocia categorie"
         },
         "form": {
             "emptyAlias": "Inserisci il nome del sito",
@@ -584,7 +589,9 @@
         },
         "msg": {
             "hostExistWarn": "{host} esiste",
+            "existedTag": "ESISTEVA",
             "noSelected": "Nessun sito selezionato",
+            "noSupported": "I siti selezionati non possono impostare categorie",
             "disassociatedMsg": "Vuoi cancellare le categorie di tutti i siti selezionati?",
             "batchDeleteMsg": "Vuoi eliminare tutti i siti selezionati?"
         }

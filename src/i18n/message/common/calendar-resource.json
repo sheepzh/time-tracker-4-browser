@@ -306,5 +306,29 @@
             "tillDaysAgo": "Przez {n} dni temu",
             "allTime": "Od początku"
         }
+    },
+    "it": {
+        "weekDays": "Lun|Mar|Mer|Gio|Ven|Sab|Dom",
+        "months": "Gen|Feb|Mar|Apr|Mag|Giu|Lug|Ago|Set|Ott|Nov|Dic",
+        "dateFormat": "{d}/{m}/{y}",
+        "monthDateFormat": "{d}/{m}",
+        "timeFormat": "{d}/{m}/{y} {h}:{i}:{s}",
+        "simpleTimeFormat": "{d}/{m} {h}:{i}",
+        "label": {
+            "startDate": "Data Inizio",
+            "endDate": "Data di fine"
+        },
+        "range": {
+            "today": "Oggi",
+            "yesterday": "Ieri",
+            "everyday": "Tutti i giorni",
+            "thisWeek": "Questa settimana",
+            "thisMonth": "Questo mese",
+            "lastWeek": "Ultima settimana",
+            "lastDays": "Ultimi {n} giorni",
+            "tillYesterday": "Fino a ieri",
+            "tillDaysAgo": "Fino a {n} giorni fa",
+            "allTime": "Sempre"
+        }
     }
 }
