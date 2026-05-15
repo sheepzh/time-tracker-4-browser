@@ -19,14 +19,12 @@ const MAIN_BRANCH_NAME = 'main'
  */
 class PaginationIterator<T> {
     private offset = 0
-    private limit = 25
+    private limit = 500
     private isEnd = false
     private buf: T[] = []
     private cursor = 0
-    private query: (pagination: Pagination) => Promise<ResponseList<T>>
 
-    constructor(query: (pagination: Pagination) => Promise<ResponseList<T>>) {
-        this.query = query
+    constructor(private query: (pagination: Pagination) => Promise<ResponseList<T>>) {
     }
 
     reset(): void {
@@ -169,17 +167,6 @@ export class CrowdinClient {
         return response.data
     }
 
-    async restoreFile(storage: UploadStorageModel.Storage, existFile: SourceFilesModel.File): Promise<SourceFilesModel.File> {
-        const response = await this.crowdin.sourceFilesApi.updateOrRestoreFile(PROJECT_ID, existFile.id, { storageId: storage.id })
-        return response.data
-    }
-
-    getFileByName(param: NameKey): Promise<SourceFilesModel.File | undefined> {
-        return new PaginationIterator(
-            p => this.crowdin.sourceFilesApi.listProjectFiles(PROJECT_ID, { ...p, branchId: param.branchId })
-        ).findFirst(t => t.name === param.name)
-    }
-
     getDirByName(param: NameKey): Promise<SourceFilesModel.Directory | undefined> {
         return new PaginationIterator(
             p => this.crowdin.sourceFilesApi.listProjectDirectories(PROJECT_ID, { ...p, branchId: param.branchId })
@@ -198,6 +185,12 @@ export class CrowdinClient {
         return new PaginationIterator(
             p => this.crowdin.sourceFilesApi.listProjectFiles(PROJECT_ID, { ...p, directoryId: directoryId })
         ).findAll()
+    }
+
+    async downloadSourceFile(fileId: number): Promise<Record<string, unknown>> {
+        const res = await this.crowdin.sourceFilesApi.downloadFile(PROJECT_ID, fileId)
+        const response = await fetch(res.data.url)
+        return await response.json() as Record<string, unknown>
     }
 
     listStringsByFile(fileId: number): Promise<SourceStringsModel.String[]> {
@@ -280,11 +273,24 @@ export class CrowdinClient {
             skipUntranslatedStrings: true,
         })
         const buildId = buildRes.data.id
+        const maxRetries = 120
+        let retryCount = 0
         while (true) {
-            // Wait finished
-            const res = await this.crowdin.translationsApi.downloadTranslations(PROJECT_ID, buildId)
-            return res.data.url
+            if (retryCount >= maxRetries) {
+                throw new Error(`Build timed out after ${maxRetries} retries: buildId=${buildId}`)
+            }
+            const statusRes = await this.crowdin.translationsApi.checkBuildStatus(PROJECT_ID, buildId)
+            const { status, progress } = statusRes.data
+            console.log(`Build status: ${status}, progress: ${progress}%`)
+            if (status === 'finished') break
+            if (status === 'canceled' || status === 'failed') {
+                throw new Error(`Build ${status}: buildId=${buildId}`)
+            }
+            retryCount++
+            await new Promise(resolve => setTimeout(resolve, 1000))
         }
+        const res = await this.crowdin.translationsApi.downloadTranslations(PROJECT_ID, buildId)
+        return res.data.url
     }
 }
 
