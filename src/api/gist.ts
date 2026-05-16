@@ -161,5 +161,8 @@ export async function testToken(token: string): Promise<string | undefined> {
         }
     })
     const { status, statusText } = response || {}
-    return status === 200 ? undefined : statusText || ("ERROR " + status)
+    if (status === 200) return undefined
+    if (status === 401) return '[401] Invalid token or no permission to access gist'
+    if (status === 403) return '[403] Access forbidden, possibly due to rate limit exceeded'
+    return statusText || `ERROR ${status}`
 }
