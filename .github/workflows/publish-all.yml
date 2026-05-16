@@ -1,6 +1,6 @@
 name: Publish Extension to All Stores
 
-on: [ workflow_dispatch ]
+on: [workflow_dispatch]
 
 env:
     MAX_PACKAGE_SIZE: 2621440 # 2.5MB in bytes
@@ -14,6 +14,23 @@ jobs:
               uses: actions/checkout@v6
               with:
                   fetch-depth: 0
+
+            - name: Verify branch
+              run: |
+                  if [[ "$GITHUB_REF" == refs/heads/main ]]; then
+                      echo "Running on main branch ✅"
+                  elif [[ "$GITHUB_REF" == refs/tags/* ]]; then
+                      git fetch origin main
+                      if git merge-base --is-ancestor HEAD origin/main; then
+                          echo "Tag is on main branch ✅"
+                      else
+                          echo "❌ Tag is not on main branch"
+                          exit 1
+                      fi
+                  else
+                      echo "❌ Not on main branch or a tag on main"
+                      exit 1
+                  fi
 
             - name: Setup Node.js
               uses: actions/setup-node@v6
@@ -131,7 +148,8 @@ jobs:
                   addon-guid: "{a8cf72f7-09b7-4cd4-9aaa-7a023bf09916}"
                   xpi-path: target.firefox.zip
                   source-file-path: target.src.zip
-                  compatibility: "{\"firefox\": {\"min\": \"${{ env.FF_MIN_VER }}\"}, \"android\":
-                      {\"min\": \"${{ env.FF_MIN_VER}}\"}}"
+                  compatibility:
+                      '{"firefox": {"min": "${{ env.FF_MIN_VER }}"}, "android":
+                      {"min": "${{ env.FF_MIN_VER}}"}}'
                   jwt-issuer: ${{ secrets.FIREFOX_JWD_ISSUER }}
                   jwt-secret: ${{ secrets.FIREFOX_JWD_SECRET }}
