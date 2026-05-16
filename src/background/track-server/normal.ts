@@ -1,5 +1,5 @@
 import { listTabs, sendMsg2Tab } from "@api/chrome/tab"
-import { windowHolder } from '@api/chrome/window'
+import { getWindow } from '@api/chrome/window'
 import optionHolder from "@service/components/option-holder"
 import {
     addFocusTime as addItemFocusTime, increaseVisit as increaseItemVisit, type ItemIncContext,
@@ -35,7 +35,7 @@ export async function handleTrackTimeEvent(event: timer.core.Event, tab: ChromeT
 
     const { start, end, ignoreTabCheck } = event
     if (!ignoreTabCheck) {
-        if (windowNotFocused(windowId)) return
+        if (await windowNotFocused(windowId)) return
         if (!active) return
     }
     const { protocol, host } = extractHostname(url)
@@ -59,10 +59,10 @@ export async function handleTrackTimeEvent(event: timer.core.Event, tab: ChromeT
     }
 }
 
-function windowNotFocused(winId: number | undefined): boolean {
+async function windowNotFocused(winId: number | undefined): Promise<boolean> {
     if (IS_ANDROID) return false
     if (!winId) return true
-    const window = windowHolder.get(winId)
+    const window = await getWindow(winId)
     return !window?.focused
 }
 
