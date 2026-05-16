@@ -76,5 +76,11 @@
         "hour": "Wyświetl w godzinach",
         "minute": "Wyświetl w minutach",
         "second": "Wyświetl w sekundach"
+    },
+    "it": {
+        "default": "Formato orario predefinito",
+        "hour": "Visualizza in ore",
+        "minute": "Visualizza in minuti",
+        "second": "Visualizza in secondi"
     }
 }

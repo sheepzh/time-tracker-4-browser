@@ -277,7 +277,8 @@
         "batchDelete": {
             "noSelectedMsg": "Si prega di selezionare la riga che si desidera eliminare nella prima tabella",
             "confirmMsg": "{count} record come [{example}] di {date} saranno eliminati!",
-            "confirmMsgAll": "{count} record come [{example}], saranno eliminati!"
+            "confirmMsgAll": "{count} record come [{example}], saranno eliminati!",
+            "confirmMsgRange": "{count} record come [{example}] tra {start} ed {end} saranno eliminati!"
         },
         "remoteReading": {
             "on": "Lettura dei dati di backup remoti",

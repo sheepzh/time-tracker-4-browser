@@ -178,6 +178,7 @@
         "cancel": "Abbrechen",
         "previous": "Zurück",
         "next": "Weiter",
+        "okay": "OK",
         "dont": "Nein",
         "operation": "Aktionen",
         "configuration": "Einstellungen",
@@ -186,7 +187,8 @@
         "batchEnable": "Stapelaktivierung",
         "batchDisable": "Stapeldeaktivierung",
         "collapse": "Schließen",
-        "expand": "Aufklappen"
+        "expand": "Aufklappen",
+        "copy": "Kopieren"
     },
     "fr": {
         "create": "Nouveau",
@@ -302,5 +304,30 @@
         "batchDisable": "Seria wyłączenia",
         "collapse": "Zwiń",
         "expand": "Rozwiń"
+    },
+    "it": {
+        "create": "Nuovo",
+        "add": "Aggiungi",
+        "delete": "Elimina",
+        "batchDelete": "Elimina batch",
+        "modify": "Modifica",
+        "save": "Salva",
+        "test": "Test",
+        "paste": "Incolla",
+        "confirm": "Conferma",
+        "cancel": "Cancella",
+        "previous": "Indietro",
+        "next": "Avanti",
+        "okay": "OK",
+        "dont": "No",
+        "operation": "Azioni",
+        "configuration": "Impostazioni",
+        "clear": "Cancella",
+        "enable": "Abilita",
+        "batchEnable": "Attiva Batch",
+        "batchDisable": "Disabilita Batch",
+        "collapse": "Riduci",
+        "expand": "Espandi",
+        "copy": "Copia"
     }
 }

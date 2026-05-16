@@ -130,8 +130,10 @@
         "addConfirmMsg": "{url} sarà aggiunto alla whitelist.",
         "removeConfirmMsg": "{url} sarà rimosso dalla whitelist.",
         "duplicateMsg": "Duplicato",
+        "infoAlertTitle": "È possibile aggiungere alla whitelist questa pagina",
         "infoAlert0": "I siti in whitelist non saranno conteggiati",
         "infoAlert1": "I siti in whitelist non saranno conteggiati",
+        "infoAlert2": "È possibile utilizzare un jolly(*) per abbinare più siti, come *.example.com/**, e utilizzare + come prefisso per escludere i siti, come +need.example.com/**",
         "errorInput": "URL del sito non valido"
     }
 }

@@ -70,5 +70,11 @@
             "percentage": "Rozkład",
             "ranking": "Ranking"
         }
+    },
+    "it": {
+        "route": {
+            "percentage": "Distribuzione",
+            "ranking": "Classifica"
+        }
     }
 }

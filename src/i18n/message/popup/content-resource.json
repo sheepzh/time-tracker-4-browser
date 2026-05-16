@@ -9,6 +9,8 @@
                 "lastDays": "近 {n} 天数据",
                 "allTime": "全部数据"
             },
+            "shareTitle": "分享",
+            "installTip": "扫描安装 👉",
             "averageCount": "平均每天 {value} 次",
             "averageTime": "平均每天 {value}",
             "totalTime": "共 {totalTime}",
@@ -178,6 +180,8 @@
                 "lastDays": "Daten der letzten {n} Tage",
                 "allTime": "Alle Daten"
             },
+            "shareTitle": "Teilen",
+            "installTip": "Zum Installieren scannen",
             "averageCount": "{value} mal pro Tag",
             "averageTime": "{value} pro Tag im Durchschnitt",
             "totalTime": "Insgesamt {totalTime}",
@@ -186,6 +190,15 @@
         },
         "ranking": {
             "includingCount": "Einschließlich {siteCount} Websites"
+        },
+        "limit": {
+            "noData": "Für diese URL ist keine Regel aktiv",
+            "newOne": "Neu",
+            "timeUsed": "{percent} verwendet",
+            "visitUsed": "{used} mal besucht",
+            "remain": "{remaining} verbleibend",
+            "noLimit": "Kein Limit",
+            "notHit": "Nicht aktiv"
         }
     },
     "fr": {
@@ -298,12 +311,25 @@
                 "lastDays": "Ultimo {n} giorni dati",
                 "allTime": "Tutti i dati"
             },
+            "shareTitle": "Condividi",
+            "installTip": "Scansiona per installare",
+            "averageCount": "{value} al giorno in media",
             "averageTime": "{value} al giorno in media",
             "totalTime": "Totale {totalTime}",
-            "totalCount": "{totalCount} volte Totale"
+            "totalCount": "{totalCount} volte Totale",
+            "otherLabel": "Altri siti {count}"
         },
         "ranking": {
             "includingCount": "Inclusi siti {siteCount}"
+        },
+        "limit": {
+            "noData": "Nessuna regola di limite effettiva per questo URL",
+            "newOne": "Nuova",
+            "timeUsed": "{percent} usato",
+            "visitUsed": "Conteggio visite {used}",
+            "remain": "{remaining} rimanente",
+            "noLimit": "Nessun limite",
+            "notHit": "Non funzione"
         }
     }
 }
