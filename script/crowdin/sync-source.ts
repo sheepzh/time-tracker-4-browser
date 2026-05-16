@@ -1,15 +1,20 @@
-import { type SourceFilesModel, type SourceStringsModel } from "@crowdin/crowdin-api-client"
+import type { SourceFilesModel, SourceStringsModel } from "@crowdin/crowdin-api-client"
 import { toMap } from "@util/array"
 import { type CrowdinClient, getClientFromEnv, type NameKey } from "./client"
-import {
-    ALL_DIRS,
-    Dir,
-    isIgnored,
-    ItemSet,
-    readAllMessages,
-    SOURCE_LOCALE,
-    transMsg
-} from "./common"
+import { ALL_DIRS, type Dir, isIgnored, type ItemSet, readAllMessages, SOURCE_LOCALE, transMsg } from "./common"
+
+/**
+ * Check if local source content is the same as Crowdin source content
+ */
+function isSourceUnchanged(localContent: ItemSet, crowdinContent: ItemSet): boolean {
+    const localKeys = Object.keys(localContent).filter(k => !!localContent[k])
+    const crowdinKeys = Object.keys(crowdinContent)
+    if (localKeys.length !== crowdinKeys.length) return false
+    for (const key of localKeys) {
+        if (localContent[key] !== crowdinContent[key]) return false
+    }
+    return true
+}
 
 async function initBranch(client: CrowdinClient): Promise<SourceFilesModel.Branch> {
     const branch = await client.getOrCreateMainBranch()
@@ -85,6 +90,14 @@ async function processByDir(client: CrowdinClient, dir: Dir, branch: SourceFiles
             const storage = await client.createStorage(crowdinFilename, fileContent)
             existFile = await client.createFile(directory.id, storage, crowdinFilename)
             console.log(`Created new file: dir=${dir}, fileName=${crowdinFilename}, id=${existFile.id}`)
+        } else {
+            // Download source file from Crowdin and compare
+            const crowdinJson = await client.downloadSourceFile(existFile.id)
+            const crowdinContent = transMsg(crowdinJson)
+            if (isSourceUnchanged(fileContent, crowdinContent)) {
+                console.log(`No source diff for ${dir}/${crowdinFilename}, skipped`)
+                continue
+            }
         }
         // Process by strings
         await processStrings(client, existFile, fileContent)
