@@ -63,5 +63,11 @@
         "showSiteName": "Wyświetl nazwę witryny",
         "showTopN": "Wyświetl górną część {n}",
         "donutChart": "Wyświetlane jako wykresy"
+    },
+    "it": {
+        "rating": "Invia il tuo voto",
+        "showSiteName": "Visualizza nome del sito",
+        "showTopN": "Mostra top {n}",
+        "donutChart": "Visualizzati come grafici di ciambella"
     }
 }

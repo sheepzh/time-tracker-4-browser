@@ -50,5 +50,9 @@
     "pl": {
         "confirmTitle": "Potwierdzenie",
         "successMsg": "Pomyślnie!"
+    },
+    "it": {
+        "confirmTitle": "Conferma",
+        "successMsg": "Con successo!"
     }
 }

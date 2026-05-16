@@ -27,7 +27,10 @@
         "paramError": "参数错误，请检查！",
         "deleteConfirm": "共筛选出 {count} 条数据，是否全部删除？",
         "migrationAlert": "使用导入/导出在不同浏览器之间迁移数据",
-        "importError": "文件格式错误"
+        "importError": "文件格式错误",
+        "exportData": "导出数据",
+        "restoreData": "导入数据",
+        "restoreFromOther": "导入 {ext} 数据"
     },
     "zh_TW": {
         "totalMemoryAlert": "瀏覽器為每個擴充功能提供 {size}MB 本地儲存空間",
@@ -236,7 +239,10 @@
         "paramError": "Parameterfehler, bitte überprüfen!",
         "deleteConfirm": "Insgesamt wurden {count} Datensätze herausgefiltert. Möchten Sie sie alle löschen?",
         "migrationAlert": "Migrieren Sie Daten zwischen Browsern mithilfe von Import und Export",
-        "importError": "Falsche Dateierweiterung"
+        "importError": "Falsche Dateierweiterung",
+        "exportData": "Daten exportieren",
+        "restoreData": "Daten wiederherstellen",
+        "restoreFromOther": "Wiederherstellen aus {ext}"
     },
     "fr": {
         "totalMemoryAlert": "Le navigateur fournit {size}Mo pour stocker des données locales pour chaque extension",
@@ -415,6 +421,9 @@
         "paramError": "Il parametro è errato, per favore controlla!",
         "deleteConfirm": "Un totale di {count} record sono stati filtrati. Vuoi eliminarli tutti?",
         "migrationAlert": "Migrare i dati tra browser utilizzando importazione ed esportazione",
-        "importError": "Estensione del file sbagliata"
+        "importError": "Estensione del file sbagliata",
+        "exportData": "Esporta dati",
+        "restoreData": "Ripristino dati",
+        "restoreFromOther": "Ripristina da {ext}"
     }
 }

@@ -63,5 +63,10 @@
         "add2Whitelist": "Dodaj {host} do Whitelisty",
         "removeFromWhitelist": "Usuń {host} z Whitelisty",
         "feedbackPage": "Zgłoszenia"
+    },
+    "it": {
+        "add2Whitelist": "Aggiungi {host} alla whitelist",
+        "removeFromWhitelist": "Rimuovi {host} dalla whitelist",
+        "feedbackPage": "Problemi"
     }
 }

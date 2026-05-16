@@ -193,5 +193,20 @@
             "deleteConfirmMsgRange": "Sprawdź wpisy dla [{url}] pomiędzy {start} a {end} zostaną usunięte",
             "deleteConfirmMsg": "Wpis wizyt dla [{url}] z {date} zostanie usunięty"
         }
+    },
+    "it": {
+        "date": "Data",
+        "host": "Dominio",
+        "group": "Gruppo Di Schede",
+        "focus": "Durata",
+        "run": "Tempo Di Esecuzione",
+        "time": "Visite",
+        "operation": {
+            "add2Whitelist": "Whitelist",
+            "analysis": "Analizza",
+            "deleteConfirmMsgAll": "Tutti i record di visita per [{url}] verranno eliminati",
+            "deleteConfirmMsgRange": "Record di visite per [{url}] tra {start} ed {end} saranno eliminati",
+            "deleteConfirmMsg": "Visita record per [{url}] di {date} sarà eliminato"
+        }
     }
 }

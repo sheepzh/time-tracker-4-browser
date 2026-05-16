@@ -52,6 +52,7 @@
         "title": "Analiza przeglądania "
     },
     "it": {
+        "searchPlaceholder": "Inserisci dominio o URL",
         "title": "Analisi Di Esplorazione"
     }
 }

@@ -129,7 +129,21 @@
         }
     },
     "it": {
+        "merge": {
+            "mergeBy": "Unisci per",
+            "mergeMethod": {
+                "date": "Data",
+                "domain": "URL",
+                "cate": "Categoria",
+                "group": "Gruppo Di Schede",
+                "notMerge": "Non Unire"
+            }
+        },
+        "cate": {
+            "notSet": "Non impostato"
+        },
         "limit": {
+            "limited": "Limitata",
             "daily": "Limite giornaliero",
             "weekly": "Limite settimanale",
             "period": "Periodi bloccati",
@@ -159,7 +173,7 @@
     },
     "de": {
         "merge": {
-            "mergeBy": "Merge nach",
+            "mergeBy": "Zusammenführen durch",
             "mergeMethod": {
                 "date": "Datum",
                 "domain": "URL",
@@ -172,6 +186,7 @@
             "notSet": "Nicht festgelegt"
         },
         "limit": {
+            "limited": "Begrenzt",
             "daily": "Tägliches Limit",
             "weekly": "Wöchentliches Limit",
             "period": "Unzulässiger Zeitraum",
