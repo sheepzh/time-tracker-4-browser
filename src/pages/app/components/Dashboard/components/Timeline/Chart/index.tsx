@@ -10,17 +10,16 @@ import { t } from '@app/locale'
 import { Collection, Files, Link } from '@element-plus/icons-vue'
 import { useEcharts } from '@hooks'
 import Flex from "@pages/components/Flex"
+import IconRadioGroup from '@pages/components/IconRadioGroup'
 import { type ECElementEvent, type ECharts } from "echarts/core"
-import { ElIcon, ElRadioButton, ElRadioGroup } from 'element-plus'
-import { computed, defineComponent } from "vue"
-import { type JSX } from 'vue/jsx-runtime'
+import { type Component, computed, defineComponent } from "vue"
 import { TIMELINE_DAY_COUNT, useTimelineContext } from '../context'
 import Wrapper, { BizData, EcOption } from './Wrapper'
 
-const CHART_CONFIG: Record<timer.timeline.MergeMethod, JSX.Element | string> = {
-    none: <Files />,
-    domain: <Link />,
-    cate: <Collection />,
+const CHART_CONFIG: Record<timer.timeline.MergeMethod, Component> = {
+    none: Files,
+    domain: Link,
+    cate: Collection,
 }
 
 const extractLegendSelected = (legends: EcOption['legend']): Record<string, boolean> => {
@@ -72,19 +71,12 @@ const TimelineChart = defineComponent<{}>(() => {
                     <Flex align="center">
                         {t(msg => msg.dashboard.timeline.title, { n: TIMELINE_DAY_COUNT })}
                     </Flex>
-                    <Flex align='center'>
-                        <ElRadioGroup
-                            size="small"
-                            modelValue={merge.value}
-                            onChange={val => setMerge(val as timer.timeline.MergeMethod)}
-                        >
-                            {Object.entries(CHART_CONFIG).map(([k, v]) => (
-                                <ElRadioButton value={k}>
-                                    <ElIcon size={15}>{v}</ElIcon>
-                                </ElRadioButton>
-                            ))}
-                        </ElRadioGroup>
-                    </Flex>
+                    <IconRadioGroup
+                        size="small"
+                        modelValue={merge.value}
+                        onChange={val => setMerge(val as timer.timeline.MergeMethod)}
+                        options={Object.entries(CHART_CONFIG).map(([value, icon]) => ({ value, icon }))}
+                    />
                 </Flex>
             </ChartTitle>
             <div ref={elRef} style={{ flex: 1 }} />
