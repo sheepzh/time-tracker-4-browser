@@ -31,7 +31,7 @@ const DEMO_ITEMS: InitialCate[] = [
 
 async function initItem(item: InitialCate) {
     const { name, hosts } = item
-    const cate = await cateDatabase.add(name)
+    const cate = await cateDatabase.add({ name, autoRules: [] })
     const cateId = cate.id
     const siteKeys = hosts.map(host => ({ host, type: 'normal' } satisfies timer.site.SiteKey))
     await batchChangeCate(cateId, siteKeys)

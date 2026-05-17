@@ -100,8 +100,8 @@ class MessageDispatcher {
             .register('option.weekStartTime', getWeekStartTime)
             // Category
             .register('cate.all', () => cateDatabase.listAll())
-            .register('cate.add', name => cateDatabase.add(name))
-            .register('cate.change', ({ id, name }) => cateDatabase.update(id, name))
+            .register('cate.add', data => cateDatabase.add(data))
+            .register('cate.change', data => cateDatabase.update(data))
             .register('cate.delete', id => cateDatabase.delete(id))
             // Meta information
             .register('meta.installTs', getInstallTime)

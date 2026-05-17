@@ -80,6 +80,12 @@ const SiteOption = defineComponent<{ value: timer.site.SiteInfo }>(props => {
     )
 }, { props: ['value'] })
 
+const notSetCate = (): timer.site.Cate => ({
+    id: CATE_NOT_SET_ID,
+    name: t(msg => msg.shared.cate.notSet),
+    autoRules: [],
+})
+
 const TargetSelect = defineComponent(() => {
     const cate = useCategory()
 
@@ -90,7 +96,7 @@ const TargetSelect = defineComponent(() => {
     })
 
     const { data: allItems } = useRequest(
-        () => fetchItems([...cate.all, { id: CATE_NOT_SET_ID, name: t(msg => msg.shared.cate.notSet) }]),
+        () => fetchItems([...cate.all, notSetCate()]),
         { defaultValue: [[], []], deps: [() => cate.all] },
     )
 

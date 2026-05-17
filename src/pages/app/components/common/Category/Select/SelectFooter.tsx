@@ -14,7 +14,7 @@ const SelectFooter = defineComponent(() => {
     const [name, setName] = useState<string>()
 
     const { refresh: saveCate, loading } = useManualRequest(
-        (name: string) => sendMsg2Runtime('cate.add', name),
+        (name: string) => sendMsg2Runtime('cate.add', { name, autoRules: [] }),
         {
             onSuccess() {
                 cate.refresh()

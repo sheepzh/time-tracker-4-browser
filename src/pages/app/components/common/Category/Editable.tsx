@@ -5,7 +5,7 @@ import { useManualRequest, useSwitch } from "@hooks"
 import Flex from "@pages/components/Flex"
 import { supportCategory } from "@util/site"
 import { ElIcon, ElTag } from "element-plus"
-import { computed, defineComponent, nextTick, ref } from "vue"
+import { computed, defineComponent, ref } from "vue"
 import Select, { type Instance } from "./Select"
 
 type Props = ModelValue<number | undefined> & {
@@ -34,12 +34,6 @@ const CategoryEditable = defineComponent<Props>(props => {
         },
     })
 
-    const handleEditClick = (ev: MouseEvent) => {
-        ev.stopImmediatePropagation()
-        openEditing()
-        nextTick(() => selectRef.value?.openOptions?.())
-    }
-
     const selectRef = ref<Instance>()
 
     return () => supportCategory(props.siteKey) ?
@@ -64,7 +58,7 @@ const CategoryEditable = defineComponent<Props>(props => {
                             {current.value.name}
                         </ElTag>
                     }
-                    <Flex align="center" onClick={handleEditClick}>
+                    <Flex align="center" onClick={openEditing}>
                         <ElIcon style={{ cursor: 'pointer' }}>
                             <Edit />
                         </ElIcon>
