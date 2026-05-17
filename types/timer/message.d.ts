@@ -44,7 +44,7 @@ declare namespace timer.mq {
         & _MakeRegistry<'item.batch', core.RowKey[], core.Row[]>
         // Category
         & _MakeRegistry<'cate.all', undefined, site.Cate[]>
-        & _MakeRegistry<'cate.add', string, site.Cate>
+        & _MakeRegistry<'cate.add', Omit<site.Cate, 'id'>, site.Cate>
         & _MakeRegistry<'cate.change', site.Cate>
         & _MakeRegistry<'cate.delete', number>
         // Option
