@@ -5,7 +5,7 @@ import {
 import { t } from '@app/locale'
 import { getGroupName, isGroup, isSite } from "@util/stat"
 import { cvtDateRange2Str, type DateRange, formatTime, getBirthday } from "@util/time"
-import type { ReportFilterOption, ReportSort } from "./types"
+import type { RecordFilterOption, RecordSort } from "./types"
 
 /**
  * Compute the confirm text for one item to delete
@@ -34,7 +34,7 @@ function computeRangeConfirmText(url: string, dateRange: DateRange): string {
         : t(msg => msg.item.operation.deleteConfirmMsgRange, { url, start, end })
 }
 
-export function computeDeleteConfirmMsg(row: timer.stat.Row, filterOption: ReportFilterOption, groupMap: Record<number, chrome.tabGroups.TabGroup>): string {
+export function computeDeleteConfirmMsg(row: timer.stat.Row, filterOption: RecordFilterOption, groupMap: Record<number, chrome.tabGroups.TabGroup>): string {
     let name: string | undefined
     if (isGroup(row)) {
         name = getGroupName(groupMap, row)
@@ -49,7 +49,7 @@ export function computeDeleteConfirmMsg(row: timer.stat.Row, filterOption: Repor
         : computeSingleConfirmText(name, date ?? '')
 }
 
-export async function handleDelete(row: timer.stat.Row, filterOption: ReportFilterOption) {
+export async function handleDelete(row: timer.stat.Row, filterOption: RecordFilterOption) {
     const { date } = row
     const { mergeDate, dateRange } = filterOption
     if (!mergeDate) {
@@ -72,15 +72,15 @@ export async function handleDelete(row: timer.stat.Row, filterOption: ReportFilt
     isGroup(row) && await deleteSiteStatByGroup(row.groupKey, strRange)
 }
 
-const cvtOrderDir = (order: ReportSort['order']): timer.common.SortDirection | undefined => {
+const cvtOrderDir = (order: RecordSort['order']): timer.common.SortDirection | undefined => {
     if (order === 'ascending') return 'ASC'
     else if (order === 'descending') return 'DESC'
     else return undefined
 }
 
 const cvt2GroupQuery = (
-    { query, mergeDate, dateRange: date }: ReportFilterOption,
-    { prop, order }: ReportSort,
+    { query, mergeDate, dateRange: date }: RecordFilterOption,
+    { prop, order }: RecordSort,
 ): timer.stat.GroupQuery => ({
     date: cvtDateRange2Str(date), mergeDate, query,
     sortKey: prop !== 'host' && prop !== 'run' ? prop : undefined,
@@ -88,8 +88,8 @@ const cvt2GroupQuery = (
 })
 
 const cvt2SiteQuery = (
-    { dateRange: date, mergeDate, siteMerge, query, cateIds, readRemote: inclusiveRemote }: ReportFilterOption,
-    { prop, order }: ReportSort,
+    { dateRange: date, mergeDate, siteMerge, query, cateIds, readRemote: inclusiveRemote }: RecordFilterOption,
+    { prop, order }: RecordSort,
 ): timer.stat.SiteQuery => ({
     date: cvtDateRange2Str(date), mergeDate,
     mergeHost: siteMerge === 'domain',
@@ -100,15 +100,15 @@ const cvt2SiteQuery = (
 })
 
 const cvt2CateQuery = (
-    { dateRange: date, mergeDate, query, cateIds, readRemote: inclusiveRemote }: ReportFilterOption,
-    { prop, order }: ReportSort,
+    { dateRange: date, mergeDate, query, cateIds, readRemote: inclusiveRemote }: RecordFilterOption,
+    { prop, order }: RecordSort,
 ): timer.stat.CateQuery => ({
     date: cvtDateRange2Str(date), mergeDate, query, cateIds, inclusiveRemote,
     sortKey: prop !== 'host' && prop !== 'run' ? prop : undefined,
     sortDirection: cvtOrderDir(order),
 })
 
-export const queryPage = async (filter: ReportFilterOption, sort: ReportSort, page: timer.common.PageQuery): Promise<timer.common.PageResult<timer.stat.Row>> => {
+export const queryPage = async (filter: RecordFilterOption, sort: RecordSort, page: timer.common.PageQuery): Promise<timer.common.PageResult<timer.stat.Row>> => {
     const { siteMerge } = filter
     if (siteMerge === 'group') {
         return await getGroupStatPage({ ...cvt2GroupQuery(filter, sort), ...page })
@@ -119,7 +119,7 @@ export const queryPage = async (filter: ReportFilterOption, sort: ReportSort, pa
     }
 }
 
-export const queryAll = async (filter: ReportFilterOption, sort: ReportSort): Promise<timer.stat.Row[]> => {
+export const queryAll = async (filter: RecordFilterOption, sort: RecordSort): Promise<timer.stat.Row[]> => {
     const { siteMerge } = filter
     if (siteMerge === 'group') {
         return await listGroupStats(cvt2GroupQuery(filter, sort))

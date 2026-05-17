@@ -7,8 +7,8 @@
 import { type AppAnalysisQuery } from '@/shared/route'
 import { addWhitelist, deleteWhitelist, listWhitelist } from "@api/sw/whitelist"
 import PopupConfirmButton from '@app/components/common/PopupConfirmButton'
-import { computeDeleteConfirmMsg, handleDelete } from '@app/components/Report/common'
-import { useReportFilter } from '@app/components/Report/context'
+import { computeDeleteConfirmMsg, handleDelete } from '@app/components/Record/common'
+import { useRecordFilter } from '@app/components/Record/context'
 import { t } from '@app/locale'
 import { ANALYSIS_ROUTE } from '@app/router/constants'
 import { Delete, Open, Plus, Stopwatch } from "@element-plus/icons-vue"
@@ -54,7 +54,7 @@ const deleteVisible = (row: timer.stat.Row) => {
 }
 
 const _default = defineComponent<Props>(({ onDelete }) => {
-    const filter = useReportFilter()
+    const filter = useRecordFilter()
     const { groupMap } = useTabGroups()
     const width = computed(() => {
         const siteMerge = filter.siteMerge

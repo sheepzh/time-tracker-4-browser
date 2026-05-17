@@ -58,7 +58,7 @@ const _default = defineComponent(() => {
         <Flex gap={10} marginBottom={60} justify='center'>
             <a target='_blank' href={analysisUrl}>
                 <ElButton round icon={Trend} type="success">
-                    {t(msg => msg.menu.siteAnalysis)}
+                    {t(msg => msg.menu.analysis)}
                 </ElButton>
             </a>
             <ElButton

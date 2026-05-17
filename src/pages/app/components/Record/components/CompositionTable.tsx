@@ -18,10 +18,10 @@ type Row = {
 
 type ValueFormatter = (val: number) => string
 
-const CLIENT_NAME = t(msg => msg.report.remoteReading.table.client)
-const VALUE = t(msg => msg.report.remoteReading.table.value)
-const LOCAL_DATA = t(msg => msg.report.remoteReading.table.localData)
-const PERCENTAGE = t(msg => msg.report.remoteReading.table.percentage)
+const CLIENT_NAME = t(msg => msg.record.remoteReading.table.client)
+const VALUE = t(msg => msg.record.remoteReading.table.value)
+const LOCAL_DATA = t(msg => msg.record.remoteReading.table.localData)
+const PERCENTAGE = t(msg => msg.record.remoteReading.table.percentage)
 
 function computeRows(data: timer.stat.RemoteCompositionVal[]): Row[] {
     const rows: Row[] = data.map(e => typeof e === 'number'

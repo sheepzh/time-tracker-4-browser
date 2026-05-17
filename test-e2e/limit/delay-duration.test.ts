@@ -66,10 +66,10 @@ describe('Limit delay duration', () => {
     // afterEach(() => context.close())
 
     test('Delay with customized duration', async () => {
-        const optionPage = await context.openAppPage('/additional/option?i=limit')
+        const optionPage = await context.openAppPage('/other/option?i=limit')
         await setDelayDuration(optionPage, 1)
 
-        const limitPage = await context.openAppPage('/behavior/limit')
+        const limitPage = await context.openAppPage('/productivity/limit')
         await createLimitRule(DEMO_RULE, limitPage)
 
         const ruleId = await findRuleId(limitPage)

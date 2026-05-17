@@ -11,12 +11,12 @@ import { UploadFilled } from "@element-plus/icons-vue"
 import { useRequest } from '@hooks'
 import { ElButton, ElIcon, ElTooltip } from "element-plus"
 import { computed, defineComponent } from "vue"
-import { useReportFilter } from "../context"
+import { useRecordFilter } from "../context"
 import { ICON_BTN_STYLE } from "./common"
 
 const _default = defineComponent(() => {
-    const filter = useReportFilter()
-    const content = computed(() => t(msg => msg.report.remoteReading[filter.readRemote ? 'on' : 'off']))
+    const filter = useRecordFilter()
+    const content = computed(() => t(msg => msg.record.remoteReading[filter.readRemote ? 'on' : 'off']))
     const { data: visible } = useRequest(() => checkAuth().then(errMsg => !errMsg), { defaultValue: false })
 
     return () => (

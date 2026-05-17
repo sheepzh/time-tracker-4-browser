@@ -1,11 +1,11 @@
 import { DateRange } from '@util/time'
 import type { Sort } from "element-plus"
 
-export type ReportSort = Omit<Sort, 'prop'> & {
+export type RecordSort = Omit<Sort, 'prop'> & {
     prop: timer.core.Dimension | 'host' | 'date'
 }
 
-export type ReportFilterOption = {
+export type RecordFilterOption = {
     query: string | undefined
     dateRange: DateRange
     mergeDate: boolean

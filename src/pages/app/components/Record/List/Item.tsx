@@ -13,7 +13,7 @@ import { computed, defineComponent, ref, StyleValue, watch } from "vue"
 import { computeDeleteConfirmMsg, handleDelete } from "../common"
 import CompositionTable from "../components/CompositionTable"
 import TooltipSiteList from "../components/TooltipSiteList"
-import { useReportFilter } from "../context"
+import { useRecordFilter } from "../context"
 
 type Props = {
     value: timer.stat.Row
@@ -36,7 +36,7 @@ const useContentStyle = () => {
 }
 
 const _default = defineComponent<Props>(props => {
-    const filter = useReportFilter()
+    const filter = useRecordFilter()
     const { groupMap } = useTabGroups()
     const formatter = (focus: number): string => periodFormatter(focus, { format: filter?.timeFormat })
     const { date, focus, time } = props.value

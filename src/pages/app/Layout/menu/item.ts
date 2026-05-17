@@ -7,18 +7,18 @@
  */
 
 import { type I18nKey } from '@app/locale'
-import { ANALYSIS_ROUTE, MERGE_ROUTE } from '@app/router/constants'
-import { Aim, Connection, HelpFilled, Histogram, Memo, MoreFilled, Rank, SetUp, Stopwatch, Timer, View } from "@element-plus/icons-vue"
-import { Trend } from '@pages/icons'
+import { ANALYSIS_ROUTE, DASHBOARD_ROUTE, MERGE_ROUTE, OPTION_ROUTE, RECORD_ROUTE } from '@app/router/constants'
+import { Aim, HelpFilled, Memo, Rank, SetUp, Stopwatch, Timer } from "@element-plus/icons-vue"
+import { Focus, Trend } from '@pages/icons'
 import { getGuidePageUrl } from "@util/constant/url"
 import { type Component } from 'vue'
 import About from "../icons/About"
-import Database from "../icons/Database"
+import Database from '../icons/Database'
 import Table from "../icons/Table"
 import Website from "../icons/Website"
 import Whitelist from "../icons/Whitelist"
 
-type MenuBase = {
+export type MenuItem = {
     title: I18nKey
     icon: Component | string
     /**
@@ -27,15 +27,12 @@ type MenuBase = {
      * @since 2.4.2
      */
     mobile?: boolean
-}
+} & (
+        | { route: string }
+        | { href: string }
+    )
 
-export type MenuItem = MenuBase & (
-    | { route: string }
-    | { href: string }
-)
-
-type MenuGroup = MenuBase & {
-    index: string
+type MenuGroup = Pick<MenuItem, 'title'> & {
     children: MenuItem[]
 }
 
@@ -45,51 +42,46 @@ export const indexOfItem = (item: MenuItem) => 'route' in item ? item.route : it
  * Menu items
  */
 export const menuGroups = (): MenuGroup[] => [{
-    title: msg => msg.menu.data,
-    index: 'data',
-    icon: Histogram,
+    title: msg => msg.menu.overview,
     children: [{
         title: msg => msg.menu.dashboard,
-        route: '/data/dashboard',
+        route: DASHBOARD_ROUTE,
         icon: Stopwatch,
     }, {
-        title: msg => msg.menu.dataReport,
-        route: '/data/report',
+        title: msg => msg.menu.record,
+        route: RECORD_ROUTE,
         icon: Table,
     }, {
-        title: msg => msg.menu.siteAnalysis,
+        title: msg => msg.menu.analysis,
         route: ANALYSIS_ROUTE,
         icon: Trend,
-    }, {
-        title: msg => msg.menu.dataClear,
-        route: '/data/manage',
-        icon: Database,
     }]
 }, {
-    title: msg => msg.menu.behavior,
-    index: 'behavior',
-    icon: View,
+    title: msg => msg.menu.productivity,
     children: [{
         title: msg => msg.menu.habit,
-        route: '/behavior/habit',
+        route: '/productivity/habit',
         icon: Aim,
     }, {
         title: msg => msg.base.limit,
-        route: '/behavior/limit',
+        route: '/productivity/limit',
         icon: Timer,
+    }, {
+        title: msg => msg.menu.focus,
+        route: '/productivity/focus',
+        icon: Focus,
+        mobile: false,
     }]
 }, {
-    title: msg => msg.menu.additional,
-    index: 'additional',
-    icon: Connection,
+    title: msg => msg.menu.siteRule,
     children: [{
-        title: msg => msg.menu.siteManage,
-        route: '/additional/site-manage',
+        title: msg => msg.menu.sites,
+        route: '/site-rule/sites',
         icon: Website,
         mobile: false,
     }, {
         title: msg => msg.menu.whitelist,
-        route: '/additional/whitelist',
+        route: '/site-rule/whitelist',
         icon: Whitelist,
         mobile: false,
     }, {
@@ -97,16 +89,18 @@ export const menuGroups = (): MenuGroup[] => [{
         route: MERGE_ROUTE,
         icon: Rank,
         mobile: false,
-    }, {
-        title: msg => msg.base.option,
-        route: '/additional/option',
-        icon: SetUp,
     }]
 }, {
     title: msg => msg.menu.other,
-    index: 'other',
-    icon: MoreFilled,
     children: [{
+        title: msg => msg.base.option,
+        route: OPTION_ROUTE,
+        icon: SetUp,
+    }, {
+        title: msg => msg.menu.migration,
+        route: '/other/migration',
+        icon: Database,
+    }, {
         title: msg => msg.base.guidePage,
         href: getGuidePageUrl(),
         icon: Memo,

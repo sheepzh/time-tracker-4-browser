@@ -4,12 +4,12 @@ import { extractFileHost, extractHostname, isBrowserUrl, isHomepage, isIpAndPort
 test('browser url', () => {
     // chrome
     expect(isBrowserUrl('chrome://settings/')).toBeTruthy()
-    expect(isBrowserUrl('chrome-extension://hkjmfadlepammjmjiihpongliebpcnba/static/app.html#/data/report')).toBeTruthy()
+    expect(isBrowserUrl('chrome-extension://hkjmfadlepammjmjiihpongliebpcnba/static/app.html#/data/record')).toBeTruthy()
     // firefox
     expect(isBrowserUrl('about:addons')).toBeTruthy()
     // edge
     expect(isBrowserUrl('edge://extensions/')).toBeTruthy()
-    expect(isBrowserUrl('extension://ifckodfehjfpfddhjhpejmidkhelbnpa/static/app.html#/additional/option')).toBeTruthy()
+    expect(isBrowserUrl('extension://ifckodfehjfpfddhjhpejmidkhelbnpa/static/app.html#/other/option')).toBeTruthy()
     expect(isBrowserUrl('https://www.jss.com.cn/')).toBeFalsy()
 })
 

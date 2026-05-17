@@ -5,7 +5,7 @@ import { getHost } from "@util/stat"
 import { ElCard, useNamespace } from "element-plus"
 import { defineComponent, ref } from "vue"
 import { queryPage } from "../common"
-import { useReportFilter } from "../context"
+import { useRecordFilter } from "../context"
 import type { DisplayComponent } from "../types"
 import Item from "./Item"
 
@@ -33,7 +33,7 @@ const useStyle = () => {
 }
 
 const _default = defineComponent<{}>((_, ctx) => {
-    const filterOption = useReportFilter()
+    const filterOption = useRecordFilter()
     const { data, loading, loadMoreAsync, end, reset } = useScrollRequest(async (num, size) => {
         const pagination = await queryPage(
             filterOption,
@@ -76,7 +76,7 @@ const _default = defineComponent<{}>((_, ctx) => {
                 ))}
             </div>
             <p v-loading={loading.value} class={infoCls}>
-                {end.value ? t(msg => msg.report.noMore) : (loading.value ? 'Loading ...' : 'Load More')}
+                {end.value ? t(msg => msg.record.noMore) : (loading.value ? 'Loading ...' : 'Load More')}
             </p>
         </div>
     )

@@ -20,7 +20,7 @@ import { handleClick, initTitle } from "./route"
 import { colorMenu } from './style'
 
 const useCollapseState = () => {
-    const [collapsed, setCollapsed] = useCached('menu-collapsed', false)
+    const [collapsed, setCollapsed] = useCached('menu-collapsed', true)
     const [tooltipVisible, setTooltipVisible] = useState(false)
 
     const toggle = () => {

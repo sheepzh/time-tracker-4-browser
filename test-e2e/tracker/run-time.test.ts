@@ -6,7 +6,7 @@ import { createWhitelist } from "../common/whitelist"
 let context: LaunchContext
 
 async function clickRunTimeChange(siteHost: string): Promise<void> {
-    const sitePage = await context.openAppPage("/additional/site-manage")
+    const sitePage = await context.openAppPage("/site-rule/sites")
     await sitePage.focus('input[placeholder]')
     await sitePage.keyboard.type(siteHost)
     await sitePage.keyboard.press('Enter')
