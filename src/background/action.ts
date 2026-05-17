@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { APP_OPTION_ROUTE, APP_REPORT_ROUTE } from "@/shared/route"
+import { APP_OPTION_ROUTE, APP_RECORD_ROUTE } from "@/shared/route"
 import { onIconClick } from "@api/chrome/action"
 import { createContextMenu } from "@api/chrome/context-menu"
 import { getRuntimeId } from "@api/chrome/runtime"
@@ -88,7 +88,7 @@ export function initBrowserAction() {
 
     if (IS_ANDROID) {
         // Forbidden popup page
-        onIconClick(() => createTab({ url: getAppPageUrl(APP_REPORT_ROUTE) }))
+        onIconClick(() => createTab({ url: getAppPageUrl(APP_RECORD_ROUTE) }))
     }
 }
 

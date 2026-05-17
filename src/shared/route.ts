@@ -1,4 +1,4 @@
-export const APP_LIMIT_ROUTE = '/behavior/limit'
+export const APP_LIMIT_ROUTE = '/productivity/limit'
 export type AppLimitQuery = {
     action?: 'create' | 'modify'
     url?: string
@@ -11,12 +11,12 @@ export type AppAnalysisQuery = Partial<timer.site.SiteKey> & {
     url?: string
 }
 
-export const APP_OPTION_ROUTE = '/additional/option'
-export const APP_REPORT_ROUTE = '/data/report'
+export const APP_OPTION_ROUTE = '/other/option'
+export const APP_RECORD_ROUTE = '/data/record'
 /**
- * The query param of report page
+ * The query param of record page
  */
-export type AppReportQuery = {
+export type AppRecordQuery = {
     /**
      * Query
      */

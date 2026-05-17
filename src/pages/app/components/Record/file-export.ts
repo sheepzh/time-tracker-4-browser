@@ -11,7 +11,7 @@ import { exportCsv as exportCsv_, exportJson as exportJson_ } from "@util/file"
 import { CATE_NOT_SET_ID } from "@util/site"
 import { getAlias, getGroupName, getHost, getRelatedCateId, isGroup } from "@util/stat"
 import { formatTimeYMD } from "@util/time"
-import type { ReportFilterOption } from "./types"
+import type { RecordFilterOption } from "./types"
 
 type ExportInfo = {
     host?: string
@@ -26,11 +26,11 @@ type ExportInfo = {
 /**
  * Compute the name of downloaded file
  */
-function computeFileName(filterParam: ReportFilterOption): string {
+function computeFileName(filterParam: RecordFilterOption): string {
     const { dateRange, siteMerge, mergeDate, timeFormat } = filterParam
     const [ds, de] = dateRange instanceof Date ? [dateRange,] : dateRange ?? []
     const parts = [
-        t(msg => msg.report.exportFileName),
+        t(msg => msg.record.exportFileName),
         ds && formatTimeYMD(ds),
         de && formatTimeYMD(de),
         mergeDate && t(msg => msg.shared.merge.mergeMethod.date),
@@ -64,7 +64,7 @@ const getCateName = (row: timer.stat.Row, categories: timer.site.Cate[]): string
 
 export type ExportParam = {
     rows: timer.stat.Row[]
-    filter: ReportFilterOption
+    filter: RecordFilterOption
     categories: timer.site.Cate[]
     groupMap: Record<number, chrome.tabGroups.TabGroup>
 }
@@ -84,7 +84,7 @@ export function exportJson(param: ExportParam): void {
 type CsvColumn = keyof ExportInfo
 
 type CsvColumnConfig = {
-    visible: (mergeDate: boolean, siteMerge: ReportFilterOption['siteMerge']) => boolean
+    visible: (mergeDate: boolean, siteMerge: RecordFilterOption['siteMerge']) => boolean
     i18n: I18nKey
     formatter: (row: timer.stat.Row, categories: timer.site.Cate[], groupMap: Record<number, chrome.tabGroups.TabGroup>) => string
 }

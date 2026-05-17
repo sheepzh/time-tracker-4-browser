@@ -1,5 +1,5 @@
 import CategoryEditable from "@app/components/common/Category/Editable"
-import TooltipSiteList from "@app/components/Report/components/TooltipSiteList"
+import TooltipSiteList from "@app/components/Record/components/TooltipSiteList"
 import { useCategory } from '@app/context'
 import { t } from '@app/locale'
 import Flex from "@pages/components/Flex"

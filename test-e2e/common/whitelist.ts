@@ -2,7 +2,7 @@ import { type LaunchContext } from "./base"
 import { sleep } from './util'
 
 export async function createWhitelist(context: LaunchContext, white: string) {
-    const whitePage = await context.openAppPage('/additional/whitelist')
+    const whitePage = await context.openAppPage('/site-rule/whitelist')
 
     const btn = await whitePage.waitForSelector('.el-button')
     await btn?.click()
@@ -23,7 +23,7 @@ export async function createWhitelist(context: LaunchContext, white: string) {
 }
 
 export async function removeAllWhitelist(context: LaunchContext) {
-    const whitePage = await context.openAppPage('/additional/whitelist')
+    const whitePage = await context.openAppPage('/site-rule/whitelist')
     await whitePage.evaluate(async () => {
         await chrome.storage.local.remove('__timer__WHITELIST')
     })

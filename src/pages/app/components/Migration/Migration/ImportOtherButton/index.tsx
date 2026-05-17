@@ -8,7 +8,7 @@
 import { importOther } from '@api/sw/immigration'
 import DialogSop from '@app/components/common/DialogSop'
 import { initDialogSopContext } from '@app/components/common/DialogSop/context'
-import { useDataMemory } from '@app/components/DataManage/context'
+import { useDataMemory } from '@app/components/Migration/context'
 import { t } from "@app/locale"
 import { css } from '@emotion/css'
 import { useRequest, useState } from '@hooks'

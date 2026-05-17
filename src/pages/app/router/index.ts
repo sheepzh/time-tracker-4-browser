@@ -7,66 +7,66 @@
 
 import { type App } from "vue"
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from "vue-router"
-import { ANALYSIS_ROUTE, DASHBOARD_ROUTE, LIMIT_ROUTE, MERGE_ROUTE, OPTION_ROUTE, REPORT_ROUTE } from "./constants"
+import { ANALYSIS_ROUTE, DASHBOARD_ROUTE, LIMIT_ROUTE, MERGE_ROUTE, OPTION_ROUTE, RECORD_ROUTE } from "./constants"
 
 const dataRoutes: RouteRecordRaw[] = [
     {
         path: '/data',
         redirect: DASHBOARD_ROUTE,
-    },
-    // Needn't nested router
-    {
+    }, {
         path: DASHBOARD_ROUTE,
         component: () => import('../components/Dashboard')
-    },
-    {
-        path: REPORT_ROUTE,
-        component: () => import('../components/Report')
+    }, {
+        path: RECORD_ROUTE,
+        component: () => import('../components/Record')
     }, {
         path: ANALYSIS_ROUTE,
         component: () => import('../components/Analysis')
-    }, {
-        path: '/data/manage',
-        component: () => import('../components/DataManage')
     }
 ]
 
 const behaviorRoutes: RouteRecordRaw[] = [
     {
-        path: '/behavior',
-        redirect: '/behavior/habit'
+        path: '/productivity',
+        redirect: '/productivity/habit'
     }, {
-        path: '/behavior/habit',
+        path: '/productivity/habit',
         component: () => import('../components/Habit'),
     }, {
         path: LIMIT_ROUTE,
         component: () => import('../components/Limit'),
+    }, {
+        path: '/productivity/focus',
+        component: () => import('../components/Focus'),
     }
 ]
 
 const additionalRoutes: RouteRecordRaw[] = [
     {
-        path: '/additional',
-        redirect: '/additional/whitelist'
+        path: '/site-rule',
+        redirect: '/site-rule/whitelist'
     }, {
-        path: '/additional/site-manage',
+        path: '/site-rule/sites',
         component: () => import('../components/SiteManage')
     }, {
-        path: '/additional/whitelist',
+        path: '/site-rule/whitelist',
         component: () => import('../components/Whitelist')
     }, {
         path: MERGE_ROUTE,
         component: () => import('../components/RuleMerge')
-    }, {
-        path: OPTION_ROUTE,
-        component: () => import('../components/Option')
     }
 ]
 
 const otherRoutes: RouteRecordRaw[] = [
     {
         path: '/other',
-        redirect: '/other/help'
+        redirect: '/other/option'
+    }, {
+        path: '/other/migration',
+        component: () => import('../components/Migration')
+    }, {
+        path: OPTION_ROUTE,
+        component: () => import('../components/Option')
     }, {
         path: '/other/help',
         component: () => import('../components/HelpUs'),

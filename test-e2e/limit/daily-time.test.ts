@@ -11,7 +11,7 @@ describe('Daily time limit', () => {
 
     test('basic', async () => {
         const limitTime = 2
-        const limitPage = await context.openAppPage('/behavior/limit')
+        const limitPage = await context.openAppPage('/productivity/limit')
         const demoRule: timer.limit.Rule = {
             id: 1, name: 'TEST DAILY LIMIT',
             cond: [MOCK_URL],

@@ -8,8 +8,8 @@ import { isGroup, isNormalSite, isSite } from "@util/stat"
 import { cvtDateRange2Str, DateRange, formatTime, formatTimeYMD, getBirthday } from "@util/time"
 import { ElButton, ElMessage, ElMessageBox } from "element-plus"
 import { computed, defineComponent } from "vue"
-import { useReportComponent, useReportFilter } from "../context"
-import type { DisplayComponent, ReportFilterOption } from "../types"
+import { useRecordComponent, useRecordFilter } from "../context"
+import type { DisplayComponent, RecordFilterOption } from "../types"
 
 async function computeBatchDeleteMsg(selected: timer.stat.Row[], mergeDate: boolean, dateRange: DateRange): Promise<string> {
     const hosts: string[] = []
@@ -26,7 +26,7 @@ async function computeBatchDeleteMsg(selected: timer.stat.Row[], mergeDate: bool
     }
     if (!example) {
         // Never happen
-        return t(msg => msg.report.batchDelete.noSelectedMsg)
+        return t(msg => msg.record.batchDelete.noSelectedMsg)
     }
     let count2Delete = selected.length ?? 0
     if (mergeDate) {
@@ -54,7 +54,7 @@ async function computeBatchDeleteMsg(selected: timer.stat.Row[], mergeDate: bool
     let [startDate, endDate] = dateRange instanceof Date ? [dateRange,] : dateRange ?? []
     if (!startDate && !endDate) {
         // Delete all
-        key = msg => msg.report.batchDelete.confirmMsgAll
+        key = msg => msg.record.batchDelete.confirmMsgAll
     } else {
         const dateFormat = t(msg => msg.calendar.dateFormat)
         startDate = startDate ?? getBirthday()
@@ -63,11 +63,11 @@ async function computeBatchDeleteMsg(selected: timer.stat.Row[], mergeDate: bool
         const end = formatTime(endDate, dateFormat)
         if (start === end) {
             // Single date
-            key = msg => msg.report.batchDelete.confirmMsg
+            key = msg => msg.record.batchDelete.confirmMsg
             i18nParam.date = start
         } else {
             // Date range
-            key = msg => msg.report.batchDelete.confirmMsgRange
+            key = msg => msg.record.batchDelete.confirmMsgRange
             i18nParam.start = start
             i18nParam.end = end
         }
@@ -75,12 +75,12 @@ async function computeBatchDeleteMsg(selected: timer.stat.Row[], mergeDate: bool
     return t(key, i18nParam)
 }
 
-async function handleBatchDelete(displayComp: DisplayComponent | undefined, filter: ReportFilterOption) {
+async function handleBatchDelete(displayComp: DisplayComponent | undefined, filter: RecordFilterOption) {
     if (!displayComp) return
 
     const selected = displayComp?.getSelected?.() ?? []
     if (!selected?.length) {
-        ElMessage.info(t(msg => msg.report.batchDelete.noSelectedMsg))
+        ElMessage.info(t(msg => msg.record.batchDelete.noSelectedMsg))
         return
     }
     const { dateRange, mergeDate } = filter
@@ -119,12 +119,12 @@ async function deleteBatch(selected: timer.stat.Row[], mergeDate: boolean, dateR
 }
 
 const BatchDelete = defineComponent(() => {
-    const filter = useReportFilter()
+    const filter = useRecordFilter()
     const disabled = computed(() => {
         const { siteMerge } = filter
         return !!siteMerge && siteMerge !== 'group'
     })
-    const comp = useReportComponent()
+    const comp = useRecordComponent()
 
     return () => (
         <ElButton

@@ -6,12 +6,12 @@
  */
 
 import { useCategory } from "@app/context"
-import { useTabGroups } from "@hooks"
 import { Download } from "@element-plus/icons-vue"
+import { useTabGroups } from "@hooks"
 import { ElButton, ElDropdown, ElDropdownItem, ElDropdownMenu, ElIcon } from "element-plus"
 import { defineComponent } from "vue"
 import { queryAll } from "../common"
-import { useReportFilter, useReportSort } from "../context"
+import { useRecordFilter, useRecordSort } from "../context"
 import { exportCsv, exportJson, ExportParam } from "../file-export"
 import { ICON_BTN_STYLE } from "./common"
 
@@ -19,8 +19,8 @@ const ALL_FILE_FORMATS = ["json", "csv"] as const
 type FileFormat = typeof ALL_FILE_FORMATS[number]
 
 const DownloadFile = defineComponent(() => {
-    const filter = useReportFilter()
-    const sort = useReportSort()
+    const filter = useRecordFilter()
+    const sort = useRecordSort()
     const cate = useCategory()
     const { groupMap } = useTabGroups()
 

@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-import CompositionTable from '@app/components/Report/components/CompositionTable'
-import { useReportFilter } from "@app/components/Report/context"
-import type { ReportSort } from "@app/components/Report/types"
+import CompositionTable from '@app/components/Record/components/CompositionTable'
+import { useRecordFilter } from "@app/components/Record/context"
+import type { RecordSort } from "@app/components/Record/types"
 import { t } from '@app/locale'
 import { periodFormatter } from '@app/util/time'
 import TooltipWrapper from '@pages/components/TooltipWrapper'
@@ -20,11 +20,11 @@ type Props = {
 }
 
 const TimeColumn = defineComponent<Props>(props => {
-    const filter = useReportFilter()
+    const filter = useRecordFilter()
     const formatter = (focus: number | undefined): string => periodFormatter(focus, { format: filter.timeFormat })
     return () => (
         <ElTableColumn
-            prop={props.dimension satisfies ReportSort['prop']}
+            prop={props.dimension satisfies RecordSort['prop']}
             label={t(msg => msg.item[props.dimension])}
             minWidth={130}
             align="center"

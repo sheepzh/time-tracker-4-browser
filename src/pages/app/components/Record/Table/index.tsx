@@ -10,7 +10,7 @@ import ContentCard from '@app/components/common/ContentCard'
 import Editable from '@app/components/common/Editable'
 import Pagination from '@app/components/common/Pagination'
 import { t } from '@app/locale'
-import { periodFormatter } from '@app/util/time'
+import { cvt2LocaleTime, periodFormatter } from '@app/util/time'
 import { Histogram } from "@element-plus/icons-vue"
 import { useDocumentVisibility, useManualRequest, useRequest, useState } from '@hooks'
 import Flex from "@pages/components/Flex"
@@ -19,13 +19,12 @@ import { isRtl } from "@util/document"
 import { siteEqual } from "@util/site"
 import { getAlias, isSite } from "@util/stat"
 import { cvtDateRange2Str } from '@util/time'
-import { ElLink, ElTable, ElTableColumn, ElText, ElTooltip, type TableInstance } from "element-plus"
+import { ElLink, ElTable, ElTableColumn, ElText, ElTooltip, RenderRowData, type TableInstance } from "element-plus"
 import { computed, defineComponent, ref, watch } from "vue"
 import { queryPage } from "../common"
-import { useReportFilter, useReportSort } from "../context"
-import type { DisplayComponent, ReportFilterOption, ReportSort } from "../types"
+import { useRecordFilter, useRecordSort } from "../context"
+import type { DisplayComponent, RecordFilterOption, RecordSort } from "../types"
 import CateColumn from "./columns/CateColumn"
-import DateColumn from "./columns/DateColumn"
 import GroupColumn from "./columns/GroupColumn"
 import HostColumn from "./columns/HostColumn"
 import OperationColumn from "./columns/OperationColumn"
@@ -41,7 +40,7 @@ async function handleAliasChange(key: timer.site.SiteKey, newAlias: string | und
 
 type ColumnVisible = Record<'index' | 'date' | 'site' | 'cate' | 'group', boolean>
 
-const computeVisible = (filter: ReportFilterOption): ColumnVisible => {
+const computeVisible = (filter: RecordFilterOption): ColumnVisible => {
     const { siteMerge, mergeDate } = filter
     return {
         index: !siteMerge || siteMerge === 'group',
@@ -55,8 +54,8 @@ const computeVisible = (filter: ReportFilterOption): ColumnVisible => {
 const _default = defineComponent((_, ctx) => {
     const rtl = isRtl()
     const [page, setPage] = useState<timer.common.PageQuery>({ size: 20, num: 1 })
-    const sort = useReportSort()
-    const filter = useReportFilter()
+    const sort = useRecordSort()
+    const filter = useRecordFilter()
     const visible = computed(() => computeVisible(filter))
     const { data, refresh, loading } = useRequest(() => queryPage(filter, sort.value, page.value), {
         loadingTarget: () => table.value?.$el,
@@ -116,10 +115,20 @@ const _default = defineComponent((_, ctx) => {
                         height="100%"
                         defaultSort={sort.value}
                         onSelection-change={setSelection}
-                        onSort-change={(val: ReportSort) => sort.value = val}
+                        onSort-change={(val: RecordSort) => sort.value = val}
                     >
                         {visible.value.index && <ElTableColumn type="selection" align="center" fixed="left" />}
-                        {visible.value.date && <DateColumn />}
+                        {visible.value.date && (
+                            <ElTableColumn
+                                prop={'date' satisfies RecordSort['prop']}
+                                label={t(msg => msg.item.date)}
+                                minWidth={135}
+                                align="center"
+                                sortable="custom"
+                            >
+                                {({ row }: RenderRowData<timer.stat.Row>) => cvt2LocaleTime(row.date)}
+                            </ElTableColumn>
+                        )}
                         {visible.value.site && <>
                             <HostColumn />
                             <ElTableColumn
@@ -150,7 +159,7 @@ const _default = defineComponent((_, ctx) => {
                         v-slots={{
                             content: () => (
                                 <ElText v-loading={totalLoading.value}>
-                                    {t(msg => msg.report.total, {
+                                    {t(msg => msg.record.total, {
                                         visit: total.value.visit,
                                         focus: periodFormatter(total.value.focus, { format: filter.timeFormat }),
                                     })}

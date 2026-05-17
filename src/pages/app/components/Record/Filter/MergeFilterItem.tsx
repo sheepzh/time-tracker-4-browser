@@ -6,7 +6,7 @@ import Flex from "@pages/components/Flex"
 import { ElCheckboxButton, ElCheckboxGroup, ElIcon, ElText, ElTooltip } from "element-plus"
 import { computed, defineComponent, StyleValue } from "vue"
 import { type JSX } from "vue/jsx-runtime"
-import { useReportFilter } from "../context"
+import { useRecordFilter } from "../context"
 
 const METHOD_ICONS: Record<timer.stat.MergeMethod, JSX.Element> = {
     cate: <Collection />,
@@ -16,7 +16,7 @@ const METHOD_ICONS: Record<timer.stat.MergeMethod, JSX.Element> = {
 }
 
 const MergeFilterItem = defineComponent<{}>(() => {
-    const filter = useReportFilter()
+    const filter = useRecordFilter()
     const cate = useCategory()
     const { mergeItems: siteMergeItems } = useSiteMerge({
         onGroupDisabled: () => mergeMethod.value.filter(v => v !== 'group')
