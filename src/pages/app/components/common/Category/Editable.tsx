@@ -34,6 +34,11 @@ const CategoryEditable = defineComponent<Props>(props => {
         },
     })
 
+    const handleEdit = () => {
+        openEditing()
+        setTimeout(() => selectRef.value?.openOptions(), 100)
+    }
+
     const selectRef = ref<Instance>()
 
     return () => supportCategory(props.siteKey) ?
@@ -58,7 +63,7 @@ const CategoryEditable = defineComponent<Props>(props => {
                             {current.value.name}
                         </ElTag>
                     }
-                    <Flex align="center" onClick={openEditing}>
+                    <Flex align="center" onClick={handleEdit}>
                         <ElIcon style={{ cursor: 'pointer' }}>
                             <Edit />
                         </ElIcon>

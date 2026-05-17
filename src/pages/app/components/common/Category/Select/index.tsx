@@ -70,7 +70,7 @@ const useCategorySelect = (props: Props) => {
         }
     )
 
-    const handleDeleteCategory = async (category: timer.site.Cate, e: MouseEvent) => {
+    const deleteCategory = async (category: timer.site.Cate, e: MouseEvent) => {
         e.stopPropagation()
 
         // Check related sites
@@ -95,7 +95,7 @@ const useCategorySelect = (props: Props) => {
     }
 
     // Edit category
-    const handleEditCategory = async (category: timer.site.Cate, e: MouseEvent) => {
+    const editCategory = async (category: timer.site.Cate, e: MouseEvent) => {
         e.stopPropagation()
 
         setVisibleLocked(true)
@@ -120,12 +120,12 @@ const useCategorySelect = (props: Props) => {
         handleVisibleChange,
         selectOption,
         handleClearClick,
-        handleDeleteCategory,
-        handleEditCategory,
+        deleteCategory,
+        editCategory,
     }
 }
 
-const Select = defineComponent<Props>(props => {
+const Select = defineComponent<Props>((props, ctx) => {
     const {
         cate,
         visible,
@@ -134,8 +134,8 @@ const Select = defineComponent<Props>(props => {
         handleVisibleChange,
         selectOption,
         handleClearClick,
-        handleDeleteCategory,
-        handleEditCategory,
+        deleteCategory,
+        editCategory,
     } = useCategorySelect(props)
 
     const ns = useNamespace('select')
@@ -143,6 +143,10 @@ const Select = defineComponent<Props>(props => {
     const showClearIcon = computed(() =>
         props.clearable && props.modelValue !== undefined && props.modelValue !== CATE_NOT_SET_ID
     )
+
+    ctx.expose({
+        openOptions: () => visible.value = true
+    } satisfies Instance)
 
     return () => (
         <div class={[ns.b(), props.size && ns.m(props.size)]} style={{ width: props.width || '100%' }}>
@@ -183,8 +187,7 @@ const Select = defineComponent<Props>(props => {
                     ),
                     content: () => (
                         <div class={ns.b('dropdown')}>
-                            <ElScrollbar
-                                tag="ul"
+                            <ElScrollbar tag="ul"
                                 wrapClass={ns.be('dropdown', 'wrap')}
                                 viewClass={ns.be('dropdown', 'list')}
                             >
@@ -199,8 +202,9 @@ const Select = defineComponent<Props>(props => {
                                     >
                                         <OptionItem
                                             value={c}
-                                            onEdit={e => handleEditCategory(c, e)}
-                                            onDelete={e => handleDeleteCategory(c, e)}
+                                            onEdit={e => editCategory(c, e)}
+                                            onDelete={e => deleteCategory(c, e)}
+                                            onSelect={() => selectOption(c.id)}
                                         />
                                     </div>
                                 ))}
