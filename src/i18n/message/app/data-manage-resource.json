@@ -157,6 +157,7 @@
         "totalMemoryAlert": "Браузер надає кожному розширенню {size} МБ для зберігання локальних даних",
         "totalMemoryAlert1": "Не вдалося визначити максимальну кількість доступної пам'яті браузера",
         "usedMemoryAlert": "Використано {size} МБ",
+        "idbAlert": "Перемістити дані відстеження до IndexedDB для зменшення використання сховища",
         "operationAlert": "Ви можете видалити ці неважливі дані, щоб зменшити використання пам'яті",
         "filterItems": "Фільтрувати дані",
         "filterFocus": "Час перегляду для дня – між {start} секунд і {end} секунд",
@@ -180,7 +181,10 @@
         "paramError": "Хибний параметр. Будь ласка, перевірте!",
         "deleteConfirm": "Всього відфільтровано {count} записів. Ви хочете видалити їх усі?",
         "migrationAlert": "Переносьте дані між браузерами за допомогою імпорту й експорту",
-        "importError": "Неправильне розширення файлу"
+        "importError": "Неправильне розширення файлу",
+        "exportData": "Експортувати дані",
+        "restoreData": "Відновити дані",
+        "restoreFromOther": "Відновити з {ext}"
     },
     "es": {
         "totalMemoryAlert": "El navegador proporciona {size}MB para almacenar datos locales para cada extensión",
