@@ -140,6 +140,8 @@
                 "lastDays": "Дані за минулі {n} днів",
                 "allTime": "Всі дані"
             },
+            "shareTitle": "Поділитися",
+            "installTip": "Сканувати для встановлення",
             "averageCount": "{value} разів на день у середньому",
             "averageTime": "{value} на день у середньому",
             "totalTime": "Всього {totalTime}",
@@ -148,6 +150,15 @@
         },
         "ranking": {
             "includingCount": "Включаючи {siteCount} сайтів"
+        },
+        "limit": {
+            "noData": "Для цієї URL-адреси не призначене правило обмеження",
+            "newOne": "Створити",
+            "timeUsed": "{percent} використано",
+            "visitUsed": "{used} кількість відвіданих",
+            "remain": "{remaining} залишилося",
+            "noLimit": "Без обмежень",
+            "notHit": "Не задіяно"
         }
     },
     "es": {
