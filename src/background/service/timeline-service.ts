@@ -13,7 +13,7 @@ import { toMap } from '@util/array'
 import { CATE_NOT_SET_ID } from '@util/site'
 import CustomizedHostMergeRuler from './components/host-merge-ruler'
 
-export async function listTimeline(query: timer.timeline.Query): Promise<timer.timeline.Activity[]> {
+export async function listTimeline(query: tt4b.timeline.Query): Promise<tt4b.timeline.Activity[]> {
     const ticks = await db.select(query)
     const { merge } = query
     if (merge === 'domain') {
@@ -25,14 +25,14 @@ export async function listTimeline(query: timer.timeline.Query): Promise<timer.t
     }
 }
 
-async function mergeByDomain(ticks: timer.timeline.Tick[]): Promise<timer.timeline.Activity[]> {
+async function mergeByDomain(ticks: tt4b.timeline.Tick[]): Promise<tt4b.timeline.Activity[]> {
     const mergeRules = await mergeDb.selectAll()
     const merger = new CustomizedHostMergeRuler(mergeRules)
     const allHosts = Array.from(new Set(ticks.map(t => t.host)))
     const mergedMap = toMap(allHosts, h => h, h => merger.merge(h))
 
     const allSiteKeys = Array.from(new Set(Object.values(mergedMap)))
-        .map((mergedHost) => ({ type: 'merged', host: mergedHost } satisfies timer.site.SiteKey))
+        .map((mergedHost) => ({ type: 'merged', host: mergedHost } satisfies tt4b.site.SiteKey))
     const allSites = await siteDb.getBatch(allSiteKeys)
     const nameMap = toMap(allSites, s => s.host, s => s.alias)
 
@@ -45,11 +45,11 @@ async function mergeByDomain(ticks: timer.timeline.Tick[]): Promise<timer.timeli
     })
 }
 
-async function mergeByCate(ticks: timer.timeline.Tick[]): Promise<timer.timeline.Activity[]> {
+async function mergeByCate(ticks: tt4b.timeline.Tick[]): Promise<tt4b.timeline.Activity[]> {
     const cates = await cateDb.listAll()
     const cateNameMap = toMap(cates, c => c.id, c => c.name)
     const allSiteKeys = Array.from(new Set(ticks.map(t => t.host)))
-        .map(host => ({ type: 'normal', host } satisfies timer.site.SiteKey))
+        .map(host => ({ type: 'normal', host } satisfies tt4b.site.SiteKey))
     const allSites = await siteDb.getBatch(allSiteKeys)
     const siteCateMap = toMap(allSites, s => s.host, s => s.cate)
 
@@ -63,9 +63,9 @@ async function mergeByCate(ticks: timer.timeline.Tick[]): Promise<timer.timeline
     })
 }
 
-async function fillSiteName(ticks: timer.timeline.Tick[]): Promise<timer.timeline.Activity[]> {
+async function fillSiteName(ticks: tt4b.timeline.Tick[]): Promise<tt4b.timeline.Activity[]> {
     const allSiteKeys = Array.from(new Set(ticks.map(t => t.host)))
-        .map(host => ({ type: 'normal', host } satisfies timer.site.SiteKey))
+        .map(host => ({ type: 'normal', host } satisfies tt4b.site.SiteKey))
     const allSites = await siteDb.getBatch(allSiteKeys)
     const nameMap = toMap(allSites, s => s.host, s => s.alias)
 

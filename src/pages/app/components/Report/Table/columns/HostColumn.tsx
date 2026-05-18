@@ -27,7 +27,7 @@ const _default = defineComponent(() => {
             sortable="custom"
             align="center"
         >
-            {({ row }: RenderRowData<timer.stat.Row>) => (
+            {({ row }: RenderRowData<tt4b.stat.Row>) => (
                 <Flex key={isSite(row) ? identifySiteKey(row.siteKey) : ''} justify="center">
                     <TooltipWrapper
                         usePopover={filter?.siteMerge === 'domain'}
@@ -37,7 +37,7 @@ const _default = defineComponent(() => {
                         v-slots={{
                             content: () => (
                                 <TooltipSiteList
-                                    modelValue={isGroup(row) ? undefined : (row.mergedRows as timer.stat.SiteRow[] | undefined)}
+                                    modelValue={isGroup(row) ? undefined : (row.mergedRows as tt4b.stat.SiteRow[] | undefined)}
                                 />
                             ),
                             default: () => isSite(row) ? <HostAlert value={row.siteKey} iconUrl={row.iconUrl} /> : '',

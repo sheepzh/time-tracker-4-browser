@@ -18,25 +18,25 @@ import CustomizedHostMergeRuler from './components/host-merge-ruler'
 import { slicePageResult } from "./components/page-info"
 import virtualSiteHolder from './components/virtual-site-holder'
 
-export async function saveAlias(key: timer.site.SiteKey, alias: string | undefined, noRewrite?: boolean) {
+export async function saveAlias(key: tt4b.site.SiteKey, alias: string | undefined, noRewrite?: boolean) {
     const exist = await siteDatabase.get(key)
     if (exist && noRewrite) return
     await siteDatabase.save({ ...exist, ...key, alias })
 }
 
-export async function removeIconUrl(key: timer.site.SiteKey) {
+export async function removeIconUrl(key: tt4b.site.SiteKey) {
     const exist = await siteDatabase.get(key)
     if (!exist) return
     delete exist.iconUrl
     await siteDatabase.save(exist)
 }
 
-export async function saveIconUrl(key: timer.site.SiteKey, iconUrl: string) {
+export async function saveIconUrl(key: tt4b.site.SiteKey, iconUrl: string) {
     const exist = await siteDatabase.get(key)
     await siteDatabase.save({ ...exist, ...key, iconUrl })
 }
 
-export async function saveSiteRunState(key: timer.site.SiteKey, enabled: boolean) {
+export async function saveSiteRunState(key: tt4b.site.SiteKey, enabled: boolean) {
     const exist = await siteDatabase.get(key)
     if (!exist) return
     exist.run = enabled
@@ -50,7 +50,7 @@ export async function saveSiteRunState(key: timer.site.SiteKey, enabled: boolean
     }
 }
 
-export async function addSite(siteInfo: timer.site.SiteInfo): Promise<string | undefined> {
+export async function addSite(siteInfo: tt4b.site.SiteInfo): Promise<string | undefined> {
     if (await siteDatabase.exist(siteInfo)) {
         return 'Site already exists'
     }
@@ -59,17 +59,17 @@ export async function addSite(siteInfo: timer.site.SiteInfo): Promise<string | u
     virtualSiteHolder.buildWith(siteInfo)
 }
 
-export async function removeSites(keys: timer.site.SiteKey[]): Promise<void> {
+export async function removeSites(keys: tt4b.site.SiteKey[]): Promise<void> {
     await siteDatabase.remove(keys)
     keys.forEach(key => virtualSiteHolder.onDeleted(key))
 }
 
-export async function selectSitePage(param?: timer.site.PageQuery): Promise<timer.common.PageResult<timer.site.SiteInfo>> {
+export async function selectSitePage(param?: tt4b.site.PageQuery): Promise<tt4b.common.PageResult<tt4b.site.SiteInfo>> {
     const origin = await siteDatabase.select(param)
     return slicePageResult(origin, param)
 }
 
-export async function batchChangeCate(cateId: number | undefined, keys: timer.site.SiteKey[]): Promise<void> {
+export async function batchChangeCate(cateId: number | undefined, keys: tt4b.site.SiteKey[]): Promise<void> {
     keys = keys?.filter(supportCategory)
     if (!keys?.length) return
 
@@ -82,7 +82,7 @@ export async function batchChangeCate(cateId: number | undefined, keys: timer.si
 /**
  * @since 0.9.0
  */
-export async function getSite(siteKey: timer.site.SiteKey): Promise<timer.site.SiteInfo> {
+export async function getSite(siteKey: tt4b.site.SiteKey): Promise<tt4b.site.SiteInfo> {
     const info = await siteDatabase.get(siteKey)
     return info ?? siteKey
 }
@@ -93,12 +93,12 @@ function moveToFront<T>(arr: T[], idx: number): T[] {
     return [item, ...arr.slice(0, idx), ...arr.slice(idx + 1)]
 }
 
-export async function searchSites(query: string | undefined): Promise<timer.site.SiteInfo[]> {
+export async function searchSites(query: string | undefined): Promise<tt4b.site.SiteInfo[]> {
     query = cleanSearchQuery(query)
     const filter = query ? (host: string) => host.includes(query) : () => true
     const [normal, merged] = await listHosts(filter)
 
-    const keys: timer.site.SiteKey[] = []
+    const keys: tt4b.site.SiteKey[] = []
     normal.forEach(host => keys.push({ host, type: 'normal' }))
     merged.forEach(host => keys.push({ host, type: 'merged' }))
 
@@ -162,7 +162,7 @@ async function listHosts(filter: (host: string) => boolean): Promise<[normal: st
     return [Array.from(normal), Array.from(merged)]
 }
 
-export async function fillInitialAlias(keys: timer.site.SiteKey[]) {
+export async function fillInitialAlias(keys: tt4b.site.SiteKey[]) {
     const sites = await siteDatabase.getBatch(keys)
     const toSave = new SiteMap<string>()
     sites.forEach(site => {
@@ -196,7 +196,7 @@ async function batchSaveAlias(siteMap: SiteMap<string>): Promise<void> {
     const allSites = await siteDatabase.getBatch(siteMap.keys())
     const existMap = SiteMap.identify(allSites)
 
-    const toSave: timer.site.SiteInfo[] = []
+    const toSave: tt4b.site.SiteInfo[] = []
     siteMap.forEach((k, alias) => {
         const exist = existMap.get(k)
         if (exist?.alias) return

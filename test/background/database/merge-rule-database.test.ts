@@ -2,7 +2,7 @@ import db from "@db/merge-rule-database"
 import { mockStorage } from "../../__mock__/storage"
 import { mockLegacyData } from './migratable'
 
-function of(origin: string, merged?: string | number): timer.merge.Rule {
+function of(origin: string, merged?: string | number): tt4b.merge.Rule {
     return { origin, merged: merged || '' }
 }
 
@@ -12,7 +12,7 @@ describe('merge-rule-database', () => {
     beforeEach(async () => chrome.storage.local.clear())
 
     test('add, selectAll, remove', async () => {
-        let toAdd: timer.merge.Rule[] = [of('4', 2)]
+        let toAdd: tt4b.merge.Rule[] = [of('4', 2)]
         await db.add(...toAdd)
         expect((await db.selectAll())).toEqual(expect.arrayContaining(toAdd))
         toAdd = [
@@ -42,7 +42,7 @@ describe('merge-rule-database', () => {
         expect(await db.selectAll()).toEqual([])
 
         await db.importData(mockLegacyData(data2Import))
-        const imported: timer.merge.Rule[] = await db.selectAll()
+        const imported: tt4b.merge.Rule[] = await db.selectAll()
         expect(imported).toEqual([
             { origin: "www.baidu.com", merged: 2 },
             { origin: "www.google.com", merged: "google.com" }

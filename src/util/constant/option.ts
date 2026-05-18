@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-export const DEFAULT_APPEARANCE: timer.option.AppearanceRequired = {
+export const DEFAULT_APPEARANCE: tt4b.option.AppearanceRequired = {
     displayWhitelistMenu: false,
     // Change false to true @since 0.8.4
     displayBadgeText: true,
@@ -21,7 +21,7 @@ export const DEFAULT_APPEARANCE: timer.option.AppearanceRequired = {
     chartAnimationDuration: 1000,
 } as const
 
-export const DEFAULT_TRACKING: timer.option.TrackingRequired = {
+export const DEFAULT_TRACKING: tt4b.option.TrackingRequired = {
     autoPauseTracking: false,
     // 10 minutes
     autoPauseInterval: 600,
@@ -31,7 +31,7 @@ export const DEFAULT_TRACKING: timer.option.TrackingRequired = {
     storage: 'classic',
 } as const
 
-export const DEFAULT_LIMIT: timer.option.LimitRequired = {
+export const DEFAULT_LIMIT: tt4b.option.LimitRequired = {
     limitDelayDuration: 5,
     limitLevel: 'nothing',
     limitPassword: '',
@@ -40,7 +40,7 @@ export const DEFAULT_LIMIT: timer.option.LimitRequired = {
     limitReminderDuration: 5,
 } as const
 
-export const DEFAULT_BACKUP: timer.option.BackupOption = {
+export const DEFAULT_BACKUP: tt4b.option.BackupOption = {
     backupType: 'none',
     clientName: 'unknown',
     backupAuths: {},
@@ -50,11 +50,11 @@ export const DEFAULT_BACKUP: timer.option.BackupOption = {
     autoBackUpInterval: 30,
 } as const
 
-export const DEFAULT_ACCESSIBILITY: timer.option.AccessibilityOption = {
+export const DEFAULT_ACCESSIBILITY: tt4b.option.AccessibilityOption = {
     chartDecal: false
 } as const
 
-export const DEFAULT_NOTIFICATION: timer.option.NotificationOption = {
+export const DEFAULT_NOTIFICATION: tt4b.option.NotificationOption = {
     notificationCycle: 'none',
     notificationMethod: 'browser',
     notificationOffset: 0,
@@ -67,4 +67,4 @@ export const defaultOption = () => structuredClone({
     ...DEFAULT_LIMIT,
     ...DEFAULT_ACCESSIBILITY,
     ...DEFAULT_NOTIFICATION,
-}) satisfies timer.option.DefaultOption
+}) satisfies tt4b.option.DefaultOption

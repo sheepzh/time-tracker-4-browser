@@ -4,4 +4,4 @@ export const listAllMergeRules = () => sendMsg2Runtime('merge.all')
 
 export const deleteMergeRule = (origin: string) => sendMsg2Runtime('merge.delete', origin)
 
-export const addMergeRule = (rule: timer.merge.Rule) => sendMsg2Runtime('merge.add', rule)
+export const addMergeRule = (rule: tt4b.merge.Rule) => sendMsg2Runtime('merge.add', rule)

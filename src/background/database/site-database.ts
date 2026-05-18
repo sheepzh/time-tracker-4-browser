@@ -34,7 +34,7 @@ const HOST_KEY_PREFIX = DB_KEY_PREFIX + 'h'
 const VIRTUAL_KEY_PREFIX = DB_KEY_PREFIX + 'v'
 const MERGED_FLAG = 'm'
 
-function cvt2Key({ host, type }: timer.site.SiteKey): string {
+function cvt2Key({ host, type }: tt4b.site.SiteKey): string {
     switch (type) {
         case 'virtual': return VIRTUAL_KEY_PREFIX + host
         case 'merged': return HOST_KEY_PREFIX + MERGED_FLAG + host
@@ -42,7 +42,7 @@ function cvt2Key({ host, type }: timer.site.SiteKey): string {
     }
 }
 
-function cvt2SiteKey(key: string): timer.site.SiteKey {
+function cvt2SiteKey(key: string): tt4b.site.SiteKey {
     if (key.startsWith(VIRTUAL_KEY_PREFIX)) {
         return {
             host: key.substring(VIRTUAL_KEY_PREFIX.length),
@@ -59,7 +59,7 @@ function cvt2SiteKey(key: string): timer.site.SiteKey {
     }
 }
 
-function cvt2Entry({ alias, iconUrl, cate, run }: timer.site.SiteInfo): _Entry {
+function cvt2Entry({ alias, iconUrl, cate, run }: tt4b.site.SiteInfo): _Entry {
     const entry: _Entry = { i: iconUrl }
     alias && (entry.a = alias)
     cate && (entry.c = cate)
@@ -68,9 +68,9 @@ function cvt2Entry({ alias, iconUrl, cate, run }: timer.site.SiteInfo): _Entry {
     return entry
 }
 
-function cvt2SiteInfo(key: timer.site.SiteKey, entry: _Entry | undefined): timer.site.SiteInfo {
+function cvt2SiteInfo(key: tt4b.site.SiteKey, entry: _Entry | undefined): tt4b.site.SiteInfo {
     const { a, i, c, r } = entry ?? {}
-    const siteInfo: timer.site.SiteInfo = { ...key }
+    const siteInfo: tt4b.site.SiteInfo = { ...key }
     siteInfo.alias = a
     siteInfo.cate = c ?? CATE_NOT_SET_ID
     siteInfo.iconUrl = i
@@ -78,7 +78,7 @@ function cvt2SiteInfo(key: timer.site.SiteKey, entry: _Entry | undefined): timer
     return siteInfo
 }
 
-function buildFilter(condition?: timer.site.Query): (site: timer.site.SiteInfo) => boolean {
+function buildFilter(condition?: tt4b.site.Query): (site: tt4b.site.SiteInfo) => boolean {
     const { fuzzyQuery, cateIds, types } = condition || {}
     let cateFilter = typeof cateIds === 'number' ? [cateIds] : (cateIds?.length ? cateIds : undefined)
     let typeFilter = typeof types === 'string' ? [types] : (types?.length ? types : undefined)
@@ -92,7 +92,7 @@ function buildFilter(condition?: timer.site.Query): (site: timer.site.SiteInfo) 
 }
 
 class SiteDatabase extends BaseDatabase {
-    async select(condition?: timer.site.Query): Promise<timer.site.SiteInfo[]> {
+    async select(condition?: tt4b.site.Query): Promise<tt4b.site.SiteInfo[]> {
         const filter = buildFilter(condition)
         const data = await this.storage.get()
         return Object.entries(data)
@@ -106,30 +106,30 @@ class SiteDatabase extends BaseDatabase {
      *
      * @returns site info, or undefined
      */
-    async get(key: timer.site.SiteKey): Promise<timer.site.SiteInfo | undefined> {
+    async get(key: tt4b.site.SiteKey): Promise<tt4b.site.SiteInfo | undefined> {
         const entry = await this.storage.getOne<_Entry>(cvt2Key(key))
         return entry && cvt2SiteInfo(key, entry)
     }
 
-    async getBatch(keys: timer.site.SiteKey[]): Promise<timer.site.SiteInfo[]> {
+    async getBatch(keys: tt4b.site.SiteKey[]): Promise<tt4b.site.SiteInfo[]> {
         const result = await this.storage.get(keys.map(cvt2Key))
         return Object.entries(result)
             .map(([key, value]) => cvt2SiteInfo(cvt2SiteKey(key), value as _Entry))
     }
 
-    async save(...sites: timer.site.SiteInfo[]): Promise<void> {
+    async save(...sites: tt4b.site.SiteInfo[]): Promise<void> {
         if (!sites.length) return
         const toSet = toMap(sites, cvt2Key, cvt2Entry)
         await this.storage.set(toSet)
     }
 
-    async remove(siteKeys: timer.site.SiteKey[]): Promise<void> {
+    async remove(siteKeys: tt4b.site.SiteKey[]): Promise<void> {
         if (!siteKeys.length) return
         const keys = siteKeys.map(cvt2Key)
         await this.storage.remove(keys)
     }
 
-    async exist(siteKey: timer.site.SiteKey): Promise<boolean> {
+    async exist(siteKey: tt4b.site.SiteKey): Promise<boolean> {
         const key = cvt2Key(siteKey)
         const entry = await this.storage.getOne<_Entry>(key)
         return !!entry

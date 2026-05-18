@@ -17,8 +17,8 @@ function throwError<T>(): T {
     throw new Error("Failed to parse, please check your file or contact the author via " + AUTHOR_EMAIL)
 }
 
-export async function parseFile(ext: OtherExtension, file: File): Promise<timer.imported.Data> {
-    let rows: timer.imported.Row[] = []
+export async function parseFile(ext: OtherExtension, file: File): Promise<tt4b.imported.Data> {
+    let rows: tt4b.imported.Row[] = []
     let focus = false
     let time = false
     if (ext === 'web_activity_time_tracker') {
@@ -36,11 +36,11 @@ export async function parseFile(ext: OtherExtension, file: File): Promise<timer.
     return { rows, focus, time }
 }
 
-async function parseWebActivityTimeTracker(file: File): Promise<[timer.imported.Row[], time: boolean]> {
+async function parseWebActivityTimeTracker(file: File): Promise<[tt4b.imported.Row[], time: boolean]> {
     const text = await file.text()
     if (isCsvFile(file)) {
         const lines = text.split('\n').map(line => line.trim()).filter(line => !!line).splice(1)
-        const rows: timer.imported.Row[] = lines.map(line => {
+        const rows: tt4b.imported.Row[] = lines.map(line => {
             const [host, date, seconds] = line.split(',').map(cell => cell.trim())
             if (!host || !date || (!seconds && seconds !== '0')) return throwError()
             const [year, month, day] = date?.split('/') ?? []
@@ -73,7 +73,7 @@ type WattJsonItem = {
 }
 
 const parseWattJsonFile = (fileContent: string) => {
-    const rows: timer.imported.Row[] = []
+    const rows: tt4b.imported.Row[] = []
     const data = JSON.parse(fileContent) as WattJsonItem[]
     data.forEach(({ url: host, days }) => {
         if (!host) throw new Error("Invalid item without url")
@@ -113,13 +113,13 @@ type WebtimeTrackerBackup = {
 const WEBTIME_TRACKER_DATE_REG = /(\d{2})-(\d{2})-\d{2}/
 const cvtWebtimeTrackerDate = (date: string): string | undefined => WEBTIME_TRACKER_DATE_REG.test(date) ? date.split('-').join('') : undefined
 
-async function parseWebtimeTracker(file: File): Promise<timer.imported.Row[]> {
+async function parseWebtimeTracker(file: File): Promise<tt4b.imported.Row[]> {
     const text = await file.text()
     if (isJsonFile(file)) {
         // JSON file by backup
         const data = JSON.parse(text) as WebtimeTrackerBackup
         const domains = data?.content?.domains || {}
-        const rows: timer.imported.Row[] = Object.entries(domains)
+        const rows: tt4b.imported.Row[] = Object.entries(domains)
             .flatMap(
                 ([host, value]) => Object.entries(value?.days || {})
                     .map(([date, item]) => [host, cvtWebtimeTrackerDate(date), item?.seconds] as [string, string, number])
@@ -129,12 +129,12 @@ async function parseWebtimeTracker(file: File): Promise<timer.imported.Row[]> {
                 host,
                 date,
                 focus: seconds * MILL_PER_SECOND
-            } as timer.imported.Row))
+            } as tt4b.imported.Row))
         return rows
     } else if (isCsvFile(file)) {
         const lines = text.split('\n').map(line => line.trim()).filter(line => !!line)
         const colHeaders = lines[0]?.split(',') ?? []
-        const rows: timer.imported.Row[] = []
+        const rows: tt4b.imported.Row[] = []
         lines.slice(1).forEach(line => {
             const cells = line.split(',')
             const host = cells[0]
@@ -179,7 +179,7 @@ function parseHistoryTrendsUnlimitedLine(line: string, data: { [dateAndHost: str
     }
 }
 
-async function parseHistoryTrendsUnlimited(file: File): Promise<timer.imported.Row[]> {
+async function parseHistoryTrendsUnlimited(file: File): Promise<tt4b.imported.Row[]> {
     const text = await file.text()
     if (isTsvFile(file)) {
         const lines = text.split('\n').map(line => line.trim()).filter(line => !!line)
@@ -188,7 +188,7 @@ async function parseHistoryTrendsUnlimited(file: File): Promise<timer.imported.R
         return Object.entries(dailyVisits).map(([dateAndHost, time]) => {
             const date = dateAndHost.substring(0, 8)
             const host = dateAndHost.substring(8)
-            return { date, host, time, focus: 0 } satisfies timer.imported.Row
+            return { date, host, time, focus: 0 } satisfies tt4b.imported.Row
         })
     }
     throw new Error("Invalid file format")

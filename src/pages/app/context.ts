@@ -9,7 +9,7 @@ type MenuLayout = 'nav' | 'sidebar'
 
 interface CategoryInstance {
     enabled: boolean
-    all: timer.site.Cate[]
+    all: tt4b.site.Cate[]
     nameMap: Record<number, string>
     refresh(): void
 }

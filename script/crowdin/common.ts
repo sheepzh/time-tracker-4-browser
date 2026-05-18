@@ -32,9 +32,9 @@ export const ALL_CROWDIN_LANGUAGES = [
  */
 export type CrowdinLanguage = typeof ALL_CROWDIN_LANGUAGES[number]
 
-export const SOURCE_LOCALE: timer.RequiredLocale = 'en'
+export const SOURCE_LOCALE: tt4b.RequiredLocale = 'en'
 
-const OPTIONAL_PLACEHOLDER: Record<timer.OptionalLocale, 0> = {
+const OPTIONAL_PLACEHOLDER: Record<tt4b.OptionalLocale, 0> = {
     ja: 0,
     uk: 0,
     de: 0,
@@ -50,9 +50,9 @@ const OPTIONAL_PLACEHOLDER: Record<timer.OptionalLocale, 0> = {
     it: 0,
 }
 
-export const ALL_TRANS_LOCALES = Object.keys(OPTIONAL_PLACEHOLDER) as timer.OptionalLocale[]
+export const ALL_TRANS_LOCALES = Object.keys(OPTIONAL_PLACEHOLDER) as tt4b.OptionalLocale[]
 
-const I18N_CROWDIN_MAP: Record<timer.OptionalLocale, CrowdinLanguage> = {
+const I18N_CROWDIN_MAP: Record<tt4b.OptionalLocale, CrowdinLanguage> = {
     zh_CN: 'zh-CN',
     ja: 'ja',
     zh_TW: 'zh-TW',
@@ -68,7 +68,7 @@ const I18N_CROWDIN_MAP: Record<timer.OptionalLocale, CrowdinLanguage> = {
     it: 'it',
 }
 
-export const crowdinLangOf = (locale: timer.OptionalLocale): CrowdinLanguage => I18N_CROWDIN_MAP[locale]
+export const crowdinLangOf = (locale: tt4b.OptionalLocale): CrowdinLanguage => I18N_CROWDIN_MAP[locale]
 
 const IGNORED_FILE: Partial<{ [dir in Dir]: string[] }> = {
     common: [
@@ -119,7 +119,7 @@ export async function readAllMessages(dir: Dir): Promise<Record<string, Messages
 export async function mergeMessage(
     dir: Dir,
     filename: string,
-    messages: Partial<Record<timer.Locale, ItemSet>>
+    messages: Partial<Record<tt4b.Locale, ItemSet>>
 ): Promise<void> {
     const dirPath = path.join(MSG_BASE, dir)
     const filePath = path.join(dirPath, filename)
@@ -147,7 +147,7 @@ export async function mergeMessage(
                 const pathSeg = path.split('.')
                 fillItem(pathSeg, 0, newMessage, text)
             })
-        Object.entries(newMessage).length && (existMessages[locale as timer.Locale] = newMessage)
+        Object.entries(newMessage).length && (existMessages[locale as tt4b.Locale] = newMessage)
     })
 
     const newFileContent = JSON.stringify(existMessages, null, 4)

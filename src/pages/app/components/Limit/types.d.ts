@@ -5,7 +5,7 @@ export type LimitFilterOption = {
 
 export type ModifyInstance = {
     create(url?: string): void
-    modify(row: timer.limit.Item): void
+    modify(row: tt4b.limit.Item): void
 }
 
 export type TestInstance = {
@@ -13,9 +13,9 @@ export type TestInstance = {
 }
 
 export type LimitInstance = {
-    getSelected(): timer.limit.Item[]
+    getSelected(): tt4b.limit.Item[]
 }
 
-export type ModifyForm = Omit<timer.limit.Rule, 'id'> & {
+export type ModifyForm = Omit<tt4b.limit.Rule, 'id'> & {
     urlMiss?: boolean
 }

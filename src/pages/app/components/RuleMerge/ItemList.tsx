@@ -45,7 +45,7 @@ const _default = defineComponent(() => {
     }
 
     const { refresh: add } = useManualRequest(
-        (rule: timer.merge.Rule) => addMergeRule(rule),
+        (rule: tt4b.merge.Rule) => addMergeRule(rule),
         { onSuccess: handleSucc }
     )
 

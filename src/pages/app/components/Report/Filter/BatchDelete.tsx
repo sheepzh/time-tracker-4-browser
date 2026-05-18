@@ -11,7 +11,7 @@ import { computed, defineComponent } from "vue"
 import { useReportComponent, useReportFilter } from "../context"
 import type { DisplayComponent, ReportFilterOption } from "../types"
 
-async function computeBatchDeleteMsg(selected: timer.stat.Row[], mergeDate: boolean, dateRange: DateRange): Promise<string> {
+async function computeBatchDeleteMsg(selected: tt4b.stat.Row[], mergeDate: boolean, dateRange: DateRange): Promise<string> {
     const hosts: string[] = []
     const groupIds: number[] = []
     selected.forEach(row => {
@@ -104,7 +104,7 @@ async function handleBatchDelete(displayComp: DisplayComponent | undefined, filt
     })
 }
 
-async function deleteBatch(selected: timer.stat.Row[], mergeDate: boolean, dateRange: DateRange) {
+async function deleteBatch(selected: tt4b.stat.Row[], mergeDate: boolean, dateRange: DateRange) {
     if (mergeDate) {
         // Delete according to the date range
         const date = cvtDateRange2Str(dateRange)

@@ -2,7 +2,7 @@ import { sendMsg2Runtime } from "@api/sw/common"
 
 export const getOption = () => sendMsg2Runtime('option.get')
 
-export const setOption = (option: Partial<timer.option.AllOption>) => sendMsg2Runtime('option.set', option)
+export const setOption = (option: Partial<tt4b.option.AllOption>) => sendMsg2Runtime('option.set', option)
 
 export const getWeekStartTime = async (now?: number | Date): Promise<Date> => {
     let nowTs = typeof now === 'number' ? now : now?.getTime()

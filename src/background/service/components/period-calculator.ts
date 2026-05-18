@@ -13,7 +13,7 @@ import { after, compare, indexOf, keyOf, rowOf, startOfKey } from "@util/period"
  * @param milliseconds milliseconds
  * @returns results, can't be empty if milliseconds is positive
  */
-export function calculate(timestamp: number, milliseconds: number): timer.period.Result[] {
+export function calculate(timestamp: number, milliseconds: number): tt4b.period.Result[] {
     if (milliseconds <= 0) return []
 
     const key = keyOf(timestamp)
@@ -21,7 +21,7 @@ export function calculate(timestamp: number, milliseconds: number): timer.period
 
     const currentResult = { ...key, milliseconds: 0 }
     const extraMill = timestamp - start
-    const result: timer.period.Result[] = []
+    const result: tt4b.period.Result[] = []
     if (extraMill < milliseconds) {
         // milliseconds including before period
         // 1st. add before ones
@@ -37,7 +37,7 @@ export function calculate(timestamp: number, milliseconds: number): timer.period
     return result
 }
 
-export function merge(periods: timer.period.Result[], size: number): timer.period.Row[] {
+export function merge(periods: tt4b.period.Result[], size: number): tt4b.period.Row[] {
     periods = periods.sort(compare)
     const first = periods[0]
     const last = periods[periods.length - 1]
@@ -47,8 +47,8 @@ export function merge(periods: timer.period.Result[], size: number): timer.perio
     periods.forEach(p => map.set(indexOf(p), p.milliseconds))
 
     let mills: number[] = []
-    let start: timer.period.Key = first
-    const rows: timer.period.Row[] = []
+    let start: tt4b.period.Key = first
+    const rows: tt4b.period.Row[] = []
     for (; compare(start, last) <= 0; start = after(start, 1)) {
         mills.push(map.get(indexOf(start)) ?? 0)
         const isEndOfWindow = (start.order % size) === size - 1

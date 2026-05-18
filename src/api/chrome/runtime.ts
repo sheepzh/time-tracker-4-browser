@@ -14,9 +14,9 @@ export function getIconUrl(): string {
 export function onRuntimeMessage(handler: ChromeMessageHandler): void {
     // Be careful!!!
     // Can't use await/async in callback parameter
-    chrome.runtime.onMessage.addListener((message: timer.mq.Request<timer.mq.ReqCode>, sender: chrome.runtime.MessageSender, sendResponse: timer.mq.Callback<timer.mq.ReqCode>) => {
+    chrome.runtime.onMessage.addListener((message: tt4b.mq.Request<tt4b.mq.ReqCode>, sender: chrome.runtime.MessageSender, sendResponse: tt4b.mq.Callback<tt4b.mq.ReqCode>) => {
         void handler(message, sender)
-            .then((response: timer.mq.Response<timer.mq.ReqCode>) => {
+            .then((response: tt4b.mq.Response<tt4b.mq.ReqCode>) => {
                 sendResponse(response)
             })
             .catch((err: unknown) => {

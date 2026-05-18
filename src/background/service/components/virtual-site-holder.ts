@@ -13,12 +13,12 @@ class VirtualSiteHolder {
         db.select().then(keys => keys.forEach(key => this.buildWith(key)))
     }
 
-    buildWith({ host, type }: timer.site.SiteKey) {
+    buildWith({ host, type }: tt4b.site.SiteKey) {
         if (type !== 'virtual') return
         this.hostRegMap[host] = compileAntPattern(host)
     }
 
-    onDeleted({ host, type }: timer.site.SiteKey) {
+    onDeleted({ host, type }: tt4b.site.SiteKey) {
         if (type !== 'virtual') return
         delete this.hostRegMap[host]
     }

@@ -13,16 +13,16 @@ import type { LimitFilterOption, LimitInstance, ModifyInstance, TestInstance } f
 
 type Context = {
     filter: LimitFilterOption
-    list: ShallowRef<timer.limit.Item[]>
+    list: ShallowRef<tt4b.limit.Item[]>
     refresh: NoArgCallback
     batchDelete: NoArgCallback
     batchEnable: NoArgCallback
     batchDisable: NoArgCallback
-    changeEnabled: (item: timer.limit.Item, val: boolean) => Promise<void>
-    changeDelay: (item: timer.limit.Item, val: boolean) => Promise<void>
-    changeLocked: (item: timer.limit.Item, val: boolean) => Promise<void>
-    modify: ArgCallback<timer.limit.Item>
-    remove: ArgCallback<timer.limit.Item>
+    changeEnabled: (item: tt4b.limit.Item, val: boolean) => Promise<void>
+    changeDelay: (item: tt4b.limit.Item, val: boolean) => Promise<void>
+    changeLocked: (item: tt4b.limit.Item, val: boolean) => Promise<void>
+    modify: ArgCallback<tt4b.limit.Item>
+    remove: ArgCallback<tt4b.limit.Item>
     create: () => void
     test: () => void
     empty: ShallowRef<boolean>
@@ -42,7 +42,7 @@ const initialQuery = () => {
     }
 }
 
-const batchJudge = async (items: timer.limit.Item[]): Promise<boolean> => {
+const batchJudge = async (items: tt4b.limit.Item[]): Promise<boolean> => {
     if (!items?.length) return false
     const { limitDelayDuration, limitLevel } = await getOption()
     for (const item of items) {
@@ -55,7 +55,7 @@ const batchJudge = async (items: timer.limit.Item[]): Promise<boolean> => {
     return false
 }
 
-const verifyCanModify = async (...items: timer.limit.Item[]) => {
+const verifyCanModify = async (...items: tt4b.limit.Item[]) => {
     const needVerify = await batchJudge(items)
     if (!needVerify) return
 
@@ -97,7 +97,7 @@ export const useLimitProvider = () => {
     const docVisible = useDocumentVisibility()
     watch(docVisible, () => docVisible.value && refresh())
 
-    const { refresh: remove } = useManualRequest(async (row: timer.limit.Item) => {
+    const { refresh: remove } = useManualRequest(async (row: tt4b.limit.Item) => {
         await verifyCanModify(row)
         const message = t(msg => msg.limit.message.deleteConfirm, { name: row.name })
         await ElMessageBox.confirm(message)
@@ -111,7 +111,7 @@ export const useLimitProvider = () => {
 
     const inst = ref<LimitInstance>()
 
-    const selectedAndThen = (then: (list: timer.limit.Item[]) => void): void => {
+    const selectedAndThen = (then: (list: tt4b.limit.Item[]) => void): void => {
         const list = inst.value?.getSelected?.()
         if (!list?.length) {
             ElMessage.info('No limit rule selected')
@@ -125,7 +125,7 @@ export const useLimitProvider = () => {
         refresh()
     }
 
-    const handleBatchDelete = (list: timer.limit.Item[]) => {
+    const handleBatchDelete = (list: tt4b.limit.Item[]) => {
         const names = list.map(item => item.name ?? item.id).join(', ')
         verifyCanModify(...list)
             .then(() => ElMessageBox.confirm(t(msg => msg.limit.message.deleteConfirm, { name: names }), { type: "warning" }))
@@ -134,12 +134,12 @@ export const useLimitProvider = () => {
             .catch(() => { })
     }
 
-    const handleBatchEnable = (list: timer.limit.Item[]) => {
+    const handleBatchEnable = (list: tt4b.limit.Item[]) => {
         list.forEach(item => item.enabled = true)
         updateLimits(list).then(onBatchSuccess).catch(() => { })
     }
 
-    const handleBatchDisable = (list: timer.limit.Item[]) => verifyCanModify(...list)
+    const handleBatchDisable = (list: tt4b.limit.Item[]) => verifyCanModify(...list)
         .then(() => {
             list.forEach(item => item.enabled = false)
             return updateLimits(list)
@@ -147,7 +147,7 @@ export const useLimitProvider = () => {
         .then(onBatchSuccess)
         .catch(() => { })
 
-    const changeEnabled = async (row: timer.limit.Item, newVal: boolean) => {
+    const changeEnabled = async (row: tt4b.limit.Item, newVal: boolean) => {
         try {
             // Only verify when disabling, ignore lock state
             !newVal && await verifyCanModify(row)
@@ -158,7 +158,7 @@ export const useLimitProvider = () => {
         }
     }
 
-    const changeDelay = async (row: timer.limit.Item, newVal: boolean) => {
+    const changeDelay = async (row: tt4b.limit.Item, newVal: boolean) => {
         try {
             (row.locked || newVal) && await verifyCanModify(row)
             row.allowDelay = newVal
@@ -168,7 +168,7 @@ export const useLimitProvider = () => {
         }
     }
 
-    const changeLocked = async (row: timer.limit.Item, newVal: boolean) => {
+    const changeLocked = async (row: tt4b.limit.Item, newVal: boolean) => {
         const locked = !!newVal
         try {
             if (locked) {
@@ -186,7 +186,7 @@ export const useLimitProvider = () => {
 
     const modifyInst = ref<ModifyInstance>()
     const testInst = ref<TestInstance>()
-    const modify = (row: timer.limit.Item) => verifyCanModify(row)
+    const modify = (row: tt4b.limit.Item) => verifyCanModify(row)
         .then(() => modifyInst.value?.modify?.(toRaw(row)))
         .catch(() => {/** Do nothing */ })
     const create = () => modifyInst.value?.create?.()

@@ -13,7 +13,7 @@ const GroupColumn = defineComponent(() => {
             align="center"
             label={t(msg => msg.item.group)}
             width={140}
-            v-slots={({ row }: RenderRowData<timer.stat.Row>) => {
+            v-slots={({ row }: RenderRowData<tt4b.stat.Row>) => {
                 if (!isGroup(row)) return
                 const { groupKey } = row
                 const { color, title } = groupMap.value[groupKey] ?? {}

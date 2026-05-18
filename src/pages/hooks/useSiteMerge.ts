@@ -13,7 +13,7 @@ export const useSiteMerge = ({ onGroupDisabled }: Options) => {
     })
 
     const mergeItems = computed(() => {
-        const res: (Exclude<timer.stat.MergeMethod, 'date'>)[] = ['cate', 'domain']
+        const res: (Exclude<tt4b.stat.MergeMethod, 'date'>)[] = ['cate', 'domain']
         countTabGroup.value && res.push('group')
         return res
     })

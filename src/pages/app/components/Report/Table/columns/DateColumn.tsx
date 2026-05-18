@@ -19,7 +19,7 @@ const DateColumn: FunctionalComponent = () => (
         align="center"
         sortable="custom"
     >
-        {({ row }: RenderRowData<timer.stat.Row>) => <span>{cvt2LocaleTime(row.date)}</span>}
+        {({ row }: RenderRowData<tt4b.stat.Row>) => <span>{cvt2LocaleTime(row.date)}</span>}
     </ElTableColumn>
 )
 

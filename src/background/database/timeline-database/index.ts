@@ -6,11 +6,11 @@ class TimelineDatabaseWrapper implements TimelineDatabase {
     private classic = new ClassicTimelineDatabase()
     private idb = new IDBTimelineDatabase()
 
-    batchSave(ticks: timer.timeline.Tick[]): Promise<void> {
+    batchSave(ticks: tt4b.timeline.Tick[]): Promise<void> {
         return this.idb.batchSave(ticks)
     }
 
-    select(cond?: TimelineCondition): Promise<timer.timeline.Tick[]> {
+    select(cond?: TimelineCondition): Promise<tt4b.timeline.Tick[]> {
         return this.idb.select(cond)
     }
 

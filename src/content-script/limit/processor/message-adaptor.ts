@@ -2,7 +2,7 @@ import { trySendMsg2Runtime } from '@api/sw/common'
 import { hasDailyLimited, hasWeeklyLimited, matches } from "@util/limit"
 import type { LimitReason, ModalContext, Processor } from '../types'
 
-const cvtItem2AddReason = (item: timer.limit.Item, delayDuration: number): LimitReason[] => {
+const cvtItem2AddReason = (item: tt4b.limit.Item, delayDuration: number): LimitReason[] => {
     const { cond, allowDelay, id, delayCount, weeklyDelayCount } = item
     const reasons2Add: LimitReason[] = []
     hasDailyLimited(item, delayDuration) && reasons2Add.push({ type: "DAILY", cond, allowDelay, id, delayCount })
@@ -17,7 +17,7 @@ class MessageAdaptor implements Processor {
         this.initRules()
     }
 
-    onLimitTimeMeet(items: timer.limit.Item[]): void {
+    onLimitTimeMeet(items: tt4b.limit.Item[]): void {
         if (!items.length) return
         items.filter(({ cond }) => matches(cond, this.context.url))
             .flatMap(item => cvtItem2AddReason(item, this.delayDuration))

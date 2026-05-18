@@ -44,7 +44,7 @@ type TargetItem = AnalysisTarget & {
     label: string
 }
 
-const fetchItems = async (categories: timer.site.Cate[]): Promise<[siteItems: TargetItem[], cateItems: TargetItem[]]> => {
+const fetchItems = async (categories: tt4b.site.Cate[]): Promise<[siteItems: TargetItem[], cateItems: TargetItem[]]> => {
     // 1. query categories
     const cateItems: TargetItem[] = categories.map(({ id, name }) => ({ type: 'cate', key: id, label: name }))
 
@@ -62,7 +62,7 @@ const SiteTypeTag: FunctionalComponent<{ text: string }> = ({ text }) => (
     </span>
 )
 
-const SiteOption = defineComponent<{ value: timer.site.SiteInfo }>(props => {
+const SiteOption = defineComponent<{ value: tt4b.site.SiteInfo }>(props => {
     const alias = computed(() => props.value.alias)
     const type = computed(() => props.value.type)
     const mergedText = t(msg => msg.analysis.common.merged)

@@ -23,8 +23,8 @@ const STORAGE_MIGRATABLES: StorageMigratable<unknown>[] = [
     statDatabase,
 ]
 
-export async function exportData(): Promise<timer.backup.ExportData> {
-    const data: timer.backup.ExportData = {
+export async function exportData(): Promise<tt4b.backup.ExportData> {
+    const data: tt4b.backup.ExportData = {
         __meta__: { version: packageInfo.version, ts: Date.now() },
     }
     for (const migratable of BROWSER_MIGRATABLES) {
@@ -39,7 +39,7 @@ export async function importData(data: unknown): Promise<void> {
     for (const db of BROWSER_MIGRATABLES) await db.importData(data)
 }
 
-export async function migrateStorage(type: timer.option.StorageType): Promise<void> {
+export async function migrateStorage(type: tt4b.option.StorageType): Promise<void> {
     const dataList: unknown[] = []
     // 1. migrate all the databases firstly
     for (const migratable of STORAGE_MIGRATABLES) {

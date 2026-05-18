@@ -16,7 +16,7 @@ const useDescriptions = () => {
     return { style, size }
 }
 
-const renderBaseItems = (rule: timer.limit.Rule | undefined, url: string) => <>
+const renderBaseItems = (rule: tt4b.limit.Rule | undefined, url: string) => <>
     <ElDescriptionsItem label={t(msg => msg.limit.item.name)} labelAlign="right">
         {rule?.name ?? '-'}
     </ElDescriptionsItem>

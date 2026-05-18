@@ -11,7 +11,7 @@ import { identifySiteKey, parseSiteIdentity } from '@util/site'
 import { ElOption, ElSelect, ElTag } from "element-plus"
 import { computed, defineComponent } from "vue"
 
-type Props = ModelValue<timer.site.SiteKey | undefined>
+type Props = ModelValue<tt4b.site.SiteKey | undefined>
 
 const EXIST_MSG = t(msg => msg.siteManage.msg.existedTag)
 const MERGED_MSG = t(msg => msg.siteManage.type.merged?.name)?.toLocaleUpperCase?.()
@@ -28,7 +28,7 @@ const VIRTUAL_MSG = t(msg => msg.siteManage.type.virtual?.name)?.toLocaleUpperCa
  *      5. www.github.com/sheepzh/*[VIRTUAL-EXISTED]
  *      3. www.google.com[MERGED-EXISTED]
  */
-function labelOf(site: timer.site.SiteInfo): string {
+function labelOf(site: tt4b.site.SiteInfo): string {
     let { host: label, type, alias } = site
     const suffix: string[] = []
     type === 'merged' && suffix.push(MERGED_MSG)

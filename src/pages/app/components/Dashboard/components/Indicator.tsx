@@ -33,7 +33,7 @@ function calculateInstallDays(installTime: Date, now: Date): number {
     return Math.round(deltaMills / MILL_PER_DAY)
 }
 
-function calcBusiestClock(rows: timer.period.Row[]): number | undefined {
+function calcBusiestClock(rows: tt4b.period.Row[]): number | undefined {
     const map = groupBy(rows,
         ({ startTime }) => startTime - getStartOfDay(startTime),
         list => sum(list.map(e => e.milliseconds))

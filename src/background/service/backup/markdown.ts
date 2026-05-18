@@ -10,7 +10,7 @@ import { formatPeriodCommon } from "@util/time"
 
 export const CLIENT_FILE_NAME = "clients_no_modify.md"
 
-const CLIENT_FIELDS: MarkdownTableField<timer.backup.Client>[] = [
+const CLIENT_FIELDS: MarkdownTableField<tt4b.backup.Client>[] = [
     {
         name: "Client Id",
         formatter: r => r.id,
@@ -42,7 +42,7 @@ function genJsonLine(data: any): string {
     return `<!-- ${JSON.stringify(data)} -->`
 }
 
-export function convertClients2Markdown(clients: timer.backup.Client[]): string {
+export function convertClients2Markdown(clients: tt4b.backup.Client[]): string {
     return genMarkdownTable(clients, CLIENT_FIELDS)
 }
 
@@ -82,7 +82,7 @@ function genMarkdownTable<T>(list: T[], fields: MarkdownTableField<T>[]): string
     return lines.join('\n')
 }
 
-const ROW_FIELDS: MarkdownTableField<timer.core.Row>[] = [
+const ROW_FIELDS: MarkdownTableField<tt4b.core.Row>[] = [
     {
         name: "Date",
         formatter: r => r.date,
@@ -98,7 +98,7 @@ const ROW_FIELDS: MarkdownTableField<timer.core.Row>[] = [
     },
 ]
 
-export function divideByDate(rows: timer.core.Row[]): { [date: string]: string } {
+export function divideByDate(rows: tt4b.core.Row[]): { [date: string]: string } {
     return groupBy(rows, row => row.date, list => genMarkdownTable(list, ROW_FIELDS))
 }
 

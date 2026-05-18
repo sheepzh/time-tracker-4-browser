@@ -8,7 +8,7 @@ describe('limit-database', () => {
 
     beforeEach(async () => chrome.storage.local.clear())
     test('save, all, remove', async () => {
-        const toAdd: timer.limit.Rule = {
+        const toAdd: tt4b.limit.Rule = {
             id: 1,
             name: "foobar",
             cond: ['123'],
@@ -18,7 +18,7 @@ describe('limit-database', () => {
             locked: false,
         }
         const id = await db.add(toAdd)
-        let all: timer.limit.Rule[] = await db.all()
+        let all: tt4b.limit.Rule[] = await db.all()
         expect(all.length).toEqual(1)
         let { cond, time, name, enabled, allowDelay } = all[0] ?? {}
         expect(cond).toEqual(toAdd.cond)
@@ -66,7 +66,7 @@ describe('limit-database', () => {
     })
 
     test("import data", async () => {
-        const cond1: MakeOptional<timer.limit.Rule, 'id'> = {
+        const cond1: MakeOptional<tt4b.limit.Rule, 'id'> = {
             name: 'foobar1',
             cond: ["cond1"],
             time: 20,
@@ -74,7 +74,7 @@ describe('limit-database', () => {
             enabled: true,
             locked: false,
         }
-        const cond2: MakeOptional<timer.limit.Rule, 'id'> = {
+        const cond2: MakeOptional<tt4b.limit.Rule, 'id'> = {
             name: 'foobar2',
             cond: ["cond2"],
             time: 20,

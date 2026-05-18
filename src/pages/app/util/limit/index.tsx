@@ -19,7 +19,7 @@ const tN = (key: I18nKey<LimitMessage>, param?: any) => tN_<LimitMessage, VNode>
  *
  * @returns T/F
  */
-export async function judgeVerificationRequired(item: timer.limit.Item, delayDuration: number): Promise<boolean> {
+export async function judgeVerificationRequired(item: tt4b.limit.Item, delayDuration: number): Promise<boolean> {
     if (!item.enabled || !isEffective(item.weekdays)) return false
 
     const { visitTime, periods } = item
@@ -104,7 +104,7 @@ const errMsg = (message: string) => ElMessage.error({ message, customClass: MSG_
  * @returns null if verification not required,
  *          or promise with resolve invoked only if verification code or password correct
  */
-export function processVerification(option: timer.option.LimitOption): Promise<void> {
+export function processVerification(option: tt4b.option.LimitOption): Promise<void> {
     const { limitLevel, limitPassword, limitVerifyDifficulty } = option
     if (limitLevel === 'strict') {
         return new Promise(() => ElMessageBox({

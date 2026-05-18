@@ -2,7 +2,7 @@ import { type Language } from "element-plus/es/locale"
 import { locale, t } from "."
 import calendarMessages from "./message/common/calendar"
 
-const LOCALES: Record<timer.Locale, () => Promise<{ default: Language }>> = {
+const LOCALES: Record<tt4b.Locale, () => Promise<{ default: Language }>> = {
     zh_CN: () => import('element-plus/es/locale/lang/zh-cn'),
     zh_TW: () => import('element-plus/es/locale/lang/zh-tw'),
     en: () => import('element-plus/es/locale/lang/en'),

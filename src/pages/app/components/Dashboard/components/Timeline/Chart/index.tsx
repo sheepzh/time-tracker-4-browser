@@ -16,7 +16,7 @@ import { type Component, computed, defineComponent } from "vue"
 import { TIMELINE_DAY_COUNT, useTimelineContext } from '../context'
 import Wrapper, { BizData, EcOption } from './Wrapper'
 
-const CHART_CONFIG: Record<timer.timeline.MergeMethod, Component> = {
+const CHART_CONFIG: Record<tt4b.timeline.MergeMethod, Component> = {
     none: Files,
     domain: Link,
     cate: Collection,
@@ -74,7 +74,7 @@ const TimelineChart = defineComponent<{}>(() => {
                     <IconRadioGroup
                         size="small"
                         modelValue={merge.value}
-                        onChange={val => setMerge(val as timer.timeline.MergeMethod)}
+                        onChange={val => setMerge(val as tt4b.timeline.MergeMethod)}
                         options={Object.entries(CHART_CONFIG).map(([value, icon]) => ({ value, icon }))}
                     />
                 </Flex>

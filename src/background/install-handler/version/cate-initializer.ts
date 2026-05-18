@@ -33,7 +33,7 @@ async function initItem(item: InitialCate) {
     const { name, hosts } = item
     const cate = await cateDatabase.add(name)
     const cateId = cate.id
-    const siteKeys = hosts.map(host => ({ host, type: 'normal' } satisfies timer.site.SiteKey))
+    const siteKeys = hosts.map(host => ({ host, type: 'normal' } satisfies tt4b.site.SiteKey))
     await batchChangeCate(cateId, siteKeys)
 }
 

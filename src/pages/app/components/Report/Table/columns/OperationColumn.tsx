@@ -20,7 +20,7 @@ import { ElButton, ElMessage, ElTableColumn, type RenderRowData } from "element-
 import { computed, defineComponent } from "vue"
 import { useRouter } from "vue-router"
 
-const LOCALE_WIDTH: { [locale in timer.Locale]: number } = {
+const LOCALE_WIDTH: { [locale in tt4b.Locale]: number } = {
     en: 330,
     zh_CN: 290,
     ja: 360,
@@ -38,16 +38,16 @@ const LOCALE_WIDTH: { [locale in timer.Locale]: number } = {
 }
 
 type Props = {
-    onDelete?: ArgCallback<timer.stat.Row>
+    onDelete?: ArgCallback<tt4b.stat.Row>
 }
 
-const analysisVisible = (row: timer.stat.Row) => {
+const analysisVisible = (row: tt4b.stat.Row) => {
     if (isGroup(row)) return false
     if (isCate(row)) return row.cateKey !== CATE_NOT_SET_ID
     return true
 }
 
-const deleteVisible = (row: timer.stat.Row) => {
+const deleteVisible = (row: tt4b.stat.Row) => {
     if (isCate(row)) return false
     if (isSite(row) && row.siteKey.type === 'merged') return false
     return true
@@ -69,7 +69,7 @@ const _default = defineComponent<Props>(({ onDelete }) => {
     const { refresh: onAddWhitelist } = useManualRequest(addWhitelist, { onSuccess: onWhitelistSuccess })
     const { refresh: onRemoveWhitelist } = useManualRequest(deleteWhitelist, { onSuccess: onWhitelistSuccess })
 
-    const jump2Analysis = (row: timer.stat.Row) => {
+    const jump2Analysis = (row: tt4b.stat.Row) => {
         let query: AppAnalysisQuery
         if (isCate(row)) {
             query = { cateId: row.cateKey?.toString?.() }
@@ -87,7 +87,7 @@ const _default = defineComponent<Props>(({ onDelete }) => {
             label={t(msg => msg.button.operation)}
             align="center"
         >
-            {({ row }: RenderRowData<timer.stat.Row>) => <>
+            {({ row }: RenderRowData<tt4b.stat.Row>) => <>
                 {/* Analysis */}
                 {analysisVisible(row) && (
                     <ElButton

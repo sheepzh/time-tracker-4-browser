@@ -22,7 +22,7 @@ const STEP_TITLES = [
     t(msg => msg.option.backup.confirmStep),
 ]
 
-async function fetchStatResult(client: timer.backup.Client): Promise<StatResult> {
+async function fetchStatResult(client: tt4b.backup.Client): Promise<StatResult> {
     const { id: specCid, maxDate, minDate = BIRTHDAY } = client
     const start = minDate ?? BIRTHDAY
     const end = maxDate ?? formatTimeYMD(Date.now())

@@ -16,7 +16,7 @@ class VerificationProcessor {
         this.generators = ALL_GENERATORS
     }
 
-    generate(difficulty: timer.limit.VerificationDifficulty, locale: timer.Locale): VerificationPair | undefined {
+    generate(difficulty: tt4b.limit.VerificationDifficulty, locale: tt4b.Locale): VerificationPair | undefined {
         const context: VerificationContext = { difficulty, locale }
         const supported = this.generators.filter(g => g.supports(context))
 

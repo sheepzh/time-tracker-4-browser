@@ -13,23 +13,23 @@ function cloneData<T = any>(data: T | undefined): T | undefined {
     }
 }
 
-type RuntimeMsgArgs<C extends timer.mq.ReqCode> = [timer.mq.ReqData<C>] extends [undefined]
-    ? [data?: timer.mq.ReqData<C>, timeout_ms?: number]
-    : [data: timer.mq.ReqData<C>, timeout_ms?: number]
+type RuntimeMsgArgs<C extends tt4b.mq.ReqCode> = [tt4b.mq.ReqData<C>] extends [undefined]
+    ? [data?: tt4b.mq.ReqData<C>, timeout_ms?: number]
+    : [data: tt4b.mq.ReqData<C>, timeout_ms?: number]
 
-export function sendMsg2Runtime<C extends timer.mq.ReqCode>(
+export function sendMsg2Runtime<C extends tt4b.mq.ReqCode>(
     code: C,
     ...args: RuntimeMsgArgs<C>
-): Promise<timer.mq.ResData<C>> {
+): Promise<tt4b.mq.ResData<C>> {
     const [data, timeout_ms] = args
-    const request: timer.mq.Request<C> = { code, data: cloneData(data) as timer.mq.ReqData<C> }
+    const request: tt4b.mq.Request<C> = { code, data: cloneData(data) as tt4b.mq.ReqData<C> }
     return new Promise((resolve, reject) => {
         const timeout = setTimeout(() => {
             // timeout: no response from runtime
             reject('sendMsg2Runtime timeout')
         }, timeout_ms ?? 10_000)
         try {
-            chrome.runtime.sendMessage(request, (response: timer.mq.Response<C>) => {
+            chrome.runtime.sendMessage(request, (response: tt4b.mq.Response<C>) => {
                 clearTimeout(timeout)
                 handleError('sendMsg2Runtime')
                 const resCode = response?.code
@@ -37,7 +37,7 @@ export function sendMsg2Runtime<C extends timer.mq.ReqCode>(
                     console.warn("Error occurred when querying service-worker", code, data, response?.msg)
                     return reject(new Error(response?.msg || 'Unknown error'))
                 }
-                resCode === 'success' && resolve(response.data as timer.mq.ResData<C>)
+                resCode === 'success' && resolve(response.data as tt4b.mq.ResData<C>)
             })
         } catch (e) {
             clearTimeout(timeout)
@@ -51,10 +51,10 @@ export function sendMsg2Runtime<C extends timer.mq.ReqCode>(
  * Wrap for hooks, after the extension reloaded or upgraded, the context of current content script will be invalid
  * And sending messages to the runtime will be failed
  */
-export async function trySendMsg2Runtime<C extends timer.mq.ReqCode>(
+export async function trySendMsg2Runtime<C extends tt4b.mq.ReqCode>(
     code: C,
     ...args: RuntimeMsgArgs<C>
-): Promise<timer.mq.ResData<C> | undefined> {
+): Promise<tt4b.mq.ResData<C> | undefined> {
     try {
         return await sendMsg2Runtime(code, ...args)
     } catch {

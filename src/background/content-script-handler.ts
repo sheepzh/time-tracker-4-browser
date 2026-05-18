@@ -17,7 +17,7 @@ function isUrl(title: string) {
     return title.startsWith('https://') || title.startsWith('http://') || title.startsWith('ftp://')
 }
 
-async function collectAlias(key: timer.site.SiteKey, tabTitle: string) {
+async function collectAlias(key: tt4b.site.SiteKey, tabTitle: string) {
     if (!tabTitle) return
     if (isUrl(tabTitle)) return
     const siteName = extractSiteName(tabTitle, key.host)
@@ -36,7 +36,7 @@ async function processTabInfo(tab: ChromeTab): Promise<void> {
     if (!host) return
     // localhost hosts with Chrome use cache, so keep the favIcon url undefined
     IS_CHROME && /^localhost(:.+)?/.test(host) && (favIconUrl = undefined)
-    const siteKey: timer.site.SiteKey = { host, type: 'normal' }
+    const siteKey: tt4b.site.SiteKey = { host, type: 'normal' }
     favIconUrl && await saveIconUrl(siteKey, favIconUrl)
     !IS_ANDROID
         && !isBrowserUrl(url)

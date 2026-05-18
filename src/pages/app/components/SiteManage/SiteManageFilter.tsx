@@ -70,7 +70,7 @@ const _default = defineComponent<{
                     placeholder={t(msg => msg.siteManage.column.type)}
                     options={ALL_TYPES.map(type => ({ value: type, label: t(msg => msg.siteManage.type[type].name) }))}
                     defaultValue={filter.types ?? []}
-                    onChange={val => filter.types = val as timer.site.Type[]}
+                    onChange={val => filter.types = val as tt4b.site.Type[]}
                 />
                 <CategoryFilter
                     disabled={cateDisabled.value}

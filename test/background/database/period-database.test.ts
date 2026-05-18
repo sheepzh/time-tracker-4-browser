@@ -3,7 +3,7 @@ import { keyOf } from '@util/period'
 import { formatTimeYMD } from "@util/time"
 import { mockStorage } from "../../__mock__/storage"
 
-function resultOf(date: Date, orderNum: number, milliseconds: number): timer.period.Result {
+function resultOf(date: Date, orderNum: number, milliseconds: number): tt4b.period.Result {
     return { ...keyOf(date, orderNum), milliseconds }
 }
 
@@ -19,7 +19,7 @@ describe('period-database', () => {
 
         expect((await db.get(dateStr))).toEqual({})
 
-        const toAdd: timer.period.Result[] = [
+        const toAdd: tt4b.period.Result[] = [
             resultOf(date, 0, 56999),
             resultOf(date, 1, 2),
             resultOf(yesterday, 95, 2)
@@ -38,7 +38,7 @@ describe('period-database', () => {
     test('getBatch', async () => {
         const date = new Date(2021, 5, 7)
         const yesterday = new Date(2021, 5, 6)
-        const toAdd: timer.period.Result[] = [
+        const toAdd: tt4b.period.Result[] = [
             resultOf(date, 0, 56999),
             resultOf(date, 1, 2),
             resultOf(yesterday, 95, 2)

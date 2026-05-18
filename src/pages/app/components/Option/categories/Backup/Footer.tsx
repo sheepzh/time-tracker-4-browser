@@ -28,7 +28,7 @@ const useStyle = () => {
 
 const TIME_FORMAT = t(msg => msg.calendar.timeFormat)
 
-const _default = defineComponent<{ type: timer.backup.Type }>(props => {
+const _default = defineComponent<{ type: tt4b.backup.Type }>(props => {
 
     const { data: lastTime, refresh: refreshLastTime } = useRequest(() => getLastBackUp(props.type), {
         deps: () => props.type,

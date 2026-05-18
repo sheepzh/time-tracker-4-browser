@@ -17,7 +17,7 @@ type TimelineData = {
     }
 }
 
-function filter(ticks: timer.timeline.Tick[], cond?: TimelineCondition): timer.timeline.Tick[] {
+function filter(ticks: tt4b.timeline.Tick[], cond?: TimelineCondition): tt4b.timeline.Tick[] {
     if (!cond) {
         return ticks
     }
@@ -44,14 +44,14 @@ export default class ClassicTimelineDatabase extends BaseDatabase implements Tim
         return data ?? {}
     }
 
-    async batchSave(_ticks: timer.timeline.Tick[]): Promise<void> {
+    async batchSave(_ticks: tt4b.timeline.Tick[]): Promise<void> {
         console.warn("ClassicTimelineDatabase is deprecated, data will not be saved to it. This invoking is not expected")
         return
     }
 
-    async select(cond?: TimelineCondition): Promise<timer.timeline.Tick[]> {
+    async select(cond?: TimelineCondition): Promise<tt4b.timeline.Tick[]> {
         const data = await this.getData()
-        const ticks: timer.timeline.Tick[] = []
+        const ticks: tt4b.timeline.Tick[] = []
         Object.values(data).forEach(hostData => {
             Object.entries(hostData).forEach(([host, items]) => {
                 items.forEach(({ s: start, d: duration }) => ticks.push({ host, start, duration }))

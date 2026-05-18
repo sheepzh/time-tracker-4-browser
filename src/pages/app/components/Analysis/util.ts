@@ -11,7 +11,7 @@ import type { ValueFormatter } from '../common/kanban/types'
 /**
  * Transfer host info to label
  */
-export function labelOfHostInfo(site: timer.site.SiteKey | undefined): string {
+export function labelOfHostInfo(site: tt4b.site.SiteKey | undefined): string {
     if (!site) return ''
     const { host, type } = site
     if (!host) return ''

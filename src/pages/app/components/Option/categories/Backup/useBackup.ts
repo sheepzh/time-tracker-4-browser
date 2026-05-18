@@ -2,7 +2,7 @@ import { useOption } from '@app/components/Option/useOption'
 import { DEFAULT_BACKUP } from "@util/constant/option"
 import { computed } from "vue"
 
-function copy(target: timer.option.BackupOption, source: timer.option.BackupOption) {
+function copy(target: tt4b.option.BackupOption, source: tt4b.option.BackupOption) {
     target.backupType = source.backupType
     target.autoBackUp = source.autoBackUp
     target.autoBackUpInterval = source.autoBackUpInterval
@@ -13,7 +13,7 @@ function copy(target: timer.option.BackupOption, source: timer.option.BackupOpti
 }
 
 export const useBackup = () => {
-    const { option } = useOption<timer.option.BackupOption>({ defaultValue: DEFAULT_BACKUP, copy })
+    const { option } = useOption<tt4b.option.BackupOption>({ defaultValue: DEFAULT_BACKUP, copy })
 
     const reset = () => {
         // Only reset type and auto flag
@@ -34,7 +34,7 @@ export const useBackup = () => {
         }
     })
 
-    const ext = computed<timer.backup.TypeExt | undefined>({
+    const ext = computed<tt4b.backup.TypeExt | undefined>({
         get: () => option.backupExts?.[option.backupType],
         set: val => {
             const typeVal = option.backupType
@@ -47,12 +47,12 @@ export const useBackup = () => {
         },
     })
 
-    const setExtField = (field: keyof timer.backup.TypeExt, val: string) => {
+    const setExtField = (field: keyof tt4b.backup.TypeExt, val: string) => {
         const newVal = { ...(ext.value || {}), [field]: val?.trim?.() }
         ext.value = newVal
     }
 
-    const setLoginField = (field: keyof timer.backup.LoginInfo, val: string) => {
+    const setLoginField = (field: keyof tt4b.backup.LoginInfo, val: string) => {
         const typeVal = option.backupType
         if (!typeVal) return
         const newLogin = {

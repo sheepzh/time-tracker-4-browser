@@ -12,7 +12,7 @@ const PERIOD_PER_DATE = 24 * 60 / MINUTE_PER_PERIOD
 export const MAX_PERIOD_ORDER = PERIOD_PER_DATE - 1
 const MILL_PER_PERIOD = MINUTE_PER_PERIOD * MILL_PER_MINUTE
 
-export function keyOf(time: Date | number, order?: number): timer.period.Key {
+export function keyOf(time: Date | number, order?: number): tt4b.period.Key {
     time = time instanceof Date ? time : new Date(time)
     const year = time.getFullYear()
     const month = time.getMonth() + 1
@@ -23,7 +23,7 @@ export function keyOf(time: Date | number, order?: number): timer.period.Key {
     return { year, month, date, order }
 }
 
-export function indexOf(key: timer.period.Key): number {
+export function indexOf(key: tt4b.period.Key): number {
     const { year, month, date, order } = key
     return (year << 18)
         | (month << 14)
@@ -31,24 +31,24 @@ export function indexOf(key: timer.period.Key): number {
         | order
 }
 
-export function compare(a: timer.period.Key, b: timer.period.Key): number {
+export function compare(a: tt4b.period.Key, b: tt4b.period.Key): number {
     return indexOf(a) - indexOf(b)
 }
 
-export function after(key: timer.period.Key, orderCount: number): timer.period.Key {
+export function after(key: tt4b.period.Key, orderCount: number): tt4b.period.Key {
     const date = new Date(key.year, key.month - 1, key.date, 0, (key.order + orderCount) * MINUTE_PER_PERIOD, 1)
     return keyOf(date)
 }
 
-export function startOfKey(key: timer.period.Key): Date {
+export function startOfKey(key: tt4b.period.Key): Date {
     return new Date(key.year, key.month - 1, key.date, 0, MINUTE_PER_PERIOD * key.order)
 }
 
-export function getDateString(key: timer.period.Key) {
+export function getDateString(key: tt4b.period.Key) {
     return `${key.year}${key.month < 10 ? '0' : ''}${key.month}${key.date < 10 ? '0' : ''}${key.date}`
 }
 
-export function rowOf(endKey: timer.period.Key, duration?: number, milliseconds?: number): timer.period.Row {
+export function rowOf(endKey: tt4b.period.Key, duration?: number, milliseconds?: number): tt4b.period.Row {
     duration = duration || 1
     milliseconds = milliseconds || 0
     const date = getDateString(endKey)
@@ -58,7 +58,7 @@ export function rowOf(endKey: timer.period.Key, duration?: number, milliseconds?
     return { startTime, endTime, milliseconds, date }
 }
 
-function generateOrderMap(data: timer.period.Row[], periodSize: number): Map<number, number> {
+function generateOrderMap(data: tt4b.period.Row[], periodSize: number): Map<number, number> {
     const map: Map<number, number> = new Map()
     data.forEach(item => {
         const key = Math.floor(startOrderOfRow(item) / periodSize)
@@ -68,13 +68,13 @@ function generateOrderMap(data: timer.period.Row[], periodSize: number): Map<num
     return map
 }
 
-function startOrderOfRow(row: timer.period.Row): number {
+function startOrderOfRow(row: tt4b.period.Row): number {
     const d = new Date(row.startTime)
     return (d.getHours() * 60 + d.getMinutes()) / MINUTE_PER_PERIOD
 }
 
-function cvt2AverageResult(map: Map<number, number>, periodSize: number, dateNum: number): timer.period.Row[] {
-    const result: timer.period.Row[] = []
+function cvt2AverageResult(map: Map<number, number>, periodSize: number, dateNum: number): tt4b.period.Row[] {
+    const result: tt4b.period.Row[] = []
     let period = keyOf(new Date(), 0)
     for (let i = 0; i < PERIOD_PER_DATE / periodSize; i++) {
         const key = period.order / periodSize
@@ -86,7 +86,7 @@ function cvt2AverageResult(map: Map<number, number>, periodSize: number, dateNum
     return result
 }
 
-export function averageByDay(data: timer.period.Row[], periodSize: number): timer.period.Row[] {
+export function averageByDay(data: tt4b.period.Row[], periodSize: number): tt4b.period.Row[] {
     if (!data?.length) return []
     const rangeStart = data[0]?.startTime
     const rangeEnd = data[data.length - 1]?.endTime

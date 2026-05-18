@@ -15,5 +15,5 @@ declare type ChromeAlarm = chrome.alarms.Alarm
 // chrome.runtime
 declare type ChromeOnInstalledReason = `${chrome.runtime.OnInstalledReason}`
 declare type ChromeMessageSender = chrome.runtime.MessageSender
-declare type ChromeMessageHandler = (req: timer.mq.Request<timer.mq.ReqCode>, sender: ChromeMessageSender) => Promise<timer.mq.Response<timer.mq.ReqCode>>
-declare type ChromeTabMessageHandler = (req: timer.tab.Request<timer.tab.ReqCode>, sender: ChromeMessageSender) => Promise<timer.tab.Response<timer.tab.ReqCode>>
+declare type ChromeMessageHandler = (req: tt4b.mq.Request<tt4b.mq.ReqCode>, sender: ChromeMessageSender) => Promise<tt4b.mq.Response<tt4b.mq.ReqCode>>
+declare type ChromeTabMessageHandler = (req: tt4b.tab.Request<tt4b.tab.ReqCode>, sender: ChromeMessageSender) => Promise<tt4b.tab.Response<tt4b.tab.ReqCode>>

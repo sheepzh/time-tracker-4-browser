@@ -87,7 +87,7 @@ describe('util/limit', () => {
     })
 
     test('hasWeeklyLimited', () => {
-        const item: timer.limit.Item = {
+        const item: tt4b.limit.Item = {
             id: 1,
             name: 'foobar',
             cond: [],
@@ -119,8 +119,8 @@ describe('util/limit', () => {
     })
 
     test('hasLimit', () => {
-        const assert = (setup: (item: timer.limit.Item) => void, limited: boolean) => {
-            const item: timer.limit.Item = {
+        const assert = (setup: (item: tt4b.limit.Item) => void, limited: boolean) => {
+            const item: tt4b.limit.Item = {
                 id: 1,
                 name: 'foobar',
                 cond: [],

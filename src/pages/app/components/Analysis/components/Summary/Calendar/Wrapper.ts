@@ -76,7 +76,7 @@ function getXAxisLabelMap(data: _Value[]): { [x: string]: string } {
 
 function optionOf(
     data: _Value[], weekDays: string[],
-    format: timer.app.TimeFormat, domWidth: number,
+    format: tt4b.app.TimeFormat, domWidth: number,
 ): EcOption {
     const xAxisLabelMap = getXAxisLabelMap(data)
     const axisTextColor = getSecondaryTextColor()
@@ -139,8 +139,8 @@ function optionOf(
 }
 
 export type BizOption = {
-    rows: timer.stat.Row[]
-    timeFormat: timer.app.TimeFormat
+    rows: tt4b.stat.Row[]
+    timeFormat: tt4b.app.TimeFormat
 }
 
 class Wrapper extends EchartsWrapper<BizOption, EcOption> {

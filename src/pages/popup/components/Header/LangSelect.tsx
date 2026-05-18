@@ -13,7 +13,7 @@ import { ElDropdown, ElDropdownItem, ElDropdownMenu, ElIcon, ElText } from "elem
 import { defineComponent, type StyleValue } from "vue"
 
 // Keep the locale same as this browser first position
-const SORTED_LOCALES: timer.Locale[] = ALL_LOCALES.sort((a, _b) => a === localeSameAsBrowser ? -1 : 0)
+const SORTED_LOCALES: tt4b.Locale[] = ALL_LOCALES.sort((a, _b) => a === localeSameAsBrowser ? -1 : 0)
 
 const SELECTED_STYLES: StyleValue = {
     color: 'var(--el-color-primary)',
@@ -29,7 +29,7 @@ const LangSelect = defineComponent(() => {
     const { reload: reloadPopup } = usePopupContext()
 
     const { refresh: saveLocale } = useManualRequest(
-        async (opt: timer.option.LocaleOption) => {
+        async (opt: tt4b.option.LocaleOption) => {
             await sendMsg2Runtime('option.set', { locale: opt })
             handleLocaleOption(opt)
         },

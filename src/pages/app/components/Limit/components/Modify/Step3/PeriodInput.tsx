@@ -28,7 +28,7 @@ const range2Period = (range: [Date, Date]): [number, number] => {
     return [Math.min(startIdx, endIdx), Math.max(startIdx, endIdx)]
 }
 
-const insertPeriods = (periods: timer.limit.Period[], toInsert: timer.limit.Period) => {
+const insertPeriods = (periods: tt4b.limit.Period[], toInsert: tt4b.limit.Period) => {
     if (!toInsert || !periods) return
     let len = periods.length
     if (!len) {
@@ -57,13 +57,13 @@ const insertPeriods = (periods: timer.limit.Period[], toInsert: timer.limit.Peri
     periods.sort((a, b) => a[0] - b[0])
 }
 
-const mergePeriod = (target: timer.limit.Period, toMerge: timer.limit.Period) => {
+const mergePeriod = (target: tt4b.limit.Period, toMerge: tt4b.limit.Period) => {
     if (!target || !toMerge) return
     target[0] = Math.min(target[0], toMerge[0])
     target[1] = Math.max(target[1], toMerge[1])
 }
 
-const checkImpact = (p1: timer.limit.Period, p2: timer.limit.Period): boolean => {
+const checkImpact = (p1: tt4b.limit.Period, p2: tt4b.limit.Period): boolean => {
     if (!p1 || !p2) return false
     const [s1, e1] = p1
     const [s2, e2] = p2
@@ -100,7 +100,7 @@ const usePickerStyle = () => {
     `
 }
 
-const PeriodInput = defineComponent<ModelValue<timer.limit.Period[]>>(props => {
+const PeriodInput = defineComponent<ModelValue<tt4b.limit.Period[]>>(props => {
     const [editing, openEditing, closeEditing] = useSwitch(false)
     const [editingRange, setEditingRange] = useState(rangeInitial())
     const isXs = useXsState()
@@ -112,7 +112,7 @@ const PeriodInput = defineComponent<ModelValue<timer.limit.Period[]>>(props => {
 
     const handleSave = () => {
         const val = range2Period(editingRange.value)
-        const oldPeriods = props.modelValue.map(p => [p[0], p[1]] satisfies timer.limit.Period)
+        const oldPeriods = props.modelValue.map(p => [p[0], p[1]] satisfies tt4b.limit.Period)
         insertPeriods(oldPeriods, val)
         props.onChange?.(oldPeriods)
         closeEditing()
@@ -120,7 +120,7 @@ const PeriodInput = defineComponent<ModelValue<timer.limit.Period[]>>(props => {
 
     const handleDelete = (idx: number) => {
         const newPeriods = props.modelValue.filter((_, i) => i !== idx)
-            .map(p => [p[0], p[1]] satisfies timer.limit.Period)
+            .map(p => [p[0], p[1]] satisfies tt4b.limit.Period)
         props.onChange?.(newPeriods)
     }
 

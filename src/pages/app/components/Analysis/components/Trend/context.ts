@@ -37,7 +37,7 @@ type IndicatorSet = Record<DimensionType, {
 
 type SourceParam = {
     dateRange: [Date, Date]
-    rows: timer.stat.Row[]
+    rows: tt4b.stat.Row[]
 }
 
 type EffectParam = {
@@ -48,9 +48,9 @@ type EffectParam = {
 }
 
 function computeIndicatorSet(
-    rows: timer.stat.Row[],
+    rows: tt4b.stat.Row[],
     dateRange: [Date, Date] | undefined,
-): [IndicatorSet | undefined, Record<string, timer.stat.Row | undefined>] {
+): [IndicatorSet | undefined, Record<string, tt4b.stat.Row | undefined>] {
     const [start, end] = dateRange || []
     const allDates = start && end ? getAllDatesBetween(start, end) : []
     if (!rows) {
@@ -67,7 +67,7 @@ function computeIndicatorSet(
     focusMax = visitMax = { date: undefined, value: undefined }
     activeDay = focusTotal = visitTotal = 0
 
-    const fullPeriodRow: Record<string, timer.stat.Row> = {}
+    const fullPeriodRow: Record<string, tt4b.stat.Row> = {}
     allDates.forEach(date => {
         const row = periodRowMap[date]
         if (!row) return

@@ -23,11 +23,11 @@ type DateRecords = {
     }
 }
 
-export type LimitRecord = timer.limit.Rule & {
+export type LimitRecord = tt4b.limit.Rule & {
     records: DateRecords
 }
 
-type PartialRule = MakeRequired<Partial<timer.limit.Rule>, 'name' | 'cond'>
+type PartialRule = MakeRequired<Partial<tt4b.limit.Rule>, 'name' | 'cond'>
 
 const isValidRow = createObjectGuard<PartialRule>({
     id: isOptionalInt,
@@ -159,7 +159,7 @@ function migrate(exist: Items, toMigrate: unknown) {
     })
 }
 
-function cvtRule2Item(rule: timer.limit.Rule): ItemValue {
+function cvtRule2Item(rule: tt4b.limit.Rule): ItemValue {
     const { id, name, cond, time, count, weekly, weeklyCount, visitTime, periods, enabled, locked, allowDelay, weekdays } = rule
     return {
         i: id, n: name, c: cond, t: time, ct: count, wt: weekly, wct: weeklyCount,
@@ -200,7 +200,7 @@ class LimitDatabase extends BaseDatabase implements BrowserMigratable<'__limit__
         return Object.values(items).map(cvtItem2Rec)
     }
 
-    async batchUpdate(rules: timer.limit.Rule[]): Promise<void> {
+    async batchUpdate(rules: tt4b.limit.Rule[]): Promise<void> {
         if (!rules.length) return
         const items = await this.getItems()
         rules.forEach(rule => {
@@ -212,7 +212,7 @@ class LimitDatabase extends BaseDatabase implements BrowserMigratable<'__limit__
         await this.update(items)
     }
 
-    async add(data: Omit<timer.limit.Rule, 'id'>): Promise<number> {
+    async add(data: Omit<tt4b.limit.Rule, 'id'>): Promise<number> {
         const items = await this.getItems()
 
         const lastId = Object.values(items)
@@ -257,7 +257,7 @@ class LimitDatabase extends BaseDatabase implements BrowserMigratable<'__limit__
         await this.update(items)
     }
 
-    async updateDelayCount(date: string, toUpdate: timer.limit.Item[]): Promise<void> {
+    async updateDelayCount(date: string, toUpdate: tt4b.limit.Item[]): Promise<void> {
         const items = await this.getItems()
         toUpdate?.forEach(({ id, delayCount }) => {
             const entry = items[id]
@@ -277,7 +277,7 @@ class LimitDatabase extends BaseDatabase implements BrowserMigratable<'__limit__
 
         const rows = extractNamespace(data, this.namespace, isValidImportRows) ?? []
         for (const row of rows) {
-            const toImport: Omit<timer.limit.Rule, 'id'> = {
+            const toImport: Omit<tt4b.limit.Rule, 'id'> = {
                 name: row.name,
                 cond: row.cond,
                 time: row.time,
@@ -306,7 +306,7 @@ class LimitDatabase extends BaseDatabase implements BrowserMigratable<'__limit__
         this.setByKey(KEY, exists)
     }
 
-    exportData(): Promise<timer.limit.Rule[]> {
+    exportData(): Promise<tt4b.limit.Rule[]> {
         return this.all()
     }
 }

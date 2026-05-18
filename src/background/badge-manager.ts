@@ -105,7 +105,7 @@ class BadgeManager {
         await this.render()
     }
 
-    private async processOption(option: timer.option.DefaultOption) {
+    private async processOption(option: tt4b.option.DefaultOption) {
         const { displayBadgeText, badgeBgColor, countLocalFiles } = option
 
         const changed = this.#visible !== displayBadgeText || this.#countLocalFiles !== countLocalFiles

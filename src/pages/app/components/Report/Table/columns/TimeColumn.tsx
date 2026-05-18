@@ -16,7 +16,7 @@ import { Effect, ElTableColumn, type RenderRowData } from "element-plus"
 import { defineComponent } from "vue"
 
 type Props = {
-    dimension: timer.core.Dimension & 'focus' | 'run'
+    dimension: tt4b.core.Dimension & 'focus' | 'run'
 }
 
 const TimeColumn = defineComponent<Props>(props => {
@@ -30,7 +30,7 @@ const TimeColumn = defineComponent<Props>(props => {
             align="center"
             sortable="custom"
         >
-            {({ row }: RenderRowData<timer.stat.Row>) => (
+            {({ row }: RenderRowData<tt4b.stat.Row>) => (
                 <TooltipWrapper
                     usePopover={filter.readRemote}
                     placement="top"

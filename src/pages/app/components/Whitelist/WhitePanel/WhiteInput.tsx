@@ -16,7 +16,7 @@ import { isValidHost, judgeVirtualFast } from "@util/pattern"
 import { ElButton, ElIcon, ElMessage, ElOption, ElSelect, ElTag } from "element-plus"
 import { defineComponent, StyleValue } from "vue"
 
-type SearchItem = timer.site.SiteKey & {
+type SearchItem = tt4b.site.SiteKey & {
     exclude?: boolean
 }
 

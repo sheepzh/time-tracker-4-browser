@@ -2,7 +2,7 @@ import { listLimits } from "@api/sw/limit"
 import { judgeVerificationRequired, processVerification } from "@app/util/limit/index"
 import { ref } from "vue"
 
-export const useVerify = (option: timer.option.LimitOption) => {
+export const useVerify = (option: tt4b.option.LimitOption) => {
     const verified = ref(false)
 
     const verify = async (): Promise<void> => {

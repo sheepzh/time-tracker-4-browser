@@ -17,7 +17,7 @@ type Row = {
     total: number
 }
 
-const cvtRow = (rows: timer.stat.Row[], start: Date, end: Date): Row[] => {
+const cvtRow = (rows: tt4b.stat.Row[], start: Date, end: Date): Row[] => {
     const groupByDate = groupBy(rows, r => r.date, l => sum(l.map(e => e.focus ?? 0)))
     const iterator = new DateIterator(start, end)
     const result: Row[] = []

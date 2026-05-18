@@ -3,7 +3,7 @@ import { useProvide, useProvider, useRequest } from '@hooks'
 import { type ShallowRef } from "vue"
 
 type Context = {
-    memory: ShallowRef<timer.common.StorageUsage>
+    memory: ShallowRef<tt4b.common.StorageUsage>
     refreshMemory: () => void
 }
 

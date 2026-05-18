@@ -60,7 +60,7 @@ function formatDateStr(date: Date | [Date, Date?] | undefined, dataDate: [string
     return end ? combineDate(start, end, format) : formatTime(start, format)
 }
 
-function formatTotalStr(rows: timer.stat.Row[], type: timer.core.Dimension | undefined): string {
+function formatTotalStr(rows: tt4b.stat.Row[], type: tt4b.core.Dimension | undefined): string {
     if (type === 'focus') {
         const total = sum(rows.map(r => r?.focus ?? 0))
         const totalTime = formatPeriodCommon(total)
@@ -264,16 +264,16 @@ export function generateToolbox(getInstance: () => ECharts | undefined): Toolbox
     }
 }
 
-type OtherRow = Record<Exclude<timer.core.Dimension, 'run'>, number> & {
+type OtherRow = Record<Exclude<tt4b.core.Dimension, 'run'>, number> & {
     other: true
     count: number
 }
 
-type ChartRow = timer.stat.Row | OtherRow
+type ChartRow = tt4b.stat.Row | OtherRow
 
 export const isOther = (row: ChartRow): row is OtherRow => 'other' in row
 
-function cvt2ChartRows(rows: timer.stat.Row[], dimension: Exclude<timer.core.Dimension, 'run'>, itemCount: number): ChartRow[] {
+function cvt2ChartRows(rows: tt4b.stat.Row[], dimension: Exclude<tt4b.core.Dimension, 'run'>, itemCount: number): ChartRow[] {
     const sorted = rows.filter(item => !!item[dimension]).sort((a, b) => (b[dimension] ?? 0) - (a[dimension] ?? 0))
     const popupRows: ChartRow[] = []
     const other: OtherRow = { focus: 0, time: 0, count: 0, other: true }
@@ -342,7 +342,7 @@ type CustomOption = Pick<
 >
 
 export function generateSiteSeriesOption(
-    rows: timer.stat.Row[],
+    rows: tt4b.stat.Row[],
     result: PercentageResult,
     customOption: CustomOption,
 ): PieSeriesOption {
@@ -356,8 +356,8 @@ export function generateSiteSeriesOption(
         if (isOther(row)) {
             item.itemStyle = { color: getInfoColor() }
             item.name = t(msg => msg.content.percentage.otherLabel, { count: row.count })
-        } else if (!isOther(row) && isSite(row as timer.stat.StatKey)) {
-            const { siteKey, alias, iconUrl } = row as timer.stat.SiteRow
+        } else if (!isOther(row) && isSite(row as tt4b.stat.StatKey)) {
+            const { siteKey, alias, iconUrl } = row as tt4b.stat.SiteRow
             const { host, type } = siteKey ?? {}
             const name = item.name = (displaySiteName ? (alias ?? host) : host) ?? ''
             const richValue: PieLabelRichValueOption = { ...BASE_LABEL_RICH_VALUE }
@@ -437,7 +437,7 @@ function calcRealRadius(
     }
 }
 
-function calculateAverageText(type: timer.core.Dimension, averageValue: number): string | undefined {
+function calculateAverageText(type: tt4b.core.Dimension, averageValue: number): string | undefined {
     if (type === 'focus') {
         return t(msg => msg.content.percentage.averageTime, { value: formatPeriodCommon(parseInt(averageValue.toFixed(0))) })
     } else if (type === 'time') {
@@ -478,7 +478,7 @@ export function formatTooltip({ query, dateLength }: PercentageResult, params: T
 /**
  * Handle click
  */
-export function handleClick(data: PieSeriesItemOption, date: PercentageResult['date'], type: timer.core.Dimension): void {
+export function handleClick(data: PieSeriesItemOption, date: PercentageResult['date'], type: tt4b.core.Dimension): void {
     const { row } = data
     if (isOther(row)) {
         return

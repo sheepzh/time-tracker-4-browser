@@ -25,7 +25,7 @@ export const generateTitleOption = (text: string): TitleComponentOption => {
 
 export type SeriesDataItem = {
     value: number
-    row: timer.stat.Row
+    row: tt4b.stat.Row
 }
 
 /**

@@ -8,7 +8,7 @@ import { defineComponent, type FunctionalComponent, toRefs } from 'vue'
 import { DAILY_WEEKLY_TAG_TYPE, PERIOD_TAG_TYPE, VISIT_TAG_TYPE } from '../style'
 
 type Props = {
-    value: timer.limit.Item
+    value: tt4b.limit.Item
 }
 
 const TimeCountPair: FunctionalComponent<{ time?: number, count?: number }> = ({ time, count }) => {

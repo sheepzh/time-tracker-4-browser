@@ -1,7 +1,7 @@
 import { divide2Buckets, type GistData, gistData2Rows } from "@service/backup/gist/compressor"
 
 test('divide 1', () => {
-    const rows: timer.core.Row[] = [{
+    const rows: tt4b.core.Row[] = [{
         host: 'www.baidu.com',
         date: '20220801',
         focus: 0,

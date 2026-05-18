@@ -13,17 +13,17 @@ import { ALL_LOCALES as _ALL_LOCALES } from "./message/merge"
 /**
  * Not to import this one if not necessary
  */
-export type FakedLocale = timer.Locale
+export type FakedLocale = tt4b.Locale
 
 /**
  * @since 0.2.2
  */
-const FEEDBACK_LOCALE: timer.Locale = "en"
+const FEEDBACK_LOCALE: tt4b.Locale = "en"
 
-export const ALL_LOCALES: timer.Locale[] = _ALL_LOCALES
+export const ALL_LOCALES: tt4b.Locale[] = _ALL_LOCALES
 
 // Standardize the locale code according to the Chrome locale code
-const chrome2I18n: { [key: string]: timer.Locale } = {
+const chrome2I18n: { [key: string]: tt4b.Locale } = {
     'zh': 'zh_CN',
     'zh-CN': "zh_CN",
     'zh-TW': "zh_TW",
@@ -44,7 +44,7 @@ const chrome2I18n: { [key: string]: timer.Locale } = {
     'pl': 'pl',
 }
 
-const translationChrome2I18n: { [key: string]: timer.TranslatingLocale } = {
+const translationChrome2I18n: { [key: string]: tt4b.TranslatingLocale } = {
     ko: 'ko',
     it: 'it',
     sv: 'sv',
@@ -68,18 +68,18 @@ const translationChrome2I18n: { [key: string]: timer.TranslatingLocale } = {
  *
  * They are different, so translate
  */
-function chromeLocale2ExtensionLocale(chromeLocale: string): timer.Locale {
+function chromeLocale2ExtensionLocale(chromeLocale: string): tt4b.Locale {
     if (!chromeLocale) return FEEDBACK_LOCALE
     const code2 = chromeLocale.substring(0, 2)
     return chrome2I18n[chromeLocale] ?? chrome2I18n[code2] ?? FEEDBACK_LOCALE
 }
 
-const browserUiLocale: timer.Locale = chromeLocale2ExtensionLocale(getUILanguage())
+const browserUiLocale: tt4b.Locale = chromeLocale2ExtensionLocale(getUILanguage())
 
 /**
  * @since 0.9.0
  */
-export const localeSameAsBrowser: timer.Locale = browserUiLocale
+export const localeSameAsBrowser: tt4b.Locale = browserUiLocale
 
 /**
  * @since 1.5.0
@@ -95,16 +95,16 @@ export function isTranslatingLocale(): boolean {
 /**
  * Real locale with locale option
  */
-export let locale: timer.Locale = browserUiLocale
+export let locale: tt4b.Locale = browserUiLocale
 
-export function cvtOption2Locale(option: timer.option.LocaleOption): timer.Locale {
+export function cvtOption2Locale(option: tt4b.option.LocaleOption): tt4b.Locale {
     if (!option || option === 'default') {
         return chromeLocale2ExtensionLocale(getUILanguage())
     }
     return option
 }
 
-export function handleLocaleOption(option: timer.option.LocaleOption) {
+export function handleLocaleOption(option: tt4b.option.LocaleOption) {
     locale = cvtOption2Locale(option)
 
     setLocale(locale)
@@ -123,7 +123,7 @@ export async function initLocale() {
 function tryGetOriginalI18nVal<MessageType>(
     messages: Messages<MessageType>,
     keyPath: I18nKey<MessageType>,
-    specLocale?: timer.Locale
+    specLocale?: tt4b.Locale
 ) {
     try {
         return keyPath(messages[specLocale || locale] as MessageType)
@@ -135,7 +135,7 @@ function tryGetOriginalI18nVal<MessageType>(
 function getI18nVal<MessageType>(
     messages: Messages<MessageType>,
     keyPath: I18nKey<MessageType>,
-    specLocale?: timer.Locale
+    specLocale?: tt4b.Locale
 ): string {
     const result = tryGetOriginalI18nVal(messages, keyPath, specLocale)
         || keyPath(messages[FEEDBACK_LOCALE] as MessageType)
@@ -158,7 +158,7 @@ function fillWithParam(result: string, param: { [key: string]: string | number }
     return result
 }
 
-export function t<MessageType>(messages: Messages<MessageType>, props: TranslateProps<MessageType>, specLocale?: timer.Locale): string {
+export function t<MessageType>(messages: Messages<MessageType>, props: TranslateProps<MessageType>, specLocale?: tt4b.Locale): string {
     const { key, param } = props
     const result: string = getI18nVal(messages, key, specLocale)
     return param ? fillWithParam(result, param) : result

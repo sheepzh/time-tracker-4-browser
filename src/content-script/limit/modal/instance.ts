@@ -29,7 +29,7 @@ function pauseAllAudio(): void {
     })
 }
 
-const TYPE_SORT: { [reason in timer.limit.ReasonType]: number } = {
+const TYPE_SORT: { [reason in tt4b.limit.ReasonType]: number } = {
     PERIOD: 0,
     VISIT: 1,
     DAILY: 2,
@@ -102,7 +102,7 @@ class ModalInstance implements MaskModal {
         this.refresh()
     }
 
-    removeReasonsByType(...types: timer.limit.ReasonType[]): void {
+    removeReasonsByType(...types: tt4b.limit.ReasonType[]): void {
         if (!types.length) return
         this.reasons = this.reasons.filter(r => !types.includes(r.type))
         this.refresh()

@@ -9,7 +9,7 @@ import db from "@db/period-database"
 import { after, compare, getDateString } from "@util/period"
 import { merge } from "./components/period-calculator"
 
-function dateStrBetween(startDate: timer.period.Key, endDate: timer.period.Key): string[] {
+function dateStrBetween(startDate: tt4b.period.Key, endDate: tt4b.period.Key): string[] {
     const result: string[] = []
     while (compare(startDate, endDate) <= 0) {
         result.push(getDateString(startDate))
@@ -18,7 +18,7 @@ function dateStrBetween(startDate: timer.period.Key, endDate: timer.period.Key):
     return result
 }
 
-export async function selectPeriods(param: timer.period.Query): Promise<timer.period.Row[]> {
+export async function selectPeriods(param: tt4b.period.Query): Promise<tt4b.period.Row[]> {
     let { range, size = 1 } = param
     if (!Number.isInteger(size) || size <= 1) size = 1
 
@@ -32,7 +32,7 @@ export async function selectPeriods(param: timer.period.Query): Promise<timer.pe
     return merge(results, size)
 }
 
-export async function batchDeletePeriods(start: timer.period.Key, end: timer.period.Key): Promise<void> {
+export async function batchDeletePeriods(start: tt4b.period.Key, end: tt4b.period.Key): Promise<void> {
     const allDates = dateStrBetween(start, end)
     await db.batchDelete(allDates)
 }

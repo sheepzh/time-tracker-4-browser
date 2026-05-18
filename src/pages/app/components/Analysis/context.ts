@@ -15,8 +15,8 @@ import type { AnalysisTarget } from "./types"
 
 type Context = {
     target: Ref<AnalysisTarget | undefined>
-    timeFormat: Ref<timer.app.TimeFormat>
-    rows: Ref<timer.stat.Row[]>
+    timeFormat: Ref<tt4b.app.TimeFormat>
+    rows: Ref<tt4b.stat.Row[]>
 }
 
 function parseQuery(): AnalysisTarget | undefined {
@@ -30,7 +30,7 @@ function parseQuery(): AnalysisTarget | undefined {
     return undefined
 }
 
-async function queryRows(target: AnalysisTarget | undefined): Promise<(timer.stat.CateRow | timer.stat.SiteRow)[]> {
+async function queryRows(target: AnalysisTarget | undefined): Promise<(tt4b.stat.CateRow | tt4b.stat.SiteRow)[]> {
     const { key, type } = target ?? {}
     if (!key) return []
 
@@ -50,7 +50,7 @@ const NAMESPACE = 'siteAnalysis'
 export const initAnalysis = () => {
     const target = ref(parseQuery())
 
-    const [cachedFormat, setFormatCache] = useLocalStorage<timer.app.TimeFormat>('analysis_timeFormat')
+    const [cachedFormat, setFormatCache] = useLocalStorage<tt4b.app.TimeFormat>('analysis_timeFormat')
     const timeFormat = ref(cachedFormat ?? 'default')
     watch(timeFormat, setFormatCache)
 

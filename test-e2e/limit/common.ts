@@ -17,7 +17,7 @@ export async function isLimitModalVisible(page: Page): Promise<boolean> {
     })
 }
 
-export async function createLimitRule(rule: timer.limit.Rule, page: Page) {
+export async function createLimitRule(rule: tt4b.limit.Rule, page: Page) {
     const createButton = await page.$('.el-card:first-child .el-button:last-child')
     await createButton!.click()
     // 1 Fill the name

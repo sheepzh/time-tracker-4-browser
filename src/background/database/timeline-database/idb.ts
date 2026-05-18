@@ -10,13 +10,13 @@ const TIME_LIFE_CYCLE = MILL_PER_DAY * 366
 // If two tick with the same host is near 1 sec, then merge them to one
 const MERGE_THRESHOLD = MILL_PER_SECOND
 
-const canMerge = (exist: timer.timeline.Tick, tick: timer.timeline.Tick) => {
+const canMerge = (exist: tt4b.timeline.Tick, tick: tt4b.timeline.Tick) => {
     const { start: existStart, host: existHost } = exist
     const { start, host } = tick
     return existHost === host && start >= existStart && start <= existStart + MERGE_THRESHOLD
 }
 
-const isConflict = (item: timer.timeline.Tick, tick: timer.timeline.Tick) => {
+const isConflict = (item: tt4b.timeline.Tick, tick: tt4b.timeline.Tick) => {
     const { start: itemStart, duration: itemDuration } = item
     const { start } = tick
     return itemStart <= start && start < itemStart + itemDuration
@@ -40,29 +40,29 @@ class CleanThrottle {
     }
 }
 
-export default class IDBTimelineDatabase extends BaseIDBStorage<timer.timeline.Tick> implements TimelineDatabase {
-    indexes: Index<timer.timeline.Tick>[] = [
+export default class IDBTimelineDatabase extends BaseIDBStorage<tt4b.timeline.Tick> implements TimelineDatabase {
+    indexes: Index<tt4b.timeline.Tick>[] = [
         'host', 'start',
     ]
-    key: Key<timer.timeline.Tick> | Key<timer.timeline.Tick>[] = ['host', 'start']
+    key: Key<tt4b.timeline.Tick> | Key<tt4b.timeline.Tick>[] = ['host', 'start']
     table: Table = 'timeline'
     private cleanThrottle = new CleanThrottle()
 
-    batchSave(ticks: timer.timeline.Tick[]): Promise<void> {
+    batchSave(ticks: tt4b.timeline.Tick[]): Promise<void> {
         return this.withStore(async store => {
             const index = this.assertIndex(store, 'host')
             const hosts = Array.from(new Set(ticks.map(tick => tick.host)))
 
             // Fetch existing records for all hosts
-            const existByHost = new Map<string, timer.timeline.Tick[]>()
+            const existByHost = new Map<string, tt4b.timeline.Tick[]>()
             await Promise.all(hosts.map(async host => {
                 const req = index.getAll(IDBKeyRange.only(host))
-                const exist = await req2Promise<timer.timeline.Tick[]>(req)
+                const exist = await req2Promise<tt4b.timeline.Tick[]>(req)
                 exist && existByHost.set(host, exist)
             }))
 
-            const toSave: timer.timeline.Tick[] = []
-            const toDelete: timer.timeline.Tick[] = []
+            const toSave: tt4b.timeline.Tick[] = []
+            const toDelete: tt4b.timeline.Tick[] = []
             ticks.forEach(tick => {
                 const existForHost = existByHost.get(tick.host) ?? []
 
@@ -89,10 +89,10 @@ export default class IDBTimelineDatabase extends BaseIDBStorage<timer.timeline.T
         }, 'readwrite')
     }
 
-    async select(cond?: TimelineCondition): Promise<timer.timeline.Tick[]> {
+    async select(cond?: TimelineCondition): Promise<tt4b.timeline.Tick[]> {
         const rows = await this.withStore(async store => {
             const { cursorReq, coverage = {} } = this.judgeIndex(store, cond)
-            const rows = await iterateCursor<timer.timeline.Tick>(cursorReq)
+            const rows = await iterateCursor<tt4b.timeline.Tick>(cursorReq)
             const { start: cs, host: ch } = cond ?? {}
             return rows.filter(tick => {
                 const { host, start } = tick

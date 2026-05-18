@@ -3,7 +3,7 @@ import { type LaunchContext } from '../common/base'
 import { waitForMessage, waitForSuccMessage } from '../common/message'
 import { sleep } from '../common/util'
 
-const typeNames: Record<timer.backup.Type, string> = {
+const typeNames: Record<tt4b.backup.Type, string> = {
     gist: 'gist',
     web_dav: 'dav',
     obsidian_local_rest_api: 'obsidian',
@@ -73,7 +73,7 @@ export class BackupOptionWrapper {
         return await page.$(`#${OPTION_TAB_ID} ${selector}`)
     }
 
-    async changeType(type: timer.backup.Type) {
+    async changeType(type: tt4b.backup.Type) {
         const page = await this.page()
         const pane = await page.$(`#${OPTION_TAB_ID} .el-select`)
         await pane?.click()

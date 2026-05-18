@@ -5,21 +5,12 @@ import { getPrimaryTextColor, getRegularTextColor } from '@pages/util/style'
 import { groupBy, sum } from "@util/array"
 import { getHost } from "@util/stat"
 import { MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND } from "@util/time"
-import {
-    type ComposeOption,
-    type LegendComponentOption,
-    type PieSeriesOption,
-    type TitleComponentOption
-} from "echarts"
-import {
-    type GridOption,
-    type TooltipOption,
-    type TopLevelFormatterParams
-} from "echarts/types/dist/shared"
+import type { ComposeOption, LegendComponentOption, PieSeriesOption, TitleComponentOption } from "echarts"
+import type { GridOption, TooltipOption, TopLevelFormatterParams } from "echarts/types/dist/shared"
 import { computeAverageLen, generateTitleOption } from "../common"
 
 export type BizOption = {
-    rows: timer.stat.Row[]
+    rows: tt4b.stat.Row[]
     dateRange: [Date, Date]
 }
 

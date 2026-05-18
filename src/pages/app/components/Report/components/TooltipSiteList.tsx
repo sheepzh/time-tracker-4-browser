@@ -5,7 +5,7 @@ import { ElScrollbar } from "element-plus"
 import { computed, defineComponent, StyleValue, toRefs } from "vue"
 
 type Props = {
-    modelValue: timer.stat.SiteRow[] | false | undefined
+    modelValue: tt4b.stat.SiteRow[] | false | undefined
     clickDisabled?: boolean
 }
 

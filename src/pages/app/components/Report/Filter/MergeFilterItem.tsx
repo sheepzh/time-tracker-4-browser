@@ -8,7 +8,7 @@ import { computed, defineComponent, StyleValue } from "vue"
 import { type JSX } from "vue/jsx-runtime"
 import { useReportFilter } from "../context"
 
-const METHOD_ICONS: Record<timer.stat.MergeMethod, JSX.Element> = {
+const METHOD_ICONS: Record<tt4b.stat.MergeMethod, JSX.Element> = {
     cate: <Collection />,
     date: <Calendar />,
     domain: <Link />,
@@ -22,13 +22,13 @@ const MergeFilterItem = defineComponent<{}>(() => {
         onGroupDisabled: () => mergeMethod.value.filter(v => v !== 'group')
     })
     const mergeItems = computed(() => {
-        const res = ['date', ...siteMergeItems.value] satisfies timer.stat.MergeMethod[]
+        const res = ['date', ...siteMergeItems.value] satisfies tt4b.stat.MergeMethod[]
         return cate.enabled ? res : res.filter(m => m !== 'cate')
     })
     const mergeMethod = computed({
         get: () => {
             const { mergeDate, siteMerge } = filter
-            const res: timer.stat.MergeMethod[] = []
+            const res: tt4b.stat.MergeMethod[] = []
             mergeDate && (res.push('date'))
             siteMerge && (res.push(siteMerge))
             return res
@@ -51,7 +51,7 @@ const MergeFilterItem = defineComponent<{}>(() => {
             </ElText>
             <ElCheckboxGroup
                 modelValue={mergeMethod.value}
-                onChange={val => mergeMethod.value = val as timer.stat.MergeMethod[]}
+                onChange={val => mergeMethod.value = val as tt4b.stat.MergeMethod[]}
             >
                 {mergeItems.value.map(method => (
                     <ElCheckboxButton value={method}>

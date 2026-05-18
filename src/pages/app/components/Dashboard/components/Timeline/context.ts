@@ -13,15 +13,15 @@ const NAMESPACE = 'dashboard-timeline'
 
 type ContextValue = {
     dates: string[]
-    activities: ShallowRef<timer.timeline.Activity[]>
-    merge: ShallowRef<timer.timeline.MergeMethod>
-    setMerge: ArgCallback<timer.timeline.MergeMethod>
+    activities: ShallowRef<tt4b.timeline.Activity[]>
+    merge: ShallowRef<tt4b.timeline.MergeMethod>
+    setMerge: ArgCallback<tt4b.timeline.MergeMethod>
 }
 
 export const initTimelineContext = () => {
     const start = getStartOfDay(Date.now() - MILL_PER_DAY * (TIMELINE_DAY_COUNT - 1))
     const dates = getAllDatesBetween(new Date(start), new Date(), formatYAxis)
-    const [merge, setMerge] = useState<timer.timeline.MergeMethod>('none')
+    const [merge, setMerge] = useState<tt4b.timeline.MergeMethod>('none')
     const { data: activities } = useRequest(
         () => sendMsg2Runtime('timeline.list', { start, merge: merge.value }),
         {

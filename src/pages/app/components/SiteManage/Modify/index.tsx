@@ -22,7 +22,7 @@ type _FormData = {
     /**
      * Value of alias key
      */
-    key: timer.site.SiteKey | undefined
+    key: tt4b.site.SiteKey | undefined
     alias: string | undefined
     category: number | undefined
 }
@@ -75,7 +75,7 @@ const _default = defineComponent<{ onSave: NoArgCallback }>((props, ctx) => {
         if (!siteKey) return false
 
         alias = alias?.trim()
-        const siteInfo: timer.site.SiteInfo = { ...siteKey, alias, cate: formData.category }
+        const siteInfo: tt4b.site.SiteInfo = { ...siteKey, alias, cate: formData.category }
         const errMsg = await sendMsg2Runtime('site.add', siteInfo)
         if (errMsg) return ElMessage.warning(errMsg)
         close()

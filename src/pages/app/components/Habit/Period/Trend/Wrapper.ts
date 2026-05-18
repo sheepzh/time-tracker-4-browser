@@ -20,12 +20,12 @@ type EcOption = ComposeOption<
 >
 
 export type BizOption = {
-    data: timer.period.Row[]
-    timeFormat: timer.app.TimeFormat
+    data: tt4b.period.Row[]
+    timeFormat: tt4b.app.TimeFormat
 }
 
 
-function formatTimeOfEcharts(params: TopLevelFormatterParams, timeFormat: timer.app.TimeFormat): string {
+function formatTimeOfEcharts(params: TopLevelFormatterParams, timeFormat: tt4b.app.TimeFormat): string {
     const format = Array.isArray(params) ? params[0] : params
     if (!format) return 'NaN'
     const { value } = format
@@ -50,7 +50,7 @@ function formatTimeOfEcharts(params: TopLevelFormatterParams, timeFormat: timer.
 
 type BarItem = Exclude<BarSeriesOption["data"], undefined>[number]
 
-const cvt2Item = (row: timer.period.Row): BarItem => {
+const cvt2Item = (row: tt4b.period.Row): BarItem => {
     const startTime = row.startTime
     const endTime = row.endTime
     const time = (startTime + endTime) / 2

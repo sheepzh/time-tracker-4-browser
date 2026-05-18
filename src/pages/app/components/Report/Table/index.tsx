@@ -32,7 +32,7 @@ import OperationColumn from "./columns/OperationColumn"
 import TimeColumn from "./columns/TimeColumn"
 import VisitColumn from "./columns/VisitColumn"
 
-async function handleAliasChange(key: timer.site.SiteKey, newAlias: string | undefined, data: timer.stat.Row[]) {
+async function handleAliasChange(key: tt4b.site.SiteKey, newAlias: string | undefined, data: tt4b.stat.Row[]) {
     newAlias = await changeSiteAlias(key, newAlias)
     data.filter(isSite)
         .filter(item => siteEqual(item.siteKey, key))
@@ -54,7 +54,7 @@ const computeVisible = (filter: ReportFilterOption): ColumnVisible => {
 
 const _default = defineComponent((_, ctx) => {
     const rtl = isRtl()
-    const [page, setPage] = useState<timer.common.PageQuery>({ size: 20, num: 1 })
+    const [page, setPage] = useState<tt4b.common.PageQuery>({ size: 20, num: 1 })
     const sort = useReportSort()
     const filter = useReportFilter()
     const visible = computed(() => computeVisible(filter))
@@ -70,13 +70,13 @@ const _default = defineComponent((_, ctx) => {
     } = useManualRequest(async () => {
         const { siteMerge, dateRange, query, readRemote: inclusiveRemote, cateIds } = filter
         const date = cvtDateRange2Str(dateRange)
-        let rows: timer.stat.Row[] = []
+        let rows: tt4b.stat.Row[] = []
         if (siteMerge === 'group') {
             rows = await listGroupStats({ date, query })
         } else if (siteMerge === 'cate') {
             rows = await listCateStats({ date, query, cateIds, inclusiveRemote })
         } else {
-            const param: timer.stat.SiteQuery = {
+            const param: tt4b.stat.SiteQuery = {
                 date, query, cateIds, inclusiveRemote,
                 mergeHost: siteMerge === 'domain',
             }
@@ -92,7 +92,7 @@ const _default = defineComponent((_, ctx) => {
     const docVisible = useDocumentVisibility()
     watch(docVisible, () => docVisible.value && refresh())
 
-    const [selection, setSelection] = useState<timer.stat.Row[]>([])
+    const [selection, setSelection] = useState<tt4b.stat.Row[]>([])
     ctx.expose({
         getSelected: () => selection.value,
         refresh,
@@ -126,7 +126,7 @@ const _default = defineComponent((_, ctx) => {
                                 label={t(msg => msg.siteManage.column.alias)}
                                 minWidth={140}
                                 align="center"
-                                v-slots={({ row }: { row: timer.stat.Row }) => (
+                                v-slots={({ row }: { row: tt4b.stat.Row }) => (
                                     <Editable
                                         modelValue={getAlias(row)}
                                         onChange={newAlias => 'siteKey' in row && handleAliasChange(row.siteKey, newAlias, data.value.list)}

@@ -63,15 +63,15 @@ export function listTabs(query?: chrome.tabs.QueryInfo): Promise<ChromeTab[]> {
     }))
 }
 
-export function sendMsg2Tab<C extends timer.tab.ReqCode>(tabId: number, code: C, data?: timer.tab.ReqData<C>): Promise<timer.tab.ResData<C> | undefined> {
-    const request: timer.tab.Request<C> = { code, data: data as timer.tab.ReqData<C> }
+export function sendMsg2Tab<C extends tt4b.tab.ReqCode>(tabId: number, code: C, data?: tt4b.tab.ReqData<C>): Promise<tt4b.tab.ResData<C> | undefined> {
+    const request: tt4b.tab.Request<C> = { code, data: data as tt4b.tab.ReqData<C> }
     return new Promise((resolve, reject) => {
         const timeout = setTimeout(() => reject('sendMsg2Tab timeout'), 2000)
-        chrome.tabs.sendMessage<timer.tab.Request<C>, timer.tab.Response<C>>(tabId, request, response => {
+        chrome.tabs.sendMessage<tt4b.tab.Request<C>, tt4b.tab.Response<C>>(tabId, request, response => {
             const sendError = handleError('sendMsg2Tab')
             clearTimeout(timeout)
             if (response?.code === 'success') {
-                resolve(response.data as timer.tab.ResData<C> | undefined)
+                resolve(response.data as tt4b.tab.ResData<C> | undefined)
                 return
             }
             if (response?.code === 'fail') {
@@ -83,11 +83,11 @@ export function sendMsg2Tab<C extends timer.tab.ReqCode>(tabId: number, code: C,
     })
 }
 
-export async function trySendMsg2Tab<C extends timer.tab.ReqCode>(
+export async function trySendMsg2Tab<C extends tt4b.tab.ReqCode>(
     tabId: number,
     code: C,
-    data?: timer.tab.ReqData<C>
-): Promise<timer.tab.ResData<C> | undefined> {
+    data?: tt4b.tab.ReqData<C>
+): Promise<tt4b.tab.ResData<C> | undefined> {
     try {
         return await sendMsg2Tab(tabId, code, data)
     } catch (e) {

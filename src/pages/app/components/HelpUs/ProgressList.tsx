@@ -13,7 +13,7 @@ import Flex from "@pages/components/Flex"
 import { ElProgress, type ProgressProps } from "element-plus"
 import { defineComponent, ref, type StyleValue } from "vue"
 
-type SupportedLocale = timer.Locale | timer.TranslatingLocale
+type SupportedLocale = tt4b.Locale | tt4b.TranslatingLocale
 
 const localeCrowdMap: { [locale in SupportedLocale]: string } = {
     en: "en",
@@ -108,7 +108,7 @@ const _default = defineComponent(() => {
                 >
                     <Flex width={70} gap={10} fontSize={12} column align="end" color="var(--el-text-color-regular)">
                         <span>{`${progress}%`}</span>
-                        <span>{localeMessages[locale as timer.Locale]?.name ?? locale}</span>
+                        <span>{localeMessages[locale as tt4b.Locale]?.name ?? locale}</span>
                     </Flex>
                 </ElProgress>
             ))}

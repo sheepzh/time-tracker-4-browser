@@ -20,21 +20,21 @@ import { OptionItem, OptionLines, OptionTag, OptionTooltip } from '../components
 import { useOption } from "../useOption"
 import type { CategoryInstance } from './types'
 
-const ALL_STORAGES: Record<timer.option.StorageType, string> = {
+const ALL_STORAGES: Record<tt4b.option.StorageType, string> = {
     classic: 'chrome.storage.local',
     indexed_db: 'IndexedDB',
 }
 
-const weekStartOptionPairs: [[timer.option.WeekStartOption, string]] = [
+const weekStartOptionPairs: [[tt4b.option.WeekStartOption, string]] = [
     ['default', t(msg => msg.option.tracking.weekStartAsNormal)]
 ]
 const allWeekDays = t(msg => msg.calendar.weekDays)
     .split('|')
-    .map((weekDay, idx) => [idx + 1, weekDay] as [timer.option.WeekStartOption, string])
+    .map((weekDay, idx) => [idx + 1, weekDay] as [tt4b.option.WeekStartOption, string])
 rotate(allWeekDays, locale === 'zh_CN' ? 0 : 1, true)
 allWeekDays.forEach(weekDayInfo => weekStartOptionPairs.push(weekDayInfo))
 
-function copy(target: timer.option.TrackingOption, source: Readonly<timer.option.TrackingOption>) {
+function copy(target: tt4b.option.TrackingOption, source: Readonly<tt4b.option.TrackingOption>) {
     target.countLocalFiles = source.countLocalFiles
     target.countTabGroup = source.countTabGroup
     target.weekStart = source.weekStart
@@ -44,7 +44,7 @@ function copy(target: timer.option.TrackingOption, source: Readonly<timer.option
 }
 
 const _default = defineComponent((_props, ctx) => {
-    const { option } = useOption<timer.option.TrackingOption>({ defaultValue: DEFAULT_TRACKING, copy })
+    const { option } = useOption<tt4b.option.TrackingOption>({ defaultValue: DEFAULT_TRACKING, copy })
     const { data: fileAccess } = useRequest(isAllowedFileSchemeAccess)
     const reset = () => {
         // Not to reset these fields
@@ -66,7 +66,7 @@ const _default = defineComponent((_props, ctx) => {
         }
     )
 
-    const handleChangeStorage = (type: timer.option.StorageType) => {
+    const handleChangeStorage = (type: tt4b.option.StorageType) => {
         const msg = t(msg => msg.option.tracking.storageConfirm, { type: ALL_STORAGES[type] })
         ElMessageBox.confirm(msg, { type: 'warning' })
             .then(() => changeStorageType(type))
@@ -168,7 +168,7 @@ const _default = defineComponent((_props, ctx) => {
                 modelValue={option.weekStart}
                 size="small"
                 style={{ width: '120px' }}
-                onChange={(val: timer.option.WeekStartOption) => option.weekStart = val}
+                onChange={(val: tt4b.option.WeekStartOption) => option.weekStart = val}
                 options={weekStartOptionPairs.map(([value, label]) => ({ value, label }))}
             />
         </OptionItem>

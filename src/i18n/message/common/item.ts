@@ -19,7 +19,7 @@ export type ItemMessage = {
         analysis: string
     }
 } & {
-    [dimension in timer.core.Dimension]: string
+    [dimension in tt4b.core.Dimension]: string
 }
 
 const _default: Messages<ItemMessage> = resource

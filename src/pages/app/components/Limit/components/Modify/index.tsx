@@ -75,23 +75,23 @@ const _default = defineComponent((_, ctx) => {
             ) {
                 throw new Error(t(msg => msg.limit.message.noRule))
             }
-            let saved: timer.limit.Rule
+            let saved: tt4b.limit.Rule
             if (mode.value === 'modify') {
                 if (!modifyingItem) return
                 saved = {
                     ...modifyingItem,
                     cond, enabled, name, time, weekly, visitTime, weekdays, count, weeklyCount,
                     // Object to array
-                    periods: periods?.map(i => [i[0], i[1]] satisfies timer.limit.Period),
-                } satisfies timer.limit.Rule
+                    periods: periods?.map(i => [i[0], i[1]] satisfies tt4b.limit.Period),
+                } satisfies tt4b.limit.Rule
                 await updateLimits([saved])
             } else {
                 const toCreate = {
                     cond, enabled, name, time, weekly, visitTime, weekdays, count, weeklyCount,
                     // Object to array
-                    periods: periods?.map(i => [i[0], i[1]] satisfies timer.limit.Period),
+                    periods: periods?.map(i => [i[0], i[1]] satisfies tt4b.limit.Period),
                     allowDelay: false, locked: false,
-                } satisfies MakeOptional<timer.limit.Rule, 'id'>
+                } satisfies MakeOptional<tt4b.limit.Rule, 'id'>
                 const id = await addLimit(toCreate)
                 saved = { ...toCreate, id }
             }
@@ -99,7 +99,7 @@ const _default = defineComponent((_, ctx) => {
         }
     })
     // Cache
-    let modifyingItem: timer.limit.Rule | undefined = undefined
+    let modifyingItem: tt4b.limit.Rule | undefined = undefined
 
     ctx.expose({
         create(url?: string) {
@@ -107,7 +107,7 @@ const _default = defineComponent((_, ctx) => {
             mode.value = 'create'
             modifyingItem = undefined
         },
-        modify(row: timer.limit.Item) {
+        modify(row: tt4b.limit.Item) {
             open(toRaw(row))
             mode.value = 'modify'
             modifyingItem = { ...row }

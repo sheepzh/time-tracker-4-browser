@@ -26,7 +26,7 @@ function initDailyBroadcast() {
     )
 }
 
-const processAskHitVisit = async (item: timer.limit.Item) => {
+const processAskHitVisit = async (item: tt4b.limit.Item) => {
     let tabs = await listTabs()
     const { cond } = item
     for (const { id, url } of tabs) {
@@ -42,7 +42,7 @@ const processAskHitVisit = async (item: timer.limit.Item) => {
     return false
 }
 
-async function querySummary(): Promise<timer.limit.Summary | undefined> {
+async function querySummary(): Promise<tt4b.limit.Summary | undefined> {
     const tabs = await listTabs({ currentWindow: true, active: true })
     const url = tabs[0]?.url
     if (!url) return undefined

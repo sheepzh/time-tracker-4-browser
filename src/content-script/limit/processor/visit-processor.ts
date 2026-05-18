@@ -5,7 +5,7 @@ import type { ModalContext, Processor } from '../types'
 
 class VisitProcessor implements Processor {
     private focusTime: number = 0
-    private rules: timer.limit.Rule[] = []
+    private rules: tt4b.limit.Rule[] = []
     tracker: NormalTracker
     private delayCount: number = 0
 
@@ -19,14 +19,14 @@ class VisitProcessor implements Processor {
         this.initRules()
     }
 
-    private hasLimited(rule: timer.limit.Rule): boolean {
+    private hasLimited(rule: tt4b.limit.Rule): boolean {
         const { visitTime } = rule
         if (!visitTime) return false
         const afterDelayed = visitTime * MILL_PER_SECOND + this.delayCount * this.delayDuration * MILL_PER_MINUTE
         return afterDelayed < this.focusTime
     }
 
-    private async handleTracker({ start, end }: timer.core.Event) {
+    private async handleTracker({ start, end }: tt4b.core.Event) {
         const diff = end - start
         this.focusTime += diff
         this.rules.forEach(rule => {

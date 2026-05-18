@@ -11,7 +11,7 @@ export interface StorageMigratable<AllData> {
      *
      * @param type the type of target storage
      */
-    migrateStorage(type: timer.option.StorageType): Promise<AllData>
+    migrateStorage(type: tt4b.option.StorageType): Promise<AllData>
     /**
      * Handler after migration finished. Clean the old data here
      *
@@ -20,7 +20,7 @@ export interface StorageMigratable<AllData> {
     afterStorageMigrated(allData: AllData): Promise<void>
 }
 
-export type BrowserMigratableNamespace = keyof Omit<timer.backup.ExportData, '__meta__'>
+export type BrowserMigratableNamespace = keyof Omit<tt4b.backup.ExportData, '__meta__'>
 
 /**
  * Migrate data among browsers (export / import)
@@ -30,6 +30,6 @@ export interface BrowserMigratable<N extends BrowserMigratableNamespace = Browse
      * The name space for migration
      */
     namespace: N
-    exportData(): Promise<Required<timer.backup.ExportData>[N]>
+    exportData(): Promise<Required<tt4b.backup.ExportData>[N]>
     importData(data: unknown): Promise<void>
 }

@@ -17,7 +17,7 @@ const matchUrl = (cond: string, url: string): boolean => {
  * @param cond
  * @param url
  */
-export function matches(cond: timer.limit.Item['cond'], url: string): boolean {
+export function matches(cond: tt4b.limit.Item['cond'], url: string): boolean {
     let hit = false
     for (let i = cond.length - 1; i >= 0; i--) {
         const rule = cond[i]
@@ -36,7 +36,7 @@ export function matches(cond: timer.limit.Item['cond'], url: string): boolean {
  * @param cond
  * @param url
  */
-export function matchCond(cond: timer.limit.Item['cond'], url: string): string[] {
+export function matchCond(cond: tt4b.limit.Item['cond'], url: string): string[] {
     const matchedNormalRules: string[] = []
     for (let i = cond.length - 1; i >= 0; i--) {
         const rule = cond[i]
@@ -65,25 +65,25 @@ export const meetTimeLimit = (limit: LimitInfo, delay: DelayInfo) => {
     return meetLimit(realLimit, wasted)
 }
 
-export function hasDailyLimited(item: timer.limit.Item, delayDuration: number): boolean {
+export function hasDailyLimited(item: tt4b.limit.Item, delayDuration: number): boolean {
     const { time, count, waste, visit, delayCount, allowDelay } = item
     const delay = { count: delayCount, duration: delayDuration, allow: !!allowDelay }
     const limit = { wasted: waste, maxLimit: (time ?? 0) * MILL_PER_SECOND }
     return meetTimeLimit(limit, delay) || meetLimit(count, visit)
 }
 
-export function hasWeeklyLimited(item: timer.limit.Item, delayDuration: number): boolean {
+export function hasWeeklyLimited(item: tt4b.limit.Item, delayDuration: number): boolean {
     const { weekly, weeklyCount, weeklyWaste, weeklyVisit, weeklyDelayCount, allowDelay } = item
     const delay = { count: weeklyDelayCount, duration: delayDuration, allow: !!allowDelay }
     const limit = { wasted: weeklyWaste, maxLimit: (weekly ?? 0) * MILL_PER_SECOND }
     return meetTimeLimit(limit, delay) || meetLimit(weeklyCount, weeklyVisit)
 }
 
-export function hasLimited(item: timer.limit.Item, delayDuration: number): boolean {
+export function hasLimited(item: tt4b.limit.Item, delayDuration: number): boolean {
     return hasDailyLimited(item, delayDuration) || hasWeeklyLimited(item, delayDuration)
 }
 
-export function isEffective(weekdays: timer.limit.Rule['weekdays'], weekday?: number): boolean {
+export function isEffective(weekdays: tt4b.limit.Rule['weekdays'], weekday?: number): boolean {
     const weekdayLen = weekdays?.length
     if (!weekdayLen || weekdayLen <= 0 || weekdayLen >= 7) return true
     return weekdays.includes(weekday ?? getWeekDay(new Date()))
@@ -106,7 +106,7 @@ export const dateMinute2Idx = (date: Date): number => {
     return hour * 60 + min
 }
 
-export const period2Str = (p: timer.limit.Period | undefined): string => {
+export const period2Str = (p: tt4b.limit.Period | undefined): string => {
     const [start, end] = p ?? []
     return `${idx2Str(start)}-${idx2Str(end)}`
 }

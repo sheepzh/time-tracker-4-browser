@@ -13,7 +13,7 @@ import { ElLink } from "element-plus"
 import { computed, defineComponent, type StyleValue } from "vue"
 
 type Props = {
-    value: timer.site.SiteKey
+    value: tt4b.site.SiteKey
     iconUrl?: string
     clickable?: boolean
 }

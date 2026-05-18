@@ -29,7 +29,7 @@ class RunTimeTracker {
 
         try {
             if (this.host) {
-                const event: timer.core.Event = {
+                const event: tt4b.core.Event = {
                     start: lastTime,
                     end: now,
                     ignoreTabCheck: false,

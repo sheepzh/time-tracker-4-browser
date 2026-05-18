@@ -43,7 +43,7 @@ export const LICENSE_PAGE = 'https://github.com/sheepzh/time-tracker-4-browser/b
 /**
  * @since 0.9.6
  */
-export const FEEDBACK_QUESTIONNAIRE: Record<timer.RequiredLocale, string> & Partial<Record<timer.OptionalLocale, string>> = {
+export const FEEDBACK_QUESTIONNAIRE: Record<tt4b.RequiredLocale, string> & Partial<Record<tt4b.OptionalLocale, string>> = {
     zh_CN: TU_CAO_PAGE,
     zh_TW: 'https://docs.google.com/forms/d/e/1FAIpQLSdfvG6ExLj331YOLZIKO3x98k3kMxpkkLW1RgFuRGmUnZCGRQ/viewform?usp=sf_link',
     en: 'https://docs.google.com/forms/d/e/1FAIpQLSdNq4gnSY7uxYkyqOPqyYF3Bqlc3ZnWCLDi5DI5xGjPeVCNiw/viewform?usp=sf_link',
@@ -53,7 +53,7 @@ const UNINSTALL_QUESTIONNAIRE_EN = 'https://docs.google.com/forms/d/e/1FAIpQLSfl
 /**
  * @since 0.9.6
  */
-export const UNINSTALL_QUESTIONNAIRE: { [locale in timer.RequiredLocale]: string } & { [locale in timer.OptionalLocale]?: string } = {
+export const UNINSTALL_QUESTIONNAIRE: { [locale in tt4b.RequiredLocale]: string } & { [locale in tt4b.OptionalLocale]?: string } = {
     zh_CN: 'https://www.wjx.cn/vj/YDgY9Yz.aspx',
     zh_TW: 'https://docs.google.com/forms/d/e/1FAIpQLSdK93q-548dK-2naoS3DaArdc7tEGoUY9JQvaXP5Kpov8h6-A/viewform?usp=sf_link',
     ja: 'https://docs.google.com/forms/d/e/1FAIpQLSdsB3onZuleNf6j7KJJLbcote647WV6yeUr-9m7Db5QXakfpg/viewform?usp=sf_link',
@@ -72,14 +72,14 @@ export function getAppPageUrl(route?: string, query?: any): string {
 }
 
 export const HOMEPAGE = "https://www.wfhg.cc"
-const HOMEPAGE_LOCALES: timer.Locale[] = [
+const HOMEPAGE_LOCALES: tt4b.Locale[] = [
     "zh_CN", "zh_TW", "en",
     "ja", "de", "ru",
     "fr", "es", "pt_PT",
 ]
 
 export function getHomepageWithLocale(): string {
-    const homepageLocale: timer.Locale = HOMEPAGE_LOCALES.includes(locale) ? locale : "en"
+    const homepageLocale: tt4b.Locale = HOMEPAGE_LOCALES.includes(locale) ? locale : "en"
     return `${HOMEPAGE}/${homepageLocale}/`
 }
 

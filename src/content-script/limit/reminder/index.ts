@@ -9,7 +9,7 @@ class Reminder {
     private el: HTMLElement | undefined
     private darkMode: boolean = false
 
-    public async show(data: timer.limit.ReminderInfo) {
+    public async show(data: tt4b.limit.ReminderInfo) {
         if (!document?.body || this.el) return
 
         await exitFullscreen()

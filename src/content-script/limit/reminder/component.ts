@@ -1,5 +1,5 @@
-import { t } from "@cs/locale"
 import { getIconUrl } from "@api/chrome/runtime"
+import { t } from "@cs/locale"
 
 const containerStyle = (dark: boolean): Partial<CSSStyleDeclaration> => ({
     position: 'fixed',
@@ -91,7 +91,7 @@ function createCloseBtn(dark: boolean, onClose: () => void): HTMLElement {
     return btn
 }
 
-function createGroup(dark: boolean, data: timer.limit.ReminderInfo, onClose: () => void): HTMLDivElement {
+function createGroup(dark: boolean, data: tt4b.limit.ReminderInfo, onClose: () => void): HTMLDivElement {
     const group = document.createElement('div')
     mountStyle(group, GROUP_STYLE)
 
@@ -115,7 +115,7 @@ function createGroup(dark: boolean, data: timer.limit.ReminderInfo, onClose: () 
     return group
 }
 
-export function createComponent(dark: boolean, data: timer.limit.ReminderInfo, onClose: () => void) {
+export function createComponent(dark: boolean, data: tt4b.limit.ReminderInfo, onClose: () => void) {
     const el = document.createElement('div')
     mountStyle(el, containerStyle(dark))
 

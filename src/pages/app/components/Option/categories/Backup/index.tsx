@@ -4,12 +4,12 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { OptionItem, OptionLines, OptionTooltip } from '@app/components/Option/components'
-import { t } from '@app/locale'
 import {
     DEFAULT_VAULT as DEFAULT_OBSIDIAN_BUCKET,
     DEFAULT_ENDPOINT as DEFAULT_OBSIDIAN_ENDPOINT,
 } from "@api/obsidian"
+import { OptionItem, OptionLines, OptionTooltip } from '@app/components/Option/components'
+import { t } from '@app/locale'
 import { ElInput, ElSelect } from "element-plus"
 import { computed, defineComponent } from "vue"
 import type { CategoryInstance } from '../types'
@@ -17,14 +17,14 @@ import AutoInput from "./AutoInput"
 import Footer from "./Footer"
 import { useBackup } from "./useBackup"
 
-const ALL_TYPES: timer.backup.Type[] = [
+const ALL_TYPES: tt4b.backup.Type[] = [
     'none',
     'gist',
     'web_dav',
     'obsidian_local_rest_api',
 ]
 
-const TYPE_NAMES: Record<timer.backup.Type, string> = {
+const TYPE_NAMES: Record<tt4b.backup.Type, string> = {
     none: t(msg => msg.option.off),
     gist: 'GitHub Gist',
     obsidian_local_rest_api: 'Obsidian - Local REST API',
@@ -48,7 +48,7 @@ const _default = defineComponent((_, ctx) => {
             <ElSelect
                 modelValue={option.backupType}
                 size="small"
-                onChange={(val: timer.backup.Type) => option.backupType = val}
+                onChange={(val: tt4b.backup.Type) => option.backupType = val}
                 options={ALL_TYPES.map(value => ({ value, label: TYPE_NAMES[value] }))}
             />
         </OptionItem>

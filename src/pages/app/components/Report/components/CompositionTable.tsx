@@ -23,7 +23,7 @@ const VALUE = t(msg => msg.report.remoteReading.table.value)
 const LOCAL_DATA = t(msg => msg.report.remoteReading.table.localData)
 const PERCENTAGE = t(msg => msg.report.remoteReading.table.percentage)
 
-function computeRows(data: timer.stat.RemoteCompositionVal[]): Row[] {
+function computeRows(data: tt4b.stat.RemoteCompositionVal[]): Row[] {
     const rows: Row[] = data.map(e => typeof e === 'number'
         ? { name: LOCAL_DATA, value: e || 0 }
         : { name: e.cname || e.cid, value: e.value }
@@ -44,7 +44,7 @@ const formatValue = (value: number, valueFormatter?: ValueFormatter) => {
 const _default = defineComponent({
     props: {
         data: {
-            type: Array as PropType<timer.stat.RemoteCompositionVal[]>,
+            type: Array as PropType<tt4b.stat.RemoteCompositionVal[]>,
             required: true,
         },
         valueFormatter: Function as PropType<ValueFormatter>,

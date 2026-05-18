@@ -28,7 +28,7 @@ const TimeCountPair: FunctionalComponent<TimeCountPairProps> = ({ time, count, l
     )
 }
 
-const PeriodTag: FunctionalComponent<{ periods?: timer.limit.Period[], }> = ({ periods }) => {
+const PeriodTag: FunctionalComponent<{ periods?: tt4b.limit.Period[], }> = ({ periods }) => {
     if (!periods?.length) return null
 
     return <>
@@ -41,7 +41,7 @@ const PeriodTag: FunctionalComponent<{ periods?: timer.limit.Period[], }> = ({ p
     </>
 }
 
-const Rule = defineComponent<{ value: timer.limit.Item }>(props => {
+const Rule = defineComponent<{ value: tt4b.limit.Item }>(props => {
     const row = toRef(props, 'value')
 
     return () => (

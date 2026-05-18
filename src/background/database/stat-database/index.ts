@@ -17,11 +17,11 @@ import type { StatCondition, StatDatabase } from './types'
 
 type StateDatabaseComposite =
     & StatDatabase
-    & StorageMigratable<[tabs: timer.core.Row[], groups: timer.core.Row[]]>
+    & StorageMigratable<[tabs: tt4b.core.Row[], groups: tt4b.core.Row[]]>
     & BrowserMigratable<'__stat__'>
 
 // Only `date` and `host` are required for import, other fields are optional, and will be set to default if not provided
-type ValidImportRow = MakeRequired<Partial<timer.core.Row>, 'date' | 'host'>
+type ValidImportRow = MakeRequired<Partial<tt4b.core.Row>, 'date' | 'host'>
 
 const isValidImportRow = createObjectGuard<ValidImportRow>({
     focus: isOptionalInt,
@@ -41,31 +41,31 @@ class StatDatabaseWrapper implements StateDatabaseComposite {
     })
     private current = () => this.holder.current
 
-    get(host: string, date: Date): Promise<timer.core.Row> {
+    get(host: string, date: Date): Promise<tt4b.core.Row> {
         return this.current().get(host, date)
     }
 
-    batchSelect(keys: timer.core.RowKey[]): Promise<timer.core.Row[]> {
+    batchSelect(keys: tt4b.core.RowKey[]): Promise<tt4b.core.Row[]> {
         return this.current().batchSelect(keys)
     }
 
-    select(condition?: StatCondition): Promise<timer.core.Row[]> {
+    select(condition?: StatCondition): Promise<tt4b.core.Row[]> {
         return this.current().select(condition)
     }
 
-    accumulate(host: string, date: Date | string, item: timer.core.Result): Promise<timer.core.Result> {
+    accumulate(host: string, date: Date | string, item: tt4b.core.Result): Promise<tt4b.core.Result> {
         return this.current().accumulate(host, date, item)
     }
 
-    batchAccumulate(data: Record<string, timer.core.Result>, date: Date | string): Promise<Record<string, timer.core.Result>> {
+    batchAccumulate(data: Record<string, tt4b.core.Result>, date: Date | string): Promise<Record<string, tt4b.core.Result>> {
         return this.current().batchAccumulate(data, date)
     }
 
-    accumulateGroup(groupId: number, date: Date | string, item: timer.core.Result): Promise<timer.core.Result> {
+    accumulateGroup(groupId: number, date: Date | string, item: tt4b.core.Result): Promise<tt4b.core.Result> {
         return this.current().accumulateGroup(groupId, date, item)
     }
 
-    delete(...rows: timer.core.RowKey[]): Promise<void> {
+    delete(...rows: tt4b.core.RowKey[]): Promise<void> {
         return this.current().delete(...rows)
     }
 
@@ -77,7 +77,7 @@ class StatDatabaseWrapper implements StateDatabaseComposite {
         return this.current().deleteByGroup(groupId, range)
     }
 
-    selectGroup(condition?: StatCondition): Promise<timer.core.Row[]> {
+    selectGroup(condition?: StatCondition): Promise<tt4b.core.Row[]> {
         return this.current().selectGroup(condition)
     }
 
@@ -85,15 +85,15 @@ class StatDatabaseWrapper implements StateDatabaseComposite {
         return this.current().deleteGroup(...rows)
     }
 
-    forceUpdate(...rows: timer.core.Row[]): Promise<void> {
+    forceUpdate(...rows: tt4b.core.Row[]): Promise<void> {
         return this.current().forceUpdate(...rows)
     }
 
-    forceUpdateGroup(...rows: timer.core.Row[]): Promise<void> {
+    forceUpdateGroup(...rows: tt4b.core.Row[]): Promise<void> {
         return this.current().forceUpdateGroup(...rows)
     }
 
-    async migrateStorage(type: timer.option.StorageType): Promise<[timer.core.Row[], timer.core.Row[]]> {
+    async migrateStorage(type: tt4b.option.StorageType): Promise<[tt4b.core.Row[], tt4b.core.Row[]]> {
         const target = this.holder.get(type)
         if (!target) return [[], []]
         const tabs = await this.select({ virtual: true })
@@ -103,7 +103,7 @@ class StatDatabaseWrapper implements StateDatabaseComposite {
         return [tabs, groups]
     }
 
-    async afterStorageMigrated([tabs, groups]: [timer.core.Row[], timer.core.Row[]]): Promise<void> {
+    async afterStorageMigrated([tabs, groups]: [tt4b.core.Row[], tt4b.core.Row[]]): Promise<void> {
         await this.current().delete(...tabs)
         const groupKeys = groups.map(({ host, date }) => [parseInt(host), date] satisfies [number, string])
         await this.current().deleteGroup(...groupKeys)
@@ -114,11 +114,11 @@ class StatDatabaseWrapper implements StateDatabaseComposite {
         await this.forceUpdate(...rows)
     }
 
-    async exportData(): Promise<timer.core.Row[]> {
+    async exportData(): Promise<tt4b.core.Row[]> {
         return this.select({ virtual: true })
     }
 
-    private parseImportRows(data: unknown): timer.core.Row[] {
+    private parseImportRows(data: unknown): tt4b.core.Row[] {
         if (!isExportData(data)) return []
         if (isLegacyVersion(data)) {
             return parseImportData(data) ?? []
@@ -127,9 +127,9 @@ class StatDatabaseWrapper implements StateDatabaseComposite {
         if (!(this.namespace in data)) return []
 
         const nsData = extractNamespace(data, this.namespace, isValidImportRows) ?? []
-        const rows: timer.core.Row[] = []
+        const rows: tt4b.core.Row[] = []
         for (const item of nsData) {
-            const row: timer.core.Row = {
+            const row: tt4b.core.Row = {
                 host: item.host,
                 date: item.date,
                 time: item.time ?? 0,

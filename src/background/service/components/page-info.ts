@@ -11,7 +11,7 @@ const DEFAULT_PAGE_SIZE = 10
 /**
  * Slice the origin list to page
  */
-export function slicePageResult<T>(originList: T[], pageQuery?: timer.common.PageQuery): timer.common.PageResult<T> {
+export function slicePageResult<T>(originList: T[], pageQuery?: tt4b.common.PageQuery): tt4b.common.PageResult<T> {
     let { num: pageNum = DEFAULT_PAGE_NUM, size: pageSize = DEFAULT_PAGE_SIZE } = pageQuery || {}
     pageNum < 1 && (pageNum = DEFAULT_PAGE_NUM)
     pageSize < 1 && (pageSize = DEFAULT_PAGE_SIZE)

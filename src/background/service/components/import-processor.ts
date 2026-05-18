@@ -9,7 +9,7 @@ import statDatabase from "@db/stat-database"
 import { mergeWith } from '@util/stat'
 import backupProcessor from "../backup/processor"
 
-export async function importOther(query: timer.imported.ProcessQuery): Promise<void> {
+export async function importOther(query: tt4b.imported.ProcessQuery): Promise<void> {
     const { data, resolution } = query
     if (resolution === 'overwrite') {
         return processOverwrite(data)
@@ -17,7 +17,7 @@ export async function importOther(query: timer.imported.ProcessQuery): Promise<v
     return processAcc(data)
 }
 
-async function processOverwrite(data: timer.imported.Data): Promise<void> {
+async function processOverwrite(data: tt4b.imported.Data): Promise<void> {
     const { rows, focus, time } = data
     const exist = await statDatabase.batchSelect(rows)
     await mergeWith(rows, exist, async (row, exist) => {
@@ -27,7 +27,7 @@ async function processOverwrite(data: timer.imported.Data): Promise<void> {
     })
 }
 
-async function processAcc(data: timer.imported.Data): Promise<void> {
+async function processAcc(data: tt4b.imported.Data): Promise<void> {
     const { rows } = data
     await Promise.all(rows.map(async row => {
         const { host, date, focus = 0, time = 0 } = row
@@ -36,9 +36,9 @@ async function processAcc(data: timer.imported.Data): Promise<void> {
 }
 
 
-export async function previewBackup(param: timer.backup.RemoteQuery): Promise<timer.imported.Row[]> {
+export async function previewBackup(param: tt4b.backup.RemoteQuery): Promise<tt4b.imported.Row[]> {
     const remoteRows = await backupProcessor.query(param)
-    const rows: timer.imported.Row[] = remoteRows.map(rr => ({
+    const rows: tt4b.imported.Row[] = remoteRows.map(rr => ({
         date: rr.date,
         host: rr.host,
         focus: rr.focus,

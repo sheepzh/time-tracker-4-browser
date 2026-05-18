@@ -16,9 +16,9 @@ import TooltipSiteList from "../components/TooltipSiteList"
 import { useReportFilter } from "../context"
 
 type Props = {
-    value: timer.stat.Row
+    value: tt4b.stat.Row
     onSelectedChange: ArgCallback<boolean>
-    onDelete?: ArgCallback<timer.stat.Row>
+    onDelete?: ArgCallback<tt4b.stat.Row>
 }
 
 const useContentStyle = () => {
@@ -71,7 +71,7 @@ const _default = defineComponent<Props>(props => {
                             trigger="click"
                             usePopover={props.value.siteKey.type === 'merged'}
                             v-slots={{
-                                content: () => <TooltipSiteList modelValue={mergedRows as timer.stat.SiteRow[]} />,
+                                content: () => <TooltipSiteList modelValue={mergedRows as tt4b.stat.SiteRow[]} />,
                             }}
                         >
                             <HostAlert

@@ -14,13 +14,13 @@ import { useHabitFilter } from "../context"
 import type { FilterOption } from "./types"
 
 type Value = {
-    curr: timer.period.Row[]
-    prev: timer.period.Row[]
+    curr: tt4b.period.Row[]
+    prev: tt4b.period.Row[]
 }
 
 type PeriodRange = {
-    curr: timer.period.KeyRange
-    prev: timer.period.KeyRange
+    curr: tt4b.period.KeyRange
+    prev: tt4b.period.KeyRange
 }
 
 type Context = {

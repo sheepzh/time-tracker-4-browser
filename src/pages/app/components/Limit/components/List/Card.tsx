@@ -14,7 +14,7 @@ import { defineComponent, type FunctionalComponent, type StyleValue } from "vue"
 import Rule from "./Rule"
 
 type Props = {
-    value: timer.limit.Item
+    value: tt4b.limit.Item
 }
 
 const CARD_PADDING = 10

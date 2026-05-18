@@ -22,12 +22,12 @@ const DATE_RANGE_CALCULATORS: { [duration in PopupDuration]: DateRangeCalculator
     allTime: () => undefined,
 }
 
-export const queryRows = async (param: PopupQuery): Promise<[rows: timer.stat.Row[], date: [Date, Date] | Date | undefined]> => {
+export const queryRows = async (param: PopupQuery): Promise<[rows: tt4b.stat.Row[], date: [Date, Date] | Date | undefined]> => {
     const { duration, durationNum, mergeMethod, dimension: sortKey } = param
     const dateRange = await DATE_RANGE_CALCULATORS[duration]?.(new Date(), durationNum)
     const date = cvtDateRange2Str(dateRange)
-    const sortDirection: timer.common.SortDirection = 'DESC'
-    let rows: timer.stat.Row[]
+    const sortDirection: tt4b.common.SortDirection = 'DESC'
+    let rows: tt4b.stat.Row[]
     if (mergeMethod === 'cate') {
         rows = await listCateStats({ date, mergeDate: true, sortKey, sortDirection })
     } else if (mergeMethod === 'group') {
@@ -42,7 +42,7 @@ export const queryRows = async (param: PopupQuery): Promise<[rows: timer.stat.Ro
     return [rows, dateRange]
 }
 
-function buildReportQuery(siteType: timer.site.Type, date: DateRange | undefined, type: timer.core.Dimension): ReportQuery {
+function buildReportQuery(siteType: tt4b.site.Type, date: DateRange | undefined, type: tt4b.core.Dimension): ReportQuery {
     const query: ReportQuery = {}
     // Merge host
     siteType === 'merged' && (query.mm = 'domain')
@@ -66,9 +66,9 @@ function buildReportQuery(siteType: timer.site.Type, date: DateRange | undefined
 }
 
 export function calJumpUrl(
-    row: timer.stat.Row | undefined,
+    row: tt4b.stat.Row | undefined,
     date: DateRange | undefined,
-    type: timer.core.Dimension,
+    type: tt4b.core.Dimension,
 ): string | undefined {
     if (!row) return
     if (isSite(row)) {

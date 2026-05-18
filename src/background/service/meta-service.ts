@@ -64,7 +64,7 @@ function getBrand() {
 /**
  * @since 1.4.7
  */
-export async function updateBackUpTime(type: timer.backup.Type, time: number) {
+export async function updateBackUpTime(type: tt4b.backup.Type, time: number) {
     const meta = await db.getMeta()
     if (!meta.backup) {
         meta.backup = {}
@@ -76,7 +76,7 @@ export async function updateBackUpTime(type: timer.backup.Type, time: number) {
 /**
  * @since 1.4.7
  */
-export async function getLastBackUp(type: timer.backup.Type): Promise<number | undefined> {
+export async function getLastBackUp(type: tt4b.backup.Type): Promise<number | undefined> {
     const meta = await db.getMeta()
     return meta.backup?.[type]?.ts
 }

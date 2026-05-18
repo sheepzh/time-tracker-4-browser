@@ -50,7 +50,7 @@ const generateJsonData = ({ rows, categories, groupMap }: ExportParam): ExportIn
     time: row.time
 }))
 
-const getCateName = (row: timer.stat.Row, categories: timer.site.Cate[]): string | undefined => {
+const getCateName = (row: tt4b.stat.Row, categories: tt4b.site.Cate[]): string | undefined => {
     const cateId = getRelatedCateId(row)
     let cate: string | undefined = undefined
     if (cateId === CATE_NOT_SET_ID) {
@@ -63,9 +63,9 @@ const getCateName = (row: timer.stat.Row, categories: timer.site.Cate[]): string
 }
 
 export type ExportParam = {
-    rows: timer.stat.Row[]
+    rows: tt4b.stat.Row[]
     filter: ReportFilterOption
-    categories: timer.site.Cate[]
+    categories: tt4b.site.Cate[]
     groupMap: Record<number, chrome.tabGroups.TabGroup>
 }
 
@@ -86,7 +86,7 @@ type CsvColumn = keyof ExportInfo
 type CsvColumnConfig = {
     visible: (mergeDate: boolean, siteMerge: ReportFilterOption['siteMerge']) => boolean
     i18n: I18nKey
-    formatter: (row: timer.stat.Row, categories: timer.site.Cate[], groupMap: Record<number, chrome.tabGroups.TabGroup>) => string
+    formatter: (row: tt4b.stat.Row, categories: tt4b.site.Cate[], groupMap: Record<number, chrome.tabGroups.TabGroup>) => string
 }
 
 const CSV_COLUMN_CONFIGS: Record<CsvColumn, CsvColumnConfig> = {

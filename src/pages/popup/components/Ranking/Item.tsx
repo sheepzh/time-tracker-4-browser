@@ -65,7 +65,7 @@ const Title = defineComponent<TitleProps>(props => {
     )
 }, { props: ['value', 'date', 'displaySiteName'] })
 
-const renderAvatarText = (row: timer.stat.Row, cateNameMap: Record<number, string>, groupMap: Record<number, chrome.tabGroups.TabGroup>) => {
+const renderAvatarText = (row: tt4b.stat.Row, cateNameMap: Record<number, string>, groupMap: Record<number, chrome.tabGroups.TabGroup>) => {
     let name: string | undefined = undefined
     if (isGroup(row)) {
         name = getGroupName(groupMap, row)
@@ -79,7 +79,7 @@ const renderAvatarText = (row: timer.stat.Row, cateNameMap: Record<number, strin
 }
 
 type ItemProps = {
-    value: timer.stat.Row
+    value: tt4b.stat.Row
     max?: number
     total?: number
     date?: DateRange

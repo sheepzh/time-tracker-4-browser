@@ -3,7 +3,7 @@ import { cvtGroupId2Host, formatDateStr, increase, zeroRow } from './common'
 import { filterDate, filterHost, filterNumberRange, processCondition, type ProcessedCondition } from './condition'
 import type { StatCondition, StatDatabase } from './types'
 
-type StoredRow = timer.core.Row & {
+type StoredRow = tt4b.core.Row & {
     // If present, this is a group row
     groupId?: number
 }
@@ -54,7 +54,7 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
     key: StatIndex = ['date', 'host']
     indexes: StatIndex[] = INDEXES
 
-    get(host: string, date: Date | string): Promise<timer.core.Row> {
+    get(host: string, date: Date | string): Promise<tt4b.core.Row> {
         return this.withStore(async store => {
             const index = super.assertIndex(store, ['date', 'host'])
             const dateStr = formatDateStr(date)
@@ -63,11 +63,11 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
         }, 'readonly')
     }
 
-    batchSelect(keys: timer.core.RowKey[]): Promise<timer.core.Row[]> {
+    batchSelect(keys: tt4b.core.RowKey[]): Promise<tt4b.core.Row[]> {
         if (!keys.length) return Promise.resolve([])
         return this.withStore(async store => {
             const index = super.assertIndex(store, ['date', 'host'])
-            const out: timer.core.Row[] = []
+            const out: tt4b.core.Row[] = []
             for (const { host, date } of keys) {
                 const req = index.get([date, host])
                 const row = await req2Promise<StoredRow>(req) ?? zeroRow(host, date)
@@ -135,8 +135,8 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
         }
     }
 
-    private async selectInternal(store: IDBObjectStore, cond: ProcessedCondition, expectGroup: boolean): Promise<timer.core.Row[]> {
-        const allRows: timer.core.Row[] = []
+    private async selectInternal(store: IDBObjectStore, cond: ProcessedCondition, expectGroup: boolean): Promise<tt4b.core.Row[]> {
+        const allRows: tt4b.core.Row[] = []
         const { cursorReq, coverage = {} } = this.judgeIndex(store, cond, expectGroup)
         const filter = buildFilter(cond, coverage)
 
@@ -161,14 +161,14 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
         return allRows
     }
 
-    select(condition?: StatCondition): Promise<timer.core.Row[]> {
+    select(condition?: StatCondition): Promise<tt4b.core.Row[]> {
         return this.withStore(async store => {
             const cond = processCondition(condition)
             return this.selectInternal(store, cond, false)
         }, 'readonly')
     }
 
-    accumulate(host: string, date: Date | string, item: timer.core.Result): Promise<timer.core.Result> {
+    accumulate(host: string, date: Date | string, item: tt4b.core.Result): Promise<tt4b.core.Result> {
         return this.withStore(async store => {
             const index = super.assertIndex(store, ['date', 'host'])
             const dateStr = formatDateStr(date)
@@ -181,11 +181,11 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
         }, 'readwrite')
     }
 
-    batchAccumulate(data: Record<string, timer.core.Result>, date: Date | string): Promise<Record<string, timer.core.Row>> {
+    batchAccumulate(data: Record<string, tt4b.core.Result>, date: Date | string): Promise<Record<string, tt4b.core.Row>> {
         return this.withStore(async store => {
             const dateStr = formatDateStr(date)
             const cursorReq = super.assertIndexCursor(store, 'date', IDBKeyRange.only(dateStr))
-            const toUpdate: Record<string, timer.core.Row> = {}
+            const toUpdate: Record<string, tt4b.core.Row> = {}
 
             await iterateCursor(cursorReq, cursor => {
                 const stored = cursor.value as StoredRow | undefined
@@ -195,7 +195,7 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
 
             for (const [host, result] of Object.entries(data)) {
                 const existing = toUpdate[host]
-                const newValue: timer.core.Row = { host, date: dateStr, ...increase(result, existing) }
+                const newValue: tt4b.core.Row = { host, date: dateStr, ...increase(result, existing) }
                 toUpdate[host] = newValue
                 store.put(newValue)
             }
@@ -203,7 +203,7 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
         }, 'readwrite')
     }
 
-    delete(...rows: timer.core.RowKey[]): Promise<void> {
+    delete(...rows: tt4b.core.RowKey[]): Promise<void> {
         return this.withStore(async store => {
             const index = super.assertIndex(store, ['date', 'host'])
             for (const { host, date } of rows) {
@@ -279,7 +279,7 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
         }, 'readwrite')
     }
 
-    accumulateGroup(groupId: number, date: Date | string, item: timer.core.Result): Promise<timer.core.Result> {
+    accumulateGroup(groupId: number, date: Date | string, item: tt4b.core.Result): Promise<tt4b.core.Result> {
         return this.withStore(async store => {
             const index = super.assertIndex(store, ['date', 'host'])
             const dateStr = formatDateStr(date)
@@ -293,7 +293,7 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
         }, 'readwrite')
     }
 
-    selectGroup(condition?: StatCondition): Promise<timer.core.Row[]> {
+    selectGroup(condition?: StatCondition): Promise<tt4b.core.Row[]> {
         return this.withStore(async store => {
             const cond = processCondition(condition)
             return this.selectInternal(store, cond, true)
@@ -315,11 +315,11 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
         }, 'readwrite')
     }
 
-    forceUpdate(...rows: timer.core.Row[]): Promise<void> {
+    forceUpdate(...rows: tt4b.core.Row[]): Promise<void> {
         return this.withStore(store => rows.forEach(row => store.put(row)), 'readwrite')
     }
 
-    forceUpdateGroup(...rows: timer.core.Row[]): Promise<void> {
+    forceUpdateGroup(...rows: tt4b.core.Row[]): Promise<void> {
         return this.withStore(store => {
             for (const row of rows) {
                 const { host, date, time, focus, run } = row

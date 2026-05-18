@@ -16,7 +16,7 @@ export type SiteManageMessage = {
         cate: string
         icon: string
     }
-    type: Record<timer.site.Type, Record<'name' | 'info', string>>
+    type: Record<tt4b.site.Type, Record<'name' | 'info', string>>
     cate: {
         name: string
         relatedMsg: string

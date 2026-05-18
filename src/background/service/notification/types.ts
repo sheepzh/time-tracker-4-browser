@@ -7,16 +7,16 @@ type Summary = {
 }
 
 export type NotificationMeta = {
-    locale: timer.Locale
+    locale: tt4b.Locale
     version: string
     ts: number
 }
 
 export type NotificationRequest = {
-    cycle: Exclude<timer.notification.Cycle, 'none'>
-    method: timer.notification.Method
-    endpoint?: timer.option.NotificationOption['notificationEndpoint']
-    authToken?: timer.option.NotificationOption['notificationAuthToken']
+    cycle: Exclude<tt4b.notification.Cycle, 'none'>
+    method: tt4b.notification.Method
+    endpoint?: tt4b.option.NotificationOption['notificationEndpoint']
+    authToken?: tt4b.option.NotificationOption['notificationAuthToken']
 }
 
 /**
@@ -24,9 +24,9 @@ export type NotificationRequest = {
  */
 export type NotificationData = {
     meta: NotificationMeta
-    cycle: Exclude<timer.notification.Cycle, 'none'>
+    cycle: Exclude<tt4b.notification.Cycle, 'none'>
     summary: Summary
-    row: timer.core.Row[]
+    row: tt4b.core.Row[]
 }
 
 /**

@@ -38,7 +38,7 @@ class TrackContext {
 }
 
 type NormalTrackerOption = {
-    onReport: (ev: timer.core.Event) => Promise<void>
+    onReport: (ev: tt4b.core.Event) => Promise<void>
     onResume?: (reason: StateChangeReason) => void
     onPause?: (reason: StateChangeReason) => void
 }
@@ -79,7 +79,7 @@ export default class NormalTracker implements AudibleChangeHandler {
             return
         }
 
-        const data: timer.core.Event = {
+        const data: tt4b.core.Event = {
             start: lastTime,
             end: now,
             ignoreTabCheck: !!ignoreTabCheck

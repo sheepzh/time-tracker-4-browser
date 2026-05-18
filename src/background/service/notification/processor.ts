@@ -14,7 +14,7 @@ const DATE_RANGE_CALCULATORS: Record<NotificationRequest['cycle'], (now: number)
 
 class Processor {
     private notifiers: {
-        [method in timer.notification.Method]: Notifier
+        [method in tt4b.notification.Method]: Notifier
     }
 
     constructor() {

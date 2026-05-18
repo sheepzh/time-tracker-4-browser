@@ -19,7 +19,7 @@ import { mergeDate } from "./merge/date"
 import { mergeHost } from "./merge/host"
 import { processRemote } from "./remote"
 
-function extractAllSiteKeys(rows: timer.stat.SiteRow[], container: timer.site.SiteKey[]) {
+function extractAllSiteKeys(rows: tt4b.stat.SiteRow[], container: tt4b.site.SiteKey[]) {
     rows.forEach(row => {
         const { mergedRows } = row
         container.push(row.siteKey)
@@ -27,7 +27,7 @@ function extractAllSiteKeys(rows: timer.stat.SiteRow[], container: timer.site.Si
     })
 }
 
-function fillRowWithSiteInfo(row: timer.stat.SiteRow, siteMap: SiteMap<timer.site.SiteInfo>): void {
+function fillRowWithSiteInfo(row: tt4b.stat.SiteRow, siteMap: SiteMap<tt4b.site.SiteInfo>): void {
     if (!isSite(row)) return
     const { siteKey, mergedRows } = row
 
@@ -41,7 +41,7 @@ function fillRowWithSiteInfo(row: timer.stat.SiteRow, siteMap: SiteMap<timer.sit
     }
 }
 
-function compareSortVal(a: string | number, b: string | number, direction?: timer.common.SortDirection): number {
+function compareSortVal(a: string | number, b: string | number, direction?: tt4b.common.SortDirection): number {
     if (a === b) return 0
     const val = a > b ? 1 : -1
     return direction === 'DESC' ? -val : val
@@ -52,12 +52,12 @@ function filterByCateId(itemCateId: number | undefined, cateIds: number[] | unde
     return cateIds.includes(itemCateId ?? CATE_NOT_SET_ID)
 }
 
-export async function countSite(param?: timer.stat.SiteQuery): Promise<number> {
+export async function countSite(param?: tt4b.stat.SiteQuery): Promise<number> {
     const rows = await statDatabase.select(param)
     return rows.length
 }
 
-export async function selectSite(param?: timer.stat.SiteQuery): Promise<timer.stat.SiteRow[]> {
+export async function selectSite(param?: tt4b.stat.SiteQuery): Promise<tt4b.stat.SiteRow[]> {
     const {
         mergeHost: needMerge, mergeDate: needMergeDate,
         date, query, host, cateIds,
@@ -87,18 +87,18 @@ export async function selectSite(param?: timer.stat.SiteQuery): Promise<timer.st
     needMergeDate && (siteRows = mergeDate(siteRows))
     // Sort
     if (sortKey) {
-        const sortVal = (a: timer.stat.SiteRow) => sortKey === 'host' ? a.siteKey.host : a[sortKey] ?? 0
+        const sortVal = (a: tt4b.stat.SiteRow) => sortKey === 'host' ? a.siteKey.host : a[sortKey] ?? 0
         siteRows.sort((a, b) => compareSortVal(sortVal(a), sortVal(b), sortDirection))
     }
     return siteRows
 }
 
-export async function selectSitePage(param?: timer.stat.SitePageQuery): Promise<timer.common.PageResult<timer.stat.SiteRow>> {
+export async function selectSitePage(param?: tt4b.stat.SitePageQuery): Promise<tt4b.common.PageResult<tt4b.stat.SiteRow>> {
     const rows = await selectSite(param)
     return slicePageResult(rows, param)
 }
 
-export async function selectCate(param?: timer.stat.CateQuery): Promise<timer.stat.CateRow[]> {
+export async function selectCate(param?: tt4b.stat.CateQuery): Promise<tt4b.stat.CateRow[]> {
     const {
         mergeDate: needMergeDate,
         date, query, cateIds,
@@ -132,13 +132,13 @@ export async function selectCate(param?: timer.stat.CateQuery): Promise<timer.st
     return cateRows
 }
 
-export async function selectCatePage(query?: timer.stat.CatePageQuery): Promise<timer.common.PageResult<timer.stat.CateRow>> {
+export async function selectCatePage(query?: tt4b.stat.CatePageQuery): Promise<tt4b.common.PageResult<tt4b.stat.CateRow>> {
     const rows = await selectCate(query)
     return slicePageResult(rows, query)
 }
 
-async function fillSite(rows: timer.stat.SiteRow[]): Promise<true> {
-    let keys: timer.site.SiteKey[] = []
+async function fillSite(rows: tt4b.stat.SiteRow[]): Promise<true> {
+    let keys: tt4b.site.SiteKey[] = []
     extractAllSiteKeys(rows, keys)
     keys = distinctSites(keys)
 
@@ -149,7 +149,7 @@ async function fillSite(rows: timer.stat.SiteRow[]): Promise<true> {
     return true
 }
 
-export async function selectGroup(param?: timer.stat.GroupQuery): Promise<timer.stat.GroupRow[]> {
+export async function selectGroup(param?: tt4b.stat.GroupQuery): Promise<tt4b.stat.GroupRow[]> {
     const {
         date, query, mergeDate: needMergeDate,
         focusRange, timeRange,
@@ -158,7 +158,7 @@ export async function selectGroup(param?: timer.stat.GroupQuery): Promise<timer.
     const list = await statDatabase.selectGroup({ date, focusRange, timeRange })
     const groups = await listAllGroups()
     const groupMap = toMap(groups, g => g.id)
-    let rows: timer.stat.GroupRow[] = list.map(({ date, time, focus, run, host }) => {
+    let rows: tt4b.stat.GroupRow[] = list.map(({ date, time, focus, run, host }) => {
         const groupKey = parseInt(host)
         const { title, color } = groupMap[groupKey] ?? {}
         return ({ date, groupKey, title, color, run, focus, time })
@@ -171,21 +171,21 @@ export async function selectGroup(param?: timer.stat.GroupQuery): Promise<timer.
     return rows
 }
 
-export async function selectGroupPage(param?: timer.stat.GroupPageQuery) {
+export async function selectGroupPage(param?: tt4b.stat.GroupPageQuery) {
     const rows = await selectGroup(param)
     return slicePageResult(rows, param)
 }
 
-export async function countGroup(param?: timer.stat.GroupQuery): Promise<number> {
+export async function countGroup(param?: tt4b.stat.GroupQuery): Promise<number> {
     const { groupIds, date } = param ?? {}
     const keys = groupIds?.map(gid => `${gid}`)
     const rows = await statDatabase.selectGroup({ keys, date })
     return rows.length
 }
 
-export async function batchDelete(targets: timer.stat.StatKey[]) {
+export async function batchDelete(targets: tt4b.stat.StatKey[]) {
     if (!targets?.length) return
-    const siteKeys: timer.core.RowKey[] = []
+    const siteKeys: tt4b.core.RowKey[] = []
     const groupKeys: [groupId: number, date: string][] = []
     targets.forEach(row => {
         const { date } = row

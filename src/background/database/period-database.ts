@@ -18,7 +18,7 @@ const KEY_PREFIX = REMAIN_WORD_PREFIX + 'PERIOD'
 const KEY_PREFIX_LENGTH = KEY_PREFIX.length
 const generateKey = (date: string) => KEY_PREFIX + date
 
-function merge(exists: { [dateKey: string]: DailyResult }, toMerge: timer.period.Result[]) {
+function merge(exists: { [dateKey: string]: DailyResult }, toMerge: tt4b.period.Result[]) {
     toMerge.forEach(period => {
         const { order, milliseconds } = period
         const key = generateKey(getDateString(period))
@@ -29,8 +29,8 @@ function merge(exists: { [dateKey: string]: DailyResult }, toMerge: timer.period
     })
 }
 
-function db2PeriodInfos(data: { [dateKey: string]: DailyResult }): timer.period.Result[] {
-    const result: timer.period.Result[] = []
+function db2PeriodInfos(data: { [dateKey: string]: DailyResult }): tt4b.period.Result[] {
+    const result: tt4b.period.Result[] = []
     Object.entries(data).forEach((([dateKey, val]) => {
         const dateStr = dateKey.substring(KEY_PREFIX_LENGTH)
         const date = new Date(
@@ -59,7 +59,7 @@ class PeriodDatabase extends BaseDatabase {
         return result || {}
     }
 
-    async accumulate(items: timer.period.Result[]): Promise<void> {
+    async accumulate(items: tt4b.period.Result[]): Promise<void> {
         const dates = Array.from(new Set(items.map(getDateString)))
         const exists = await this.getBatch0(dates)
         merge(exists, items)
@@ -78,7 +78,7 @@ class PeriodDatabase extends BaseDatabase {
         return this.storage.get(keys)
     }
 
-    async getBatch(dates: string[]): Promise<timer.period.Result[]> {
+    async getBatch(dates: string[]): Promise<tt4b.period.Result[]> {
         const data = await this.getBatch0(dates)
         return db2PeriodInfos(data)
     }
@@ -87,7 +87,7 @@ class PeriodDatabase extends BaseDatabase {
      * @since 1.0.0
      * @returns all period items
      */
-    async getAll(): Promise<timer.period.Result[]> {
+    async getAll(): Promise<tt4b.period.Result[]> {
         const allItems = await this.storage.get()
         const periodItems: { [dateKey: string]: DailyResult } = {}
         Object.entries(allItems)

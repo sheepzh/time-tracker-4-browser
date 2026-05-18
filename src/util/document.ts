@@ -4,7 +4,7 @@ export const setDir = (direction: 'ltr' | 'rtl') => {
     htmlEl?.setAttribute('dir', direction)
 }
 
-export const setLocale = (locale: timer.Locale) => {
+export const setLocale = (locale: tt4b.Locale) => {
     if (isNotExtensionPage()) return
     const htmlEl = document.getElementsByTagName("html")?.[0]
     htmlEl?.setAttribute('data-locale', locale)

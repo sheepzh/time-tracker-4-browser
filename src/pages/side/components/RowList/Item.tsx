@@ -18,14 +18,14 @@ const renderTitle = (siteName: string | undefined, host: string | undefined, han
     )
 }
 
-const renderAvatarText = (row: timer.stat.Row) => {
+const renderAvatarText = (row: tt4b.stat.Row) => {
     const alias = getAlias(row)
     if (alias) return alias.substring(0, 1)?.toUpperCase?.()
     return getHost(row)?.substring?.(0, 1)?.toUpperCase?.()
 }
 
 type Props = {
-    value: timer.stat.Row
+    value: tt4b.stat.Row
     max?: number
     total?: number
 }

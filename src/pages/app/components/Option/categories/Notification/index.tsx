@@ -8,13 +8,13 @@ import Footer from './Footer'
 import { useNotification } from './useNotification'
 import usePermission from './usePermission'
 
-const CYCLE_LABELS: Record<timer.notification.Cycle, string> = {
+const CYCLE_LABELS: Record<tt4b.notification.Cycle, string> = {
     none: t(msg => msg.option.off),
     daily: t(msg => msg.option.notification.cycle.daily),
     weekly: t(msg => msg.option.notification.cycle.weekly),
 }
 
-const METHOD_LABELS: Record<timer.notification.Method, string> = {
+const METHOD_LABELS: Record<tt4b.notification.Method, string> = {
     browser: t(msg => msg.option.notification.method.browser),
     callback: t(msg => msg.option.notification.method.callback.label),
 }
@@ -29,7 +29,7 @@ const Notification = defineComponent((_, ctx) => {
 
     const { checkRequest } = usePermission()
 
-    const onCycleChange = async (val: timer.notification.Cycle) => {
+    const onCycleChange = async (val: tt4b.notification.Cycle) => {
         if (val === 'none') {
             option.notificationCycle = val
             return
@@ -38,7 +38,7 @@ const Notification = defineComponent((_, ctx) => {
         result ? option.notificationCycle = val : ElMessage.info('Denied by user')
     }
 
-    const onMethodChange = async (val: timer.notification.Method) => {
+    const onMethodChange = async (val: tt4b.notification.Method) => {
         const result = await checkRequest(val)
         result ? option.notificationMethod = val : ElMessage.info('Denied by user')
     }
@@ -54,8 +54,8 @@ const Notification = defineComponent((_, ctx) => {
                     modelValue={option.notificationCycle}
                     size="small"
                     style={{ width: "120px" } satisfies StyleValue}
-                    onChange={val => onCycleChange(val as timer.notification.Cycle)}
-                    options={Object.entries(CYCLE_LABELS).map(([value, label]) => ({ value: value as timer.notification.Cycle, label }))}
+                    onChange={val => onCycleChange(val as tt4b.notification.Cycle)}
+                    options={Object.entries(CYCLE_LABELS).map(([value, label]) => ({ value: value as tt4b.notification.Cycle, label }))}
                 />
                 {option.notificationCycle === 'weekly' && <>
                     <ElSelect
@@ -83,8 +83,8 @@ const Notification = defineComponent((_, ctx) => {
                     modelValue={option.notificationMethod}
                     size="small"
                     style={{ width: "150px" } satisfies StyleValue}
-                    onChange={val => onMethodChange(val as timer.notification.Method)}
-                    options={Object.entries(METHOD_LABELS).map(([value, label]) => ({ value: value as timer.notification.Method, label }))}
+                    onChange={val => onMethodChange(val as tt4b.notification.Method)}
+                    options={Object.entries(METHOD_LABELS).map(([value, label]) => ({ value: value as tt4b.notification.Method, label }))}
                 />
             </OptionItem>
             {isNotNone.value && option.notificationMethod === 'callback' && (

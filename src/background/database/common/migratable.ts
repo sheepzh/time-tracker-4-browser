@@ -2,14 +2,14 @@ import { isRecord } from '@util/guard'
 import { createObjectGuard, isInt, isString, TypeGuard } from 'typescript-guard'
 import type { BrowserMigratableNamespace } from '../types'
 
-export const isExportData = createObjectGuard<Pick<timer.backup.ExportData, '__meta__'>>({
+export const isExportData = createObjectGuard<Pick<tt4b.backup.ExportData, '__meta__'>>({
     __meta__: createObjectGuard({
         version: isString,
         ts: isInt,
     }),
 })
 
-export const isLegacyVersion = (data: unknown): data is timer.backup.ExportData => {
+export const isLegacyVersion = (data: unknown): data is tt4b.backup.ExportData => {
     if (!isExportData(data)) return false
 
     const version = data.__meta__.version

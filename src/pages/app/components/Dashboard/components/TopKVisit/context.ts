@@ -35,7 +35,7 @@ export const initProvider = () => {
     const { data: value } = useRequest(async () => {
         const now = new Date()
         const startTime: Date = new Date(now.getTime() - MILL_PER_DAY * filter.dayNum)
-        const query: timer.stat.SiteQuery = {
+        const query: tt4b.stat.SiteQuery = {
             date: cvtDateRange2Str([startTime, now]),
             sortKey: "time",
             sortDirection: 'DESC',

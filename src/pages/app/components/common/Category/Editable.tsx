@@ -9,7 +9,7 @@ import { computed, defineComponent, nextTick, ref } from "vue"
 import Select, { type Instance } from "./Select"
 
 type Props = ModelValue<number | undefined> & {
-    siteKey: timer.site.SiteKey
+    siteKey: tt4b.site.SiteKey
 }
 
 const CategoryEditable = defineComponent<Props>(props => {

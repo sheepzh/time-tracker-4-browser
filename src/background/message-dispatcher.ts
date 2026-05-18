@@ -47,17 +47,17 @@ function processParam(param: unknown): unknown {
 }
 
 class MessageDispatcher {
-    private handlers: Partial<Record<timer.mq.ReqCode, timer.mq.Handler<timer.mq.ReqCode>>> = {}
+    private handlers: Partial<Record<tt4b.mq.ReqCode, tt4b.mq.Handler<tt4b.mq.ReqCode>>> = {}
 
     constructor() {
         this.initServiceHandlers()
     }
 
-    register<C extends timer.mq.ReqCode>(code: C, handler: timer.mq.Handler<C>): MessageDispatcher {
+    register<C extends tt4b.mq.ReqCode>(code: C, handler: tt4b.mq.Handler<C>): MessageDispatcher {
         if (this.handlers[code]) {
             throw new Error(`Duplicate handler: code=${code}`)
         }
-        this.handlers[code] = handler as unknown as timer.mq.Handler<timer.mq.ReqCode>
+        this.handlers[code] = handler as unknown as tt4b.mq.Handler<tt4b.mq.ReqCode>
         return this
     }
 
@@ -135,7 +135,7 @@ class MessageDispatcher {
             .register('immigration.importOther', importOther)
     }
 
-    private async handle(message: timer.mq.Request<timer.mq.ReqCode>, sender: ChromeMessageSender): Promise<timer.mq.Response<timer.mq.ReqCode>> {
+    private async handle(message: tt4b.mq.Request<tt4b.mq.ReqCode>, sender: ChromeMessageSender): Promise<tt4b.mq.Response<tt4b.mq.ReqCode>> {
         const code = message?.code
         if (!code) {
             return { code: 'ignore' }
@@ -149,7 +149,7 @@ class MessageDispatcher {
         try {
             const data = processParam(message.data)
             const result = await handler(data, sender)
-            return { code: 'success', data: result } as timer.mq.Response<typeof code>
+            return { code: 'success', data: result } as tt4b.mq.Response<typeof code>
         } catch (error) {
             const msg = error instanceof Error ? error.message : (error?.toString?.() ?? 'Unknown error')
             return { code: 'fail', msg }

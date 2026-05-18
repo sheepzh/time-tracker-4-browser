@@ -11,17 +11,17 @@ import { REMAIN_WORD_PREFIX } from "./common/constant"
 const PREFIX = REMAIN_WORD_PREFIX + "backup"
 const CACHE_KEY = PREFIX + "_cache"
 
-function cacheKeyOf(type: timer.backup.Type) {
+function cacheKeyOf(type: tt4b.backup.Type) {
     return CACHE_KEY + "_" + type
 }
 
 class BackupDatabase extends BaseDatabase {
 
-    async getCache(type: timer.backup.Type): Promise<unknown> {
+    async getCache(type: tt4b.backup.Type): Promise<unknown> {
         return (await this.storage.getOne(cacheKeyOf(type))) || {}
     }
 
-    async updateCache(type: timer.backup.Type, newVal: unknown): Promise<void> {
+    async updateCache(type: tt4b.backup.Type, newVal: unknown): Promise<void> {
         return this.storage.put(cacheKeyOf(type), newVal as Object)
     }
 }

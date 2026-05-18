@@ -21,7 +21,7 @@ import { useVerify } from "./useVerify"
 
 const useLevelSelectStyle = () => {
     const selectNs = useNamespace('select')
-    const localWidth: Partial<Record<timer.Locale, number>> = {
+    const localWidth: Partial<Record<tt4b.Locale, number>> = {
         en: 330,
         uk: 330,
         zh_CN: 210,
@@ -38,7 +38,7 @@ const useLevelSelectStyle = () => {
     return { width, cls }
 }
 
-const ALL_LEVEL: timer.limit.RestrictionLevel[] = [
+const ALL_LEVEL: tt4b.limit.RestrictionLevel[] = [
     'nothing',
     'verification',
     'password',
@@ -46,13 +46,13 @@ const ALL_LEVEL: timer.limit.RestrictionLevel[] = [
     'strict',
 ]
 
-const ALL_DIFF: timer.limit.VerificationDifficulty[] = [
+const ALL_DIFF: tt4b.limit.VerificationDifficulty[] = [
     'easy',
     'hard',
     'disgusting',
 ]
 
-function copy(target: timer.option.LimitOption, source: Readonly<timer.option.LimitOption>) {
+function copy(target: tt4b.option.LimitOption, source: Readonly<tt4b.option.LimitOption>) {
     target.limitPrompt = source.limitPrompt
     target.limitLevel = source.limitLevel
     target.limitPassword = source.limitPassword
@@ -62,9 +62,9 @@ function copy(target: timer.option.LimitOption, source: Readonly<timer.option.Li
     target.limitDelayDuration = source.limitDelayDuration
 }
 
-function reset(target: timer.option.LimitOption) {
+function reset(target: tt4b.option.LimitOption) {
     const defaultValue: MakeOptional<
-        timer.option.LimitOption, 'limitPassword' | 'limitVerifyDifficulty' | 'limitReminderDuration'
+        tt4b.option.LimitOption, 'limitPassword' | 'limitVerifyDifficulty' | 'limitReminderDuration'
     > = structuredClone(DEFAULT_LIMIT)
     // Not to reset limitPassword
     delete defaultValue.limitPassword
@@ -96,7 +96,7 @@ const TestButton: FunctionalComponent<{ onClick: NoArgCallback }> = props => (
 )
 
 const _default = defineComponent((_, ctx) => {
-    const { option } = useOption<timer.option.LimitOption>({ defaultValue: DEFAULT_LIMIT, copy })
+    const { option } = useOption<tt4b.option.LimitOption>({ defaultValue: DEFAULT_LIMIT, copy })
     const { verified, verify } = useVerify(option)
     const { modifyPsw } = usePswEdit({ reset: () => option.limitPassword })
     const { setup2fa } = use2faSetup()
@@ -105,7 +105,7 @@ const _default = defineComponent((_, ctx) => {
         reset: () => verify().then(() => reset(option)).catch(() => { })
     } satisfies CategoryInstance)
 
-    const handleLevelChange = (val: timer.limit.RestrictionLevel) => {
+    const handleLevelChange = (val: tt4b.limit.RestrictionLevel) => {
         verify().then(async () => {
             if (val === "strict") {
                 await confirm4Strict()
@@ -203,7 +203,7 @@ const _default = defineComponent((_, ctx) => {
             <ElSelect
                 modelValue={option.limitVerifyDifficulty}
                 size="small"
-                onChange={(val: timer.limit.VerificationDifficulty) => verify()
+                onChange={(val: tt4b.limit.VerificationDifficulty) => verify()
                     .then(() => option.limitVerifyDifficulty = val)
                     .catch(console.warn)
                 }

@@ -28,10 +28,10 @@ describe('stat-database/idb', () => {
 
         // Hosts
         const github = await db.get(GITHUB, '20240601')
-        expect(github).toEqual({ host: GITHUB, date: '20240601', focus: 10, time: 20 } satisfies timer.core.Row)
+        expect(github).toEqual({ host: GITHUB, date: '20240601', focus: 10, time: 20 } satisfies tt4b.core.Row)
 
         const google = await db.get(GOOGLE, new Date(2025, 10, 1))
-        expect(google).toEqual({ host: GOOGLE, date: '20251101', focus: 1, time: 0 } satisfies timer.core.Row)
+        expect(google).toEqual({ host: GOOGLE, date: '20251101', focus: 1, time: 0 } satisfies tt4b.core.Row)
 
         // Date not exist
         const notExist = await db.get(GOOGLE, '20240601')
@@ -42,14 +42,14 @@ describe('stat-database/idb', () => {
         expect(list).toEqual([
             { host: GITHUB, date: '20240601', focus: 10, time: 20 },
             { host: GOOGLE, date: '20251101', focus: 1, time: 0 },
-        ] satisfies timer.core.Row[])
+        ] satisfies tt4b.core.Row[])
 
         // Groups
         const byGroupId = await db.get(`${GROUP_1}`, '20240601')
         expect(byGroupId).toMatchObject(zeroResult())
 
         const groups = await db.selectGroup({ date: '20240601' })
-        expect(groups).toEqual([{ host: `${GROUP_1}`, date: '20240601', focus: 5, time: 10 } satisfies timer.core.Row])
+        expect(groups).toEqual([{ host: `${GROUP_1}`, date: '20240601', focus: 5, time: 10 } satisfies tt4b.core.Row])
     })
 
     test('batchAccumulate', async () => {
@@ -63,15 +63,15 @@ describe('stat-database/idb', () => {
         }, '20240602')
 
         expect(await db.get(GITHUB, '20240602'))
-            .toEqual({ host: GITHUB, date: '20240602', focus: 10, time: 20 } satisfies timer.core.Row)
+            .toEqual({ host: GITHUB, date: '20240602', focus: 10, time: 20 } satisfies tt4b.core.Row)
         expect(await db.get(GOOGLE, '20240602'))
-            .toEqual({ host: GOOGLE, date: '20240602', focus: 1, time: 0 } satisfies timer.core.Row)
+            .toEqual({ host: GOOGLE, date: '20240602', focus: 1, time: 0 } satisfies tt4b.core.Row)
         expect(await db.get(MAYBE_GROUP_1, '20240602'))
-            .toEqual({ host: MAYBE_GROUP_1, date: '20240602', focus: 5, time: 10 } satisfies timer.core.Row)
+            .toEqual({ host: MAYBE_GROUP_1, date: '20240602', focus: 5, time: 10 } satisfies tt4b.core.Row)
 
         await db.batchAccumulate({ [GOOGLE]: { focus: 0, time: 1 } }, '20240602')
 
-        expect(await db.get(GOOGLE, '20240602')).toEqual({ host: GOOGLE, date: '20240602', focus: 1, time: 1 } satisfies timer.core.Row)
+        expect(await db.get(GOOGLE, '20240602')).toEqual({ host: GOOGLE, date: '20240602', focus: 1, time: 1 } satisfies tt4b.core.Row)
     })
 
     test('multiple indexes', async () => {
@@ -96,83 +96,83 @@ describe('stat-database/idb', () => {
         expect(await db.select({ date: [, '20240602'] })).toEqual([
             { host: GITHUB, date: '20240602', focus: 10, time: 20 },
             { host: GOOGLE, date: '20240602', focus: 1, time: 0 },
-        ] satisfies timer.core.Row[])
+        ] satisfies tt4b.core.Row[])
         expect(await db.select({ date: '20240603' })).toEqual([
             { host: GITHUB, date: '20240603', focus: 10, time: 20 },
             { host: GOOGLE, date: '20240603', focus: 1, time: 0 },
-        ] satisfies timer.core.Row[])
+        ] satisfies tt4b.core.Row[])
         expect(await db.select({ date: ['20240602', '20240603'] })).toEqual([
             { host: GITHUB, date: '20240602', focus: 10, time: 20 },
             { host: GOOGLE, date: '20240602', focus: 1, time: 0 },
             { host: GITHUB, date: '20240603', focus: 10, time: 20 },
             { host: GOOGLE, date: '20240603', focus: 1, time: 0 },
-        ] satisfies timer.core.Row[])
+        ] satisfies tt4b.core.Row[])
         // Same as above, but reversed order
         expect(await db.select({ date: ['20240603', '20240602'] })).toEqual([
             { host: GITHUB, date: '20240602', focus: 10, time: 20 },
             { host: GOOGLE, date: '20240602', focus: 1, time: 0 },
             { host: GITHUB, date: '20240603', focus: 10, time: 20 },
             { host: GOOGLE, date: '20240603', focus: 1, time: 0 },
-        ] satisfies timer.core.Row[])
+        ] satisfies tt4b.core.Row[])
         // Including virtual
         expect(await db.select({ date: '20240603', virtual: true })).toEqual([
             { host: GITHUB, date: '20240603', focus: 10, time: 20 },
             { host: GITHUB_VIRTUAL, date: '20240603', focus: 5, time: 10 },
             { host: GOOGLE, date: '20240603', focus: 1, time: 0 },
-        ] satisfies timer.core.Row[])
+        ] satisfies tt4b.core.Row[])
 
         // Query by host
         expect(await db.select({ keys: GOOGLE })).toEqual([
             { host: GOOGLE, date: '20240602', focus: 1, time: 0 },
             { host: GOOGLE, date: '20240603', focus: 1, time: 0 },
-        ] satisfies timer.core.Row[])
+        ] satisfies tt4b.core.Row[])
         expect(await db.select({ keys: GITHUB })).toEqual([
             { host: GITHUB, date: '20240602', focus: 10, time: 20 },
             { host: GITHUB, date: '20240603', focus: 10, time: 20 },
-        ] satisfies timer.core.Row[])
-        expect(await db.select({ keys: GITHUB_VIRTUAL })).toEqual([] satisfies timer.core.Row[])
+        ] satisfies tt4b.core.Row[])
+        expect(await db.select({ keys: GITHUB_VIRTUAL })).toEqual([] satisfies tt4b.core.Row[])
         expect(await db.select({ keys: GITHUB_VIRTUAL, virtual: true })).toEqual([
             { host: GITHUB_VIRTUAL, date: '20240603', focus: 5, time: 10 },
-        ] satisfies timer.core.Row[])
+        ] satisfies tt4b.core.Row[])
 
         // Query by date and host index
         expect(await db.select({ date: '20240603', keys: GOOGLE })).toEqual([
             { host: GOOGLE, date: '20240603', focus: 1, time: 0 },
-        ] satisfies timer.core.Row[])
-        expect(await db.select({ date: '20240603', keys: GITHUB_VIRTUAL })).toEqual([] satisfies timer.core.Row[])
+        ] satisfies tt4b.core.Row[])
+        expect(await db.select({ date: '20240603', keys: GITHUB_VIRTUAL })).toEqual([] satisfies tt4b.core.Row[])
         expect(await db.select({ date: '20240603', keys: GITHUB_VIRTUAL, virtual: true })).toEqual([
             { host: GITHUB_VIRTUAL, date: '20240603', focus: 5, time: 10 },
-        ] satisfies timer.core.Row[])
+        ] satisfies tt4b.core.Row[])
 
         // Query by time index
         expect(await db.select({ timeRange: [10, 20] })).toEqual([
             { host: GITHUB, date: '20240602', focus: 10, time: 20 },
             { host: GITHUB, date: '20240603', focus: 10, time: 20 },
-        ] satisfies timer.core.Row[])
+        ] satisfies tt4b.core.Row[])
         expect(await db.select({ timeRange: [10, 20], virtual: true })).toEqual([
             { host: GITHUB_VIRTUAL, date: '20240603', focus: 5, time: 10 },
             { host: GITHUB, date: '20240602', focus: 10, time: 20 },
             { host: GITHUB, date: '20240603', focus: 10, time: 20 },
-        ] satisfies timer.core.Row[])
+        ] satisfies tt4b.core.Row[])
         expect(await db.select({ timeRange: [10, 20], date: '20240603', virtual: true })).toEqual([
             { host: GITHUB, date: '20240603', focus: 10, time: 20 },
             { host: GITHUB_VIRTUAL, date: '20240603', focus: 5, time: 10 },
-        ] satisfies timer.core.Row[])
+        ] satisfies tt4b.core.Row[])
 
         // Query by focus index
         expect(await db.select({ focusRange: [5, 10] })).toEqual([
             { host: GITHUB, date: '20240602', focus: 10, time: 20 },
             { host: GITHUB, date: '20240603', focus: 10, time: 20 },
-        ] satisfies timer.core.Row[])
+        ] satisfies tt4b.core.Row[])
         expect(await db.select({ focusRange: [5, 10], virtual: true })).toEqual([
             { host: GITHUB_VIRTUAL, date: '20240603', focus: 5, time: 10 },
             { host: GITHUB, date: '20240602', focus: 10, time: 20 },
             { host: GITHUB, date: '20240603', focus: 10, time: 20 },
-        ] satisfies timer.core.Row[])
+        ] satisfies tt4b.core.Row[])
         expect(await db.select({ focusRange: [5, 10], date: '20240603', virtual: true })).toEqual([
             { host: GITHUB, date: '20240603', focus: 10, time: 20 },
             { host: GITHUB_VIRTUAL, date: '20240603', focus: 5, time: 10 },
-        ] satisfies timer.core.Row[])
+        ] satisfies tt4b.core.Row[])
     })
 
     test('delete', async () => {
@@ -193,10 +193,10 @@ describe('stat-database/idb', () => {
 
         await db.deleteByGroup(GROUP_1)
         expect(await db.get(MAYBE_GROUP_1, '20240603'))
-            .toEqual({ host: MAYBE_GROUP_1, date: '20240603', focus: 222, time: 222 } satisfies timer.core.Row)
+            .toEqual({ host: MAYBE_GROUP_1, date: '20240603', focus: 222, time: 222 } satisfies tt4b.core.Row)
 
         await db.delete({ host: MAYBE_GROUP_1, date: '20240603' }, { host: GITHUB_VIRTUAL, date: '20240603' })
-        expect(await db.select({ virtual: true })).toEqual([] satisfies timer.core.Row[])
+        expect(await db.select({ virtual: true })).toEqual([] satisfies tt4b.core.Row[])
     })
 
     test('multiple select groups', async () => {
@@ -216,11 +216,11 @@ describe('stat-database/idb', () => {
         expect(await db.selectGroup({ date: '20240603' })).toEqual([
             { date: '20240603', host: `${GROUP_1}`, focus: 3, time: 3 },
             { date: '20240603', host: `${GROUP_2}`, focus: 4, time: 4 },
-        ] satisfies timer.core.Row[])
+        ] satisfies tt4b.core.Row[])
 
         expect(await db.selectGroup({ date: ['20240602', '20240603'], keys: GROUP_1.toString() })).toEqual([
             { date: '20240602', host: `${GROUP_1}`, focus: 1, time: 1 },
             { date: '20240603', host: `${GROUP_1}`, focus: 3, time: 3 },
-        ] satisfies timer.core.Row[])
+        ] satisfies tt4b.core.Row[])
     })
 })

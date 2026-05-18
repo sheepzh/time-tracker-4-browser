@@ -1,9 +1,9 @@
 
 export type LimitReason =
-    & RequiredPick<timer.limit.Rule, 'id' | 'cond'>
-    & PartialPick<timer.limit.Item, 'delayCount' | 'allowDelay'>
+    & RequiredPick<tt4b.limit.Rule, 'id' | 'cond'>
+    & PartialPick<tt4b.limit.Item, 'delayCount' | 'allowDelay'>
     & {
-        type: timer.limit.ReasonType
+        type: tt4b.limit.ReasonType
         getVisitTime?: () => number
     }
 
@@ -12,7 +12,7 @@ export interface MaskModal {
 
     addReason(...reasons: LimitReason[]): void
     removeReason(...reasons: LimitReason[]): void
-    removeReasonsByType(...types: timer.limit.ReasonType[]): void
+    removeReasonsByType(...types: tt4b.limit.ReasonType[]): void
     addDelayHandler(handler: NoArgCallback): void
 }
 

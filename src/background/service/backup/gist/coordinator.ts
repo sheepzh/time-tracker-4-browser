@@ -48,7 +48,7 @@ function bucket2filename(bucket: string, cid: string) {
     return `${bucket}_${cid}.json`
 }
 
-function filterDate(row: timer.core.Row, start: string, end: string) {
+function filterDate(row: tt4b.core.Row, start: string, end: string) {
     const { date } = row
     if (!date) return false
     if (start && date < start) return false
@@ -56,7 +56,7 @@ function filterDate(row: timer.core.Row, start: string, end: string) {
     return true
 }
 
-function checkTokenExist(context: timer.backup.CoordinatorContext<Cache>): string {
+function checkTokenExist(context: tt4b.backup.CoordinatorContext<Cache>): string {
     const token = context.auth?.token
     if (!token) {
         throw new Error("Token must not be empty. This can't happen, please contact to the developer")
@@ -64,10 +64,10 @@ function checkTokenExist(context: timer.backup.CoordinatorContext<Cache>): strin
     return token
 }
 
-export default class GistCoordinator implements timer.backup.Coordinator<Cache> {
+export default class GistCoordinator implements tt4b.backup.Coordinator<Cache> {
     async updateClients(
-        context: timer.backup.CoordinatorContext<Cache>,
-        clients: timer.backup.Client[],
+        context: tt4b.backup.CoordinatorContext<Cache>,
+        clients: tt4b.backup.Client[],
     ): Promise<void> {
         const gist = await this.getMetaGist(context)
         if (!gist) {
@@ -82,7 +82,7 @@ export default class GistCoordinator implements timer.backup.Coordinator<Cache> 
         await updateGist(checkTokenExist(context), gist.id, { description: gist.description, public: false, files })
     }
 
-    async listAllClients(context: timer.backup.CoordinatorContext<Cache>): Promise<timer.backup.Client[]> {
+    async listAllClients(context: tt4b.backup.CoordinatorContext<Cache>): Promise<tt4b.backup.Client[]> {
         const gist = await this.getMetaGist(context)
         if (!gist) {
             return []
@@ -91,11 +91,11 @@ export default class GistCoordinator implements timer.backup.Coordinator<Cache> 
         return file ? await getJsonFileContent(file) ?? [] : []
     }
 
-    async download(context: timer.backup.CoordinatorContext<Cache>, start: string, end: string, targetCid?: string): Promise<timer.core.Row[]> {
+    async download(context: tt4b.backup.CoordinatorContext<Cache>, start: string, end: string, targetCid?: string): Promise<tt4b.core.Row[]> {
         const startTime = parseTime(start) ?? getBirthday()
         const endTime = parseTime(end) ?? new Date()
         const allYearMonth = new MonthIterator(startTime, endTime).toArray()
-        const result: timer.core.Row[] = []
+        const result: tt4b.core.Row[] = []
         await Promise.all(allYearMonth.map(async yearMonth => {
             const filename = bucket2filename(yearMonth, targetCid || context.cid)
             const gist: Gist = await this.getStatGist(context)
@@ -110,7 +110,7 @@ export default class GistCoordinator implements timer.backup.Coordinator<Cache> 
         return result
     }
 
-    async upload(context: timer.backup.CoordinatorContext<Cache>, rows: timer.core.Row[]): Promise<void> {
+    async upload(context: tt4b.backup.CoordinatorContext<Cache>, rows: tt4b.core.Row[]): Promise<void> {
         const cid = context.cid
         const buckets = divide2Buckets(rows)
         const gist = await this.getStatGist(context)
@@ -137,7 +137,7 @@ export default class GistCoordinator implements timer.backup.Coordinator<Cache> 
         return gist.description === TIMER_DATA_GIST_DESC
     }
 
-    private async getMetaGist(context: timer.backup.CoordinatorContext<Cache>): Promise<Gist> {
+    private async getMetaGist(context: tt4b.backup.CoordinatorContext<Cache>): Promise<Gist> {
         const gistId = context.cache.metaGistId
         const token = checkTokenExist(context)
         // 1. Find by id
@@ -165,7 +165,7 @@ export default class GistCoordinator implements timer.backup.Coordinator<Cache> 
         return created
     }
 
-    private async getStatGist(context: timer.backup.CoordinatorContext<Cache>): Promise<Gist> {
+    private async getStatGist(context: tt4b.backup.CoordinatorContext<Cache>): Promise<Gist> {
         const gistId = context.cache.statGistId
         const token = checkTokenExist(context)
         // 1. Find by id
@@ -192,13 +192,13 @@ export default class GistCoordinator implements timer.backup.Coordinator<Cache> 
         return created
     }
 
-    async testAuth(auth: timer.backup.Auth): Promise<string | undefined> {
+    async testAuth(auth: tt4b.backup.Auth): Promise<string | undefined> {
         const { token } = auth
         if (!token) return 'Token is empty'
         return testToken(token)
     }
 
-    async clear(context: timer.backup.CoordinatorContext<Cache>, client: timer.backup.Client): Promise<void> {
+    async clear(context: tt4b.backup.CoordinatorContext<Cache>, client: tt4b.backup.Client): Promise<void> {
         // 1. Find the names of file to delete
         const { minDate, maxDate, id: cid } = client || {}
         const allBuckets = calcAllBuckets(minDate, maxDate)

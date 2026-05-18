@@ -7,7 +7,7 @@ import { getBirthday, parseTime } from '@util/time'
 import { processDir } from "../common"
 import { CLIENT_FILE_NAME, convertClients2Markdown, divideByDate, parseData } from "../markdown"
 
-function getEndpoint(ext: timer.backup.TypeExt | undefined): string | undefined {
+function getEndpoint(ext: tt4b.backup.TypeExt | undefined): string | undefined {
     let { endpoint } = ext || {}
     if (endpoint?.endsWith('/')) {
         endpoint = endpoint.substring(0, endpoint.length - 1)
@@ -15,7 +15,7 @@ function getEndpoint(ext: timer.backup.TypeExt | undefined): string | undefined 
     return endpoint
 }
 
-function prepareContext(context: timer.backup.CoordinatorContext<never>): WebDAVContext {
+function prepareContext(context: tt4b.backup.CoordinatorContext<never>): WebDAVContext {
     const { auth, ext } = context
     const endpoint = getEndpoint(ext)
     if (!endpoint) {
@@ -29,8 +29,8 @@ function prepareContext(context: timer.backup.CoordinatorContext<never>): WebDAV
     return { auth: webDavAuth, endpoint }
 }
 
-export default class WebDAVCoordinator implements timer.backup.Coordinator<never> {
-    async updateClients(context: timer.backup.CoordinatorContext<never>, clients: timer.backup.Client[]): Promise<void> {
+export default class WebDAVCoordinator implements tt4b.backup.Coordinator<never> {
+    async updateClients(context: tt4b.backup.CoordinatorContext<never>, clients: tt4b.backup.Client[]): Promise<void> {
         const dirPath = processDir(context?.ext?.dirPath)
         const clientFilePath = `${dirPath}${CLIENT_FILE_NAME}`
         const content = convertClients2Markdown(clients)
@@ -38,7 +38,7 @@ export default class WebDAVCoordinator implements timer.backup.Coordinator<never
         await writeFile(davContext, clientFilePath, content)
     }
 
-    async listAllClients(context: timer.backup.CoordinatorContext<never>): Promise<timer.backup.Client[]> {
+    async listAllClients(context: tt4b.backup.CoordinatorContext<never>): Promise<tt4b.backup.Client[]> {
         const dirPath = processDir(context?.ext?.dirPath)
         const clientFilePath = `${dirPath}${CLIENT_FILE_NAME}`
         const davContext = prepareContext(context)
@@ -51,7 +51,7 @@ export default class WebDAVCoordinator implements timer.backup.Coordinator<never
         }
     }
 
-    async download(context: timer.backup.CoordinatorContext<never>, start: string, end: string, targetCid?: string): Promise<timer.core.Row[]> {
+    async download(context: tt4b.backup.CoordinatorContext<never>, start: string, end: string, targetCid?: string): Promise<tt4b.core.Row[]> {
         const dirPath = processDir(context?.ext?.dirPath)
         const davContext = prepareContext(context)
         targetCid = targetCid || context?.cid
@@ -59,17 +59,17 @@ export default class WebDAVCoordinator implements timer.backup.Coordinator<never
         const dateStart = parseTime(start) ?? getBirthday()
         const dateEnd = parseTime(end) ?? new Date()
         const dateIterator = new DateIterator(dateStart, dateEnd)
-        const result: timer.core.Row[] = []
+        const result: tt4b.core.Row[] = []
         await Promise.all(dateIterator.toArray().map(async date => {
             const filePath = `${dirPath}${targetCid}/${date}.md`
             const fileContent = await readFile(davContext, filePath)
-            const rows = parseData<timer.core.Row[]>(fileContent)
+            const rows = parseData<tt4b.core.Row[]>(fileContent)
             rows?.forEach?.(row => result.push(row))
         }))
         return result
     }
 
-    async upload(context: timer.backup.CoordinatorContext<never>, rows: timer.core.Row[]): Promise<void> {
+    async upload(context: tt4b.backup.CoordinatorContext<never>, rows: tt4b.core.Row[]): Promise<void> {
         const dateAndContents = divideByDate(rows)
         const dirPath = processDir(context?.ext?.dirPath)
         const cid = context?.cid
@@ -91,7 +91,7 @@ export default class WebDAVCoordinator implements timer.backup.Coordinator<never
         return clientDirPath
     }
 
-    async testAuth(auth: timer.backup.Auth, ext: timer.backup.TypeExt): Promise<string | undefined> {
+    async testAuth(auth: tt4b.backup.Auth, ext: tt4b.backup.TypeExt): Promise<string | undefined> {
         const endpoint = getEndpoint(ext)
         if (!endpoint) {
             return "The endpoint is blank"
@@ -121,7 +121,7 @@ export default class WebDAVCoordinator implements timer.backup.Coordinator<never
         }
     }
 
-    async clear(context: timer.backup.CoordinatorContext<never>, client: timer.backup.Client): Promise<void> {
+    async clear(context: tt4b.backup.CoordinatorContext<never>, client: tt4b.backup.Client): Promise<void> {
         const cid = client.id
         const dirPath = processDir(context.ext?.dirPath)
         const davContext = prepareContext(context)

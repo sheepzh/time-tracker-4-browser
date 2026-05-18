@@ -20,7 +20,7 @@ type PopupContextValue = {
     cateNameMap: ShallowRef<Record<number, string>>
     menu: ShallowRef<PopupMenu | undefined>
     setMenu: ArgCallback<PopupMenu>
-    limitSummary: ShallowRef<timer.limit.Summary | undefined>
+    limitSummary: ShallowRef<tt4b.limit.Summary | undefined>
     limitSummaryLoading: ShallowRef<boolean>
     selectedLimit: Ref<number | undefined>
 }

@@ -15,14 +15,14 @@ import { defineComponent } from "vue"
 
 const OperationColumn = defineComponent<{}>(() => {
     const { refresh } = useSiteManageTable()
-    const { refresh: doDelete } = useManualRequest<[timer.site.SiteKey], void>(deleteSites, { onSuccess: refresh })
+    const { refresh: doDelete } = useManualRequest<[tt4b.site.SiteKey], void>(deleteSites, { onSuccess: refresh })
     return () => (
         <ElTableColumn
             width={150}
             label={t(msg => msg.button.operation)}
             align="center"
             v-slots={
-                ({ row }: RenderRowData<timer.site.SiteInfo>) => (
+                ({ row }: RenderRowData<tt4b.site.SiteInfo>) => (
                     <PopupConfirmButton
                         buttonIcon={Delete}
                         buttonType="danger"

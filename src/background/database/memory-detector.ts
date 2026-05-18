@@ -17,7 +17,7 @@ const total: number = chrome.storage.local.QUOTA_BYTES || 0
  *
  * @since 0.0.9
  */
-export async function getUsedStorage(): Promise<timer.common.StorageUsage> {
+export async function getUsedStorage(): Promise<tt4b.common.StorageUsage> {
     const used = await new StoragePromise(chrome.storage.local).getUsedMemory()
     return { used, total }
 }

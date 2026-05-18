@@ -47,7 +47,7 @@ async function saveTwoFa(secret: string): Promise<void> {
     await db.update(meta)
 }
 
-async function encrypt(plaintext: string, cid: string): Promise<timer.TwoFactorAuth> {
+async function encrypt(plaintext: string, cid: string): Promise<tt4b.TwoFactorAuth> {
     const encoder = new TextEncoder()
     const dataBuffer = encoder.encode(plaintext)
 
@@ -92,7 +92,7 @@ export async function check2faCode(code: string): Promise<boolean> {
     return verifyTotp(secret, code)
 }
 
-async function decryptSecret(twoFa: timer.TwoFactorAuth, cid: string): Promise<string> {
+async function decryptSecret(twoFa: tt4b.TwoFactorAuth, cid: string): Promise<string> {
     const encoder = new TextEncoder()
     const keyMaterial = await crypto.subtle.importKey(
         'raw', encoder.encode(cid), { name: 'PBKDF2' }, false, ['deriveKey']

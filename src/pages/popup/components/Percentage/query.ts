@@ -1,12 +1,12 @@
+import { listAllGroups } from "@api/chrome/tabGroups"
 import { queryRows, } from "@popup/common"
 import { t } from '@popup/locale'
 import type { PopupOption, PopupQuery } from "@popup/types"
-import { listAllGroups } from "@api/chrome/tabGroups"
 import { getBirthday, getDayLength } from "@util/time"
 
 export type PercentageResult = {
     query: PopupQuery
-    rows: timer.stat.Row[]
+    rows: tt4b.stat.Row[]
     // Actually date range according to duration
     date: Date | [Date, Date?] | undefined
     displaySiteName: boolean
@@ -18,7 +18,7 @@ export type PercentageResult = {
     donutChart: boolean
 }
 
-const findAllDates = (row: timer.stat.Row): Set<string> => {
+const findAllDates = (row: tt4b.stat.Row): Set<string> => {
     const set = new Set<string>()
     const { date, mergedDates } = row
     date && set.add(date)
@@ -30,7 +30,7 @@ const findAllDates = (row: timer.stat.Row): Set<string> => {
     return set
 }
 
-const findDateRange = (rows: timer.stat.Row[]): [string, string] | undefined => {
+const findDateRange = (rows: tt4b.stat.Row[]): [string, string] | undefined => {
     const set = new Set<string>()
     rows?.forEach(row => {
         const dates = findAllDates(row)

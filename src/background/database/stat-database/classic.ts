@@ -21,13 +21,13 @@ const generateHostReg = (host: string): RegExp => RegExp(`^\\d{8}${escapeRegExp(
 const generateGroupKey = (groupId: number, date: Date | string) => formatDateStr(date) + cvtGroupId2Host(groupId)
 const generateGroupReg = (groupId: number): RegExp => RegExp(`^\\d{8}${escapeRegExp(cvtGroupId2Host(groupId))}$`)
 
-const isPartialResult = createObjectGuard<Partial<timer.core.Result>>({
+const isPartialResult = createObjectGuard<Partial<tt4b.core.Result>>({
     focus: isOptionalInt,
     time: isOptionalInt,
     run: isOptionalInt,
 })
 
-function filterRow(row: timer.core.Row, condition: ProcessedCondition): boolean {
+function filterRow(row: tt4b.core.Row, condition: ProcessedCondition): boolean {
     const { host, date, focus, time } = row
     const { timeStart, timeEnd, focusStart, focusEnd, keys, virtual } = condition
 
@@ -44,7 +44,7 @@ export class ClassicStatDatabase extends BaseDatabase implements StatDatabase {
 
     async refresh(): Promise<{ [key: string]: unknown }> {
         const result = await this.storage.get()
-        const items: Record<string, timer.core.Result> = {}
+        const items: Record<string, tt4b.core.Result> = {}
         Object.entries(result)
             .filter(([key]) => !key.startsWith(REMAIN_WORD_PREFIX))
             .forEach(([key, value]) => items[key] = value)
@@ -55,7 +55,7 @@ export class ClassicStatDatabase extends BaseDatabase implements StatDatabase {
      * @param host host
      * @since 0.1.3
      */
-    accumulate(host: string, date: Date | string, item: timer.core.Result): Promise<timer.core.Result> {
+    accumulate(host: string, date: Date | string, item: tt4b.core.Result): Promise<tt4b.core.Result> {
         const key = generateKey(host, date)
         return this.accumulateInner(key, item)
     }
@@ -64,13 +64,13 @@ export class ClassicStatDatabase extends BaseDatabase implements StatDatabase {
      * @param host host
      * @since 0.1.3
      */
-    accumulateGroup(groupId: number, date: Date | string, item: timer.core.Result): Promise<timer.core.Result> {
+    accumulateGroup(groupId: number, date: Date | string, item: tt4b.core.Result): Promise<tt4b.core.Result> {
         const key = generateGroupKey(groupId, date)
         return this.accumulateInner(key, item)
     }
 
-    private async accumulateInner(key: string, item: timer.core.Result): Promise<timer.core.Result> {
-        const exist = await this.storage.getOne<timer.core.Result>(key)
+    private async accumulateInner(key: string, item: tt4b.core.Result): Promise<tt4b.core.Result> {
+        const exist = await this.storage.getOne<tt4b.core.Result>(key)
         const value = increase(item, exist)
         await this.setByKey(key, value)
         return value
@@ -83,7 +83,7 @@ export class ClassicStatDatabase extends BaseDatabase implements StatDatabase {
      * @param date date
      * @since 0.1.8
      */
-    async batchAccumulate(data: Record<string, timer.core.Result>, date: Date | string): Promise<Record<string, timer.core.Result>> {
+    async batchAccumulate(data: Record<string, tt4b.core.Result>, date: Date | string): Promise<Record<string, tt4b.core.Result>> {
         const hosts = Object.keys(data)
         if (!hosts.length) return {}
         const dateStr = formatDateStr(date)
@@ -92,12 +92,12 @@ export class ClassicStatDatabase extends BaseDatabase implements StatDatabase {
 
         const items = await this.storage.get(Object.values(keys))
 
-        const toUpdate: Record<string, timer.core.Result> = {}
-        const afterUpdated: Record<string, timer.core.Result> = {}
+        const toUpdate: Record<string, tt4b.core.Result> = {}
+        const afterUpdated: Record<string, tt4b.core.Result> = {}
         Object.entries(keys).forEach(([host, key]) => {
             const item = data[host]
             if (!item) return
-            const exist = increase(item, items[key] as timer.core.Result | undefined)
+            const exist = increase(item, items[key] as tt4b.core.Result | undefined)
             toUpdate[key] = afterUpdated[host] = exist
         })
         await this.storage.set(toUpdate)
@@ -107,10 +107,10 @@ export class ClassicStatDatabase extends BaseDatabase implements StatDatabase {
     /**
      * Filter by query parameters
      */
-    private async filter(condition?: StatCondition, onlyGroup?: boolean): Promise<timer.core.Row[]> {
+    private async filter(condition?: StatCondition, onlyGroup?: boolean): Promise<tt4b.core.Row[]> {
         const cond = processCondition(condition ?? {})
         const items = await this.refresh()
-        const result: timer.core.Row[] = []
+        const result: tt4b.core.Row[] = []
         Object.entries(items).forEach(([key, value]) => {
             const date = key.substring(0, 8)
             let host = key.substring(8)
@@ -123,8 +123,8 @@ export class ClassicStatDatabase extends BaseDatabase implements StatDatabase {
             } else if (host.startsWith(GROUP_PREFIX)) {
                 return
             }
-            const { focus, time, run } = value as timer.core.Result
-            const row: timer.core.Row = { host, date, focus, time }
+            const { focus, time, run } = value as tt4b.core.Result
+            const row: tt4b.core.Row = { host, date, focus, time }
             run !== undefined && (row.run = run)
             filterRow(row, cond) && result.push(row)
         })
@@ -136,12 +136,12 @@ export class ClassicStatDatabase extends BaseDatabase implements StatDatabase {
      *
      * @param condition     condition
      */
-    async select(condition?: StatCondition): Promise<timer.core.Row[]> {
+    async select(condition?: StatCondition): Promise<tt4b.core.Row[]> {
         log("select:{condition}", condition)
         return this.filter(condition)
     }
 
-    async selectGroup(condition?: StatCondition): Promise<timer.core.Row[]> {
+    async selectGroup(condition?: StatCondition): Promise<tt4b.core.Row[]> {
         return this.filter(condition, true)
     }
 
@@ -150,17 +150,17 @@ export class ClassicStatDatabase extends BaseDatabase implements StatDatabase {
      *
      * @since 0.0.5
      */
-    async get(host: string, date: Date | string): Promise<timer.core.Row> {
+    async get(host: string, date: Date | string): Promise<tt4b.core.Row> {
         const key = generateKey(host, date)
-        const exist = await this.storage.getOne<timer.core.Result>(key)
+        const exist = await this.storage.getOne<tt4b.core.Result>(key)
         const result = exist ?? zeroResult()
         return { host, date: formatDateStr(date), ...result }
     }
 
-    async batchSelect(keys: timer.core.RowKey[]): Promise<timer.core.Row[]> {
+    async batchSelect(keys: tt4b.core.RowKey[]): Promise<tt4b.core.Row[]> {
         if (!keys.length) return []
         const storageKeys = keys.map(({ host, date }) => generateKey(host, date))
-        const items = await this.storage.get<Record<string, timer.core.Result>>(storageKeys)
+        const items = await this.storage.get<Record<string, tt4b.core.Result>>(storageKeys)
         return keys.map(({ host, date }, i) => {
             const sk = storageKeys[i]
             const exist = sk ? items[sk] : undefined
@@ -175,7 +175,7 @@ export class ClassicStatDatabase extends BaseDatabase implements StatDatabase {
      * @param rows     site rows, the host and date mustn't be null
      * @since 0.0.9
      */
-    async delete(...rows: timer.core.RowKey[]): Promise<void> {
+    async delete(...rows: tt4b.core.RowKey[]): Promise<void> {
         const keys: string[] = rows.map(({ host, date }) => generateKey(host, date))
         return this.storage.remove(keys)
     }
@@ -190,10 +190,10 @@ export class ClassicStatDatabase extends BaseDatabase implements StatDatabase {
      *
      * @since 1.4.3
      */
-    forceUpdate(...rows: timer.core.Row[]): Promise<void> {
+    forceUpdate(...rows: tt4b.core.Row[]): Promise<void> {
         const toSet = Object.fromEntries(rows.map(({ host, date, time, focus, run }) => {
             const key = generateKey(host, date)
-            const result: timer.core.Result = { time, focus }
+            const result: tt4b.core.Result = { time, focus }
             run && (result.run = run)
             return [key, result]
         }))
@@ -201,10 +201,10 @@ export class ClassicStatDatabase extends BaseDatabase implements StatDatabase {
         return this.storage.set(toSet)
     }
 
-    forceUpdateGroup(...rows: timer.core.Row[]): Promise<void> {
+    forceUpdateGroup(...rows: tt4b.core.Row[]): Promise<void> {
         const toSet = Object.fromEntries(rows.map(({ host, date, time, focus, run }) => {
             const key = generateGroupKey(Number(host), date)
-            const result: timer.core.Result = { time, focus }
+            const result: tt4b.core.Result = { time, focus }
             run && (result.run = run)
             return [key, result]
         }))
@@ -257,9 +257,9 @@ export class ClassicStatDatabase extends BaseDatabase implements StatDatabase {
  *
  * @deprecated since 4.0.0, legacy data is not supported for export, this method will be removed in future versions
  */
-export function parseImportData(data: unknown): timer.core.Row[] {
+export function parseImportData(data: unknown): tt4b.core.Row[] {
     if (typeof data !== "object" || data === null) return []
-    const rows: timer.core.Row[] = []
+    const rows: tt4b.core.Row[] = []
     Object.entries(data)
         .filter(([key]) => /^20\d{2}[01]\d[0-3]\d.*/.test(key) && !key.substring(8).startsWith(GROUP_PREFIX))
         .forEach(([key, value]) => {
@@ -267,7 +267,7 @@ export function parseImportData(data: unknown): timer.core.Row[] {
             if (!isPartialResult(value)) return
             const date = key.substring(0, 8)
             const host = key.substring(8)
-            const row: timer.core.Row = { host, date, focus: value.focus ?? 0, time: value.time ?? 0 }
+            const row: tt4b.core.Row = { host, date, focus: value.focus ?? 0, time: value.time ?? 0 }
             isNotZeroResult(row) && rows.push(row)
         })
     return rows

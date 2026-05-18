@@ -4,7 +4,7 @@ import { reactive, type ShallowRef, watch } from 'vue'
 
 type FilterOption = {
     query?: string
-    types?: timer.site.Type[]
+    types?: tt4b.site.Type[]
     cateIds?: number[]
 }
 
@@ -13,10 +13,10 @@ type CacheValue = {
 }
 
 type Context = {
-    pagination: ShallowRef<timer.common.PageResult<timer.site.SiteInfo>>
+    pagination: ShallowRef<tt4b.common.PageResult<tt4b.site.SiteInfo>>
     filter: FilterOption
-    selected: ShallowRef<timer.site.SiteInfo[]>
-    setSelected: ArgCallback<timer.site.SiteInfo[]>
+    selected: ShallowRef<tt4b.site.SiteInfo[]>
+    setSelected: ArgCallback<tt4b.site.SiteInfo[]>
     refresh: NoArgCallback
 }
 
@@ -28,8 +28,8 @@ export const initSiteManage = (loadingTarget: RequestOption<unknown, unknown[]>[
     const filter = reactive<FilterOption>({ cateIds: cache?.cateIds })
     watch(() => filter.cateIds, cateIds => setCache({ cateIds }))
 
-    const page = reactive<timer.common.PageQuery>({ num: 1, size: 20 })
-    const [selected, setSelected] = useState<timer.site.SiteInfo[]>([])
+    const page = reactive<tt4b.common.PageQuery>({ num: 1, size: 20 })
+    const [selected, setSelected] = useState<tt4b.site.SiteInfo[]>([])
 
     const { data: pagination, refresh, loading } = useRequest(() => {
         const { query: fuzzyQuery, cateIds, types } = filter

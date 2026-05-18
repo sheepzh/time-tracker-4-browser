@@ -2,7 +2,7 @@ import { locale } from "@i18n"
 import { getStartOfDay, getWeekDay, MILL_PER_DAY } from "@util/time"
 import optionHolder from './option-holder'
 
-function getDefaultWeekStart(localeOpt: timer.option.LocaleOption): number {
+function getDefaultWeekStart(localeOpt: tt4b.option.LocaleOption): number {
     const parts = navigator.language.split(/[-_]/)
     const region = parts[parts.length - 1]?.toLowerCase() ?? ''
     switch (locale) {
@@ -13,7 +13,7 @@ function getDefaultWeekStart(localeOpt: timer.option.LocaleOption): number {
         // Other countries or fallbacked to English use Monday as the first day of week
         case 'en':
             if (['us', 'ca', 'in', 'za', 'jm', 'ph'].includes(region)) {
-                // US, Canaca, India, South Africa, Jamaica, Philippines use Sunday as the first day of week 
+                // US, Canaca, India, South Africa, Jamaica, Philippines use Sunday as the first day of week
                 return 6
             } else if (['gb', 'au', 'nz'].includes(region)) {
                 // UK, Australia and New Zealand use Monday as the first day of week
@@ -52,7 +52,7 @@ export async function getWeekStartDay(): Promise<number> {
 
 /**
  * Get the start time and end time of this week
- * 
+ *
  * @param now the specific time to calculate
  * @returns start time with milliseconds
  *

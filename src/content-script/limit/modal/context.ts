@@ -62,4 +62,4 @@ export const provideRule = () => {
     provide(RULE_KEY, rule)
 }
 
-export const useRule = () => inject<ShallowRef<timer.limit.Item | undefined>>(RULE_KEY) as ShallowRef<timer.limit.Item | undefined>
+export const useRule = () => inject<ShallowRef<tt4b.limit.Item | undefined>>(RULE_KEY) as ShallowRef<tt4b.limit.Item | undefined>

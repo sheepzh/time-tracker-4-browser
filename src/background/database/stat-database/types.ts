@@ -30,15 +30,15 @@ export type StatCondition = {
 }
 
 export interface StatDatabase {
-    get(host: string, date: Date): Promise<timer.core.Row>
-    batchSelect(keys: timer.core.RowKey[]): Promise<timer.core.Row[]>
-    select(condition?: StatCondition): Promise<timer.core.Row[]>
+    get(host: string, date: Date): Promise<tt4b.core.Row>
+    batchSelect(keys: tt4b.core.RowKey[]): Promise<tt4b.core.Row[]>
+    select(condition?: StatCondition): Promise<tt4b.core.Row[]>
     /**
      * Accumulate data
      */
-    accumulate(host: string, date: Date | string, item: timer.core.Result): Promise<timer.core.Result>
-    batchAccumulate(data: Record<string, timer.core.Result>, date: Date | string): Promise<Record<string, timer.core.Result>>
-    delete(...rows: timer.core.RowKey[]): Promise<void>
+    accumulate(host: string, date: Date | string, item: tt4b.core.Result): Promise<tt4b.core.Result>
+    batchAccumulate(data: Record<string, tt4b.core.Result>, date: Date | string): Promise<Record<string, tt4b.core.Result>>
+    delete(...rows: tt4b.core.RowKey[]): Promise<void>
     /**
      * Delete by host
      *
@@ -58,16 +58,16 @@ export interface StatDatabase {
     /**
      * Accumulate data for tab group
      */
-    accumulateGroup(groupId: number, date: Date | string, item: timer.core.Result): Promise<timer.core.Result>
-    selectGroup(condition?: StatCondition): Promise<timer.core.Row[]>
+    accumulateGroup(groupId: number, date: Date | string, item: tt4b.core.Result): Promise<tt4b.core.Result>
+    selectGroup(condition?: StatCondition): Promise<tt4b.core.Row[]>
     deleteGroup(...rows: [groupId: number, date: string][]): Promise<void>
     /**
      * Force update data with overwriting
      */
-    forceUpdate(...rows: timer.core.Row[]): Promise<void>
+    forceUpdate(...rows: tt4b.core.Row[]): Promise<void>
 
     /**
      * Force update group data with overwriting
      */
-    forceUpdateGroup(...rows: timer.core.Row[]): Promise<void>
+    forceUpdateGroup(...rows: tt4b.core.Row[]): Promise<void>
 }

@@ -1,8 +1,8 @@
 export type ImportForm = {
     ext: OtherExtension
     file?: File
-    data: timer.imported.Data
-    resolution?: timer.imported.ConflictResolution
+    data: tt4b.imported.Data
+    resolution?: tt4b.imported.ConflictResolution
 }
 
 export type OtherExtension =

@@ -7,10 +7,10 @@ import notificationProcessor from "./service/notification/processor"
 const BACKUP_ALARM_NAME = 'auto-backup-data'
 const NOTIFICATION_ALARM_NAME = 'notification-data'
 
-const needResetBackup = (newVal: timer.option.AllOption, oldVal: timer.option.AllOption): boolean =>
+const needResetBackup = (newVal: tt4b.option.AllOption, oldVal: tt4b.option.AllOption): boolean =>
     newVal.autoBackUp !== oldVal.autoBackUp || newVal.autoBackUpInterval !== oldVal.autoBackUpInterval
 
-const needResetNotification = (newVal: timer.option.AllOption, oldVal: timer.option.AllOption): boolean =>
+const needResetNotification = (newVal: tt4b.option.AllOption, oldVal: tt4b.option.AllOption): boolean =>
     newVal.notificationCycle !== oldVal.notificationCycle || newVal.notificationOffset !== oldVal.notificationOffset
 
 export async function initScheduler(): Promise<void> {
@@ -45,7 +45,7 @@ async function resetBackup(): Promise<void> {
 }
 
 type OffsetHandler = (offsetMin: number) => number
-const OFFSET_HANDLERS: Record<Exclude<timer.notification.Cycle, 'none'>, OffsetHandler> = {
+const OFFSET_HANDLERS: Record<Exclude<tt4b.notification.Cycle, 'none'>, OffsetHandler> = {
     daily: offset => {
         const next = new Date()
         next.setHours(0, offset, 0, 0)

@@ -11,7 +11,7 @@ import { mergeObject } from '@util/lang'
 interface ExportedSettings {
     version: string
     timestamp: number
-    settings: timer.option.AllOption
+    settings: tt4b.option.AllOption
 }
 
 /**
@@ -43,18 +43,18 @@ export async function importSettings(jsonString: string): Promise<void> {
     const validatedSettings = await validateAndMergeSettings(importData.settings)
 
     // Set the imported settings
-    await setOption(validatedSettings as Partial<timer.option.AllOption>)
+    await setOption(validatedSettings as Partial<tt4b.option.AllOption>)
 }
 
 /**
  * Validate imported settings and merge with defaults to ensure all required fields exist
  */
-async function validateAndMergeSettings(importedSettings: Partial<timer.option.AllOption>): Promise<timer.option.AllOption> {
+async function validateAndMergeSettings(importedSettings: Partial<tt4b.option.AllOption>): Promise<tt4b.option.AllOption> {
     // Get current user settings as defaults instead of default options
     const current = await getOption()
     // Delete client name
     delete importedSettings['clientName']
-    return mergeObject(current ?? {}, importedSettings) as timer.option.AllOption
+    return mergeObject(current ?? {}, importedSettings) as tt4b.option.AllOption
 }
 
 /**

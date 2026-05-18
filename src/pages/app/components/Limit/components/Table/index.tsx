@@ -22,7 +22,7 @@ import Rule from "./Rule"
 import Waste from "./Waste"
 import Weekday from "./Weekday"
 
-const ACTION_WIDTH: { [locale in timer.Locale]: number } = {
+const ACTION_WIDTH: { [locale in tt4b.Locale]: number } = {
     en: 220,
     zh_CN: 200,
     ja: 200,
@@ -42,10 +42,10 @@ const ACTION_WIDTH: { [locale in timer.Locale]: number } = {
 const DEFAULT_SORT_COL = 'waste'
 
 function createSorter(key: 'waste' | 'weeklyWaste') {
-    return (a: timer.limit.Item, b: timer.limit.Item) => a[key] - b[key]
+    return (a: tt4b.limit.Item, b: tt4b.limit.Item) => a[key] - b[key]
 }
 
-function sortByEffectiveDays(a: timer.limit.Item, b: timer.limit.Item) {
+function sortByEffectiveDays(a: tt4b.limit.Item, b: tt4b.limit.Item) {
     return (a.weekdays?.length ?? 0) - (b.weekdays?.length ?? 0)
 }
 
@@ -88,23 +88,23 @@ const _default = defineComponent((_, ctx) => {
                 label={t(msg => msg.limit.item.name)}
                 minWidth={120}
                 align="center"
-                formatter={({ name }: timer.limit.Item) => name || '-'}
+                formatter={({ name }: tt4b.limit.Item) => name || '-'}
                 fixed
                 sortable
-                sortBy={(row: timer.limit.Item) => row.name}
+                sortBy={(row: tt4b.limit.Item) => row.name}
             />
             <ElTableColumn
                 label={t(msg => msg.limit.item.condition)}
                 minWidth={180}
                 align="center"
-                formatter={({ cond }: timer.limit.Item) => <>{cond?.map?.(c => <span style={{ display: "block" }}>{c}</span>) || ''}</>}
+                formatter={({ cond }: tt4b.limit.Item) => <>{cond?.map?.(c => <span style={{ display: "block" }}>{c}</span>) || ''}</>}
             />
             <ElTableColumn
                 label={t(msg => msg.limit.item.detail)}
                 minWidth={200}
                 align="center"
             >
-                {({ row }: RenderRowData<timer.limit.Item>) => <Rule value={row} />}
+                {({ row }: RenderRowData<tt4b.limit.Item>) => <Rule value={row} />}
             </ElTableColumn>
             <ElTableColumn
                 prop='effectiveDays'
@@ -114,7 +114,7 @@ const _default = defineComponent((_, ctx) => {
                 sortable
                 sortMethod={sortByEffectiveDays}
             >
-                {({ row: { weekdays } }: RenderRowData<timer.limit.Item>) => <Weekday value={weekdays} />}
+                {({ row: { weekdays } }: RenderRowData<tt4b.limit.Item>) => <Weekday value={weekdays} />}
             </ElTableColumn>
             <ElTableColumn
                 prop={DEFAULT_SORT_COL}
@@ -124,7 +124,7 @@ const _default = defineComponent((_, ctx) => {
                 minWidth={90}
                 align="center"
             >
-                {({ row }: RenderRowData<timer.limit.Item>) => isEffective(row.weekdays) ? (
+                {({ row }: RenderRowData<tt4b.limit.Item>) => isEffective(row.weekdays) ? (
                     <Waste
                         time={{ wasted: row.waste, maxLimit: (row.time ?? 0) * MILL_PER_SECOND }}
                         delay={{ count: row.delayCount, duration: delayDuration.value, allow: !!row.allowDelay }}
@@ -154,7 +154,7 @@ const _default = defineComponent((_, ctx) => {
                         weeklyWaste, weekly,
                         weeklyVisit, weeklyCount,
                         weeklyDelayCount, allowDelay,
-                    } }: RenderRowData<timer.limit.Item>) => (
+                    } }: RenderRowData<tt4b.limit.Item>) => (
                         <Waste
                             time={{ wasted: weeklyWaste, maxLimit: (weekly ?? 0) * MILL_PER_SECOND }}
                             delay={{ count: weeklyDelayCount, duration: delayDuration.value, allow: !!allowDelay }}
@@ -171,7 +171,7 @@ const _default = defineComponent((_, ctx) => {
                     align="center"
                     fixed="right"
                 >
-                    {({ row }: RenderRowData<timer.limit.Item>) => (
+                    {({ row }: RenderRowData<tt4b.limit.Item>) => (
                         <ElSwitch size="small" modelValue={row.enabled} onChange={v => changeEnabled(row, !!v)} />
                     )}
                 </ElTableColumn>
@@ -181,7 +181,7 @@ const _default = defineComponent((_, ctx) => {
                     align="center"
                     fixed="right"
                 >
-                    {({ row }: RenderRowData<timer.limit.Item>) => (
+                    {({ row }: RenderRowData<tt4b.limit.Item>) => (
                         <ElSwitch size="small" modelValue={row.allowDelay} onChange={v => changeDelay(row, !!v)} />
                     )}
                 </ElTableColumn>
@@ -192,7 +192,7 @@ const _default = defineComponent((_, ctx) => {
                         align="center"
                         fixed="right"
                     >
-                        {({ row }: RenderRowData<timer.limit.Item>) => (
+                        {({ row }: RenderRowData<tt4b.limit.Item>) => (
                             <ElSwitch size="small" modelValue={row.locked} onChange={v => changeLocked(row, !!v)} />
                         )}
                     </ElTableColumn>
@@ -203,7 +203,7 @@ const _default = defineComponent((_, ctx) => {
                 width={ACTION_WIDTH[locale]}
                 align="center"
                 fixed="right"
-                v-slots={({ row }: RenderRowData<timer.limit.Item>) => <>
+                v-slots={({ row }: RenderRowData<tt4b.limit.Item>) => <>
                     <ElButton type="danger" size="small" icon={Delete} onClick={() => remove(row)}>
                         {t(msg => msg.button.delete)}
                     </ElButton>

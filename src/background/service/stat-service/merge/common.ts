@@ -7,9 +7,9 @@
 
 import { isGroup } from "@util/stat"
 
-type _RemoteCompositionMap = Record<'_' | string, timer.stat.RemoteCompositionVal>
+type _RemoteCompositionMap = Record<'_' | string, tt4b.stat.RemoteCompositionVal>
 
-function mergeComposition(c1: timer.stat.RemoteComposition | undefined, c2: timer.stat.RemoteComposition | undefined): timer.stat.RemoteComposition {
+function mergeComposition(c1: tt4b.stat.RemoteComposition | undefined, c2: tt4b.stat.RemoteComposition | undefined): tt4b.stat.RemoteComposition {
     const focusMap: _RemoteCompositionMap = {}
     const timeMap: _RemoteCompositionMap = {}
     const runMap: _RemoteCompositionMap = {}
@@ -28,7 +28,7 @@ function mergeComposition(c1: timer.stat.RemoteComposition | undefined, c2: time
     return result
 }
 
-function accCompositionValue(map: _RemoteCompositionMap, value: timer.stat.RemoteCompositionVal) {
+function accCompositionValue(map: _RemoteCompositionMap, value: tt4b.stat.RemoteCompositionVal) {
     if (typeof value === 'number') {
         const cid = '_'
         const existVal = map[cid]
@@ -48,7 +48,7 @@ function accCompositionValue(map: _RemoteCompositionMap, value: timer.stat.Remot
     }
 }
 
-export function mergeResult(target: timer.stat.Row, delta: timer.stat.Row) {
+export function mergeResult(target: tt4b.stat.Row, delta: tt4b.stat.Row) {
     const { focus, time } = delta
     target.focus += focus ?? 0
     target.time += time ?? 0

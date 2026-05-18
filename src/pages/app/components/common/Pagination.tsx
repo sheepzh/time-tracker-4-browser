@@ -12,9 +12,9 @@ import { defineComponent } from "vue"
 
 type Props = {
     disabled?: boolean
-    defaultValue?: timer.common.PageQuery
+    defaultValue?: tt4b.common.PageQuery
     total?: number
-    onChange?: (val: timer.common.PageQuery) => void
+    onChange?: (val: tt4b.common.PageQuery) => void
 }
 
 const Pagination = defineComponent<Props>(props => {
@@ -24,8 +24,8 @@ const Pagination = defineComponent<Props>(props => {
                 disabled={props.disabled}
                 {...getPaginationIconProps()}
                 pageSizes={[10, 20, 50]}
-                defaultCurrentPage={(props.defaultValue as timer.common.PageQuery)?.num}
-                defaultPageSize={(props.defaultValue as timer.common.PageQuery)?.size}
+                defaultCurrentPage={(props.defaultValue as tt4b.common.PageQuery)?.num}
+                defaultPageSize={(props.defaultValue as tt4b.common.PageQuery)?.size}
                 layout="total, sizes, prev, pager, next, jumper"
                 total={props.total}
                 onChange={(currentPage, pageSize) => props.onChange?.({ num: currentPage, size: pageSize })}

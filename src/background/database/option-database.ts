@@ -19,12 +19,12 @@ const DB_KEY = REMAIN_WORD_PREFIX + 'OPTION'
  */
 class OptionDatabase extends BaseDatabase {
 
-    async getOption(): Promise<timer.option.AllOption> {
-        const option = await this.storage.getOne<timer.option.AllOption>(DB_KEY)
-        return mergeObject<timer.option.AllOption>(defaultOption(), option)
+    async getOption(): Promise<tt4b.option.AllOption> {
+        const option = await this.storage.getOne<tt4b.option.AllOption>(DB_KEY)
+        return mergeObject<tt4b.option.AllOption>(defaultOption(), option)
     }
 
-    async setOption(option: timer.option.AllOption): Promise<void> {
+    async setOption(option: tt4b.option.AllOption): Promise<void> {
         option && await this.setByKey(DB_KEY, option)
     }
 }

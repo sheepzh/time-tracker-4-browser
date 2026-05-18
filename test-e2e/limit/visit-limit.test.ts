@@ -11,7 +11,7 @@ describe('Time limit per visit', () => {
 
     test("Delay", async () => {
         const limitPage = await context.openAppPage('/behavior/limit')
-        const demoRule: timer.limit.Rule = {
+        const demoRule: tt4b.limit.Rule = {
             id: 1, name: 'TEST DAILY LIMIT',
             cond: [MOCK_URL],
             visitTime: 1,

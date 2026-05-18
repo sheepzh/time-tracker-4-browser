@@ -13,7 +13,7 @@ export type ItemIncContext = {
 export async function addFocusTime(context: ItemIncContext, focusTime: number): Promise<void> {
     const { host, url, groupId } = context
 
-    const resultSet: Record<string, timer.core.Result> = { [host]: resultOf(focusTime, 0) }
+    const resultSet: Record<string, tt4b.core.Result> = { [host]: resultOf(focusTime, 0) }
     const virtualHosts = virtualSiteHolder.findMatched(url)
     virtualHosts.forEach(virtualHost => resultSet[virtualHost] = resultOf(focusTime, 0))
 

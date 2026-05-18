@@ -33,7 +33,7 @@ const SUBTITLE_STYLE: StyleValue = {
     margin: 0,
 }
 
-const SiteInfo: FunctionalComponent<{ site: timer.site.SiteInfo }> = ({ site }) => {
+const SiteInfo: FunctionalComponent<{ site: tt4b.site.SiteInfo }> = ({ site }) => {
     const { iconUrl, alias } = site
     const label = labelOfHostInfo(site)
     const [title, subtitle] = alias ? [alias, label] : [label]

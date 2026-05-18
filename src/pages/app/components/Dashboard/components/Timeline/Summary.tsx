@@ -15,9 +15,9 @@ const defaultResult = (): { busy: number, focus: number } => ({
     focus: 1,
 })
 
-const computeSessionScore = (activities: timer.timeline.Activity[], hourCount: number) => {
+const computeSessionScore = (activities: tt4b.timeline.Activity[], hourCount: number) => {
     let continuousSessions = 0
-    let currentSession: timer.timeline.Activity[] = []
+    let currentSession: tt4b.timeline.Activity[] = []
 
     activities.sort((a, b) => a.start - b.start).forEach(current => {
         const prev = currentSession[currentSession.length - 1]
@@ -42,7 +42,7 @@ const computeSessionScore = (activities: timer.timeline.Activity[], hourCount: n
     return Math.min(sessionDensity, MAX_SCORE)
 }
 
-const analyze = (activities: timer.timeline.Activity[]): { busy: number, focus: number } => {
+const analyze = (activities: tt4b.timeline.Activity[]): { busy: number, focus: number } => {
     if (!activities.length) return defaultResult()
 
     const minTime = activities.map(t => t.start).sort((a, b) => a - b)[0]!

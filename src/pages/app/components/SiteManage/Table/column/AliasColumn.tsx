@@ -28,7 +28,7 @@ const AliasColumn = defineComponent<{}>(() => {
         ElMessage.success(t(msg => msg.operation.successMsg))
     }
 
-    const genInitialAlias = async ({ host, type, alias }: timer.site.SiteInfo) => {
+    const genInitialAlias = async ({ host, type, alias }: tt4b.site.SiteInfo) => {
         if (alias) return alias
         if (type === 'normal') return await getInitialAlias(host)
         return undefined
@@ -60,7 +60,7 @@ const AliasColumn = defineComponent<{}>(() => {
                         />
                     </Flex>
                 ),
-                default: ({ row }: { row: timer.site.SiteInfo }) => (
+                default: ({ row }: { row: tt4b.site.SiteInfo }) => (
                     <Editable
                         key={`${identifySiteKey(row)}_${row.alias}`}
                         modelValue={row.alias}

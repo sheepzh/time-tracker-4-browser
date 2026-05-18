@@ -1,6 +1,6 @@
 import { mockStorage } from "../../__mock__/storage"
 
-let calcTimeState: (item: timer.limit.Item, reminderMills: number, delayDuration: number) => {
+let calcTimeState: (item: tt4b.limit.Item, reminderMills: number, delayDuration: number) => {
     daily: 'NORMAL' | 'REMINDER' | 'LIMITED'
     weekly: 'NORMAL' | 'REMINDER' | 'LIMITED'
 }
@@ -19,7 +19,7 @@ beforeAll(async () => {
 
 describe("background/limit-service", () => {
     test("calcTimeState", () => {
-        const item: timer.limit.Item = {
+        const item: tt4b.limit.Item = {
             id: 1,
             name: "foobar",
             cond: [],

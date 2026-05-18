@@ -15,8 +15,8 @@ import { graphic } from "echarts/core"
 import { formatYAxis } from '../common'
 
 export type BizData = {
-    activities: timer.timeline.Activity[]
-    merge: timer.timeline.MergeMethod
+    activities: tt4b.timeline.Activity[]
+    merge: tt4b.timeline.MergeMethod
     dates: string[]
 }
 
@@ -69,7 +69,7 @@ const formatDuration = (duration: number): string => {
 
 const LEGEND_WIDTH = 180
 
-const collectLegends = (activities: timer.timeline.Activity[], merge: timer.timeline.MergeMethod): LegendInfo[] => {
+const collectLegends = (activities: tt4b.timeline.Activity[], merge: tt4b.timeline.MergeMethod): LegendInfo[] => {
     const colors = getSeriesPalette()
     const colorLen = colors.length || 1
 
@@ -85,6 +85,13 @@ const collectLegends = (activities: timer.timeline.Activity[], merge: timer.time
                 : keyNameMap[key],
             color: colors[idx % colorLen] ?? '#000',
         } satisfies LegendInfo))
+}
+
+type Cartesian2DCoordSys = {
+    x: number
+    y: number
+    width: number
+    height: number
 }
 
 const renderItem: CustomSeriesRenderItem = (params, api) => {
@@ -150,7 +157,7 @@ const generateSeries = (biz: BizData, legendColors: Record<string, string>): EcO
     })
 }
 
-const calcDataZoomDefaultRange = (activities: timer.timeline.Activity[]): [start: number | undefined, end: number | undefined] => {
+const calcDataZoomDefaultRange = (activities: tt4b.timeline.Activity[]): [start: number | undefined, end: number | undefined] => {
     if (!activities.length) return [undefined, undefined]
     let min = activities.map(a => a.start).reduce((a, b) => b < a ? b : a)
     let max = activities.map(({ start, duration }) => start + duration).reduce((a, b) => b > a ? b : a)

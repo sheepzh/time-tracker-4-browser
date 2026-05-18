@@ -54,12 +54,12 @@ export function generateSiteLabel(host: string, name?: string): string {
  *
  * @since 3.0.0
  */
-export function supportCategory(siteKey: timer.site.SiteKey | undefined): boolean {
+export function supportCategory(siteKey: tt4b.site.SiteKey | undefined): boolean {
     const { type } = siteKey || {}
     return type === 'normal'
 }
 
-export function siteEqual(a: timer.site.SiteKey | undefined, b: timer.site.SiteKey | undefined) {
+export function siteEqual(a: tt4b.site.SiteKey | undefined, b: tt4b.site.SiteKey | undefined) {
     if (!a && !b) return true
     if (a === b) return true
     return a?.host === b?.host && a?.type === b?.type
@@ -72,25 +72,25 @@ export const CATE_NOT_SET_ID = -1
 
 type SiteIdentityPrefix = 'n' | 'm' | 'v'
 
-const TYPE_PREFIX_MAP: { [type in timer.site.Type]: SiteIdentityPrefix } = {
+const TYPE_PREFIX_MAP: { [type in tt4b.site.Type]: SiteIdentityPrefix } = {
     normal: "n",
     merged: "m",
     virtual: "v",
 }
 
-const PREFIX_TYPE_MAP: { [prefix in SiteIdentityPrefix]: timer.site.Type } = {
+const PREFIX_TYPE_MAP: { [prefix in SiteIdentityPrefix]: tt4b.site.Type } = {
     n: 'normal',
     m: 'merged',
     v: 'virtual',
 }
 
-export function identifySiteKey(site: timer.site.SiteKey | undefined): string {
+export function identifySiteKey(site: tt4b.site.SiteKey | undefined): string {
     if (!site) return ''
     const { host, type } = site || {}
     return (TYPE_PREFIX_MAP[type] ?? ' ') + (host || '')
 }
 
-export function parseSiteIdentity(identity: string | undefined): timer.site.SiteKey | undefined {
+export function parseSiteIdentity(identity: string | undefined): tt4b.site.SiteKey | undefined {
     if (!identity) return
     const type = PREFIX_TYPE_MAP[identity.charAt(0) as SiteIdentityPrefix]
     if (!type) return
@@ -99,13 +99,13 @@ export function parseSiteIdentity(identity: string | undefined): timer.site.Site
     return { type, host }
 }
 
-function cloneSiteKey(origin: timer.site.SiteKey | undefined): timer.site.SiteKey | undefined {
+function cloneSiteKey(origin: tt4b.site.SiteKey | undefined): tt4b.site.SiteKey | undefined {
     if (!origin) return
     return { host: origin.host, type: origin.type }
 }
 
-export function distinctSites(list: timer.site.SiteKey[]): timer.site.SiteKey[] {
-    const map: Record<string, timer.site.SiteKey> = {}
+export function distinctSites(list: tt4b.site.SiteKey[]): tt4b.site.SiteKey[] {
+    const map: Record<string, tt4b.site.SiteKey> = {}
     list?.forEach(ele => {
         const key = identifySiteKey(ele)
         if (map[key]) return
@@ -116,29 +116,29 @@ export function distinctSites(list: timer.site.SiteKey[]): timer.site.SiteKey[] 
 }
 
 export class SiteMap<T> {
-    private innerMap: Record<string, [timer.site.SiteKey, T]>
+    private innerMap: Record<string, [tt4b.site.SiteKey, T]>
 
     constructor() {
         this.innerMap = {}
     }
 
-    static identify<T extends timer.site.SiteKey>(data: T[]): SiteMap<T> {
+    static identify<T extends tt4b.site.SiteKey>(data: T[]): SiteMap<T> {
         const map = new SiteMap<T>()
         data.forEach(item => map.put(item, item))
         return map
     }
 
-    public put(site: timer.site.SiteKey, t: T): void {
+    public put(site: tt4b.site.SiteKey, t: T): void {
         const key = identifySiteKey(site)
         this.innerMap[key] = [site, t]
     }
 
-    public get(site: timer.site.SiteKey): T | null {
+    public get(site: tt4b.site.SiteKey): T | null {
         const key = identifySiteKey(site)
         return this.innerMap[key]?.[1] ?? null
     }
 
-    public map<R>(mapper: (key: timer.site.SiteKey, value: T) => R): R[] {
+    public map<R>(mapper: (key: tt4b.site.SiteKey, value: T) => R): R[] {
         return Object.values(this.innerMap).map(([site, val]) => mapper?.(site, val))
     }
 
@@ -146,11 +146,11 @@ export class SiteMap<T> {
         return Object.keys(this.innerMap).length
     }
 
-    public keys(): timer.site.SiteKey[] {
+    public keys(): tt4b.site.SiteKey[] {
         return Object.values(this.innerMap).map(v => v[0])
     }
 
-    public forEach(func: (k: timer.site.SiteKey, v: T, idx: number) => void) {
+    public forEach(func: (k: tt4b.site.SiteKey, v: T, idx: number) => void) {
         if (!func) return
         Object.values(this.innerMap).forEach(([k, v], idx) => func(k, v, idx))
     }

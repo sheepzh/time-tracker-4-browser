@@ -14,29 +14,29 @@ import ObsidianCoordinator from "./obsidian/coordinator"
 import WebDAVCoordinator from "./web-dav/coordinator"
 
 type AuthCheckResult = {
-    option: timer.option.BackupOption
-    auth: timer.backup.Auth
-    ext: timer.backup.TypeExt
-    type: timer.backup.Type
-    coordinator: timer.backup.Coordinator<unknown>
+    option: tt4b.option.BackupOption
+    auth: tt4b.backup.Auth
+    ext: tt4b.backup.TypeExt
+    type: tt4b.backup.Type
+    coordinator: tt4b.backup.Coordinator<unknown>
     errorMsg?: string
 }
 
-class CoordinatorContextWrapper<Cache> implements timer.backup.CoordinatorContext<Cache> {
-    auth: timer.backup.Auth
-    ext?: timer.backup.TypeExt
+class CoordinatorContextWrapper<Cache> implements tt4b.backup.CoordinatorContext<Cache> {
+    auth: tt4b.backup.Auth
+    ext?: tt4b.backup.TypeExt
     cache: Cache = {} as unknown as Cache
-    type: timer.backup.Type
+    type: tt4b.backup.Type
     cid: string
 
-    constructor(cid: string, auth: timer.backup.Auth, ext: timer.backup.TypeExt, type: timer.backup.Type) {
+    constructor(cid: string, auth: tt4b.backup.Auth, ext: tt4b.backup.TypeExt, type: tt4b.backup.Type) {
         this.cid = cid
         this.auth = auth
         this.ext = ext
         this.type = type
     }
 
-    async init(): Promise<timer.backup.CoordinatorContext<Cache>> {
+    async init(): Promise<tt4b.backup.CoordinatorContext<Cache>> {
         this.cache = await syncDb.getCache(this.type) as Cache
         return this
     }
@@ -47,9 +47,9 @@ class CoordinatorContextWrapper<Cache> implements timer.backup.CoordinatorContex
 }
 
 async function syncFull(
-    context: timer.backup.CoordinatorContext<unknown>,
-    coordinator: timer.backup.Coordinator<unknown>,
-    client: timer.backup.Client
+    context: tt4b.backup.CoordinatorContext<unknown>,
+    coordinator: tt4b.backup.Coordinator<unknown>,
+    client: tt4b.backup.Client
 ): Promise<void> {
     // 1. select rows
     const rows = await statDb.select()
@@ -60,7 +60,7 @@ async function syncFull(
     await coordinator.upload(context, rows)
 }
 
-function filterClient(c: timer.backup.Client, excludeLocal: boolean, localClientId: string, start?: string, end?: string) {
+function filterClient(c: tt4b.backup.Client, excludeLocal: boolean, localClientId: string, start?: string, end?: string) {
     // Exclude local client
     if (excludeLocal && c.id === localClientId) return false
     // Judge range
@@ -69,7 +69,7 @@ function filterClient(c: timer.backup.Client, excludeLocal: boolean, localClient
     return true
 }
 
-function prepareAuth(option: timer.option.BackupOption): timer.backup.Auth {
+function prepareAuth(option: tt4b.option.BackupOption): tt4b.backup.Auth {
     const type = option?.backupType || 'none'
     const token = option?.backupAuths?.[type]
     const login = option.backupLogin?.[type]
@@ -78,12 +78,12 @@ function prepareAuth(option: timer.option.BackupOption): timer.backup.Auth {
 
 class Processor {
     coordinators: {
-        [type in timer.backup.Type]: timer.backup.Coordinator<unknown>
+        [type in tt4b.backup.Type]: tt4b.backup.Coordinator<unknown>
     }
 
     constructor() {
         this.coordinators = {
-            none: null as unknown as timer.backup.Coordinator<never>,
+            none: null as unknown as tt4b.backup.Coordinator<never>,
             gist: new GistCoordinator(),
             obsidian_local_rest_api: new ObsidianCoordinator(),
             web_dav: new WebDAVCoordinator(),
@@ -95,8 +95,8 @@ class Processor {
         if (errorMsg) return errorMsg
 
         const cid = await getCid()
-        const context: timer.backup.CoordinatorContext<unknown> = await new CoordinatorContextWrapper<unknown>(cid, auth, ext, type).init()
-        const client: timer.backup.Client = {
+        const context: tt4b.backup.CoordinatorContext<unknown> = await new CoordinatorContextWrapper<unknown>(cid, auth, ext, type).init()
+        const client: tt4b.backup.Client = {
             id: cid,
             name: option.clientName,
             minDate: undefined,
@@ -115,7 +115,7 @@ class Processor {
         }
     }
 
-    async listClients(): Promise<(timer.backup.Client & { current: boolean })[]> {
+    async listClients(): Promise<(tt4b.backup.Client & { current: boolean })[]> {
         const { auth, ext, type, coordinator, errorMsg } = await this.checkAuth()
         if (errorMsg) throw new Error(errorMsg)
         const cid = await getCid()
@@ -130,7 +130,7 @@ class Processor {
         const ext = backupExts?.[type] ?? {}
         const auth = prepareAuth(option)
 
-        const coordinator: timer.backup.Coordinator<unknown> = type && this.coordinators[type]
+        const coordinator: tt4b.backup.Coordinator<unknown> = type && this.coordinators[type]
         if (!coordinator) {
             // no coordinator, do nothing
             return { option, auth, ext, type, coordinator, errorMsg: "Invalid type" }
@@ -144,7 +144,7 @@ class Processor {
         return { option, auth, ext, type, coordinator, errorMsg }
     }
 
-    async query(param: timer.backup.RemoteQuery): Promise<timer.backup.Row[]> {
+    async query(param: tt4b.backup.RemoteQuery): Promise<tt4b.backup.Row[]> {
         const { type, coordinator, auth, ext, errorMsg } = await this.checkAuth()
         if (errorMsg || !coordinator) {
             return []
@@ -153,13 +153,13 @@ class Processor {
         const { start, end, specCid, excludeLocal } = param
         let localCid = await getCid()
         // 1. init context
-        const context: timer.backup.CoordinatorContext<unknown> = await new CoordinatorContextWrapper<unknown>(localCid, auth, ext, type).init()
+        const context: tt4b.backup.CoordinatorContext<unknown> = await new CoordinatorContextWrapper<unknown>(localCid, auth, ext, type).init()
         // 2. query all clients, and filter them
         const allClients = (await coordinator.listAllClients(context))
             .filter(c => filterClient(c, !!excludeLocal, localCid, start, end))
             .filter(c => !specCid || c.id === specCid)
         // 3. iterate clients
-        const result: timer.backup.Row[] = []
+        const result: tt4b.backup.Row[] = []
         await Promise.all(
             allClients.map(async client => {
                 const { id, name } = client
@@ -179,7 +179,7 @@ class Processor {
         const { auth, ext, type, coordinator, errorMsg } = await this.checkAuth()
         if (errorMsg) return errorMsg
         let localCid = await getCid()
-        const context: timer.backup.CoordinatorContext<unknown> = await new CoordinatorContextWrapper<unknown>(localCid, auth, ext, type).init()
+        const context: tt4b.backup.CoordinatorContext<unknown> = await new CoordinatorContextWrapper<unknown>(localCid, auth, ext, type).init()
         // 1. Find the client
         const allClients = await coordinator.listAllClients(context)
         const client = allClients?.filter(c => c?.id === cid)?.[0]

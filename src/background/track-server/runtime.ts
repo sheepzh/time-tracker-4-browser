@@ -17,7 +17,7 @@ function splitRunTime(start: number, end: number): Record<string, number> {
 
 const RUN_TIME_END_CACHE = new FIFOCache<number>(500)
 
-export async function handleTrackRunTimeEvent(event: timer.core.Event, url: string | undefined): Promise<void> {
+export async function handleTrackRunTimeEvent(event: tt4b.core.Event, url: string | undefined): Promise<void> {
     const { start, end, host } = event
     if (!host || !start || !end || !url) return
     if (whitelistHolder.contains(host, url)) return

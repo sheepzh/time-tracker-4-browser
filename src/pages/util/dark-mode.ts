@@ -28,7 +28,7 @@ export function initDarkTheme(el?: Element) {
     getOption().then(processDarkMode)
 }
 
-function calcDarkMode(option: timer.option.AppearanceOption): boolean {
+function calcDarkMode(option: tt4b.option.AppearanceOption): boolean {
     const { darkMode, darkModeTimeStart: start, darkModeTimeEnd: end } = option
     if (darkMode === "default") {
         if (typeof window === 'undefined') return false
@@ -55,7 +55,7 @@ function calcDarkMode(option: timer.option.AppearanceOption): boolean {
     return false
 }
 
-export function processDarkMode(option: timer.option.AppearanceOption): boolean {
+export function processDarkMode(option: tt4b.option.AppearanceOption): boolean {
     const val = calcDarkMode(option)
     toggle0(val)
     return val

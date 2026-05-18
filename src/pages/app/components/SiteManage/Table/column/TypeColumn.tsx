@@ -5,9 +5,9 @@ import { ElTableColumn, ElTag, type RenderRowData, type TagProps } from "element
 import { type FunctionalComponent } from "vue"
 import type { JSX } from "vue/jsx-runtime"
 
-const computeText = ({ type }: timer.site.SiteInfo): string => t(msg => msg.siteManage.type[type].name)
+const computeText = ({ type }: tt4b.site.SiteInfo): string => t(msg => msg.siteManage.type[type].name)
 
-function computeType({ type }: timer.site.SiteInfo): TagProps["type"] | undefined {
+function computeType({ type }: tt4b.site.SiteInfo): TagProps["type"] | undefined {
     switch (type) {
         case 'merged': return 'info'
         case 'virtual': return 'success'
@@ -34,7 +34,7 @@ const TypeColumn: FunctionalComponent = () => (
                     }}
                 />
             ),
-            default: ({ row }: RenderRowData<timer.site.SiteInfo>) => (
+            default: ({ row }: RenderRowData<tt4b.site.SiteInfo>) => (
                 <ElTag size="small" type={computeType(row)}>
                     {computeText(row)}
                 </ElTag>

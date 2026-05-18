@@ -10,8 +10,8 @@ import { type LimitMessage } from "@i18n/message/app/limit"
 type LimitVerificationMessage = LimitMessage['verification']
 
 export type VerificationContext = {
-    difficulty: timer.limit.VerificationDifficulty
-    locale: timer.Locale
+    difficulty: tt4b.limit.VerificationDifficulty
+    locale: tt4b.Locale
 }
 
 export type VerificationPair = {

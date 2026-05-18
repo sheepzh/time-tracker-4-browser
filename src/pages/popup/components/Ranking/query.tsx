@@ -4,7 +4,7 @@ import { sum } from "@util/array"
 import { type DateRange } from '@util/time'
 
 type RankingResult = {
-    rows: timer.stat.Row[]
+    rows: tt4b.stat.Row[]
     max: number
     total: number
     displaySiteName: boolean

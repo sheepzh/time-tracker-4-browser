@@ -6,7 +6,7 @@ export type AppLimitQuery = {
 }
 
 export const APP_ANALYSIS_ROUTE = '/data/analysis'
-export type AppAnalysisQuery = Partial<timer.site.SiteKey> & {
+export type AppAnalysisQuery = Partial<tt4b.site.SiteKey> & {
     cateId?: string
     url?: string
 }
@@ -24,7 +24,7 @@ export type AppReportQuery = {
     /**
      * Merge method
      */
-    mm?: Exclude<timer.stat.MergeMethod, 'date'>
+    mm?: Exclude<tt4b.stat.MergeMethod, 'date'>
     /**
      * Merge date
      */
@@ -40,5 +40,5 @@ export type AppReportQuery = {
     /**
      * Sorted column
      */
-    sc?: timer.core.Dimension
+    sc?: tt4b.core.Dimension
 }

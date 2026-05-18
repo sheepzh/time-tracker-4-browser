@@ -34,7 +34,7 @@ export type DataManageMessage = {
         fileNotSelected: string
         conflictNotSelected: string
     } & {
-        [resolution in timer.imported.ConflictResolution]: string
+        [resolution in tt4b.imported.ConflictResolution]: string
     }
     exportData: string
     restoreData: string

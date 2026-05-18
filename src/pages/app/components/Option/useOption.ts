@@ -12,7 +12,7 @@ type MutableKeys<T> = {
     -readonly [K in keyof T]: T[K]
 }
 
-export const useOption = <T extends object = Partial<timer.option.AllOption>>(options: Options<T>) => {
+export const useOption = <T extends object = Partial<tt4b.option.AllOption>>(options: Options<T>) => {
     const { defaultValue, copy, onChange } = options
     const option = reactive<MutableKeys<T>>(typeof defaultValue === 'function' ? defaultValue() : structuredClone(defaultValue))
 

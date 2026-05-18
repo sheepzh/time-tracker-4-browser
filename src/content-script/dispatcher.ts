@@ -7,16 +7,16 @@
 
 import type { AudibleChangeHandler } from './types'
 
-type Handler<Code extends timer.tab.ReqCode> = (data: timer.tab.ReqData<Code>) => timer.tab.ResData<Code>
+type Handler<Code extends tt4b.tab.ReqCode> = (data: tt4b.tab.ReqData<Code>) => tt4b.tab.ResData<Code>
 
 class Dispatcher {
-    private handlers: Partial<Record<timer.tab.ReqCode, Handler<timer.tab.ReqCode>>> = {}
+    private handlers: Partial<Record<tt4b.tab.ReqCode, Handler<tt4b.tab.ReqCode>>> = {}
     private audibleChangeHandlers: AudibleChangeHandler[] = []
 
     constructor() {
         // Be careful!!!
         // Can't use await/async in callback parameter
-        chrome.runtime.onMessage.addListener((message: timer.tab.Request<timer.tab.ReqCode>, _, sendResponse: timer.tab.Callback<timer.tab.ReqCode>) => {
+        chrome.runtime.onMessage.addListener((message: tt4b.tab.Request<tt4b.tab.ReqCode>, _, sendResponse: tt4b.tab.Callback<tt4b.tab.ReqCode>) => {
             this.handle(message)
                 .then(sendResponse)
                 .catch((err: unknown) => {
@@ -32,7 +32,7 @@ class Dispatcher {
         this.register('syncAudible', audible => void this.audibleChangeHandlers.forEach(h => h.onAudibleChange(audible)))
     }
 
-    register<Code extends timer.tab.ReqCode>(code: Code, handler: Handler<Code>): Dispatcher {
+    register<Code extends tt4b.tab.ReqCode>(code: Code, handler: Handler<Code>): Dispatcher {
         this.handlers[code] = handler
         return this
     }
@@ -42,7 +42,7 @@ class Dispatcher {
         return this
     }
 
-    private async handle(message: timer.tab.Request<timer.tab.ReqCode>): Promise<timer.tab.Response<timer.tab.ReqCode>> {
+    private async handle(message: tt4b.tab.Request<tt4b.tab.ReqCode>): Promise<tt4b.tab.Response<tt4b.tab.ReqCode>> {
         const code = message?.code
         if (!code) {
             return { code: 'ignore' }
@@ -50,8 +50,8 @@ class Dispatcher {
         const handler = this.handlers[code]
         if (!handler) return { code: 'ignore' }
         try {
-            const res = handler(message.data as timer.tab.ReqData<timer.tab.ReqCode>)
-            return { code: "success", data: res as timer.tab.ResData<typeof code> }
+            const res = handler(message.data as tt4b.tab.ReqData<tt4b.tab.ReqCode>)
+            return { code: "success", data: res as tt4b.tab.ResData<typeof code> }
         } catch (error) {
             const msg = error instanceof Error ? error.message : (error?.toString?.() ?? 'Unknown error')
             return { code: 'fail', msg }

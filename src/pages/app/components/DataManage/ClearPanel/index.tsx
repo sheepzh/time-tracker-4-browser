@@ -25,7 +25,7 @@ type ClearFilterRanges = {
     timeRange: [number, number?]
 }
 
-function buildClearStatQuery(option: FilterOption): (timer.stat.SiteQuery & timer.stat.GroupQuery) | undefined {
+function buildClearStatQuery(option: FilterOption): (tt4b.stat.SiteQuery & tt4b.stat.GroupQuery) | undefined {
     const param = checkParam(option)
     if (!param) return undefined
     const { date } = option

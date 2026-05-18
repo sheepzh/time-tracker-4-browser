@@ -22,9 +22,9 @@ type Meta = MetaBase & {
  */
 type LocaleMessages =
     {
-        [locale in timer.Locale]: Meta
+        [locale in tt4b.Locale]: Meta
     } & {
-        [translatingLocale in timer.TranslatingLocale]: MetaBase
+        [translatingLocale in tt4b.TranslatingLocale]: MetaBase
     }
 
 const _default: LocaleMessages = resource

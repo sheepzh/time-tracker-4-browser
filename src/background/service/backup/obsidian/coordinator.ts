@@ -13,7 +13,7 @@ import { getBirthday, parseTime } from '@util/time'
 import { processDir } from "../common"
 import { CLIENT_FILE_NAME, convertClients2Markdown, divideByDate, parseData } from "../markdown"
 
-function prepareContext(context: timer.backup.CoordinatorContext<never>) {
+function prepareContext(context: tt4b.backup.CoordinatorContext<never>) {
     const { auth, ext, cid } = context
     const { token } = auth || {}
     if (!token) {
@@ -25,16 +25,16 @@ function prepareContext(context: timer.backup.CoordinatorContext<never>) {
     return { ctx, dirPath, cid }
 }
 
-export default class ObsidianCoordinator implements timer.backup.Coordinator<never> {
+export default class ObsidianCoordinator implements tt4b.backup.Coordinator<never> {
 
-    async updateClients(context: timer.backup.CoordinatorContext<never>, clients: timer.backup.Client[]): Promise<void> {
+    async updateClients(context: tt4b.backup.CoordinatorContext<never>, clients: tt4b.backup.Client[]): Promise<void> {
         const { ctx, dirPath } = prepareContext(context)
         const clientFilePath = `${dirPath}${CLIENT_FILE_NAME}`
         const content = convertClients2Markdown(clients)
         await updateFile(ctx, clientFilePath, content)
     }
 
-    async listAllClients(context: timer.backup.CoordinatorContext<never>): Promise<timer.backup.Client[]> {
+    async listAllClients(context: tt4b.backup.CoordinatorContext<never>): Promise<tt4b.backup.Client[]> {
         const { ctx, dirPath } = prepareContext(context)
         const clientFilePath = `${dirPath}${CLIENT_FILE_NAME}`
         try {
@@ -46,23 +46,23 @@ export default class ObsidianCoordinator implements timer.backup.Coordinator<nev
         }
     }
 
-    async download(context: timer.backup.CoordinatorContext<never>, start: string, end: string, targetCid?: string): Promise<timer.core.Row[]> {
+    async download(context: tt4b.backup.CoordinatorContext<never>, start: string, end: string, targetCid?: string): Promise<tt4b.core.Row[]> {
         const { ctx, dirPath, cid } = prepareContext(context)
 
         const startTime = parseTime(start) ?? getBirthday()
         const endTime = parseTime(end) ?? new Date()
         const dateIterator = new DateIterator(startTime, endTime)
-        const result: timer.core.Row[] = []
+        const result: tt4b.core.Row[] = []
         await Promise.all(dateIterator.toArray().map(async date => {
             const filePath = `${dirPath}${targetCid || cid}/${date}.md`
             const fileContent = await getFileContent(ctx, filePath)
-            const rows = parseData<timer.core.Row[]>(fileContent)
+            const rows = parseData<tt4b.core.Row[]>(fileContent)
             rows?.forEach?.(row => result.push(row))
         }))
         return result
     }
 
-    async upload(context: timer.backup.CoordinatorContext<never>, rows: timer.core.Row[]): Promise<void> {
+    async upload(context: tt4b.backup.CoordinatorContext<never>, rows: tt4b.core.Row[]): Promise<void> {
         const { ctx, dirPath, cid } = prepareContext(context)
 
         const dateAndContents = divideByDate(rows)
@@ -74,7 +74,7 @@ export default class ObsidianCoordinator implements timer.backup.Coordinator<nev
         )
     }
 
-    async testAuth(authInfo: timer.backup.Auth, ext: timer.backup.TypeExt): Promise<string | undefined> {
+    async testAuth(authInfo: tt4b.backup.Auth, ext: tt4b.backup.TypeExt): Promise<string | undefined> {
         let { endpoint, dirPath, bucket } = ext || {}
         let { token: auth } = authInfo || {}
         dirPath = processDir(dirPath)
@@ -105,7 +105,7 @@ export default class ObsidianCoordinator implements timer.backup.Coordinator<nev
         }
     }
 
-    async clear(context: timer.backup.CoordinatorContext<never>, client: timer.backup.Client): Promise<void> {
+    async clear(context: tt4b.backup.CoordinatorContext<never>, client: tt4b.backup.Client): Promise<void> {
         const cid = client.id
         const { ctx, dirPath } = prepareContext(context)
         const clientDirPath = `${dirPath}${cid}/`

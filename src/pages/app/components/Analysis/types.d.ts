@@ -1,6 +1,6 @@
 export type AnalysisTarget = {
     type: 'site'
-    key: timer.site.SiteInfo
+    key: tt4b.site.SiteInfo
 } | {
     type: 'cate'
     key: number

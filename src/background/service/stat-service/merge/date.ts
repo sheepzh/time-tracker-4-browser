@@ -2,10 +2,10 @@ import { identifyTargetKey, isCate, isGroup, isNormalSite, isSite } from "@util/
 import { mergeResult } from "./common"
 
 type MergeRow =
-    | MakeRequired<timer.stat.SiteRow | timer.stat.CateRow, 'mergedDates' | 'mergedRows'>
-    | MakeRequired<timer.stat.GroupRow, 'mergedDates' | 'mergedRows'>
+    | MakeRequired<tt4b.stat.SiteRow | tt4b.stat.CateRow, 'mergedDates' | 'mergedRows'>
+    | MakeRequired<tt4b.stat.GroupRow, 'mergedDates' | 'mergedRows'>
 
-export function mergeDate<T extends timer.stat.Row>(origin: T[]): T[] {
+export function mergeDate<T extends tt4b.stat.Row>(origin: T[]): T[] {
     const map: Record<string, MergeRow> = {}
     origin.forEach(ele => {
         const { date } = ele

@@ -26,21 +26,21 @@ const useStyle = () => {
     return { radioCls }
 }
 
-const formatTime = (value: timer.backup.Client): string => {
+const formatTime = (value: tt4b.backup.Client): string => {
     const { minDate, maxDate } = value || {}
     const min = minDate ? cvt2LocaleTime(minDate) : ''
     const max = maxDate ? cvt2LocaleTime(maxDate) : ''
     return `${min} - ${max}`
 }
 
-const _default = defineComponent<{ onSelect: ArgCallback<timer.backup.Client> }>(props => {
+const _default = defineComponent<{ onSelect: ArgCallback<tt4b.backup.Client> }>(props => {
     const { data: list, loading, refresh } = useRequest(allBackupClients, {
         defaultValue: [],
         onError: e => ElMessage.error(e instanceof Error ? e.message : String(e ?? 'Unknown error...'))
     })
 
     const selectedCid = ref<string>()
-    const handleRowSelect = (row: timer.backup.Client) => {
+    const handleRowSelect = (row: tt4b.backup.Client) => {
         selectedCid.value = row.id
         props.onSelect?.(toRaw(row))
     }
@@ -53,7 +53,7 @@ const _default = defineComponent<{ onSelect: ArgCallback<timer.backup.Client> }>
             maxHeight="40vh"
             class="backup-client-table"
             highlightCurrentRow
-            onCurrent-change={(row: timer.backup.Client) => handleRowSelect(row)}
+            onCurrent-change={(row: tt4b.backup.Client) => handleRowSelect(row)}
             emptyText={loading.value ? 'Loading data ...' : 'Empty data'}
         >
             <ElTableColumn
@@ -68,7 +68,7 @@ const _default = defineComponent<{ onSelect: ArgCallback<timer.backup.Client> }>
                             underline="never"
                         />
                     ),
-                    default: ({ row }: RenderRowData<timer.backup.Client>) => (
+                    default: ({ row }: RenderRowData<tt4b.backup.Client>) => (
                         <ElRadio
                             class={radioCls}
                             value={row.id}
@@ -83,14 +83,14 @@ const _default = defineComponent<{ onSelect: ArgCallback<timer.backup.Client> }>
                 align="center"
                 headerAlign="center"
                 width={320}
-                formatter={(client: timer.backup.Client) => client.id || '-'}
+                formatter={(client: tt4b.backup.Client) => client.id || '-'}
             />
             <ElTableColumn
                 label={t(msg => msg.option.backup.client, { input: '' })}
                 align="center"
                 headerAlign="center"
             >
-                {({ row: client }: RenderRowData<(timer.backup.Client & { current: boolean })>) => <>
+                {({ row: client }: RenderRowData<(tt4b.backup.Client & { current: boolean })>) => <>
                     {client.name || '-'}
                     <ElTag
                         v-show={client.current}

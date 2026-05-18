@@ -3,7 +3,7 @@ import optionHolder from '../service/components/option-holder'
 
 const handleRemove = (group: chrome.tabGroups.TabGroup) => db.deleteByGroup(group.id)
 
-function handleTabGroupsEnabled(option: timer.option.TrackingOption) {
+function handleTabGroupsEnabled(option: tt4b.option.TrackingOption) {
     // Do nothing if not enabled
     if (!option.countTabGroup) return
     try {

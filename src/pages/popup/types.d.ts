@@ -13,10 +13,10 @@ export type PopupDuration =
     | "allTime"
 
 export type PopupQuery = {
-    mergeMethod: Exclude<timer.stat.MergeMethod, 'date'> | undefined
+    mergeMethod: Exclude<tt4b.stat.MergeMethod, 'date'> | undefined
     duration: PopupDuration
     durationNum?: number
-    dimension: Exclude<timer.core.Dimension, 'run'>
+    dimension: Exclude<tt4b.core.Dimension, 'run'>
 }
 
 export type PopupOption = {

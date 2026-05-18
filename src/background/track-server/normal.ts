@@ -28,7 +28,7 @@ async function handleTime(context: ItemIncContext, timeRange: [number, number], 
     return focusTime
 }
 
-export async function handleTrackTimeEvent(event: timer.core.Event, tab: ChromeTab | undefined): Promise<void> {
+export async function handleTrackTimeEvent(event: tt4b.core.Event, tab: ChromeTab | undefined): Promise<void> {
     if (!tab) return
     const { id: tabId, windowId, groupId, url, active } = tab
     if (!url) return
@@ -66,7 +66,7 @@ async function windowNotFocused(winId: number | undefined): Promise<boolean> {
     return !window?.focused
 }
 
-async function sendLimitedMessage(items: timer.limit.Item[]) {
+async function sendLimitedMessage(items: tt4b.limit.Item[]) {
     const tabs = await listTabs()
     if (!tabs.length) return
     for (const tab of tabs) {

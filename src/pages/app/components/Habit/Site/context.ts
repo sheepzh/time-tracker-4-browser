@@ -12,8 +12,8 @@ import { computed, type ShallowRef } from "vue"
 import { useHabitFilter } from "../context"
 
 type Context = {
-    rows: ShallowRef<timer.stat.Row[]>
-    dateMergedRows: ShallowRef<timer.stat.Row[]>
+    rows: ShallowRef<tt4b.stat.Row[]>
+    dateMergedRows: ShallowRef<tt4b.stat.Row[]>
 }
 
 const NAMESPACE = 'habitSite'
@@ -37,6 +37,6 @@ export const initProvider = () => {
     return dateRangeLength
 }
 
-export const useRows = (): ShallowRef<timer.stat.Row[]> => useProvider<Context, 'rows'>(NAMESPACE, "rows").rows
+export const useRows = (): ShallowRef<tt4b.stat.Row[]> => useProvider<Context, 'rows'>(NAMESPACE, "rows").rows
 
-export const useDateMergedRows = (): ShallowRef<timer.stat.Row[]> => useProvider<Context, 'dateMergedRows'>(NAMESPACE, 'dateMergedRows').dateMergedRows
+export const useDateMergedRows = (): ShallowRef<tt4b.stat.Row[]> => useProvider<Context, 'dateMergedRows'>(NAMESPACE, 'dateMergedRows').dateMergedRows

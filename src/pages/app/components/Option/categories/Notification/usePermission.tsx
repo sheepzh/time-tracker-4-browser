@@ -11,7 +11,7 @@ const judgeDataPerm = async () => {
     return !!perm?.data_collection?.includes?.(DATA_PERM)
 }
 
-const doRequestPerm = async (method: timer.notification.Method | undefined): Promise<boolean> => {
+const doRequestPerm = async (method: tt4b.notification.Method | undefined): Promise<boolean> => {
     if (!method) return true
     if (method === 'browser') {
         return await requestPerm(BASE_PERM)
@@ -23,7 +23,7 @@ const doRequestPerm = async (method: timer.notification.Method | undefined): Pro
 }
 
 const usePermission = () => {
-    const granted = reactive<Record<timer.notification.Method, boolean>>({
+    const granted = reactive<Record<tt4b.notification.Method, boolean>>({
         browser: false,
         callback: false,
     })
@@ -33,7 +33,7 @@ const usePermission = () => {
         granted.browser = await hasPerm(BASE_PERM)
     })
 
-    const checkRequest = async (method: timer.notification.Method) => {
+    const checkRequest = async (method: tt4b.notification.Method) => {
         // Invalid method to check
         if (granted[method]) return true
 

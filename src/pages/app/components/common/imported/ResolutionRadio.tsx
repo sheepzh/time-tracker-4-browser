@@ -11,9 +11,9 @@ import Flex from "@pages/components/Flex"
 import { ElForm, ElFormItem, ElIcon, ElRadio, ElRadioGroup, ElTooltip } from "element-plus"
 import { defineComponent } from "vue"
 
-const ALL_RESOLUTIONS: timer.imported.ConflictResolution[] = ['overwrite', 'accumulate']
+const ALL_RESOLUTIONS: tt4b.imported.ConflictResolution[] = ['overwrite', 'accumulate']
 
-type Value = timer.imported.ConflictResolution | undefined
+type Value = tt4b.imported.ConflictResolution | undefined
 
 type Props = {
     modelValue: Value

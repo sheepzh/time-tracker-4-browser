@@ -2,7 +2,7 @@ import { useOption } from '@app/components/Option/useOption'
 import { DEFAULT_NOTIFICATION } from '@util/constant/option'
 import { computed } from 'vue'
 
-function copy(target: timer.option.NotificationOption, source: Readonly<timer.option.NotificationOption>) {
+function copy(target: tt4b.option.NotificationOption, source: Readonly<tt4b.option.NotificationOption>) {
     target.notificationCycle = source.notificationCycle
     target.notificationOffset = source.notificationOffset
     target.notificationMethod = source.notificationMethod
@@ -13,7 +13,7 @@ function copy(target: timer.option.NotificationOption, source: Readonly<timer.op
 const MIN_PER_DAY = 24 * 60
 
 export const useNotification = () => {
-    const { option } = useOption<timer.option.NotificationOption>({ defaultValue: DEFAULT_NOTIFICATION, copy })
+    const { option } = useOption<tt4b.option.NotificationOption>({ defaultValue: DEFAULT_NOTIFICATION, copy })
 
     const weekday = computed<number | null>({
         get() {

@@ -18,7 +18,7 @@ async function findRuleId(page: Page): Promise<number> {
         ruleName => new Promise<number>((resolve, reject) => {
             chrome.runtime.sendMessage({ code: 'limit.list', data: undefined }, (res: {
                 code?: string
-                data?: timer.limit.Item[]
+                data?: tt4b.limit.Item[]
                 msg?: string
             }) => {
                 if (res?.code !== 'success') return reject(new Error(res?.msg ?? 'limit.list failed'))
@@ -56,7 +56,7 @@ const DEMO_RULE = {
     enabled: true,
     allowDelay: true,
     locked: false,
-} as const satisfies timer.limit.Rule
+} as const satisfies tt4b.limit.Rule
 
 describe('Limit delay duration', () => {
     let context: LaunchContext

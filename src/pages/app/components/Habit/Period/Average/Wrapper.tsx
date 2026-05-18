@@ -21,16 +21,16 @@ type EcOption = ComposeOption<
 >
 
 export type BizOption = {
-    currRange: timer.period.KeyRange
-    prevRange: timer.period.KeyRange
-    curr: timer.period.Row[]
-    prev: timer.period.Row[]
+    currRange: tt4b.period.KeyRange
+    prevRange: tt4b.period.KeyRange
+    curr: tt4b.period.Row[]
+    prev: tt4b.period.Row[]
     periodSize: number
 }
 
 const [CURR_COLOR = '', PREV_COLOR = ''] = getCompareColor()
 
-const cvt2Item = (row: timer.period.Row): number => {
+const cvt2Item = (row: tt4b.period.Row): number => {
     const milliseconds = row.milliseconds
     return milliseconds
 }
@@ -42,24 +42,24 @@ const formatXAxis = (idx: number, periodSize: number) => {
     return hour.toString().padStart(2, '0') + ':' + min.toString().padStart(2, '0')
 }
 
-const key2Str = (key: timer.period.Key) => {
+const key2Str = (key: tt4b.period.Key) => {
     const { month, date } = key
     return `${month?.toString?.()?.padStart(2, '0')}/${date?.toString?.()?.padStart(2, '0')}`
 }
 
-const isSameDay = (keyRange: timer.period.KeyRange): boolean => {
+const isSameDay = (keyRange: tt4b.period.KeyRange): boolean => {
     const [start, end] = keyRange || []
     return start?.year === end?.year
         && start?.month === end?.month
         && start?.date === end?.date
 }
 
-const range2Str = (keyRange: timer.period.KeyRange) => {
+const range2Str = (keyRange: tt4b.period.KeyRange) => {
     const [start, end] = keyRange
     return isSameDay(keyRange) ? key2Str(start) : `${key2Str(start)}-${key2Str(end)}`
 }
 
-const formatValueLine = (mill: number, range: timer.period.KeyRange, color: string): string => {
+const formatValueLine = (mill: number, range: tt4b.period.KeyRange, color: string): string => {
     return tooltipFlexLine(
         `${tooltipDot(color)}&ensp;<b>${formatPeriodCommon(mill ?? 0)}</b>`,
         range2Str(range),

@@ -22,16 +22,16 @@ import DarkModeInput from "./DarkModeInput"
 
 const FOLLOW_BROWSER: I18nKey = msg => msg.option.followBrowser
 
-const SORTED_LOCALES: timer.Locale[] = ALL_LOCALES
+const SORTED_LOCALES: tt4b.Locale[] = ALL_LOCALES
     // Keep the locale same as this browser first position
     .sort((a, _b) => a === localeSameAsBrowser ? -1 : 0)
 
-const allLocaleOptions = (["default", ...SORTED_LOCALES] satisfies timer.option.LocaleOption[]).map(locale => ({
+const allLocaleOptions = (["default", ...SORTED_LOCALES] satisfies tt4b.option.LocaleOption[]).map(locale => ({
     value: locale,
     label: locale === "default" ? t(FOLLOW_BROWSER) : localeMessages[locale].name
 }))
 
-function copy(target: timer.option.AppearanceOption, source: timer.option.AppearanceOption) {
+function copy(target: tt4b.option.AppearanceOption, source: tt4b.option.AppearanceOption) {
     target.displayWhitelistMenu = source.displayWhitelistMenu
     target.displayBadgeText = source.displayBadgeText
     target.badgeBgColor = source.badgeBgColor
@@ -47,7 +47,7 @@ const DEFAULT_SIDE_PANEL_ENABLED = true
 
 
 const _default = defineComponent((_props, ctx) => {
-    const { option } = useOption<timer.option.AppearanceOption>({
+    const { option } = useOption<tt4b.option.AppearanceOption>({
         defaultValue: DEFAULT_APPEARANCE, copy,
         onChange: processDarkMode,
     })
@@ -66,11 +66,11 @@ const _default = defineComponent((_props, ctx) => {
         }
     } satisfies CategoryInstance)
 
-    const handleLocaleChange = (newVal: timer.option.LocaleOption) => {
+    const handleLocaleChange = (newVal: tt4b.option.LocaleOption) => {
         option.locale = newVal
         // await maybe not work in Firefox, so calculate the real locale again
         // GG Firefox
-        const realLocale: timer.Locale = newVal === "default"
+        const realLocale: tt4b.Locale = newVal === "default"
             ? localeSameAsBrowser
             : newVal
         ElMessageBox({
@@ -107,7 +107,7 @@ const _default = defineComponent((_props, ctx) => {
                     modelValue={option.locale}
                     size="small"
                     style={{ width: "120px" }}
-                    onChange={(newVal: timer.option.LocaleOption) => handleLocaleChange(newVal)}
+                    onChange={(newVal: tt4b.option.LocaleOption) => handleLocaleChange(newVal)}
                     filterable
                     options={allLocaleOptions}
                 />

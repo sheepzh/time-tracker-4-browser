@@ -22,7 +22,7 @@ describe('stat-database/classic', () => {
 
     test('accumulate and get single host result', async () => {
         await db.accumulate(baidu, now, resultOf(100, 0))
-        const data: timer.core.Result = await db.get(baidu, now)
+        const data: tt4b.core.Result = await db.get(baidu, now)
         expect(data).toMatchObject(resultOf(100, 0))
     })
 
@@ -30,10 +30,10 @@ describe('stat-database/classic', () => {
         await db.accumulate(baidu, now, resultOf(200, 0))
         await db.accumulate(baidu, now, resultOf(200, 0))
         let data = await db.get(baidu, now)
-        expect(data).toEqual({ host: baidu, date: now, focus: 400, time: 0 } satisfies timer.core.Row)
+        expect(data).toEqual({ host: baidu, date: now, focus: 400, time: 0 } satisfies tt4b.core.Row)
         await db.accumulate(baidu, now, resultOf(0, 1))
         data = await db.get(baidu, now)
-        expect(data).toEqual({ host: baidu, date: now, focus: 400, time: 1 } satisfies timer.core.Row)
+        expect(data).toEqual({ host: baidu, date: now, focus: 400, time: 1 } satisfies tt4b.core.Row)
     })
 
     test('batchAccumulate and select with condition/date range', async () => {
@@ -67,7 +67,7 @@ describe('stat-database/classic', () => {
 
         // By date range
         cond = { date: [now, now] }
-        const expectedResult: timer.core.Row[] = [
+        const expectedResult: tt4b.core.Row[] = [
             { date: now, focus: 11, host: google, time: 0 },
             { date: now, focus: 1, host: baidu, time: 0 },
         ]

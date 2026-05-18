@@ -83,7 +83,7 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
 
         const { rows, query, donutChart } = result
         const { dimension } = query
-        const selected: timer.stat.Row | undefined = this.selectedCache
+        const selected: tt4b.stat.Row | undefined = this.selectedCache
             ? rows.filter(isCate).filter(r => r.cateKey === this.selectedCache)[0]
             : undefined
 

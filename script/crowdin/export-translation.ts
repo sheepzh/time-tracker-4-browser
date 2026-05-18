@@ -17,7 +17,7 @@ const TEMP_FILE_NAME = join(process.cwd(), ".crowdin-temp.zip")
 const TEMP_DIR = join(process.cwd(), ".crowdin-temp")
 
 async function processDir(dir: Dir): Promise<void> {
-    const fileSets: Record<string, Partial<Record<timer.Locale, ItemSet>>> = {}
+    const fileSets: Record<string, Partial<Record<tt4b.Locale, ItemSet>>> = {}
     for (const locale of ALL_TRANS_LOCALES) {
         const crowdinLang = crowdinLangOf(locale)
         const dirPath = join(TEMP_DIR, crowdinLang, dir)

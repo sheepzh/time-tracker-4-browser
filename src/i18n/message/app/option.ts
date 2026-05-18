@@ -60,13 +60,13 @@ export type OptionMessage = {
         prompt: string
         reminder: string
         level: {
-            [level in timer.limit.RestrictionLevel]: string
+            [level in tt4b.limit.RestrictionLevel]: string
         } & {
             label: string
             passwordLabel: string
             verificationLabel: string
             verificationDifficulty: {
-                [diff in timer.limit.VerificationDifficulty]: string
+                [diff in tt4b.limit.VerificationDifficulty]: string
             }
             strictTitle: string
             strictContent: string
@@ -84,11 +84,11 @@ export type OptionMessage = {
         type: string
         client: string
         meta: {
-            [type in timer.backup.Type]: {
+            [type in tt4b.backup.Type]: {
                 authInfo?: string
             }
         } & {
-            [type in Extract<timer.backup.Type, 'obsidian_local_rest_api'>]: {
+            [type in Extract<tt4b.backup.Type, 'obsidian_local_rest_api'>]: {
                 endpointInfo: string
             }
         }

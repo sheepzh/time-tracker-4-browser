@@ -34,9 +34,9 @@ const LEGEND_COLOR_MAP = {
 const TITLE = t(msg => msg.habit.site.trend.title)
 
 export type BizOption = {
-    rows: timer.stat.Row[]
+    rows: tt4b.stat.Row[]
     dateRange: [Date, Date]
-    timeFormat: timer.app.TimeFormat
+    timeFormat: tt4b.app.TimeFormat
 }
 
 const valueYAxis = (): YAXisOption => ({
@@ -47,7 +47,7 @@ const valueYAxis = (): YAXisOption => ({
     splitLine: { show: false },
 })
 
-const formatTimeTooltip = (params: TopLevelFormatterParams, format: timer.app.TimeFormat) => {
+const formatTimeTooltip = (params: TopLevelFormatterParams, format: tt4b.app.TimeFormat) => {
     if (!Array.isArray(params)) return ''
     const date = params?.[0]?.name
     if (!date) return ''

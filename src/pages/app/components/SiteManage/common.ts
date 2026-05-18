@@ -5,4 +5,4 @@
  * https://opensource.org/licenses/MIT
  */
 
-export const ALL_TYPES: timer.site.Type[] = ['normal', 'merged', 'virtual']
+export const ALL_TYPES: tt4b.site.Type[] = ['normal', 'merged', 'virtual']

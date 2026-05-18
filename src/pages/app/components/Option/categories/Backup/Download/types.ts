@@ -1,5 +1,5 @@
 export type DownloadForm = {
-    client?: timer.backup.Client
-    resolution?: timer.imported.ConflictResolution
-    data: timer.imported.Data
+    client?: tt4b.backup.Client
+    resolution?: tt4b.imported.ConflictResolution
+    data: tt4b.imported.Data
 }

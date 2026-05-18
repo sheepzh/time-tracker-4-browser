@@ -24,7 +24,7 @@ const VisitColumn = defineComponent(() => {
             align="center"
             sortable="custom"
         >
-            {({ row }: RenderRowData<timer.stat.Row>) => (
+            {({ row }: RenderRowData<tt4b.stat.Row>) => (
                 <TooltipWrapper
                     usePopover={filter.readRemote}
                     placement="top"

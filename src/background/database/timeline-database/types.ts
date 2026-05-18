@@ -7,6 +7,6 @@ export type TimelineCondition = {
 }
 
 export interface TimelineDatabase {
-    batchSave(ticks: timer.timeline.Tick[]): Promise<void>
-    select(cond?: TimelineCondition): Promise<timer.timeline.Tick[]>
+    batchSave(ticks: tt4b.timeline.Tick[]): Promise<void>
+    select(cond?: TimelineCondition): Promise<tt4b.timeline.Tick[]>
 }

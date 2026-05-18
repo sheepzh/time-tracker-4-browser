@@ -3,7 +3,7 @@ import { date2Idx } from "@util/limit"
 import { MILL_PER_SECOND } from "@util/time"
 import type { LimitReason, ModalContext, Processor } from '../types'
 
-function processRule(rule: timer.limit.Rule, nowSeconds: number, context: ModalContext): ReturnType<typeof setTimeout>[] {
+function processRule(rule: tt4b.limit.Rule, nowSeconds: number, context: ModalContext): ReturnType<typeof setTimeout>[] {
     const { cond, periods, id } = rule
     if (!periods?.length) return []
     return periods.flatMap(p => {

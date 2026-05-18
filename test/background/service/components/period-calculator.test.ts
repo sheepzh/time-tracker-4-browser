@@ -4,7 +4,7 @@ import { MILL_PER_DAY } from "@util/time"
 
 const PERIOD_PER_DATE = 24 * 60 / MINUTE_PER_PERIOD
 
-function resultOf(date: Date | number, orderNum: number, milliseconds: number): timer.period.Result {
+function resultOf(date: Date | number, orderNum: number, milliseconds: number): tt4b.period.Result {
     return { ...keyOf(date, orderNum), milliseconds }
 }
 
@@ -27,13 +27,13 @@ test('', () => {
     let result = calculate(ts1, 877)
     expect(result.length).toEqual(1)
     let current = result[0]
-    let realCurrent: timer.period.Result = resultOf(base, 1 + 13 * 4, 877)
+    let realCurrent: tt4b.period.Result = resultOf(base, 1 + 13 * 4, 877)
     expect(current).toEqual(realCurrent)
 
     result = calculate(ts1, (7 * 60 + 56) * 1000 + 877)
     expect(result.length).toEqual(2)
     const last = result[0]
-    const realLast: timer.period.Result = resultOf(base, 13 * 4, 1)
+    const realLast: tt4b.period.Result = resultOf(base, 13 * 4, 1)
     expect(last).toEqual(realLast)
     current = result[1]
     realCurrent.milliseconds = (7 * 60 + 56) * 1000 + 876
@@ -63,7 +63,7 @@ test('', () => {
 
 test.skip('merge', () => {
     const d20200506 = new Date(2020, 4, 6)
-    const toMerge: timer.period.Result[] = [
+    const toMerge: tt4b.period.Result[] = [
         resultOf(d20200506, 19, 20),
         resultOf(d20200506, 18, 20),
         resultOf(d20200506, 20, 20),

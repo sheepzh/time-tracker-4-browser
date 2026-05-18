@@ -6,7 +6,7 @@ import { computed, type CSSProperties, defineComponent, ref, toRef, watch } from
 import Item from "./Item"
 
 type Props = {
-    data: timer.stat.Row[]
+    data: tt4b.stat.Row[]
     loading?: boolean
     style?: CSSProperties
 }

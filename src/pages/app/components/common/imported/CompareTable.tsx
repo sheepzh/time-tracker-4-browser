@@ -14,15 +14,15 @@ import { computed, defineComponent, toRef } from "vue"
 import HostAlert from "../HostAlert"
 
 type SortInfo = SortBy & {
-    key: keyof timer.imported.Row
+    key: keyof tt4b.imported.Row
 }
 
-function computeList(sort: SortInfo, originRows: timer.imported.Row[]): timer.imported.Row[] {
+function computeList(sort: SortInfo, originRows: tt4b.imported.Row[]): tt4b.imported.Row[] {
     const { key, order } = sort
     if (!key) {
         return originRows
     }
-    const comparator = (a: timer.imported.Row, b: timer.imported.Row): number => {
+    const comparator = (a: tt4b.imported.Row, b: tt4b.imported.Row): number => {
         const av = a[key] ?? 0, bv = b[key] ?? 0
         if (av == bv) return 0
         if (order === TableV2SortOrder.DESC) {
@@ -39,12 +39,12 @@ const focusCol = (comparedCol: I18nKey): Column[] => [
         width: 150,
         align: 'center',
         title: t(comparedCol),
-        cellRenderer: ({ rowData }) => <span>{periodFormatter((rowData as timer.imported.Row).focus)}</span>,
+        cellRenderer: ({ rowData }) => <span>{periodFormatter((rowData as tt4b.imported.Row).focus)}</span>,
     }, {
         width: 150,
         align: 'center',
         title: t(msg => msg.dataManage.importOther.local),
-        cellRenderer: ({ rowData }) => <span>{periodFormatter((rowData as timer.imported.Row).exist?.focus)}</span>,
+        cellRenderer: ({ rowData }) => <span>{periodFormatter((rowData as tt4b.imported.Row).exist?.focus)}</span>,
     }
 ]
 
@@ -53,17 +53,17 @@ const timeCol = (comparedCol: I18nKey): Column[] => [
         width: 150,
         align: 'center',
         title: t(comparedCol),
-        cellRenderer: ({ rowData }) => <span>{(rowData as timer.imported.Row).time ?? 0}</span>,
+        cellRenderer: ({ rowData }) => <span>{(rowData as tt4b.imported.Row).time ?? 0}</span>,
     }, {
         width: 150,
         align: 'center',
         title: t(msg => msg.dataManage.importOther.local),
-        cellRenderer: ({ rowData }) => <span>{(rowData as timer.imported.Row).exist?.time ?? '-'}</span>,
+        cellRenderer: ({ rowData }) => <span>{(rowData as tt4b.imported.Row).exist?.time ?? '-'}</span>,
     }
 ]
 
 type Props = {
-    data: timer.imported.Data
+    data: tt4b.imported.Data
     comparedCol: I18nKey
 }
 
@@ -78,7 +78,7 @@ const BASE_COLUMNS: Column[] = [
         sortable: true,
         align: 'center',
         title: t(msg => msg.item.date),
-        cellRenderer: ({ rowData }) => <span>{cvt2LocaleTime((rowData as timer.imported.Row).date)}</span>,
+        cellRenderer: ({ rowData }) => <span>{cvt2LocaleTime((rowData as tt4b.imported.Row).date)}</span>,
     }, {
         width: 300,
         dataKey: 'host' satisfies SortInfo['key'],
@@ -86,7 +86,7 @@ const BASE_COLUMNS: Column[] = [
         align: 'center',
         title: t(msg => msg.item.host),
         cellRenderer: ({ rowData }) => {
-            const { host } = rowData as timer.imported.Row
+            const { host } = rowData as tt4b.imported.Row
             return host ? <HostAlert value={{ host, type: 'normal' }} clickable={false} /> : <></>
         },
     }

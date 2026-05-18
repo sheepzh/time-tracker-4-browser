@@ -2,13 +2,13 @@ import periodDatabase from '@db/period-database'
 import { calculate } from '../components/period-calculator'
 import { FirefoxThrottler } from './firefox-throttler'
 
-class PeriodThrottler extends FirefoxThrottler<timer.period.Result> {
+class PeriodThrottler extends FirefoxThrottler<tt4b.period.Result> {
     public add(timestamp: number, milliseconds: number): void {
         const results = calculate(timestamp, milliseconds)
         this.save(results)
     }
 
-    protected doStore(data: timer.period.Result[]): void {
+    protected doStore(data: tt4b.period.Result[]): void {
         periodDatabase.accumulate(data)
     }
 }

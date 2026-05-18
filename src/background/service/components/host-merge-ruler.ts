@@ -43,7 +43,7 @@ const processRegStr = (regStr: string) => regStr
     .split('**').join('.+')
     .split('*').join('[^\\.]+')
 
-function convert(dbItem: timer.merge.Rule): RegRuleItem | [string, string | number] {
+function convert(dbItem: tt4b.merge.Rule): RegRuleItem | [string, string | number] {
     const { origin, merged } = dbItem
     if (origin.includes('*')) {
         const regStr = processRegStr(origin)
@@ -61,7 +61,7 @@ export default class CustomizedHostMergeRuler {
 
     private cache: FIFOCache<string> = new FIFOCache(500)
 
-    constructor(rules: timer.merge.Rule[]) {
+    constructor(rules: tt4b.merge.Rule[]) {
         rules.map(item => convert(item))
             .forEach(rule => Array.isArray(rule)
                 ? (this.noRegMergeRules[rule[0]] = rule[1] || rule[0])

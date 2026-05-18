@@ -8,7 +8,7 @@ import { getRelatedCateId, identifyStatKey, isCate, isGroup, isSite } from "@uti
 import { Effect, ElTableColumn, ElText, ElTooltip, type RenderRowData } from "element-plus"
 import { defineComponent } from "vue"
 
-const renderMerged = (cateId: number, categories: timer.site.Cate[], merged: timer.stat.SiteRow[]) => {
+const renderMerged = (cateId: number, categories: tt4b.site.Cate[], merged: tt4b.stat.SiteRow[]) => {
     const [cateName, isNotSet] = CATE_NOT_SET_ID === cateId
         ? [t(msg => msg.shared.cate.notSet), true]
         : [categories.find(c => c.id === cateId)?.name, false]
@@ -32,20 +32,20 @@ const renderMerged = (cateId: number, categories: timer.site.Cate[], merged: tim
 }
 
 type Props = {
-    onChange: (key: timer.site.SiteKey, newCate: number | undefined) => void,
+    onChange: (key: tt4b.site.SiteKey, newCate: number | undefined) => void,
 }
 
 const CateColumn = defineComponent<Props>(props => {
     const cate = useCategory()
     return () => cate.enabled ? (
         <ElTableColumn label={t(msg => msg.siteManage.column.cate)} minWidth={140}>
-            {({ row }: RenderRowData<timer.stat.Row>) => {
+            {({ row }: RenderRowData<tt4b.stat.Row>) => {
                 if (!row || isGroup(row)) return
                 const { mergedRows } = row
                 const cateId = getRelatedCateId(row)
                 return (
                     <Flex key={`${identifyStatKey(row)}_${cateId}`} justify="center">
-                        {isCate(row) && renderMerged(row.cateKey, cate.all, (mergedRows ?? []) as timer.stat.SiteRow[])}
+                        {isCate(row) && renderMerged(row.cateKey, cate.all, (mergedRows ?? []) as tt4b.stat.SiteRow[])}
                         {isSite(row) && (
                             <CategoryEditable
                                 siteKey={row.siteKey}

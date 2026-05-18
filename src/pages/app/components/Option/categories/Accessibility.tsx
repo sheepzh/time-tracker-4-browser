@@ -5,7 +5,7 @@ import { OptionItem } from '../components'
 import { useOption } from "../useOption"
 import type { CategoryInstance } from './types'
 
-function copy(target: timer.option.AccessibilityOption, source: Readonly<timer.option.AccessibilityOption>) {
+function copy(target: tt4b.option.AccessibilityOption, source: Readonly<tt4b.option.AccessibilityOption>) {
     target.chartDecal = source.chartDecal
 }
 

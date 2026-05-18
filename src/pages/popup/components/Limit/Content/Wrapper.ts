@@ -108,7 +108,7 @@ const createGauge = (options: GaugeOptions): GaugeSeriesOption => {
     }
 }
 
-class Wrapper extends EchartsWrapper<timer.limit.Item, EcOption> {
+class Wrapper extends EchartsWrapper<tt4b.limit.Item, EcOption> {
     private dimension: LimitDimension = 'time'
     protected replaceSeries = true
 
@@ -123,7 +123,7 @@ class Wrapper extends EchartsWrapper<timer.limit.Item, EcOption> {
         })
     }
 
-    async render(biz: timer.limit.Item) {
+    async render(biz: tt4b.limit.Item) {
         const firstRender = !this.lastBizOption
         if (firstRender) {
             const hasTimeLimit = !!biz.time || !!biz.weekly
@@ -171,21 +171,21 @@ class Wrapper extends EchartsWrapper<timer.limit.Item, EcOption> {
         }
     }
 
-    private buildDailyPart(biz: timer.limit.Item, leftPos: string): ChartPart {
+    private buildDailyPart(biz: tt4b.limit.Item, leftPos: string): ChartPart {
         const { time, waste, visit, count } = biz
         const basePart = this.builtLimitPart([waste, time], [visit, count], leftPos)
         basePart.titles.push(createTitle(t(msg => msg.shared.limit.daily), leftPos))
         return basePart
     }
 
-    private buildWeeklyPart(biz: timer.limit.Item, rightPos: string): ChartPart {
+    private buildWeeklyPart(biz: tt4b.limit.Item, rightPos: string): ChartPart {
         const { weekly = 0, weeklyWaste, weeklyVisit: weeklyVisitCount, weeklyCount = 0 } = biz
         const basePart = this.builtLimitPart([weeklyWaste, weekly], [weeklyVisitCount, weeklyCount], rightPos)
         basePart.titles.push(createTitle(t(msg => msg.shared.limit.weekly), rightPos))
         return basePart
     }
 
-    private buildPeriodPart(periods: timer.limit.Period[] | undefined, leftPos: string): ChartPart {
+    private buildPeriodPart(periods: tt4b.limit.Period[] | undefined, leftPos: string): ChartPart {
         if (!periods?.length) return { titles: [], series: [] }
         const now = new Date()
         const nowMinutes = now.getHours() * 60 + now.getMinutes()
@@ -283,7 +283,7 @@ class Wrapper extends EchartsWrapper<timer.limit.Item, EcOption> {
         }
     }
 
-    protected generateOption(biz: timer.limit.Item): Awaitable<EcOption> {
+    protected generateOption(biz: tt4b.limit.Item): Awaitable<EcOption> {
         const hasPeriods = !!biz.periods?.length
         const leftPos = hasPeriods ? '17.5%' : '32%'
         const centerPos = hasPeriods ? '50%' : undefined

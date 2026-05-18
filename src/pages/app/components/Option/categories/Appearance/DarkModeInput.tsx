@@ -8,8 +8,8 @@ import { t } from '@app/locale'
 import { ElSelect, ElTimePicker } from "element-plus"
 import { computed, defineComponent, StyleValue } from "vue"
 
-const ALL_MODES: timer.option.DarkMode[] = ["default", "on", "off", "timed"]
-const MODE_LABELS: Record<timer.option.DarkMode, string> = {
+const ALL_MODES: tt4b.option.DarkMode[] = ["default", "on", "off", "timed"]
+const MODE_LABELS: Record<tt4b.option.DarkMode, string> = {
     default: t(msg => msg.option.followBrowser),
     on: t(msg => msg.option.on),
     off: t(msg => msg.option.off),
@@ -36,10 +36,10 @@ function computeDateToSecond(date: Date) {
 }
 
 type Props = {
-    modelValue: timer.option.DarkMode
+    modelValue: tt4b.option.DarkMode
     startSecond?: number
     endSecond?: number
-    onChange?: (darkMode: timer.option.DarkMode, [startSecond, endSecond]: [number?, number?]) => void
+    onChange?: (darkMode: tt4b.option.DarkMode, [startSecond, endSecond]: [number?, number?]) => void
 }
 
 const _default = defineComponent<Props>(props => {
@@ -51,7 +51,7 @@ const _default = defineComponent<Props>(props => {
             modelValue={props.modelValue}
             size="small"
             style={{ width: "120px" }}
-            onChange={val => props.onChange?.(val as timer.option.DarkMode, [props.startSecond, props.endSecond])}
+            onChange={val => props.onChange?.(val as tt4b.option.DarkMode, [props.startSecond, props.endSecond])}
             options={ALL_MODES.map(value => ({ value, label: MODE_LABELS[value] }))}
         />
         {props.modelValue === "timed" && <>

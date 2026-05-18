@@ -20,12 +20,12 @@ import TypeColumn from "./column/TypeColumn"
 const _default = defineComponent<{}>(() => {
     const { setSelected, refresh, pagination } = useSiteManageTable()
 
-    const handleIconError = async (row: timer.site.SiteInfo) => {
+    const handleIconError = async (row: tt4b.site.SiteInfo) => {
         await deleteSiteIcon(row)
         row.iconUrl = undefined
     }
 
-    const handleRunChange = async (val: boolean, row: timer.site.SiteInfo) => {
+    const handleRunChange = async (val: boolean, row: tt4b.site.SiteInfo) => {
         await changeSiteRun(row, val)
         row.run = val
         refresh()
@@ -43,7 +43,7 @@ const _default = defineComponent<{}>(() => {
                 label={t(msg => msg.item.host)}
                 minWidth={220}
                 align="center"
-                v-slots={({ row }: RenderRowData<timer.site.SiteInfo>) => (
+                v-slots={({ row }: RenderRowData<tt4b.site.SiteInfo>) => (
                     <div style={{ margin: 'auto', width: 'fit-content' }}>
                         <HostAlert value={row} />
                     </div>
@@ -54,7 +54,7 @@ const _default = defineComponent<{}>(() => {
                 label={t(msg => msg.siteManage.column.icon)}
                 minWidth={100}
                 align="center"
-                v-slots={({ row }: RenderRowData<timer.site.SiteInfo>) => {
+                v-slots={({ row }: RenderRowData<tt4b.site.SiteInfo>) => {
                     const { iconUrl } = row || {}
                     if (!iconUrl) return ''
                     return (
@@ -69,7 +69,7 @@ const _default = defineComponent<{}>(() => {
                 label={t(msg => msg.siteManage.column.cate)}
                 minWidth={140}
                 align="center"
-                v-slots={({ row }: RenderRowData<timer.site.SiteInfo>) => (
+                v-slots={({ row }: RenderRowData<tt4b.site.SiteInfo>) => (
                     <Category.Editable siteKey={row} modelValue={row?.cate} onChange={val => row.cate = val} />
                 )}
             />
@@ -78,7 +78,7 @@ const _default = defineComponent<{}>(() => {
                 width={100}
                 align="center"
             >
-                {({ row }: RenderRowData<timer.site.SiteInfo>) => row.type === 'normal' && (
+                {({ row }: RenderRowData<tt4b.site.SiteInfo>) => row.type === 'normal' && (
                     <ElSwitch
                         size="small"
                         modelValue={row.run}

@@ -9,7 +9,7 @@ import { stopPropagationAfter } from "@util/document"
 import { ElButton, ElInput, ElMessage, ElMessageBox } from "element-plus"
 import { defineComponent, nextTick, ref } from "vue"
 
-const OptionItem = defineComponent<{ value: timer.site.Cate }>(props => {
+const OptionItem = defineComponent<{ value: tt4b.site.Cate }>(props => {
     const cate = useCategory()
 
     const [editing, openEditing, closeEditing] = useSwitch(false)

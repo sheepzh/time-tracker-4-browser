@@ -1,5 +1,5 @@
 export type ClearForm = {
-    client?: timer.backup.Client
+    client?: tt4b.backup.Client
     result?: StatResult
 }
 

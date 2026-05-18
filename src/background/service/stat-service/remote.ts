@@ -11,9 +11,9 @@ import { BIRTHDAY, formatTimeYMD } from "@util/time"
 import processor from "../backup/processor"
 import { cvt2SiteRow } from "./common"
 
-export async function processRemote(origin: timer.stat.SiteRow[], param?: StatCondition): Promise<timer.stat.SiteRow[]> {
+export async function processRemote(origin: tt4b.stat.SiteRow[], param?: StatCondition): Promise<tt4b.stat.SiteRow[]> {
     // Map to merge
-    const originMap: Record<string, MakeRequired<timer.stat.SiteRow, 'composition'>> = {}
+    const originMap: Record<string, MakeRequired<tt4b.stat.SiteRow, 'composition'>> = {}
     origin.forEach(row => originMap[identifyStatKey(row)] = {
         ...row,
         composition: {
@@ -26,7 +26,7 @@ export async function processRemote(origin: timer.stat.SiteRow[], param?: StatCo
     const { keys, date } = param ?? {}
     const keyArr = typeof keys === 'string' ? [keys] : keys
     const predicate = keyArr?.length
-        ? ({ host }: timer.core.Row) => keyArr.includes(host)
+        ? ({ host }: tt4b.core.Row) => keyArr.includes(host)
         : () => true
 
     // 1. query remote
@@ -43,7 +43,7 @@ export async function processRemote(origin: timer.stat.SiteRow[], param?: StatCo
     return Object.values(originMap)
 }
 
-function processRemoteRow(rowMap: Record<string, MakeRequired<timer.stat.SiteRow, 'composition'>>, remoteBase: timer.core.Row) {
+function processRemoteRow(rowMap: Record<string, MakeRequired<tt4b.stat.SiteRow, 'composition'>>, remoteBase: tt4b.core.Row) {
     const row = cvt2SiteRow(remoteBase)
     const key = identifyStatKey(row)
     let exist = rowMap[key]
@@ -57,7 +57,7 @@ function processRemoteRow(rowMap: Record<string, MakeRequired<timer.stat.SiteRow
             time: [],
             run: [],
         },
-    } satisfies MakeRequired<timer.stat.SiteRow, 'composition'>)
+    } satisfies MakeRequired<tt4b.stat.SiteRow, 'composition'>)
 
     const { focus = 0, time = 0, run = 0, cid = '', cname } = row
 

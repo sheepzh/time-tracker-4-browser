@@ -34,17 +34,17 @@ class CateDatabase extends BaseDatabase {
         await this.storage.put(KEY, items || {})
     }
 
-    async listAll(): Promise<timer.site.Cate[]> {
+    async listAll(): Promise<tt4b.site.Cate[]> {
         const items = await this.getItems()
         return Object.entries(items).map(([id, { n = '' } = {}]) => {
             return {
                 id: parseInt(id),
                 name: n,
-            } satisfies timer.site.Cate
+            } satisfies tt4b.site.Cate
         })
     }
 
-    async add(name: string): Promise<timer.site.Cate> {
+    async add(name: string): Promise<tt4b.site.Cate> {
         const items = await this.getItems()
         const existId = Object.entries(items).find(([_, v]) => v.n === name)?.[0]
         if (existId) {
