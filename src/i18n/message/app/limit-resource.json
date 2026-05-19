@@ -384,6 +384,7 @@
         "reminder": "Weniger als {min} Minuten bis zum Zeitlimit!"
     },
     "fr": {
+        "onlyEffective": "Seulement en vigueur",
         "wildcardTip": "Vous pouvez utiliser des caractères génériques pour cibler des sous-domaines ou des sous-pages, et le préfixe \"+\" pour en exclure !",
         "emptyTips": "Cliquez ici pour créer une règle !",
         "item": {
@@ -425,6 +426,8 @@
             "strictTip": "La règle de limite a déjà été déclenchée et le déverrouillage manuel n'est pas autorisé !",
             "incorrectPsw": "Mot de passe incorrect",
             "incorrectAnswer": "Réponse incorrecte",
+            "twoFaInputTip": "La règle a été déclenchée ou verrouillée. Entrez le code à 6 chiffres de votre application d'authentification pour continuer.",
+            "incorrect2fa": "Code d’authentification à deux facteurs incorrect",
             "pi": "{digitCount} chiffres de {startIndex} à {endIndex} de la partie décimale de π",
             "confession": "Le temps, c'est de l'argent"
         },

@@ -276,7 +276,10 @@
         "paramError": "Le paramètre est incorrect, veuillez vérifier!",
         "deleteConfirm": "Un total de {count} enregistrements a été filtré. Souhaitez-vous tous les supprimer ?",
         "migrationAlert": "Migrer les données entre les navigateurs à l'aide de l'importation et de l'exportation",
-        "importError": "Mauvaise extension de fichier"
+        "importError": "Mauvaise extension de fichier",
+        "exportData": "Exporter les données",
+        "restoreData": "Restaurer les données",
+        "restoreFromOther": "Restaurer depuis {ext}"
     },
     "ru": {
         "totalMemoryAlert": "Браузер предоставляет {size}MB для хранения локальных данных по каждому расширению",

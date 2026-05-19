@@ -222,6 +222,8 @@
                 "lastDays": "Les données de ces {n} derniers jours",
                 "allTime": "Toutes les données"
             },
+            "shareTitle": "Partager",
+            "installTip": "Scanner pour installer",
             "averageCount": "{value} fois par jour en moyenne",
             "averageTime": "{value} par jour en moyenne",
             "totalTime": "{totalTime} au total",
@@ -230,6 +232,15 @@
         },
         "ranking": {
             "includingCount": "Y compris {siteCount} sites"
+        },
+        "limit": {
+            "noData": "Pas de règle de limite en vigueur pour cette URL",
+            "newOne": "Créer Nouvelle",
+            "timeUsed": "{percent} utilisé",
+            "visitUsed": "{used} visites",
+            "remain": "{remaining} restantes",
+            "noLimit": "Aucune limite",
+            "notHit": "Pas en vigueur"
         }
     },
     "ru": {

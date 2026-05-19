@@ -208,6 +208,7 @@
             "notSet": "Non Défini"
         },
         "limit": {
+            "limited": "Limité",
             "daily": "Limite quotidienne",
             "weekly": "Limite hebdomadaire",
             "period": "Périodes bloquées",
