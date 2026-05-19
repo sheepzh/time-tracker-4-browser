@@ -3,6 +3,7 @@
 [![codecov](https://codecov.io/gh/sheepzh/time-tracker-4-browser/branch/main/graph/badge.svg?token=S98QSBSKCR&style=flat-square)](https://codecov.io/gh/sheepzh/time-tracker-4-browser)
 [![](https://img.shields.io/badge/license-Anti%20996-blue)](https://github.com/996icu/996.ICU)
 [![](https://img.shields.io/github/v/release/sheepzh/time-tracker-4-browser)](https://github.com/sheepzh/time-tracker-4-browser/releases)
+[![Discord](https://img.shields.io/badge/discord-join-5865F2?logo=discord&logoColor=white)](https://discord.gg/yXCngD8pKS)
 
 <p>
   <a href="https://chromewebstore.google.com/detail/dkdhhcbjijekmneelocdllcldcpmekmm/reviews"><img src="https://developer.chrome.com/static/docs/webstore/branding/image/206x58-chrome-web-bcb82d15b2486.png" alt="Chrome Web Store" height="48"></a>
@@ -54,13 +55,25 @@
 	<img src="./doc/screenshot/app.png" width="100%">
 </div>
 
-## 贡献指南
+## 如何反馈
 
-如果你想参与到该项目的开源建设，可以考虑以下几种方式
+如果你在使用过程中遇到了问题，或有任何想法和建议，欢迎通过以下方式告诉我们：
 
 #### 提交 Issue
 
-如果您有一些好的想法，或者 bug 反馈，可以新建一条 [issue](https://github.com/sheepzh/time-tracker-4-browser/issues) 。作者会在第一时间进行回复。
+在 [GitHub Issues](https://github.com/sheepzh/time-tracker-4-browser/issues) 中描述你遇到的问题或功能建议，我们会尽快回复。
+
+#### 加入 Discord
+
+加入我们的 [Discord 社区](https://discord.gg/yXCngD8pKS)，与开发者和其他用户直接交流。
+
+#### 创建 Discussion
+
+在 [GitHub Discussions](https://github.com/sheepzh/time-tracker-4-browser/discussions) 中发起话题，适合分享使用经验或进行开放性讨论。
+
+## 贡献指南
+
+如果你想参与到该项目的开源建设，可以考虑以下几种方式
 
 #### 参与开发
 

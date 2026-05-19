@@ -1,6 +1,7 @@
 {
     "en": {
         "rating": "Submit rating",
+        "discord": "Join Discord",
         "showSiteName": "Display site name",
         "showTopN": "Display top {n}",
         "donutChart": "Displayed as donut charts"

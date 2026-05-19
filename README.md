@@ -3,6 +3,7 @@
 [![codecov](https://codecov.io/gh/sheepzh/time-tracker-4-browser/branch/main/graph/badge.svg?token=S98QSBSKCR&style=flat-square)](https://codecov.io/gh/sheepzh/time-tracker-4-browser)
 [![](https://img.shields.io/badge/license-Anti%20996-blue)](https://github.com/996icu/996.ICU)
 [![Crowdin](https://badges.crowdin.net/timer-chrome-edge-firefox/localized.svg)](https://crowdin.com/project/timer-chrome-edge-firefox)
+[![Discord](https://img.shields.io/badge/discord-join-5865F2?logo=discord&logoColor=white)](https://discord.gg/yXCngD8pKS)
 
 <p>
   <a href="https://chromewebstore.google.com/detail/dkdhhcbjijekmneelocdllcldcpmekmm/reviews"><img src="https://developer.chrome.com/static/docs/webstore/branding/image/206x58-chrome-web-bcb82d15b2486.png" alt="Available in the Chrome Web Store" height="48"></a>
@@ -53,15 +54,27 @@ Time Tracker is a browser extension to track the time you spent on all websites.
     <p>Page Blocking</p>
 </div>
 
+## Feedback
+
+If you encounter any issues or have suggestions during use, feel free to reach out through the following channels:
+
+#### 1. Submit an Issue
+
+Describe your problem or feature request in [GitHub Issues](https://github.com/sheepzh/time-tracker-4-browser/issues), and we'll get back to you as soon as possible.
+
+#### 2. Join Discord
+
+Join our [Discord community](https://discord.gg/yXCngD8pKS) to chat directly with the developer and other users.
+
+#### 3. Create a Discussion
+
+Start a topic in [GitHub Discussions](https://github.com/sheepzh/time-tracker-4-browser/discussions) — great for sharing experiences or open-ended conversations.
+
 ## Contribution
 
 There are some things you can do to contribute to this software.
 
-#### 1. Submit issues
-
-You can [submit one issue](https://github.com/sheepzh/time-tracker-4-browser/issues) to us if you have some suggestions, feature requests, or feedback of bugs. And we will reply it as soon as possible.
-
-#### 2. Participate in development
+#### 1. Participate in development
 
 If you know how to develop browser extensions and are familiar with the project's technology stack (TypeScript + Vue3 + Element Plus + Echarts), you can also contribute code
 

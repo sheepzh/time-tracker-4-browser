@@ -9,6 +9,7 @@ import resource from './header-resource.json'
 
 export type HeaderMessage = {
     rating: string
+    discord: string
     donutChart: string
     showSiteName: string
     showTopN: string
