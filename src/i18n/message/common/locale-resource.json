@@ -93,5 +93,11 @@
     },
     "hi": {
         "name": "हिन्दी"
+    },
+    "nb": {
+        "name": "norsk bokmål"
+    },
+    "hu": {
+        "name": "magyar"
     }
 }

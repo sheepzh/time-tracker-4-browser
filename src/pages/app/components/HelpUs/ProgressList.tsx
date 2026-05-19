@@ -43,6 +43,8 @@ const localeCrowdMap: { [locale in SupportedLocale]: string } = {
     mn: "mn",
     ar: "ar",
     hi: "hi",
+    hu: "hu",
+    nb: "nb",
 }
 
 const crowdLocaleMap: { [locale: string]: SupportedLocale } = {}
@@ -106,7 +108,7 @@ const _default = defineComponent(() => {
                     status={computeType(progress)}
                     style={{ fontSize: '16px' } satisfies StyleValue}
                 >
-                    <Flex width={70} gap={10} fontSize={12} column align="end" color="var(--el-text-color-regular)">
+                    <Flex width={70} gap={10} fontSize={12} column align="end" style={{ textAlign: 'end' }} color="var(--el-text-color-regular)">
                         <span>{`${progress}%`}</span>
                         <span>{localeMessages[locale as tt4b.Locale]?.name ?? locale}</span>
                     </Flex>

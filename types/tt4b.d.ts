@@ -52,6 +52,8 @@ declare namespace tt4b {
         | 'sk'
         | 'mn'
         | 'hi'
+        | 'hu'
+        | 'nb'
 
     type ExtensionMeta = {
         installTime?: number
