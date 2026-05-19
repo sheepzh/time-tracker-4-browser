@@ -1156,8 +1156,14 @@
                 "strictTitle": "Confirmation de l'opération",
                 "strictContent": "Lorsque vous sélectionnez cette option, si un site déclenche une limite quotidienne, vous ne serez pas autorisé à le débloquer manuellement sauf en attendant le lendemain. Si les règles ne sont pas correctement configurées, elles peuvent très bien gêner vos routines !",
                 "pswFormLabel": "Mot de passe",
-                "pswFormAgain": "Retapez"
-            }
+                "pswFormAgain": "Retapez",
+                "2fa": "Utilisez le code 2FA pour déverrouiller",
+                "twoFaTitle": "Activer l'authentification à deux facteurs (A2F)",
+                "twoFaScanHint": "Scannez le code QR avec une application d'authentification ou importez le lien d'installation dans un gestionnaire de mots de passe qui prend en charge TOTP.",
+                "twoFaCopyLink": "Copier le lien",
+                "twoFaVerifyLabel": "Entrez le code à 6 chiffres pour verifier"
+            },
+            "delayDuration": "Délai pour {input} minutes chaque fois"
         },
         "backup": {
             "title": "Sauvegarde des données",

@@ -197,7 +197,7 @@
     },
     "fr": {
         "heatMap": {
-            "title0": "Plus de {hour} heures parcourues au cours de l'année dernière",
+            "title0": "Visité pendant plus de {hour} heures durant l'année dernière",
             "title1": "Parcouru moins d'une heure l'année dernière"
         },
         "topK": {
