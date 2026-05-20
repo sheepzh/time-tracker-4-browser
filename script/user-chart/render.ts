@@ -16,8 +16,6 @@ type EcOption = ComposeOption<
     | GridComponentOption>
 const ALL_BROWSERS: Browser[] = ['firefox', 'chrome', 'edge']
 
-const POINT_COUNT = 500
-
 type OriginData = {
     [browser in Browser]: UserCount
 }
@@ -29,11 +27,13 @@ type ChartData = {
     }
 }
 
+const VALID_DATE_RE = /^\d{4}-\d{2}-\d{2}$/
+
 function preProcess(originData: OriginData): ChartData {
     // 1. sort dates
     const dateSet = new Set<string>()
     Object.values(originData).forEach(ud => Object.keys(ud).forEach(date => dateSet.add(date)))
-    let allDates = Array.from(dateSet).sort()
+    let allDates = Array.from(dateSet).filter(d => VALID_DATE_RE.test(d)).sort()
 
     // 2. smooth the count
     const ctx: { [browser in Browser]: SmoothContext } = {
@@ -45,7 +45,7 @@ function preProcess(originData: OriginData): ChartData {
     allDates.forEach(
         date => ALL_BROWSERS.forEach(b => ctx[b].process(originData[b][date]))
     )
-    const result: ChartData = {
+    return {
         xAxis: allDates,
         yAxises: {
             chrome: ctx.chrome.end(),
@@ -53,12 +53,6 @@ function preProcess(originData: OriginData): ChartData {
             edge: ctx.edge.end(),
         }
     }
-
-    // 3. zoom
-    const reduction = Math.floor(Object.keys(allDates).length / POINT_COUNT)
-    result.xAxis = zoom(result.xAxis, reduction)
-    ALL_BROWSERS.forEach(b => result.yAxises[b] = zoom(result.yAxises[b], reduction))
-    return result
 }
 
 class SmoothContext {
@@ -107,19 +101,6 @@ class SmoothContext {
             .forEach(() => this.data.push(this.lastVal))
         return this.data
     }
-}
-
-function zoom<T>(data: T[], reduction: number): T[] {
-    let i = 0
-    const newData: T[] = []
-    while (i < data.length) {
-        const item = data[i]
-        if (item !== undefined) {
-            newData.push(item)
-        }
-        i += reduction
-    }
-    return newData
 }
 
 function render2Svg(chartData: ChartData): string {

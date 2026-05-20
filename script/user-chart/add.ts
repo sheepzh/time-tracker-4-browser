@@ -113,10 +113,12 @@ function parseChrome(content: string): UserCount {
         if (!dateStr || !numberStr) {
             return
         }
-        // Replace '/' to '-', then rjust month and date
-        const date = dateStr.split('/').map(str => rjust(str, 2, '0')).join('-')
+        // Chrome CSV format: YYYY/M/D
+        const [, y, m, d] = /^(\d{4})\/(\d{1,2})\/(\d{1,2})$/.exec(dateStr.trim()) ?? []
+        if (!y || !m || !d) return
+        const date = `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`
         const number = parseInt(numberStr)
-        date && number && (result[date] = number)
+        number && (result[date] = number)
     })
     return result
 }
