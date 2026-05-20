@@ -2,7 +2,7 @@ import {
     BarChart, CustomChart, EffectScatterChart, GaugeChart, LineChart, PieChart, ScatterChart,
 } from "echarts/charts"
 import {
-    AriaComponent, DataZoomComponent, GridComponent, LegendComponent, TitleComponent, ToolboxComponent,
+    AriaComponent, DataZoomComponent, GridComponent, LegendComponent, MarkLineComponent, TitleComponent, ToolboxComponent,
     TooltipComponent, VisualMapComponent,
 } from "echarts/components"
 import { use } from "echarts/core"
@@ -12,7 +12,7 @@ export const initEcharts = () => {
     use([
         CanvasRenderer,
         ToolboxComponent, AriaComponent, GridComponent, TooltipComponent, TitleComponent, VisualMapComponent, LegendComponent,
-        DataZoomComponent,
+        DataZoomComponent, MarkLineComponent,
         BarChart, PieChart, LineChart, ScatterChart, EffectScatterChart, CustomChart, GaugeChart,
     ])
 }
