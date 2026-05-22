@@ -128,7 +128,7 @@ const PeriodInput = defineComponent<ModelValue<tt4b.limit.Period[]>>(props => {
 
     return () => (
         <Flex gap={5} column={isXs.value}>
-            <Flex gap={5} wrap>
+            <Flex v-show={!!props.modelValue.length} gap={5} wrap>
                 {props.modelValue?.map((p, idx) =>
                     <ElTag
                         size={isXs.value ? 'small' : 'large'}
@@ -160,7 +160,7 @@ const PeriodInput = defineComponent<ModelValue<tt4b.limit.Period[]>>(props => {
                     style={{ ...BUTTON_STYLE, marginInlineStart: 0 } satisfies StyleValue}
                 />
             </Flex>
-            <div>
+            <Flex>
                 <ElButton
                     v-show={!editing.value}
                     icon={Plus}
@@ -170,7 +170,7 @@ const PeriodInput = defineComponent<ModelValue<tt4b.limit.Period[]>>(props => {
                 >
                     {t(msg => msg.button.create)}
                 </ElButton>
-            </div>
+            </Flex>
         </Flex>
     )
 }, { props: ['modelValue', 'onChange'] })
