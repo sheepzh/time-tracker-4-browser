@@ -1,6 +1,6 @@
 {
     "name": "tt4b",
-    "version": "4.3.2",
+    "version": "4.3.3",
     "description": "Time tracker for browser",
     "homepage": "https://www.wfhg.cc",
     "scripts": {
@@ -34,8 +34,8 @@
         "@rsdoctor/rspack-plugin": "^1.5.11",
         "@rspack/cli": "^2.0.4",
         "@rspack/core": "^2.0.4",
-        "@rstest/core": "^0.10.1",
-        "@rstest/coverage-istanbul": "^0.10.1",
+        "@rstest/core": "^0.10.2",
+        "@rstest/coverage-istanbul": "^0.10.2",
         "@types/chrome": "0.1.42",
         "@types/decompress": "^4.2.7",
         "@types/firefox-webext-browser": "^143.0.0",
@@ -50,7 +50,7 @@
         "husky": "^9.1.7",
         "jsdom": "^29.1.1",
         "jszip": "^3.10.1",
-        "knip": "^6.14.1",
+        "knip": "^6.14.2",
         "postcss": "^8.5.15",
         "postcss-loader": "^8.2.1",
         "postcss-rtlcss": "^6.0.0",

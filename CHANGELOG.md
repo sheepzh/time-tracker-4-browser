@@ -4,6 +4,11 @@ All notable changes to Time Tracker will be documented in this file.
 
 It is worth mentioning that the release time of each change refers to the time when the installation package is submitted to the webstore. It is about one week for Firefox to moderate packages, while only 1-2 days for Chrome and Edge.
 
+## [4.3.3] - 2026-05-23
+
+-  Added Norwegian Bokmal, Hungarian, Indonesian to translate
+-  Added mark line for habit average chart (#778)
+
 ## [4.3.2] - 2026-05-16
 
 -  Urgently fixed some bugs
