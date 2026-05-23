@@ -1,4 +1,3 @@
-
 type StoragePrimitive = string | boolean | number | undefined
 type StorageArray = Array<StorageValue>
 type StorageObject = { [key: string]: StorageValue }
@@ -7,10 +6,12 @@ type StorageValue =
     | StorageArray
     | StorageObject
 
-export function useLocalStorage<T>(key: string, defaultValue: T): [T, ArgCallback<T>]
-export function useLocalStorage<T>(key: string): [T | undefined, (val: T | undefined) => void]
-export function useLocalStorage<T = StorageValue>(key: string, defaultVal?: T): [data: T | undefined, setter: ArgCallback<T | undefined>] {
-    const value: T | undefined = deserialize(localStorage.getItem(key)) ?? defaultVal
+type Guard<T> = (val: unknown) => val is T
+
+export function useLocalStorage<T>(key: string, guard: Guard<T>, defaultValue: T): [T, ArgCallback<T>]
+export function useLocalStorage<T>(key: string, guard: Guard<T>): [T | undefined, (val: T | undefined) => void]
+export function useLocalStorage<T = StorageValue>(key: string, guard: Guard<T>, defaultVal?: T): [data: T | undefined, setter: ArgCallback<T | undefined>] {
+    const value = deserialize(localStorage.getItem(key), guard) ?? defaultVal
 
     const setter = (val: T | undefined) => {
         if (val === undefined) {
@@ -23,11 +24,12 @@ export function useLocalStorage<T = StorageValue>(key: string, defaultVal?: T): 
     return [value, setter]
 }
 
-function deserialize<T>(json: string | null): T | undefined {
+function deserialize<T>(json: string | null, guard: Guard<T>): T | undefined {
     if (!json) return undefined
 
     try {
-        return JSON.parse(json) as T
+        const parsed = JSON.parse(json)
+        return guard(parsed) ? parsed : undefined
     } catch {
         return undefined
     }

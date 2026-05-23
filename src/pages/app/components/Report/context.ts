@@ -1,5 +1,11 @@
+import { isOptionalIntArray, isTimeFormat } from '@app/util/limit/types'
 import { useLocalStorage, useProvide, useProvider } from '@hooks'
-import { createStringUnionGuard, isString } from 'typescript-guard'
+import {
+    createObjectGuard, createOptionalGuard, createStringUnionGuard, isBoolean,
+    isOptionalInt,
+    isOptionalString,
+    isString,
+} from 'typescript-guard'
 import { reactive, ref, type ShallowRef, toRaw, watch } from "vue"
 import { type RouteLocation, type Router, useRoute, useRouter } from "vue-router"
 import type { DisplayComponent, ReportFilterOption, ReportSort } from "./types"
@@ -40,12 +46,22 @@ function parseQuery(route: RouteLocation, router: Router): [QueryPartial, Report
     return [partial, isSortProp(sc) ? sc : undefined]
 }
 
-type FilterStorageValue = Omit<ReportFilterOption, 'dateRange' | 'readRemote'> & {
+type CacheValue = Omit<ReportFilterOption, 'dateRange' | 'readRemote'> & {
     dateStart?: number
     dateEnd?: number
 }
 
-const cvtStorage2Filter = (storage: FilterStorageValue | undefined): ReportFilterOption => {
+const isCacheValue = createObjectGuard<CacheValue>({
+    query: isOptionalString,
+    mergeDate: isBoolean,
+    siteMerge: createOptionalGuard(isSiteMerge),
+    cateIds: isOptionalIntArray,
+    timeFormat: isTimeFormat,
+    dateStart: isOptionalInt,
+    dateEnd: isOptionalInt,
+})
+
+const cvtStorage2Filter = (storage: CacheValue | undefined): ReportFilterOption => {
     const { query, dateStart, dateEnd, mergeDate, siteMerge, cateIds, timeFormat } = storage ?? {}
     const now = new Date()
     return {
@@ -59,7 +75,7 @@ const cvtStorage2Filter = (storage: FilterStorageValue | undefined): ReportFilte
     }
 }
 
-const cvtFilter2Storage = (filter: ReportFilterOption): FilterStorageValue => {
+const cvtFilter2Storage = (filter: ReportFilterOption): CacheValue => {
     const { query, dateRange, mergeDate, siteMerge, cateIds, timeFormat } = filter
     const [dateStart, dateEnd] = dateRange instanceof Date ? [dateRange,] : dateRange ?? []
     return {
@@ -76,7 +92,7 @@ export const initReportContext = () => {
     const router = useRouter()
     const [queryFilter, querySort] = parseQuery(route, router)
 
-    const [cachedFilter, setCachedFilter] = useLocalStorage<FilterStorageValue>('report_filter')
+    const [cachedFilter, setCachedFilter] = useLocalStorage<CacheValue>('report_filter', isCacheValue)
     const filter = reactive<ReportFilterOption>({ ...cvtStorage2Filter(cachedFilter), ...queryFilter })
     watch(() => filter, v => setCachedFilter(cvtFilter2Storage(toRaw(v))), { deep: true })
 

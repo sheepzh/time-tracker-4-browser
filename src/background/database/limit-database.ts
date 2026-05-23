@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { isOptionalInt, isRecord, isVector2 } from '@util/guard'
+import { isRecord, isVector2 } from '@util/guard'
 import { formatTimeYMD, MILL_PER_DAY } from "@util/time"
-import { createArrayGuard, createGuard, createObjectGuard, createOptionalGuard, isBoolean, isInt, isString } from 'typescript-guard'
+import { createArrayGuard, createGuard, createObjectGuard, createOptionalGuard, isInt, isOptionalBoolean, isOptionalInt, isString } from 'typescript-guard'
 import BaseDatabase from "./common/base-database"
 import { REMAIN_WORD_PREFIX } from "./common/constant"
 import { extractNamespace, isExportData, isLegacyVersion } from './common/migratable'
@@ -38,10 +38,10 @@ const isValidRow = createObjectGuard<PartialRule>({
     weekly: isOptionalInt,
     weeklyCount: isOptionalInt,
     visitTime: isOptionalInt,
-    enabled: createOptionalGuard(isBoolean),
-    locked: createOptionalGuard(isBoolean),
+    enabled: isOptionalBoolean,
+    locked: isOptionalBoolean,
     weekdays: createOptionalGuard(createArrayGuard(createGuard(val => isInt(val) && val >= 0 && val <= 6))),
-    allowDelay: createOptionalGuard(isBoolean),
+    allowDelay: isOptionalBoolean,
     periods: createOptionalGuard(createArrayGuard(isVector2)),
 })
 

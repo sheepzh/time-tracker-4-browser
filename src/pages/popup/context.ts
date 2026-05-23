@@ -5,10 +5,11 @@ import { useLocalStorage, useProvide, useProvider, useRequest } from "@hooks"
 import { isDarkMode, processDarkMode } from "@pages/util/dark-mode"
 import { toMap } from "@util/array"
 import { CATE_NOT_SET_ID } from "@util/site"
+import { createObjectGuard, createOptionalGuard, createStringUnionGuard, isBoolean, isNumber, isOptionalInt } from 'typescript-guard'
 import { computed, reactive, Ref, ref, type ShallowRef, toRaw, watch } from "vue"
 import { useRoute, useRouter } from 'vue-router'
-import { isMenu } from './common'
 import { t } from "./locale"
+import { isMenu } from './router'
 import type { PopupMenu, PopupOption, PopupQuery } from './types'
 
 type PopupContextValue = {
@@ -26,7 +27,7 @@ type PopupContextValue = {
 }
 
 const initMenu = () => {
-    const [stored, setStored] = useLocalStorage<PopupMenu>('popup_menu', 'percentage')
+    const [stored, setStored] = useLocalStorage<PopupMenu>('popup_menu', isMenu, 'percentage')
     const route = useRoute()
     const router = useRouter()
     const myRoute = computed(() => {
@@ -92,8 +93,17 @@ export const initPopupContext = (): ShallowRef<number> => {
     return appKey
 }
 
+const isMergeMethod = createStringUnionGuard<Exclude<PopupQuery['mergeMethod'], undefined>>('cate', 'domain', 'group')
+
+const isQuery = createObjectGuard<PopupQuery>({
+    dimension: createStringUnionGuard<PopupQuery['dimension']>('focus', 'time'),
+    duration: createStringUnionGuard<PopupQuery['duration']>('allTime', 'lastDays', 'thisMonth', 'thisWeek', 'today', 'yesterday'),
+    durationNum: isOptionalInt,
+    mergeMethod: createOptionalGuard(isMergeMethod),
+})
+
 const initQuery = () => {
-    const [queryCache, setQueryCache] = useLocalStorage<PopupQuery>('popup-query', {
+    const [queryCache, setQueryCache] = useLocalStorage<PopupQuery>('popup-query', isQuery, {
         dimension: 'focus',
         duration: 'today',
         mergeMethod: undefined,
@@ -105,8 +115,14 @@ const initQuery = () => {
     return query
 }
 
+const isOption = createObjectGuard<PopupOption>({
+    showName: isBoolean,
+    topN: isNumber,
+    donutChart: isBoolean,
+})
+
 const initOption = () => {
-    const [optionCache, setOptionCache] = useLocalStorage<PopupOption>('popup-option', {
+    const [optionCache, setOptionCache] = useLocalStorage<PopupOption>('popup-option', isOption, {
         showName: true,
         topN: 10,
         donutChart: false,

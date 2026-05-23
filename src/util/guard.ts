@@ -1,6 +1,4 @@
-import { createOptionalGuard, isInt } from 'typescript-guard'
-
-export const isOptionalInt = createOptionalGuard(isInt)
+import { isInt } from 'typescript-guard'
 
 export const isRecord = (unk: unknown): unk is Record<string, unknown> => typeof unk === 'object' && unk !== null
 

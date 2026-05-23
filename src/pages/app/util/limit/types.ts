@@ -4,8 +4,9 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { type I18nKey } from "@i18n"
-import { type LimitMessage } from "@i18n/message/app/limit"
+import type { I18nKey } from "@i18n"
+import type { LimitMessage } from "@i18n/message/app/limit"
+import { createArrayGuard, createOptionalGuard, createStringUnionGuard, isInt } from 'typescript-guard'
 
 type LimitVerificationMessage = LimitMessage['verification']
 
@@ -35,3 +36,7 @@ export interface VerificationGenerator {
      */
     generate(context: VerificationContext): VerificationPair
 }
+
+export const isTimeFormat = createStringUnionGuard<tt4b.app.TimeFormat>('default', 'hour', 'minute', 'second')
+
+export const isOptionalIntArray = createOptionalGuard(createArrayGuard(isInt))

@@ -9,9 +9,22 @@ import { listPeriods } from '@api/sw/period'
 import { useLocalStorage, useProvide, useProvider, useRequest } from '@hooks'
 import { keyOf, MAX_PERIOD_ORDER } from "@util/period"
 import { getDayLength, MILL_PER_DAY } from "@util/time"
+import { createObjectGuard, createStringUnionGuard, isInt } from 'typescript-guard'
 import { computed, reactive, toRaw, watch, type Reactive, type Ref } from "vue"
 import { useHabitFilter } from "../context"
-import type { FilterOption } from "./types"
+
+export type ChartType = 'average' | 'trend' | 'stack'
+export const isChartType = createStringUnionGuard<ChartType>('average', 'trend', 'stack')
+
+type FilterOption = {
+    periodSize: number
+    chartType: ChartType
+}
+
+const isFilterOption = createObjectGuard<FilterOption>({
+    periodSize: isInt,
+    chartType: isChartType,
+})
 
 type Value = {
     curr: tt4b.period.Row[]
@@ -46,7 +59,7 @@ export const initProvider = () => {
     const globalFilter = useHabitFilter()
     const periodRange = computed(() => computeRange(globalFilter.dateRange))
     const [cachedFilter, setFilterCache] = useLocalStorage<FilterOption>(
-        'habit_period_filter', { periodSize: 1, chartType: 'average' }
+        'habit_period_filter', isFilterOption, { periodSize: 1, chartType: 'average' }
     )
     const filter = reactive<FilterOption>(cachedFilter)
     watch(() => filter, () => setFilterCache(toRaw(filter)), { deep: true })

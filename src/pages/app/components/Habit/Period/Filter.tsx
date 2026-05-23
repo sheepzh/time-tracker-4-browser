@@ -11,8 +11,7 @@ import { type HabitMessage } from '@i18n/message/app/habit'
 import Flex from '@pages/components/Flex'
 import { ElRadioButton, ElRadioGroup } from 'element-plus'
 import { defineComponent } from 'vue'
-import { usePeriodFilter } from './context'
-import type { ChartType } from './types'
+import { type ChartType, isChartType, usePeriodFilter } from './context'
 
 // [value, label]
 type _SizeOption = [number, keyof HabitMessage['period']['sizes']]
@@ -31,7 +30,7 @@ function allOptions(): Record<number, string> {
     return allOptions
 }
 
-const CHART_CONFIG: { [type in ChartType]: string } = {
+const CHART_CONFIG: Record<ChartType, string> = {
     average: t(msg => msg.habit.period.chartType.average),
     trend: t(msg => msg.habit.period.chartType.trend),
     stack: t(msg => msg.habit.period.chartType.stack),
@@ -55,7 +54,7 @@ const _default = defineComponent(() => {
             />
             <ElRadioGroup
                 modelValue={filter.chartType}
-                onChange={val => val && (filter.chartType = val as ChartType)}
+                onChange={val => isChartType(val) && (filter.chartType = val)}
             >
                 {Object.entries(CHART_CONFIG).map(([type, name]) => (
                     <ElRadioButton value={type}>

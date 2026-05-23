@@ -1,6 +1,7 @@
 import { getSiteStatPage } from "@api/sw/stat"
 import { useLocalStorage, useProvide, useProvider, useRequest } from "@hooks"
 import { cvtDateRange2Str, MILL_PER_DAY } from "@util/time"
+import { createObjectGuard, createStringUnionGuard, isInt } from 'typescript-guard'
 import { reactive, type ShallowRef, toRaw, watch } from "vue"
 
 export type BizOption = {
@@ -12,12 +13,18 @@ export type BizOption = {
 }
 
 export type TopKChartType = 'bar' | 'pie' | 'halfPie'
+const isTopKChartType = createStringUnionGuard<TopKChartType>('bar', 'pie', 'halfPie')
 
 export type TopKFilterOption = {
     topK: number
     dayNum: number
     topKChartType: TopKChartType
 }
+const isTopKFilterOption = createObjectGuard<TopKFilterOption>({
+    topK: isInt,
+    dayNum: isInt,
+    topKChartType: isTopKChartType,
+})
 
 type Context = {
     value: ShallowRef<BizOption[]>
@@ -28,7 +35,7 @@ const NAMESPACE = 'dashboardTopKVisit'
 
 export const initProvider = () => {
     const [cachedFilter, setFilterCache] = useLocalStorage<TopKFilterOption>(
-        'habit_period_filter', { topK: 6, dayNum: 30, topKChartType: 'pie' }
+        `${NAMESPACE}_filter`, isTopKFilterOption, { topK: 6, dayNum: 30, topKChartType: 'pie' }
     )
     const filter = reactive<TopKFilterOption>(cachedFilter)
     watch(() => filter, () => setFilterCache(toRaw(filter)), { deep: true })
