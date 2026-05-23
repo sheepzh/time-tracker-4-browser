@@ -14,7 +14,7 @@ type EcOption = ComposeOption<
     | LineSeriesOption
     | TitleComponentOption
     | GridComponentOption>
-const ALL_BROWSERS: Browser[] = ['firefox', 'chrome', 'edge']
+const ALL_BROWSERS: Browser[] = ['chrome', 'edge', 'firefox']
 
 type OriginData = {
     [browser in Browser]: UserCount
