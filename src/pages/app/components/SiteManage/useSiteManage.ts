@@ -1,5 +1,7 @@
 import { getSitePage } from '@api/sw/site'
+import { isOptionalIntArray } from '@app/util/limit/types'
 import { type RequestOption, useLocalStorage, useProvide, useProvider, useRequest, useState } from '@hooks'
+import { createObjectGuard } from 'typescript-guard'
 import { reactive, type ShallowRef, watch } from 'vue'
 
 type FilterOption = {
@@ -12,6 +14,10 @@ type CacheValue = {
     cateIds?: number[]
 }
 
+const isCacheValue = createObjectGuard<CacheValue>({
+    cateIds: isOptionalIntArray,
+})
+
 type Context = {
     pagination: ShallowRef<tt4b.common.PageResult<tt4b.site.SiteInfo>>
     filter: FilterOption
@@ -23,7 +29,7 @@ type Context = {
 const NAMESPACE = 'site-manage'
 
 export const initSiteManage = (loadingTarget: RequestOption<unknown, unknown[]>['loadingTarget']) => {
-    const [cache, setCache] = useLocalStorage<CacheValue>('site-manage-filter')
+    const [cache, setCache] = useLocalStorage<CacheValue>('site-manage-filter', isCacheValue)
 
     const filter = reactive<FilterOption>({ cateIds: cache?.cateIds })
     watch(() => filter.cateIds, cateIds => setCache({ cateIds }))

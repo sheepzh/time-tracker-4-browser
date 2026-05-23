@@ -1,6 +1,7 @@
 import { useLocalStorage } from '@hooks'
+import { createStringUnionGuard } from 'typescript-guard'
 import { type App } from "vue"
-import { createRouter, createWebHashHistory, RouteRecordRedirect, type RouteRecordSingleView } from "vue-router"
+import { createRouter, createWebHashHistory, type RouteRecordRedirect, type RouteRecordSingleView } from "vue-router"
 import type { PopupMenu } from './types'
 
 type Path = `/${PopupMenu}`
@@ -25,8 +26,10 @@ const createRoutes = (stored: PopupMenu | undefined): MyRoute[] => [
     },
 ]
 
+export const isMenu = createStringUnionGuard<PopupMenu>('limit', 'percentage', 'ranking')
+
 export default (app: App) => {
-    const [stored] = useLocalStorage<PopupMenu>('popup_menu')
+    const [stored] = useLocalStorage<PopupMenu>('popup_menu', isMenu)
     const routes = createRoutes(stored)
     const history = createWebHashHistory()
     const router = createRouter({ routes, history })

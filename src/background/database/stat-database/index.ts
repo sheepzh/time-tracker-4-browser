@@ -5,9 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { isOptionalInt } from '@util/guard'
 import { isNotZeroResult } from '@util/stat'
-import { createArrayGuard, createObjectGuard, isString } from 'typescript-guard'
+import { createArrayGuard, createObjectGuard, isOptionalInt, isString } from 'typescript-guard'
 import { extractNamespace, isExportData, isLegacyVersion } from '../common/migratable'
 import { StorageHolder } from '../common/storage-holder'
 import type { BrowserMigratable, StorageMigratable } from '../types'

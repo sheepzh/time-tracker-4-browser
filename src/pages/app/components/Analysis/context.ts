@@ -7,6 +7,7 @@
 
 import { type AppAnalysisQuery } from '@/shared/route'
 import { listCateStats, listSiteStats } from "@api/sw/stat"
+import { isTimeFormat } from '@app/util/limit/types'
 import { useLocalStorage, useProvide, useProvider, useRequest } from "@hooks"
 import { extractHostname } from '@util/pattern'
 import { ref, watch, type Ref } from "vue"
@@ -50,9 +51,9 @@ const NAMESPACE = 'siteAnalysis'
 export const initAnalysis = () => {
     const target = ref(parseQuery())
 
-    const [cachedFormat, setFormatCache] = useLocalStorage<tt4b.app.TimeFormat>('analysis_timeFormat')
-    const timeFormat = ref(cachedFormat ?? 'default')
-    watch(timeFormat, setFormatCache)
+    const [cached, setCached] = useLocalStorage<tt4b.app.TimeFormat>('analysis_timeFormat', isTimeFormat, 'default')
+    const timeFormat = ref(cached)
+    watch(timeFormat, setCached)
 
     const { data: rows, loading } = useRequest(() => queryRows(target.value), { deps: target, defaultValue: [] })
     useProvide<Context>(NAMESPACE, { target, timeFormat, rows })
