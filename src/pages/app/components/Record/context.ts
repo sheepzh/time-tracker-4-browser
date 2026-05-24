@@ -8,27 +8,27 @@ import {
 } from 'typescript-guard'
 import { reactive, ref, type ShallowRef, toRaw, watch } from "vue"
 import { type RouteLocation, type Router, useRoute, useRouter } from "vue-router"
-import type { DisplayComponent, ReportFilterOption, ReportSort } from "./types"
+import type { DisplayComponent, RecordFilterOption, RecordSort } from "./types"
 
 type Context = {
-    filter: ReportFilterOption
-    sort: ShallowRef<ReportSort>
+    filter: RecordFilterOption
+    sort: ShallowRef<RecordSort>
     comp: ShallowRef<DisplayComponent | undefined>
 }
 
-const NAMESPACE = 'report'
+const NAMESPACE = 'record'
 
-type QueryPartial = PartialPick<ReportFilterOption, 'query' | 'dateRange' | 'mergeDate' | 'siteMerge'>
+type QueryPartial = PartialPick<RecordFilterOption, 'query' | 'dateRange' | 'mergeDate' | 'siteMerge'>
 
-const isSortProp = createStringUnionGuard<ReportSort['prop']>('date', 'host', 'focus', 'run', 'time')
-const isSiteMerge = createStringUnionGuard<Exclude<ReportFilterOption['siteMerge'], undefined>>(
+const isSortProp = createStringUnionGuard<RecordSort['prop']>('date', 'host', 'focus', 'run', 'time')
+const isSiteMerge = createStringUnionGuard<Exclude<RecordFilterOption['siteMerge'], undefined>>(
     'cate', 'domain', 'group',
 )
 
 /**
  * Init the query parameters
  */
-function parseQuery(route: RouteLocation, router: Router): [QueryPartial, ReportSort['prop'] | undefined] {
+function parseQuery(route: RouteLocation, router: Router): [QueryPartial, RecordSort['prop'] | undefined] {
     const routeQuery = route.query
     const { q, mm, md, ds, de, sc } = routeQuery
     const dateStart = isString(ds) ? new Date(Number.parseInt(ds)) : undefined
@@ -46,7 +46,7 @@ function parseQuery(route: RouteLocation, router: Router): [QueryPartial, Report
     return [partial, isSortProp(sc) ? sc : undefined]
 }
 
-type CacheValue = Omit<ReportFilterOption, 'dateRange' | 'readRemote'> & {
+type CacheValue = Omit<RecordFilterOption, 'dateRange' | 'readRemote'> & {
     dateStart?: number
     dateEnd?: number
 }
@@ -61,7 +61,7 @@ const isCacheValue = createObjectGuard<CacheValue>({
     dateEnd: isOptionalInt,
 })
 
-const cvtStorage2Filter = (storage: CacheValue | undefined): ReportFilterOption => {
+const cvtStorage2Filter = (storage: CacheValue | undefined): RecordFilterOption => {
     const { query, dateStart, dateEnd, mergeDate, siteMerge, cateIds, timeFormat } = storage ?? {}
     const now = new Date()
     return {
@@ -75,7 +75,7 @@ const cvtStorage2Filter = (storage: CacheValue | undefined): ReportFilterOption 
     }
 }
 
-const cvtFilter2Storage = (filter: ReportFilterOption): CacheValue => {
+const cvtFilter2Storage = (filter: RecordFilterOption): CacheValue => {
     const { query, dateRange, mergeDate, siteMerge, cateIds, timeFormat } = filter
     const [dateStart, dateEnd] = dateRange instanceof Date ? [dateRange,] : dateRange ?? []
     return {
@@ -87,16 +87,16 @@ const cvtFilter2Storage = (filter: ReportFilterOption): CacheValue => {
     }
 }
 
-export const initReportContext = () => {
+export const initRecordContext = () => {
     const route = useRoute()
     const router = useRouter()
     const [queryFilter, querySort] = parseQuery(route, router)
 
-    const [cachedFilter, setCachedFilter] = useLocalStorage<CacheValue>('report_filter', isCacheValue)
-    const filter = reactive<ReportFilterOption>({ ...cvtStorage2Filter(cachedFilter), ...queryFilter })
+    const [cachedFilter, setCachedFilter] = useLocalStorage<CacheValue>('record_filter', isCacheValue)
+    const filter = reactive<RecordFilterOption>({ ...cvtStorage2Filter(cachedFilter), ...queryFilter })
     watch(() => filter, v => setCachedFilter(cvtFilter2Storage(toRaw(v))), { deep: true })
 
-    const sort = ref<ReportSort>({
+    const sort = ref<RecordSort>({
         order: 'descending',
         prop: querySort ?? 'focus'
     })
@@ -109,8 +109,8 @@ export const initReportContext = () => {
     return context
 }
 
-export const useReportFilter = (): ReportFilterOption => useProvider<Context, 'filter'>(NAMESPACE, "filter").filter
+export const useRecordFilter = (): RecordFilterOption => useProvider<Context, 'filter'>(NAMESPACE, "filter").filter
 
-export const useReportSort = (): ShallowRef<ReportSort> => useProvider<Context, 'sort'>(NAMESPACE, 'sort').sort
+export const useRecordSort = (): ShallowRef<RecordSort> => useProvider<Context, 'sort'>(NAMESPACE, 'sort').sort
 
-export const useReportComponent = () => useProvider<Context, 'comp'>(NAMESPACE, 'comp').comp
+export const useRecordComponent = () => useProvider<Context, 'comp'>(NAMESPACE, 'comp').comp

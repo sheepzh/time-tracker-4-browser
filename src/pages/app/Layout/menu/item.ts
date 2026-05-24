@@ -7,7 +7,7 @@
  */
 
 import { type I18nKey } from '@app/locale'
-import { ANALYSIS_ROUTE, MERGE_ROUTE } from '@app/router/constants'
+import { ANALYSIS_ROUTE, MERGE_ROUTE, RECORD_ROUTE } from '@app/router/constants'
 import { Aim, Connection, HelpFilled, Histogram, Memo, MoreFilled, Rank, SetUp, Stopwatch, Timer, View } from "@element-plus/icons-vue"
 import { Trend } from '@pages/icons'
 import { getGuidePageUrl } from "@util/constant/url"
@@ -53,8 +53,8 @@ export const menuGroups = (): MenuGroup[] => [{
         route: '/data/dashboard',
         icon: Stopwatch,
     }, {
-        title: msg => msg.menu.dataReport,
-        route: '/data/report',
+        title: msg => msg.menu.record,
+        route: RECORD_ROUTE,
         icon: Table,
     }, {
         title: msg => msg.menu.siteAnalysis,

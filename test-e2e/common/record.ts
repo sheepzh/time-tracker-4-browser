@@ -43,7 +43,7 @@ export function parseTime2Sec(timeStr: string | undefined): number | undefined {
 }
 
 export async function readRecordsOfFirstPage(context: LaunchContext) {
-    const recordPage = await context.openAppPage('/data/report')
+    const recordPage = await context.openAppPage('/data/record')
     // At least one record
     await recordPage.waitForSelector('.el-table .el-table__body-wrapper table tbody tr td')
     let records = await recordPage.evaluate(readRecords)

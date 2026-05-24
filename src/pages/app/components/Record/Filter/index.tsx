@@ -14,7 +14,7 @@ import Flex from "@pages/components/Flex"
 import { ElDatePickerShortcut } from '@pages/element-ui/types'
 import { daysAgo } from "@util/time"
 import { defineComponent } from "vue"
-import { useReportFilter } from "../context"
+import { useRecordFilter } from "../context"
 import BatchDelete from "./BatchDelete"
 import DownloadFile from "./DownloadFile"
 import MergeFilterItem from "./MergeFilterItem"
@@ -33,7 +33,7 @@ const dateShortcuts: ElDatePickerShortcut[] = [
 ]
 
 const _default = defineComponent<{}>(() => {
-    const filter = useReportFilter()
+    const filter = useRecordFilter()
 
     return () => (
         <Flex justify="space-between" width="100%" gap={10} wrap>

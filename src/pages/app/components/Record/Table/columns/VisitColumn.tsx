@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-import CompositionTable from "@app/components/Report/components/CompositionTable"
-import { useReportFilter } from "@app/components/Report/context"
-import type { ReportSort } from "@app/components/Report/types"
+import CompositionTable from "@app/components/Record/components/CompositionTable"
+import { useRecordFilter } from "@app/components/Record/context"
+import type { RecordSort } from "@app/components/Record/types"
 import { t } from '@app/locale'
 import TooltipWrapper from '@pages/components/TooltipWrapper'
 import { getComposition } from "@util/stat"
@@ -15,10 +15,10 @@ import { Effect, ElTableColumn, type RenderRowData } from "element-plus"
 import { defineComponent } from "vue"
 
 const VisitColumn = defineComponent(() => {
-    const filter = useReportFilter()
+    const filter = useRecordFilter()
     return () => (
         <ElTableColumn
-            prop={'time' satisfies ReportSort['prop']}
+            prop={'time' satisfies RecordSort['prop']}
             label={t(msg => msg.item.time)}
             minWidth={130}
             align="center"

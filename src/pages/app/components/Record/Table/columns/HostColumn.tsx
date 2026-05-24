@@ -6,9 +6,9 @@
  */
 
 import HostAlert from '@app/components/common/HostAlert'
-import TooltipSiteList from '@app/components/Report/components/TooltipSiteList'
-import { useReportFilter } from '@app/components/Report/context'
-import { ReportSort } from '@app/components/Report/types'
+import TooltipSiteList from '@app/components/Record/components/TooltipSiteList'
+import { useRecordFilter } from '@app/components/Record/context'
+import type { RecordSort } from '@app/components/Record/types'
 import { t } from '@app/locale'
 import Flex from "@pages/components/Flex"
 import TooltipWrapper from '@pages/components/TooltipWrapper'
@@ -18,10 +18,10 @@ import { Effect, ElTableColumn, type RenderRowData } from "element-plus"
 import { defineComponent } from "vue"
 
 const _default = defineComponent(() => {
-    const filter = useReportFilter()
+    const filter = useRecordFilter()
     return () => (
         <ElTableColumn
-            prop={'host' satisfies ReportSort['prop']}
+            prop={'host' satisfies RecordSort['prop']}
             label={t(msg => msg.item.host)}
             minWidth={210}
             sortable="custom"

@@ -7,7 +7,7 @@
 
 import { type App } from "vue"
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from "vue-router"
-import { ANALYSIS_ROUTE, DASHBOARD_ROUTE, LIMIT_ROUTE, MERGE_ROUTE, OPTION_ROUTE, REPORT_ROUTE } from "./constants"
+import { ANALYSIS_ROUTE, DASHBOARD_ROUTE, LIMIT_ROUTE, MERGE_ROUTE, OPTION_ROUTE, RECORD_ROUTE } from "./constants"
 
 const dataRoutes: RouteRecordRaw[] = [
     {
@@ -20,8 +20,8 @@ const dataRoutes: RouteRecordRaw[] = [
         component: () => import('../components/Dashboard')
     },
     {
-        path: REPORT_ROUTE,
-        component: () => import('../components/Report')
+        path: RECORD_ROUTE,
+        component: () => import('../components/Record')
     }, {
         path: ANALYSIS_ROUTE,
         component: () => import('../components/Analysis')

@@ -8,13 +8,13 @@
 import { useXsState } from '@hooks'
 import { defineComponent } from "vue"
 import ContentContainer from '../common/ContentContainer'
-import { initReportContext } from "./context"
+import { initRecordContext } from "./context"
 import Filter from "./Filter"
 import List from "./List"
 import Table from "./Table"
 
 const _default = defineComponent(() => {
-    const { comp } = initReportContext()
+    const { comp } = initRecordContext()
     const isXs = useXsState()
 
     return () => <ContentContainer v-slots={{

@@ -5,7 +5,7 @@ import {
 import { t } from '@app/locale'
 import { getGroupName, isGroup, isSite } from "@util/stat"
 import { cvtDateRange2Str, type DateRange, formatTime, getBirthday } from "@util/time"
-import type { ReportFilterOption, ReportSort } from "./types"
+import type { RecordFilterOption, RecordSort } from "./types"
 
 /**
  * Compute the confirm text for one item to delete
@@ -34,7 +34,7 @@ function computeRangeConfirmText(url: string, dateRange: DateRange): string {
         : t(msg => msg.item.operation.deleteConfirmMsgRange, { url, start, end })
 }
 
-export function computeDeleteConfirmMsg(row: tt4b.stat.Row, filterOption: ReportFilterOption, groupMap: Record<number, chrome.tabGroups.TabGroup>): string {
+export function computeDeleteConfirmMsg(row: tt4b.stat.Row, filterOption: RecordFilterOption, groupMap: Record<number, chrome.tabGroups.TabGroup>): string {
     let name: string | undefined
     if (isGroup(row)) {
         name = getGroupName(groupMap, row)
@@ -49,7 +49,7 @@ export function computeDeleteConfirmMsg(row: tt4b.stat.Row, filterOption: Report
         : computeSingleConfirmText(name, date ?? '')
 }
 
-export async function handleDelete(row: tt4b.stat.Row, filterOption: ReportFilterOption) {
+export async function handleDelete(row: tt4b.stat.Row, filterOption: RecordFilterOption) {
     const { date } = row
     const { mergeDate, dateRange } = filterOption
     if (!mergeDate) {
@@ -72,15 +72,15 @@ export async function handleDelete(row: tt4b.stat.Row, filterOption: ReportFilte
     isGroup(row) && await deleteSiteStatByGroup(row.groupKey, strRange)
 }
 
-const cvtOrderDir = (order: ReportSort['order']): tt4b.common.SortDirection | undefined => {
+const cvtOrderDir = (order: RecordSort['order']): tt4b.common.SortDirection | undefined => {
     if (order === 'ascending') return 'ASC'
     else if (order === 'descending') return 'DESC'
     else return undefined
 }
 
 const cvt2GroupQuery = (
-    { query, mergeDate, dateRange: date }: ReportFilterOption,
-    { prop, order }: ReportSort,
+    { query, mergeDate, dateRange: date }: RecordFilterOption,
+    { prop, order }: RecordSort,
 ): tt4b.stat.GroupQuery => ({
     date: cvtDateRange2Str(date), mergeDate, query,
     sortKey: prop !== 'host' && prop !== 'run' ? prop : undefined,
@@ -88,8 +88,8 @@ const cvt2GroupQuery = (
 })
 
 const cvt2SiteQuery = (
-    { dateRange: date, mergeDate, siteMerge, query, cateIds, readRemote: inclusiveRemote }: ReportFilterOption,
-    { prop, order }: ReportSort,
+    { dateRange: date, mergeDate, siteMerge, query, cateIds, readRemote: inclusiveRemote }: RecordFilterOption,
+    { prop, order }: RecordSort,
 ): tt4b.stat.SiteQuery => ({
     date: cvtDateRange2Str(date), mergeDate,
     mergeHost: siteMerge === 'domain',
@@ -100,15 +100,15 @@ const cvt2SiteQuery = (
 })
 
 const cvt2CateQuery = (
-    { dateRange: date, mergeDate, query, cateIds, readRemote: inclusiveRemote }: ReportFilterOption,
-    { prop, order }: ReportSort,
+    { dateRange: date, mergeDate, query, cateIds, readRemote: inclusiveRemote }: RecordFilterOption,
+    { prop, order }: RecordSort,
 ): tt4b.stat.CateQuery => ({
     date: cvtDateRange2Str(date), mergeDate, query, cateIds, inclusiveRemote,
     sortKey: prop !== 'host' && prop !== 'run' ? prop : undefined,
     sortDirection: cvtOrderDir(order),
 })
 
-export const queryPage = async (filter: ReportFilterOption, sort: ReportSort, page: tt4b.common.PageQuery): Promise<tt4b.common.PageResult<tt4b.stat.Row>> => {
+export const queryPage = async (filter: RecordFilterOption, sort: RecordSort, page: tt4b.common.PageQuery): Promise<tt4b.common.PageResult<tt4b.stat.Row>> => {
     const { siteMerge } = filter
     if (siteMerge === 'group') {
         return await getGroupStatPage({ ...cvt2GroupQuery(filter, sort), ...page })
@@ -119,7 +119,7 @@ export const queryPage = async (filter: ReportFilterOption, sort: ReportSort, pa
     }
 }
 
-export const queryAll = async (filter: ReportFilterOption, sort: ReportSort): Promise<tt4b.stat.Row[]> => {
+export const queryAll = async (filter: RecordFilterOption, sort: RecordSort): Promise<tt4b.stat.Row[]> => {
     const { siteMerge } = filter
     if (siteMerge === 'group') {
         return await listGroupStats(cvt2GroupQuery(filter, sort))

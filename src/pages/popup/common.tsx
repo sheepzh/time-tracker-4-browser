@@ -1,6 +1,6 @@
 import { getWeekStartTime } from "@api/sw/option"
 import { listCateStats, listGroupStats, listSiteStats } from '@api/sw/stat'
-import { REPORT_ROUTE, type ReportQuery } from "@app/router/constants"
+import { RECORD_ROUTE, type RecordQuery } from "@app/router/constants"
 import type { PopupDuration, PopupQuery } from "@popup/types"
 import { isRemainHost } from "@util/constant/remain-host"
 import { getAppPageUrl } from "@util/constant/url"
@@ -41,8 +41,8 @@ export const queryRows = async (param: PopupQuery): Promise<[rows: tt4b.stat.Row
     return [rows, dateRange]
 }
 
-function buildReportQuery(siteType: tt4b.site.Type, date: DateRange | undefined, type: tt4b.core.Dimension): ReportQuery {
-    const query: ReportQuery = {}
+function buildRecordQuery(siteType: tt4b.site.Type, date: DateRange | undefined, type: tt4b.core.Dimension): RecordQuery {
+    const query: RecordQuery = {}
     // Merge host
     siteType === 'merged' && (query.mm = 'domain')
     // Date
@@ -77,8 +77,8 @@ export function calJumpUrl(
             return `http://${host}`
         }
 
-        const query = buildReportQuery(siteType, date, type)
+        const query = buildRecordQuery(siteType, date, type)
         query.q = host
-        return getAppPageUrl(REPORT_ROUTE, query)
+        return getAppPageUrl(RECORD_ROUTE, query)
     }
 }

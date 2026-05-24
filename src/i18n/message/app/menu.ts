@@ -10,7 +10,7 @@ import resource from './menu-resource.json'
 export type MenuMessage = {
     dashboard: string
     data: string
-    dataReport: string
+    record: string
     siteAnalysis: string
     dataClear: string
     behavior: string

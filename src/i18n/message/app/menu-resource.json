@@ -2,7 +2,7 @@
     "zh_CN": {
         "dashboard": "仪表盘",
         "data": "我的数据",
-        "dataReport": "报表明细",
+        "record": "报表明细",
         "siteAnalysis": "站点分析",
         "dataClear": "数据管理",
         "behavior": "上网行为",
@@ -17,7 +17,7 @@
     "zh_TW": {
         "dashboard": "数据总览",
         "data": "我的資料",
-        "dataReport": "報表明細",
+        "record": "報表明細",
         "siteAnalysis": "網站分析",
         "dataClear": "儲存狀況",
         "behavior": "用戶行爲",
@@ -32,7 +32,7 @@
     "en": {
         "dashboard": "Dashboard",
         "data": "My Data",
-        "dataReport": "Record",
+        "record": "Record",
         "siteAnalysis": "Site Analysis",
         "dataClear": "Storage",
         "behavior": "User Behavior",
@@ -47,7 +47,7 @@
     "ja": {
         "dashboard": "ダッシュボード",
         "data": "私のデータ",
-        "dataReport": "報告する",
+        "record": "報告する",
         "siteAnalysis": "ウェブサイト分析",
         "dataClear": "記憶状況",
         "behavior": "ユーザーの行動",
@@ -62,7 +62,7 @@
     "pt_PT": {
         "dashboard": "Painel",
         "data": "Os Meus Dados",
-        "dataReport": "Registos",
+        "record": "Registos",
         "siteAnalysis": "Análise de Sites",
         "dataClear": "Armazenamento",
         "behavior": "Comportamento",
@@ -77,7 +77,7 @@
     "uk": {
         "dashboard": "Огляд",
         "data": "Мої дані",
-        "dataReport": "Записи",
+        "record": "Записи",
         "siteAnalysis": "Аналіз сайту",
         "dataClear": "Стан пам'яті",
         "behavior": "Поведінка",
@@ -92,7 +92,7 @@
     "es": {
         "dashboard": "Tablero",
         "data": "Mis datos",
-        "dataReport": "Registro",
+        "record": "Registro",
         "siteAnalysis": "Análisis de sitios",
         "dataClear": "Estado de la memoria",
         "behavior": "Comportamiento del usuario",
@@ -107,7 +107,7 @@
     "de": {
         "dashboard": "Übersicht",
         "data": "Meine Daten",
-        "dataReport": "Aufzeichnen",
+        "record": "Aufzeichnen",
         "siteAnalysis": "Analysebericht",
         "dataClear": "Speicherstatus",
         "behavior": "Nutzerverhalten",
@@ -122,7 +122,7 @@
     "fr": {
         "dashboard": "Tableau de bord",
         "data": "Mes données",
-        "dataReport": "Enregistrement",
+        "record": "Enregistrement",
         "siteAnalysis": "Analyse du site",
         "dataClear": "Situation de la mémoire",
         "behavior": "Comportement de l'utilisateur",
@@ -137,7 +137,7 @@
     "ru": {
         "dashboard": "Панель Данных",
         "data": "Мои Данные",
-        "dataReport": "Рекорд",
+        "record": "Рекорд",
         "siteAnalysis": "Анализ сайта",
         "dataClear": "Память о ситуации",
         "behavior": "Поведение",
@@ -152,7 +152,7 @@
     "ar": {
         "dashboard": "لوحة التحكم",
         "data": "بياناتي",
-        "dataReport": "تسجيل",
+        "record": "تسجيل",
         "siteAnalysis": "تحليل الموقع",
         "dataClear": "حالة الذاكرة",
         "behavior": "سلوك المستخدم",
@@ -167,7 +167,7 @@
     "tr": {
         "dashboard": "Kontrol Paneli",
         "data": "Verilerim",
-        "dataReport": "Kayıtlı Veriler",
+        "record": "Kayıtlı Veriler",
         "siteAnalysis": "Site Analizi",
         "dataClear": "Depolama",
         "behavior": "Kullanıcı Davranışları",
@@ -182,7 +182,7 @@
     "pl": {
         "dashboard": "Panel",
         "data": "Moje dane",
-        "dataReport": "Wpisy",
+        "record": "Wpisy",
         "siteAnalysis": "Analiza strony",
         "dataClear": "Pamięć",
         "behavior": "Zachowanie użytkownika",
@@ -197,7 +197,7 @@
     "it": {
         "dashboard": "Dashboard",
         "data": "Miei Dati",
-        "dataReport": "Record",
+        "record": "Record",
         "siteAnalysis": "Analisi Sito",
         "dataClear": "Memoria",
         "behavior": "Comportamento Dell'Utente",

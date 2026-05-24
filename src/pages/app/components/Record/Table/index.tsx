@@ -22,8 +22,8 @@ import { cvtDateRange2Str } from '@util/time'
 import { ElLink, ElTable, ElTableColumn, ElText, ElTooltip, type TableInstance } from "element-plus"
 import { computed, defineComponent, ref, watch } from "vue"
 import { queryPage } from "../common"
-import { useReportFilter, useReportSort } from "../context"
-import type { DisplayComponent, ReportFilterOption, ReportSort } from "../types"
+import { useRecordFilter, useRecordSort } from "../context"
+import type { DisplayComponent, RecordFilterOption, RecordSort } from "../types"
 import CateColumn from "./columns/CateColumn"
 import DateColumn from "./columns/DateColumn"
 import GroupColumn from "./columns/GroupColumn"
@@ -41,7 +41,7 @@ async function handleAliasChange(key: tt4b.site.SiteKey, newAlias: string | unde
 
 type ColumnVisible = Record<'index' | 'date' | 'site' | 'cate' | 'group', boolean>
 
-const computeVisible = (filter: ReportFilterOption): ColumnVisible => {
+const computeVisible = (filter: RecordFilterOption): ColumnVisible => {
     const { siteMerge, mergeDate } = filter
     return {
         index: !siteMerge || siteMerge === 'group',
@@ -55,8 +55,8 @@ const computeVisible = (filter: ReportFilterOption): ColumnVisible => {
 const _default = defineComponent((_, ctx) => {
     const rtl = isRtl()
     const [page, setPage] = useState<tt4b.common.PageQuery>({ size: 20, num: 1 })
-    const sort = useReportSort()
-    const filter = useReportFilter()
+    const sort = useRecordSort()
+    const filter = useRecordFilter()
     const visible = computed(() => computeVisible(filter))
     const { data, refresh, loading } = useRequest(() => queryPage(filter, sort.value, page.value), {
         loadingTarget: () => table.value?.$el,
@@ -116,7 +116,7 @@ const _default = defineComponent((_, ctx) => {
                         height="100%"
                         defaultSort={sort.value}
                         onSelection-change={setSelection}
-                        onSort-change={(val: ReportSort) => sort.value = val}
+                        onSort-change={(val: RecordSort) => sort.value = val}
                     >
                         {visible.value.index && <ElTableColumn type="selection" align="center" fixed="left" />}
                         {visible.value.date && <DateColumn />}
@@ -150,7 +150,7 @@ const _default = defineComponent((_, ctx) => {
                         v-slots={{
                             content: () => (
                                 <ElText v-loading={totalLoading.value}>
-                                    {t(msg => msg.report.total, {
+                                    {t(msg => msg.record.total, {
                                         visit: total.value.visit,
                                         focus: periodFormatter(total.value.focus, { format: filter.timeFormat }),
                                     })}
