@@ -24,7 +24,7 @@ import menuMessages, { type MenuMessage } from "./menu"
 import mergeRuleMessages, { type MergeRuleMessage } from "./merge-rule"
 import operationMessages, { type OperationMessage } from './operation'
 import optionMessages, { type OptionMessage } from "./option"
-import reportMessages, { type ReportMessage } from "./report"
+import recordMessages, { type RecordMessage } from "./record"
 import siteManageManages, { type SiteManageMessage } from "./site-manage"
 import timeFormatMessages, { type TimeFormatMessage } from "./time-format"
 import whitelistMessages, { type WhitelistMessage } from "./whitelist"
@@ -34,7 +34,7 @@ export type AppMessage = {
     dataManage: DataManageMessage
     item: ItemMessage
     shared: SharedMessage
-    report: ReportMessage
+    record: RecordMessage
     whitelist: WhitelistMessage
     mergeRule: MergeRuleMessage
     option: OptionMessage
@@ -59,7 +59,7 @@ const MESSAGE_ROOT: MessageRoot<AppMessage> = {
     dataManage: dataManageMessages,
     item: itemMessages,
     shared: sharedMessages,
-    report: reportMessages,
+    record: recordMessages,
     whitelist: whitelistMessages,
     mergeRule: mergeRuleMessages,
     option: optionMessages,

@@ -26,7 +26,7 @@ async function computeBatchDeleteMsg(selected: tt4b.stat.Row[], mergeDate: boole
     }
     if (!example) {
         // Never happen
-        return t(msg => msg.report.batchDelete.noSelectedMsg)
+        return t(msg => msg.record.batchDelete.noSelectedMsg)
     }
     let count2Delete = selected.length ?? 0
     if (mergeDate) {
@@ -54,7 +54,7 @@ async function computeBatchDeleteMsg(selected: tt4b.stat.Row[], mergeDate: boole
     let [startDate, endDate] = dateRange instanceof Date ? [dateRange,] : dateRange ?? []
     if (!startDate && !endDate) {
         // Delete all
-        key = msg => msg.report.batchDelete.confirmMsgAll
+        key = msg => msg.record.batchDelete.confirmMsgAll
     } else {
         const dateFormat = t(msg => msg.calendar.dateFormat)
         startDate = startDate ?? getBirthday()
@@ -63,11 +63,11 @@ async function computeBatchDeleteMsg(selected: tt4b.stat.Row[], mergeDate: boole
         const end = formatTime(endDate, dateFormat)
         if (start === end) {
             // Single date
-            key = msg => msg.report.batchDelete.confirmMsg
+            key = msg => msg.record.batchDelete.confirmMsg
             i18nParam.date = start
         } else {
             // Date range
-            key = msg => msg.report.batchDelete.confirmMsgRange
+            key = msg => msg.record.batchDelete.confirmMsgRange
             i18nParam.start = start
             i18nParam.end = end
         }
@@ -80,7 +80,7 @@ async function handleBatchDelete(displayComp: DisplayComponent | undefined, filt
 
     const selected = displayComp?.getSelected?.() ?? []
     if (!selected?.length) {
-        ElMessage.info(t(msg => msg.report.batchDelete.noSelectedMsg))
+        ElMessage.info(t(msg => msg.record.batchDelete.noSelectedMsg))
         return
     }
     const { dateRange, mergeDate } = filter

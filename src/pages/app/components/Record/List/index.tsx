@@ -76,7 +76,7 @@ const _default = defineComponent<{}>((_, ctx) => {
                 ))}
             </div>
             <p v-loading={loading.value} class={infoCls}>
-                {end.value ? t(msg => msg.report.noMore) : (loading.value ? 'Loading ...' : 'Load More')}
+                {end.value ? t(msg => msg.record.noMore) : (loading.value ? 'Loading ...' : 'Load More')}
             </p>
         </div>
     )

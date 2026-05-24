@@ -10,7 +10,7 @@ import { getWeekStartTime } from '@api/sw/option'
 import { listSiteStats } from '@api/sw/stat'
 import ChartTitle from '@app/components/Dashboard/ChartTitle'
 import { t } from "@app/locale"
-import { REPORT_ROUTE, type ReportQuery } from '@app/router/constants'
+import { RECORD_ROUTE, type RecordQuery } from '@app/router/constants'
 import { useEcharts, useRequest } from "@hooks"
 import Flex from "@pages/components/Flex"
 import { groupBy, sum } from "@util/array"
@@ -44,7 +44,7 @@ const fetchData = async (): Promise<Result> => {
 }
 
 /**
- * Click to jump to the report page
+ * Click to jump to the record page
  *
  * @since 1.1.1
  */
@@ -59,7 +59,7 @@ function handleClick(value: ChartValue): void {
     const currentDay = parseInt(currentDate.substring(6, 8))
     const currentTs = (new Date(currentYear, currentMonth, currentDay).getTime() + 1000).toString()
 
-    const url = getAppPageUrl(REPORT_ROUTE, { ds: currentTs, de: currentTs } satisfies ReportQuery)
+    const url = getAppPageUrl(RECORD_ROUTE, { ds: currentTs, de: currentTs } satisfies RecordQuery)
     createTabAfterCurrent(url)
 }
 

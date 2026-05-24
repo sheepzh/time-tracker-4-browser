@@ -16,7 +16,7 @@ import { ICON_BTN_STYLE } from "./common"
 
 const _default = defineComponent(() => {
     const filter = useReportFilter()
-    const content = computed(() => t(msg => msg.report.remoteReading[filter.readRemote ? 'on' : 'off']))
+    const content = computed(() => t(msg => msg.record.remoteReading[filter.readRemote ? 'on' : 'off']))
     const { data: visible } = useRequest(() => checkAuth().then(errMsg => !errMsg), { defaultValue: false })
 
     return () => (

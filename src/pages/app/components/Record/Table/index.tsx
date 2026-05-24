@@ -150,7 +150,7 @@ const _default = defineComponent((_, ctx) => {
                         v-slots={{
                             content: () => (
                                 <ElText v-loading={totalLoading.value}>
-                                    {t(msg => msg.report.total, {
+                                    {t(msg => msg.record.total, {
                                         visit: total.value.visit,
                                         focus: periodFormatter(total.value.focus, { format: filter.timeFormat }),
                                     })}

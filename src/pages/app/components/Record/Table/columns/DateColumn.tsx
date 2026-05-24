@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import type { ReportSort } from '@app/components/Report/types'
+import type { ReportSort } from '@app/components/Record/types'
 import { t } from '@app/locale'
 import { cvt2LocaleTime } from '@app/util/time'
 import { ElTableColumn, RenderRowData } from "element-plus"

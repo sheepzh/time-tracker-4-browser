@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-import resource from './report-resource.json'
+import resource from './record-resource.json'
 
-export type ReportMessage = {
+export type RecordMessage = {
     exportFileName: string
     total: string
     batchDelete: {
@@ -29,6 +29,6 @@ export type ReportMessage = {
     noMore: string
 }
 
-const _default: Messages<ReportMessage> = resource
+const _default: Messages<RecordMessage> = resource
 
 export default _default

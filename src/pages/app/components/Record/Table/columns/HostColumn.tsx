@@ -6,9 +6,9 @@
  */
 
 import HostAlert from '@app/components/common/HostAlert'
-import TooltipSiteList from '@app/components/Report/components/TooltipSiteList'
-import { useReportFilter } from '@app/components/Report/context'
-import { ReportSort } from '@app/components/Report/types'
+import TooltipSiteList from '@app/components/Record/components/TooltipSiteList'
+import { useReportFilter } from '@app/components/Record/context'
+import { ReportSort } from '@app/components/Record/types'
 import { t } from '@app/locale'
 import Flex from "@pages/components/Flex"
 import TooltipWrapper from '@pages/components/TooltipWrapper'

@@ -30,7 +30,7 @@ function computeFileName(filterParam: ReportFilterOption): string {
     const { dateRange, siteMerge, mergeDate, timeFormat } = filterParam
     const [ds, de] = dateRange instanceof Date ? [dateRange,] : dateRange ?? []
     const parts = [
-        t(msg => msg.report.exportFileName),
+        t(msg => msg.record.exportFileName),
         ds && formatTimeYMD(ds),
         de && formatTimeYMD(de),
         mergeDate && t(msg => msg.shared.merge.mergeMethod.date),

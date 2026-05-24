@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-import CompositionTable from "@app/components/Report/components/CompositionTable"
-import { useReportFilter } from "@app/components/Report/context"
-import type { ReportSort } from "@app/components/Report/types"
+import CompositionTable from "@app/components/Record/components/CompositionTable"
+import { useReportFilter } from "@app/components/Record/context"
+import type { ReportSort } from "@app/components/Record/types"
 import { t } from '@app/locale'
 import TooltipWrapper from '@pages/components/TooltipWrapper'
 import { getComposition } from "@util/stat"
