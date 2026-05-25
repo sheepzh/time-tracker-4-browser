@@ -105,7 +105,6 @@
         "noMore": "Não mais"
     },
     "uk": {
-        "exportFileName": "My_Browsing_Time",
         "total": "Всього відвідувань: {visit} разів, загальна тривалість: {focus}",
         "batchDelete": {
             "noSelectedMsg": "Спершу виберіть рядок, який ви хочете видалити",
@@ -251,7 +250,6 @@
         "noMore": "Daha Fazla Veri Yok"
     },
     "pl": {
-        "exportFileName": "My_Browsing_Time",
         "total": "Całkowita liczba wizyt: {visit}, całkowity czas trwania: {focus}",
         "batchDelete": {
             "noSelectedMsg": "Proszę najpierw wybrać wiersz, który chcesz usunąć z tabeli",
@@ -272,7 +270,6 @@
         "noMore": "Nie więcej"
     },
     "it": {
-        "exportFileName": "My_Browsing_Time",
         "total": "Visite totali: {visit} volte, durata totale: {focus}",
         "batchDelete": {
             "noSelectedMsg": "Si prega di selezionare la riga che si desidera eliminare nella prima tabella",
