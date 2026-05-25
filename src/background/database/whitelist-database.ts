@@ -23,6 +23,10 @@ class WhitelistDatabase extends BaseDatabase implements BrowserMigratable<'__whi
         return exist || []
     }
 
+    async saveAll(toSave: string[]): Promise<void> {
+        await this.update(toSave)
+    }
+
     async add(white: string): Promise<void> {
         const exist = await this.selectAll()
         if (exist.includes(white)) return

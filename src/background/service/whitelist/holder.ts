@@ -19,8 +19,8 @@ class WhitelistHolder {
         this.rebuild()
     }
 
-    private async rebuild() {
-        const whitelist = await db.selectAll()
+    private async rebuild(whitelist?: string[]) {
+        whitelist ??= await db.selectAll()
         this.processor.setWhitelist(whitelist)
         this.postHandlers.forEach(handler => handler(whitelist))
     }
@@ -36,6 +36,11 @@ class WhitelistHolder {
 
     all(): Promise<string[]> {
         return db.selectAll()
+    }
+
+    async saveAll(toSave: string[]): Promise<void> {
+        await db.saveAll(toSave)
+        await this.rebuild(toSave)
     }
 
     async remove(white: string): Promise<void> {

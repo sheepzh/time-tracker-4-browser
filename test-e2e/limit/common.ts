@@ -1,4 +1,5 @@
 import type { ElementHandle, Frame, Page } from "puppeteer"
+import { fillCondEditor } from "../common/cond-editor"
 import { sleep } from "../common/util"
 
 export async function waitForLimitFrame(page: Page, timeout = 5000): Promise<Frame> {
@@ -30,15 +31,7 @@ export async function createLimitRule(rule: tt4b.limit.Rule, page: Page) {
     await new Promise(resolve => setTimeout(resolve, 400))
     await page.click('.el-dialog .el-button.el-button--primary')
     // 2. Fill the condition
-    const configInput = await page.$('.el-dialog #site-input')
-    for (const url of rule.cond || []) {
-        await configInput!.focus()
-        await page.keyboard.type(url)
-        await sleep(.1)
-        await page.keyboard.press('ArrowDown')
-        await sleep(.1)
-        await page.keyboard.press('Enter')
-    }
+    await fillCondEditor(page, rule.cond || [], '.el-dialog')
     await sleep(.1)
     await page.click('.el-dialog .el-button.el-button--primary')
     // 3. Fill the rule

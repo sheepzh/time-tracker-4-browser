@@ -15,7 +15,4 @@ export {
     APP_RECORD_ROUTE as RECORD_ROUTE, type AppLimitQuery as LimitQuery, type AppRecordQuery as RecordQuery
 } from "@/shared/route"
 
-/**
- * @since 1.8.0
- */
-export const MERGE_ROUTE = '/additional/rule-merge'
+export const RULE_ROUTE = '/additional/rule'

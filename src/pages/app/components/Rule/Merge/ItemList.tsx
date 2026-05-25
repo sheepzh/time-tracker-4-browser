@@ -14,7 +14,7 @@ import { defineComponent, ref } from "vue"
 import AddButton from './components/AddButton'
 import Item, { type ItemInstance } from './components/Item'
 
-const _default = defineComponent(() => {
+const _default = defineComponent<{}>(() => {
     const { data: items, refresh } = useRequest(listAllMergeRules, { defaultValue: [] })
     const handleSucc = () => {
         ElMessage.success(t(msg => msg.operation.successMsg))
@@ -29,7 +29,7 @@ const _default = defineComponent(() => {
     const itemRefs = ref<ItemInstance[]>([])
 
     const handleDelete = (origin: string) => {
-        const message = t(msg => msg.mergeRule.removeConfirmMsg, { origin })
+        const message = t(msg => msg.rule.merge.removeConfirmMsg, { origin })
         const title = t(msg => msg.operation.confirmTitle)
         ElMessageBox.confirm(message, title).then(() => remove(origin))
     }
@@ -37,7 +37,7 @@ const _default = defineComponent(() => {
     async function handleChange(origin: string, merged: string | number, index: number): Promise<void> {
         const hasDuplicate = items.value.some((o, i) => o.origin === origin && i !== index)
         if (hasDuplicate) {
-            ElMessage.warning(t(msg => msg.mergeRule.duplicateMsg, { origin }))
+            ElMessage.warning(t(msg => msg.rule.merge.duplicateMsg, { origin }))
             itemRefs.value?.[index]?.forceEdit?.()
             return
         }
@@ -52,11 +52,11 @@ const _default = defineComponent(() => {
     const handleAdd = async (origin: string, merged: string | number): Promise<boolean> => {
         const alreadyExist = items.value.some(item => item.origin === origin)
         if (alreadyExist) {
-            ElMessage.warning(t(msg => msg.mergeRule.duplicateMsg, { origin }))
+            ElMessage.warning(t(msg => msg.rule.merge.duplicateMsg, { origin }))
             return false
         }
         const title = t(msg => msg.operation.confirmTitle)
-        const content = t(msg => msg.mergeRule.addConfirmMsg, { origin })
+        const content = t(msg => msg.rule.merge.addConfirmMsg, { origin })
         try {
             await ElMessageBox.confirm(content, title, { dangerouslyUseHTMLString: true })
             add({ origin, merged })

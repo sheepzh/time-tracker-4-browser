@@ -56,7 +56,8 @@ export async function createTabAfterCurrent(url: string, currentTab?: ChromeTab)
 }
 
 export function listTabs(query?: chrome.tabs.QueryInfo): Promise<ChromeTab[]> {
-    query = query || {}
+    query ??= {}
+    if (IS_MV3) return chrome.tabs.query(query)
     return new Promise(resolve => chrome.tabs.query(query, tabs => {
         handleError("listTabs")
         resolve(tabs || [])

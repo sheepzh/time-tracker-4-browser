@@ -1141,6 +1141,7 @@ declare namespace tt4b {
             // Whitelist
             & _MakeRegistry<'whitelist.all', undefined, string[]>
             & _MakeRegistry<'whitelist.add' | 'whitelist.delete', string>
+            & _MakeRegistry<'whitelist.save', string[]>
             & _MakeRegistry<'whitelist.contain', { host: string; url: string }, boolean>
             // Backup
             & _MakeRegistry<'backup.sync' | 'backup.checkAuth', undefined, string | undefined>

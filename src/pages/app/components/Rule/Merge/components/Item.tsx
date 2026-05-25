@@ -26,9 +26,9 @@ export type ItemInstance = {
 
 function computeMergeTxt(mergedVal: number | string,): string {
     if (typeof mergedVal === 'number') {
-        return t(msg => msg.mergeRule.tagResult.level, { level: mergedVal + 1 })
+        return t(msg => msg.rule.merge.tagResult.level, { level: mergedVal + 1 })
     }
-    if (!mergedVal) return t(msg => msg.mergeRule.tagResult.blank)
+    if (!mergedVal) return t(msg => msg.rule.merge.tagResult.blank)
     return mergedVal
 }
 

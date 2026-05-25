@@ -113,6 +113,7 @@ class MessageDispatcher {
             .register('whitelist.all', () => whitelistHolder.all())
             .register('whitelist.add', white => whitelistHolder.add(white))
             .register('whitelist.delete', white => whitelistHolder.remove(white))
+            .register('whitelist.save', list => whitelistHolder.saveAll(list))
             // Merge rule
             .register('merge.all', () => mergeRuleDatabase.selectAll())
             .register('merge.delete', origin => mergeRuleDatabase.remove(origin))

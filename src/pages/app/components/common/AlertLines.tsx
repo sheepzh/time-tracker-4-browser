@@ -13,26 +13,21 @@ export type AlertLinesProps = {
     type?: AlertProps['type']
 }
 
-const AlertLines: FunctionalComponent<AlertLinesProps> = ({ lines, title, type }) => {
-    return (
-        <ElAlert
-            key={type}
-            type={type}
-            title={typeof title === 'string' ? title : t(title)}
-            closable={false}
-            style={STYLE}
-        >
-            {lines?.map((l, i) => (
-                <li key={i}>
-                    {Array.isArray(l)
-                        ? tN(l[0], l[1])
-                        : (typeof l === 'string' ? l : t(l))}
-                </li>
-            ))}
-        </ElAlert>
-    )
-}
-
+const AlertLines: FunctionalComponent<AlertLinesProps> = ({ lines, title, type }) => (
+    <ElAlert
+        key={type}
+        type={type}
+        title={typeof title === 'string' ? title : t(title)}
+        closable={false}
+        style={STYLE}
+    >
+        {lines?.map((l, i) => (
+            <li key={i}>
+                {Array.isArray(l) ? tN(l[0], l[1]) : (typeof l === 'string' ? l : t(l))}
+            </li>
+        ))}
+    </ElAlert>
+)
 AlertLines.displayName = 'AlertLines'
 
 export default AlertLines

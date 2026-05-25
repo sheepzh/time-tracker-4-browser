@@ -21,13 +21,12 @@ import habitMessages, { type HabitMessage } from "./habit"
 import helpUsMessages, { type HelpUsMessage } from "./help-us"
 import limitMessages, { type LimitMessage } from "./limit"
 import menuMessages, { type MenuMessage } from "./menu"
-import mergeRuleMessages, { type MergeRuleMessage } from "./merge-rule"
 import operationMessages, { type OperationMessage } from './operation'
 import optionMessages, { type OptionMessage } from "./option"
 import recordMessages, { type RecordMessage } from "./record"
+import ruleMessages, { type RuleMessage } from "./rule"
 import siteManageManages, { type SiteManageMessage } from "./site-manage"
 import timeFormatMessages, { type TimeFormatMessage } from "./time-format"
-import whitelistMessages, { type WhitelistMessage } from "./whitelist"
 
 export type AppMessage = {
     about: AboutMessage
@@ -35,8 +34,7 @@ export type AppMessage = {
     item: ItemMessage
     shared: SharedMessage
     record: RecordMessage
-    whitelist: WhitelistMessage
-    mergeRule: MergeRuleMessage
+    rule: RuleMessage
     option: OptionMessage
     analysis: AnalysisMessage
     menu: MenuMessage
@@ -60,8 +58,7 @@ const MESSAGE_ROOT: MessageRoot<AppMessage> = {
     item: itemMessages,
     shared: sharedMessages,
     record: recordMessages,
-    whitelist: whitelistMessages,
-    mergeRule: mergeRuleMessages,
+    rule: ruleMessages,
     option: optionMessages,
     analysis: analysisMessages,
     menu: menuMessages,

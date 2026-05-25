@@ -7,7 +7,7 @@
 
 import { type App } from "vue"
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from "vue-router"
-import { ANALYSIS_ROUTE, DASHBOARD_ROUTE, LIMIT_ROUTE, MERGE_ROUTE, OPTION_ROUTE, RECORD_ROUTE } from "./constants"
+import { ANALYSIS_ROUTE, DASHBOARD_ROUTE, LIMIT_ROUTE, OPTION_ROUTE, RECORD_ROUTE, RULE_ROUTE } from "./constants"
 
 const dataRoutes: RouteRecordRaw[] = [
     {
@@ -47,16 +47,13 @@ const behaviorRoutes: RouteRecordRaw[] = [
 const additionalRoutes: RouteRecordRaw[] = [
     {
         path: '/additional',
-        redirect: '/additional/whitelist'
+        redirect: RULE_ROUTE,
+    }, {
+        path: RULE_ROUTE,
+        component: () => import('../components/Rule')
     }, {
         path: '/additional/site-manage',
         component: () => import('../components/SiteManage')
-    }, {
-        path: '/additional/whitelist',
-        component: () => import('../components/Whitelist')
-    }, {
-        path: MERGE_ROUTE,
-        component: () => import('../components/RuleMerge')
     }, {
         path: OPTION_ROUTE,
         component: () => import('../components/Option')

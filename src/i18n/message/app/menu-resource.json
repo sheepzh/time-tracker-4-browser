@@ -9,8 +9,7 @@
         "habit": "上网习惯",
         "additional": "附加功能",
         "siteManage": "网站管理",
-        "whitelist": "白名单管理",
-        "mergeRule": "子域名合并",
+        "rule": "规则管理",
         "other": "其他",
         "about": "关于"
     },
@@ -24,8 +23,6 @@
         "habit": "習慣分析",
         "additional": "附加功能",
         "siteManage": "網站管理",
-        "whitelist": "白名單",
-        "mergeRule": "網站合併規則",
         "other": "其他",
         "about": "關於"
     },
@@ -39,8 +36,7 @@
         "habit": "Habits",
         "additional": "Additional Features",
         "siteManage": "Site Management",
-        "whitelist": "Whitelist",
-        "mergeRule": "Merge-site Rules",
+        "rule": "Rules",
         "other": "Other Features",
         "about": "About"
     },
@@ -54,8 +50,6 @@
         "habit": "閲覧の習慣",
         "additional": "その他の機能",
         "siteManage": "ウェブサイト管理",
-        "whitelist": "Webホワイトリスト",
-        "mergeRule": "ドメイン合併",
         "other": "その他の機能",
         "about": "について"
     },
@@ -69,8 +63,6 @@
         "habit": "Hábitos",
         "additional": "Funcionalidades",
         "siteManage": "Gestão de Sites",
-        "whitelist": "Lista Branca",
-        "mergeRule": "Regras de Agrupamento",
         "other": "Outras Opções",
         "about": "Sobre"
     },
@@ -84,8 +76,6 @@
         "habit": "Звички",
         "additional": "Додаткові функції",
         "siteManage": "Керування сайтами",
-        "whitelist": "Білий список",
-        "mergeRule": "Правила об'єднання сайтів",
         "other": "Інші функції",
         "about": "Про нас"
     },
@@ -99,8 +89,6 @@
         "habit": "Hábitos",
         "additional": "Funciones adicionales",
         "siteManage": "Gestión de sitios",
-        "whitelist": "Lista blanca",
-        "mergeRule": "Reglas de fusión de sitios",
         "other": "Otras Funciones",
         "about": "Acerca de"
     },
@@ -114,8 +102,6 @@
         "habit": "Gewohnheit",
         "additional": "Zusatzfunktionen",
         "siteManage": "Websites",
-        "whitelist": "Whitelist",
-        "mergeRule": "Regeln zusammenführen",
         "other": "Andere Eigenschaften",
         "about": "Über uns"
     },
@@ -129,8 +115,6 @@
         "habit": "Habitudes",
         "additional": "Fonctionnalités supplémentaires",
         "siteManage": "Gestion des sites",
-        "whitelist": "Liste blanche",
-        "mergeRule": "Fusionner les règles du site",
         "other": "Autres fonctionnalités",
         "about": "À propos"
     },
@@ -144,8 +128,6 @@
         "habit": "Привычки",
         "additional": "Дополнительный",
         "siteManage": "Управление сайтом",
-        "whitelist": "Белый список",
-        "mergeRule": "Объединение сайтов",
         "other": "Другие особенности",
         "about": "О нас"
     },
@@ -159,8 +141,6 @@
         "habit": "العادات",
         "additional": "ميزات إضافية",
         "siteManage": "أدوار النظام",
-        "whitelist": "القائمة البيضاء",
-        "mergeRule": "دمج قواعد الموقع",
         "other": "مميزات اخزي",
         "about": "حول"
     },
@@ -174,8 +154,6 @@
         "habit": "Alışkanlıklar",
         "additional": "Ek Özellikler",
         "siteManage": "Site Yönetimi",
-        "whitelist": "Beyaz Liste",
-        "mergeRule": "Birleştirme Kuralları",
         "other": "Diğer Özellikler",
         "about": "Hakkımızda"
     },
@@ -189,8 +167,6 @@
         "habit": "Nawyki",
         "additional": "Dodatkowe funkcje",
         "siteManage": "Zarządzanie stronami",
-        "whitelist": "Whitelista",
-        "mergeRule": "Reguły łączenia stron",
         "other": "Pozostałe funkcje",
         "about": "O rozszerzeniu"
     },
@@ -203,8 +179,6 @@
         "habit": "Abitudini",
         "additional": "Funzionalità aggiuntive",
         "siteManage": "Gestione del sito",
-        "whitelist": "Whitelist",
-        "mergeRule": "Raggruppa regole dei siti",
         "other": "Altre funzioni",
         "about": "Info su"
     }
