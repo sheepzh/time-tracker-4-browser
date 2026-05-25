@@ -17,8 +17,7 @@ export type MenuMessage = {
     habit: string
     additional: string
     siteManage: string
-    whitelist: string
-    mergeRule: string
+    rule: string
     other: string
     about: string
 }

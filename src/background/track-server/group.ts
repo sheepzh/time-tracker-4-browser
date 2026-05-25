@@ -10,7 +10,7 @@ function handleTabGroupsEnabled(option: tt4b.option.TrackingOption) {
         chrome.tabGroups.onRemoved.removeListener(handleRemove)
         chrome.tabGroups.onRemoved.addListener(handleRemove)
     } catch (e) {
-        console.warn('failed to handle event: enableTabGroup', e)
+        console.info('failed to handle event: enableTabGroup', e)
     }
 }
 

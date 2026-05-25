@@ -34,18 +34,18 @@ const _default = defineComponent<Props>(props => {
             else return mergedVal
         },
         set(val: string) {
-            const newVal = tryParseInteger(val?.trim())[1]
+            const newVal = tryParseInteger(val.trim())[1]
             setMerged(typeof newVal === 'number' ? newVal - 1 : newVal)
         },
     })
 
     const handleSave = () => {
         const originVal = origin.value
-        const mergedVal = merged.value
-        if (originVal && mergedVal && isValidHost(originVal)) {
+        const mergedVal = merged.value ?? ''
+        if (originVal && isValidHost(originVal)) {
             props.onSave?.(originVal, mergedVal)
         } else {
-            ElMessage.warning(t(msg => msg.mergeRule.errorOrigin))
+            ElMessage.warning(t(msg => msg.rule.merge.errorOrigin))
         }
     }
 
@@ -59,7 +59,7 @@ const _default = defineComponent<Props>(props => {
         <Box style={{ marginInlineEnd: props.end ? 'auto' : undefined }}>
             <ElInput
                 modelValue={origin.value}
-                placeholder={t(msg => msg.mergeRule.originPlaceholder)}
+                placeholder={t(msg => msg.rule.merge.originPlaceholder)}
                 clearable
                 onClear={() => setOrigin('')}
                 onInput={setOrigin}
@@ -68,7 +68,7 @@ const _default = defineComponent<Props>(props => {
             />
             <ElInput
                 modelValue={mergedTxt.value}
-                placeholder={t(msg => msg.mergeRule.mergedPlaceholder)}
+                placeholder={t(msg => msg.rule.merge.mergedPlaceholder)}
                 clearable
                 onClear={() => mergedTxt.value = ''}
                 onInput={val => mergedTxt.value = val}

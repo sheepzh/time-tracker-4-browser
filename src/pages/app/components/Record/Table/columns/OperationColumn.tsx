@@ -118,7 +118,7 @@ const _default = defineComponent<Props>(({ onDelete }) => {
                         buttonIcon={Plus}
                         buttonType="warning"
                         buttonText={t(msg => msg.item.operation.add2Whitelist)}
-                        confirmText={t(msg => msg.whitelist.addConfirmMsg, { url: row.siteKey?.host })}
+                        confirmText={t(msg => msg.rule.white.addConfirmMsg, { url: row.siteKey?.host })}
                         onConfirm={() => onAddWhitelist(row.siteKey.host)}
                     />
                 )}
@@ -128,7 +128,7 @@ const _default = defineComponent<Props>(({ onDelete }) => {
                         buttonIcon={Open}
                         buttonType="primary"
                         buttonText={t(msg => msg.button.enable)}
-                        confirmText={t(msg => msg.whitelist.removeConfirmMsg, { url: row.siteKey?.host })}
+                        confirmText={t(msg => msg.rule.white.removeConfirmMsg, { url: row.siteKey?.host })}
                         onConfirm={() => onRemoveWhitelist(row.siteKey.host)}
                     />
                 )}

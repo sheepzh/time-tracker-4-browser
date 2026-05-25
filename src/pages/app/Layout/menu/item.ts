@@ -7,16 +7,13 @@
  */
 
 import { type I18nKey } from '@app/locale'
-import { ANALYSIS_ROUTE, MERGE_ROUTE, RECORD_ROUTE } from '@app/router/constants'
-import { Aim, Connection, HelpFilled, Histogram, Memo, MoreFilled, Rank, SetUp, Stopwatch, Timer, View } from "@element-plus/icons-vue"
-import { Trend } from '@pages/icons'
+import { ANALYSIS_ROUTE, RECORD_ROUTE, RULE_ROUTE } from '@app/router/constants'
+import {
+    Aim, Connection, HelpFilled, Histogram, Memo, MoreFilled, SetUp, Stopwatch, Timer, View,
+} from "@element-plus/icons-vue"
+import { About, Database, Rule, Table, Trend, Website } from '@pages/icons'
 import { getGuidePageUrl } from "@util/constant/url"
 import { type Component } from 'vue'
-import About from "../icons/About"
-import Database from "../icons/Database"
-import Table from "../icons/Table"
-import Website from "../icons/Website"
-import Whitelist from "../icons/Whitelist"
 
 type MenuBase = {
     title: I18nKey
@@ -88,14 +85,9 @@ export const menuGroups = (): MenuGroup[] => [{
         icon: Website,
         mobile: false,
     }, {
-        title: msg => msg.menu.whitelist,
-        route: '/additional/whitelist',
-        icon: Whitelist,
-        mobile: false,
-    }, {
-        title: msg => msg.menu.mergeRule,
-        route: MERGE_ROUTE,
-        icon: Rank,
+        title: msg => msg.menu.rule,
+        route: RULE_ROUTE,
+        icon: Rule,
         mobile: false,
     }, {
         title: msg => msg.base.option,

@@ -20,6 +20,8 @@ type PartialPick<T, K extends keyof T> = Partial<Pick<T, K>>
 
 type RequiredPick<T, K extends keyof T> = Required<Pick<T, K>>
 
+type Exactly<T, U> = T & Record<Exclude<keyof U, keyof T>, never>
+
 /**
  * Tuple with length
  *

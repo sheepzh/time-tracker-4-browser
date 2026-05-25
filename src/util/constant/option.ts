@@ -26,7 +26,8 @@ export const DEFAULT_TRACKING: tt4b.option.TrackingRequired = {
     // 10 minutes
     autoPauseInterval: 600,
     countLocalFiles: false,
-    countTabGroup: true,
+    // Additional permission required, so default to false
+    countTabGroup: false,
     weekStart: 'default',
     storage: 'classic',
 } as const
