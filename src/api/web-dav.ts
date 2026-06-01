@@ -34,7 +34,7 @@ export async function judgeDirExist(context: WebDAVContext, dirPath: string): Pr
     const method = 'PROPFIND'
     headers.append('Accept', 'text/plain,application/xml')
     headers.append('Depth', '1')
-    const response = await fetch(url, { method, headers })
+    const response = await fetch(url, { method, headers, credentials: 'omit' })
     const status = response?.status
     if (status == 207) {
         return true
@@ -62,7 +62,7 @@ export async function makeDirs(context: WebDAVContext, dirPath: string) {
         if (!exists) {
             const url = `${endpoint}/${currentPath}`
             const headers = authHeaders(auth)
-            const response = await fetch(url, { method: 'MKCOL', headers })
+            const response = await fetch(url, { method: 'MKCOL', headers, credentials: 'omit' })
             handleWriteResponse(response)
         }
     }
@@ -72,7 +72,7 @@ export async function deleteDir(context: WebDAVContext, dirPath: string) {
     const { auth, endpoint } = context || {}
     const url = `${endpoint}/${dirPath}`
     const headers = authHeaders(auth)
-    const response = await fetchDelete(url, { headers })
+    const response = await fetchDelete(url, { headers, credentials: 'omit' })
     const status = response.status
     if (status === 403) {
         throw new Error("Unauthorized to delete directory")
@@ -87,7 +87,7 @@ export async function writeFile(context: WebDAVContext, filePath: string, conten
     const headers = authHeaders(auth)
     headers.set("Content-Type", "application/octet-stream")
     const url = `${endpoint}/${filePath}`
-    const response = await fetch(url, { headers, method: 'put', body: content })
+    const response = await fetch(url, { headers, method: 'put', body: content, credentials: 'omit' })
     handleWriteResponse(response)
 }
 
@@ -106,7 +106,7 @@ export async function readFile(context: WebDAVContext, filePath: string): Promis
     const headers = authHeaders(auth)
     const url = `${endpoint}/${filePath}`
     try {
-        const response = await fetchGet(url, { headers })
+        const response = await fetchGet(url, { headers, credentials: 'omit' })
         const status = response?.status
         if (status === 200) {
             return response.text()
