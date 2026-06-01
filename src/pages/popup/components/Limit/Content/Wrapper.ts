@@ -145,7 +145,7 @@ class Wrapper extends EchartsWrapper<tt4b.limit.Item, EcOption> {
         const [timeUsed, timeLimit] = time
         const timeMax = timeLimit ? timeLimit * MILL_PER_SECOND : 0
         const timeLabel = timeMax
-            ? t(msg => msg.content.limit.remain, { remaining: formatPeriodCommon(timeMax - timeUsed, true) })
+            ? t(msg => msg.content.limit.remain, { remaining: formatPeriodCommon(Math.max(0, timeMax - timeUsed), true) })
             : noLimitText
         const timeOpts: GaugeOptions = {
             name: 'time', center: leftPos,

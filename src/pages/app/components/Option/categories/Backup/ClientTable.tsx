@@ -53,7 +53,7 @@ const _default = defineComponent<{ onSelect: ArgCallback<tt4b.backup.Client> }>(
             maxHeight="40vh"
             class="backup-client-table"
             highlightCurrentRow
-            onCurrent-change={(row: tt4b.backup.Client) => handleRowSelect(row)}
+            onCurrent-change={row => row && handleRowSelect(row)}
             emptyText={loading.value ? 'Loading data ...' : 'Empty data'}
         >
             <ElTableColumn

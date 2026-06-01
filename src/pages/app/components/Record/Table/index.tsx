@@ -20,6 +20,7 @@ import { siteEqual } from "@util/site"
 import { getAlias, isSite } from "@util/stat"
 import { cvtDateRange2Str } from '@util/time'
 import { ElLink, ElTable, ElTableColumn, ElText, ElTooltip, type TableInstance } from "element-plus"
+import { createObjectGuard, createStringUnionGuard, isAny } from 'typescript-guard'
 import { computed, defineComponent, ref, watch } from "vue"
 import { queryPage } from "../common"
 import { useRecordFilter, useRecordSort } from "../context"
@@ -51,6 +52,13 @@ const computeVisible = (filter: RecordFilterOption): ColumnVisible => {
         group: siteMerge === 'group',
     }
 }
+
+const isRecordSort = createObjectGuard<RecordSort>({
+    order: createStringUnionGuard<RecordSort['order']>('ascending', 'descending'),
+    prop: createStringUnionGuard<RecordSort['prop']>('date', 'host', 'focus', 'run', 'time'),
+    init: isAny,
+    silent: isAny,
+})
 
 const _default = defineComponent((_, ctx) => {
     const rtl = isRtl()
@@ -116,7 +124,7 @@ const _default = defineComponent((_, ctx) => {
                         height="100%"
                         defaultSort={sort.value}
                         onSelection-change={setSelection}
-                        onSort-change={(val: RecordSort) => sort.value = val}
+                        onSort-change={val => isRecordSort(val) && (sort.value = val)}
                     >
                         {visible.value.index && <ElTableColumn type="selection" align="center" fixed="left" />}
                         {visible.value.date && <DateColumn />}

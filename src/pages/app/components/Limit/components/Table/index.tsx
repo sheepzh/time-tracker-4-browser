@@ -69,7 +69,7 @@ const _default = defineComponent((_, ctx) => {
     }, { defaultValue: false })
 
     ctx.expose({
-        getSelected: () => table.value?.getSelectionRows?.() ?? []
+        getSelected: () => (table.value?.getSelectionRows?.() ?? []) as tt4b.limit.Item[],
     } satisfies LimitInstance)
 
     return () => (
@@ -80,7 +80,7 @@ const _default = defineComponent((_, ctx) => {
             height="100%"
             data={list.value}
             defaultSort={sort.value}
-            onSort-change={(val: Sort) => setSort({ prop: val?.prop, order: val?.order })}
+            onSort-change={val => val.prop && val.order && setSort({ prop: val?.prop, order: val?.order })}
         >
             <ElTableColumn type="selection" align="center" fixed="left" />
             <ElTableColumn

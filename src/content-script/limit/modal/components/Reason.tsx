@@ -25,68 +25,65 @@ const renderBaseItems = (rule: tt4b.limit.Rule | undefined, url: string) => <>
     </ElDescriptionsItem>
 </>
 
-const TimeDescriptions = defineComponent({
-    props: {
-        // Seconds
-        time: Number,
-        // Milliseconds
-        waste: Number,
-        count: Number,
-        visit: Number,
-        ruleLabel: String,
-        dataLabel: String,
-    },
-    setup(props) {
-        const { reason, url, delayDuration } = useApp()
-        const rule = useRule()
-        const { style, size } = useDescriptions()
+type DescriptionProps = {
+    time?: number
+    waste?: number
+    count?: number
+    visit?: number
+    ruleLabel?: string
+    dataLabel?: string
+}
 
-        const timeLimited = computed(() => meetTimeLimit(
-            { wasted: props.waste ?? 0, maxLimit: (props.time ?? 0) * MILL_PER_SECOND },
-            {
-                count: reason.value?.delayCount ?? 0,
-                duration: delayDuration.value,
-                allow: !!reason.value?.allowDelay,
-            },
-        ))
-        const visitLimited = computed(() => meetLimit(props.count ?? 0, props.visit ?? 0))
+const TimeDescriptions = defineComponent<DescriptionProps>(props => {
+    const { reason, url, delayDuration } = useApp()
+    const rule = useRule()
+    const { style, size } = useDescriptions()
 
-        return () => (
-            <ElDescriptions border column={1} size={size.value} style={style.value}>
-                {renderBaseItems(rule.value, url)}
-                <ElDescriptionsItem label={props.ruleLabel} labelAlign="right">
-                    <Flex gap={5} width={200}>
-                        <ElTag v-show={!!props.time}>{formatPeriodCommon((props.time ?? 0) * MILL_PER_SECOND)}</ElTag>
-                        {props.count && <ElTag>{t(msg => msg.shared.limit.visits, { n: props.count })}</ElTag>}
-                    </Flex>
-                </ElDescriptionsItem>
-                <ElDescriptionsItem label={props.dataLabel} labelAlign="right">
-                    <Flex gap={5} width={200}>
-                        <ElTag
-                            v-show={!!props.waste || !!props.time}
-                            type={timeLimited.value ? 'danger' : 'info'}
-                        >
-                            {formatPeriodCommon(props.waste ?? 0)}
-                        </ElTag>
-                        <ElTag
-                            v-show={!!props.count || !!props.visit}
-                            type={visitLimited.value ? 'danger' : 'info'}
-                        >
-                            {t(msg => msg.shared.limit.visits, { n: props.visit ?? 0 })}
-                        </ElTag>
-                    </Flex>
-                </ElDescriptionsItem>
-                <ElDescriptionsItem
-                    v-show={!!reason.value?.allowDelay && !!props.time}
-                    label={t(msg => msg.limit.item.delayCount)}
-                    labelAlign="right"
-                >
-                    {reason.value?.delayCount ?? 0}
-                </ElDescriptionsItem>
-            </ElDescriptions>
-        )
-    },
-})
+    const timeLimited = computed(() => meetTimeLimit(
+        { wasted: props.waste ?? 0, maxLimit: (props.time ?? 0) * MILL_PER_SECOND },
+        {
+            count: reason.value?.delayCount ?? 0,
+            duration: delayDuration.value,
+            allow: !!reason.value?.allowDelay,
+        },
+    ))
+    const visitLimited = computed(() => meetLimit(props.count ?? 0, props.visit ?? 0))
+
+    return () => (
+        <ElDescriptions border column={1} size={size.value} style={style.value}>
+            {renderBaseItems(rule.value, url)}
+            <ElDescriptionsItem label={props.ruleLabel} labelAlign="right">
+                <Flex gap={5} width={200}>
+                    <ElTag v-show={!!props.time}>{formatPeriodCommon((props.time ?? 0) * MILL_PER_SECOND)}</ElTag>
+                    <ElTag v-show={!!props.count}>{t(msg => msg.shared.limit.visits, { n: props.count })}</ElTag>
+                </Flex>
+            </ElDescriptionsItem>
+            <ElDescriptionsItem label={props.dataLabel} labelAlign="right">
+                <Flex gap={5} width={200}>
+                    <ElTag
+                        v-show={!!props.waste || !!props.time}
+                        type={timeLimited.value ? 'danger' : 'info'}
+                    >
+                        {formatPeriodCommon(props.waste ?? 0)}
+                    </ElTag>
+                    <ElTag
+                        v-show={!!props.count || !!props.visit}
+                        type={visitLimited.value ? 'danger' : 'info'}
+                    >
+                        {t(msg => msg.shared.limit.visits, { n: props.visit ?? 0 })}
+                    </ElTag>
+                </Flex>
+            </ElDescriptionsItem>
+            <ElDescriptionsItem
+                v-show={!!reason.value?.allowDelay && !!props.time}
+                label={t(msg => msg.limit.item.delayCount)}
+                labelAlign="right"
+            >
+                {reason.value?.delayCount ?? 0}
+            </ElDescriptionsItem>
+        </ElDescriptions>
+    )
+}, { props: ['time', 'waste', 'count', 'visit', 'ruleLabel', 'dataLabel'] })
 
 const _default = defineComponent(() => {
     const { reason, visitTime, url } = useApp()
