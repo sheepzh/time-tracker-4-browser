@@ -147,7 +147,8 @@ type Items = Record<number, ItemValue>
 
 function migrate(exist: Items, toMigrate: unknown) {
     if (!isRecord(toMigrate)) return
-    const idBase = Object.keys(exist).map(parseInt).sort().reverse()?.[0] ?? 0 + 1
+    const ids = Object.keys(exist).map(Number).filter(Number.isFinite)
+    const idBase = (ids.length ? Math.max(...ids) : 0) + 1
     Object.values(toMigrate).forEach((value, idx) => {
         const id = idBase + idx
         const itemValue: ItemValue = value as ItemValue

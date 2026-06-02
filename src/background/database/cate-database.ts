@@ -52,8 +52,9 @@ class CateDatabase extends BaseDatabase {
             return { id: parseInt(existId), name }
         }
 
-        const id = (Object.keys(items || {}).map(k => parseInt(k)).sort().reverse()?.[0] ?? 0) + 1
-        items[id] = { n: name ?? items[id]?.n }
+        const ids = Object.keys(items).map(Number).filter(Number.isFinite)
+        const id = (ids.length ? Math.max(...ids) : 0) + 1
+        items[id] = {n: name}
 
         await this.saveItems(items)
         return { name, id }
