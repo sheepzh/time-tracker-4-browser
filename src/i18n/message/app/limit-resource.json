@@ -576,6 +576,7 @@
         "reminder": "Zaman sınırı dolmasına {min} dakikadan az kaldı!"
     },
     "pl": {
+        "onlyEffective": "Tylko efektywne",
         "wildcardTip": "Możesz używać symbolu \"*\", aby dopasowywać subdomeny lub podstrony, a także użyć znaku „+” jako prefiksu, aby wykluczyć podstrony!",
         "emptyTips": "Kliknij tutaj, aby utworzyć zasadę!",
         "item": {
@@ -617,6 +618,8 @@
             "strictTip": "Aktywowano, żadna operacja nie jest dozwolona przed zwolnieniem!",
             "incorrectPsw": "Nieprawidłowe hasło",
             "incorrectAnswer": "Niepoprawna odpowiedź",
+            "twoFaInputTip": "Reguła została uruchomiona lub zablokowana. Wprowadź 6-cyfrowy kod z aplikacji uwierzytelniającej, aby kontynuować.",
+            "incorrect2fa": "Nieprawidłowy kod 2FA",
             "pi": "{digitCount} cyfr od {startIndex} do {endIndex} części dziesiętnej liczby π",
             "confession": "Czas ucieka"
         },
