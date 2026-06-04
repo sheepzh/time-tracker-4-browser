@@ -398,7 +398,10 @@
         "paramError": "Sprawdź poprawność parametrów!",
         "deleteConfirm": "Wyfiltrowano w sumie {count} wpisów. Czy chcesz je usunąć?",
         "migrationAlert": "Przenieś dane między przeglądarkami za pomocą importu i eksportu",
-        "importError": "Błędne rozszerzenie pliku"
+        "importError": "Błędne rozszerzenie pliku",
+        "exportData": "Eksportuj dane",
+        "restoreData": "Przywróć dane",
+        "restoreFromOther": "Przywróć z {ext}"
     },
     "it": {
         "totalMemoryAlert": "Il browser fornisce {size}MB per memorizzare i dati locali per ogni estensione",

@@ -115,6 +115,7 @@
         "habit": "Habitudes",
         "additional": "Fonctionnalités supplémentaires",
         "siteManage": "Gestion des sites",
+        "rule": "Règles",
         "other": "Autres fonctionnalités",
         "about": "À propos"
     },
@@ -167,6 +168,7 @@
         "habit": "Nawyki",
         "additional": "Dodatkowe funkcje",
         "siteManage": "Zarządzanie stronami",
+        "rule": "Reguła",
         "other": "Pozostałe funkcje",
         "about": "O rozszerzeniu"
     },
