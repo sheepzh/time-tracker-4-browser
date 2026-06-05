@@ -4,7 +4,8 @@ import {
 } from "@api/gist"
 import {
     init,
-    type ComposeOption, type EChartsType, type GridComponentOption, type LineSeriesOption, type TitleComponentOption,
+    type ComposeOption,
+    type GridComponentOption, type LineSeriesOption, type TitleComponentOption
 } from "echarts"
 import { writeFileSync } from "fs"
 import { exit } from 'process'
@@ -13,18 +14,15 @@ import { filenameOf, getExistGist, validateTokenFromEnv, type Browser, type User
 type EcOption = ComposeOption<
     | LineSeriesOption
     | TitleComponentOption
-    | GridComponentOption>
-const ALL_BROWSERS: Browser[] = ['chrome', 'edge', 'firefox']
+    | GridComponentOption
+>
+const ALL_BROWSERS: Browser[] = ['edge', 'chrome', 'firefox']
 
-type OriginData = {
-    [browser in Browser]: UserCount
-}
+type OriginData = Record<Browser, UserCount>
 
 type ChartData = {
     xAxis: string[]
-    yAxises: {
-        [browser in Browser]: number[]
-    }
+    yAxises: Record<Browser, number[]>
 }
 
 const VALID_DATE_RE = /^\d{4}-\d{2}-\d{2}$/
@@ -36,7 +34,7 @@ function preProcess(originData: OriginData): ChartData {
     let allDates = Array.from(dateSet).filter(d => VALID_DATE_RE.test(d)).sort()
 
     // 2. smooth the count
-    const ctx: { [browser in Browser]: SmoothContext } = {
+    const ctx: Record<Browser, SmoothContext> = {
         chrome: new SmoothContext(),
         firefox: new SmoothContext(),
         edge: new SmoothContext(),
@@ -73,7 +71,7 @@ class SmoothContext {
         if (newVal) {
             this.smooth(newVal)
         } else {
-            this.increaseStep()
+            this.step += 1
         }
     }
 
@@ -82,37 +80,31 @@ class SmoothContext {
             return
         }
         const unitVal = (currentValue - this.lastVal) / (this.step + 1)
-        Object.keys(Array.from(new Array(this.step)))
-            .map(key => parseInt(key))
-            .map(i => Math.floor(unitVal * (i + 1) + this.lastVal))
-            .forEach(smoothedVal => this.data.push(smoothedVal))
+
+        const smoothedValues = Array.from({ length: this.step }, (_, i) => Math.floor(unitVal * (i + 1) + this.lastVal))
+        this.data.push(...smoothedValues)
         this.data.push(currentValue)
         // Reset
         this.lastVal = currentValue
         this.step = 0
     }
 
-    increaseStep(): void {
-        this.step += 1
-    }
-
     end(): number[] {
-        Object.keys(Array.from(new Array(this.step)))
-            .forEach(() => this.data.push(this.lastVal))
+        Array.from({ length: this.step }).forEach(() => this.data.push(this.lastVal))
         return this.data
     }
 }
 
 function render2Svg(chartData: ChartData): string {
     const { xAxis, yAxises } = chartData
-    const chart: EChartsType = init(null, null, {
+    const chart = init(null, null, {
         renderer: 'svg',
         ssr: true,
         width: 960,
         height: 640
     })
     const totalUserCount = Object.values(yAxises)
-        .map(v => v[v.length - 1] || 0)
+        .map(v => v[v.length - 1] ?? 0)
         .reduce((a, b) => a + b)
     const option: EcOption = {
         title: {
