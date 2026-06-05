@@ -9,23 +9,20 @@ import { getMembers } from "@api/crowdin"
 import { t } from '@app/locale'
 import { useRequest } from '@hooks'
 import Box from "@pages/components/Box"
-import Flex from "@pages/components/Flex"
+import Flex from '@pages/components/Flex'
 import Img from '@pages/components/Img'
 import { ElDivider } from "element-plus"
 import { defineComponent } from "vue"
 
 const _default = defineComponent(() => {
     const { data: list } = useRequest(async () => {
-        const members = await getMembers() || []
-        return members.sort((a, b) => (a.joinedAt || "").localeCompare(b.joinedAt || ""))
+        const members = await getMembers()
+        return members.sort((a, b) => a.joinedAt.localeCompare(b.joinedAt))
     })
     return () => (
         <Box marginTop={10}>
-            <ElDivider>{t(msg => msg.helpUs.contributors)}</ElDivider>
-            <Flex
-                wrap gap={15} justify="space-around"
-                marginInline="auto" paddingBlock={5}
-            >
+            <ElDivider>{t(msg => msg.helpUs.contributors)} ({list.value?.length ?? '-'})</ElDivider>
+            <Flex wrap gap={15} justify="space-around" marginInline="auto" paddingBlock={5}>
                 {list.value?.map(({ avatarUrl, username }, idx, arr) => (
                     <a
                         href={`https://crowdin.com/profile/${username}`}

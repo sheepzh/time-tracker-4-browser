@@ -58,7 +58,7 @@ export async function getTranslationStatus(): Promise<TranslationStatusInfo[]> {
 
 export async function getMembers(): Promise<MemberInfo[]> {
     const result: MemberInfo[] = []
-    const limit = 10
+    const limit = 500
     let offset = 0
     while (true) {
         const url = `https://api.crowdin.com/api/v2/projects/${CROWDIN_PROJECT_ID}/members?limit=${limit}&offset=${offset}`
