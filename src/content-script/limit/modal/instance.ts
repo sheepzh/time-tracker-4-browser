@@ -159,8 +159,6 @@ class ModalInstance implements MaskModal {
             await this.init()
         }
         await exitFullscreen()
-        // Scroll to top
-        scrollTo(0, 0)
         pauseAllVideo()
         pauseAllAudio()
 

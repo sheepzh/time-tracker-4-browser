@@ -67,6 +67,7 @@ const verifyCanModify = async (...items: tt4b.limit.Item[]) => {
 
 export const useLimitProvider = () => {
     const { url, action, id } = initialQuery()
+    let modifyTriggered = false
     const initialUrl = action === 'create' ? undefined : url
 
     if (action === 'create') {
@@ -81,9 +82,10 @@ export const useLimitProvider = () => {
             defaultValue: [],
             deps: [() => filter.url, () => filter.effective],
             onSuccess: data => {
-                if (action !== 'modify') return
+                if (action !== 'modify' || modifyTriggered) return
                 const target = data.find(i => i.id === id)
                 target && setTimeout(() => modifyInst.value?.modify(target))
+                modifyTriggered = true
             }
         },
     )

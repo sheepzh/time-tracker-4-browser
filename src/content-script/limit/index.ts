@@ -12,11 +12,11 @@ export default async function processLimit(url: string, dispatcher: Dispatcher) 
     const modal = new ModalInstance(url)
     const context: ModalContext = { modal, url }
 
-    const mesageAdaptor = new MessageAdaptor(context, delayDuration)
+    const messageAdaptor = new MessageAdaptor(context, delayDuration)
     const visitProcessor = new VisitProcessor(context, delayDuration)
 
     const processors: Processor[] = [
-        mesageAdaptor,
+        messageAdaptor,
         visitProcessor,
         new PeriodProcessor(context),
     ]
@@ -26,7 +26,7 @@ export default async function processLimit(url: string, dispatcher: Dispatcher) 
 
     dispatcher
         .register('limitChanged', () => void processors.forEach(p => p.onLimitChanged()))
-        .register('limitTimeMeet', items => void mesageAdaptor.onLimitTimeMeet(items))
+        .register('limitTimeMeet', items => void messageAdaptor.onLimitTimeMeet(items))
         .register('limitReminder', data => void reminder.show(data))
         .register('askVisitHit', ruleId => modal.reasons.some(r => r.type === 'VISIT' && ruleId === r.id))
         .registerAudibleChange(visitProcessor.tracker)

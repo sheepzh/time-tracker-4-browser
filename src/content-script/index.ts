@@ -42,7 +42,7 @@ function getOrSetFlag(): boolean {
 async function main() {
     const dispatcher = new Dispatcher()
 
-    // Execute in every injections
+    // Execute in every injection
     const normalTracker = new NormalTracker({
         onReport: data => trySendMsg2Runtime('track.time', data),
         onResume: reason => reason === 'idle' && trySendMsg2Runtime('cs.idleChanged', false),
@@ -59,8 +59,8 @@ async function main() {
     const isWhitelist = await trySendMsg2Runtime('whitelist.contain', { host, url })
     if (isWhitelist) return
 
-    initLocale()
-    printInfo(host)
+    void initLocale()
+    void printInfo(host)
     await processLimit(url, dispatcher)
 
     processTimeline()
@@ -69,4 +69,4 @@ async function main() {
     await trySendMsg2Runtime('cs.injected')
 }
 
-main()
+void main()
