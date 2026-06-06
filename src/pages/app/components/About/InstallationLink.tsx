@@ -1,8 +1,8 @@
-import { useXsState } from '@hooks'
 import { css } from '@emotion/css'
+import { useXsState } from '@hooks'
 import Flex from "@pages/components/Flex"
 import { colorUsage, colorVariant } from '@pages/util/style'
-import { computed, defineComponent, h, StyleValue, useSlots } from "vue"
+import { computed, defineComponent, type StyleValue, useSlots } from "vue"
 
 type Props = { name: string, href: string }
 
@@ -56,7 +56,7 @@ const InstallationLink = defineComponent<Props>(({ href, name }) => {
                 style={{ textDecorationLine: 'none' }}
             >
                 <div style={iconStyle.value}>
-                    {icon && h(icon)}
+                    {icon?.()}
                 </div>
                 <span class={nameCls}>{name}</span>
             </Flex>

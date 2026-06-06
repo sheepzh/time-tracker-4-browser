@@ -36,7 +36,7 @@ const TITLE = t(msg => msg.habit.site.trend.title)
 export type BizOption = {
     rows: tt4b.stat.Row[]
     dateRange: [Date, Date]
-    timeFormat: tt4b.app.TimeFormat
+    timeFormat: tt4b.ui.TimeFormat
 }
 
 const valueYAxis = (): YAXisOption => ({
@@ -47,7 +47,7 @@ const valueYAxis = (): YAXisOption => ({
     splitLine: { show: false },
 })
 
-const formatTimeTooltip = (params: TopLevelFormatterParams, format: tt4b.app.TimeFormat) => {
+const formatTimeTooltip = (params: TopLevelFormatterParams, format: tt4b.ui.TimeFormat) => {
     if (!Array.isArray(params)) return ''
     const date = params?.[0]?.name
     if (!date) return ''

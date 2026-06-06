@@ -5,24 +5,21 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { useXsState } from '@hooks'
 import { tN, type I18nKey } from "@app/locale"
 import { BottomRight, InfoFilled, TopRight } from "@element-plus/icons-vue"
+import { useXsState } from '@hooks'
 import Box from "@pages/components/Box"
 import Flex from "@pages/components/Flex"
 import { colorVariant, getCssVariable } from '@pages/util/style'
-import { range } from "@util/array"
 import { ElIcon, ElTooltip } from "element-plus"
-import { computed, defineComponent, type CSSProperties } from "vue"
+import { defineComponent, type CSSProperties, type FunctionalComponent } from "vue"
 import type { RingValue, ValueFormatter } from './types'
 
-const SubVal = defineComponent<{ value: string }>(props => {
-    return () => (
-        <Flex as='span' color='text-primary' margin='0 3px'>
-            {props.value}
-        </Flex>
-    )
-}, { props: ['value'] })
+const SubVal: FunctionalComponent<{ value: string }> = ({ value }) => (
+    <Flex as='span' color='text-primary' margin='0 3px'>
+        {value}
+    </Flex>
+)
 
 const computeComparison = (value: RingValue) => {
     const [current = 0, last = 0] = value
@@ -42,51 +39,31 @@ const computeComparison = (value: RingValue) => {
     return count ? { color, Icon, count } : false
 }
 
-const renderIcons = (val: ReturnType<typeof computeComparison>) => {
-    if (!val) return false
-    const { color, count, Icon } = val
-
+const ComparisonIcon: FunctionalComponent<{ value: RingValue }> = props => {
+    const comp = computeComparison(props.value)
+    if (!comp) return null
+    const { color, count, Icon } = comp
     return (
-        <Flex color={`var(${color})`}>
-            {range(count).map(() => <ElIcon><Icon /></ElIcon>)}
+        <Flex color={color}>
+            {Array.from({ length: count }).map((_, idx) => <ElIcon key={idx}><Icon /></ElIcon>)}
         </Flex>
     )
 }
 
-const ComparisonIcon = defineComponent<{ value: RingValue }>(props => {
-    const comp = computed(() => computeComparison(props.value))
-    return () => renderIcons(comp.value)
-}, { props: ['value'] })
+const RingLine: FunctionalComponent<{ value: RingValue, formatter?: ValueFormatter }> = props => {
+    const { value, formatter } = props
+    const [current, last] = value
 
+    if (current === undefined && last === undefined) return <SubVal value='-' />
 
-/**
- * Compute ring text
- *
- * @param ring ring value
- * @param formatter formatter
- * @returns text or '-'
- */
-function computeRingText(ring: RingValue, formatter?: ValueFormatter): string | undefined {
-    const [current, last] = ring
-    if (current === undefined && last === undefined) {
-        // return undefined if both are undefined
-        return undefined
-    }
     const delta = (current ?? 0) - (last ?? 0)
-    let result = formatter ? formatter(delta) : delta?.toString()
-    delta >= 0 && (result = '+' + result)
-    return result
-}
-
-const RingLine = defineComponent<{ value: RingValue, formatter?: ValueFormatter }>(props => {
-    const text = computed(() => computeRingText(props.value, props.formatter))
-    return () => text.value ? <>
-        <SubVal value={text.value} />
+    const deltaText = formatter?.(delta) ?? delta?.toString()
+    const text = delta >= 0 ? `+${deltaText}` : deltaText
+    return <>
+        <SubVal value={text} />
         <ComparisonIcon value={props.value} />
-    </> : <>
-        <SubVal value='-' />
     </>
-}, { props: ['value', 'formatter'] })
+}
 
 type SubProps = {
     value?: string
@@ -130,8 +107,8 @@ type Props = {
     containerStyle?: CSSProperties
 }
 
-const _default = defineComponent<Props>(props => {
-    return () => (
+const IndicatorCell: FunctionalComponent<Props> = props => {
+    return (
         <Flex
             column justify="center"
             minHeight={140}
@@ -151,6 +128,7 @@ const _default = defineComponent<Props>(props => {
             />
         </Flex>
     )
-}, { props: ['mainName', 'mainValue', 'subInfo', 'subRing', 'subTips', 'subValue', 'containerStyle', 'valueFormatter'] })
+}
+IndicatorCell.displayName = 'IndicatorCell'
 
-export default _default
+export default IndicatorCell

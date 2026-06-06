@@ -25,11 +25,11 @@ export function cvt2LocaleTime(date: string | undefined): string {
 }
 
 type PeriodFormatOption = {
-    format?: tt4b.app.TimeFormat
+    format?: tt4b.ui.TimeFormat
     hideUnit?: boolean
 }
 
-const UNIT_MAP: { [unit in Exclude<tt4b.app.TimeFormat, 'default'>]: string } = {
+const UNIT_MAP: { [unit in Exclude<tt4b.ui.TimeFormat, 'default'>]: string } = {
     second: 's',
     minute: 'm',
     hour: 'h',

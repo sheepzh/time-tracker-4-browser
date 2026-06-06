@@ -1,5 +1,5 @@
-import type { StatCondition } from '@db/stat-database'
 import { ClassicStatDatabase, parseImportData } from "@db/stat-database/classic"
+import type { StatCondition } from '@db/stat-database/types'
 import { resultOf } from "@util/stat"
 import { formatTimeYMD, MILL_PER_DAY } from "@util/time"
 import { mockStorage } from '../../../__mock__/storage'

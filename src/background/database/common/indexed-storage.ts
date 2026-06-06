@@ -103,50 +103,49 @@ export type IndexResult<FilterCoverage> = {
 }
 
 export abstract class BaseIDBStorage<T = Record<string, unknown>> {
-    private DB_NAME = `tt4b_${chrome.runtime.id}` as const
-
-    private db: IDBDatabase | undefined
-    private static initPromises = new Map<string, Promise<IDBDatabase>>()
+    #DB_NAME = `tt4b_${chrome.runtime.id}` as const
+    #db: IDBDatabase | undefined
+    static #initPromises = new Map<string, Promise<IDBDatabase>>()
 
     abstract indexes: Index<T>[]
     abstract key: Key<T> | Key<T>[]
     abstract table: Table
 
     protected async initDb(): Promise<IDBDatabase> {
-        if (this.db) return this.db
+        if (this.#db) return this.#db
 
-        let initPromise = BaseIDBStorage.initPromises.get(this.table)
+        let initPromise = BaseIDBStorage.#initPromises.get(this.table)
         if (!initPromise) {
-            initPromise = this.doInitDb()
-            BaseIDBStorage.initPromises.set(this.table, initPromise)
+            initPromise = this.#doInitDb()
+            BaseIDBStorage.#initPromises.set(this.table, initPromise)
         }
 
         try {
-            this.db = await initPromise
-            this.setupDbCloseHandler(this.db)
-            return this.db
+            this.#db = await initPromise
+            this.#setupDbCloseHandler(this.#db)
+            return this.#db
         } catch (error) {
-            BaseIDBStorage.initPromises.delete(this.table)
+            BaseIDBStorage.#initPromises.delete(this.table)
             throw error
         }
     }
 
-    private setupDbCloseHandler(db: IDBDatabase): void {
+    #setupDbCloseHandler(db: IDBDatabase): void {
         db.onversionchange = () => db.close()
 
         db.onclose = () => {
-            if (this.db !== db) return
+            if (this.#db !== db) return
 
-            this.db = undefined
-            BaseIDBStorage.initPromises.delete(this.table)
+            this.#db = undefined
+            BaseIDBStorage.#initPromises.delete(this.table)
         }
     }
 
-    private async doInitDb(): Promise<IDBDatabase> {
+    async #doInitDb(): Promise<IDBDatabase> {
         const factory = typeof window !== 'undefined' ? window.indexedDB : globalThis.indexedDB
 
         const checkDb = await new Promise<IDBDatabase>((resolve, reject) => {
-            const checkRequest = factory.open(this.DB_NAME)
+            const checkRequest = factory.open(this.#DB_NAME)
             checkRequest.onsuccess = () => resolve(checkRequest.result)
             checkRequest.onerror = () => reject(checkRequest.error || new Error("Failed to open database"))
         })
@@ -155,7 +154,7 @@ export abstract class BaseIDBStorage<T = Record<string, unknown>> {
     }
 
     // Only used for testing, be careful when using in production
-    public async clear(): Promise<void> {
+    async clear(): Promise<void> {
         await this.withStore(store => store.clear(), 'readwrite')
     }
 
@@ -163,16 +162,16 @@ export abstract class BaseIDBStorage<T = Record<string, unknown>> {
         const factory = typeof window !== 'undefined' ? window.indexedDB : globalThis.indexedDB
 
         const checkDb = await new Promise<IDBDatabase>((resolve, reject) => {
-            const checkRequest = factory.open(this.DB_NAME)
+            const checkRequest = factory.open(this.#DB_NAME)
             checkRequest.onsuccess = () => resolve(checkRequest.result)
             checkRequest.onerror = () => reject(checkRequest.error || new Error("Failed to open database"))
             checkRequest.onblocked = () => {
-                console.warn(`Database check blocked for "${this.table}" (DB: ${this.DB_NAME}), waiting for other connections to close`)
+                console.warn(`Database check blocked for "${this.table}" (DB: ${this.#DB_NAME}), waiting for other connections to close`)
             }
         })
 
         const storeExisted = checkDb.objectStoreNames.contains(this.table)
-        const needUpgrade = !storeExisted || this.needUpgradeIndexes(checkDb)
+        const needUpgrade = !storeExisted || this.#needUpgradeIndexes(checkDb)
 
         if (!needUpgrade) {
             checkDb.close()
@@ -183,7 +182,7 @@ export abstract class BaseIDBStorage<T = Record<string, unknown>> {
         checkDb.close()
 
         return new Promise<void>((resolve, reject) => {
-            const upgradeRequest = factory.open(this.DB_NAME, currentVersion + 1)
+            const upgradeRequest = factory.open(this.#DB_NAME, currentVersion + 1)
 
             upgradeRequest.onupgradeneeded = () => {
                 try {
@@ -205,7 +204,7 @@ export abstract class BaseIDBStorage<T = Record<string, unknown>> {
                     let store = upgradeDb.objectStoreNames.contains(this.table)
                         ? transaction.objectStore(this.table)
                         : upgradeDb.createObjectStore(this.table, { keyPath: this.key as string | string[] })
-                    this.createIndexes(store)
+                    this.#createIndexes(store)
                 } catch (error) {
                     console.error("Failed to upgrade database in onupgradeneeded", error)
                     upgradeRequest.transaction?.abort()
@@ -225,10 +224,10 @@ export abstract class BaseIDBStorage<T = Record<string, unknown>> {
             }
 
             upgradeRequest.onblocked = () => {
-                const blockingTables = Array.from(BaseIDBStorage.initPromises.keys())
+                const blockingTables = Array.from(BaseIDBStorage.#initPromises.keys())
                     .filter(table => table !== this.table)
                 console.warn(
-                    `Database upgrade blocked for table "${this.table}" (DB: ${this.DB_NAME}), ` +
+                    `Database upgrade blocked for table "${this.table}" (DB: ${this.#DB_NAME}), ` +
                     `waiting for other connections to close. ` +
                     `Other tables with active connections: ${blockingTables.length > 0 ? blockingTables.join(', ') : 'none'}`
                 )
@@ -236,7 +235,7 @@ export abstract class BaseIDBStorage<T = Record<string, unknown>> {
         })
     }
 
-    private needUpgradeIndexes(db: IDBDatabase): boolean {
+    #needUpgradeIndexes(db: IDBDatabase): boolean {
         try {
             const transaction = db.transaction(this.table, 'readonly')
             const store = transaction.objectStore(this.table)
@@ -256,7 +255,7 @@ export abstract class BaseIDBStorage<T = Record<string, unknown>> {
         }
     }
 
-    private createIndexes(store: IDBObjectStore) {
+    #createIndexes(store: IDBObjectStore) {
         const existingIndexes = store.indexNames
 
         for (const index of this.indexes) {
@@ -298,12 +297,12 @@ export abstract class BaseIDBStorage<T = Record<string, unknown>> {
                 }
 
                 if (errorType === 'StoreNotFound') {
-                    this.db?.close()
+                    this.#db?.close()
                     await this.upgrade()
                 }
 
-                this.db = undefined
-                BaseIDBStorage.initPromises.delete(this.table)
+                this.#db = undefined
+                BaseIDBStorage.#initPromises.delete(this.table)
                 db = await this.initDb()
             }
         }

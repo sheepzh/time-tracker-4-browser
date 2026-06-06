@@ -15,12 +15,12 @@ type EcOption = ComposeOption<
 
 export type BizOption = {
     data: tt4b.period.Row[]
-    timeFormat: tt4b.app.TimeFormat
+    timeFormat: tt4b.ui.TimeFormat
 }
 
 const [COLOR] = getLineSeriesPalette()
 
-const formatTooltip = (params: TopLevelFormatterParams, timeFormat: tt4b.app.TimeFormat) => {
+const formatTooltip = (params: TopLevelFormatterParams, timeFormat: tt4b.ui.TimeFormat) => {
     const param = Array.isArray(params) ? params[0] : params
     const [, total, , end] = param?.data as number[]
     return `

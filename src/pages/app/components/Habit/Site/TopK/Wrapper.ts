@@ -26,7 +26,7 @@ type EcOption = ComposeOption<
 
 type BizOption = {
     rows: tt4b.stat.Row[]
-    timeFormat: tt4b.app.TimeFormat
+    timeFormat: tt4b.ui.TimeFormat
 }
 
 const TOP_NUM = 8
@@ -34,7 +34,7 @@ const TOP_NUM = 8
 const MARGIN_LEFT_P = 8
 const MARGIN_RIGHT_P = 8
 
-const formatFocusTooltip = (params: TopLevelFormatterParams, format: tt4b.app.TimeFormat): string => {
+const formatFocusTooltip = (params: TopLevelFormatterParams, format: tt4b.ui.TimeFormat): string => {
     const param = Array.isArray(params) ? params[0] : params
     const { data } = param || {}
     const row = (data as any)?.row as tt4b.stat.Row
@@ -75,7 +75,7 @@ function mergeDate(origin: tt4b.stat.Row[]): tt4b.stat.Row[] {
     return newRows
 }
 
-async function generateOption(rows: tt4b.stat.Row[] = [], timeFormat: tt4b.app.TimeFormat, dom: HTMLElement): Promise<EcOption> {
+async function generateOption(rows: tt4b.stat.Row[] = [], timeFormat: tt4b.ui.TimeFormat, dom: HTMLElement): Promise<EcOption> {
     const merged = mergeDate(rows)
     const topList = merged.sort((a, b) => b.focus - a.focus).splice(0, TOP_NUM).reverse()
     const max = topList[topList.length - 1]?.focus ?? 0

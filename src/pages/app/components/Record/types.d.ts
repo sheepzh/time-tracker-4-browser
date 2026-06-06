@@ -14,7 +14,7 @@ export type RecordFilterOption = {
     /**
      * @since 1.1.7
      */
-    timeFormat: tt4b.app.TimeFormat
+    timeFormat: tt4b.ui.TimeFormat
     readRemote?: boolean
 }
 

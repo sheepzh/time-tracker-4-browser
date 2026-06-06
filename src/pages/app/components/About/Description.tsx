@@ -107,7 +107,7 @@ const _default = defineComponent<{}>(() => {
                     <DescLink href={pages.privacy} />
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.base.sourceCode)} labelAlign="right">
-                    <DescLink href={pages.sourceCode} icon={<GitHub />} />
+                    <DescLink href={pages.sourceCode} icon={GitHub} />
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.about.label.license)} labelAlign="right">
                     <DescLink href={LICENSE_PAGE}>
@@ -115,7 +115,7 @@ const _default = defineComponent<{}>(() => {
                     </DescLink>
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.base.changeLog)} labelAlign="right">
-                    <DescLink href={pages.changeLog} icon={<GitHub />} />
+                    <DescLink href={pages.changeLog} icon={GitHub} />
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.about.label.support)} labelAlign="right">
                     {pages.email}
@@ -135,18 +135,18 @@ const _default = defineComponent<{}>(() => {
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.about.label.thanks)} labelAlign="right">
                     <div>
-                        <DescLink href="https://vuejs.org/" icon={<Vue />}>VueJS</DescLink>
+                        <DescLink href="https://vuejs.org/" icon={Vue}>VueJS</DescLink>
                     </div>
                     <div>
-                        <DescLink href="https://echarts.apache.org/" icon={<Echarts />}>Echarts</DescLink>
+                        <DescLink href="https://echarts.apache.org/" icon={Echarts}>Echarts</DescLink>
                     </div>
                     <div>
-                        <DescLink href="https://element-plus.org/" icon={<ElementPlus />}>Element Plus</DescLink>
+                        <DescLink href="https://element-plus.org/" icon={ElementPlus}>Element Plus</DescLink>
                     </div>
                 </ElDescriptionsItem>
                 {locale !== 'zh_CN' && (
                     <ElDescriptionsItem label='Buy me a coffee' labelAlign="right">
-                        <DescLink icon={<Coffee />} href={BUY_ME_A_COFFEE_PAGE}>{BUY_ME_A_COFFEE_PAGE}</DescLink>
+                        <DescLink icon={Coffee} href={BUY_ME_A_COFFEE_PAGE}>{BUY_ME_A_COFFEE_PAGE}</DescLink>
                     </ElDescriptionsItem>
                 )}
             </ElDescriptions>

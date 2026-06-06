@@ -4,13 +4,13 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import EditableTag from "@app/components/common/EditableTag"
 import { t } from '@app/locale'
+import { Edit } from '@element-plus/icons-vue'
 import { useShadow, useSwitch } from '@hooks'
 import Flex from "@pages/components/Flex"
 import { LOCAL_HOST_PATTERN } from "@util/constant/remain-host"
-import { type TagProps } from "element-plus"
-import { computed, defineComponent } from "vue"
+import { ElTag, type TagProps } from "element-plus"
+import { computed, defineComponent, type StyleValue } from "vue"
 import ItemInput from "./ItemInput"
 
 type Props = {
@@ -36,6 +36,12 @@ function computeMergeType(mergedVal: number | string): TagProps["type"] | undefi
     if (typeof mergedVal === 'number') return 'success'
     if (!mergedVal) return 'info'
     return undefined
+}
+
+const EDIT_ICON_STYLE: StyleValue = {
+    height: '14px',
+    width: '14px',
+    cursor: 'pointer',
 }
 
 const _default = defineComponent<Props>((props, ctx) => {
@@ -67,18 +73,23 @@ const _default = defineComponent<Props>((props, ctx) => {
             onCancel={handleCancel}
         />
     ) : (
-        <EditableTag
-            type={type.value}
+        <ElTag
+            size="large"
             closable={LOCAL_HOST_PATTERN !== origin.value}
             onClose={() => props.onDelete?.(props.origin)}
-            onEdit={openEditing}
+            type={type.value}
         >
-            <Flex gap={4}>
-                <span dir="ltr">{origin.value}</span>
-                <span>{'>>>'}</span>
-                <span>{mergeText.value}</span>
+            <Flex align="center" gap={7} style={{ marginInlineEnd: '-3px' }}>
+                <Flex gap={4}>
+                    <span dir="ltr">{origin.value}</span>
+                    <span>{'>>>'}</span>
+                    <span>{mergeText.value}</span>
+                </Flex>
+                <Flex onClick={openEditing} >
+                    <Edit style={EDIT_ICON_STYLE} />
+                </Flex>
             </Flex>
-        </EditableTag>
+        </ElTag>
     )
 }, { props: ['merged', 'onChange', 'onDelete', 'origin'] })
 

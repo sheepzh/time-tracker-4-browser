@@ -1,6 +1,5 @@
 import { createNotification } from "@api/chrome/notifications"
 import { hasPerm, requestPerm } from "@api/chrome/permission"
-import { getIconUrl } from "@api/chrome/runtime"
 import { t } from '@i18n'
 import calendarMessages from "@i18n/message/common/calendar"
 import metaMessages from "@i18n/message/common/meta"
@@ -51,11 +50,6 @@ export default class BrowserNotifier implements Notifier {
 
         const message = `Focus time: ${focusStr}, Visits: ${visit}, Sites: ${siteCount}`
 
-        await createNotification('time', {
-            type: 'basic',
-            iconUrl: getIconUrl(),
-            title,
-            message,
-        })
+        await createNotification('time', { type: 'basic', title, message })
     }
 }

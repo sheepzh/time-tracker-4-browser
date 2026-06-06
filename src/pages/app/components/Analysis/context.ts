@@ -16,7 +16,7 @@ import type { AnalysisTarget } from "./types"
 
 type Context = {
     target: Ref<AnalysisTarget | undefined>
-    timeFormat: Ref<tt4b.app.TimeFormat>
+    timeFormat: Ref<tt4b.ui.TimeFormat>
     rows: Ref<tt4b.stat.Row[]>
 }
 
@@ -51,7 +51,7 @@ const NAMESPACE = 'siteAnalysis'
 export const initAnalysis = () => {
     const target = ref(parseQuery())
 
-    const [cached, setCached] = useLocalStorage<tt4b.app.TimeFormat>('analysis_timeFormat', isTimeFormat, 'default')
+    const [cached, setCached] = useLocalStorage<tt4b.ui.TimeFormat>('analysis_timeFormat', isTimeFormat, 'default')
     const timeFormat = ref(cached)
     watch(timeFormat, setCached)
 

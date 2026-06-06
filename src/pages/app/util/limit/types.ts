@@ -37,6 +37,6 @@ export interface VerificationGenerator {
     generate(context: VerificationContext): VerificationPair
 }
 
-export const isTimeFormat = createStringUnionGuard<tt4b.app.TimeFormat>('default', 'hour', 'minute', 'second')
+export const isTimeFormat = createStringUnionGuard<tt4b.ui.TimeFormat>('default', 'hour', 'minute', 'second')
 
 export const isOptionalIntArray = createOptionalGuard(createArrayGuard(isInt))
