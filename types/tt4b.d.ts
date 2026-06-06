@@ -88,7 +88,7 @@ declare namespace tt4b {
         salt: string
     }
 
-    namespace app {
+    namespace ui {
         /**
          * @since 1.1.7
          */

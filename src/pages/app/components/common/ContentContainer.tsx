@@ -8,36 +8,24 @@
 import { css } from '@emotion/css'
 import Flex from "@pages/components/Flex"
 import { ElCard, useNamespace } from "element-plus"
-import { type FunctionalComponent, h, type StyleValue } from "vue"
+import type { FunctionalComponent } from "vue"
 import ContentCard from "./ContentCard"
 
-const FILTER_BODY_STYLE: StyleValue = {
-    paddingBottom: '18px',
-    paddingTop: '18px',
-    boxSizing: 'border-box',
-    width: '100%',
-    userSelect: 'none',
-}
-
-const useContainerStyle = () => {
+export const FilterContainer: FunctionalComponent = (_, ctx) => {
     const btnNs = useNamespace('button')
-    return css`
+    const clz = css`
+        padding-block: 18px;
+        user-select: none;
+
         & .${btnNs.b()}+.${btnNs.b()} {
             margin-inline-start: 0px;
         }
     `
+    return <ElCard bodyClass={clz} v-slots={ctx.slots} />
 }
 
-export const FilterContainer: FunctionalComponent = (_, ctx) => (
-    <ElCard
-        bodyStyle={FILTER_BODY_STYLE}
-        bodyClass={useContainerStyle()}
-        v-slots={ctx.slots}
-    />
-)
-
 const _default: FunctionalComponent<{ class?: string }> = (props, ctx) => {
-    const { default: default_, filter, content } = ctx.slots
+    const { default: children, filter, content } = ctx.slots
 
     return (
         <Flex
@@ -49,9 +37,9 @@ const _default: FunctionalComponent<{ class?: string }> = (props, ctx) => {
             boxSizing="border-box"
             gap={15}
         >
-            {filter && <FilterContainer>{h(filter)}</FilterContainer>}
-            {!!default_ && <Flex column gap={15} flex={1} height={0} width="100%">{h(default_)}</Flex>}
-            {!default_ && content && <ContentCard v-slots={content} />}
+            {filter && <FilterContainer>{filter()}</FilterContainer>}
+            {!!children && <Flex column gap={15} flex={1} height={0} width="100%">{children()}</Flex>}
+            {!children && content && <ContentCard>{content()}</ContentCard>}
         </Flex>
     )
 }

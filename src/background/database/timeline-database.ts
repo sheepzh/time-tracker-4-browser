@@ -2,8 +2,15 @@ import { MILL_PER_DAY, MILL_PER_SECOND } from '@util/time'
 import {
     BaseIDBStorage, iterateCursor, req2Promise,
     type Index, type IndexResult, type Key, type Table,
-} from '../common/indexed-storage'
-import type { TimelineCondition, TimelineDatabase } from './types'
+} from './common/indexed-storage'
+
+type TimelineCondition = {
+    host?: string
+    /**
+     * Start time in milliseconds, inclusive
+     */
+    start?: number
+}
 
 const TIME_LIFE_CYCLE = MILL_PER_DAY * 366
 
@@ -40,7 +47,7 @@ class CleanThrottle {
     }
 }
 
-export default class IDBTimelineDatabase extends BaseIDBStorage<tt4b.timeline.Tick> implements TimelineDatabase {
+class TimelineDatabase extends BaseIDBStorage<tt4b.timeline.Tick> {
     indexes: Index<tt4b.timeline.Tick>[] = [
         'host', 'start',
     ]
@@ -91,7 +98,7 @@ export default class IDBTimelineDatabase extends BaseIDBStorage<tt4b.timeline.Ti
 
     async select(cond?: TimelineCondition): Promise<tt4b.timeline.Tick[]> {
         const rows = await this.withStore(async store => {
-            const { cursorReq, coverage = {} } = this.judgeIndex(store, cond)
+            const { cursorReq, coverage = {} } = this.#judgeIndex(store, cond)
             const rows = await iterateCursor<tt4b.timeline.Tick>(cursorReq)
             const { start: cs, host: ch } = cond ?? {}
             return rows.filter(tick => {
@@ -111,7 +118,7 @@ export default class IDBTimelineDatabase extends BaseIDBStorage<tt4b.timeline.Ti
         return rows
     }
 
-    private judgeIndex(store: IDBObjectStore, cond?: TimelineCondition): IndexResult<IndexCoverage> {
+    #judgeIndex(store: IDBObjectStore, cond?: TimelineCondition): IndexResult<IndexCoverage> {
         const { host, start } = cond ?? {}
         if (host) {
             return {
@@ -128,3 +135,7 @@ export default class IDBTimelineDatabase extends BaseIDBStorage<tt4b.timeline.Ti
         }
     }
 }
+
+const timelineDatabase = new TimelineDatabase()
+
+export default timelineDatabase

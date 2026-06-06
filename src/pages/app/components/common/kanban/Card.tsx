@@ -5,10 +5,11 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { t, type I18nKey } from '@app/locale'
 import { useXsState } from '@hooks'
-import { I18nKey, t } from '@app/locale'
+import Box from '@pages/components/Box'
 import { ElCard } from "element-plus"
-import { defineComponent, h, useSlots, type StyleValue } from "vue"
+import { defineComponent, useSlots, type StyleValue } from "vue"
 
 const TITLE_STYLE: StyleValue = {
     position: 'absolute',
@@ -19,6 +20,10 @@ const TITLE_STYLE: StyleValue = {
     zIndex: 1000,
 }
 
+const FILTER_CONTAINER_STYLE: StyleValue = {
+    borderBottom: '1px var(--el-border-color) var(--el-border-style)',
+}
+
 const _default = defineComponent<{ title: I18nKey }>(props => {
     const { default: default_, filter } = useSlots()
     const isXs = useXsState()
@@ -27,16 +32,11 @@ const _default = defineComponent<{ title: I18nKey }>(props => {
         <ElCard bodyStyle={{ position: 'relative' }}>
             <div style={TITLE_STYLE}>{t(props.title)}</div>
             {!!filter && !isXs.value && (
-                <div
-                    style={{
-                        paddingTop: '10px', paddingBottom: '14px',
-                        borderBottom: '1px var(--el-border-color) var(--el-border-style)',
-                    }}
-                >
-                    {h(filter)}
-                </div>
+                <Box paddingBlock="10px 14px" style={FILTER_CONTAINER_STYLE}>
+                    {filter()}
+                </Box>
             )}
-            {!!default_ && h(default_)}
+            {default_?.()}
         </ElCard>
     )
 }, { props: ['title'] })

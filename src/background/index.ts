@@ -7,7 +7,7 @@
 
 import { trySendMsg2Tab } from "@api/chrome/tab"
 import { initBrowserAction, initSidePanel } from './action'
-import badgeTextManager from "./badge-manager"
+import badgeManager from "./badge-manager"
 import initCsHandler from "./content-script-handler"
 import initDataCleaner from "./data-cleaner"
 import { initAfterInstalled } from './install-handler'
@@ -47,11 +47,11 @@ initScheduler()
 initWhitelistMenuManager()
 
 // Badge manager
-badgeTextManager.init(messageDispatcher)
+badgeManager.init(messageDispatcher)
 
 // Listen to tab changed
 new TabListener()
-    .onActivated(({ url, tabId }) => badgeTextManager.updateFocus({ url, tabId }))
+    .onActivated(({ url, tabId }) => badgeManager.updateFocus({ url, tabId }))
     .onUpdated((tabId, { audible }) => audible !== undefined && trySendMsg2Tab(tabId, 'syncAudible', audible))
     .start()
 

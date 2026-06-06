@@ -1,6 +1,6 @@
 import limitMessages, { type LimitMessage } from "../app/limit"
 import menuMessages, { type MenuMessage } from "../app/menu"
-import calendarMessages, { type CalendarMessage } from "../calendar"
+import calendarMessages, { type CalendarMessage } from "../common/calendar"
 import metaMessages, { type MetaMessage } from "../common/meta"
 import sharedMessages, { type SharedMessage } from '../common/shared'
 import { merge, type MessageRoot } from "../merge"

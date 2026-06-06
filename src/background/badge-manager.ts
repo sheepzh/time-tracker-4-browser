@@ -138,6 +138,6 @@ class BadgeManager {
     }
 }
 
-const badgeTextManager = new BadgeManager()
+const badgeManager = new BadgeManager()
 
-export default badgeTextManager
+export default badgeManager

@@ -54,11 +54,16 @@ const _default = defineComponent(() => {
         <KanbanCard title={msg => msg.analysis.summary.title}>
             <Grid
                 class={containerCls}
-                gap={1}
+                rowGap={1} columnGap={[1, 1]}
                 bgColor='var(--el-border-color)'
-                templateColumns='repeat(auto-fill, minmax(calc(min(100%, max(500px, calc(50% - .5px)))), 1fr))'
+                minColumnWidth="min(100%, max(500px, calc(50% - .5px)))"
+                maxColumnWidth="1fr"
             >
-                <Grid gap={1} templateColumns='repeat(auto-fill, minmax(calc(min(100%, max(300px, calc(50% - .5px)))), 1fr))'>
+                <Grid
+                    rowGap={1} columnGap={[1, 1]}
+                    minColumnWidth='calc(min(100%, max(300px, calc(50% - .5px))))'
+                    maxColumnWidth='1fr'
+                >
                     <TargetInfo />
                     <KanbanIndicatorCell
                         mainName={FOCUS_LABEL}

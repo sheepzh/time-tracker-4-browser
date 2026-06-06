@@ -8,7 +8,6 @@
 import { getVersion } from "@api/chrome/runtime"
 import CateInitializer from "./cate-initializer"
 import HostMergeInitializer from "./host-merge-initializer"
-import IndexedDBMigrator from './indexed-migrator'
 import LocalFileInitializer from "./local-file-initializer"
 import type { Migrator } from "./types"
 import WhitelistInitializer from "./whitelist-initializer"
@@ -27,7 +26,6 @@ class VersionManager {
             new LocalFileInitializer(),
             new WhitelistInitializer(),
             new CateInitializer(),
-            new IndexedDBMigrator(),
         )
     }
 

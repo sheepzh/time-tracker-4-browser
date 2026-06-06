@@ -7,7 +7,7 @@
 
 import resource from './time-format-resource.json'
 
-export type TimeFormatMessage = { [key in tt4b.app.TimeFormat]: string }
+export type TimeFormatMessage = { [key in tt4b.ui.TimeFormat]: string }
 
 const _default: Messages<TimeFormatMessage> = resource
 

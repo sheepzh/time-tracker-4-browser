@@ -10,7 +10,7 @@ import { daysAgo } from "@util/time"
 import { reactive, Reactive } from "vue"
 
 export type FilterOption = {
-    timeFormat: tt4b.app.TimeFormat
+    timeFormat: tt4b.ui.TimeFormat
     dateRange: [Date, Date]
 }
 

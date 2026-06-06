@@ -1,5 +1,5 @@
-import { type CSSProperties, defineComponent, h, useSlots } from "vue"
-import { ALL_BASE_PROPS, type BaseProps, cvt2BaseStyle, cvtPxScale } from "./common"
+import type { CSSProperties, FunctionalComponent } from "vue"
+import { type BaseProps, cvt2BaseStyle, cvtPxScale } from "./common"
 
 const cvtFlexWrap = (wrap: boolean | CSSProperties['flexWrap']): CSSProperties['flexWrap'] => {
     if (typeof wrap === 'string') return wrap
@@ -22,35 +22,33 @@ type Props = {
     target?: HTMLAnchorElement['target']
 } & BaseProps
 
-const Flex = defineComponent<Props>(props => {
+const Flex: FunctionalComponent<Props> = (props, { slots }) => {
     const Comp = props.as ?? 'div'
 
-    return () => {
-        const { default: defaultSlots } = useSlots()
-        return (
-            <Comp
-                id={props.id}
-                class={props.class}
-                onClick={props.onClick}
-                style={{
-                    display: props.inline ? 'inline-flex' : 'flex',
-                    flex: props.flex,
-                    flexDirection: props?.column ? 'column' : props.direction,
-                    alignItems: props.align,
-                    justifyContent: props.justify,
-                    flexWrap: cvtFlexWrap(props.wrap),
-                    columnGap: cvtPxScale(props.columnGap),
-                    rowGap: cvtPxScale(props.rowGap),
-                    gap: cvtPxScale(props.gap),
-                    ...cvt2BaseStyle(props),
-                }}
-                href={props.href}
-                target={props.target}
-            >
-                {defaultSlots && h(defaultSlots)}
-            </Comp>
-        )
-    }
-}, { props: [...ALL_BASE_PROPS, 'direction', 'column', 'flex', 'align', 'justify', 'gap', 'columnGap', 'rowGap', 'wrap', 'as'] })
+    return (
+        <Comp
+            id={props.id}
+            class={props.class}
+            onClick={props.onClick}
+            style={{
+                display: props.inline ? 'inline-flex' : 'flex',
+                flex: props.flex,
+                flexDirection: props?.column ? 'column' : props.direction,
+                alignItems: props.align,
+                justifyContent: props.justify,
+                flexWrap: cvtFlexWrap(props.wrap),
+                columnGap: cvtPxScale(props.columnGap),
+                rowGap: cvtPxScale(props.rowGap),
+                gap: cvtPxScale(props.gap),
+                ...cvt2BaseStyle(props),
+            }}
+            href={props.href}
+            target={props.target}
+        >
+            {slots.default?.()}
+        </Comp>
+    )
+}
+Flex.displayName = 'Flex'
 
 export default Flex
