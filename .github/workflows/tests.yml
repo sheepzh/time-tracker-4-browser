@@ -4,11 +4,11 @@ jobs:
     test:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v6
             - name: Test using Node.js
-              uses: actions/setup-node@v1
+              uses: actions/setup-node@v6
               with:
-                  node-version: "v22"
+                  node-version: 24
             - run: npm install
             - run: npm run test-c
             - name: Tests ✅
@@ -31,6 +31,6 @@ jobs:
                   }
             - name: Upload coverage report
               if: ${{ !cancelled() }}
-              uses: codecov/test-results-action@v1
+              uses: codecov/codecov-action@v6
               with:
                   token: ${{ secrets.CODECOV_TOKEN }}
