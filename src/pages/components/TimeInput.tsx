@@ -3,9 +3,12 @@ import { useDebounceFn, useState, useXsState } from '@hooks'
 import { getStyle } from '@pages/util/style'
 import { range } from "@util/array"
 import {
-    Effect, ElIcon, ElInput, ElPopover, ElScrollbar, type ScrollbarInstance, useLocale, useNamespace,
+    Effect,
+    ElIcon,
+    ElInput, ElPopover, ElScrollbar, InputProps, type ScrollbarInstance, type TimePickerDefaultProps, useLocale,
+    useNamespace
 } from "element-plus"
-import { computed, defineComponent, nextTick, onMounted, ref, Transition, watch } from "vue"
+import { computed, CSSProperties, defineComponent, nextTick, onMounted, ref, Transition, watch } from "vue"
 
 function computeSecond2LimitInfo(time: number): [number, number, number] {
     time = time || 0
@@ -20,11 +23,9 @@ const formatTimeVal = (val: number): string => {
     return val?.toString?.()?.padStart?.(2, '0') ?? 'NaN'
 }
 
-type TimeSpinnerProps = {
+type TimeSpinnerProps = ModelValue<number> & {
     max: number
-    modelValue: number
     visible: boolean
-    onChange?: (val: number) => void
 }
 
 const TimeSpinner = defineComponent<TimeSpinnerProps>(props => {
@@ -104,14 +105,14 @@ const TimeSpinner = defineComponent<TimeSpinnerProps>(props => {
     )
 }, { props: ['max', 'modelValue', 'visible', 'onChange'] })
 
-const useTimeInput = (source: () => number) => {
+const useTimeInput = (source: () => number | undefined) => {
     const [initialHour, initialMin, initialSec] = computeSecond2LimitInfo(source?.() ?? 0)
     const [hour, setHour] = useState(initialHour)
     const [minute, setMinute] = useState(initialMin)
     const [second, setSecond] = useState(initialSec)
 
     const reset = () => {
-        const [hour, min, sec] = computeSecond2LimitInfo(source?.() ?? 0)
+        const [hour, min, sec] = computeSecond2LimitInfo(source() ?? 0)
         setHour(hour)
         setMinute(min)
         setSecond(sec)
@@ -134,10 +135,12 @@ const useTimeInput = (source: () => number) => {
     }
 }
 
-type TimeInputProps = {
-    modelValue: number
+type TimeInputProps = Pick<TimePickerDefaultProps, 'size'> & ModelValue<number | undefined> & {
     hourMax?: number
-    onChange?: (val: number) => void
+    placeholder?: string
+    style?: CSSProperties
+    hideSeconds?: boolean
+    width?: string
 }
 
 /**
@@ -151,7 +154,15 @@ const TimeInput = defineComponent<TimeInputProps>(props => {
         reset, getTotalSecond,
     } = useTimeInput(() => props.modelValue)
 
-    const inputText = computed(() => `${formatTimeVal(hour.value)} h ${formatTimeVal(minute.value)} m ${formatTimeVal(second.value)} s`)
+    const inputAttr = computed<Pick<InputProps, 'modelValue' | 'clearable'>>(() => {
+        const { modelValue, hideSeconds } = props
+        // Not support 0 as valid time, treat it as unlimited
+        if (!modelValue) return { modelValue: undefined, clearable: false }
+        const text = hideSeconds
+            ? `${formatTimeVal(hour.value)} h ${formatTimeVal(minute.value)} m`
+            : `${formatTimeVal(hour.value)} h ${formatTimeVal(minute.value)} m ${formatTimeVal(second.value)} s`
+        return { modelValue: text, clearable: true }
+    })
 
     const ns = useNamespace('time')
     const nsDate = useNamespace('date')
@@ -177,7 +188,7 @@ const TimeInput = defineComponent<TimeInputProps>(props => {
     }
 
     const handleClear = (ev: MouseEvent) => {
-        props.onChange?.(0)
+        props.onChange?.(undefined)
         ev.stopPropagation()
     }
 
@@ -196,13 +207,14 @@ const TimeInput = defineComponent<TimeInputProps>(props => {
                     <ElInput
                         class={[nsDate.b('editor'), nsDate.bm('editor', 'time')]}
                         prefixIcon={Clock}
-                        modelValue={inputText.value}
+                        placeholder={props.placeholder}
+                        modelValue={inputAttr.value.modelValue}
                         inputStyle={{ cursor: 'pointer' }}
-                        style={{ '--el-date-editor-width': '170px' }}
-                        size={isXs.value ? 'small' : undefined}
+                        style={{ ...props.style, '--el-date-editor-width': props.width ?? '170px' }}
+                        size={props.size ?? (isXs.value ? 'small' : undefined)}
                         readonly
                         v-slots={{
-                            suffix: () => !!props.modelValue && (
+                            suffix: () => inputAttr.value.clearable && (
                                 <div onClick={handleClear}>
                                     <ElIcon class={[nsInput.e('icon'), 'clear-icon']}>
                                         <CircleClose />
@@ -215,11 +227,11 @@ const TimeInput = defineComponent<TimeInputProps>(props => {
             }}>
             <Transition name={transitionName.value}>
                 <div class={ns.b('panel')} style={{ width: '100%' }}>
-                    <div class={[ns.be('panel', 'content'), 'has-seconds']}>
-                        <div class={[ns.b('spinner'), 'has-seconds']}>
+                    <div class={[ns.be('panel', 'content'), !props.hideSeconds && 'has-seconds']}>
+                        <div class={[ns.b('spinner'), !props.hideSeconds && 'has-seconds']}>
                             <TimeSpinner max={props.hourMax ?? 24} modelValue={hour.value} onChange={setHour} visible={popoverVisible.value} />
                             <TimeSpinner max={60} modelValue={minute.value} onChange={setMinute} visible={popoverVisible.value} />
-                            <TimeSpinner max={60} modelValue={second.value} onChange={setSecond} visible={popoverVisible.value} />
+                            {!props.hideSeconds && <TimeSpinner max={60} modelValue={second.value} onChange={setSecond} visible={popoverVisible.value} />}
                         </div>
                     </div>
                     <div class={[ns.be('panel', 'footer')]}>
@@ -242,6 +254,6 @@ const TimeInput = defineComponent<TimeInputProps>(props => {
             </Transition>
         </ElPopover>
     )
-}, { props: ['hourMax', 'modelValue', 'onChange'] })
+}, { props: ['style', 'size', 'placeholder', 'hourMax', 'modelValue', 'onChange', 'hideSeconds', 'width'] })
 
 export default TimeInput

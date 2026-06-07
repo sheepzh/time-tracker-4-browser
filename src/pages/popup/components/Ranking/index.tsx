@@ -1,13 +1,18 @@
-import { useOption, useQuery } from "@popup/context"
+import { useViewSlots } from "@popup/context"
+import { useStatOption, useStatQuery } from "../stat/context"
+import StatToolbar from "../stat/Toolbar"
 import { useRequest } from "@hooks"
 import { ElCol, ElRow, ElScrollbar } from "element-plus"
 import { defineComponent } from "vue"
 import Item from "./Item"
+import RankingOption from "./Option"
 import { doQuery } from "./query"
 
 const Ranking = defineComponent(() => {
-    const query = useQuery()
-    const option = useOption()
+    const query = useStatQuery()
+    const option = useStatOption()
+    const { setViewSlots } = useViewSlots()
+    setViewSlots({ toolbar: StatToolbar, headerOption: RankingOption })
     const { data: result } = useRequest(() => doQuery(query, option), { deps: () => ({ ...query, ...option }) })
 
     return () => (

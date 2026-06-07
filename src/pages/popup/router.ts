@@ -1,19 +1,15 @@
-import { useLocalStorage } from '@hooks'
-import { createStringUnionGuard } from 'typescript-guard'
 import { type App } from "vue"
 import { createRouter, createWebHashHistory, type RouteRecordRedirect, type RouteRecordSingleView } from "vue-router"
-import type { PopupMenu } from './types'
 
-type Path = `/${PopupMenu}`
+type Path = `/${tt4b.ui.PopupMenu}`
 type MyRoute =
     | (Omit<RouteRecordSingleView, 'path'> & { path: Path })
     | (Omit<RouteRecordRedirect, 'redirect'> & { redirect: Path })
 
-
-const createRoutes = (stored: PopupMenu | undefined): MyRoute[] => [
+const createRoutes = (): MyRoute[] => [
     {
         path: '/',
-        redirect: stored ? `/${stored}` : '/percentage',
+        redirect: '/percentage',
     }, {
         path: '/percentage',
         component: () => import('./components/Percentage'),
@@ -23,14 +19,14 @@ const createRoutes = (stored: PopupMenu | undefined): MyRoute[] => [
     }, {
         path: '/limit',
         component: () => import('./components/Limit'),
-    },
+    }, {
+        path: '/focus',
+        component: () => import('./components/Focus'),
+    }
 ]
 
-export const isMenu = createStringUnionGuard<PopupMenu>('limit', 'percentage', 'ranking')
-
 export default (app: App) => {
-    const [stored] = useLocalStorage<PopupMenu>('popup_menu', isMenu)
-    const routes = createRoutes(stored)
+    const routes = createRoutes()
     const history = createWebHashHistory()
     const router = createRouter({ routes, history })
     app.use(router)

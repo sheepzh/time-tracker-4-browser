@@ -5,6 +5,9 @@ export type ModalMessage = {
     delay: string
     browsingTime: string
     ruleDetail: string
+    pomodoroActive: string
+    focusActive: string
+    focusBlocked: string
 }
 
 const _default: Messages<ModalMessage> = resource

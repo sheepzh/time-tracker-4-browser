@@ -5,7 +5,6 @@
         "on": "始终开启",
         "off": "始终关闭",
         "followBrowser": "跟随浏览器",
-        "permGrantConfirm": "该功能需要授予相关权限",
         "appearance": {
             "title": "外观",
             "displayWhitelist": "{input}  是否在 {contextMenu} 里，显示 {whitelist} 相关功能",
@@ -153,7 +152,6 @@
         "on": "始終開啟",
         "off": "始終關閉",
         "followBrowser": "跟隨瀏覽器",
-        "permGrantConfirm": "此功能需要相關權限才能運作",
         "appearance": {
             "title": "外觀設定",
             "displayWhitelist": "{input} 是否在 {contextMenu} 顯示 {whitelist} 功能",
@@ -295,7 +293,6 @@
         "on": "Always on",
         "off": "Always off",
         "followBrowser": "Follow browser",
-        "permGrantConfirm": "This feature requires relevant permissions",
         "appearance": {
             "title": "Appearance",
             "displayWhitelist": "{input}  Whether to display {whitelist} in {contextMenu}",
@@ -579,7 +576,6 @@
         "on": "Sempre ativo",
         "off": "Sempre inativo",
         "followBrowser": "Usar do navegador",
-        "permGrantConfirm": "Esta funcionalidade precisa de permissões relevantes",
         "appearance": {
             "title": "Aparência",
             "displayWhitelist": "{input} Mostrar {whitelist} no {contextMenu}",
@@ -703,7 +699,6 @@
         "on": "Завжди ввімкнено",
         "off": "Завжди вимкнено",
         "followBrowser": "Як у браузері",
-        "permGrantConfirm": "Ця функція потребує відповідних дозволів",
         "appearance": {
             "title": "Зовнішній вигляд",
             "displayWhitelist": "{input}  Показувати {whitelist} в {contextMenu}",
@@ -825,7 +820,6 @@
         "on": "Siempre encendido",
         "off": "Siempre apagado",
         "followBrowser": "Igual que el navegador",
-        "permGrantConfirm": "Esta función requiere permisos pertinentes",
         "appearance": {
             "title": "Apariencia",
             "displayWhitelist": "{input}  Mostrar {whitelist} en {contextMenu}",
@@ -947,7 +941,6 @@
         "on": "Immer an",
         "off": "Immer aus",
         "followBrowser": "Browser verfolgen",
-        "permGrantConfirm": "Dieses Feature benötigt entsprechende Berechtigungen",
         "appearance": {
             "title": "Aussehen",
             "displayWhitelist": "{input} {whitelist} in {contextMenu} anzeigen",
@@ -1095,7 +1088,6 @@
         "on": "Toujours activé",
         "off": "Toujours éteint",
         "followBrowser": "Suivre le navigateur",
-        "permGrantConfirm": "Cette fonctionnalité nécessite des autorisations appropriées",
         "appearance": {
             "title": "Apparence",
             "displayWhitelist": "{input} S'il faut afficher les {whitelist} dans {contextMenu}",
@@ -1499,7 +1491,6 @@
         "on": "Her zaman açık",
         "off": "Her zaman kapalı",
         "followBrowser": "Tarayıcıyı takip et",
-        "permGrantConfirm": "Bu özellik ilgili izinleri gerektirir",
         "appearance": {
             "title": "Görünüm",
             "displayWhitelist": "{input}  {contextMenu} içinde {whitelist} gösterilip gösterilmeyeceğini seçin",
@@ -1641,7 +1632,6 @@
         "on": "Zawsze włączone",
         "off": "Zawsze wyłączone",
         "followBrowser": "Śledź przeglądarkę",
-        "permGrantConfirm": "Ta opcja wymaga odpowiednich uprawnień",
         "appearance": {
             "title": "Wygląd",
             "displayWhitelist": "{input} Wyświetlanie {whitelist} w {contextMenu}",
@@ -1783,7 +1773,6 @@
         "on": "Sempre acceso",
         "off": "Sempre spento",
         "followBrowser": "Segui browser",
-        "permGrantConfirm": "Questa funzione richiede autorizzazioni rilevanti",
         "appearance": {
             "title": "Apparenza",
             "displayWhitelist": "{input}  Se visualizzare {whitelist} in {contextMenu}",

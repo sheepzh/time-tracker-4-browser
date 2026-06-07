@@ -1,18 +1,18 @@
 import { css } from '@emotion/css'
 import { t } from "@i18n"
 import calendarMessages from "@i18n/message/common/calendar"
-import { type PopupDuration } from '@popup/types'
 import { type CascaderNode, type CascaderOption, ElCascader, useNamespace } from "element-plus"
 import { computed, defineComponent } from "vue"
+import type { StatDuration } from './types'
 
-const rangeLabel = (duration: PopupDuration, n?: string | number): string => t(calendarMessages, {
+const rangeLabel = (duration: StatDuration, n?: string | number): string => t(calendarMessages, {
     key: msg => msg.range[duration],
     param: n ? { n } : undefined,
 })
 
 const BUILTIN_DAY_NUM = [7, 30, 90, 180, 365]
 
-const cvt2Opt = (value: PopupDuration, n?: string | number): CascaderOption => ({
+const cvt2Opt = (value: StatDuration, n?: string | number): CascaderOption => ({
     value, label: rangeLabel(value, n),
 })
 
@@ -27,10 +27,10 @@ const options = (): CascaderOption[] => [
             })),
         ],
     },
-    ...(['thisMonth', 'thisWeek', 'yesterday', 'today'] satisfies PopupDuration[]).map(cvt2Opt),
+    ...(['thisMonth', 'thisWeek', 'yesterday', 'today'] satisfies StatDuration[]).map(cvt2Opt),
 ]
 
-type DurationValue = [PopupDuration, number?]
+type DurationValue = [StatDuration, number?]
 
 type Props = ModelValue<DurationValue>
 
@@ -54,7 +54,7 @@ const DurationSelect = defineComponent<Props>(props => {
     return () => (
         <ElCascader
             modelValue={casVal.value}
-            onChange={val => props.onChange?.(val as [PopupDuration, number?])}
+            onChange={val => props.onChange?.(val as [StatDuration, number?])}
             options={options()}
             show-all-levels={false}
             style={{ width: '130px' }}

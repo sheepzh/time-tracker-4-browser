@@ -26,20 +26,23 @@ const STEP_TITLES = [
     t(msg => msg.limit.step.rule),
 ]
 
-const createInitial = (url?: string): ModifyForm => ({
-    name: `RULE-${new String(new Date().getTime() % 10000).padStart(4, '0')}`,
-    time: 3600,
-    weekly: 0,
-    cond: url ? [cleanCond(url)] : [],
-    visitTime: 0,
-    periods: [],
-    enabled: true,
-    weekdays: range(7),
-    count: 0,
-    weeklyCount: 0,
-    allowDelay: false,
-    locked: false,
-})
+const createInitial = (url?: string): ModifyForm => {
+    url = url ? cleanCond(url) : url
+    return {
+        name: `RULE-${new String(new Date().getTime() % 10000).padStart(4, '0')}`,
+        time: 3600,
+        weekly: 0,
+        cond: url ? [url] : [],
+        visitTime: 0,
+        periods: [],
+        enabled: true,
+        weekdays: range(7),
+        count: 0,
+        weeklyCount: 0,
+        allowDelay: false,
+        locked: false,
+    }
+}
 
 const _default = defineComponent((_, ctx) => {
     const { refresh } = useLimitData()

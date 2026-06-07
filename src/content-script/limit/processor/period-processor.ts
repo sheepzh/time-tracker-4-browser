@@ -1,7 +1,7 @@
 import { trySendMsg2Runtime } from '@api/sw/common'
 import { date2Idx } from "@util/limit"
 import { MILL_PER_SECOND } from "@util/time"
-import type { LimitReason, ModalContext, Processor } from '../types'
+import type { ModalContext, Processor, Reason } from '../types'
 
 function processRule(rule: tt4b.limit.Rule, nowSeconds: number, context: ModalContext): ReturnType<typeof setTimeout>[] {
     const { cond, periods, id } = rule
@@ -10,7 +10,7 @@ function processRule(rule: tt4b.limit.Rule, nowSeconds: number, context: ModalCo
         const [s, e] = p
         const startSeconds = s * 60
         const endSeconds = (e + 1) * 60
-        const reason: LimitReason = { id, cond, type: "PERIOD" }
+        const reason: Reason = { id, cond, type: "PERIOD" }
         const timers: ReturnType<typeof setTimeout>[] = []
         if (nowSeconds < startSeconds) {
             timers.push(setTimeout(() => context.modal.addReason(reason), (startSeconds - nowSeconds) * MILL_PER_SECOND))

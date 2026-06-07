@@ -1,5 +1,5 @@
 import { queryRows } from "@popup/common"
-import type { PopupOption, PopupQuery } from "@popup/types"
+import type { StatOption, StatQuery } from "../stat/types"
 import { sum } from "@util/array"
 import { type DateRange } from '@util/time'
 
@@ -11,7 +11,7 @@ type RankingResult = {
     date: DateRange
 }
 
-export const doQuery = async (query: PopupQuery, option: PopupOption): Promise<RankingResult> => {
+export const doQuery = async (query: StatQuery, option: StatOption): Promise<RankingResult> => {
     const [rows, date] = await queryRows(query)
     const { dimension } = query
     const values = rows?.map(r => r?.[dimension] ?? 0) ?? []

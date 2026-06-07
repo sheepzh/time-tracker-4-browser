@@ -1,10 +1,10 @@
 import { InfoFilled } from '@element-plus/icons-vue'
 import { ElIcon, ElTooltip } from 'element-plus'
-import { type FunctionalComponent, h, type StyleValue } from 'vue'
+import type { FunctionalComponent, StyleValue } from 'vue'
 
-const Tag: FunctionalComponent<{}> = (_, { slots: { default: default_ } }) => (
+const Tag: FunctionalComponent<{}> = (_, { slots }) => (
     <a style={{ color: '#F56C6C', fontSize: 'inherit' } satisfies StyleValue}>
-        {default_ && h(default_)}
+        {slots.default?.()}
     </a>
 )
 Tag.displayName = 'OptionTag'
