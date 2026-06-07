@@ -1,5 +1,5 @@
 import Flex from '@pages/components/Flex'
-import { useLimitSummary } from '@popup/context'
+import { useLimitContext } from '../context'
 import { t } from '@popup/locale'
 import { ElResult } from 'element-plus'
 import { computed, defineComponent, type FunctionalComponent } from 'vue'
@@ -15,7 +15,7 @@ const Empty: FunctionalComponent<{}> = () => (
 )
 
 const Content = defineComponent<{}>(() => {
-    const { summary, selected } = useLimitSummary()
+    const { summary, selected } = useLimitContext()
     const item = computed(() => summary.value?.items.find(i => i.id === selected.value))
 
     return () => item.value ? <Chart item={item.value} /> : <Empty />

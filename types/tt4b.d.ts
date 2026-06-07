@@ -80,6 +80,7 @@ declare namespace tt4b {
          * Two-factor auth
          */
         twoFa?: TwoFactorAuth
+        popup?: ui.PopupMenu
     }
 
     type TwoFactorAuth = {
@@ -98,7 +99,7 @@ declare namespace tt4b {
             | "minute"
             | "hour"
 
-        type PopupMenu = 'percentage' | 'ranking' | 'limit'
+        type PopupMenu = 'percentage' | 'ranking' | 'limit' | 'focus'
     }
 
     namespace common {
@@ -251,11 +252,11 @@ declare namespace tt4b {
 
     namespace limit {
         /**
-        * Restricted periods
-        * [0, 1] means from 00:00 to 00:01
-        * [0, 120] means from 00:00 to 02:00
-        * @since 2.0.0
-        */
+         * Restricted periods
+         * [0, 1] means from 00:00 to 00:01
+         * [0, 120] means from 00:00 to 02:00
+         * @since 2.0.0
+         */
         type Period = Vector<2>
         /**
          * Limit rule in runtime
@@ -879,10 +880,10 @@ declare namespace tt4b {
             darkModeTimeStart?: number
             darkModeTimeEnd?: number
             /**
-            * The animation of charts
-            *
-            * @since 3.2.2
-            */
+             * The animation of charts
+             *
+             * @since 3.2.2
+             */
             chartAnimationDuration: number
         }
 
@@ -1060,13 +1061,20 @@ declare namespace tt4b {
             | readonly _TransmitValue[]
 
         type _HandlerIO<Input extends _TransmitValue = undefined, Output extends _TransmitValue = undefined> = [Input, Output]
-        type _MakeRegistry<Codes extends string, Param extends _TransmitValue = undefined, Result extends _TransmitValue = undefined> = Record<Codes, _HandlerIO<Param, Result>>
+        type _MakeRegistry<
+            Codes extends string,
+            Param extends _TransmitValue = undefined,
+            Result extends _TransmitValue = undefined,
+        > = Record<Codes, _HandlerIO<Param, Result>>
 
         type _MqReqData<R, K extends keyof R> = R[K] extends [infer In, unknown] ? In : never
         type _MqResData<R, K extends keyof R> = R[K] extends [unknown, infer Out] ? Out : never
         type _MqRequest<R, K extends keyof R = keyof R> = { code: K; data: _MqReqData<R, K> }
         type _MqSuccess<R, K extends keyof R> =
-            _MqResData<R, K> extends undefined ? { code: "success"; data?: undefined } : { code: "success"; data: _MqResData<R, K> }
+            _MqResData<R, K> extends undefined ? { code: "success"; data?: undefined } : {
+                code: "success"
+                data: _MqResData<R, K>
+            }
         type _MqResponse<R, K extends keyof R = keyof R> =
             | { code: "fail"; msg: string }
             | { code: "ignore" }
@@ -1114,6 +1122,7 @@ declare namespace tt4b {
             & _MakeRegistry<'meta.usedStorage', undefined, common.StorageUsage>
             & _MakeRegistry<'meta.check2fa', string, boolean>
             & _MakeRegistry<'meta.prepare2fa', undefined, string>
+            & _MakeRegistry<'meta.popup', ui.PopupMenu | undefined>
             // Site
             & _MakeRegistry<'site.runEnabled', string, boolean>
             & _MakeRegistry<'site.list', site.Query | undefined, site.SiteInfo[]>
@@ -1135,6 +1144,12 @@ declare namespace tt4b {
             & _MakeRegistry<'limit.hitVisit', limit.Item, boolean>
             & _MakeRegistry<'limit.delay', string>
             & _MakeRegistry<'limit.summary', undefined, limit.Summary | undefined>
+            // Focus
+            & _MakeRegistry<'focus.allPresets', undefined, focus.Preset[]>
+            & _MakeRegistry<'focus.addPreset', Omit<focus.Preset, 'id'>, number>
+            & _MakeRegistry<'focus.savePreset', focus.Preset>
+            & _MakeRegistry<'focus.action', focus.ActionRequest>
+            & _MakeRegistry<'focus.current', undefined, focus.Session | undefined>
             // Merge
             & _MakeRegistry<'merge.all', undefined, merge.Rule[]>
             & _MakeRegistry<'merge.delete', string>
@@ -1198,6 +1213,7 @@ declare namespace tt4b {
             & mq._MakeRegistry<'limitChanged'>
             & mq._MakeRegistry<'limitReminder', limit.ReminderInfo>
             & mq._MakeRegistry<'askVisitHit', number, boolean>
+            & mq._MakeRegistry<'focusChanged', focus.Session | undefined>
 
         type ReqCode = keyof _HandlerRegistry
 
@@ -1213,5 +1229,61 @@ declare namespace tt4b {
          * @since 0.8.4
          */
         type Callback<T extends ReqCode = ReqCode> = (result?: Response<T>) => void
+    }
+
+    namespace focus {
+        type Template = 'focus' | 'pomodoro'
+
+        type Mode = 'allow' | 'block'
+
+        type Config = {
+            template: Template
+            // URL MATCH
+            mode: Mode
+            // Site conditions to block during focus, supports wildcard patterns
+            cond: string[]
+            // Focus duration in seconds. Undefined means no limit.
+            duration?: number
+            // Break duration in seconds. If great than 0, means that cycle is enable
+            break?: number
+            allowDelay?: boolean
+        }
+
+        /**
+         * A focus preset defines a named set of blocking conditions
+         * that can be activated as a "focus mode".
+         */
+        type Preset = {
+            // Current timestamp
+            id: number
+            // Display name of this preset (e.g. "Work Mode", "Study Mode")
+            name: string
+        } & Config
+
+        type State = 'running' | 'paused' | 'done' | 'aborted'
+
+        type Action = 'start' | 'pause' | 'resume' | 'abort' | 'finish'
+
+        type Phase = 'focus' | 'break'
+
+        type Session = Config & {
+            // Start time with ts
+            start: number
+            end: number
+            presetId?: number
+            // Actual duration(milliseconds) in this cycle
+            currentDuration: number
+            // Total actual focus duration(milliseconds)
+            totalFocus: number
+            state: State
+            phase: Phase
+            logs: { action: Action, ts: number, phase: Phase }[]
+        }
+
+        type ActionRequest = {
+            action: 'start'
+            config: Config
+            presetId?: number
+        } | 'pause' | 'resume' | 'abort' | 'delay' | 'restart'
     }
 }

@@ -2,8 +2,8 @@ import { listLimits } from "@api/sw/limit"
 import { getOption } from '@api/sw/option'
 import { useDocumentVisibility, useRequest } from '@hooks'
 import { type App, inject, provide, ref, type Ref, type ShallowRef, watch } from "vue"
-import { ModalBridge } from './bridge'
-import type { LimitReasonData } from './types'
+import type { LimitReasonData } from '../types'
+import type { ModalBridge } from './bridge'
 
 const GLOBAL_KEY = "global"
 const RULE_KEY = 'rule'
@@ -51,6 +51,7 @@ export const provideRule = () => {
 
     const { data: rule, refresh } = useRequest(async () => {
         if (visibility.value !== 'visible') return undefined
+        if (reason.value?.type === 'FOCUS') return undefined
         const reasonId = reason.value?.id
         if (!reasonId) return undefined
         const rules = await listLimits({ id: reasonId })
@@ -60,6 +61,8 @@ export const provideRule = () => {
     watch([reason, visibility], refresh)
 
     provide(RULE_KEY, rule)
+
+    return reason
 }
 
 export const useRule = () => inject<ShallowRef<tt4b.limit.Item | undefined>>(RULE_KEY) as ShallowRef<tt4b.limit.Item | undefined>

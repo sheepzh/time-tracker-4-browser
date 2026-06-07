@@ -1,43 +1,47 @@
 import { listAllCategories } from '@api/sw/cate'
-import { getLimitSummary } from '@api/sw/limit'
+import { sendMsg2Runtime } from '@api/sw/common'
 import { getOption, setOption } from "@api/sw/option"
 import { useLocalStorage, useProvide, useProvider, useRequest } from "@hooks"
 import { isDarkMode, processDarkMode } from "@pages/util/dark-mode"
 import { toMap } from "@util/array"
 import { CATE_NOT_SET_ID } from "@util/site"
-import { createObjectGuard, createOptionalGuard, createStringUnionGuard, isBoolean, isNumber, isOptionalInt } from 'typescript-guard'
-import { computed, reactive, Ref, ref, type ShallowRef, toRaw, watch } from "vue"
+import { computed, ref, shallowRef, watch, type Component, type ShallowRef } from "vue"
 import { useRoute, useRouter } from 'vue-router'
+import { isMenu } from './components/Footer/Menu'
 import { t } from "./locale"
-import { isMenu } from './router'
-import type { PopupOption, PopupQuery } from './types'
+
+type ViewSlots = {
+    toolbar: Component
+    headerOption: Component
+}
 
 type PopupContextValue = {
     reload: () => void
     darkMode: ShallowRef<boolean>
     setDarkMode: ArgCallback<boolean>
-    query: PopupQuery
-    option: PopupOption
     cateNameMap: ShallowRef<Record<number, string>>
     menu: ShallowRef<tt4b.ui.PopupMenu | undefined>
     setMenu: ArgCallback<tt4b.ui.PopupMenu>
-    limitSummary: ShallowRef<tt4b.limit.Summary | undefined>
-    limitSummaryLoading: ShallowRef<boolean>
-    selectedLimit: Ref<number | undefined>
+    viewSlots: ShallowRef<ViewSlots | undefined>
+    setViewSlots: ArgCallback<ViewSlots>
 }
 
 const initMenu = () => {
     const [stored, setStored] = useLocalStorage<tt4b.ui.PopupMenu>('popup_menu', isMenu, 'percentage')
     const route = useRoute()
     const router = useRouter()
+    stored && isMenu(stored) && router.push(`/${stored}`)
     const myRoute = computed(() => {
         const menuMaybe = route.path.substring(1)
-        return isMenu(menuMaybe) ? menuMaybe : stored
+        if (isMenu(menuMaybe)) return menuMaybe
+        if (isMenu(stored)) return stored
+        return undefined
     })
     const setMyRoute = (val: tt4b.ui.PopupMenu) => {
         setStored(val)
         router.push('/' + val)
     }
+    watch(myRoute, val => sendMsg2Runtime('meta.popup', val), { immediate: true })
     return [myRoute, setMyRoute] as const
 }
 
@@ -64,91 +68,27 @@ export const initPopupContext = (): ShallowRef<number> => {
         return result
     }, { defaultValue: {} })
 
-    const query = initQuery()
-    const option = initOption()
-
     const [menu, setMenu] = initMenu()
 
-    const { data: limitSummary, loading: limitSummaryLoading } = useRequest(
-        () => menu.value === 'limit' ? getLimitSummary() : Promise.resolve(undefined),
-        {
-            deps: menu,
-            onSuccess(newVal) {
-                const newItems = newVal?.items ?? []
-                if (!newItems.some(i => i.id === selectedLimit.value)) {
-                    selectedLimit.value = newItems[0]?.id
-                }
-            }
-        },
-    )
-    const selectedLimit = ref<number>()
+    const viewSlots = shallowRef<ViewSlots>()
+    const setViewSlots = (slots: ViewSlots) => viewSlots.value = slots
 
     useProvide<PopupContextValue>(NAMESPACE, {
-        reload, darkMode, setDarkMode, query, option,
+        reload, darkMode, setDarkMode,
         cateNameMap,
         menu, setMenu,
-        limitSummary, limitSummaryLoading, selectedLimit,
+        viewSlots, setViewSlots,
     })
 
     return appKey
-}
-
-const isMergeMethod = createStringUnionGuard<Exclude<PopupQuery['mergeMethod'], undefined>>('cate', 'domain', 'group')
-
-const isQuery = createObjectGuard<PopupQuery>({
-    dimension: createStringUnionGuard<PopupQuery['dimension']>('focus', 'time'),
-    duration: createStringUnionGuard<PopupQuery['duration']>('allTime', 'lastDays', 'thisMonth', 'thisWeek', 'today', 'yesterday'),
-    durationNum: isOptionalInt,
-    mergeMethod: createOptionalGuard(isMergeMethod),
-})
-
-const initQuery = () => {
-    const [queryCache, setQueryCache] = useLocalStorage<PopupQuery>('popup-query', isQuery, {
-        dimension: 'focus',
-        duration: 'today',
-        mergeMethod: undefined,
-    })
-
-    const query = reactive(queryCache)
-    watch(query, () => setQueryCache(toRaw(query)), { deep: true })
-
-    return query
-}
-
-const isOption = createObjectGuard<PopupOption>({
-    showName: isBoolean,
-    topN: isNumber,
-    donutChart: isBoolean,
-})
-
-const initOption = () => {
-    const [optionCache, setOptionCache] = useLocalStorage<PopupOption>('popup-option', isOption, {
-        showName: true,
-        topN: 10,
-        donutChart: false,
-    })
-
-    const option = reactive(optionCache)
-    watch(option, () => setOptionCache(toRaw(option)), { deep: true })
-
-    return option
 }
 
 export const usePopupContext = () => useProvider<PopupContextValue, 'reload' | 'darkMode' | 'setDarkMode' | 'cateNameMap'>(
     NAMESPACE, 'reload', 'darkMode', 'setDarkMode', 'cateNameMap'
 )
 
-export const useQuery = () => useProvider<PopupContextValue, 'query'>(NAMESPACE, 'query').query
-
-export const useOption = () => useProvider<PopupContextValue, 'option'>(NAMESPACE, 'option').option
-
 export const useCateNameMap = () => useProvider<PopupContextValue, 'cateNameMap'>(NAMESPACE, 'cateNameMap')?.cateNameMap
 
 export const useMenu = () => useProvider<PopupContextValue, 'menu' | 'setMenu'>(NAMESPACE, 'menu', 'setMenu')
 
-export const useLimitSummary = () => {
-    const { limitSummary: summary, limitSummaryLoading: loading, selectedLimit: selected } = useProvider<PopupContextValue, 'limitSummary' | 'limitSummaryLoading' | 'selectedLimit'>(
-        NAMESPACE, 'limitSummary', 'limitSummaryLoading', 'selectedLimit'
-    )
-    return { summary, loading, selected }
-}
+export const useViewSlots = () => useProvider<PopupContextValue, 'viewSlots' | 'setViewSlots'>(NAMESPACE, 'viewSlots', 'setViewSlots')

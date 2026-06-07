@@ -1,4 +1,4 @@
-const ALL_TABLES = ['stat', 'timeline'] as const
+const ALL_TABLES = ['stat', 'timeline', 'focus_preset', 'focus_record'] as const
 
 export type Table = typeof ALL_TABLES[number]
 

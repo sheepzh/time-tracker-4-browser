@@ -8,6 +8,7 @@
 import { setBadgeBgColor, setBadgeText } from "@api/chrome/action"
 import { listTabs, onTabUpdated } from "@api/chrome/tab"
 import { getLastFocusedId, isNoneWindowId, onWindowFocusChanged } from "@api/chrome/window"
+import focusHolder from '@service/focus/holder'
 import { IS_ANDROID } from "@util/constant/environment"
 import { extractHostname, isBrowserUrl } from "@util/pattern"
 import { MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND } from "@util/time"
@@ -120,7 +121,12 @@ class BadgeManager {
         }
     }
 
-    private async render(): Promise<void> {
+    async render(): Promise<void> {
+        const focusBadge = focusHolder.badge
+        if (focusBadge) {
+            // Set focus badge with for all tabs
+            return await setBadgeText(focusBadge)
+        }
         const badgeText = await this.resolveBadgeText()
         await setBadgeText(badgeText, this.#current?.tabId)
     }

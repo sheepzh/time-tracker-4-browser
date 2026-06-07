@@ -1,18 +1,25 @@
+import { css } from '@emotion/css'
 import Flex from "@pages/components/Flex"
-import { useMenu } from "@popup/context"
-import { defineComponent, Transition } from "vue"
-import DataToolbar from './DataToolbar'
-import LimitToolbar from './LimitToolbar'
+import { useViewSlots } from "@popup/context"
+import { useNamespace } from 'element-plus'
+import { defineComponent, h, Transition } from "vue"
 import Menu from "./Menu"
 
+const buttonNs = useNamespace('button')
+const footerCls = css`
+    & .${buttonNs.b()}+${buttonNs.b()} {
+        margin-inline-start: 6px;
+    }
+`
+
 const Footer = defineComponent(() => {
-    const { menu } = useMenu()
+    const { viewSlots } = useViewSlots()
 
     return () => (
-        <Flex justify="space-between" marginBottom={2} marginInline={1}>
+        <Flex class={footerCls} justify="space-between" marginBottom={2} marginInline={1}>
             <Menu />
             <Transition name="el-fade-in" mode="out-in">
-                {menu.value === 'limit' ? <LimitToolbar /> : <DataToolbar />}
+                {viewSlots.value?.toolbar && h(viewSlots.value.toolbar)}
             </Transition>
         </Flex>
     )

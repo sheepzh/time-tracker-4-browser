@@ -1,4 +1,6 @@
-import { APP_ANALYSIS_ROUTE, APP_LIMIT_ROUTE, type AppAnalysisQuery, type AppLimitQuery } from '@/shared/route'
+import {
+    APP_LIMIT_ROUTE, APP_SITE_ANALYSIS_ROUTE, type AppLimitQuery, type AppSiteAnalysisQuery,
+} from '@/shared/route'
 import { trySendMsg2Runtime } from '@api/sw/common'
 import { processVerification } from '@app/util/limit'
 import { t } from "@cs/locale"
@@ -10,19 +12,19 @@ import { meetTimeLimit } from '@util/limit'
 import { MILL_PER_SECOND } from '@util/time'
 import { ElButton } from "element-plus"
 import { computed, defineComponent } from "vue"
-import { useApp, useRule } from '../context'
+import { useApp, useRule } from '../../context'
+import { useLimitReason } from './context'
 
 const _default = defineComponent(() => {
-    const { reason, visitTime: currVisitTime, bridge, url, delayDuration } = useApp()
+    const { visitTime: currVisitTime, bridge, url, delayDuration } = useApp()
+    const reason = useLimitReason()
 
-    const analysisUrl = getAppPageUrl(APP_ANALYSIS_ROUTE, { url } satisfies AppAnalysisQuery)
+    const analysisUrl = getAppPageUrl(APP_SITE_ANALYSIS_ROUTE, { url } satisfies AppSiteAnalysisQuery)
     const ruleUrl = getAppPageUrl(APP_LIMIT_ROUTE, { url: encodeURI(url) } satisfies AppLimitQuery)
 
     const rule = useRule()
     const showDelay = computed(() => {
-        const reasonVal = reason.value
-        if (!reasonVal) return false
-        const { type, allowDelay, delayCount = 0 } = reasonVal
+        const { type, allowDelay, delayCount = 0 } = reason.value
         if (!allowDelay) return false
 
         const { time, weekly, visitTime, waste, weeklyWaste } = rule.value ?? {}
@@ -58,7 +60,7 @@ const _default = defineComponent(() => {
         <Flex gap={10} marginBottom={60} justify='center'>
             <a target='_blank' href={analysisUrl}>
                 <ElButton round icon={Trend} type="success">
-                    {t(msg => msg.menu.siteAnalysis)}
+                    {t(msg => msg.menu.analysis)}
                 </ElButton>
             </a>
             <ElButton

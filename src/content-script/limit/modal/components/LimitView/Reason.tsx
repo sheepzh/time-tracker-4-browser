@@ -5,7 +5,8 @@ import { matchCond, meetLimit, meetTimeLimit, period2Str } from "@util/limit"
 import { formatPeriodCommon, MILL_PER_SECOND } from "@util/time"
 import { ElDescriptions, ElDescriptionsItem, ElTag } from 'element-plus'
 import { computed, defineComponent, type StyleValue } from "vue"
-import { useApp, useRule } from '../context'
+import { useApp, useRule } from '../../context'
+import { useLimitReason } from './context'
 
 const useDescriptions = () => {
     const isXs = useXsState()
@@ -35,16 +36,17 @@ type DescriptionProps = {
 }
 
 const TimeDescriptions = defineComponent<DescriptionProps>(props => {
-    const { reason, url, delayDuration } = useApp()
+    const { url, delayDuration } = useApp()
+    const reason = useLimitReason()
     const rule = useRule()
     const { style, size } = useDescriptions()
 
     const timeLimited = computed(() => meetTimeLimit(
         { wasted: props.waste ?? 0, maxLimit: (props.time ?? 0) * MILL_PER_SECOND },
         {
-            count: reason.value?.delayCount ?? 0,
+            count: reason.value.delayCount ?? 0,
             duration: delayDuration.value,
-            allow: !!reason.value?.allowDelay,
+            allow: !!reason.value.allowDelay,
         },
     ))
     const visitLimited = computed(() => meetLimit(props.count ?? 0, props.visit ?? 0))
@@ -86,8 +88,9 @@ const TimeDescriptions = defineComponent<DescriptionProps>(props => {
 }, { props: ['time', 'waste', 'count', 'visit', 'ruleLabel', 'dataLabel'] })
 
 const _default = defineComponent(() => {
-    const { reason, visitTime, url } = useApp()
-    const type = computed(() => reason.value?.type)
+    const { visitTime, url } = useApp()
+    const reason = useLimitReason()
+    const type = computed(() => reason.value.type)
     const rule = useRule()
 
     const { style, size } = useDescriptions()
@@ -121,9 +124,9 @@ const _default = defineComponent(() => {
                     {visitTime.value ? formatPeriodCommon(visitTime.value) : '-'}
                 </ElDescriptionsItem>
                 <ElDescriptionsItem
-                    v-show={!!reason.value?.allowDelay || !!reason.value?.delayCount}
+                    v-show={!!reason.value.allowDelay || !!reason.value.delayCount}
                     label={t(msg => msg.limit.item.delayCount)} labelAlign="right">
-                    {reason.value?.delayCount ?? 0}
+                    {reason.value.delayCount ?? 0}
                 </ElDescriptionsItem>
             </ElDescriptions>
             <ElDescriptions v-show={type.value === 'PERIOD'} border column={1} style={style.value} size={size.value}>
