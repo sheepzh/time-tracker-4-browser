@@ -77,7 +77,7 @@ const AUTOCOMPLETE_STYLE: StyleValue = {
 
 
 const TagList: FunctionalComponent<{ list: string[], onRemove: ArgCallback<string> }> = ({ list, onRemove }) => (
-    <div v-show={list.length} style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
+    <div v-show={list.length} style={{ minHeight: 0, overflow: 'hidden' }}>
         <ElScrollbar height="100%">
             <Flex width="100%" wrap gap={4}>
                 {list.map(url => (

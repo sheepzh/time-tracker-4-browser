@@ -64,13 +64,13 @@ declare namespace tt4b {
          */
         cid?: string
         backup?: {
-            [key in tt4b.backup.Type]?: {
+            [key in backup.Type]?: {
                 ts: number
                 msg?: string
             }
         }
         notification?: {
-            [key in tt4b.notification.Method]?: {
+            [key in notification.Method]?: {
                 ts: number
                 endDate: string
                 msg?: string
@@ -79,7 +79,7 @@ declare namespace tt4b {
         /**
          * Two-factor auth
          */
-        twoFa?: tt4b.TwoFactorAuth
+        twoFa?: TwoFactorAuth
     }
 
     type TwoFactorAuth = {
@@ -181,7 +181,7 @@ declare namespace tt4b {
     namespace site {
         type SiteKey = {
             host: string
-            type: tt4b.site.Type
+            type: Type
         }
         type SiteInfo = SiteKey & {
             alias?: string
@@ -213,7 +213,7 @@ declare namespace tt4b {
         type Query = {
             fuzzyQuery?: string
             cateIds?: Arrayable<number>
-            types?: Arrayable<tt4b.site.Type>
+            types?: Arrayable<Type>
         }
 
         type PageQuery = Query & common.PageQuery
@@ -383,7 +383,7 @@ declare namespace tt4b {
          * @since 3.1.0
          */
         type ReminderInfo = {
-            items: tt4b.limit.Item[]
+            items: Item[]
             // Minutes
             duration: number
         }
@@ -402,7 +402,7 @@ declare namespace tt4b {
         type Summary = {
             url: string
             site: site.SiteInfo
-            items: tt4b.limit.Item[]
+            items: Item[]
         }
     }
 
@@ -509,38 +509,38 @@ declare namespace tt4b {
         }
 
         /**
-         * tt4b.backup.Coordinator of data synchronizer
+         * backup.Coordinator of data synchronizer
          */
         interface Coordinator<Cache> {
             /**
              * Register for client
              */
-            updateClients(context: tt4b.backup.CoordinatorContext<Cache>, clients: Client[]): Promise<void>
+            updateClients(context: CoordinatorContext<Cache>, clients: Client[]): Promise<void>
             /**
              * List all clients
              */
-            listAllClients(context: tt4b.backup.CoordinatorContext<Cache>): Promise<Client[]>
+            listAllClients(context: CoordinatorContext<Cache>): Promise<Client[]>
             /**
              * Download fragmented data from cloud
              *
              * @param targetCid The client id, default value is the local one in context
              */
-            download(context: tt4b.backup.CoordinatorContext<Cache>, start: string, end: string, targetCid?: string): Promise<tt4b.core.Row[]>
+            download(context: CoordinatorContext<Cache>, start: string, end: string, targetCid?: string): Promise<core.Row[]>
             /**
              * Upload fragmented data to cloud
              * @param rows
              */
-            upload(context: tt4b.backup.CoordinatorContext<Cache>, rows: tt4b.core.Row[]): Promise<void>
+            upload(context: CoordinatorContext<Cache>, rows: core.Row[]): Promise<void>
             /**
              * Test auth
              *
              * @returns errorMsg or null/undefined
              */
-            testAuth(auth: Auth, ext: tt4b.backup.TypeExt): Promise<string | undefined>
+            testAuth(auth: Auth, ext: TypeExt): Promise<string | undefined>
             /**
              * Clear data
              */
-            clear(context: tt4b.backup.CoordinatorContext<Cache>, client: tt4b.backup.Client): Promise<void>
+            clear(context: CoordinatorContext<Cache>, client: Client): Promise<void>
         }
 
         type Type =
@@ -549,7 +549,7 @@ declare namespace tt4b {
             // Sync into Obsidian via its plugin Local REST API
             // @since 1.9.4
             | 'obsidian_local_rest_api'
-            // @since 2 .4.5
+            // @since 2.4.5
             | 'web_dav'
 
         type AuthType =
@@ -599,11 +599,11 @@ declare namespace tt4b {
 
         type ExportData = {
             __meta__: ExportMeta
-            __stat__?: tt4b.core.Row[]
-            __limit__?: tt4b.limit.Rule[]
-            __merge__?: tt4b.merge.Rule[]
+            __stat__?: core.Row[]
+            __limit__?: limit.Rule[]
+            __merge__?: merge.Rule[]
             __whitelist__?: string[]
-            __cate__?: tt4b.site.Cate[]
+            __cate__?: site.Cate[]
         }
     }
 
@@ -613,13 +613,13 @@ declare namespace tt4b {
     namespace imported {
         type ConflictResolution = 'overwrite' | 'accumulate'
 
-        type Row = Required<tt4b.core.RowKey> & tt4b.core.Result & {
-            exist?: tt4b.core.Result
+        type Row = Required<core.RowKey> & core.Result & {
+            exist?: core.Result
         }
 
         type Data = {
             // Whether there is data for this dimension
-            [dimension in tt4b.core.Dimension]?: boolean
+            [dimension in core.Dimension]?: boolean
         } & {
             rows: Row[]
         }
@@ -632,7 +632,7 @@ declare namespace tt4b {
 
     namespace stat {
         type SiteTarget = {
-            siteKey: tt4b.site.SiteKey
+            siteKey: site.SiteKey
         }
         type CateTarget = {
             cateKey: number
@@ -673,7 +673,7 @@ declare namespace tt4b {
                 timeRange?: [number, number?]
                 virtual?: boolean
             }
-            & tt4b.common.SortBy<'date' | 'host' | tt4b.core.Dimension>
+            & common.SortBy<'date' | 'host' | core.Dimension>
             & {
                 query?: string
                 host?: string | string[]
@@ -691,7 +691,7 @@ declare namespace tt4b {
             date?: [start?: string, end?: string] | string
         }
 
-        type SitePageQuery = SiteQuery & tt4b.common.PageQuery
+        type SitePageQuery = SiteQuery & common.PageQuery
 
         type SiteRowFlat = SiteTarget &
             DateKey &
@@ -726,14 +726,14 @@ declare namespace tt4b {
         type SiteRow = SiteRowFlat & SiteMergeExtend
 
         type CateQuery = _BaseQuery
-            & tt4b.common.SortBy<'date' | 'focus' | 'time'>
+            & common.SortBy<'date' | 'focus' | 'time'>
             & {
                 query?: string
                 inclusiveRemote?: boolean
                 cateIds?: number[]
             }
 
-        type CatePageQuery = CateQuery & tt4b.common.PageQuery
+        type CatePageQuery = CateQuery & common.PageQuery
 
         type CateRowFlat = CateTarget &
             DateKey &
@@ -763,13 +763,13 @@ declare namespace tt4b {
                 focusRange?: Vector<2>
                 timeRange?: [number, number?]
             }
-            & tt4b.common.SortBy<'date' | 'title' | 'focus' | 'time'>
+            & common.SortBy<'date' | 'title' | 'focus' | 'time'>
             & {
                 query?: string
                 groupIds?: number[]
             }
 
-        type GroupPageQuery = GroupQuery & tt4b.common.PageQuery
+        type GroupPageQuery = GroupQuery & common.PageQuery
 
         type GroupMergeExtend = {
             mergedRows?: GroupRowFlat[]
@@ -884,7 +884,7 @@ declare namespace tt4b {
             chartAnimationDuration: number
         }
 
-        type AppearanceRequired = MakeRequired<tt4b.option.AppearanceOption, 'darkModeTimeStart' | 'darkModeTimeEnd'>
+        type AppearanceRequired = MakeRequired<AppearanceOption, 'darkModeTimeStart' | 'darkModeTimeEnd'>
 
         type TrackingOption = {
             /**
@@ -921,7 +921,7 @@ declare namespace tt4b {
             storage: StorageType
         }
 
-        type TrackingRequired = MakeRequired<tt4b.option.TrackingOption, 'weekStart'>
+        type TrackingRequired = MakeRequired<TrackingOption, 'weekStart'>
 
         type LimitOption = {
             /**
@@ -958,7 +958,7 @@ declare namespace tt4b {
             limitReminderDuration?: number
         }
 
-        type LimitRequired = MakeRequired<tt4b.option.LimitOption, 'limitPassword' | 'limitVerifyDifficulty' | 'limitReminderDuration'>
+        type LimitRequired = MakeRequired<LimitOption, 'limitPassword' | 'limitVerifyDifficulty' | 'limitReminderDuration'>
 
         /**
          * The options of backup
@@ -1009,7 +1009,7 @@ declare namespace tt4b {
             /**
              * Notification cycle: none, daily, or weekly
              */
-            notificationCycle: tt4b.notification.Cycle
+            notificationCycle: notification.Cycle
             /**
              * Offset time in minutes relative to the start of the cycle
              */
@@ -1017,7 +1017,7 @@ declare namespace tt4b {
             /**
              * Notification method: browser or callback
              */
-            notificationMethod: tt4b.notification.Method
+            notificationMethod: notification.Method
             /**
              * HTTP callback endpoint URL
              */
@@ -1030,8 +1030,7 @@ declare namespace tt4b {
 
         export type DefaultOption =
             & AppearanceRequired & TrackingRequired & LimitRequired
-            & tt4b.option.BackupOption & tt4b.option.AccessibilityOption
-            & tt4b.option.NotificationOption
+            & BackupOption & AccessibilityOption & NotificationOption
 
         type AllOption =
             & AppearanceOption

@@ -12,7 +12,7 @@ import { computed, defineComponent, type StyleValue } from "vue"
 import ContentContainer from '../common/ContentContainer'
 import ClearPanel from './ClearPanel'
 import MemoryInfo from "./MemoryInfo"
-import Migration from "./Migration"
+import Migration from "./Restore"
 import { initDataManage } from "./context"
 
 export default defineComponent(() => {

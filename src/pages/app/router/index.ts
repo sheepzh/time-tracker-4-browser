@@ -27,7 +27,7 @@ const dataRoutes: RouteRecordRaw[] = [
         component: () => import('../components/Analysis')
     }, {
         path: '/data/manage',
-        component: () => import('../components/DataManage')
+        component: () => import('../components/Migration')
     }
 ]
 
