@@ -13,7 +13,7 @@ beforeAll(async () => {
             getManifest: () => ({ manifest_version: 3 }),
         },
     })
-    const mod = await import("@/background/service/limit-service")
+    const mod = await import("@bg/service/limit-service")
     calcTimeState = mod.calcTimeState
 })
 

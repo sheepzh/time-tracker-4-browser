@@ -54,6 +54,9 @@
             "@service/*": [
                 "./src/background/service/*"
             ],
+            "@bg/*": [
+                "./src/background/*"
+            ],
             "@util/*": [
                 "./src/util/*"
             ],

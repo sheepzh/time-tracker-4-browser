@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getPsl } from '@/background/psl'
+import { getPsl } from '@bg/psl'
 import FIFOCache from '@util/fifo-cache'
 import { isIpAndPort, judgeVirtualFast } from "@util/pattern"
 

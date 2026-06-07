@@ -1,8 +1,8 @@
 /**
  * Build psl tree
  */
-import { type PslTree } from '@/background/psl'
 import { fetchGet } from '@api/http'
+import { type PslTree } from '@bg/psl'
 import { writeFileSync } from 'fs'
 import path from 'path'
 
