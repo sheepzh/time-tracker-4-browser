@@ -1,8 +1,9 @@
 import { t } from '@app/locale'
+import { Pointer } from '@element-plus/icons-vue'
 import { css } from '@emotion/css'
 import { useScrollRequest } from '@hooks'
 import { getHost } from "@util/stat"
-import { ElCard, useNamespace } from "element-plus"
+import { ElButton, ElCard, ElScrollbar, useNamespace } from "element-plus"
 import { defineComponent, ref } from "vue"
 import { queryPage } from "../common"
 import { useRecordFilter } from "../context"
@@ -34,14 +35,14 @@ const useStyle = () => {
 
 const _default = defineComponent<{}>((_, ctx) => {
     const filterOption = useRecordFilter()
-    const { data, loading, loadMoreAsync, end, reset } = useScrollRequest(async (num, size) => {
+    const { data, loading, loadMore, end, reset } = useScrollRequest(async (num, size) => {
         const pagination = await queryPage(
             filterOption,
             { order: "descending", prop: "focus" },
             { num, size },
         )
         return pagination.list
-    }, { manual: true, resetDeps: () => ({ ...filterOption }) })
+    }, { resetDeps: () => ({ ...filterOption }) })
 
     const selected = ref<number[]>([])
 
@@ -59,11 +60,7 @@ const _default = defineComponent<{}>((_, ctx) => {
 
     return () => (
         <div>
-            <div
-                class={listCls}
-                v-infinite-scroll={loadMoreAsync}
-                infinite-scroll-disabled={end.value || loading.value}
-            >
+            <ElScrollbar viewClass={listCls} {...{ onEndReached: loadMore }}>
                 {data.value.map((row, idx) => (
                     <ElCard>
                         <Item
@@ -74,10 +71,11 @@ const _default = defineComponent<{}>((_, ctx) => {
                         />
                     </ElCard>
                 ))}
-            </div>
-            <p v-loading={loading.value} class={infoCls}>
-                {end.value ? t(msg => msg.record.noMore) : (loading.value ? 'Loading ...' : 'Load More')}
-            </p>
+                {end.value
+                    ? <p class={infoCls}>{t(msg => msg.record.noMore)}</p>
+                    : <ElButton text onClick={loadMore} icon={Pointer} loading={loading.value}>More</ElButton>
+                }
+            </ElScrollbar>
         </div>
     )
 })

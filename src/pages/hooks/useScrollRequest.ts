@@ -1,8 +1,7 @@
-import { onBeforeMount, ref, type Ref, watch, type WatchSource } from "vue"
+import { ref, type Ref, watch, type WatchSource } from "vue"
+import { useRequest } from './useRequest'
 
-type Option<T> = {
-    manual?: boolean
-    defaultValue?: T[]
+type Option = {
     pageSize?: number
     resetDeps?: WatchSource<unknown> | WatchSource<unknown>[]
 }
@@ -11,59 +10,42 @@ type Result<T> = {
     data: Ref<T[]>
     end: Ref<boolean>
     loading: Ref<boolean>
-    loadMore: () => void
-    loadMoreAsync: () => Promise<void>
-    reset: () => void
+    loadMore: () => Promise<void>
+    reset: NoArgCallback
 }
 
-export const useScrollRequest = <T>(getter: (pageNo: number, pageSize: number) => Promise<T[]>, option?: Option<T>): Result<T> => {
-    const {
-        defaultValue,
-        manual,
-        pageSize: outerPageSize,
-        resetDeps,
-    } = option || {}
-    const data = ref<T[]>(defaultValue ?? []) as Ref<T[]>
+export const useScrollRequest = <T>(getter: (pageNo: number, pageSize: number) => Promise<T[]>, option?: Option): Result<T> => {
+    const { pageSize = 10, resetDeps } = option ?? {}
     const end = ref(false)
-    const loading = ref(false)
-    const pageNo = ref(0)
-    const pageSize = outerPageSize || 10
+    const queriedPage = ref(0)
+    const data: Ref<T[]> = ref([])
 
-    const loadMoreAsync = async () => {
-        if (end.value) return
-        try {
-            loading.value = true
-            const no = pageNo.value = (pageNo.value + 1)
-            const newData = await getter?.(no, pageSize) || []
-            data.value = [...(data.value || []), ...(newData || [])]
-            const newLen = newData?.length ?? 0
-            if (!newLen || newLen < pageSize) {
-                end.value = true
-            }
-        } finally {
-            loading.value = false
-        }
+    const { refreshAsync, loading } = useRequest(
+        (pageNo: number) => getter(pageNo, pageSize),
+        {
+            defaultParam: [1],
+            onSuccess: (list, pageNo) => {
+                list.length && (data.value = [...data.value, ...list])
+                end.value = list.length < pageSize
+                list.length && (queriedPage.value = pageNo)
+            },
+        },
+    )
+
+    const loadMore = async () => {
+        if (loading.value || end.value) return
+        return refreshAsync(queriedPage.value + 1)
     }
 
     const reset = async () => {
+        if (loading.value) return
         end.value = false
-        pageNo.value = 0
         data.value = []
-        await loadMoreAsync()
+        queriedPage.value = 0
+        await refreshAsync(1)
     }
 
-    !manual && onBeforeMount(loadMoreAsync)
+    resetDeps && watch(resetDeps, reset)
 
-    if (resetDeps && (!Array.isArray(resetDeps) || resetDeps?.length)) {
-        watch(resetDeps, reset)
-    }
-
-    return {
-        data,
-        end,
-        loading,
-        loadMore: () => loadMoreAsync(),
-        loadMoreAsync,
-        reset,
-    }
+    return { data, end, loading, loadMore, reset }
 }

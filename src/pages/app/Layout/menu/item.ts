@@ -88,7 +88,6 @@ export const menuGroups = (): MenuGroup[] => [{
         title: msg => msg.menu.rule,
         route: RULE_ROUTE,
         icon: Rule,
-        mobile: false,
     }, {
         title: msg => msg.base.option,
         route: '/additional/option',
