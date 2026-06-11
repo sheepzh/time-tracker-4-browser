@@ -1,5 +1,4 @@
 export const ALL_FOCUS_MODES: tt4b.focus.Mode[] = ['allow', 'block']
-export const ALL_FOCUS_TEMPLATES: tt4b.focus.Template[] = ['focus', 'pomodoro']
 
 type TemplateDefault = MakeOptionalUndefined<Pick<tt4b.focus.Config, 'mode' | 'cond' | 'duration' | 'break' | 'allowDelay'>>
 export const FOCUS_TEMPLATE_DEFAULTS: Record<tt4b.focus.Template, TemplateDefault> = {
