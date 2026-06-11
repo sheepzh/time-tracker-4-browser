@@ -50,7 +50,6 @@ const TemplateToolbar = defineComponent<{}>(() => {
     const { session } = useFocusContext()
     const { presets, applyPreset, template } = useFocusSetup()
 
-
     return () => !session.value && !template.value && <PresetButton presets={presets.value} onSelect={applyPreset} />
 })
 

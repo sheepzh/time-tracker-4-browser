@@ -39,7 +39,7 @@ const _default = defineComponent<{}>((_, ctx) => {
         formData.name = data.name
         formData.template = data.template
         formData.mode = data.mode
-        formData.cond = data.cond
+        formData.cond = [...data.cond]
         formData.duration = data.duration
         formData.break = data.break
         formData.allowDelay = data.allowDelay
