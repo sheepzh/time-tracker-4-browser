@@ -10,8 +10,7 @@ export type FocusMessage = {
         pause: string
         delay: string
         restart: string
-        createPreset: string
-        applyPreset: string
+        preset: string
     }
 }
 

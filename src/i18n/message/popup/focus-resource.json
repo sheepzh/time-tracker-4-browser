@@ -14,8 +14,7 @@
             "pause": "Pause",
             "delay": "Delay",
             "restart": "Restart",
-            "createPreset": "Preset",
-            "applyPreset": "Apply Preset"
+            "preset": "Preset"
         }
     }
 }

@@ -24,7 +24,6 @@ export type SharedMessage = {
         }>
         duration: string
         break: string
-        addPreset: string
         template: Record<tt4b.focus.Template, {
             label: string
             desc: string

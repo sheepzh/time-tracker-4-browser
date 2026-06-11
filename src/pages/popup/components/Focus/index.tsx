@@ -10,12 +10,14 @@ import SessionView from './session/SessionView'
 import SetupForm from './setup/SetupForm'
 import SetupToolbar from './setup/SetupToolbar'
 import TemplateSelect from './setup/TemplateSelect'
+import TemplateToolbar from './setup/TemplateToolbar'
 
 const FOCUS_URL = getAppPageUrl(APP_FOCUS_ROUTE)
 
 const Toolbar: FunctionalComponent<{}> = () => (
     <Flex gap={2}>
         <SessionToolbar />
+        <TemplateToolbar />
         <SetupToolbar />
     </Flex>
 )

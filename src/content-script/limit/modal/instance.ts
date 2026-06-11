@@ -184,7 +184,8 @@ class ModalInstance implements MaskModal {
 }
 
 const extractReason = (reason: Reason | undefined): LimitReasonData | undefined => {
-    if (!reason || reason.type === 'FOCUS') return undefined
+    if (!reason) return undefined
+    if (reason.type === 'FOCUS') return reason
     const { getVisitTime: _, ...rest } = reason
     return rest
 }

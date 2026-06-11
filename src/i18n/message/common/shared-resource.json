@@ -35,7 +35,6 @@
             },
             "duration": "Focus Time",
             "break": "Break Time",
-            "addPreset": "Add Preset",
             "template": {
                 "focus": {
                     "label": "Focus Mode",

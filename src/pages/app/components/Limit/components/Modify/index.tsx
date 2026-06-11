@@ -29,7 +29,7 @@ const STEP_TITLES = [
 const createInitial = (url?: string): ModifyForm => {
     url = url ? cleanCond(url) : url
     return {
-        name: `RULE-${new String(new Date().getTime() % 10000).padStart(4, '0')}`,
+        name: `RULE-${String(new Date().getTime() % 10000).padStart(4, '0')}`,
         time: 3600,
         weekly: 0,
         cond: url ? [url] : [],

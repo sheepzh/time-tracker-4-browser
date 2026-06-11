@@ -1148,6 +1148,7 @@ declare namespace tt4b {
             & _MakeRegistry<'focus.allPresets', undefined, focus.Preset[]>
             & _MakeRegistry<'focus.addPreset', Omit<focus.Preset, 'id'>, number>
             & _MakeRegistry<'focus.savePreset', focus.Preset>
+            & _MakeRegistry<'focus.deletePreset', number>
             & _MakeRegistry<'focus.action', focus.ActionRequest>
             & _MakeRegistry<'focus.current', undefined, focus.Session | undefined>
             // Merge

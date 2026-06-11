@@ -138,6 +138,7 @@ class MessageDispatcher {
             .register('focus.allPresets', () => focusPresetDatabase.listAll())
             .register('focus.addPreset', data => focusPresetDatabase.add(data))
             .register('focus.savePreset', data => focusPresetDatabase.update(data))
+            .register('focus.deletePreset', id => focusPresetDatabase.remove(id))
             .register('focus.action', handleAction)
             .register('focus.current', () => focusHolder.current)
             // Data immigration

@@ -4,11 +4,7 @@ import { t } from '@popup/locale'
 import { ElCard, ElText } from 'element-plus'
 import { defineComponent, type StyleValue } from 'vue'
 import { useFocusSetup } from '../context'
-
-const EMOJIS: Record<tt4b.focus.Template, string> = {
-    focus: '🎯',
-    pomodoro: '🍅',
-}
+import { TEMPLATE_EMOJIS } from './constants'
 
 const CARD_STYLE: StyleValue = {
     cursor: 'pointer',
@@ -45,7 +41,7 @@ const TemplateSelect = defineComponent(() => {
         <Flex column flex={1} gap={24} align='center' justify='center' padding='20px 8px'>
             <ElText size='large' tag='b'>{t(msg => msg.focus.template.title)}</ElText>
             <Flex gap={16} column width='50%'>
-                {Object.entries(EMOJIS).map(([value, emoji]) => (
+                {Object.entries(TEMPLATE_EMOJIS).map(([value, emoji]) => (
                     <Card
                         key={value}
                         value={value as tt4b.focus.Template}

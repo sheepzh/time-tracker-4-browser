@@ -33,19 +33,23 @@ async function broadcastFocusChanged(): Promise<void> {
 }
 
 export async function handleAction(request: tt4b.focus.ActionRequest): Promise<void> {
-    if (typeof request === 'object') {
-        await focusHolder.start(request.config, request.presetId)
-    } else {
-        switch (request) {
-            case 'pause': return focusHolder.pause()
-            case 'resume': return focusHolder.resume()
-            case 'abort': return focusHolder.abort()
-            case 'delay': return focusHolder.delay()
-            case 'restart': return focusHolder.restart()
-        }
-    }
+    await dispatchAction(request)
     await badgeManager.render()
     await broadcastFocusChanged()
+}
+
+function dispatchAction(action: tt4b.focus.ActionRequest): Promise<void> {
+    if (typeof action === 'object') {
+        return focusHolder.start(action.config, action.presetId)
+    }
+    switch (action) {
+        case 'pause': return focusHolder.pause()
+        case 'resume': return focusHolder.resume()
+        case 'abort': return focusHolder.abort()
+        case 'delay': return focusHolder.delay()
+        case 'restart': return focusHolder.restart()
+        default: return Promise.resolve()
+    }
 }
 
 export async function saveLastPopup(popup: tt4b.ui.PopupMenu | undefined): Promise<void> {

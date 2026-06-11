@@ -8,7 +8,8 @@
 export {
     APP_FOCUS_ROUTE as FOCUS_ROUTE, APP_LIMIT_ROUTE as LIMIT_ROUTE, APP_OPTION_ROUTE as OPTION_ROUTE,
     APP_RECORD_ROUTE as RECORD_ROUTE, APP_SITE_ANALYSIS_ROUTE as SITE_ANALYSIS_ROUTE,
-    type AppLimitQuery as LimitQuery, type AppRecordQuery as RecordQuery, type AppSiteAnalysisQuery as SiteAnalysisQuery
+    type AppFocusQuery as FocusQuery, type AppLimitQuery as LimitQuery, type AppRecordQuery as RecordQuery,
+    type AppSiteAnalysisQuery as SiteAnalysisQuery
 } from "@/shared/route"
 
 export const DASHBOARD_ROUTE = '/tracking/dashboard'

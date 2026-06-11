@@ -1,0 +1,7 @@
+{
+    "en": {
+        "deleteConfirm": "Are you sure you want to delete this preset [{name}]?",
+        "presetName": "Preset Name",
+        "template": "Template"
+    }
+}

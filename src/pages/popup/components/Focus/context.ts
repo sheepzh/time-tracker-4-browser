@@ -1,5 +1,6 @@
 import { focusAction, getCurrentSession, listFocusPresets } from '@api/sw/focus'
 import { useLocalStorage, useManualRequest, usePermissionCheck, useProvide, useProvider, useRequest } from '@hooks'
+import { FOCUS_TEMPLATE_DEFAULTS } from '@pages/util/focus'
 import { t } from '@popup/locale'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {
@@ -8,17 +9,6 @@ import {
 import { reactive, ref, toRaw, unref, watch, type Ref, type ShallowRef } from 'vue'
 
 type FormData = Omit<tt4b.focus.Config, 'template'> & { presetId: number | undefined }
-type FormDefault = MakeOptionalUndefined<FormData>
-const TEMPLATE_DEFAULTS: Record<tt4b.focus.Template, FormDefault> = {
-    focus: {
-        mode: 'allow', cond: [], allowDelay: false,
-        duration: 25 * 60, break: undefined, presetId: undefined,
-    },
-    pomodoro: {
-        mode: 'block', cond: [], allowDelay: undefined,
-        duration: 45 * 60, break: 10 * 60, presetId: undefined,
-    },
-}
 
 type FocusContextValue = {
     session: ShallowRef<tt4b.focus.Session | undefined>
@@ -56,15 +46,24 @@ export const initFocusContext = () => {
     const [cachedTpl, setTplCache] = useLocalStorage<tt4b.focus.Template>(TPL_KEY, isTemplate)
     const template = ref(cachedTpl)
 
-    const defaultForm = template.value ? TEMPLATE_DEFAULTS[template.value] : TEMPLATE_DEFAULTS.focus
-    const [cached, setCache] = useLocalStorage<FormData>(STORAGE_KEY, isFormData, { ...defaultForm })
+    const defaultForm = FOCUS_TEMPLATE_DEFAULTS[template.value ?? 'focus']
+    const [cached, setCache] = useLocalStorage<FormData>(STORAGE_KEY, isFormData, {
+        ...defaultForm,
+        presetId: undefined,
+    })
     const form = reactive<FormData>(cached)
     watch(() => form, () => setCache(toRaw(form)), { deep: true })
 
     const selectTemplate = (tpl: tt4b.focus.Template) => {
         template.value = tpl
         setTplCache(tpl)
-        Object.assign(form, { ...TEMPLATE_DEFAULTS[tpl] })
+        const defaults = FOCUS_TEMPLATE_DEFAULTS[tpl]
+        form.mode = defaults.mode
+        form.cond = [...defaults.cond]
+        form.duration = defaults.duration
+        form.break = defaults.break
+        form.allowDelay = defaults.allowDelay
+        form.presetId = undefined
     }
 
     const resetTemplate = () => {
@@ -102,8 +101,8 @@ export const initFocusContext = () => {
         await handleAction({ action: 'start', config, presetId: form.presetId })
     }
 
-    const applyPreset = ({ mode, cond, duration, break: break_, template: t_, id }: tt4b.focus.Preset) => {
-        if (t_ !== template.value) return
+    const applyPreset = ({ mode, cond, duration, break: break_, template: tpl, id }: tt4b.focus.Preset) => {
+        template.value = tpl
         form.mode = mode
         form.cond = [...cond]
         form.duration = duration

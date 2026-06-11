@@ -1,12 +1,11 @@
 import CondEditor from '@pages/components/CondEditor'
 import Flex from '@pages/components/Flex'
 import TimeInput from '@pages/components/TimeInput'
+import { ALL_FOCUS_MODES, FOCUS_COND_PLACEHOLDER } from '@pages/util/focus'
 import { t } from '@popup/locale'
 import { ElCheckbox, ElRadioButton, ElRadioGroup, ElText } from 'element-plus'
 import { defineComponent, useSlots, type StyleValue } from 'vue'
 import { isMode, useFocusSetup } from '../context'
-
-const ALL_MODES: tt4b.focus.Mode[] = ['allow', 'block']
 
 const CARD_STYLE: StyleValue = {
     borderRadius: 'var(--el-border-radius-base)',
@@ -87,7 +86,7 @@ const SetupForm = defineComponent<{}>(() => {
             <Card style={{ flex: 1 } satisfies StyleValue} >
                 <Flex width='100%' justify='space-between' gap={5}>
                     <ElRadioGroup modelValue={form.mode} onChange={v => isMode(v) && (form.mode = v)}>
-                        {ALL_MODES.map(m => (
+                        {ALL_FOCUS_MODES.map(m => (
                             <ElRadioButton
                                 value={m}
                                 label={t(msg => msg.shared.focus.mode[m].label)}
@@ -102,10 +101,7 @@ const SetupForm = defineComponent<{}>(() => {
                     <CondEditor
                         modelValue={form.cond}
                         onChange={v => form.cond = v}
-                        placeholder={form.mode === 'allow'
-                            ? 'e.g. www.github.com, www.reddit.com/r/chrome/**'
-                            : 'e.g. www.facebook.com, *.twitter.com, youtube.com'
-                        }
+                        placeholder={FOCUS_COND_PLACEHOLDER[form.mode]}
                     />
                 </Flex>
             </Card>
