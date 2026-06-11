@@ -1,4 +1,4 @@
-import { launchBrowser, type LaunchContext } from '../common/base'
+import { useLaunchContext } from '../common/base'
 import { readRecordsOfFirstPage } from '../common/record'
 import { MOCK_URL, sleep } from '../common/util'
 import { BackupOptionWrapper } from './common'
@@ -6,16 +6,10 @@ import { BackupOptionWrapper } from './common'
 const GIST_MOCK_ORIGIN = 'http://127.0.0.1:12347'
 const GIST_MOCK_TOKEN = 'github_gist_mock_token'
 
-let context: LaunchContext
-
 const describeOptional = process.env.GITHUB_ACTIONS ? describe.skip : describe
 
 describeOptional('Backup with gist', () => {
-    beforeEach(async () => {
-        context = await launchBrowser({ bgProxies: [{ host: 'api.github.com', target: GIST_MOCK_ORIGIN }] })
-    })
-
-    afterEach(() => context.close())
+    const context = useLaunchContext({ bgProxies: [{ host: 'api.github.com', target: GIST_MOCK_ORIGIN }] })
 
     test('create and update gist', async () => {
         // Fill in gist parameters

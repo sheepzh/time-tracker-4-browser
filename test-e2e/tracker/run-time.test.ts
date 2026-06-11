@@ -1,26 +1,22 @@
-import { launchBrowser, type LaunchContext } from '../common/base'
+import { useLaunchContext } from '../common/base'
 import { parseTime2Sec, readRecordsOfFirstPage } from "../common/record"
 import { MOCK_HOST, MOCK_URL, sleep } from '../common/util'
 import { createWhitelist } from "../common/whitelist"
 
-let context: LaunchContext
-
-async function clickRunTimeChange(siteHost: string): Promise<void> {
-    const sitePage = await context.openAppPage("/additional/site-manage")
-    await sitePage.focus('input[placeholder]')
-    await sitePage.keyboard.type(siteHost)
-    await sitePage.keyboard.press('Enter')
-    await sleep(.1)
-    await sitePage.evaluate(() => {
-        const runTimeSwitch = document.querySelector<HTMLDivElement>('table > tbody > tr > td.el-table_1_column_7 .el-switch')
-        runTimeSwitch?.click()
-    })
-}
-
 describe('Run time tracking', () => {
-    beforeEach(async () => { context = await launchBrowser() })
+    const context = useLaunchContext()
 
-    afterEach(() => context.close())
+    async function clickRunTimeChange(siteHost: string): Promise<void> {
+        const sitePage = await context.openAppPage("/additional/site-manage")
+        await sitePage.focus('input[placeholder]')
+        await sitePage.keyboard.type(siteHost)
+        await sitePage.keyboard.press('Enter')
+        await sleep(.1)
+        await sitePage.evaluate(() => {
+            const runTimeSwitch = document.querySelector<HTMLDivElement>('table > tbody > tr > td.el-table_1_column_7 .el-switch')
+            runTimeSwitch?.click()
+        })
+    }
 
     test('Basically track', async () => {
         await context.newPageAndWaitCsInjected(MOCK_URL)

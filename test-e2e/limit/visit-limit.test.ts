@@ -1,13 +1,9 @@
-import { launchBrowser, type LaunchContext } from '../common/base'
+import { useLaunchContext } from '../common/base'
 import { MOCK_URL, sleep } from '../common/util'
 import { createLimitRule, isLimitModalVisible, waitForLimitFrame } from './common'
 
 describe('Time limit per visit', () => {
-    let context: LaunchContext
-
-    beforeEach(async () => { context = await launchBrowser() })
-
-    afterEach(() => context.close())
+    const context = useLaunchContext()
 
     test("Delay", async () => {
         const limitPage = await context.openAppPage('/behavior/limit')

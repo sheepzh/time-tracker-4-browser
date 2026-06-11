@@ -1,6 +1,6 @@
 import { formatTimeYMD, MILL_PER_SECOND } from '@util/time'
 import type { Page } from 'puppeteer'
-import { launchBrowser, type LaunchContext } from '../common/base'
+import { useLaunchContext } from '../common/base'
 import { MOCK_URL, sleep } from '../common/util'
 import { clickDelay, createLimitRule, isLimitModalVisible } from './common'
 
@@ -59,11 +59,7 @@ const DEMO_RULE = {
 } as const satisfies tt4b.limit.Rule
 
 describe('Limit delay duration', () => {
-    let context: LaunchContext
-
-    beforeEach(async () => { context = await launchBrowser() })
-
-    // afterEach(() => context.close())
+    const context = useLaunchContext()
 
     test('Delay with customized duration', async () => {
         const optionPage = await context.openAppPage('/additional/option?i=limit')

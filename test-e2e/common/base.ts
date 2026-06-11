@@ -41,35 +41,38 @@ async function setupBgProxies(serviceWorker: Target, proxies: HostProxy[]): Prom
     return session
 }
 
-export interface LaunchContext {
-    browser: Browser
-    extensionId: string
-
-    close(): Promise<void>
-
-    openAppPage(route: string): Promise<Page>
-
-    newPage(url?: string): Promise<Page>
-
-    newPageAndWaitCsInjected(url: string): Promise<Page>
+async function waitForNetworkIdleShortly(page: Page): Promise<void> {
+    await page.waitForNetworkIdle({ idleTime: 20 })
 }
 
-class LaunchContextWrapper implements LaunchContext {
+export class LaunchContext {
+    #b: Browser | null = null
+    #eid: string | null = null
+    #cdp: CDPSession | null = null
 
-    constructor(
-        readonly browser: Browser, readonly extensionId: string,
-        private cdpSession: CDPSession | undefined
-    ) { }
+    constructor(private readonly options?: BrowserOptions) { }
+
+    async launch(): Promise<void> {
+        const { browser, extensionId, cdpSession } = await launchBrowser(this.options)
+        this.#b = browser
+        this.#cdp = cdpSession ?? null
+        this.#eid = extensionId
+        // remove whitelist added by service_worker
+        await removeAllWhitelist(this)
+    }
 
     async close(): Promise<void> {
-        this.cdpSession?.detach().catch(() => { })
-        await this.browser.close()
+        this.#cdp?.detach().catch(() => { })
+        await this.#b?.close()
+        this.#b = null
+        this.#eid = null
+        this.#cdp = null
     }
 
     async openAppPage(route: string): Promise<Page> {
         const page = await this.browser.newPage()
-        await page.goto(`chrome-extension://${this.extensionId}/static/app.html#${route}`)
-        await page.waitForNetworkIdle()
+        await page.goto(`chrome-extension://${this.#eid}/static/app.html#${route}`)
+        await waitForNetworkIdleShortly(page)
         return page
     }
 
@@ -82,8 +85,18 @@ class LaunchContextWrapper implements LaunchContext {
     async newPageAndWaitCsInjected(url: string): Promise<Page> {
         const page = await this.browser.newPage()
         await page.goto(url)
-        await page.waitForSelector(`#__TIMER_INJECTION_FLAG__${this.extensionId}`)
+        await page.waitForSelector(`#__TIMER_INJECTION_FLAG__${this.#eid}`)
         return page
+    }
+
+    get browser(): Browser {
+        if (!this.#b) throw new Error('Browser not initialized')
+        return this.#b
+    }
+
+    get extensionId(): string {
+        if (!this.#eid) throw new Error('Extension id not detected')
+        return this.#eid
     }
 }
 
@@ -92,13 +105,20 @@ type BrowserOptions = {
     bgProxies?: HostProxy[]
 }
 
-export async function launchBrowser(options?: BrowserOptions): Promise<LaunchContext> {
+type LaunchResult = {
+    browser: Browser
+    extensionId: string
+    cdpSession?: CDPSession
+}
+
+async function launchBrowser(options?: BrowserOptions): Promise<LaunchResult> {
     const { dirPath = E2E_OUTPUT_PATH, bgProxies } = options ?? {}
     const args = [
         `--disable-extensions-except=${dirPath}`,
         `--load-extension=${dirPath}`,
         '--start-maximized',
         '--no-sandbox',
+        '--lang=en',
     ]
     // GitHub-hosted runners use a small /dev/shm; Chrome can crash or hang without this flag.
     if (process.env['GITHUB_ACTIONS'] === 'true') {
@@ -119,10 +139,12 @@ export async function launchBrowser(options?: BrowserOptions): Promise<LaunchCon
     if (!extensionId) throw new Error('Failed to detect extension id')
 
     const cdpSession = bgProxies?.length ? await setupBgProxies(sw, bgProxies) : undefined
-    const context = new LaunchContextWrapper(browser, extensionId, cdpSession)
+    return { browser, extensionId, cdpSession }
+}
 
-    // remove whitelist added by service_worker
-    await removeAllWhitelist(context)
-
+export function useLaunchContext(options?: BrowserOptions): LaunchContext {
+    const context = new LaunchContext(options)
+    beforeEach(() => context.launch())
+    afterEach(() => context.close())
     return context
 }
