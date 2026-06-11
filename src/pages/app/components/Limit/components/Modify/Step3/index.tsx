@@ -10,12 +10,13 @@ import type { ModifyForm } from '@app/components/Limit/types'
 import { t } from '@app/locale'
 import { useXsState } from '@hooks'
 import Flex from "@pages/components/Flex"
+import TimeInput from '@pages/components/TimeInput'
 import { ElForm, ElFormItem, ElInputNumber } from "element-plus"
 import { defineComponent } from "vue"
 import PeriodInput from "./PeriodInput"
-import TimeInput from "./TimeInput"
 
 const MAX_HOUR_WEEKLY = 7 * 24
+const UNLIMITED = t(msg => msg.limit.item.unlimited)
 
 const _default = defineComponent(() => {
     const { form: data } = useDialogSop<ModifyForm>()
@@ -26,7 +27,7 @@ const _default = defineComponent(() => {
             <ElForm labelWidth={150} labelPosition='left'>
                 <ElFormItem label={t(msg => msg.shared.limit.daily)}>
                     <Flex gap={10} column={isXs.value}>
-                        <TimeInput modelValue={data.time ?? 0} onChange={v => data.time = v} />
+                        <TimeInput placeholder={UNLIMITED} modelValue={data.time ?? 0} onChange={v => data.time = v} />
                         {!isXs.value && t(msg => msg.limit.item.or)}
                         <ElInputNumber
                             min={0}
@@ -40,7 +41,12 @@ const _default = defineComponent(() => {
                 </ElFormItem>
                 <ElFormItem label={t(msg => msg.shared.limit.weekly)}>
                     <Flex gap={10} column={isXs.value}>
-                        <TimeInput modelValue={data.weekly ?? 0} onChange={v => data.weekly = v} hourMax={MAX_HOUR_WEEKLY} />
+                        <TimeInput
+                            placeholder={UNLIMITED}
+                            modelValue={data.weekly ?? 0}
+                            onChange={v => data.weekly = v}
+                            hourMax={MAX_HOUR_WEEKLY}
+                        />
                         {!isXs.value && t(msg => msg.limit.item.or)}
                         <ElInputNumber
                             min={0}
@@ -53,7 +59,11 @@ const _default = defineComponent(() => {
                     </Flex>
                 </ElFormItem>
                 <ElFormItem label={t(msg => msg.limit.item.visitTime)}>
-                    <TimeInput modelValue={data.visitTime ?? 0} onChange={v => data.visitTime = v} />
+                    <TimeInput
+                        placeholder={UNLIMITED}
+                        modelValue={data.visitTime ?? 0}
+                        onChange={v => data.visitTime = v}
+                    />
                 </ElFormItem>
                 <ElFormItem label={t(msg => msg.shared.limit.period)}>
                     <PeriodInput modelValue={data.periods ?? []} onChange={v => data.periods = v} />

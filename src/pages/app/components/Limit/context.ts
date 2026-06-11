@@ -171,15 +171,14 @@ export const useLimitProvider = () => {
     }
 
     const changeLocked = async (row: tt4b.limit.Item, newVal: boolean) => {
-        const locked = !!newVal
         try {
-            if (locked) {
+            if (newVal) {
                 const msg = t(msg => msg.limit.message.lockConfirm)
                 await ElMessageBox.confirm(msg, { type: 'warning' })
             } else {
                 await verifyCanModify(row)
             }
-            row.locked = locked
+            row.locked = newVal
             await updateLimits([toRaw(row)])
         } catch (e) {
             console.warn(e)

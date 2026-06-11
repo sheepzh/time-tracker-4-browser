@@ -87,11 +87,11 @@ const usePickerStyle = () => {
     return css`
         width: 120px !important;
         padding: 0 5px !important;
-        border-top-right-radius: 0px;
-        border-bottom-right-radius: 0px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
 
         & .${rangeNs.e('close-icon')} {
-            width: 0px;
+            width: 0;
         }
 
         & .${rangeNs.b('input')} {

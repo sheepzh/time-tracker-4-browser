@@ -126,7 +126,7 @@ install_e2e_dependencies() {
         if node "$PROJECT_ROOT/node_modules/puppeteer/install.mjs" &> /dev/null; then
             log_success "Browser downloaded successfully"
         else
-            log_error "Failed to download browser for puppeteer"
+            log_error "Failed to download browser for puppeteer. Retry manually: npx puppeteer browsers install"
             exit 1
         fi
     else

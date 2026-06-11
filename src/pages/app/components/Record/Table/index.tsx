@@ -10,7 +10,7 @@ import ContentCard from '@app/components/common/ContentCard'
 import Editable from '@app/components/common/Editable'
 import Pagination from '@app/components/common/Pagination'
 import { t } from '@app/locale'
-import { periodFormatter } from '@app/util/time'
+import { cvt2LocaleTime, periodFormatter } from '@app/util/time'
 import { Histogram } from "@element-plus/icons-vue"
 import { useDocumentVisibility, useManualRequest, useRequest, useState } from '@hooks'
 import Flex from "@pages/components/Flex"
@@ -19,14 +19,13 @@ import { isRtl } from "@util/document"
 import { siteEqual } from "@util/site"
 import { getAlias, isSite } from "@util/stat"
 import { cvtDateRange2Str } from '@util/time'
-import { ElLink, ElTable, ElTableColumn, ElText, ElTooltip, type TableInstance } from "element-plus"
+import { ElLink, ElTable, ElTableColumn, ElText, ElTooltip, type RenderRowData, type TableInstance } from "element-plus"
 import { createObjectGuard, createStringUnionGuard, isAny } from 'typescript-guard'
 import { computed, defineComponent, ref, watch } from "vue"
 import { queryPage } from "../common"
 import { useRecordFilter, useRecordSort } from "../context"
 import type { DisplayComponent, RecordFilterOption, RecordSort } from "../types"
 import CateColumn from "./columns/CateColumn"
-import DateColumn from "./columns/DateColumn"
 import GroupColumn from "./columns/GroupColumn"
 import HostColumn from "./columns/HostColumn"
 import OperationColumn from "./columns/OperationColumn"
@@ -127,7 +126,17 @@ const _default = defineComponent((_, ctx) => {
                         onSort-change={val => isRecordSort(val) && (sort.value = val)}
                     >
                         {visible.value.index && <ElTableColumn type="selection" align="center" fixed="left" />}
-                        {visible.value.date && <DateColumn />}
+                        {visible.value.date && (
+                            <ElTableColumn
+                                prop={'date' satisfies RecordSort['prop']}
+                                label={t(msg => msg.item.date)}
+                                minWidth={135}
+                                align="center"
+                                sortable="custom"
+                            >
+                                {({ row }: RenderRowData<tt4b.stat.Row>) => <span>{cvt2LocaleTime(row.date)}</span>}
+                            </ElTableColumn>
+                        )}
                         {visible.value.site && <>
                             <HostColumn />
                             <ElTableColumn

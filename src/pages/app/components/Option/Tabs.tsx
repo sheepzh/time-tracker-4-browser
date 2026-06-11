@@ -3,7 +3,7 @@ import { Download, Refresh, Upload } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
 import Flex from "@pages/components/Flex"
 import { ElButton, ElMessage, ElMessageBox, ElTabPane, ElTabs, useNamespace } from "element-plus"
-import { defineComponent, h, useSlots } from "vue"
+import { defineComponent, useSlots } from "vue"
 import ContentContainer from '../common/ContentContainer'
 import { createFileInput, exportSettings, importSettings } from "./export-import"
 import { type OptionCategory, useCategory } from './useCategory'
@@ -83,7 +83,7 @@ const _default = defineComponent<Props>(props => {
             >
                 {Object.entries(useSlots()).filter(([key]) => key !== 'default').map(([key, slot]) => (
                     <ElTabPane name={key} label={getLabel(key)}>
-                        {!!slot && h(slot)}
+                        {slot?.()}
                     </ElTabPane>
                 ))}
             </ElTabs>

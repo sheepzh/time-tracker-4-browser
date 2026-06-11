@@ -9,7 +9,6 @@ export type SharedMessage = {
         notSet: string
     }
     limit: {
-        limited: string
         daily: string
         weekly: string
         period: string

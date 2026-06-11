@@ -14,7 +14,6 @@
             "notSet": "Not Set"
         },
         "limit": {
-            "limited": "Limited",
             "daily": "Daily limit",
             "weekly": "Weekly limit",
             "period": "Blocked periods",
@@ -36,7 +35,6 @@
             "notSet": "未分类"
         },
         "limit": {
-            "limited": "已受限",
             "daily": "每日上限",
             "weekly": "每周上限",
             "period": "不可访问的时间段",
@@ -58,7 +56,6 @@
             "notSet": "未設定"
         },
         "limit": {
-            "limited": "制限あり",
             "daily": "1日の限度",
             "weekly": "週間の限度",
             "period": "許可されない期間",
@@ -143,7 +140,6 @@
             "notSet": "Non impostato"
         },
         "limit": {
-            "limited": "Limitata",
             "daily": "Limite giornaliero",
             "weekly": "Limite settimanale",
             "period": "Periodi bloccati",
@@ -186,7 +182,6 @@
             "notSet": "Nicht festgelegt"
         },
         "limit": {
-            "limited": "Begrenzt",
             "daily": "Tägliches Limit",
             "weekly": "Wöchentliches Limit",
             "period": "Unzulässiger Zeitraum",
@@ -208,7 +203,6 @@
             "notSet": "Non Défini"
         },
         "limit": {
-            "limited": "Limité",
             "daily": "Limite quotidienne",
             "weekly": "Limite hebdomadaire",
             "period": "Périodes bloquées",

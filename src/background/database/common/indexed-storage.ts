@@ -144,13 +144,11 @@ export abstract class BaseIDBStorage<T = Record<string, unknown>> {
     async #doInitDb(): Promise<IDBDatabase> {
         const factory = typeof window !== 'undefined' ? window.indexedDB : globalThis.indexedDB
 
-        const checkDb = await new Promise<IDBDatabase>((resolve, reject) => {
+        return new Promise<IDBDatabase>((resolve, reject) => {
             const checkRequest = factory.open(this.#DB_NAME)
             checkRequest.onsuccess = () => resolve(checkRequest.result)
             checkRequest.onerror = () => reject(checkRequest.error || new Error("Failed to open database"))
         })
-
-        return checkDb
     }
 
     // Only used for testing, be careful when using in production

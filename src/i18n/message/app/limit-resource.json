@@ -112,7 +112,8 @@
             "effectiveDay": "Effective On",
             "allowDelay": "Allow Delay",
             "or": "or",
-            "notEffective": "Not effective"
+            "notEffective": "Not effective",
+            "unlimited": "Unlimited"
         },
         "step": {
             "base": "Basic Information",

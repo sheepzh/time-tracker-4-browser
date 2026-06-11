@@ -10,7 +10,7 @@ import { computed, reactive, Ref, ref, type ShallowRef, toRaw, watch } from "vue
 import { useRoute, useRouter } from 'vue-router'
 import { t } from "./locale"
 import { isMenu } from './router'
-import type { PopupMenu, PopupOption, PopupQuery } from './types'
+import type { PopupOption, PopupQuery } from './types'
 
 type PopupContextValue = {
     reload: () => void
@@ -19,22 +19,22 @@ type PopupContextValue = {
     query: PopupQuery
     option: PopupOption
     cateNameMap: ShallowRef<Record<number, string>>
-    menu: ShallowRef<PopupMenu | undefined>
-    setMenu: ArgCallback<PopupMenu>
+    menu: ShallowRef<tt4b.ui.PopupMenu | undefined>
+    setMenu: ArgCallback<tt4b.ui.PopupMenu>
     limitSummary: ShallowRef<tt4b.limit.Summary | undefined>
     limitSummaryLoading: ShallowRef<boolean>
     selectedLimit: Ref<number | undefined>
 }
 
 const initMenu = () => {
-    const [stored, setStored] = useLocalStorage<PopupMenu>('popup_menu', isMenu, 'percentage')
+    const [stored, setStored] = useLocalStorage<tt4b.ui.PopupMenu>('popup_menu', isMenu, 'percentage')
     const route = useRoute()
     const router = useRouter()
     const myRoute = computed(() => {
         const menuMaybe = route.path.substring(1)
         return isMenu(menuMaybe) ? menuMaybe : stored
     })
-    const setMyRoute = (val: PopupMenu) => {
+    const setMyRoute = (val: tt4b.ui.PopupMenu) => {
         setStored(val)
         router.push('/' + val)
     }

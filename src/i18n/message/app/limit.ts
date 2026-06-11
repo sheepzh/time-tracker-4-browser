@@ -29,6 +29,7 @@ export type LimitMessage = {
         detail: string
         or: string
         notEffective: string
+        unlimited: string
     }
     button: {
         test: string

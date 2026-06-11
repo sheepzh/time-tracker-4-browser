@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-const SEPARATORS = /[-\|–_:：，]/
+const SEPARATORS = /[-|–_:：，]/
 
 const INVALID_SITE_NAME = /(登录)|(我的)|(个人)|(主页)|(首页)|(Welcome)/
 

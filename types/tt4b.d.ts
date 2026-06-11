@@ -97,6 +97,8 @@ declare namespace tt4b {
             | "second"
             | "minute"
             | "hour"
+
+        type PopupMenu = 'percentage' | 'ranking' | 'limit'
     }
 
     namespace common {

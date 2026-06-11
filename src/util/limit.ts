@@ -67,14 +67,14 @@ export const meetTimeLimit = (limit: LimitInfo, delay: DelayInfo) => {
 
 export function hasDailyLimited(item: tt4b.limit.Item, delayDuration: number): boolean {
     const { time, count, waste, visit, delayCount, allowDelay } = item
-    const delay = { count: delayCount, duration: delayDuration, allow: !!allowDelay }
+    const delay = { count: delayCount, duration: delayDuration, allow: allowDelay }
     const limit = { wasted: waste, maxLimit: (time ?? 0) * MILL_PER_SECOND }
     return meetTimeLimit(limit, delay) || meetLimit(count, visit)
 }
 
 export function hasWeeklyLimited(item: tt4b.limit.Item, delayDuration: number): boolean {
     const { weekly, weeklyCount, weeklyWaste, weeklyVisit, weeklyDelayCount, allowDelay } = item
-    const delay = { count: weeklyDelayCount, duration: delayDuration, allow: !!allowDelay }
+    const delay = { count: weeklyDelayCount, duration: delayDuration, allow: allowDelay }
     const limit = { wasted: weeklyWaste, maxLimit: (weekly ?? 0) * MILL_PER_SECOND }
     return meetTimeLimit(limit, delay) || meetLimit(weeklyCount, weeklyVisit)
 }

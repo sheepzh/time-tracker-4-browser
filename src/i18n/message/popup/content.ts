@@ -37,6 +37,6 @@ export type ContentMessage = {
     }
 }
 
-const contentMessages = resource as Messages<ContentMessage>
+const contentMessages = resource satisfies Messages<ContentMessage>
 
 export default contentMessages

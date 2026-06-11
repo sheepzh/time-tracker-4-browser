@@ -1,13 +1,13 @@
 import { Histogram, PieChart, Timer } from '@element-plus/icons-vue'
 import { useMenu } from '@popup/context'
 import { t } from '@popup/locale'
-import type { PopupMenu } from '@popup/types'
+import { isMenu } from '@popup/router'
 import { ElIcon, ElRadioButton, ElRadioGroup, ElTooltip } from "element-plus"
 import { type Component, defineComponent, h } from "vue"
 
 type MenuItem = {
     icon: Component
-    route: PopupMenu
+    route: tt4b.ui.PopupMenu
     label: string
 }
 
@@ -31,7 +31,7 @@ const Menu = defineComponent(() => {
     const { menu, setMenu } = useMenu()
 
     return () => (
-        <ElRadioGroup modelValue={menu.value} onChange={v => setMenu(v as PopupMenu)}>
+        <ElRadioGroup modelValue={menu.value} onChange={v => isMenu(v) && setMenu(v)}>
             {createItems().map(({ route, label, icon }) => (
                 <ElRadioButton value={route}>
                     <ElTooltip content={label}>
