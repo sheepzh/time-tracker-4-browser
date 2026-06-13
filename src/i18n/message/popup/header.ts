@@ -13,6 +13,8 @@ export type HeaderMessage = {
     donutChart: string
     showSiteName: string
     showTopN: string
+    bug: string
+    feature: string
 }
 
 const headerMessages = resource satisfies Messages<HeaderMessage>

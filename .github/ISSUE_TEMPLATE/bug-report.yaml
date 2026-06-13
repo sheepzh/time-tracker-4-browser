@@ -15,34 +15,22 @@ body:
           label: Version
           description: Which version of the extension/addon are you using?
           placeholder: ex. v1.0.0
-    - type: dropdown
+    - type: input
       id: os
       validations:
           required: true
       attributes:
           label: OS
           description: Which operating system are you using? (Mac/Linux/Win)
-          options:
-              - Win
-              - Mac
-              - Linux
-              - Android
-              - Other
-          default: 0
-    - type: dropdown
+          placeholder: ex. Linux
+    - type: input
       id: browser
       validations:
           required: true
       attributes:
           label: Browser
           description: Which browser are you using? (Chrome/Firefox/Edge/Other)
-          options:
-              - Chrome
-              - Firefox
-              - Edge
-              - Brave
-              - Other
-          default: 0
+          placeholder: ex. Chrome
     - type: input
       id: browser_version
       validations:

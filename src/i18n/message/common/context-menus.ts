@@ -13,7 +13,6 @@ import resource from './context-menus-resource.json'
 export type ContextMenusMessage = {
     add2Whitelist: string
     removeFromWhitelist: string
-    feedbackPage: string
 }
 
 const _default: Messages<ContextMenusMessage> = resource

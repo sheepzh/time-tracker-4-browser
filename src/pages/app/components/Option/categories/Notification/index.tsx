@@ -99,7 +99,7 @@ const Notification = defineComponent((_, ctx) => {
                         />
                         <ElTooltip content='Document' effect='light' placement='top'>
                             <ElLink
-                                target='_blank' underline={false}
+                                target='_blank' underline='never'
                                 href="https://github.com/sheepzh/time-tracker-4-browser/blob/main/examples/notification/README.md"
                             >
                                 <ElIcon><QuestionFilled /></ElIcon>

@@ -47,7 +47,6 @@ const placeholder: ChromeMessage = {
     contextMenus: {
         add2Whitelist: '',
         removeFromWhitelist: '',
-        feedbackPage: '',
     },
     initial: {
         localFile: {

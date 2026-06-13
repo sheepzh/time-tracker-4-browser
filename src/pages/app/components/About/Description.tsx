@@ -7,11 +7,11 @@ import Flex from "@pages/components/Flex"
 import { Coffee, GitHub } from '@pages/icons'
 import { rateClicked } from '@pages/util/rate'
 import {
-    BUY_ME_A_COFFEE_PAGE, CHANGE_LOG_PAGE, CHROME_HOMEPAGE, EDGE_HOMEPAGE, FEEDBACK_QUESTIONNAIRE, FIREFOX_HOMEPAGE,
-    getHomepageWithLocale, GITHUB_ISSUE_ADD, HOMEPAGE, LICENSE_PAGE, PRIVACY_PAGE, REVIEW_PAGE, SOURCE_CODE_PAGE,
+    BUY_ME_A_COFFEE_PAGE, CHANGE_LOG_PAGE, CHROME_HOMEPAGE, EDGE_HOMEPAGE, FIREFOX_HOMEPAGE, getHomepageWithLocale,
+    GITHUB_ISSUE_FEATURE, HOMEPAGE, LICENSE_PAGE, PRIVACY_PAGE, REVIEW_PAGE, SOURCE_CODE_PAGE,
 } from "@util/constant/url"
 import { type ComponentSize, ElCard, ElDescriptions, ElDescriptionsItem, ElDivider, ElText, useNamespace } from "element-plus"
-import { computed, defineComponent, reactive } from "vue"
+import { computed, defineComponent } from "vue"
 import DescLink from "./DescLink"
 import { Chrome, Echarts, Edge, ElementPlus, Firefox, Vue } from './Icon'
 import InstallationLink from "./InstallationLink"
@@ -75,18 +75,9 @@ const computeSize = (mediaSize: MediaSize): ComponentSize => {
 }
 
 const _default = defineComponent<{}>(() => {
-    const feedbackUrl = FEEDBACK_QUESTIONNAIRE[locale] || GITHUB_ISSUE_ADD
     const mediaSize = useMediaSize()
     const column = computed(() => mediaSize.value <= MediaSize.md ? 1 : 2)
     const size = computed(() => computeSize(mediaSize.value))
-    const pages = reactive({
-        homepage: HOMEPAGE,
-        privacy: PRIVACY_PAGE,
-        sourceCode: SOURCE_CODE_PAGE,
-        changeLog: CHANGE_LOG_PAGE,
-        email: AUTHOR_EMAIL,
-    })
-
     const [textContainerCls, descriptionsCls] = useStyle()
 
     return () => (
@@ -100,14 +91,14 @@ const _default = defineComponent<{}>(() => {
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.about.label.website)} labelAlign="right">
                     <DescLink href={getHomepageWithLocale()}>
-                        {pages.homepage}
+                        {HOMEPAGE}
                     </DescLink>
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.about.label.privacy)} labelAlign="right">
-                    <DescLink href={pages.privacy} />
+                    <DescLink href={PRIVACY_PAGE} />
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.base.sourceCode)} labelAlign="right">
-                    <DescLink href={pages.sourceCode} icon={GitHub} />
+                    <DescLink href={SOURCE_CODE_PAGE} icon={GitHub} />
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.about.label.license)} labelAlign="right">
                     <DescLink href={LICENSE_PAGE}>
@@ -115,10 +106,10 @@ const _default = defineComponent<{}>(() => {
                     </DescLink>
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.base.changeLog)} labelAlign="right">
-                    <DescLink href={pages.changeLog} icon={GitHub} />
+                    <DescLink href={CHANGE_LOG_PAGE} icon={GitHub} />
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.about.label.support)} labelAlign="right">
-                    {pages.email}
+                    <DescLink href={`mailto:${AUTHOR_EMAIL}`}>{AUTHOR_EMAIL}</DescLink>
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.about.label.installation)} labelAlign="right">
                     <Flex gap={15} align="center" margin={mediaSize.value === MediaSize.xs ? '5px 0' : 10}>
@@ -164,7 +155,7 @@ const _default = defineComponent<{}>(() => {
                 <div>
                     <ElText size="large">
                         🙋&ensp;
-                        <a href={feedbackUrl} target="_blank">
+                        <a href={GITHUB_ISSUE_FEATURE} target="_blank">
                             {t(msg => msg.about.text.feedback)}
                         </a>
                     </ElText>

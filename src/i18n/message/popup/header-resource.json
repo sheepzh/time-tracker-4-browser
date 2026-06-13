@@ -4,14 +4,18 @@
         "discord": "Join Discord",
         "showSiteName": "Display site name",
         "showTopN": "Display top {n}",
-        "donutChart": "Displayed as donut charts"
+        "donutChart": "Displayed as donut charts",
+        "bug": "Report Bug",
+        "feature": "Request Feature"
     },
     "zh_CN": {
         "rating": "提交评价",
         "discord": "加入 Discord",
         "showSiteName": "显示网站名称",
         "showTopN": "显示前 {n} 名",
-        "donutChart": "以圆环图显示"
+        "donutChart": "以圆环图显示",
+        "bug": "提交 Bug",
+        "feature": "功能提案"
     },
     "zh_TW": {
         "rating": "送出評分",

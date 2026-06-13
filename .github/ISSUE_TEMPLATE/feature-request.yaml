@@ -7,35 +7,22 @@ body:
       attributes:
           value: |
               Tell us your wants~
-    - type: dropdown
+    - type: input
       id: browser
       validations:
           required: true
       attributes:
           label: Browser
-          multiple: true
           description: Which browsers are you using? (Chrome/Firefox/Edge/Other)
-          options:
-              - Chrome
-              - Firefox
-              - Edge
-              - Brave
-              - Other
-          default: 0
-    - type: dropdown
+          placeholder: ex. Chrome
+    - type: input
       id: os
       validations:
           required: false
       attributes:
           label: OS
           description: Which operating system are you using? (Mac/Linux/Win, Optional)
-          options:
-              - Win
-              - Mac
-              - Linux
-              - Android
-              - Other
-          default: 0
+          placeholder: ex. Linux
     - type: textarea
       id: description
       validations:

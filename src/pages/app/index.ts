@@ -18,7 +18,7 @@ async function main() {
     injectAppCss()
     initDarkTheme()
     listenMediaSizeChange()
-    initLocale()
+    await initLocale()
     initEcharts()
     const app = await createElApp(Main)
     installRouter(app)

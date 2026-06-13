@@ -50,7 +50,10 @@ export const IS_SAFARI = BROWSER_NAME === 'safari'
 /**
  * @since 3.3.0
  */
-export const IS_ANDROID: boolean = !!userAgent?.toLowerCase()?.includes("android")
+export const IS_ANDROID = userAgent?.toLowerCase()?.includes("android") ?? false
+export const IS_WINDOWS = platform?.startsWith('Win') ?? false
+export const IS_LINUX = (platform?.startsWith('Linux') ?? false) && !IS_ANDROID
+export const IS_MAC = platform?.startsWith('Mac') ?? false
 
 let browserMajorVersion: number | undefined = undefined
 try {
@@ -61,24 +64,6 @@ try {
  * @since 1.3.2
  */
 export const BROWSER_MAJOR_VERSION = browserMajorVersion
-
-type NavigatorWithUAData = Navigator & {
-    userAgentData?: {
-        platform: string
-    }
-}
-
-let isWindows = false
-if (((navigator as unknown as NavigatorWithUAData)?.userAgentData)?.platform === 'Windows') {
-    isWindows = true
-} else if (platform?.startsWith('Win')) {
-    isWindows = true
-}
-
-/**
- * @since 2.4.2
- */
-export const IS_WINDOWS = isWindows
 
 /**
  * @since 1.4.4

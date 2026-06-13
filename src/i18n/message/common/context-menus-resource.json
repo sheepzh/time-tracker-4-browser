@@ -1,72 +1,58 @@
 {
     "zh_CN": {
         "add2Whitelist": "将{host}加入白名单",
-        "removeFromWhitelist": "将{host}从白名单移出",
-        "feedbackPage": "吐槽一下"
+        "removeFromWhitelist": "将{host}从白名单移出"
     },
     "zh_TW": {
         "add2Whitelist": "將 {host} 加入白名單",
-        "removeFromWhitelist": "將 {host} 從白名單移出",
-        "feedbackPage": "吐槽一下"
+        "removeFromWhitelist": "將 {host} 從白名單移出"
     },
     "en": {
         "add2Whitelist": "Add {host} to the whitelist",
-        "removeFromWhitelist": "Remove {host} from the whitelist",
-        "feedbackPage": "Issues"
+        "removeFromWhitelist": "Remove {host} from the whitelist"
     },
     "ja": {
         "add2Whitelist": "ホワイトリストに {host} を追加",
-        "removeFromWhitelist": "ホワイトリストから {host} を削除します",
-        "feedbackPage": "フィードバックの欠如"
+        "removeFromWhitelist": "ホワイトリストから {host} を削除します"
     },
     "pt_PT": {
         "add2Whitelist": "Adicionar {host} à lista de permissões",
-        "removeFromWhitelist": "Remover {host} da lista de permissões",
-        "feedbackPage": "Problemas"
+        "removeFromWhitelist": "Remover {host} da lista de permissões"
     },
     "uk": {
         "add2Whitelist": "Додати {host} в білий список",
-        "removeFromWhitelist": "Вилучити {host} з білого списку",
-        "feedbackPage": "Проблеми"
+        "removeFromWhitelist": "Вилучити {host} з білого списку"
     },
     "es": {
         "add2Whitelist": "Agregar {host} a la lista blanca",
-        "removeFromWhitelist": "Eliminar {host} de la lista blanca",
-        "feedbackPage": "Problemas"
+        "removeFromWhitelist": "Eliminar {host} de la lista blanca"
     },
     "de": {
         "add2Whitelist": "Fügen Sie {host} zur Whitelist hinzu",
-        "removeFromWhitelist": "Entfernen Sie {host} von der Whitelist",
-        "feedbackPage": "Issues"
+        "removeFromWhitelist": "Entfernen Sie {host} von der Whitelist"
     },
     "fr": {
         "add2Whitelist": "Ajouter {host} à la liste blanche",
-        "removeFromWhitelist": "Supprimer {host} de la liste blanche",
-        "feedbackPage": "Problèmes"
+        "removeFromWhitelist": "Supprimer {host} de la liste blanche"
     },
     "ru": {
         "add2Whitelist": "Добавить {host} в белый список",
-        "removeFromWhitelist": "Удалить {host} из белого списка",
-        "feedbackPage": "Проблемы"
+        "removeFromWhitelist": "Удалить {host} из белого списка"
     },
     "ar": {
         "add2Whitelist": "أضف {host} إلى القائمة البيضاء",
-        "removeFromWhitelist": "إزالة {host} من القائمة البيضاء",
-        "feedbackPage": "مشكلات"
+        "removeFromWhitelist": "إزالة {host} من القائمة البيضاء"
     },
     "tr": {
         "add2Whitelist": "{host} adresini beyaz listeye ekle",
-        "removeFromWhitelist": "{host} adresini beyaz listeden çıkart",
-        "feedbackPage": "Sorunlar"
+        "removeFromWhitelist": "{host} adresini beyaz listeden çıkart"
     },
     "pl": {
         "add2Whitelist": "Dodaj {host} do Whitelisty",
-        "removeFromWhitelist": "Usuń {host} z Whitelisty",
-        "feedbackPage": "Zgłoszenia"
+        "removeFromWhitelist": "Usuń {host} z Whitelisty"
     },
     "it": {
         "add2Whitelist": "Aggiungi {host} alla whitelist",
-        "removeFromWhitelist": "Rimuovi {host} dalla whitelist",
-        "feedbackPage": "Problemi"
+        "removeFromWhitelist": "Rimuovi {host} dalla whitelist"
     }
 }

@@ -7,7 +7,7 @@
 
 import { getUrl, getVersion } from "@api/chrome/runtime"
 import { locale } from "@i18n"
-import { BROWSER_MAJOR_VERSION, BROWSER_NAME } from "./environment"
+import { BROWSER_MAJOR_VERSION, BROWSER_NAME, IS_ANDROID, IS_LINUX, IS_MAC, IS_WINDOWS } from "./environment"
 
 export const FIREFOX_HOMEPAGE = 'https://addons.mozilla.org/firefox/addon/besttimetracker'
 export const CHROME_HOMEPAGE = 'https://chromewebstore.google.com/detail/time-tracker/dkdhhcbjijekmneelocdllcldcpmekmm'
@@ -24,30 +24,25 @@ export const SOURCE_CODE_PAGE = 'https://github.com/sheepzh/time-tracker-4-brows
  */
 export const CHANGE_LOG_PAGE = 'https://github.com/sheepzh/time-tracker-4-browser/blob/main/CHANGELOG.md'
 
-/**
- * @since 0.0.6
- */
-export const GITHUB_ISSUE_ADD = 'https://github.com/sheepzh/time-tracker-4-browser/issues/new/choose'
+const issueTemplatePage = (type: 'bug' | 'feature') => {
+    const template = type === 'bug' ? 'bug-report.yaml' : 'feature-request.yaml'
+    const version = `v${getVersion()}`
+    const browserVersion = BROWSER_MAJOR_VERSION
+    const os = [
+        IS_WINDOWS && 'Win',
+        IS_MAC && 'Mac',
+        IS_LINUX && 'Linux',
+        IS_ANDROID && 'Android',
+    ].filter(Boolean).join(',')
+    return `https://github.com/sheepzh/time-tracker-4-browser/issues/new?template=${template}&version=${version}&browser_version=${browserVersion}&os=${os}`
+}
 
-/**
- * Feedback powered by support.qq.com
- *
- * @since 0.8.5
- */
-export const TU_CAO_PAGE = `https://support.qq.com/products/402895?os=${BROWSER_NAME}&osVersion=${BROWSER_MAJOR_VERSION}&clientVersion=${getVersion()}`
+export const GITHUB_ISSUE_BUG = issueTemplatePage('bug')
+export const GITHUB_ISSUE_FEATURE = issueTemplatePage('feature')
 
 export const PRIVACY_PAGE = 'https://www.wfhg.cc/en/privacy.html'
 
 export const LICENSE_PAGE = 'https://github.com/sheepzh/time-tracker-4-browser/blob/main/LICENSE'
-
-/**
- * @since 0.9.6
- */
-export const FEEDBACK_QUESTIONNAIRE: Record<tt4b.RequiredLocale, string> & Partial<Record<tt4b.OptionalLocale, string>> = {
-    zh_CN: TU_CAO_PAGE,
-    zh_TW: 'https://docs.google.com/forms/d/e/1FAIpQLSdfvG6ExLj331YOLZIKO3x98k3kMxpkkLW1RgFuRGmUnZCGRQ/viewform?usp=sf_link',
-    en: 'https://docs.google.com/forms/d/e/1FAIpQLSdNq4gnSY7uxYkyqOPqyYF3Bqlc3ZnWCLDi5DI5xGjPeVCNiw/viewform?usp=sf_link',
-}
 
 const UNINSTALL_QUESTIONNAIRE_EN = 'https://docs.google.com/forms/d/e/1FAIpQLSflhZAFTw1rTUjAEwgxqCaBuhLBBthwEK9fIjvmwWfITLSK9A/viewform?usp=sf_link'
 /**

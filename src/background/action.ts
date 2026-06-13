@@ -9,13 +9,9 @@ import { onIconClick } from "@api/chrome/action"
 import { createContextMenu } from "@api/chrome/context-menu"
 import { getRuntimeId } from "@api/chrome/runtime"
 import { createTab } from "@api/chrome/tab"
-import { locale } from "@i18n"
 import { t2Chrome } from "@i18n/chrome/t"
 import { IS_ANDROID, IS_MV3, IS_SAFARI } from "@util/constant/environment"
-import {
-    CHANGE_LOG_PAGE, GITHUB_ISSUE_ADD, SOURCE_CODE_PAGE, TU_CAO_PAGE,
-    getAppPageUrl, getGuidePageUrl,
-} from "@util/constant/url"
+import { CHANGE_LOG_PAGE, SOURCE_CODE_PAGE, getAppPageUrl, getGuidePageUrl } from "@util/constant/url"
 
 const APP_PAGE_URL = getAppPageUrl()
 
@@ -57,13 +53,6 @@ const repoPageProps: ChromeContextMenuCreateProps = {
     ...baseProps
 }
 
-const feedbackPageProps: ChromeContextMenuCreateProps = {
-    id: getRuntimeId() + '_timer_menu_item_feedback_link',
-    title: titleOf('😿', t2Chrome(msg => msg.contextMenus.feedbackPage)),
-    onclick: () => createTab(locale === 'zh_CN' ? TU_CAO_PAGE : GITHUB_ISSUE_ADD),
-    ...baseProps
-}
-
 const guidePageProps: ChromeContextMenuCreateProps = {
     id: getRuntimeId() + '_timer_menu_item_guide_link',
     title: titleOf('📖', t2Chrome(msg => msg.base.guidePage)),
@@ -82,7 +71,6 @@ export function initBrowserAction() {
     createContextMenu(allFunctionProps)
     createContextMenu(optionPageProps)
     createContextMenu(repoPageProps)
-    createContextMenu(feedbackPageProps)
     createContextMenu(guidePageProps)
     createContextMenu(changeLogProps)
 
