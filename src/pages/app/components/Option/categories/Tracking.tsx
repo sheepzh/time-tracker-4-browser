@@ -4,11 +4,10 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { hasPerm, requestPerm } from "@api/chrome/permission"
 import { isAllowedFileSchemeAccess } from "@api/chrome/runtime"
 import { sendMsg2Runtime } from '@api/sw/common'
 import { t } from '@app/locale'
-import { useManualRequest, useRequest } from '@hooks'
+import { useManualRequest, usePermissionCheck, useRequest } from '@hooks'
 import { locale } from "@i18n"
 import { rotate } from "@util/array"
 import { IS_ANDROID, IS_FIREFOX } from "@util/constant/environment"
@@ -96,19 +95,9 @@ const _default = defineComponent((_props, ctx) => {
         return 'ss [sec]'
     })
 
+    const { checkOrRequest: checkPerm } = usePermissionCheck('tabGroups')
     const handleTabGroupChange = async (val: boolean) => {
-        if (val && !await hasPerm("tabGroups")) {
-            try {
-                const granted = await ElMessageBox.confirm(t(msg => msg.option.permGrantConfirm), { type: 'primary' })
-                    .then(() => requestPerm("tabGroups"))
-                if (!granted) {
-                    ElMessage.error("Grant permission failed")
-                    return
-                }
-            } catch {
-                return
-            }
-        }
+        if (val && !await checkPerm()) return
         option.countTabGroup = val
     }
 

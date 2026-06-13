@@ -1,18 +1,18 @@
-export const APP_LIMIT_ROUTE = '/behavior/limit'
+export const APP_LIMIT_ROUTE = '/productivity/limit'
 export type AppLimitQuery = {
     action?: 'create' | 'modify'
     url?: string
     id?: string
 }
 
-export const APP_ANALYSIS_ROUTE = '/data/analysis'
-export type AppAnalysisQuery = Partial<tt4b.site.SiteKey> & {
+export const APP_SITE_ANALYSIS_ROUTE = '/analysis/site'
+export type AppSiteAnalysisQuery = Partial<tt4b.site.SiteKey> & {
     cateId?: string
     url?: string
 }
 
-export const APP_OPTION_ROUTE = '/additional/option'
-export const APP_RECORD_ROUTE = '/data/record'
+export const APP_OPTION_ROUTE = '/other/option'
+export const APP_RECORD_ROUTE = '/tracking/record'
 /**
  * The query param of record page
  */
@@ -42,3 +42,7 @@ export type AppRecordQuery = {
      */
     sc?: tt4b.core.Dimension
 }
+
+export const APP_FOCUS_ROUTE = '/productivity/focus'
+
+export type AppFocusQuery = { action?: 'create' }

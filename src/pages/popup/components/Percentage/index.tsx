@@ -1,14 +1,19 @@
 import { useRequest } from "@hooks"
-import { useOption, useQuery } from "@popup/context"
+import { useViewSlots } from "@popup/context"
 import { ElCard } from "element-plus"
 import { defineComponent } from "vue"
+import { useStatOption, useStatQuery } from "../stat/context"
+import StatToolbar from "../stat/Toolbar"
 import Cate from "./Cate"
+import PercentageOption from "./Option"
 import { doQuery } from "./query"
 import Site from "./Site"
 
 const Percentage = defineComponent(() => {
-    const query = useQuery()
-    const option = useOption()
+    const query = useStatQuery()
+    const option = useStatOption()
+    const { setViewSlots } = useViewSlots()
+    setViewSlots({ toolbar: StatToolbar, headerOption: PercentageOption })
     const { data } = useRequest(() => doQuery(query, option), { deps: () => ({ ...query, ...option }) })
 
     return () => (

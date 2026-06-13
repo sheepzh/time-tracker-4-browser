@@ -6,7 +6,7 @@ import generateOption from "./rspack.common"
 manifest.name = E2E_NAME
 // Grant all permissions as required for e2e testing
 const permissions = manifest.permissions ??= []
-permissions.push(...(manifest.optional_permissions ?? []))
+permissions.push(...manifest.optional_permissions ?? [])
 manifest.optional_permissions = []
 
 const options = generateOption({

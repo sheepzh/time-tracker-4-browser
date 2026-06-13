@@ -1,13 +1,13 @@
 import Flex from '@pages/components/Flex'
 import Img from '@pages/components/Img'
-import { useLimitSummary } from '@popup/context'
 import { ElText } from 'element-plus'
 import { computed, defineComponent, StyleValue } from 'vue'
+import { useLimitContext } from './context'
 
 const TITLE_SIZE = 24
 
 const Summary = defineComponent<{}>(() => {
-    const { summary } = useLimitSummary()
+    const { summary } = useLimitContext()
     const site = computed(() => {
         const site = summary.value?.site
         if (!site) return ''
@@ -27,10 +27,7 @@ const Summary = defineComponent<{}>(() => {
     })
 
     return () => (
-        <Flex
-            column justify='center' align='center' gap={10}
-            style={{ marginTop: '20px', marginBottom: '20px' }}
-        >
+        <Flex column justify='center' align='center' gap={10} marginTop={20} marginBottom={20}>
             <Flex align='center' justify='center' gap={12}>
                 <Img src={summary.value?.site.iconUrl} size={TITLE_SIZE} />
                 <ElText style={{ fontSize: `${TITLE_SIZE}px` } satisfies StyleValue} >

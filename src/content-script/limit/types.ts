@@ -7,12 +7,23 @@ export type LimitReason =
         getVisitTime?: () => number
     }
 
-export interface MaskModal {
-    readonly reasons: LimitReason[]
+export type LimitReasonData = Omit<LimitReason, 'getVisitTime'> | FocusReason
 
-    addReason(...reasons: LimitReason[]): void
-    removeReason(...reasons: LimitReason[]): void
-    removeReasonsByType(...types: tt4b.limit.ReasonType[]): void
+export type FocusReason =
+    & Pick<tt4b.focus.Config, 'mode' | 'cond' | 'template'>
+    & {
+        type: 'FOCUS'
+    }
+
+export type Reason = LimitReason | FocusReason
+export type ReasonType = Reason['type']
+
+export interface MaskModal {
+    readonly reasons: Reason[]
+
+    addReason(...reasons: Reason[]): void
+    removeReason(...reasons: Reason[]): void
+    removeReasonsByType(...types: ReasonType[]): void
     addDelayHandler(handler: NoArgCallback): void
 }
 

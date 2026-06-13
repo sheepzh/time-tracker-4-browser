@@ -134,31 +134,33 @@ const _default = defineComponent((_, ctx) => {
                                 align="center"
                                 sortable="custom"
                             >
-                                {({ row }: RenderRowData<tt4b.stat.Row>) => <span>{cvt2LocaleTime(row.date)}</span>}
-                            </ElTableColumn>
+                                {({ row }: RenderRowData<tt4b.stat.Row>) => cvt2LocaleTime(row.date)}
+                            </ElTableColumn >
                         )}
-                        {visible.value.site && <>
-                            <HostColumn />
-                            <ElTableColumn
-                                label={t(msg => msg.siteManage.column.alias)}
-                                minWidth={140}
-                                align="center"
-                                v-slots={({ row }: { row: tt4b.stat.Row }) => (
-                                    <Editable
-                                        modelValue={getAlias(row)}
-                                        onChange={newAlias => 'siteKey' in row && handleAliasChange(row.siteKey, newAlias, data.value.list)}
-                                    />
-                                )}
-                            />
-                        </>}
+                        {
+                            visible.value.site && <>
+                                <HostColumn />
+                                <ElTableColumn
+                                    label={t(msg => msg.siteManage.column.alias)}
+                                    minWidth={140}
+                                    align="center"
+                                    v-slots={({ row }: { row: tt4b.stat.Row }) => (
+                                        <Editable
+                                            modelValue={getAlias(row)}
+                                            onChange={newAlias => 'siteKey' in row && handleAliasChange(row.siteKey, newAlias, data.value.list)}
+                                        />
+                                    )}
+                                />
+                            </>
+                        }
                         {visible.value.group && <GroupColumn />}
                         {visible.value.cate && <CateColumn onChange={refresh} />}
                         <TimeColumn dimension="focus" />
                         {runColVisible.value && <TimeColumn dimension="run" />}
                         <VisitColumn />
                         <OperationColumn onDelete={refresh} />
-                    </ElTable>
-                </Flex>
+                    </ElTable >
+                </Flex >
                 <Flex justify="center" width="100%" gap={8} align="center">
                     <ElTooltip
                         effect="light"
@@ -183,8 +185,8 @@ const _default = defineComponent((_, ctx) => {
                         onChange={setPage}
                     />
                 </Flex>
-            </Flex>
-        </ContentCard>
+            </Flex >
+        </ContentCard >
     )
 })
 

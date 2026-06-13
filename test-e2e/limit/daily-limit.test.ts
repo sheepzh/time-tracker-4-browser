@@ -7,7 +7,7 @@ describe('Daily limit', () => {
 
     test('basic time limit', async () => {
         const limitTime = 2
-        const limitPage = await context.openAppPage('/behavior/limit')
+        const limitPage = await context.openAppPage('/productivity/limit')
         const demoRule: tt4b.limit.Rule = {
             id: 1, name: 'TEST DAILY LIMIT',
             cond: [MOCK_URL],
@@ -85,7 +85,7 @@ describe('Daily limit', () => {
     }, 60000)
 
     test("Daily visit limit", async () => {
-        const limitPage = await context.openAppPage('/behavior/limit')
+        const limitPage = await context.openAppPage('/productivity/limit')
         const demoRule: tt4b.limit.Rule = {
             id: 1, name: 'TEST DAILY VISIT LIMIT',
             cond: [MOCK_URL],

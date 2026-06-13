@@ -1,0 +1,20 @@
+{
+    "en": {
+        "template": {
+            "title": "Choose Template"
+        },
+        "state": {
+            "running": "Running",
+            "paused": "Paused",
+            "aborted": "Aborted",
+            "done": "Done"
+        },
+        "button": {
+            "resume": "Resume",
+            "pause": "Pause",
+            "delay": "Delay",
+            "restart": "Restart",
+            "preset": "Preset"
+        }
+    }
+}

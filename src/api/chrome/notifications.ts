@@ -2,7 +2,7 @@ import { IS_MV3 } from "@util/constant/environment"
 import { handleError } from "./common"
 import { getIconUrl } from './runtime'
 
-type Topic = 'time'
+type Topic = 'time' | 'focus'
 type ChromeOptions = chrome.notifications.NotificationCreateOptions
 type Options = Omit<ChromeOptions, 'iconUrl'>
 

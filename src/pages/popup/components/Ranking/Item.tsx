@@ -5,7 +5,8 @@ import Flex from "@pages/components/Flex"
 import TooltipWrapper from '@pages/components/TooltipWrapper'
 import { cvtGroupColor } from '@pages/util/style'
 import { calJumpUrl } from "@popup/common"
-import { useCateNameMap, useQuery } from "@popup/context"
+import { useCateNameMap } from "@popup/context"
+import { useStatQuery } from "../stat/context"
 import { t } from '@popup/locale'
 import { isRemainHost } from "@util/constant/remain-host"
 import { getGroupName, getIconUrl, isCate, isGroup, isNormalSite, isSite } from "@util/stat"
@@ -25,7 +26,7 @@ const TITLE_STYLE: StyleValue = {
 type TitleProps = Pick<ItemProps, 'value' | 'date' | 'displaySiteName'>
 
 const Title = defineComponent<TitleProps>(props => {
-    const query = useQuery()
+    const query = useStatQuery()
     const cateNameMap = useCateNameMap()
     const { groupMap } = useTabGroups()
     const nameAndTooltip = computed((): [name: string, tooltip?: string] => {
@@ -88,7 +89,7 @@ type ItemProps = {
 }
 
 const Item = defineComponent<ItemProps>(props => {
-    const query = useQuery()
+    const query = useStatQuery()
     const cateNameMap = useCateNameMap()
     const { groupMap } = useTabGroups()
 

@@ -1,11 +1,11 @@
 import { listAllGroups } from "@api/chrome/tabGroups"
 import { queryRows, } from "@popup/common"
 import { t } from '@popup/locale'
-import type { PopupOption, PopupQuery } from "@popup/types"
+import type { StatOption, StatQuery } from "../stat/types"
 import { getBirthday, getDayLength } from "@util/time"
 
 export type PercentageResult = {
-    query: PopupQuery
+    query: StatQuery
     rows: tt4b.stat.Row[]
     // Actually date range according to duration
     date: Date | [Date, Date?] | undefined
@@ -45,8 +45,8 @@ const findDateRange = (rows: tt4b.stat.Row[]): [string, string] | undefined => {
     return minDate && maxDate ? [minDate, maxDate] : undefined
 }
 
-export const doQuery = async (query: PopupQuery, option: PopupOption): Promise<PercentageResult> => {
-    const { topN: itemCount, showName: displaySiteName } = option
+export const doQuery = async (query: StatQuery, option: StatOption): Promise<PercentageResult> => {
+    const { topN: itemCount, showName: displaySiteName, donutChart} = option
     const [rows, date] = await queryRows(query)
     const groups = await listAllGroups()
 
@@ -69,6 +69,6 @@ export const doQuery = async (query: PopupQuery, option: PopupOption): Promise<P
         chartTitle: t(msg => msg.content.percentage.title[query?.duration], { n: query?.durationNum }),
         itemCount,
         groups,
-        donutChart: !!option.donutChart,
+        donutChart,
     } satisfies PercentageResult
 }

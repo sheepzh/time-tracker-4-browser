@@ -22,6 +22,14 @@ type RequiredPick<T, K extends keyof T> = Required<Pick<T, K>>
 
 type Exactly<T, U> = T & Record<Exclude<keyof U, keyof T>, never>
 
+type RequiredKeys<T> = { [K in keyof T]-?: {} extends Pick<T, K> ? never : K }[keyof T]
+type OptionalKeys<T> = { [K in keyof T]-?: {} extends Pick<T, K> ? K : never }[keyof T]
+type MakeOptionalUndefined<T> = {
+    [K in RequiredKeys<T>]: T[K]
+} & {
+    [K in OptionalKeys<T>]-?: T[K] | undefined
+} extends infer O ? { [K in keyof O]: O[K] } : never
+
 /**
  * Tuple with length
  *

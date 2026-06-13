@@ -12,7 +12,6 @@ export type OptionMessage = {
     on: string
     off: string
     followBrowser: string
-    permGrantConfirm: string
     appearance: {
         title: string
         // whitelist

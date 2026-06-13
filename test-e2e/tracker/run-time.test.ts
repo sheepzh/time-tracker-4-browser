@@ -7,7 +7,7 @@ describe('Run time tracking', () => {
     const context = useLaunchContext()
 
     async function clickRunTimeChange(siteHost: string): Promise<void> {
-        const sitePage = await context.openAppPage("/additional/site-manage")
+        const sitePage = await context.openAppPage("/tracking/sites")
         await sitePage.focus('input[placeholder]')
         await sitePage.keyboard.type(siteHost)
         await sitePage.keyboard.press('Enter')

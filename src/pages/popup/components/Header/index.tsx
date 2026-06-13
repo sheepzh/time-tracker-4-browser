@@ -1,17 +1,17 @@
 import { createTab, listTabs, updateTab } from '@api/chrome/tab'
 import { View } from "@element-plus/icons-vue"
 import Flex from "@pages/components/Flex"
+import { useViewSlots } from '@popup/context'
 import { t } from '@popup/locale'
 import { IS_ANDROID } from "@util/constant/environment"
 import { getAppPageUrl } from "@util/constant/url"
 import { ElLink } from "element-plus"
-import type { FunctionalComponent } from "vue"
+import { defineComponent, h } from "vue"
 import DarkSwitch from "./DarkSwitch"
 import Donation from './Donation'
 import LangSelect from "./LangSelect"
 import Logo from "./Logo"
 import MoreInfo from './MoreInfo'
-import Option from "./Option"
 
 const openAppPage = async () => {
     const appPageUrl = getAppPageUrl()
@@ -30,24 +30,26 @@ const openAppPage = async () => {
     await createTab(appPageUrl)
 }
 
-const Header: FunctionalComponent<{}> = () => (
-    <Flex justify="space-between" padding='0 10px' color='text-primary'>
-        <Logo />
-        <Flex gap={10}>
-            <ElLink underline="never" onClick={openAppPage} icon={View} style={{ gap: '3px' }}>
-                {t(msg => msg.base.allFunction)}
-            </ElLink>
-            <Flex align="center" gap={8} fontSize={30}>
-                <LangSelect />
-                <DarkSwitch />
-                <Option />
-                <Donation />
-                <MoreInfo />
+const Header = defineComponent<{}>(() => {
+    const { viewSlots } = useViewSlots()
+
+    return () => (
+        <Flex justify="space-between" padding='0 10px' color='text-primary'>
+            <Logo />
+            <Flex gap={10}>
+                <ElLink underline="never" onClick={openAppPage} icon={View} style={{ gap: '3px' }}>
+                    {t(msg => msg.base.allFunction)}
+                </ElLink>
+                <Flex align="center" gap={8} fontSize={30}>
+                    <LangSelect />
+                    <DarkSwitch />
+                    {viewSlots.value?.headerOption && h(viewSlots.value.headerOption)}
+                    <Donation />
+                    <MoreInfo />
+                </Flex>
             </Flex>
         </Flex>
-    </Flex>
-)
-
-Header.displayName = "PopupHeader"
+    )
+})
 
 export default Header

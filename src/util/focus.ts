@@ -1,0 +1,1 @@
+export const isAlive = ({ state }: tt4b.focus.Session) => state === 'running' || state === 'paused'
