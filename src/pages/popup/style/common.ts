@@ -4,7 +4,11 @@ export const injectCommonCss = () => injectGlobal`
     body {
         margin: 0;
         background-color: var(--el-bg-color);
-        font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Arial,sans-serif;
+        font-family: 
+            "Helvetica Neue", Helvetica, Arial, 
+            "Segoe UI", "Roboto", 
+            "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", 
+            sans-serif;
     }
 
     html[data-theme='dark'] {
