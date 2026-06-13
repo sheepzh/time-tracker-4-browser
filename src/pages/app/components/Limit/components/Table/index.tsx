@@ -50,10 +50,10 @@ function sortByEffectiveDays(a: tt4b.limit.Item, b: tt4b.limit.Item) {
 }
 
 const _default = defineComponent((_, ctx) => {
-    const { data: weekStartName } = useRequest(async () => {
+    const { data: weeklyInfo } = useRequest(async () => {
         const offset = await getWeekStartDay()
-        const name = t(msg => msg.calendar.weekDays)?.split('|')?.[offset]
-        return name || 'NaN'
+        const weekStart = t(msg => msg.calendar.weekDays)?.split('|')?.[offset] ?? 'NaN'
+        return t(msg => msg.limit.item.weekStartInfo, { weekStart })
     })
 
     const { list, changeEnabled, changeDelay, changeLocked } = useLimitData()
@@ -147,7 +147,7 @@ const _default = defineComponent((_, ctx) => {
                     header: () => (
                         <ColumnHeader
                             label={t(msg => msg.calendar.range.thisWeek)}
-                            tooltipContent={t(msg => msg.limit.item.weekStartInfo, { weekStart: weekStartName.value })}
+                            tooltipContent={weeklyInfo.value}
                         />
                     ),
                     default: ({ row: {
