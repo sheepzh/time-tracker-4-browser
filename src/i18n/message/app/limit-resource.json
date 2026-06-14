@@ -15,7 +15,8 @@
             "effectiveDay": "生效日期",
             "allowDelay": "可延时",
             "or": "或者",
-            "notEffective": "未生效"
+            "notEffective": "未生效",
+            "unlimited": "无限制"
         },
         "step": {
             "base": "基本信息",
@@ -577,7 +578,7 @@
         "reminder": "Zaman sınırı dolmasına {min} dakikadan az kaldı!"
     },
     "pl": {
-        "onlyEffective": "Tylko efektywne",
+        "onlyEffective": "Tylko skuteczne",
         "wildcardTip": "Możesz używać symbolu \"*\", aby dopasowywać subdomeny lub podstrony, a także użyć znaku „+” jako prefiksu, aby wykluczyć podstrony!",
         "emptyTips": "Kliknij tutaj, aby utworzyć zasadę!",
         "item": {
@@ -592,7 +593,8 @@
             "effectiveDay": "Aktywna w",
             "allowDelay": "Możliwe do przedłużenia",
             "or": "lub",
-            "notEffective": "Nieskuteczny"
+            "notEffective": "Nieskuteczny",
+            "unlimited": "Nielimitowany"
         },
         "step": {
             "base": "Podstawowe informacje",
