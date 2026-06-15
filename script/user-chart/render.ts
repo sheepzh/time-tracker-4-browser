@@ -9,7 +9,8 @@ import {
 } from "echarts"
 import { writeFileSync } from "fs"
 import { exit } from 'process'
-import { filenameOf, getExistGist, validateTokenFromEnv, type Browser, type UserCount } from "./common"
+import { validateTokenFromEnv } from '../util/gist'
+import { filenameOf, getExistGist, type Browser, type UserCount } from "./common"
 
 type EcOption = ComposeOption<
     | LineSeriesOption

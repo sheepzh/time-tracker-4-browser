@@ -90,8 +90,6 @@ Most of the software's localization relies on machine translation. You can also 
 
 It's simple and much helpful!
 
-## Thanks
+## ❤️ Thanks To
 
-<a href="https://www.producthunt.com/products/timer-relaunch?utm_source=badge-follow&utm_medium=badge&utm_souce=badge-timer&#0045;relaunch" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/follow.svg?product_id=497735&theme=light" alt="Timer&#0032;&#0040;relaunch&#0041; - Timer&#0032;is&#0032;one&#0032;browser&#0032;extension&#0032;to&#0032;stat&#0032;site&#0032;visits&#0032;and&#0032;time&#0046; | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
-
-<a href="not_to_mirror_this_repo" alt="8964"></a>
+![Thanks To](https://gist.githubusercontent.com/sheepzh/cb33b8b1a1e21b533bf650483b125af5/raw/contributors.svg)
