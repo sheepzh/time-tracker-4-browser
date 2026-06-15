@@ -1,5 +1,4 @@
 import { findTarget, type Gist } from "@api/gist"
-import { exitWith } from '../util/process'
 
 export type Browser =
     | 'chrome'
@@ -7,17 +6,6 @@ export type Browser =
     | 'edge'
 
 export type UserCount = Record<string, number>
-
-/**
- * Validate the token from environment variables
- */
-export function validateTokenFromEnv(): string {
-    const token = process.env.TIMER_USER_COUNT_GIST_TOKEN
-    if (!token) {
-        exitWith("Can't find token from env variable [TIMER_USER_COUNT_GIST_TOKEN]")
-    }
-    return token!
-}
 
 /**
  * Calculate the gist description of target browser

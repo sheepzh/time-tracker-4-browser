@@ -1,0 +1,29 @@
+name: Update Contributors
+
+on:
+    schedule:
+        - cron: "0 23 * * 2"
+    workflow_dispatch:
+
+jobs:
+    update-contributors:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v6
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v6
+              with:
+                  node-version: "24"
+                  cache: "npm"
+
+            - name: Install Dependencies
+              run: npm install
+
+            - name: Run Script
+              run: npx ts-node -P tsconfig.node.json ./script/contributor.ts
+              env:
+                  TIMER_USER_COUNT_GIST_TOKEN: ${{ secrets.GIST_PAT }}
+                  TIMER_CROWDIN_AUTH: ${{ secrets.TIMER_CROWDIN_AUTH }}

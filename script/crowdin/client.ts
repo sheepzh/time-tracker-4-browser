@@ -8,11 +8,51 @@ import Crowdin, {
     type StringTranslationsModel,
     type UploadStorageModel,
 } from '@crowdin/crowdin-api-client'
+import { createArrayGuard, createObjectGuard, isInt, isString } from 'typescript-guard'
+import { exitWith } from '../util/process'
 import { ALL_CROWDIN_LANGUAGES, type CrowdinLanguage, type Dir, type ItemSet } from './common'
 
 const PROJECT_ID = 516822
 
+export type TopMember = {
+    username: string
+    avatarUrl: string
+    translated: number
+    approved: number
+    languages: string[]
+}
+
 const MAIN_BRANCH_NAME = 'main'
+
+type TopMemberRow = {
+    user: {
+        username: string
+        avatarUrl: string
+    }
+    languages: { name: string }[]
+    translated: number
+    approved: number
+}
+
+const isTopMemberRow = createObjectGuard<TopMemberRow>({
+    user: createObjectGuard({
+        username: isString,
+        avatarUrl: isString,
+    }),
+    languages: createArrayGuard(createObjectGuard({
+        name: isString,
+    })),
+    translated: isInt,
+    approved: isInt,
+})
+
+type TopMemberData = {
+    data: TopMemberRow[]
+}
+
+const isTopMemberData = createObjectGuard<TopMemberData>({
+    data: createArrayGuard(isTopMemberRow)
+})
 
 /**
  * The iterator of response
@@ -273,24 +313,66 @@ export class CrowdinClient {
             skipUntranslatedStrings: true,
         })
         const buildId = buildRes.data.id
+        await this.#retryWith(async () => {
+            const statusRes = await this.crowdin.translationsApi.checkBuildStatus(PROJECT_ID, buildId)
+            const { status, progress } = statusRes.data
+            console.log(`Build status: ${status}, progress: ${progress}%`)
+            if (status === 'finished') return true
+            if (status === 'canceled' || status === 'failed') {
+                throw new Error(`Build ${status}: buildId=${buildId}`)
+            }
+        })
+
+        const res = await this.crowdin.translationsApi.downloadTranslations(PROJECT_ID, buildId)
+        return res.data.url
+    }
+
+    async fetchTopMembers(): Promise<TopMember[]> {
+        const reportUrl = await this.#buildMemberReport()
+        const result = await fetch(reportUrl)
+        const json = await result.json()
+        if (!isTopMemberData(json)) {
+            exitWith(`Unexpected report data format: ${JSON.stringify(json)}`)
+        }
+        return json.data.map(r => ({
+            username: r.user.username,
+            avatarUrl: r.user.avatarUrl,
+            translated: r.translated,
+            approved: r.approved,
+            languages: r.languages.map(l => l.name),
+        }))
+    }
+
+    async #buildMemberReport(): Promise<string> {
+        const { data: { identifier: reportId } } = await this.crowdin.reportsApi.generateReport(PROJECT_ID, {
+            name: 'top-members',
+            schema: { unit: 'words', format: 'json' },
+        })
+
+        await this.#retryWith(async () => {
+            const status = await this.crowdin.reportsApi.checkReportStatus(PROJECT_ID, reportId)
+            const { status: s, progress } = status.data
+            console.log(`Crowdin report: ${s} ${progress}%`)
+            if (s === 'finished') return true
+            if (s === 'canceled' || s === 'failed') throw new Error(`Report ${s}`)
+        })
+
+        const report = await this.crowdin.reportsApi.downloadReport(PROJECT_ID, reportId)
+        return report.data.url
+    }
+
+    async #retryWith(predicate: () => Promise<boolean | void>) {
         const maxRetries = 120
         let retryCount = 0
         while (true) {
             if (retryCount >= maxRetries) {
-                throw new Error(`Build timed out after ${maxRetries} retries: buildId=${buildId}`)
+                throw new Error(`Build timed out after ${maxRetries} retries`)
             }
-            const statusRes = await this.crowdin.translationsApi.checkBuildStatus(PROJECT_ID, buildId)
-            const { status, progress } = statusRes.data
-            console.log(`Build status: ${status}, progress: ${progress}%`)
-            if (status === 'finished') break
-            if (status === 'canceled' || status === 'failed') {
-                throw new Error(`Build ${status}: buildId=${buildId}`)
-            }
+            const pass = await predicate()
+            if (pass) break
             retryCount++
-            await new Promise(resolve => setTimeout(resolve, 1000))
+            await new Promise(r => setTimeout(r, 1000))
         }
-        const res = await this.crowdin.translationsApi.downloadTranslations(PROJECT_ID, buildId)
-        return res.data.url
     }
 }
 

@@ -8,8 +8,9 @@ import {
 } from "@api/gist"
 import { CHROME_ID } from "@util/constant/meta"
 import fs from "fs"
+import { validateTokenFromEnv } from '../util/gist'
 import { exitWith } from "../util/process"
-import { type Browser, descriptionOf, filenameOf, getExistGist, type UserCount, validateTokenFromEnv } from "./common"
+import { type Browser, descriptionOf, filenameOf, getExistGist, type UserCount } from "./common"
 
 type AutoMode = {
     mode: 'auto'
