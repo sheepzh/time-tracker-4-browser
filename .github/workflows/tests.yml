@@ -9,6 +9,7 @@ jobs:
               uses: actions/setup-node@v6
               with:
                   node-version: 24
+                  cache: ""
             - run: npm install
             - run: npm run test-c
             - name: Tests ✅

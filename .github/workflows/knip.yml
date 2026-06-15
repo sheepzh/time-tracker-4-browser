@@ -13,6 +13,7 @@ jobs:
               uses: actions/setup-node@v6
               with:
                   node-version: "24"
+                  cache: ""
             - name: Install dependencies
               run: npm install
             - name: Run Knip
