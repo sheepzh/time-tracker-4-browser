@@ -5,7 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { IS_ANDROID, IS_CHROME, IS_SAFARI } from "@util/constant/environment"
+import { getTab } from '@api/chrome/tab'
+import { IS_ANDROID, IS_CHROME, IS_FIREFOX, IS_SAFARI } from "@util/constant/environment"
 import { extractHostname, isBrowserUrl, isHomepage } from "@util/pattern"
 import { extractSiteName } from "@util/site"
 import badgeManager from "./badge-manager"
@@ -49,6 +50,8 @@ async function processTabInfo(tab: ChromeTab): Promise<void> {
  */
 const collectIconAndAlias = async (tab: ChromeTab) => {
     if (IS_SAFARI || IS_ANDROID) return
+    // Tab from sender does not contain favIconUrl for FF
+    if (IS_FIREFOX) tab = (tab.id ? await getTab(tab.id) : undefined) ?? tab
     processTabInfo(tab)
 }
 
