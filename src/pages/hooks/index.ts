@@ -1,4 +1,5 @@
 export * from "./useCached"
+export * from "./useCopy"
 export * from "./useCount"
 export * from "./useDebounce"
 export * from "./useDocumentVisibility"

@@ -1,25 +1,14 @@
 import { t } from '@app/locale'
-import { CopyDocument } from '@element-plus/icons-vue'
-import { useRequest, useState } from '@hooks'
+import { useCopy, useRequest, useState } from '@hooks'
 import Flex from '@pages/components/Flex'
 import Img from '@pages/components/Img'
 import { generateQrDataUrl } from '@pages/util/qrcode'
-import { ElButton, ElForm, ElFormItem, ElInput, ElMessage, ElText } from 'element-plus'
+import { ElButton, ElForm, ElFormItem, ElInput, ElText } from 'element-plus'
 import { computed, defineComponent, toRef, watch } from 'vue'
 
 function extractSecret(otpauth: string): string {
     const raw = new URL(otpauth).searchParams.get('secret')
     return raw ?? 'Secret is unknown'
-}
-
-async function copy(text: string) {
-    try {
-        await navigator.clipboard.writeText(text)
-        ElMessage.success('Copied')
-    } catch (e) {
-        const errMsg = e instanceof Error ? e.message : e ?? 'Unknown error'
-        ElMessage.error(`Copy failed: ${errMsg}`)
-    }
 }
 
 export type FormInstance = {
@@ -28,6 +17,7 @@ export type FormInstance = {
 
 const _default = defineComponent<{ otpauth: string }>((props, ctx) => {
     const otpauth = toRef(props, 'otpauth')
+    const { copy: copyAuth, icon: authIcon } = useCopy(otpauth)
 
     const [code, setCode] = useState('')
     watch(otpauth, () => setCode(''), { immediate: true })
@@ -41,6 +31,7 @@ const _default = defineComponent<{ otpauth: string }>((props, ctx) => {
     } satisfies FormInstance)
 
     const secret = computed(() => extractSecret(otpauth.value))
+    const { copy: copySecret, icon: secretIcon } = useCopy(secret)
 
     return () => (
         <ElForm labelPosition="top">
@@ -57,11 +48,11 @@ const _default = defineComponent<{ otpauth: string }>((props, ctx) => {
                     size='small'
                     modelValue={secret.value}
                     readonly v-slots={{
-                        append: () => <ElButton size="small" icon={CopyDocument} onClick={() => copy(secret.value)} />,
+                        append: () => <ElButton size="small" icon={secretIcon.value} onClick={copySecret} />,
                     }}
                 />
                 <Flex marginTop={6}>
-                    <ElButton size="small" icon={CopyDocument} onClick={() => copy(otpauth.value)}>
+                    <ElButton size="small" icon={authIcon.value} onClick={copyAuth}>
                         {t(msg => msg.option.limit.level.twoFaCopyLink)}
                     </ElButton>
                 </Flex>

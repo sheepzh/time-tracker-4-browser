@@ -7,10 +7,8 @@ type Options = {
     reset: () => string | undefined
 }
 
-export const usePswEdit = (options: Options) => {
-    const { reset } = options || {}
-
-    const [psw, setPsw] = useState(reset?.())
+export const usePswEdit = ({ reset }: Options) => {
+    const [psw, setPsw] = useState(reset())
     const [confirmPsw, setConfirmPsw, resetConfirmPsw] = useState('')
 
     const messageBoxNs = useNamespace('message-box')

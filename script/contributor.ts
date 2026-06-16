@@ -70,11 +70,11 @@ async function getBase64Avatar(url: string): Promise<string> {
 type Contributor = {
     name: string
     avatarUrl: string
-    sub: string
+    sub?: string
 }
 
 function renderCard(x: number, y: number, contributor: Contributor): string {
-    const { avatarUrl, name, sub } = contributor
+    const { avatarUrl, name, sub = '' } = contributor
     const cx = x + CARD_W / 2
     const ay = y + AVATAR_R + 4
 
@@ -188,7 +188,6 @@ async function fetchCoders(token: string): Promise<Contributor[]> {
     return users.map(g => ({
         name: g.login,
         avatarUrl: g.avatar_url,
-        sub: `${g.contributions} commits`
     }))
 }
 
