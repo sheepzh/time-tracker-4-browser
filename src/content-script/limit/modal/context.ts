@@ -12,17 +12,20 @@ type AppContext = {
     reason: ShallowRef<LimitReasonData | undefined>
     visitTime: ShallowRef<number>
     bridge: ModalBridge
-    url: string
+    url: Ref<string>
     delayDuration: Ref<number>
 }
 
 export const provideApp = (app: App<Element>, bridge: ModalBridge, url: string) => {
     const reason = ref<LimitReasonData | undefined>()
     const visitTime = ref(0)
+    const currentUrl = ref(url)
     const delayDuration = ref(5)
     getOption().then(({ limitDelayDuration }) => delayDuration.value = limitDelayDuration).catch(() => { })
 
-    bridge.register('reason', data => { reason.value = data })
+    bridge
+        .register('reason', data => { reason.value = data })
+        .register('url', data => { currentUrl.value = data })
 
     const updateVisitTime = async () => {
         bridge.request('visitTime', undefined)
@@ -40,7 +43,7 @@ export const provideApp = (app: App<Element>, bridge: ModalBridge, url: string) 
         _unmount()
     }
 
-    app.provide<AppContext>(GLOBAL_KEY, { reason, visitTime, bridge, url, delayDuration })
+    app.provide<AppContext>(GLOBAL_KEY, { reason, visitTime, bridge, url: currentUrl, delayDuration })
 }
 
 export const useApp = () => inject(GLOBAL_KEY) as AppContext

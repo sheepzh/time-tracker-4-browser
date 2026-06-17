@@ -1,6 +1,6 @@
 import { useLaunchContext } from '../common/base'
 import { MOCK_URL, sleep } from '../common/util'
-import { createLimitRule, fillTimeLimit, isLimitModalVisible, waitForLimitFrame } from "./common"
+import { createLimitRule, fillTimeLimit, isLimitModalVisible, queryLimitModalVisible, waitForLimitFrame, waitForLimitModal, waitForLimitModalHidden } from './common'
 
 describe('Daily limit', () => {
     const context = useLaunchContext()
@@ -84,7 +84,44 @@ describe('Daily limit', () => {
         expect(modalExist).toBeFalsy()
     }, 60000)
 
-    test("Daily visit limit", async () => {
+    test('blocks expired path after spa navigation', async () => {
+        const limitTime = 1
+        const blockedUrl = `${MOCK_URL}/home`
+        const limitPage = await context.openAppPage('/behavior/limit')
+        const demoRule: tt4b.limit.Rule = {
+            id: 1, name: 'TEST SPA DAILY LIMIT',
+            cond: [blockedUrl],
+            time: limitTime,
+            enabled: true, allowDelay: false, locked: false,
+        }
+
+        await createLimitRule(demoRule, limitPage)
+
+        // Exhaust limit via full navigation — background time tracking uses tab.url, not pushState
+        const blockedPage = await context.newPageAndWaitCsInjected(blockedUrl)
+        await blockedPage.bringToFront()
+        await waitForLimitModal(blockedPage)
+        await blockedPage.close()
+
+        const testPage = await context.newPageAndWaitCsInjected(MOCK_URL)
+        expect(await queryLimitModalVisible(testPage)).toBeFalsy()
+
+        await testPage.bringToFront()
+        await testPage.evaluate(url => history.pushState({}, '', url), blockedUrl)
+        await waitForLimitModal(testPage)
+        const limitFrame = await waitForLimitFrame(testPage)
+        await limitFrame.waitForFunction(() => {
+            const td = document.querySelector('#app .el-descriptions:not([style*="display: none"]) tr td:nth-child(2)')
+            return td?.textContent && td.textContent !== '-'
+        }, { timeout: 5000 })
+        expect(await queryLimitModalVisible(testPage)).toBeTruthy()
+
+        await testPage.evaluate(url => history.pushState({}, '', url), MOCK_URL)
+        await waitForLimitModalHidden(testPage)
+        expect(await queryLimitModalVisible(testPage)).toBeFalsy()
+    }, 60000)
+
+    test('Daily visit limit', async () => {
         const limitPage = await context.openAppPage('/behavior/limit')
         const demoRule: tt4b.limit.Rule = {
             id: 1, name: 'TEST DAILY VISIT LIMIT',

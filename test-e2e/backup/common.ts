@@ -12,26 +12,60 @@ const typeNames: Record<tt4b.backup.Type, string> = {
 
 const OPTION_TAB_ID = 'pane-backup'
 
-async function waitClientReady(page: Page): Promise<ElementHandle<Element> | null> {
+async function waitForNoVisibleOverlay(page: Page): Promise<void> {
     await page.waitForFunction(() => {
-        const emptyBody = document.querySelector('.el-dialog .el-table__empty-block')
-        const rows = document.querySelectorAll('.el-dialog .el-table .el-table__row')
-        return !!emptyBody || !!rows.length
-    }, { timeout: 1000 })
+        return ![...document.querySelectorAll('.el-overlay')].some(o => {
+            return window.getComputedStyle(o).display !== 'none'
+        })
+    }, { timeout: 5000 })
+}
 
-    const nextBtn = await page.waitForSelector(
-        '.el-overlay:not([style*="display: none"]) .el-dialog .el-button.el-button--primary:not([disabled])',
-        { timeout: 1000 },
-    )
+async function queryTopVisibleDialog(page: Page): Promise<ElementHandle<Element> | null> {
+    const overlays = await page.$$('.el-overlay')
+    for (const overlay of overlays.reverse()) {
+        const visible = await overlay.evaluate(el => window.getComputedStyle(el).display !== 'none')
+        if (!visible) continue
+        const dialog = await overlay.$('.el-dialog')
+        if (dialog) return dialog
+    }
+    return null
+}
+
+async function waitClientReady(page: Page): Promise<ElementHandle<Element>> {
+    await page.waitForFunction(() => {
+        const overlays = [...document.querySelectorAll('.el-overlay')].filter(o => {
+            const style = window.getComputedStyle(o)
+            return style.display !== 'none'
+        })
+        const dialog = overlays.at(-1)?.querySelector('.el-dialog')
+        if (!dialog) return false
+        const emptyBody = dialog.querySelector('.el-table__empty-block')
+        const rows = dialog.querySelectorAll('.el-table .el-table__row')
+        const tableReady = !!emptyBody || !!rows.length
+        const nextBtn = dialog.querySelector('.el-button.el-button--primary:not([disabled])')
+        return tableReady && !!nextBtn
+    }, { timeout: 5000 })
+
+    const dialog = await queryTopVisibleDialog(page)
+    const nextBtn = await dialog?.$('.el-button.el-button--primary:not([disabled])')
+    if (!nextBtn) throw new Error('Next button not found')
     return nextBtn
 }
 
 async function findCurrentClientRow(page: Page): Promise<ElementHandle<Element> | null> {
-    const table = await page.waitForSelector(
-        '.el-overlay:not([style*="display: none"]) .el-dialog .el-table',
-        { timeout: 2000 },
-    )
-    const rows = await table!.$$('.el-table__row')
+    await page.waitForFunction(() => {
+        const overlays = [...document.querySelectorAll('.el-overlay')].filter(o => {
+            const style = window.getComputedStyle(o)
+            return style.display !== 'none'
+        })
+        return !!overlays.at(-1)?.querySelector('.el-dialog .el-table')
+    }, { timeout: 5000 })
+
+    const dialog = await queryTopVisibleDialog(page)
+    const tableEl = await dialog?.$('.el-table')
+    if (!tableEl) return null
+
+    const rows = await tableEl.$$('.el-table__row')
 
     for (const row of rows) {
         const currVisible = await row.evaluate(el => {
@@ -96,8 +130,7 @@ export class BackupOptionWrapper {
 
     async assertTestInvalid() {
         const page = await this.clickButton('test')
-        // The same as mock server
-        await waitForMessage(page, 'Unauthorized')
+        await waitForMessage(page, '[401] Invalid token or no permission to access gist')
     }
 
     async assertTestValid() {
@@ -175,7 +208,9 @@ export class BackupOptionWrapper {
     }
 
     async clearData() {
-        const page = await this.clickButton('clear')
+        const page = await this.page()
+        await waitForNoVisibleOverlay(page)
+        await this.clickButton('clear')
 
         const nextBtn = await waitClientReady(page)
 

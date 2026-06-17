@@ -54,15 +54,14 @@ async function main() {
 
     // Execute only one time for each dom
     if (getOrSetFlag()) return
-    if (!host) return
-
-    const isWhitelist = await trySendMsg2Runtime('whitelist.contain', { host, url })
-    if (isWhitelist) return
+    if (!host || !url) return
 
     void initLocale()
-    void printInfo(host)
+    const isWhitelist = await trySendMsg2Runtime('whitelist.contain', { host, url })
     await processLimit(url, dispatcher)
+    if (isWhitelist) return
 
+    void printInfo(host)
     processTimeline()
 
     // Increase visit count at the end

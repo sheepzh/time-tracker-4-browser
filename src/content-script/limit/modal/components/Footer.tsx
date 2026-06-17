@@ -15,8 +15,8 @@ import { useApp, useRule } from '../context'
 const _default = defineComponent(() => {
     const { reason, visitTime: currVisitTime, bridge, url, delayDuration } = useApp()
 
-    const analysisUrl = getAppPageUrl(APP_ANALYSIS_ROUTE, { url } satisfies AppAnalysisQuery)
-    const ruleUrl = getAppPageUrl(APP_LIMIT_ROUTE, { url: encodeURI(url) } satisfies AppLimitQuery)
+    const analysisUrl = computed(() => getAppPageUrl(APP_ANALYSIS_ROUTE, { url: url.value } satisfies AppAnalysisQuery))
+    const ruleUrl = computed(() => getAppPageUrl(APP_LIMIT_ROUTE, { url: encodeURI(url.value) } satisfies AppLimitQuery))
 
     const rule = useRule()
     const showDelay = computed(() => {
@@ -56,7 +56,7 @@ const _default = defineComponent(() => {
 
     return () => (
         <Flex gap={10} marginBottom={60} justify='center'>
-            <a target='_blank' href={analysisUrl}>
+            <a target='_blank' href={analysisUrl.value}>
                 <ElButton round icon={Trend} type="success">
                     {t(msg => msg.menu.siteAnalysis)}
                 </ElButton>
@@ -68,7 +68,7 @@ const _default = defineComponent(() => {
             >
                 {t(msg => msg.modal.delay, { n: delayDuration.value })}
             </ElButton>
-            <a target='_blank' href={ruleUrl}>
+            <a target='_blank' href={ruleUrl.value}>
                 <ElButton round icon={Timer}>
                     {t(msg => msg.modal.ruleDetail)}
                 </ElButton>

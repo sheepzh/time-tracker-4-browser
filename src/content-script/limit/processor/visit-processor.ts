@@ -15,8 +15,8 @@ class VisitProcessor implements Processor {
         })
     }
 
-    onLimitChanged(): void {
-        this.initRules()
+    onLimitChanged(): Promise<void> {
+        return this.initRules()
     }
 
     private hasLimited(rule: tt4b.limit.Rule): boolean {
@@ -35,7 +35,7 @@ class VisitProcessor implements Processor {
             this.context.modal.addReason({
                 id,
                 cond,
-                type: "VISIT",
+                type: 'VISIT',
                 allowDelay,
                 delayCount: this.delayCount,
                 getVisitTime: () => this.focusTime,
@@ -44,19 +44,30 @@ class VisitProcessor implements Processor {
     }
 
     private async initRules() {
-        this.rules = await trySendMsg2Runtime("limit.list", { effective: true, url: this.context.url }) ?? []
-        this.context.modal.removeReasonsByType("VISIT")
+        const url = this.context.url
+        this.clear()
+        const rules = await trySendMsg2Runtime('limit.list', { effective: true, url }) ?? []
+        if (url !== this.context.url) return
+        this.rules = rules
     }
 
     async init(): Promise<void> {
         this.tracker.init()
-        this.initRules()
         this.context.modal.addDelayHandler(() => this.processDelay())
+    }
+
+    clear(urlChanged?: boolean): void {
+        this.rules = []
+        if (urlChanged) {
+            this.focusTime = 0
+            this.delayCount = 0
+        }
+        this.context.modal.removeReasonsByType('VISIT')
     }
 
     private processDelay() {
         this.delayCount++
-        this.context.modal.removeReasonsByType("VISIT")
+        this.context.modal.removeReasonsByType('VISIT')
     }
 }
 

@@ -10,6 +10,7 @@ type BridgeRegistry =
     & MakeRegistry<'reason', LimitReasonData | undefined, void>
     & MakeRegistry<'visitTime', void, number>
     & MakeRegistry<'delay', void, void>
+    & MakeRegistry<'url', string, void>
 
 export type BridgeCode = keyof BridgeRegistry
 export type BridgeRequest<C extends BridgeCode> = BridgeRegistry[C]['req']

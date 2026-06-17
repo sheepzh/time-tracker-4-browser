@@ -2,12 +2,39 @@ import type { ElementHandle, Frame, Page } from "puppeteer"
 import { fillCondEditor } from "../common/cond-editor"
 import { sleep } from "../common/util"
 
+export async function waitForLimitModalHidden(page: Page, timeout = 15000): Promise<void> {
+    await page.waitForFunction(
+        () => {
+            const overlay = document.querySelector('extension-time-tracker-overlay')
+            if (!overlay) return true
+            const iframe = overlay.shadowRoot?.firstElementChild
+            return !(iframe instanceof HTMLIFrameElement)
+                || iframe.style.visibility === 'hidden'
+                || iframe.style.display === 'none'
+        },
+        { timeout },
+    )
+}
+
+export async function waitForLimitModal(page: Page, timeout = 15000): Promise<void> {
+    await page.waitForFunction(
+        () => {
+            const overlay = document.querySelector('extension-time-tracker-overlay')
+            if (!overlay) return false
+            const iframe = overlay.shadowRoot?.firstElementChild
+            return iframe instanceof HTMLIFrameElement
+                && iframe.style.visibility !== 'hidden'
+                && iframe.style.display !== 'none'
+        },
+        { timeout },
+    )
+}
+
 export async function waitForLimitFrame(page: Page, timeout = 5000): Promise<Frame> {
     return page.waitForFrame(f => f.url().includes('limit.html'), { timeout })
 }
 
-export async function isLimitModalVisible(page: Page): Promise<boolean> {
-    await page.waitForSelector('extension-time-tracker-overlay', { timeout: 3000 })
+export async function queryLimitModalVisible(page: Page): Promise<boolean> {
     return await page.evaluate(async () => {
         const overlay = document.querySelector('extension-time-tracker-overlay')
         if (!overlay) return false
@@ -16,6 +43,11 @@ export async function isLimitModalVisible(page: Page): Promise<boolean> {
             && iframe.style.visibility !== 'hidden'
             && iframe.style.display !== 'none'
     })
+}
+
+export async function isLimitModalVisible(page: Page): Promise<boolean> {
+    await page.waitForSelector('extension-time-tracker-overlay', { timeout: 3000 })
+    return await queryLimitModalVisible(page)
 }
 
 export async function createLimitRule(rule: tt4b.limit.Rule, page: Page) {

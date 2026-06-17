@@ -13,8 +13,8 @@ const cvtItem2AddReason = (item: tt4b.limit.Item, delayDuration: number): LimitR
 class MessageAdaptor implements Processor {
     constructor(private readonly context: ModalContext, private readonly delayDuration: number) { }
 
-    onLimitChanged(): void {
-        this.initRules()
+    onLimitChanged(): Promise<void> {
+        return this.initRules()
     }
 
     onLimitTimeMeet(items: tt4b.limit.Item[]): void {
@@ -25,14 +25,18 @@ class MessageAdaptor implements Processor {
     }
 
     async init(): Promise<void> {
-        this.initRules()
-        this.context.modal.addDelayHandler(() => this.initRules())
+        this.context.modal.addDelayHandler(() => void this.initRules())
+    }
+
+    clear(_urlChanged?: boolean): void {
+        this.context.modal.removeReasonsByType('DAILY', 'WEEKLY')
     }
 
     async initRules(): Promise<void> {
-        this.context.modal.removeReasonsByType('DAILY', 'WEEKLY')
-        const limitedRules = await trySendMsg2Runtime('limit.list', { limited: true, effective: true, url: this.context.url })
-        if (!limitedRules?.length) return
+        const url = this.context.url
+        this.clear()
+        const limitedRules = await trySendMsg2Runtime('limit.list', { limited: true, effective: true, url })
+        if (url !== this.context.url || !limitedRules?.length) return
 
         const reasons = limitedRules.flatMap(item => cvtItem2AddReason(item, this.delayDuration))
         this.context.modal.addReason(...reasons)

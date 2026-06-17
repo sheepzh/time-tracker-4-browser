@@ -51,7 +51,7 @@ const TimeDescriptions = defineComponent<DescriptionProps>(props => {
 
     return () => (
         <ElDescriptions border column={1} size={size.value} style={style.value}>
-            {renderBaseItems(rule.value, url)}
+            {renderBaseItems(rule.value, url.value)}
             <ElDescriptionsItem label={props.ruleLabel} labelAlign="right">
                 <Flex gap={5} width={200}>
                     <ElTag v-show={!!props.time}>{formatPeriodCommon((props.time ?? 0) * MILL_PER_SECOND)}</ElTag>
@@ -113,7 +113,7 @@ const _default = defineComponent(() => {
                 dataLabel={t(msg => msg.calendar.range.thisWeek)}
             />
             <ElDescriptions v-show={type.value === 'VISIT'} border column={1} style={style.value} size={size.value}>
-                {renderBaseItems(rule.value, url)}
+                {renderBaseItems(rule.value, url.value)}
                 <ElDescriptionsItem label={t(msg => msg.limit.item.visitTime)} labelAlign="right">
                     {formatPeriodCommon((rule.value?.visitTime ?? 0) * MILL_PER_SECOND) || '-'}
                 </ElDescriptionsItem>
@@ -127,7 +127,7 @@ const _default = defineComponent(() => {
                 </ElDescriptionsItem>
             </ElDescriptions>
             <ElDescriptions v-show={type.value === 'PERIOD'} border column={1} style={style.value} size={size.value}>
-                {renderBaseItems(rule.value, url)}
+                {renderBaseItems(rule.value, url.value)}
                 <ElDescriptionsItem label={t(msg => msg.shared.limit.period)} labelAlign="right">
                     {rule.value?.periods?.length
                         ? <div>

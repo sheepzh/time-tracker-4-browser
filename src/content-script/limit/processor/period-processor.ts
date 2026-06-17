@@ -10,7 +10,7 @@ function processRule(rule: tt4b.limit.Rule, nowSeconds: number, context: ModalCo
         const [s, e] = p
         const startSeconds = s * 60
         const endSeconds = (e + 1) * 60
-        const reason: LimitReason = { id, cond, type: "PERIOD" }
+        const reason: LimitReason = { id, cond, type: 'PERIOD' }
         const timers: ReturnType<typeof setTimeout>[] = []
         if (nowSeconds < startSeconds) {
             timers.push(setTimeout(() => context.modal.addReason(reason), (startSeconds - nowSeconds) * MILL_PER_SECOND))
@@ -29,15 +29,23 @@ class PeriodProcessor implements Processor {
     constructor(private readonly context: ModalContext) { }
 
     async onLimitChanged(): Promise<void> {
-        await this.init()
+        await this.initRules()
     }
 
-    async init(): Promise<void> {
-        // Clear first
-        this.timers.forEach(clearTimeout)
-        this.context.modal.removeReasonsByType("PERIOD")
+    init(): void {
+    }
 
-        const rules = await trySendMsg2Runtime('limit.list', { effective: true, url: this.context.url }) ?? []
+    clear(_urlChanged?: boolean): void {
+        this.timers.forEach(clearTimeout)
+        this.timers = []
+        this.context.modal.removeReasonsByType('PERIOD')
+    }
+
+    private async initRules(): Promise<void> {
+        const url = this.context.url
+        this.clear()
+        const rules = await trySendMsg2Runtime('limit.list', { effective: true, url }) ?? []
+        if (url !== this.context.url) return
         const nowSeconds = date2Idx(new Date())
         this.timers = rules.flatMap(r => processRule(r, nowSeconds, this.context))
     }
