@@ -10,6 +10,7 @@ export type LimitReason =
 export interface MaskModal {
     readonly reasons: LimitReason[]
 
+    setUrl(url: string): void
     addReason(...reasons: LimitReason[]): void
     removeReason(...reasons: LimitReason[]): void
     removeReasonsByType(...types: tt4b.limit.ReasonType[]): void
@@ -23,5 +24,6 @@ export type ModalContext = {
 
 export interface Processor {
     init(): Awaitable<void>
-    onLimitChanged(): void
+    onLimitChanged(): Awaitable<void>
+    clear(urlChanged?: boolean): void
 }

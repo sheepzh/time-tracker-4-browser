@@ -4,7 +4,8 @@ import { getWeekDay, MILL_PER_MINUTE, MILL_PER_SECOND } from "./time"
 const GLOBSTAR_TOKEN = `__GLOBSTAR${Math.random().toString(36).slice(2, 6)}__`
 
 const matchUrl = (cond: string, url: string): boolean => {
-    const pattern = cond
+    const normalizedCond = cond.length > 1 ? cond.replace(/\/$/, '') : cond
+    const pattern = normalizedCond
         .replace(/\*\*/g, GLOBSTAR_TOKEN)
         .split('*')
         .join('.*')

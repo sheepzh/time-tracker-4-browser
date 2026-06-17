@@ -24,6 +24,17 @@ describe('util/limit', () => {
         expect(matches(cond, 'http://www.bilibili.com/cheese/list')).toBe(false)
         expect(matches(cond, 'http://t.bilibili.com/')).toBe(true)
         expect(matches(cond, 'https://www.bilibili.com/video/BV3527/')).toBe(true)
+
+        // Trailing slash checks
+        expect(matches(['example.com/'], 'https://example.com')).toBe(true)
+        expect(matches(['example.com'], 'https://example.com/')).toBe(true)
+        expect(matches(['example.com/path/'], 'https://example.com/path')).toBe(true)
+        expect(matches(['example.com/path'], 'https://example.com/path/')).toBe(true)
+        expect(matches(['example.com/path/'], 'https://example.com/path/?foo=bar')).toBe(true)
+        expect(matches(['example.com/path'], 'https://example.com/path?foo=bar')).toBe(true)
+
+        // Do not collapse a lone root slash into an empty pattern
+        expect(matches(['/'], 'https://example.com/')).toBe(false)
     })
 
     test('matchCond', () => {

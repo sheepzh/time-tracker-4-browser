@@ -84,6 +84,12 @@ class ModalInstance implements MaskModal {
             .register('delay', () => this.delayHandlers.forEach(handler => handler()))
     }
 
+    setUrl(url: string): void {
+        if (url === this.url) return
+        this.url = url
+        this.iframe?.contentWindow && this.bridge.request('url', url).catch(() => { })
+    }
+
     addReason(...reasons2Add: LimitReason[]): void {
         reasons2Add = reasons2Add.filter(r => !this.reasons.some(reason => isSameReason(r, reason)))
         if (!reasons2Add.length) return
@@ -141,6 +147,9 @@ class ModalInstance implements MaskModal {
             const exist = this.rootElement ?? document.querySelector(TAG_NAME) as RootElement
             if (exist) {
                 this.rootElement = exist
+                if (!document.body.contains(exist)) {
+                    document.body.appendChild(exist)
+                }
                 return exist.shadowRoot
             }
             this.rootElement = createRootElement()
@@ -157,6 +166,8 @@ class ModalInstance implements MaskModal {
     private async show(reason: LimitReason) {
         if (!this.rootElement) {
             await this.init()
+        } else if (!document.body.contains(this.rootElement)) {
+            document.body.appendChild(this.rootElement)
         }
         await exitFullscreen()
         pauseAllVideo()
