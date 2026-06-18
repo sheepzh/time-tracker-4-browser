@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { changeSiteAlias } from '@api/sw/site'
+import { modifySite } from '@api/sw/site'
 import { listCateStats, listGroupStats, listSiteStats } from "@api/sw/stat"
 import ContentCard from '@app/components/common/ContentCard'
 import Editable from '@app/components/common/Editable'
@@ -16,8 +16,7 @@ import { useDocumentVisibility, useManualRequest, useRequest, useState } from '@
 import Flex from "@pages/components/Flex"
 import { sum } from "@util/array"
 import { isRtl } from "@util/document"
-import { siteEqual } from "@util/site"
-import { getAlias, isSite } from "@util/stat"
+import { getAlias } from "@util/stat"
 import { cvtDateRange2Str } from '@util/time'
 import { ElLink, ElTable, ElTableColumn, ElText, ElTooltip, type RenderRowData, type TableInstance } from "element-plus"
 import { createObjectGuard, createStringUnionGuard, isAny } from 'typescript-guard'
@@ -31,13 +30,6 @@ import HostColumn from "./columns/HostColumn"
 import OperationColumn from "./columns/OperationColumn"
 import TimeColumn from "./columns/TimeColumn"
 import VisitColumn from "./columns/VisitColumn"
-
-async function handleAliasChange(key: tt4b.site.SiteKey, newAlias: string | undefined, data: tt4b.stat.Row[]) {
-    newAlias = await changeSiteAlias(key, newAlias)
-    data.filter(isSite)
-        .filter(item => siteEqual(item.siteKey, key))
-        .forEach(item => item.alias = newAlias)
-}
 
 type ColumnVisible = Record<'index' | 'date' | 'site' | 'cate' | 'group', boolean>
 
@@ -112,6 +104,11 @@ const _default = defineComponent((_, ctx) => {
         () => filter.siteMerge,
     ], () => table.value?.doLayout?.())
 
+    const { refresh: changeAlias } = useManualRequest((row: tt4b.stat.SiteRow, newAlias: string | undefined) => {
+        const { siteKey: { type, host }, iconUrl } = row
+        return modifySite({ type, host, alias: newAlias, iconUrl })
+    }, { onSuccess: refresh })
+
     return () => (
         <ContentCard>
             <Flex gap={23} width="100%" height="100%" column>
@@ -146,7 +143,7 @@ const _default = defineComponent((_, ctx) => {
                                 v-slots={({ row }: { row: tt4b.stat.Row }) => (
                                     <Editable
                                         modelValue={getAlias(row)}
-                                        onChange={newAlias => 'siteKey' in row && handleAliasChange(row.siteKey, newAlias, data.value.list)}
+                                        onChange={newAlias => 'siteKey' in row && changeAlias(row, newAlias)}
                                     />
                                 )}
                             />

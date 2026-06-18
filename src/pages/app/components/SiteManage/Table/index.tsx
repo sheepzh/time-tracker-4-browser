@@ -4,12 +4,13 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { changeSiteRun, deleteSiteIcon } from '@api/sw/site'
+import { changeSiteRun, modifySite } from '@api/sw/site'
 import Category from '@app/components/common/Category'
 import HostAlert from '@app/components/common/HostAlert'
 import { t } from '@app/locale'
-import Flex from "@pages/components/Flex"
-import Img from '@pages/components/Img'
+import { useManualRequest } from '@hooks'
+import EditableImg from '@pages/components/EditableImg'
+import Flex from '@pages/components/Flex'
 import { ElSwitch, ElTable, ElTableColumn, type RenderRowData } from "element-plus"
 import { defineComponent } from "vue"
 import { useSiteManageTable } from '../useSiteManage'
@@ -17,19 +18,17 @@ import AliasColumn from "./column/AliasColumn"
 import OperationColumn from "./column/OperationColumn"
 import TypeColumn from "./column/TypeColumn"
 
+type RenderParam = RenderRowData<tt4b.site.SiteInfo>
+
 const _default = defineComponent<{}>(() => {
     const { setSelected, refresh, pagination } = useSiteManageTable()
 
-    const handleIconError = async (row: tt4b.site.SiteInfo) => {
-        await deleteSiteIcon(row)
-        row.iconUrl = undefined
-    }
+    const { refresh: changeIcon } = useManualRequest((row: tt4b.site.SiteInfo, iconUrl: string | undefined) => {
+        const { type, host, alias } = row
+        return modifySite({ type, host, alias, iconUrl })
+    }, { onSuccess: refresh })
 
-    const handleRunChange = async (val: boolean, row: tt4b.site.SiteInfo) => {
-        await changeSiteRun(row, val)
-        row.run = val
-        refresh()
-    }
+    const { refresh: changeRun } = useManualRequest(changeSiteRun, { onSuccess: refresh })
 
     return () => (
         <ElTable
@@ -43,7 +42,7 @@ const _default = defineComponent<{}>(() => {
                 label={t(msg => msg.item.host)}
                 minWidth={220}
                 align="center"
-                v-slots={({ row }: RenderRowData<tt4b.site.SiteInfo>) => (
+                v-slots={({ row }: RenderParam) => (
                     <div style={{ margin: 'auto', width: 'fit-content' }}>
                         <HostAlert value={row} />
                     </div>
@@ -54,22 +53,23 @@ const _default = defineComponent<{}>(() => {
                 label={t(msg => msg.siteManage.column.icon)}
                 minWidth={100}
                 align="center"
-                v-slots={({ row }: RenderRowData<tt4b.site.SiteInfo>) => {
-                    const { iconUrl } = row || {}
-                    if (!iconUrl) return ''
-                    return (
-                        <Flex align="center" justify="center">
-                            <Img size={12} src={iconUrl} onError={() => handleIconError(row)} />
-                        </Flex>
-                    )
-                }}
+                v-slots={({ row }: RenderParam) => row.type === 'normal' && (
+                    <Flex justify="center">
+                        <EditableImg
+                            size={12}
+                            src={row.iconUrl ?? ''}
+                            onError={() => changeIcon(row, undefined)}
+                            onSave={url => changeIcon(row, url)}
+                        />
+                    </Flex>
+                )}
             />
             <AliasColumn />
             <ElTableColumn
                 label={t(msg => msg.siteManage.column.cate)}
                 minWidth={140}
                 align="center"
-                v-slots={({ row }: RenderRowData<tt4b.site.SiteInfo>) => (
+                v-slots={({ row }: RenderParam) => (
                     <Category.Editable siteKey={row} modelValue={row?.cate} onChange={val => row.cate = val} />
                 )}
             />
@@ -78,11 +78,11 @@ const _default = defineComponent<{}>(() => {
                 width={100}
                 align="center"
             >
-                {({ row }: RenderRowData<tt4b.site.SiteInfo>) => row.type === 'normal' && (
+                {({ row }: RenderParam) => row.type === 'normal' && (
                     <ElSwitch
                         size="small"
                         modelValue={row.run}
-                        onChange={val => handleRunChange(!!val, row)}
+                        onChange={val => changeRun(row, !!val)}
                     />
                 )}
             </ElTableColumn>

@@ -1,23 +1,24 @@
 import { useState } from '@hooks'
-import { type CSSProperties, defineComponent, toRef } from 'vue'
+import { type CSSProperties, defineComponent, watch } from 'vue'
 
-type Props = Partial<Pick<HTMLImageElement, 'src' | 'alt' | 'title'>> & {
+export type ImgProps = Partial<Pick<HTMLImageElement, 'src' | 'alt' | 'title'>> & {
     style?: CSSProperties
     onError?: ArgCallback<Event>
     size?: number
 }
+export const ALL_IMG_PROPS: (keyof ImgProps)[] = ['src', 'alt', 'title', 'style', 'onError', 'size']
 
-const Img = defineComponent<Props>(props => {
-    const src = toRef(props, 'src')
+const Img = defineComponent<ImgProps>(props => {
     const [imgErr, setImgErr] = useState(false)
+    watch(() => props.src, () => setImgErr(false))
     const handleError = (event: Event) => {
         setImgErr(true)
         props?.onError?.(event)
     }
 
-    return () => !src.value || imgErr.value ? null : (
+    return () => !props.src || imgErr.value ? null : (
         <img
-            src={src.value}
+            src={props.src}
             alt={props.alt}
             title={props.title}
             onError={handleError}
@@ -26,6 +27,6 @@ const Img = defineComponent<Props>(props => {
             style={props.style}
         />
     )
-}, { props: ['src', 'alt', 'size', 'style', 'title', 'onError'] })
+}, { props: ALL_IMG_PROPS })
 
 export default Img

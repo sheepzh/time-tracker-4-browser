@@ -12,13 +12,7 @@ export function changeSitesCate(cateId: number | undefined, ...keys: tt4b.site.S
     return sendMsg2Runtime('site.changeCate', { keys, cateId })
 }
 
-export const deleteSiteIcon = (key: tt4b.site.SiteKey) => sendMsg2Runtime('site.deleteIcon', key)
-
-export async function changeSiteAlias(key: tt4b.site.SiteKey, alias: string | undefined): Promise<string | undefined> {
-    const trimmed = alias?.trim() || undefined
-    await sendMsg2Runtime('site.changeAlias', { key, alias: trimmed })
-    return trimmed
-}
+export const modifySite = (param: tt4b.site.ModifyParam) => sendMsg2Runtime('site.modify', param)
 
 export const fillInitialAlias = (keys: tt4b.site.SiteKey[]) => sendMsg2Runtime('site.fillAlias', keys)
 

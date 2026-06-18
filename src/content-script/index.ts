@@ -20,23 +20,23 @@ const url = document?.location?.href
 const FLAG_ID = '__TIMER_INJECTION_FLAG__' + chrome.runtime.id
 
 function getOrSetFlag(): boolean {
-    const pre = document?.getElementById(FLAG_ID)
-    if (!pre) {
-        const flag = document.createElement('span')
-        flag.style && (flag.style.visibility = 'hidden')
-        flag && (flag.id = FLAG_ID)
+    const existed = document?.getElementById(FLAG_ID)
+    if (existed) return true
 
-        if (document.readyState === "complete") {
-            document?.body?.appendChild(flag)
-        } else {
-            const oldListener = document.onreadystatechange
-            document.onreadystatechange = function (ev) {
-                oldListener?.call(this, ev)
-                document.readyState === "complete" && document?.body?.appendChild(flag)
-            }
+    const flag = document.createElement('span')
+    flag.style && (flag.style.visibility = 'hidden')
+    flag && (flag.id = FLAG_ID)
+
+    if (document.readyState === "complete") {
+        document?.body?.appendChild(flag)
+    } else {
+        const oldListener = document.onreadystatechange
+        document.onreadystatechange = function (ev) {
+            oldListener?.call(this, ev)
+            document.readyState === "complete" && document?.body?.appendChild(flag)
         }
     }
-    return !!pre
+    return false
 }
 
 async function main() {
@@ -57,8 +57,8 @@ async function main() {
     if (!host || !url) return
 
     void initLocale()
-    const isWhitelist = await trySendMsg2Runtime('whitelist.contain', { host, url })
     await processLimit(url, dispatcher)
+    const isWhitelist = await trySendMsg2Runtime('whitelist.contain', { host, url })
     if (isWhitelist) return
 
     void printInfo(host)

@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { changeSiteAlias, fillInitialAlias, getInitialAlias } from "@api/sw/site"
+import { fillInitialAlias, getInitialAlias, modifySite } from "@api/sw/site"
 import Editable from "@app/components/common/Editable"
 import { useSiteManageTable } from '@app/components/SiteManage/useSiteManage'
 import { t } from '@app/locale'
@@ -18,7 +18,10 @@ import { defineComponent, type StyleValue } from "vue"
 
 const AliasColumn = defineComponent<{}>(() => {
     const { pagination, refresh } = useSiteManageTable()
-    const { refresh: doChange } = useManualRequest(changeSiteAlias, { onSuccess: refresh })
+    const { refresh: doChange } = useManualRequest((row: tt4b.site.SiteInfo, alias: string | undefined) => {
+        const { type, host, iconUrl } = row
+        return modifySite({ type, host, alias, iconUrl })
+    }, { onSuccess: refresh })
 
     const handleBatchGenerate = async () => {
         let { list } = pagination.value
