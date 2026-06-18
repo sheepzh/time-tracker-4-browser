@@ -18,22 +18,21 @@ import CustomizedHostMergeRuler from './components/host-merge-ruler'
 import { slicePageResult } from "./components/page-info"
 import virtualSiteHolder from './components/virtual-site-holder'
 
-export async function saveAlias(key: tt4b.site.SiteKey, alias: string | undefined, noRewrite?: boolean) {
-    const exist = await siteDatabase.get(key)
-    if (exist && noRewrite) return
-    await siteDatabase.save({ ...exist, ...key, alias })
-}
+export async function saveSite(param: tt4b.site.ModifyParam, overwrite: boolean): Promise<void> {
+    const exist = await siteDatabase.get(param)
+    const alias = overwrite ? param.alias : exist?.alias ?? param.alias
+    const iconUrl = param.type === 'normal'
+        ? (overwrite ? param.iconUrl : exist?.iconUrl ?? param.iconUrl)
+        : undefined
 
-export async function removeIconUrl(key: tt4b.site.SiteKey) {
-    const exist = await siteDatabase.get(key)
-    if (!exist) return
-    delete exist.iconUrl
-    await siteDatabase.save(exist)
-}
+    // Avoid unnecessary chrome.storage writes
+    if (!exist) {
+        if (alias === undefined && iconUrl === undefined) return
+    } else if (exist.alias === alias && exist.iconUrl === iconUrl) {
+        return
+    }
 
-export async function saveIconUrl(key: tt4b.site.SiteKey, iconUrl: string) {
-    const exist = await siteDatabase.get(key)
-    await siteDatabase.save({ ...exist, ...key, iconUrl })
+    await siteDatabase.save({ ...exist, ...param, alias, iconUrl })
 }
 
 export async function saveSiteRunState(key: tt4b.site.SiteKey, enabled: boolean) {

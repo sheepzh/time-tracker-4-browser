@@ -226,11 +226,7 @@ declare namespace tt4b {
             keys: SiteKey[]
         }
 
-        type ChangeAliasParam = {
-            key: SiteKey
-            // Undefined means delete alias
-            alias: string | undefined
-        }
+        type ModifyParam = MakeOptionalUndefined<Pick<tt4b.site.SiteInfo, 'host' | 'type' | 'alias' | 'iconUrl'>>
     }
 
     namespace merge {
@@ -1119,10 +1115,9 @@ declare namespace tt4b {
             & _MakeRegistry<'site.list', site.Query | undefined, site.SiteInfo[]>
             & _MakeRegistry<'site.page', site.PageQuery | undefined, common.PageResult<site.SiteInfo>>
             & _MakeRegistry<'site.add', site.SiteInfo, string | undefined>
+            & _MakeRegistry<'site.modify', site.ModifyParam>
             & _MakeRegistry<'site.delete', site.SiteKey[]>
             & _MakeRegistry<'site.changeCate', site.ChangeCateParam>
-            & _MakeRegistry<'site.deleteIcon', site.SiteKey>
-            & _MakeRegistry<'site.changeAlias', site.ChangeAliasParam>
             & _MakeRegistry<'site.fillAlias', site.SiteKey[]>
             & _MakeRegistry<'site.initialAlias', string, string | undefined>
             & _MakeRegistry<'site.changeRun', { key: site.SiteKey; enabled: boolean }>

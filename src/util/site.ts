@@ -9,11 +9,6 @@ const SEPARATORS = /[-|–_:：，]/
 
 const INVALID_SITE_NAME = /(登录)|(我的)|(个人)|(主页)|(首页)|(Welcome)/
 
-const SPECIAL_MAP: Record<string, string> = {
-    // 哔哩哔哩 (゜-゜)つロ 干杯~-bilibili
-    'www.bilibili.com': 'bilibili'
-}
-
 /**
  * Extract the site name from the title of tab
  *
@@ -21,14 +16,11 @@ const SPECIAL_MAP: Record<string, string> = {
  * @returns siteName, undefined if disable to detect
  * @since 0.5.1
  */
-export function extractSiteName(title: string, host?: string): string | undefined {
+export function extractSiteName(title: string): string | undefined {
     title = title.trim()
-    if (!title) {
-        return undefined
-    }
-    if (host && SPECIAL_MAP[host]) {
-        return SPECIAL_MAP[host]
-    }
+    if (!title) return undefined
+    if (title.startsWith('https://') || title.startsWith('http://') || title.startsWith('ftp://')) return undefined
+
     return title
         .split(SEPARATORS)
         .filter(s => !INVALID_SITE_NAME.test(s))
@@ -57,12 +49,6 @@ export function generateSiteLabel(host: string, name?: string): string {
 export function supportCategory(siteKey: tt4b.site.SiteKey | undefined): boolean {
     const { type } = siteKey || {}
     return type === 'normal'
-}
-
-export function siteEqual(a: tt4b.site.SiteKey | undefined, b: tt4b.site.SiteKey | undefined) {
-    if (!a && !b) return true
-    if (a === b) return true
-    return a?.host === b?.host && a?.type === b?.type
 }
 
 /**

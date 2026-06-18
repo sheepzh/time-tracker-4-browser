@@ -23,8 +23,8 @@ import { getInstallTime, getLastBackUp } from "./service/meta-service"
 import notificationProcessor from './service/notification/processor'
 import { selectPeriods } from "./service/period-service"
 import {
-    addSite, batchChangeCate, fillInitialAlias, getInitialAlias, getSite, removeIconUrl, removeSites, saveAlias,
-    saveSiteRunState, searchSites, selectSitePage,
+    addSite, batchChangeCate, fillInitialAlias, getInitialAlias, getSite, removeSites, saveSite, saveSiteRunState, searchSites,
+    selectSitePage,
 } from "./service/site-service"
 import {
     batchDelete, countGroup, countSite, selectCate, selectCatePage, selectGroup, selectGroupPage, selectSite,
@@ -84,8 +84,7 @@ class MessageDispatcher {
             .register('site.add', addSite)
             .register('site.delete', removeSites)
             .register('site.changeCate', ({ cateId, keys }) => batchChangeCate(cateId, keys))
-            .register('site.deleteIcon', removeIconUrl)
-            .register('site.changeAlias', ({ key, alias }) => saveAlias(key, alias))
+            .register('site.modify', param => saveSite(param, true))
             .register('site.fillAlias', fillInitialAlias)
             .register('site.initialAlias', getInitialAlias)
             .register('site.changeRun', ({ key, enabled }) => saveSiteRunState(key, enabled))

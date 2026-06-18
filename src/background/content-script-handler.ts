@@ -6,43 +6,31 @@
  */
 
 import { getTab } from '@api/chrome/tab'
+import { saveSite } from '@service/site-service'
 import { IS_ANDROID, IS_CHROME, IS_FIREFOX, IS_SAFARI } from "@util/constant/environment"
 import { extractHostname, isBrowserUrl, isHomepage } from "@util/pattern"
 import { extractSiteName } from "@util/site"
 import badgeManager from "./badge-manager"
 import MessageDispatcher from "./message-dispatcher"
-import { saveAlias, saveIconUrl } from "./service/site-service"
 import { incVisitCount } from './track-server/normal'
-
-function isUrl(title: string) {
-    return title.startsWith('https://') || title.startsWith('http://') || title.startsWith('ftp://')
-}
-
-async function collectAlias(key: tt4b.site.SiteKey, tabTitle: string) {
-    if (!tabTitle) return
-    if (isUrl(tabTitle)) return
-    const siteName = extractSiteName(tabTitle, key.host)
-    siteName && await saveAlias(key, siteName, true)
-}
 
 /**
  * Process the tab
  */
 async function processTabInfo(tab: ChromeTab): Promise<void> {
-    let { favIconUrl, url, title } = tab
+    // Not support to modify site info on Android, so skip it
+    if (IS_ANDROID) return
+    let { favIconUrl: iconUrl, url, title } = tab
     if (!url || !title) return
     if (isBrowserUrl(url)) return
     const hostInfo = extractHostname(url)
     const host = hostInfo.host
     if (!host) return
     // localhost hosts with Chrome use cache, so keep the favIcon url undefined
-    IS_CHROME && /^localhost(:.+)?/.test(host) && (favIconUrl = undefined)
-    const siteKey: tt4b.site.SiteKey = { host, type: 'normal' }
-    favIconUrl && await saveIconUrl(siteKey, favIconUrl)
-    !IS_ANDROID
-        && !isBrowserUrl(url)
-        && isHomepage(url)
-        && await collectAlias(siteKey, title)
+    IS_CHROME && /^localhost(:.+)?/.test(host) && (iconUrl = undefined)
+    // Only collect site name for homepage
+    const alias = isHomepage(url) ? extractSiteName(title) : undefined
+    await saveSite({ host, type: 'normal', alias, iconUrl }, false)
 }
 
 /**

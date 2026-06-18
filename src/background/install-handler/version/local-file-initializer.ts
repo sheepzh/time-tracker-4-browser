@@ -5,9 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { t } from '@bg/i18n'
 import mergeRuleDatabase from "@db/merge-rule-database"
-import { t2Chrome } from "@i18n/chrome/t"
-import { saveAlias } from '@service/site-service'
+import { saveSite } from '@service/site-service'
 import { JSON_HOST, LOCAL_HOST_PATTERN, MERGED_HOST, PDF_HOST, PIC_HOST, TXT_HOST } from "@util/constant/remain-host"
 import { type Migrator } from "./types"
 
@@ -27,21 +27,14 @@ export default class LocalFileInitializer implements Migrator {
             merged: MERGED_HOST,
         }).then(() => console.log('Local file merge rules initialized'))
         // Add site name
-        saveAlias(
-            { host: PDF_HOST, type: 'normal' },
-            t2Chrome(msg => msg.initial.localFile.pdf),
-        )
-        saveAlias(
-            { host: JSON_HOST, type: 'normal' },
-            t2Chrome(msg => msg.initial.localFile.json),
-        )
-        saveAlias(
-            { host: PIC_HOST, type: 'normal' },
-            t2Chrome(msg => msg.initial.localFile.pic),
-        )
-        saveAlias(
-            { host: TXT_HOST, type: 'normal' },
-            t2Chrome(msg => msg.initial.localFile.txt),
-        )
+        const hostAlias = {
+            [PDF_HOST]: t(msg => msg.initial.localFile.pdf),
+            [JSON_HOST]: t(msg => msg.initial.localFile.json),
+            [PIC_HOST]: t(msg => msg.initial.localFile.pic),
+            [TXT_HOST]: t(msg => msg.initial.localFile.txt),
+        }
+        for (const [host, alias] of Object.entries(hostAlias)) {
+            void saveSite({ host, type: 'normal', alias, iconUrl: undefined }, true)
+        }
     }
 }
