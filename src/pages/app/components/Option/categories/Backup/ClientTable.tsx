@@ -6,7 +6,6 @@
  */
 
 import { allBackupClients } from "@api/sw/backup"
-import { useDialogSop } from '@app/components/common/DialogSop/context'
 import { t } from '@app/locale'
 import { cvt2LocaleTime } from '@app/util/time'
 import { Loading, RefreshRight } from "@element-plus/icons-vue"
@@ -35,10 +34,8 @@ const formatTime = (value: tt4b.backup.Client): string => {
 }
 
 const _default = defineComponent<{ onSelect: ArgCallback<tt4b.backup.Client> }>(props => {
-    const { visible } = useDialogSop()
     const { data: list, loading, refresh } = useRequest(allBackupClients, {
         defaultValue: [],
-        deps: () => visible.value,
         onError: e => ElMessage.error(e instanceof Error ? e.message : String(e ?? 'Unknown error...'))
     })
 

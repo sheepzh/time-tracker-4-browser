@@ -43,16 +43,16 @@ export default async function processLimit(url: string, dispatcher: Dispatcher) 
     const refreshUrl = async (nextUrl: string): Promise<void> => {
         if (!nextUrl) return
         const currentRefreshId = ++refreshId
-        const urlChanged = nextUrl !== context.url
+        const prevUrl = context.url
         context.url = nextUrl
         modal.setUrl(nextUrl)
         active = false
-        processors.forEach(p => p.clear(urlChanged))
         const whitelisted = await isWhitelisted(nextUrl)
-        if (currentRefreshId !== refreshId || whitelisted) return
-        active = true
-        await Promise.all(processors.map(p => p.onLimitChanged()))
         if (currentRefreshId !== refreshId) return
+
+        await Promise.all(processors.map(p => p.onUrlRefreshed({ prevUrl, nextUrl, whitelisted })))
+        if (currentRefreshId !== refreshId) return
+        active = !whitelisted
     }
 
     await refreshUrl(url)

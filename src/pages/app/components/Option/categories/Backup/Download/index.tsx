@@ -12,7 +12,7 @@ import { t } from "@app/locale"
 import { Files } from "@element-plus/icons-vue"
 import { BIRTHDAY, formatTimeYMD } from '@util/time'
 import { ElButton } from "element-plus"
-import { defineComponent, toRaw } from "vue"
+import { defineComponent, ref, toRaw } from "vue"
 import ClientTable from '../ClientTable'
 import Step2 from './Step2'
 import type { DownloadForm } from './types'
@@ -31,7 +31,8 @@ async function fetchData(client: tt4b.backup.Client): Promise<tt4b.imported.Data
 }
 
 const _default = defineComponent(() => {
-    const { open, step, form } = initDialogSopContext<DownloadForm>({
+    const tableKey = ref(0)
+    const { open: openSop, step, form } = initDialogSopContext<DownloadForm>({
         stepCount: STEP_TITLES.length,
         init: () => ({ data: { rows: [], focus: true, time: true }, resolution: undefined }),
         onNext: async ({ form, target }) => {
@@ -49,9 +50,13 @@ const _default = defineComponent(() => {
             await importOther({ resolution, data: toRaw(data) })
         },
     })
+    const open = () => {
+        tableKey.value++
+        openSop()
+    }
 
     return () => <>
-        <ElButton type="primary" icon={Files} onClick={() => open()}>
+        <ElButton type="primary" icon={Files} onClick={open}>
             {t(msg => msg.option.backup.download.btn)}
         </ElButton>
         <DialogSop
@@ -60,7 +65,7 @@ const _default = defineComponent(() => {
             stepTitles={STEP_TITLES}
             finishButton={{ text: t(msg => msg.option.backup.download.btn) }}
         >
-            <ClientTable v-show={step.value === 0} onSelect={c => form.client = c} />
+            <ClientTable key={tableKey.value} v-show={step.value === 0} onSelect={c => form.client = c} />
             <Step2 v-show={step.value === 1} />
         </DialogSop>
     </>

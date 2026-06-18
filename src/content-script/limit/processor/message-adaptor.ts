@@ -1,6 +1,6 @@
 import { trySendMsg2Runtime } from '@api/sw/common'
 import { hasDailyLimited, hasWeeklyLimited, matches } from "@util/limit"
-import type { LimitReason, ModalContext, Processor } from '../types'
+import type { LimitReason, ModalContext, Processor, UrlRefreshContext } from '../types'
 
 const cvtItem2AddReason = (item: tt4b.limit.Item, delayDuration: number): LimitReason[] => {
     const { cond, allowDelay, id, delayCount, weeklyDelayCount } = item
@@ -13,10 +13,6 @@ const cvtItem2AddReason = (item: tt4b.limit.Item, delayDuration: number): LimitR
 class MessageAdaptor implements Processor {
     constructor(private readonly context: ModalContext, private readonly delayDuration: number) { }
 
-    onLimitChanged(): Promise<void> {
-        return this.initRules()
-    }
-
     onLimitTimeMeet(items: tt4b.limit.Item[]): void {
         if (!items.length) return
         items.filter(({ cond }) => matches(cond, this.context.url))
@@ -28,13 +24,21 @@ class MessageAdaptor implements Processor {
         this.context.modal.addDelayHandler(() => void this.initRules())
     }
 
-    clear(_urlChanged?: boolean): void {
+    async onUrlRefreshed({ nextUrl, whitelisted }: UrlRefreshContext): Promise<void> {
         this.context.modal.removeReasonsByType('DAILY', 'WEEKLY')
+        if (whitelisted) return
+        await this.fetchLimitedRules(nextUrl)
     }
 
     async initRules(): Promise<void> {
-        const url = this.context.url
-        this.clear()
+        await this.onUrlRefreshed({
+            prevUrl: this.context.url,
+            nextUrl: this.context.url,
+            whitelisted: false,
+        })
+    }
+
+    private async fetchLimitedRules(url: string): Promise<void> {
         const limitedRules = await trySendMsg2Runtime('limit.list', { limited: true, effective: true, url })
         if (url !== this.context.url || !limitedRules?.length) return
 

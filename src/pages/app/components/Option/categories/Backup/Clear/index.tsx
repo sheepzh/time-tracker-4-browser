@@ -12,7 +12,7 @@ import { t } from '@app/locale'
 import { Delete } from "@element-plus/icons-vue"
 import { BIRTHDAY, formatTimeYMD } from '@util/time'
 import { ElButton } from "element-plus"
-import { defineComponent } from "vue"
+import { defineComponent, ref } from "vue"
 import ClientTable from '../ClientTable'
 import Step2 from './Step2'
 import type { ClearForm, StatResult } from './types'
@@ -38,7 +38,8 @@ async function fetchStatResult(client: tt4b.backup.Client): Promise<StatResult> 
 }
 
 const _default = defineComponent(() => {
-    const { step, form, open } = initDialogSopContext<ClearForm>({
+    const tableKey = ref(0)
+    const { step, form, open: openSop } = initDialogSopContext<ClearForm>({
         stepCount: STEP_TITLES.length,
         init: () => ({}),
         onNext: async ({ form }) => {
@@ -53,10 +54,14 @@ const _default = defineComponent(() => {
             if (errMsg) throw new Error(errMsg)
         },
     })
+    const open = () => {
+        tableKey.value++
+        openSop()
+    }
 
 
     return () => <>
-        <ElButton type="danger" icon={Delete} onClick={() => open()}>
+        <ElButton type="danger" icon={Delete} onClick={open}>
             {t(msg => msg.option.backup.clear.btn)}
         </ElButton>
         <DialogSop
@@ -64,7 +69,9 @@ const _default = defineComponent(() => {
             finishButton={{ type: 'danger', text: t(msg => msg.option.backup.clear.btn) }}
             stepTitles={STEP_TITLES}
         >
-            {step.value === 0 ? <ClientTable onSelect={c => form.client = c} /> : <Step2 />}
+            {step.value === 0
+                ? <ClientTable key={tableKey.value} onSelect={c => form.client = c} />
+                : <Step2 />}
         </DialogSop>
     </>
 })
