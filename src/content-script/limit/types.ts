@@ -22,8 +22,13 @@ export type ModalContext = {
     modal: MaskModal
 }
 
+export type UrlRefreshContext = {
+    prevUrl: string
+    nextUrl: string
+    whitelisted: boolean
+}
+
 export interface Processor {
     init(): Awaitable<void>
-    onLimitChanged(): Awaitable<void>
-    clear(urlChanged?: boolean): void
+    onUrlRefreshed(ctx: UrlRefreshContext): Awaitable<void>
 }

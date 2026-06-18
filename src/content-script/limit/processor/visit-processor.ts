@@ -1,7 +1,7 @@
 import { trySendMsg2Runtime } from '@api/sw/common'
 import NormalTracker from "@cs/tracker/normal"
 import { MILL_PER_MINUTE, MILL_PER_SECOND } from "@util/time"
-import type { ModalContext, Processor } from '../types'
+import type { ModalContext, Processor, UrlRefreshContext } from '../types'
 
 class VisitProcessor implements Processor {
     private focusTime: number = 0
@@ -13,10 +13,6 @@ class VisitProcessor implements Processor {
         this.tracker = new NormalTracker({
             onReport: data => this.handleTracker(data),
         })
-    }
-
-    onLimitChanged(): Promise<void> {
-        return this.initRules()
     }
 
     private hasLimited(rule: tt4b.limit.Rule): boolean {
@@ -43,26 +39,23 @@ class VisitProcessor implements Processor {
         })
     }
 
-    private async initRules() {
-        const url = this.context.url
-        this.clear()
-        const rules = await trySendMsg2Runtime('limit.list', { effective: true, url }) ?? []
-        if (url !== this.context.url) return
-        this.rules = rules
-    }
-
     async init(): Promise<void> {
         this.tracker.init()
         this.context.modal.addDelayHandler(() => this.processDelay())
     }
 
-    clear(urlChanged?: boolean): void {
+    async onUrlRefreshed({ prevUrl, nextUrl, whitelisted }: UrlRefreshContext): Promise<void> {
         this.rules = []
-        if (urlChanged) {
+        if (prevUrl !== nextUrl) {
             this.focusTime = 0
             this.delayCount = 0
         }
         this.context.modal.removeReasonsByType('VISIT')
+        if (whitelisted) return
+
+        const rules = await trySendMsg2Runtime('limit.list', { effective: true, url: nextUrl }) ?? []
+        if (nextUrl !== this.context.url) return
+        this.rules = rules
     }
 
     private processDelay() {
