@@ -14,7 +14,7 @@ import { daysAgo, getAllDatesBetween, getDayLength, MILL_PER_DAY } from "@util/t
 import { computed, onMounted, ref, watch, type Ref } from "vue"
 
 type Context = {
-    dateRange: Ref<[Date?, Date?]>
+    dateRange: Ref<[number, number]>
     rangeLength: Ref<number>
 }
 
@@ -36,7 +36,7 @@ type IndicatorSet = Record<DimensionType, {
 }
 
 type SourceParam = {
-    dateRange: [Date, Date]
+    dateRange: [number, number]
     rows: tt4b.stat.Row[]
 }
 
@@ -49,11 +49,11 @@ type EffectParam = {
 
 function computeIndicatorSet(
     rows: tt4b.stat.Row[],
-    dateRange: [Date, Date] | undefined,
+    dateRange: [number, number],
 ): [IndicatorSet | undefined, Record<string, tt4b.stat.Row | undefined>] {
-    const [start, end] = dateRange || []
-    const allDates = start && end ? getAllDatesBetween(start, end) : []
-    if (!rows) {
+    const [start, end] = dateRange
+    const allDates = getAllDatesBetween(start, end)
+    if (!rows.length) {
         // No data
         return [undefined, toMap(allDates, date => date, _l => undefined)]
     }
@@ -88,12 +88,11 @@ function computeIndicatorSet(
     return [indicators, fullPeriodRow]
 }
 
-function lastRange(dateRange: [Date, Date]): [Date, Date] | undefined {
-    const [start, end] = dateRange || []
-    if (!start || !end) return undefined
+function lastRange(dateRange: [number, number]): [number, number] {
+    const [start, end] = dateRange
     const dayLength = getDayLength(start, end)
-    const newEnd = new Date(start.getTime() - MILL_PER_DAY)
-    const newStart = new Date(start.getTime() - MILL_PER_DAY * dayLength)
+    const newEnd = start - MILL_PER_DAY
+    const newStart = start - MILL_PER_DAY * dayLength
     return [newStart, newEnd]
 }
 
@@ -132,8 +131,9 @@ function handleDataChange(source: SourceParam, effect: EffectParam) {
 const NAMESPACE = 'siteAnalysis_trend'
 
 export const initAnalysisTrend = () => {
-    const dateRange = ref(daysAgo(14, 0))
-    const rangeLength = computed(() => getDayLength(dateRange.value?.[0], dateRange.value?.[1]))
+    const [defaultStart, defaultEnd] = daysAgo(14, 0)
+    const dateRange = ref<[number, number]>([defaultStart.getTime(), defaultEnd.getTime()])
+    const rangeLength = computed(() => getDayLength(dateRange.value[0], dateRange.value[1]))
 
     const visitData = ref<DimensionData>()
     const focusData = ref<DimensionData>()

@@ -7,9 +7,10 @@
 
 import { Search } from "@element-plus/icons-vue"
 import { useState } from "@hooks"
+import { cvtPxScale } from '@pages/components/common'
 import { Enter } from '@pages/icons'
 import { ElIcon, ElInput } from "element-plus"
-import { computed, defineComponent, ref, type StyleValue } from "vue"
+import { defineComponent, ref, type StyleValue } from "vue"
 
 type Props = {
     defaultValue?: string
@@ -18,13 +19,8 @@ type Props = {
     onSearch?: ArgCallback<string>
 }
 
-const InputFilterItem = defineComponent<Props>(props => {
+const InputFilter = defineComponent<Props>(props => {
     const modelValue = ref(props.defaultValue ?? '')
-
-    const width = computed(() => {
-        const w = props.width
-        return typeof w === 'number' ? `${w}px` : (w ?? '180px')
-    })
 
     const [focused, setFocused] = useState(false)
 
@@ -47,7 +43,7 @@ const InputFilterItem = defineComponent<Props>(props => {
             onKeydown={handleKeydown}
             onBlur={handleBlur}
             onFocus={() => setFocused(true)}
-            style={{ width: width.value } satisfies StyleValue}
+            style={{ width: cvtPxScale(props.width) ?? '180px' } satisfies StyleValue}
             suffixIcon={(
                 <ElIcon color={focused.value ? 'var(--el-color-primary)' : undefined}>
                     <Enter />
@@ -58,4 +54,4 @@ const InputFilterItem = defineComponent<Props>(props => {
     )
 }, { props: ['defaultValue', 'placeholder', 'width', 'onSearch'] })
 
-export default InputFilterItem
+export default InputFilter

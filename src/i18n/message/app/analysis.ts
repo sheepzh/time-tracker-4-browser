@@ -29,7 +29,6 @@ export type AnalysisMessage = {
     trend: {
         title: string
         activeDay: string
-        totalDay: string
         maxFocus: string
         averageFocus: string
         maxVisit: string

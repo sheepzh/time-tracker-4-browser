@@ -1,13 +1,12 @@
+import type { RecordQuery } from '@app/router/constants'
 import { isOptionalIntArray, isTimeFormat } from '@app/util/limit/types'
-import { useLocalStorage, useProvide, useProvider } from '@hooks'
+import { localReactive, useProvide, useProvider } from '@hooks'
+import { getBirthday } from "@util/time"
 import {
-    createObjectGuard, createOptionalGuard, createStringUnionGuard, isBoolean,
-    isOptionalInt,
-    isOptionalString,
-    isString,
+    createObjectGuard, createOptionalGuard, createStringUnionGuard, isBoolean, isOptionalString,
 } from 'typescript-guard'
-import { reactive, ref, type ShallowRef, toRaw, watch } from "vue"
-import { type RouteLocation, type Router, useRoute, useRouter } from "vue-router"
+import { reactive, ref, type ShallowRef, toRefs } from "vue"
+import { useRoute, useRouter } from "vue-router"
 import type { DisplayComponent, RecordFilterOption, RecordSort } from "./types"
 
 type Context = {
@@ -18,8 +17,6 @@ type Context = {
 
 const NAMESPACE = 'record'
 
-type QueryPartial = PartialPick<RecordFilterOption, 'query' | 'dateRange' | 'mergeDate' | 'siteMerge'>
-
 const isSortProp = createStringUnionGuard<RecordSort['prop']>('date', 'host', 'focus', 'run', 'time')
 const isSiteMerge = createStringUnionGuard<Exclude<RecordFilterOption['siteMerge'], undefined>>(
     'cate', 'domain', 'group',
@@ -28,28 +25,32 @@ const isSiteMerge = createStringUnionGuard<Exclude<RecordFilterOption['siteMerge
 /**
  * Init the query parameters
  */
-function parseQuery(route: RouteLocation, router: Router): [QueryPartial, RecordSort['prop'] | undefined] {
-    const routeQuery = route.query
-    const { q, mm, md, ds, de, sc } = routeQuery
-    const dateStart = isString(ds) ? new Date(Number.parseInt(ds)) : undefined
-    const dateEnd = isString(de) ? new Date(Number.parseInt(de)) : undefined
+function initQuery(filter: RecordFilterOption): RecordSort['prop'] | undefined {
+    const route = useRoute()
+    const router = useRouter()
+    const { q, md, ds, de, mm, sc } = route.query as RecordQuery
     // Remove queries
     router.replace({ query: {} })
 
-    const now = new Date()
-    const partial: QueryPartial = {
-        ...(isString(q) && { query: q }),
-        ...((md === 'true' || md === '1') && { mergeDate: true }),
-        ...((dateStart ?? dateEnd) && { dateRange: [dateStart ?? now, dateEnd ?? now] }),
-        ...(isSiteMerge(mm) && { siteMerge: mm })
+    // Query
+    const query = q?.trim()
+    if (query) filter.query = query
+    // Date range
+    let dateStart = ds ? Number.parseInt(ds) : undefined
+    if (Number.isNaN(dateStart)) dateStart = undefined
+    let dateEnd = de ? Number.parseInt(de) : undefined
+    if (Number.isNaN(dateEnd)) dateEnd = undefined
+    if (dateStart || dateEnd) {
+        filter.dateRange = [dateStart ?? getBirthday().getTime(), dateEnd ?? Date.now()]
     }
-    return [partial, isSortProp(sc) ? sc : undefined]
+    // Merge method
+    if (md === 'true' || md === '1') filter.mergeDate = true
+    if (isSiteMerge(mm)) filter.siteMerge = mm
+
+    return isSortProp(sc) ? sc : undefined
 }
 
-type CacheValue = Omit<RecordFilterOption, 'dateRange' | 'readRemote'> & {
-    dateStart?: number
-    dateEnd?: number
-}
+type CacheValue = Omit<RecordFilterOption, 'dateRange' | 'readRemote'>
 
 const isCacheValue = createObjectGuard<CacheValue>({
     query: isOptionalString,
@@ -57,44 +58,20 @@ const isCacheValue = createObjectGuard<CacheValue>({
     siteMerge: createOptionalGuard(isSiteMerge),
     cateIds: isOptionalIntArray,
     timeFormat: isTimeFormat,
-    dateStart: isOptionalInt,
-    dateEnd: isOptionalInt,
 })
 
-const cvtStorage2Filter = (storage: CacheValue | undefined): RecordFilterOption => {
-    const { query, dateStart, dateEnd, mergeDate, siteMerge, cateIds, timeFormat } = storage ?? {}
-    const now = new Date()
-    return {
-        query,
-        dateRange: [dateStart ? new Date(dateStart) : now, dateEnd ? new Date(dateEnd) : now],
-        mergeDate: mergeDate ?? false,
-        siteMerge,
-        cateIds,
-        timeFormat: timeFormat ?? 'default',
-        readRemote: false,
-    }
-}
-
-const cvtFilter2Storage = (filter: RecordFilterOption): CacheValue => {
-    const { query, dateRange, mergeDate, siteMerge, cateIds, timeFormat } = filter
-    const [dateStart, dateEnd] = dateRange instanceof Date ? [dateRange,] : dateRange ?? []
-    return {
-        query,
-        mergeDate, siteMerge,
-        dateStart: dateStart?.getTime?.(),
-        dateEnd: dateEnd?.getTime?.(),
-        cateIds, timeFormat,
-    }
-}
-
 export const initRecordContext = () => {
-    const route = useRoute()
-    const router = useRouter()
-    const [queryFilter, querySort] = parseQuery(route, router)
-
-    const [cachedFilter, setCachedFilter] = useLocalStorage<CacheValue>('record_filter', isCacheValue)
-    const filter = reactive<RecordFilterOption>({ ...cvtStorage2Filter(cachedFilter), ...queryFilter })
-    watch(() => filter, v => setCachedFilter(cvtFilter2Storage(toRaw(v))), { deep: true })
+    const cached = localReactive('record_filter', isCacheValue, {
+        query: undefined,
+        mergeDate: false,
+        timeFormat: 'default',
+    })
+    const filter: RecordFilterOption = reactive({
+        ...toRefs(cached),
+        readRemote: false,
+        dateRange: [Date.now(), Date.now()],
+    })
+    const querySort = initQuery(filter)
 
     const sort = ref<RecordSort>({
         order: 'descending',

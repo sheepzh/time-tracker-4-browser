@@ -10,13 +10,14 @@ import { useDelayDuration, useLimitAction, useLimitData } from "@app/components/
 import type { LimitInstance } from '@app/components/Limit/types'
 import { t } from '@app/locale'
 import { Delete, Edit } from '@element-plus/icons-vue'
-import { useCached, useRequest } from '@hooks'
+import { localRef, useRequest } from '@hooks'
 import { locale } from '@i18n'
 import { isEffective } from "@util/limit"
 import { MILL_PER_SECOND } from "@util/time"
 import {
     ElButton, ElSwitch, ElTable, ElTableColumn, ElTag, type RenderRowData, type Sort, type TableInstance,
 } from "element-plus"
+import { createObjectGuard, createStringUnionGuard, isAny } from 'typescript-guard'
 import { defineComponent, ref } from "vue"
 import Rule from "./Rule"
 import Waste from "./Waste"
@@ -39,9 +40,15 @@ const ACTION_WIDTH: { [locale in tt4b.Locale]: number } = {
     it: 220,
 }
 
-const DEFAULT_SORT_COL = 'waste'
+type SortCol = 'waste' | 'weeklyWaste'
+const isSort = createObjectGuard<Sort>({
+    prop: createStringUnionGuard<SortCol>('waste', 'weeklyWaste'),
+    order: createStringUnionGuard<Sort['order']>('ascending', 'descending'),
+    init: isAny,
+    silent: isAny,
+})
 
-function createSorter(key: 'waste' | 'weeklyWaste') {
+function createSorter(key: SortCol) {
     return (a: tt4b.limit.Item, b: tt4b.limit.Item) => a[key] - b[key]
 }
 
@@ -60,7 +67,7 @@ const _default = defineComponent((_, ctx) => {
     const { modify, remove } = useLimitAction()
     const delayDuration = useDelayDuration()
 
-    const [sort, setSort] = useCached<Sort>('__limit_sort_default__', { prop: DEFAULT_SORT_COL, order: 'descending' })
+    const sort = localRef<Sort>('__limit_sort__', isSort, { prop: 'waste', order: 'descending' })
     const table = ref<TableInstance>()
 
     const { data: lockVisible } = useRequest(async () => {
@@ -80,7 +87,7 @@ const _default = defineComponent((_, ctx) => {
             height="100%"
             data={list.value}
             defaultSort={sort.value}
-            onSort-change={val => val.prop && val.order && setSort({ prop: val?.prop, order: val?.order })}
+            onSort-change={val => isSort(val) && (sort.value = val)}
         >
             <ElTableColumn type="selection" align="center" fixed="left" />
             <ElTableColumn
@@ -117,7 +124,7 @@ const _default = defineComponent((_, ctx) => {
                 {({ row: { weekdays } }: RenderRowData<tt4b.limit.Item>) => <Weekday value={weekdays} />}
             </ElTableColumn>
             <ElTableColumn
-                prop={DEFAULT_SORT_COL}
+                prop={'waste' satisfies SortCol}
                 sortable
                 sortMethod={createSorter('waste')}
                 label={t(msg => msg.calendar.range.today)}
@@ -138,7 +145,7 @@ const _default = defineComponent((_, ctx) => {
                 )}
             </ElTableColumn>
             <ElTableColumn
-                prop='weeklyWaste'
+                prop={'weeklyWaste' satisfies SortCol}
                 minWidth={110}
                 align="center"
                 sortable

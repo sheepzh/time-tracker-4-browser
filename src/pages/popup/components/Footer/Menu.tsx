@@ -28,10 +28,10 @@ const createItems = (): MenuItem[] => [
 ] as const
 
 const Menu = defineComponent(() => {
-    const { menu, setMenu } = useMenu()
+    const menu = useMenu()
 
     return () => (
-        <ElRadioGroup modelValue={menu.value} onChange={v => isMenu(v) && setMenu(v)}>
+        <ElRadioGroup modelValue={menu.value} onChange={v => isMenu(v) && (menu.value = v)}>
             {createItems().map(({ route, label, icon }) => (
                 <ElRadioButton value={route}>
                     <ElTooltip content={label}>

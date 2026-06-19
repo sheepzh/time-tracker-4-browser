@@ -9,10 +9,11 @@ import { getVersion } from '@api/chrome/runtime'
 import { t } from '@app/locale'
 import { Expand, Fold } from '@element-plus/icons-vue'
 import { css } from '@emotion/css'
-import { useCached, useState } from '@hooks'
+import { localRef, useState } from '@hooks'
 import Flex from '@pages/components/Flex'
 import { colorVariant } from '@pages/util/style'
 import { ElCollapseTransition, ElIcon, ElMenu, ElMenuItem, ElMenuItemGroup, ElScrollbar, ElText, ElTooltip, useNamespace } from "element-plus"
+import { isBoolean } from 'typescript-guard'
 import { defineComponent, h, nextTick, onMounted, type Ref, ref, type StyleValue, watch } from "vue"
 import { type Router, useRouter } from "vue-router"
 import { indexOfItem, menuGroups, type MenuItem } from "./item"
@@ -20,12 +21,12 @@ import { handleClick, initTitle } from "./route"
 import { colorMenu } from './style'
 
 const useCollapseState = () => {
-    const [collapsed, setCollapsed] = useCached('menu-collapsed', false)
+    const collapsed = localRef('menu-collapsed', isBoolean, false)
     const [tooltipVisible, setTooltipVisible] = useState(false)
 
     const toggle = () => {
         setTooltipVisible(false)
-        nextTick(() => setCollapsed(!collapsed.value))
+        nextTick(() => collapsed.value = !collapsed.value)
     }
 
     return {

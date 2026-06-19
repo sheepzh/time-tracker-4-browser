@@ -7,9 +7,7 @@
 
 import { createTabAfterCurrent } from "@api/chrome/tab"
 import DropdownButton, { type DropdownButtonItem } from '@app/components/common/DropdownButton'
-import ButtonFilterItem from "@app/components/common/filter/ButtonFilterItem"
-import InputFilterItem from "@app/components/common/filter/InputFilterItem"
-import SwitchFilterItem from '@app/components/common/filter/SwitchFilterItem'
+import { ButtonFilter, InputFilter, SwitchFilter } from '@app/components/common/filter'
 import { t } from '@app/locale'
 import { OPTION_ROUTE } from '@app/router/constants'
 import { Delete, Open, Operation, Plus, SetUp, TurnOff, WarningFilled } from "@element-plus/icons-vue"
@@ -72,27 +70,26 @@ const _default = defineComponent(() => {
     return () => (
         <Flex justify="space-between" gap={10}>
             <Flex gap={10}>
-                <InputFilterItem
+                <InputFilter
                     defaultValue={filter.url}
                     placeholder={t(msg => msg.limit.item.condition)}
                     onSearch={val => filter.url = val}
                 />
-                <SwitchFilterItem
+                <SwitchFilter
                     v-show={!isXs.value}
-                    historyName="effective"
                     label={t(msg => msg.limit.onlyEffective)}
-                    defaultValue={filter.effective}
+                    modelValue={filter.effective}
                     onChange={val => filter.effective = val}
                 />
             </Flex>
             <Flex gap={10} align='center'>
                 <DropdownButton v-show={!isXs.value} items={batchItems} />
-                <ButtonFilterItem
+                <ButtonFilter
                     text={msg => msg.limit.button.test}
                     icon={Operation}
                     onClick={test}
                 />
-                <ButtonFilterItem
+                <ButtonFilter
                     v-show={!isXs.value}
                     text={msg => msg.base.option}
                     icon={SetUp}
@@ -111,7 +108,7 @@ const _default = defineComponent(() => {
                             <ElText >{t(msg => msg.limit.emptyTips)}</ElText>
                         </Flex>),
                         default: () => (
-                            <ButtonFilterItem
+                            <ButtonFilter
                                 text={msg => msg.button.create}
                                 type="success"
                                 icon={Plus}

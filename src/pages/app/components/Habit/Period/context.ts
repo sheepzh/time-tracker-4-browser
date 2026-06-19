@@ -6,11 +6,11 @@
  */
 
 import { listPeriods } from '@api/sw/period'
-import { useLocalStorage, useProvide, useProvider, useRequest } from '@hooks'
+import { localReactive, useProvide, useProvider, useRequest } from '@hooks'
 import { keyOf, MAX_PERIOD_ORDER } from "@util/period"
 import { getDayLength, MILL_PER_DAY } from "@util/time"
 import { createObjectGuard, createStringUnionGuard, isInt } from 'typescript-guard'
-import { computed, reactive, toRaw, watch, type Reactive, type Ref } from "vue"
+import { computed, type Ref } from "vue"
 import { useHabitFilter } from "../context"
 
 export type ChartType = 'average' | 'trend' | 'stack'
@@ -38,15 +38,15 @@ type PeriodRange = {
 
 type Context = {
     value: Ref<Value>
-    filter: Reactive<FilterOption>
+    filter: FilterOption
     periodRange: Ref<PeriodRange>
 }
 
-const computeRange = (filterDateRange: [Date, Date]): PeriodRange => {
-    const [startDate, endDate] = filterDateRange || []
+const computeRange = (dateRange: [number, number]): PeriodRange => {
+    const [startDate, endDate] = dateRange
     const dateLength = getDayLength(startDate, endDate)
-    const prevStartDate = new Date(startDate.getTime() - MILL_PER_DAY * dateLength)
-    const prevEndDate = new Date(startDate.getTime() - MILL_PER_DAY)
+    const prevStartDate = new Date(startDate - MILL_PER_DAY * dateLength)
+    const prevEndDate = new Date(startDate - MILL_PER_DAY)
     return {
         curr: [keyOf(startDate, 0), keyOf(endDate, MAX_PERIOD_ORDER)],
         prev: [keyOf(prevStartDate, 0), keyOf(prevEndDate, MAX_PERIOD_ORDER)],
@@ -58,11 +58,9 @@ const NAMESPACE = 'habitPeriod'
 export const initProvider = () => {
     const globalFilter = useHabitFilter()
     const periodRange = computed(() => computeRange(globalFilter.dateRange))
-    const [cachedFilter, setFilterCache] = useLocalStorage<FilterOption>(
+    const filter = localReactive<FilterOption>(
         'habit_period_filter', isFilterOption, { periodSize: 1, chartType: 'average' }
     )
-    const filter = reactive<FilterOption>(cachedFilter)
-    watch(() => filter, () => setFilterCache(toRaw(filter)), { deep: true })
 
     const { data: value } = useRequest(async () => {
         const { curr: currRange, prev: prevRange } = periodRange.value || {}

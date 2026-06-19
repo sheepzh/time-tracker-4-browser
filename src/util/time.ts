@@ -147,7 +147,9 @@ export const daysAgo = (start: number, end: number): [Date, Date] => {
     return [new Date(current - start * MILL_PER_DAY), new Date(current - end * MILL_PER_DAY)]
 }
 
-export function isSameDay(a: Date, b: Date): boolean {
+export function isSameDay(a: Date | number, b: Date | number): boolean {
+    a = typeof a === 'number' ? new Date(a) : a
+    b = typeof b === 'number' ? new Date(b) : b
     return a.getFullYear() === b.getFullYear()
         && a.getMonth() === b.getMonth()
         && a.getDate() === b.getDate()
@@ -197,7 +199,7 @@ export function getStartOfDay(target: Date | number): number {
  */
 export function getBirthday(): Date {
     const date = new Date()
-    // 2022-03-03
+    // 2021-03-03
     date.setFullYear(2021)
     date.setMonth(2)
     date.setDate(3)
@@ -205,7 +207,7 @@ export function getBirthday(): Date {
     return date
 }
 
-export const BIRTHDAY = '20220303'
+export const BIRTHDAY = '20210303'
 
 /**
  * Calc the day length
@@ -214,15 +216,17 @@ export const BIRTHDAY = '20220303'
  *  0 if 2022-06-10 00:00:00 to 2022-06-09 00:00:01
  *  2 if 2022-11-10 08:00:00 to 2022-11-11 00:00:01
  */
-export function getDayLength(dateStart: Date, dateEnd: Date): number {
-    let cursor = new Date(dateStart)
-    let dateDiff = 0
-    do {
-        dateDiff += 1
-        cursor = new Date(cursor.getTime() + MILL_PER_DAY)
-    } while (cursor.getTime() < dateEnd.getTime())
-    isSameDay(cursor, dateEnd) && dateDiff++
-    return dateDiff
+export function getDayLength(start: Date | number, end: Date | number): number {
+    const d1 = new Date(start)
+    const d2 = new Date(end)
+
+    if (d1 > d2) return 0
+
+    d1.setHours(0, 0, 0, 0)
+    d2.setHours(0, 0, 0, 0)
+
+    // Use round to correct the error caused by daylight saving time
+    return Math.round((d2.getTime() - d1.getTime()) / MILL_PER_DAY) + 1
 }
 
 /**
@@ -233,15 +237,23 @@ export function getDayLength(dateStart: Date, dateEnd: Date): number {
  *  []                      if 2022-06-10 00:00:00 to 2022-06-09 00:00:01
  *  [20221110, 20221111]    if 2022-11-10 08:00:00 to 2022-11-11 00:00:01
  */
-export function getAllDatesBetween(dateStart: Date, dateEnd: Date, formatter?: Converter<Date, string>): string[] {
-    let cursor = new Date(dateStart)
-    let dates: string[] = []
-    formatter = formatter ?? formatTimeYMD
-    do {
-        dates.push(formatter(cursor))
-        cursor = new Date(cursor.getTime() + MILL_PER_DAY)
-    } while (cursor.getTime() < dateEnd.getTime())
-    isSameDay(cursor, dateEnd) && dates.push(formatter(dateEnd))
+export function getAllDatesBetween(start: Date | number, end: Date | number, formatter?: Converter<Date, string>): string[] {
+    const current = new Date(start)
+    const target = new Date(end)
+
+    if (current > target) return []
+
+    current.setHours(0, 0, 0, 0)
+    target.setHours(0, 0, 0, 0)
+
+    const dates: string[] = []
+    const fmt = formatter ?? formatTimeYMD
+
+    while (current <= target) {
+        dates.push(fmt(current))
+        current.setDate(current.getDate() + 1)
+    }
+
     return dates
 }
 
@@ -262,7 +274,7 @@ export function parseTime(dateStr: string | undefined): Date | undefined {
 
 export type DateRange = Date | [Date?, Date?] | undefined
 
-export const cvtDateRange2Str = (range: DateRange): [string?, string?] | undefined => {
+export const cvtDateRange2Str = (range: DateRange | [number?, number?]): [string?, string?] | undefined => {
     if (range === undefined) return undefined
     if (range instanceof Date) {
         // The same day
@@ -270,5 +282,7 @@ export const cvtDateRange2Str = (range: DateRange): [string?, string?] | undefin
         return [date, date]
     }
     const [start, end] = range
-    return [start && formatTimeYMD(start), end && formatTimeYMD(end)]
+    const startStr = start === undefined ? undefined : formatTimeYMD(start)
+    const endStr = end === undefined ? undefined : formatTimeYMD(end)
+    return [startStr, endStr]
 }

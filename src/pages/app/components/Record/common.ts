@@ -4,7 +4,7 @@ import {
 } from "@api/sw/stat"
 import { t } from '@app/locale'
 import { getGroupName, isGroup, isSite } from "@util/stat"
-import { cvtDateRange2Str, type DateRange, formatTime, getBirthday } from "@util/time"
+import { cvtDateRange2Str, formatTime, getBirthday } from "@util/time"
 import type { RecordFilterOption, RecordSort } from "./types"
 
 /**
@@ -17,17 +17,15 @@ function computeSingleConfirmText(url: string, date: string): string {
     return t(msg => msg.item.operation.deleteConfirmMsg, { url, date })
 }
 
-function computeRangeConfirmText(url: string, dateRange: DateRange): string {
-    let [startDate, endDate] = dateRange instanceof Date ? [dateRange,] : dateRange ?? []
-    if (!startDate && !endDate) {
+function computeRangeConfirmText(url: string, dateRange: [number?, number?]): string {
+    let [startDate, endDate] = dateRange
+    if (startDate === undefined && endDate === undefined) {
         // Delete all
         return t(msg => msg.item.operation.deleteConfirmMsgAll, { url })
     }
     const dateFormat = t(msg => msg.calendar.dateFormat)
-    startDate = startDate ?? getBirthday()
-    endDate = endDate ?? new Date()
-    const start = formatTime(startDate, dateFormat)
-    const end = formatTime(endDate, dateFormat)
+    const start = formatTime(startDate ?? getBirthday(), dateFormat)
+    const end = formatTime(endDate ?? new Date(), dateFormat)
     return start === end
         // Only one day
         ? computeSingleConfirmText(url, start)

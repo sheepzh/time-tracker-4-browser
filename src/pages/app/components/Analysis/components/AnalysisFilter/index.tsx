@@ -6,7 +6,7 @@
  */
 
 import { useAnalysisTimeFormat } from "@app/components/Analysis/context"
-import TimeFormatFilterItem from '@app/components/common/filter/TimeFormatFilterItem'
+import { TimeFormatFilter } from '@app/components/common/filter'
 import Flex from "@pages/components/Flex"
 import { defineComponent } from "vue"
 import TargetSelect from "./TargetSelect"
@@ -17,7 +17,7 @@ const AnalysisFilter = defineComponent(() => {
     return () => (
         <Flex gap={10}>
             <TargetSelect />
-            <TimeFormatFilterItem
+            <TimeFormatFilter
                 modelValue={timeFormat.value}
                 onChange={val => timeFormat.value = val}
             />

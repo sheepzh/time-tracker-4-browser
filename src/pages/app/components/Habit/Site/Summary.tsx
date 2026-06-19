@@ -25,7 +25,7 @@ type Result = {
 }
 
 const computeSummary = (rows: tt4b.stat.Row[] = [], filter: FilterOption): Result => {
-    const [averageLen, exclusiveToday4Average, exclusiveDate] = computeAverageLen(filter?.dateRange)
+    const [averageLen, exclusiveToday4Average, exclusiveDate] = computeAverageLen(filter.dateRange)
     const totalFocus = sum(rows.map(r => r.focus))
     const totalFocus4Average = exclusiveDate ? sum(rows.filter(r => r.date !== exclusiveDate).map(r => r.focus)) : totalFocus
     const totalTime = sum(rows.map(r => r.time))

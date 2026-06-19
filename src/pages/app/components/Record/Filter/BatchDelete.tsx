@@ -5,13 +5,13 @@ import {
 import { type I18nKey, t } from '@app/locale'
 import { DeleteFilled } from "@element-plus/icons-vue"
 import { isGroup, isNormalSite, isSite } from "@util/stat"
-import { cvtDateRange2Str, DateRange, formatTime, formatTimeYMD, getBirthday } from "@util/time"
+import { cvtDateRange2Str, formatTime, getBirthday } from "@util/time"
 import { ElButton, ElMessage, ElMessageBox } from "element-plus"
 import { computed, defineComponent } from "vue"
 import { useRecordComponent, useRecordFilter } from "../context"
 import type { DisplayComponent, RecordFilterOption } from "../types"
 
-async function computeBatchDeleteMsg(selected: tt4b.stat.Row[], mergeDate: boolean, dateRange: DateRange): Promise<string> {
+async function computeBatchDeleteMsg(selected: tt4b.stat.Row[], mergeDate: boolean, dateRange: [number?, number?]): Promise<string> {
     const hosts: string[] = []
     const groupIds: number[] = []
     selected.forEach(row => {
@@ -31,8 +31,7 @@ async function computeBatchDeleteMsg(selected: tt4b.stat.Row[], mergeDate: boole
     let count2Delete = selected.length ?? 0
     if (mergeDate) {
         // All the items
-        const [start, end] = dateRange instanceof Date ? [dateRange,] : dateRange ?? []
-        const date: [string?, string?] = [start && formatTimeYMD(start), end && formatTimeYMD(end)]
+        const date = cvtDateRange2Str(dateRange) ?? []
         const siteCount = hosts.length ? await countSiteStatsByHosts(hosts, date) : 0
         const groupCount = groupIds.length ? await countGroupStatsByIds(groupIds, date) : 0
         count2Delete = siteCount + groupCount
@@ -51,16 +50,14 @@ async function computeBatchDeleteMsg(selected: tt4b.stat.Row[], mergeDate: boole
     }
 
     let key: I18nKey | undefined = undefined
-    let [startDate, endDate] = dateRange instanceof Date ? [dateRange,] : dateRange ?? []
-    if (!startDate && !endDate) {
+    let [startDate, endDate] = dateRange
+    if (startDate === undefined && endDate === undefined) {
         // Delete all
         key = msg => msg.record.batchDelete.confirmMsgAll
     } else {
         const dateFormat = t(msg => msg.calendar.dateFormat)
-        startDate = startDate ?? getBirthday()
-        endDate = endDate ?? new Date()
-        const start = formatTime(startDate, dateFormat)
-        const end = formatTime(endDate, dateFormat)
+        const start = formatTime(startDate ?? getBirthday(), dateFormat)
+        const end = formatTime(endDate ?? Date.now(), dateFormat)
         if (start === end) {
             // Single date
             key = msg => msg.record.batchDelete.confirmMsg
@@ -104,7 +101,7 @@ async function handleBatchDelete(displayComp: DisplayComponent | undefined, filt
     })
 }
 
-async function deleteBatch(selected: tt4b.stat.Row[], mergeDate: boolean, dateRange: DateRange) {
+async function deleteBatch(selected: tt4b.stat.Row[], mergeDate: boolean, dateRange: [number?, number?]) {
     if (mergeDate) {
         // Delete according to the date range
         const date = cvtDateRange2Str(dateRange)

@@ -5,7 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { daysAgo, formatPeriodCommon, formatTime, getMonthTime, getStartOfDay, isSameDay } from "../../src/util/time"
+import {
+    daysAgo, formatPeriodCommon, formatTime, getAllDatesBetween, getDayLength, getMonthTime, getStartOfDay, isSameDay,
+} from "@util/time"
 
 test('time', () => {
     const dateStr = '2020/05/01 00:00:01'
@@ -68,4 +70,35 @@ test("get start of day", () => {
     now.setHours(11, 30, 29, 999)
     const start = getStartOfDay(now)
     expect(start).toEqual(new Date(2022, 4, 2).getTime())
+})
+
+describe("getDayLength", () => {
+    test("base usage", () => {
+        expect(getDayLength(new Date(2022, 4, 1, 3), new Date(2022, 4, 3, 2))).toEqual(3)
+        expect(getDayLength(new Date(2022, 7, 30, 23), new Date(2022, 8, 1, 2))).toEqual(3)
+    })
+
+    test("the same day", () => {
+        const start = new Date(2022, 4, 1, 3).getTime()
+        const end = new Date(2022, 4, 1, 2).getTime()
+        expect(getDayLength(start, end)).toEqual(0)
+        expect(getDayLength(end, start)).toEqual(1)
+    })
+})
+
+describe("getAllDatesBetween", () => {
+    const start = new Date(2022, 4, 1, 3).getTime()
+    const end = new Date(2022, 4, 3, 2).getTime()
+
+    test("base usage", () => {
+        expect(getAllDatesBetween(start, end)).toEqual(['20220501', '20220502', '20220503'])
+        expect(getAllDatesBetween(start, end, d => d.getFullYear().toString())).toEqual(['2022', '2022', '2022'])
+    })
+
+    test("the same day", () => {
+        const start = new Date(2022, 4, 1, 3).getTime()
+        const end = new Date(2022, 4, 1, 2).getTime()
+        expect(getAllDatesBetween(start, end)).toEqual([])
+        expect(getAllDatesBetween(end, start)).toEqual(['20220501'])
+    })
 })
