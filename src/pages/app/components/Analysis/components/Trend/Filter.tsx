@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import DateRangeFilterItem from '@app/components/common/filter/DateRangeFilterItem'
+import { DateRangeFilter } from '@app/components/common/filter'
 import { t } from "@app/locale"
 import type { ElDatePickerShortcut } from "@pages/element-ui/types"
 import { daysAgo } from "@util/time"
@@ -23,12 +23,12 @@ const _default = defineComponent(() => {
     const dateRange = useAnalysisTrendDateRange()
 
     return () => (
-        <DateRangeFilterItem
+        <DateRangeFilter
             modelValue={dateRange.value}
             disabledDate={(date: Date) => date.getTime() > new Date().getTime()}
             shortcuts={SHORTCUTS}
             clearable={false}
-            onChange={newVal => newVal && (dateRange.value = newVal)}
+            onChange={([s, e]) => s && e && (dateRange.value = [s, e])}
         />
     )
 })

@@ -1,30 +1,13 @@
-type StoragePrimitive = string | boolean | number | undefined
-type StorageArray = Array<StorageValue>
-type StorageObject = { [key: string]: StorageValue }
+import type { TypeGuard } from 'typescript-guard'
+import { reactive, type Reactive, shallowRef, type ShallowRef, toRaw, watch } from 'vue'
+
 type StorageValue =
-    | StoragePrimitive
-    | StorageArray
+    | string | number | boolean | undefined
+    | StorageValue[]
     | StorageObject
+type StorageObject = { [key: string]: StorageValue }
 
-type Guard<T> = (val: unknown) => val is T
-
-export function useLocalStorage<T>(key: string, guard: Guard<T>, defaultValue: T): [T, ArgCallback<T>]
-export function useLocalStorage<T>(key: string, guard: Guard<T>): [T | undefined, (val: T | undefined) => void]
-export function useLocalStorage<T = StorageValue>(key: string, guard: Guard<T>, defaultVal?: T): [data: T | undefined, setter: ArgCallback<T | undefined>] {
-    const value = deserialize(localStorage.getItem(key), guard) ?? defaultVal
-
-    const setter = (val: T | undefined) => {
-        if (val === undefined) {
-            localStorage.removeItem(key)
-        } else {
-            localStorage.setItem(key, JSON.stringify(val))
-        }
-    }
-
-    return [value, setter]
-}
-
-function deserialize<T>(json: string | null, guard: Guard<T>): T | undefined {
+function deserialize<T>(json: string | null, guard: TypeGuard<T>): T | undefined {
     if (!json) return undefined
 
     try {
@@ -33,4 +16,24 @@ function deserialize<T>(json: string | null, guard: Guard<T>): T | undefined {
     } catch {
         return undefined
     }
+}
+
+export function localRef<T>(key: string, guard: TypeGuard<T>, defaultValue: T): ShallowRef<T>
+export function localRef<T>(key: string, guard: TypeGuard<T>): ShallowRef<T | undefined>
+export function localRef<T>(key: string, guard: TypeGuard<T>, defaultValue?: T): ShallowRef<T | undefined> {
+    const result = shallowRef<T | undefined>(deserialize(localStorage.getItem(key), guard) ?? defaultValue)
+    watch(result, val => val === undefined
+        ? localStorage.removeItem(key)
+        : localStorage.setItem(key, JSON.stringify(val))
+    )
+    return result
+}
+
+export function localReactive<T extends StorageObject>(key: string, guard: TypeGuard<T>, defaultValue: T): Reactive<T> {
+    const result = reactive(deserialize(localStorage.getItem(key), guard) ?? defaultValue)
+    watch(result,
+        val => localStorage.setItem(key, JSON.stringify(toRaw(val))),
+        { deep: true },
+    )
+    return result
 }

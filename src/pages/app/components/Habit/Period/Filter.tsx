@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import SelectFilterItem from '@app/components/common/filter/SelectFilterItem'
+import { SelectFilter } from '@app/components/common/filter'
 import { t } from '@app/locale'
 import { type HabitMessage } from '@i18n/message/app/habit'
 import Flex from '@pages/components/Flex'
@@ -41,9 +41,8 @@ const _default = defineComponent(() => {
 
     return () => (
         <Flex justify="space-between">
-            <SelectFilterItem
-                historyName='periodSize'
-                defaultValue={filter.periodSize?.toString?.()}
+            <SelectFilter
+                modelValue={filter.periodSize?.toString?.()}
                 options={allOptions()}
                 onChange={val => {
                     if (!val) return

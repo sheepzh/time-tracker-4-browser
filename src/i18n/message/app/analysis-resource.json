@@ -21,7 +21,6 @@
         "trend": {
             "title": "区间趋势",
             "activeDay": "活跃天数",
-            "totalDay": "区间总天数",
             "maxFocus": "单日最大浏览时长",
             "averageFocus": "单日平均浏览时长",
             "maxVisit": "单日最大访问次数",
@@ -52,7 +51,6 @@
         "trend": {
             "title": "時段趨勢",
             "activeDay": "活躍天數",
-            "totalDay": "時段總天數",
             "maxFocus": "單日最高瀏覽時數",
             "averageFocus": "單日均瀏覽時數",
             "maxVisit": "單日最高造訪次數",
@@ -83,7 +81,6 @@
         "trend": {
             "title": "Trends",
             "activeDay": "Active days",
-            "totalDay": "Period days",
             "maxFocus": "Daily maximum browsing time",
             "averageFocus": "Daily average browsing time",
             "maxVisit": "Daily maximum visits",
@@ -114,7 +111,6 @@
         "trend": {
             "title": "レンジトレンド",
             "activeDay": "アクティブな日",
-            "totalDay": "間隔の合計日数",
             "maxFocus": "1 日の最大閲覧時間",
             "averageFocus": "1 日あたりの平均閲覧時間",
             "maxVisit": "1 日あたりの最大訪問数",
@@ -145,7 +141,6 @@
         "trend": {
             "title": "Tendências",
             "activeDay": "Dias ativos",
-            "totalDay": "Total dias",
             "maxFocus": "Máx. tempo navegação",
             "averageFocus": "Méd. tempo navegação",
             "maxVisit": "Máx. visitas",
@@ -176,7 +171,6 @@
         "trend": {
             "title": "Тенденції",
             "activeDay": "Активні дні",
-            "totalDay": "Дні періоду",
             "maxFocus": "Максимальний час перегляду на день",
             "averageFocus": "Середній час перегляду на день",
             "maxVisit": "Максимальна кількість відвідувань на день",
@@ -207,7 +201,6 @@
         "trend": {
             "title": "Tendencias",
             "activeDay": "Días activos",
-            "totalDay": "Días del período",
             "maxFocus": "Tiempo máximo de navegación diario",
             "averageFocus": "Tiempo promedio de navegación diario",
             "maxVisit": "Visitas máximas diarias",
@@ -238,7 +231,6 @@
         "trend": {
             "title": "Trends",
             "activeDay": "Aktive Tage",
-            "totalDay": "Zeitraum Tage",
             "maxFocus": "Tägliche maximale Surfzeit",
             "averageFocus": "Tägliche durchschnittliche Surfzeit",
             "maxVisit": "Tägliche maximale Besuche",
@@ -269,7 +261,6 @@
         "trend": {
             "title": "Tendances",
             "activeDay": "Jours actifs",
-            "totalDay": "Période de temps",
             "maxFocus": "Temps de navigation maximum quotidien",
             "averageFocus": "Durée moyenne de navigation quotidienne",
             "maxVisit": "Visites maximales quotidiennes",
@@ -300,7 +291,6 @@
         "trend": {
             "title": "Тренды",
             "activeDay": "Активные дни",
-            "totalDay": "Дни периода",
             "maxFocus": "Ежедневное максимальное время просмотра",
             "averageFocus": "Ежедневное среднее время просмотра",
             "maxVisit": "Ежедневные максимальные посещения",
@@ -331,7 +321,6 @@
         "trend": {
             "title": "الاتجاهات",
             "activeDay": "أيام نشطة",
-            "totalDay": "إجمالي الأيام",
             "maxFocus": "الحد الأقصى لوقت التصفح اليومي",
             "averageFocus": "متوسط ​​وقت التصفح اليومي",
             "maxVisit": "الحد الأقصى للزيارات اليومية",
@@ -362,7 +351,6 @@
         "trend": {
             "title": "Eğilimler",
             "activeDay": "Aktif Günler",
-            "totalDay": "Periyot günleri",
             "maxFocus": "Günlük maksimum gezinme süresi",
             "averageFocus": "Günlük ortalama gezinme süresi",
             "maxVisit": "Günlük maksimum ziyaret sayısı",
@@ -393,7 +381,6 @@
         "trend": {
             "title": "Trendy",
             "activeDay": "Aktywnych dni",
-            "totalDay": "Okres dni",
             "maxFocus": "Maksymalny dzienny czas przeglądania",
             "averageFocus": "Średni dzienny czas przeglądania",
             "maxVisit": "Maksymalna dzienna ilość wizyt",
@@ -424,7 +411,6 @@
         "trend": {
             "title": "Tendenze",
             "activeDay": "Giorni attivi",
-            "totalDay": "Periodo: Giorni",
             "maxFocus": "Tempo di navigazione massimo giornaliero",
             "averageFocus": "Tempo medio di navigazione giornaliero",
             "maxVisit": "Visite massime giornaliere",

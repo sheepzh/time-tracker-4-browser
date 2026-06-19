@@ -1,8 +1,8 @@
 import { getSiteStatPage } from "@api/sw/stat"
-import { useLocalStorage, useProvide, useProvider, useRequest } from "@hooks"
+import { localReactive, useProvide, useProvider, useRequest } from "@hooks"
 import { cvtDateRange2Str, MILL_PER_DAY } from "@util/time"
 import { createObjectGuard, createStringUnionGuard, isInt } from 'typescript-guard'
-import { reactive, type ShallowRef, toRaw, watch } from "vue"
+import { type ShallowRef } from "vue"
 
 export type BizOption = {
     name: string
@@ -34,11 +34,9 @@ type Context = {
 const NAMESPACE = 'dashboardTopKVisit'
 
 export const initProvider = () => {
-    const [cachedFilter, setFilterCache] = useLocalStorage<TopKFilterOption>(
+    const filter = localReactive<TopKFilterOption>(
         `${NAMESPACE}_filter`, isTopKFilterOption, { topK: 6, dayNum: 30, topKChartType: 'pie' }
     )
-    const filter = reactive<TopKFilterOption>(cachedFilter)
-    watch(() => filter, () => setFilterCache(toRaw(filter)), { deep: true })
     const { data: value } = useRequest(async () => {
         const now = new Date()
         const startTime: Date = new Date(now.getTime() - MILL_PER_DAY * filter.dayNum)

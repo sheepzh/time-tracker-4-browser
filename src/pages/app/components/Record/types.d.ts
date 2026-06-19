@@ -1,4 +1,3 @@
-import { DateRange } from '@util/time'
 import type { Sort } from "element-plus"
 
 export type RecordSort = Omit<Sort, 'prop'> & {
@@ -6,8 +5,8 @@ export type RecordSort = Omit<Sort, 'prop'> & {
 }
 
 export type RecordFilterOption = {
-    query: string | undefined
-    dateRange: DateRange
+    query?: string
+    dateRange: [number?, number?]
     mergeDate: boolean
     siteMerge?: Exclude<tt4b.stat.MergeMethod, 'date'>
     cateIds?: number[]

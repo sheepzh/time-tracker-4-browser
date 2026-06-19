@@ -5,10 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import CategoryFilter from "@app/components/common/filter/CategoryFilter"
-import DateRangeFilterItem from "@app/components/common/filter/DateRangeFilterItem"
-import InputFilterItem from '@app/components/common/filter/InputFilterItem'
-import TimeFormatFilterItem from "@app/components/common/filter/TimeFormatFilterItem"
+import { CategoryFilter, DateRangeFilter, InputFilter, TimeFormatFilter } from '@app/components/common/filter'
 import { t } from '@app/locale'
 import Flex from "@pages/components/Flex"
 import { ElDatePickerShortcut } from '@pages/element-ui/types'
@@ -38,16 +35,16 @@ const _default = defineComponent<{}>(() => {
     return () => (
         <Flex justify="space-between" width="100%" gap={10} wrap>
             <Flex gap={10} wrap>
-                <InputFilterItem
+                <InputFilter
                     defaultValue={filter.query}
                     onSearch={str => filter.query = str}
                 />
-                <DateRangeFilterItem
+                <DateRangeFilter
                     startPlaceholder={t(msg => msg.calendar.label.startDate)}
                     endPlaceholder={t(msg => msg.calendar.label.endDate)}
                     disabledDate={(date: Date | number) => new Date(date) > new Date()}
                     shortcuts={dateShortcuts}
-                    modelValue={(filter.dateRange instanceof Date ? [filter.dateRange] : (filter.dateRange ?? [])) as [Date?, Date?]}
+                    modelValue={filter.dateRange}
                     onChange={val => filter.dateRange = val}
                 />
                 <CategoryFilter
@@ -55,7 +52,7 @@ const _default = defineComponent<{}>(() => {
                     modelValue={filter.cateIds}
                     onChange={val => filter.cateIds = val}
                 />
-                <TimeFormatFilterItem
+                <TimeFormatFilter
                     modelValue={filter.timeFormat}
                     onChange={val => filter.timeFormat = val}
                 />

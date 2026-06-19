@@ -11,7 +11,7 @@ import { computeAverageLen, generateTitleOption } from "../common"
 
 export type BizOption = {
     rows: tt4b.stat.Row[]
-    dateRange: [Date, Date]
+    dateRange: [number, number]
 }
 
 type EcOption = ComposeOption<

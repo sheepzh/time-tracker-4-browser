@@ -4,29 +4,29 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import Category from '@app/components/common/Category'
+import { ButtonFilter, CategoryFilter, InputFilter, MultiSelectFilter, } from '@app/components/common/filter'
 import { useCategory } from "@app/context"
 import { t } from '@app/locale'
-import { Connection, Delete, Grid, Plus } from "@element-plus/icons-vue"
+import { Check, Close, Connection, Delete, Grid, Plus } from "@element-plus/icons-vue"
 import Flex from "@pages/components/Flex"
+import { ElButton, ElDialog, ElForm, ElFormItem } from 'element-plus'
 import { computed, defineComponent, watch } from "vue"
-import DropdownButton, { type DropdownButtonItem } from '../common/DropdownButton'
-import ButtonFilterItem from "../common/filter/ButtonFilterItem"
-import CategoryFilter from '../common/filter/CategoryFilter'
-import InputFilterItem from "../common/filter/InputFilterItem"
-import MultiSelectFilterItem from '../common/filter/MultiSelectFilterItem'
-import { ALL_TYPES } from "./common"
-import { useSiteManageFilter } from './useSiteManage'
+import DropdownButton, { type DropdownButtonItem } from '../../common/DropdownButton'
+import { ALL_TYPES } from "../common"
+import { useSiteManageFilter } from '../context'
+import { useBatch } from './useBatch'
 
 type BatchOpt = 'change' | 'disassociate' | 'delete'
 
-const _default = defineComponent<{
-    onCreate: NoArgCallback
-    onBatchChangeCate: NoArgCallback
-    onBatchDisassociate: NoArgCallback
-    onBatchDelete: NoArgCallback
-}>(props => {
+const Filter = defineComponent<{}>(() => {
     const cate = useCategory()
-    const filter = useSiteManageFilter()
+    const { filter, modifyInst } = useSiteManageFilter()
+    const {
+        batchChange, batchDisassociate, batchDelete,
+        selectVisible, closeSelect, targetCate,
+        onCateChangeConfirm,
+    } = useBatch()
 
     const cateDisabled = computed(() => {
         const types = filter.types
@@ -45,31 +45,31 @@ const _default = defineComponent<{
         key: 'change',
         label: t(msg => msg.siteManage.cate.batchChange),
         icon: Grid,
-        onClick: props.onBatchChangeCate,
+        onClick: batchChange,
     }, {
         key: 'disassociate',
         label: t(msg => msg.siteManage.cate.batchDisassociate),
         icon: Connection,
-        onClick: props.onBatchDisassociate,
+        onClick: batchDisassociate,
     }, {
         key: 'delete',
         label: t(msg => msg.button.batchDelete),
         icon: Delete,
-        onClick: props.onBatchDelete,
+        onClick: batchDelete,
     }]
 
     return () => (
         <Flex gap={10} justify="space-between" wrap>
             <Flex gap={10} wrap>
-                <InputFilterItem
+                <InputFilter
                     placeholder={`${t(msg => msg.item.host)} / ${t(msg => msg.siteManage.column.alias)}`}
                     onSearch={val => filter.query = val}
                     width={200}
                 />
-                <MultiSelectFilterItem
+                <MultiSelectFilter
                     placeholder={t(msg => msg.siteManage.column.type)}
                     options={ALL_TYPES.map(type => ({ value: type, label: t(msg => msg.siteManage.type[type].name) }))}
-                    defaultValue={filter.types ?? []}
+                    modelValue={filter.types ?? []}
                     onChange={val => filter.types = val as tt4b.site.Type[]}
                 />
                 <CategoryFilter
@@ -80,15 +80,40 @@ const _default = defineComponent<{
             </Flex>
             <Flex gap={10}>
                 <DropdownButton items={items} />
-                <ButtonFilterItem
+                <ButtonFilter
                     text={msg => msg.button.create}
                     icon={Plus}
                     type="success"
-                    onClick={props.onCreate}
+                    onClick={() => modifyInst.value?.add()}
                 />
             </Flex>
+            <ElDialog
+                title={t(msg => msg.siteManage.cate.batchChange)}
+                width={300}
+                modelValue={selectVisible.value}
+                onClose={closeSelect}
+                v-slots={{
+                    default: () => <>
+                        <ElForm>
+                            <ElFormItem label={t(msg => msg.siteManage.cate.name)} required>
+                                <Category.Select modelValue={targetCate.value} onChange={value => targetCate.value = value} />
+                            </ElFormItem>
+                        </ElForm>
+                    </>,
+                    footer: () => <>
+                        <Flex justify="end" gap={12}>
+                            <ElButton icon={Close} type="info" onClick={closeSelect}>
+                                {t(msg => msg.button.cancel)}
+                            </ElButton>
+                            <ElButton icon={Check} type="primary" onClick={onCateChangeConfirm}>
+                                {t(msg => msg.button.confirm)}
+                            </ElButton>
+                        </Flex>
+                    </>
+                }}
+            />
         </Flex>
     )
-}, { props: ['onBatchChangeCate', 'onBatchDelete', 'onBatchDisassociate', 'onCreate'] })
+})
 
-export default _default
+export default Filter

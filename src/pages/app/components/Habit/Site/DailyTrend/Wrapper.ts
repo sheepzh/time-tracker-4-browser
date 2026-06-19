@@ -35,7 +35,7 @@ const TITLE = t(msg => msg.habit.site.trend.title)
 
 export type BizOption = {
     rows: tt4b.stat.Row[]
-    dateRange: [Date, Date]
+    dateRange: [number, number]
     timeFormat: tt4b.ui.TimeFormat
 }
 
@@ -92,8 +92,7 @@ const legendOptionOf = (color: LinearGradientObject, name: string): Exclude<Lege
 function generateOption(bizOption: BizOption): EcOption {
     const { dateRange, rows, timeFormat } = bizOption
 
-    const [start, end] = dateRange
-    const allDates = getAllDatesBetween(start, end)
+    const allDates = getAllDatesBetween(dateRange[0], dateRange[1])
     const focusMap = groupBy(rows, r => r.date, l => sum(l.map(e => e.focus)))
     const visitMap = groupBy(rows, r => r.date, l => sum(l.map(e => e.time)))
     const siteMap = groupBy(rows, r => r.date, l => new Set(l.map(e => getHost(e))).size)

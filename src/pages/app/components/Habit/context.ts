@@ -11,7 +11,7 @@ import { reactive, Reactive } from "vue"
 
 export type FilterOption = {
     timeFormat: tt4b.ui.TimeFormat
-    dateRange: [Date, Date]
+    dateRange: [number, number]
 }
 
 type Context = {
@@ -21,8 +21,9 @@ type Context = {
 const NAMESPACE = 'habit'
 
 export const initHabit = () => {
+    const [defaultStart, defaultEnd] = daysAgo(7, 0)
     const filter = reactive<FilterOption>({
-        dateRange: daysAgo(7, 0),
+        dateRange: [defaultStart.getTime(), defaultEnd.getTime()],
         timeFormat: "default",
     })
     useProvide<Context>(NAMESPACE, { filter })

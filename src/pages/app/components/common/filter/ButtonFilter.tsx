@@ -4,19 +4,17 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { useXsState } from '@hooks'
 import { type I18nKey, t } from '@app/locale'
+import { useXsState } from '@hooks'
 import { type ButtonProps, ElButton } from "element-plus"
 import { defineComponent } from "vue"
 
-type Props = {
-    icon: ButtonProps['icon']
+type Props = Pick<ButtonProps, 'icon' | 'type'> & {
     text: I18nKey
-    type?: ButtonProps['type']
     onClick?: NoArgCallback
 }
 
-const ButtonFilterItem = defineComponent<Props>(props => {
+const ButtonFilter = defineComponent<Props>(props => {
     const isXs = useXsState()
     return () => isXs.value
         ? (
@@ -34,4 +32,4 @@ const ButtonFilterItem = defineComponent<Props>(props => {
         )
 }, { props: ['icon', 'onClick', 'text', 'type'] })
 
-export default ButtonFilterItem
+export default ButtonFilter

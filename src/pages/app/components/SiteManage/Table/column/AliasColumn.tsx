@@ -7,7 +7,7 @@
 
 import { fillInitialAlias, getInitialAlias, modifySite } from "@api/sw/site"
 import Editable from "@app/components/common/Editable"
-import { useSiteManageTable } from '@app/components/SiteManage/useSiteManage'
+import { useSiteManageTable } from '@app/components/SiteManage/context'
 import { t } from '@app/locale'
 import { MagicStick } from "@element-plus/icons-vue"
 import { useManualRequest } from '@hooks'

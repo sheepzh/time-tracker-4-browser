@@ -13,7 +13,7 @@ import EditableImg from '@pages/components/EditableImg'
 import Flex from '@pages/components/Flex'
 import { ElSwitch, ElTable, ElTableColumn, type RenderRowData } from "element-plus"
 import { defineComponent } from "vue"
-import { useSiteManageTable } from '../useSiteManage'
+import { useSiteManageTable } from '../context'
 import AliasColumn from "./column/AliasColumn"
 import OperationColumn from "./column/OperationColumn"
 import TypeColumn from "./column/TypeColumn"
@@ -21,7 +21,7 @@ import TypeColumn from "./column/TypeColumn"
 type RenderParam = RenderRowData<tt4b.site.SiteInfo>
 
 const _default = defineComponent<{}>(() => {
-    const { setSelected, refresh, pagination } = useSiteManageTable()
+    const { selected, refresh, pagination } = useSiteManageTable()
 
     const { refresh: changeIcon } = useManualRequest((row: tt4b.site.SiteInfo, iconUrl: string | undefined) => {
         const { type, host, alias } = row
@@ -35,7 +35,7 @@ const _default = defineComponent<{}>(() => {
             data={pagination.value.list}
             height="100%"
             highlightCurrentRow border fit
-            onSelection-change={setSelected}
+            onSelection-change={val => selected.value = val}
         >
             <ElTableColumn type="selection" align="center" />
             <ElTableColumn

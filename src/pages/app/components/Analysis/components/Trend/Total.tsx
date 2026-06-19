@@ -33,7 +33,7 @@ const _default = defineComponent<Props>(props => {
     return () => (
         <Flex flex={1} column gap={1}>
             <KanbanIndicatorCell
-                mainName={`${t(msg => msg.analysis.trend.activeDay)}/${t(msg => msg.analysis.trend.totalDay)}`}
+                mainName={t(msg => msg.analysis.trend.activeDay)}
                 mainValue={computeDayValue(props.activeDay, rangeLength.value)}
                 subRing={props.activeDay}
                 containerStyle={INDICATOR_CONTAINER_STYLE}

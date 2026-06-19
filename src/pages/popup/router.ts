@@ -1,4 +1,3 @@
-import { useLocalStorage } from '@hooks'
 import { createStringUnionGuard } from 'typescript-guard'
 import type { App } from "vue"
 import { createRouter, createWebHashHistory, type RouteRecordRedirect, type RouteRecordSingleView } from "vue-router"
@@ -9,11 +8,9 @@ type MyRoute =
     | (Omit<RouteRecordRedirect, 'redirect'> & { redirect: Path })
 
 
-const createRoutes = (stored: tt4b.ui.PopupMenu | undefined): MyRoute[] => [
+// Not to set redirect path for '/', which is managed by menu context
+const createRoutes = (): MyRoute[] => [
     {
-        path: '/',
-        redirect: stored ? `/${stored}` : '/percentage',
-    }, {
         path: '/percentage',
         component: () => import('./components/Percentage'),
     }, {
@@ -28,8 +25,7 @@ const createRoutes = (stored: tt4b.ui.PopupMenu | undefined): MyRoute[] => [
 export const isMenu = createStringUnionGuard<tt4b.ui.PopupMenu>('limit', 'percentage', 'ranking')
 
 export default (app: App) => {
-    const [stored] = useLocalStorage<tt4b.ui.PopupMenu>('popup_menu', isMenu)
-    const routes = createRoutes(stored)
+    const routes = createRoutes()
     const history = createWebHashHistory()
     const router = createRouter({ routes, history })
     app.use(router)

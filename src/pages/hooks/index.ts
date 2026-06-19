@@ -1,4 +1,3 @@
-export * from "./useCached"
 export * from "./useCopy"
 export * from "./useCount"
 export * from "./useDebounce"

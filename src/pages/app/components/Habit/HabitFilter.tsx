@@ -5,8 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import DateRangeFilterItem from '@app/components/common/filter/DateRangeFilterItem'
-import TimeFormatFilterItem from '@app/components/common/filter/TimeFormatFilterItem'
+import { DateRangeFilter, TimeFormatFilter } from '@app/components/common/filter'
 import { t } from '@app/locale'
 import Flex from "@pages/components/Flex"
 import { ElDatePickerShortcut } from '@pages/element-ui/types'
@@ -33,14 +32,14 @@ const _default = defineComponent(() => {
 
     return () => (
         <Flex gap={10}>
-            <DateRangeFilterItem
+            <DateRangeFilter
                 clearable={false}
                 modelValue={filter.dateRange}
                 shortcuts={SHORTCUTS}
                 onChange={([s, e]) => s && e && (filter.dateRange = [s, e])}
                 disabledDate={d => d.getTime() < Date.now() - MILL_PER_DAY * 366}
             />
-            <TimeFormatFilterItem
+            <TimeFormatFilter
                 modelValue={filter.timeFormat}
                 onChange={v => filter.timeFormat = v}
             />

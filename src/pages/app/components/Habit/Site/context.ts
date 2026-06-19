@@ -26,7 +26,7 @@ export const initProvider = () => {
         defaultValue: [],
     })
 
-    const dateRangeLength = computed(() => getDayLength(filter.dateRange?.[0], filter.dateRange?.[1]))
+    const dateRangeLength = computed(() => getDayLength(filter.dateRange[0], filter.dateRange[1]))
 
     const { data: dateMergedRows } = useRequest(() => listSiteStats({ date: cvtDateRange2Str(filter.dateRange), mergeDate: true }), {
         deps: [() => filter.dateRange],

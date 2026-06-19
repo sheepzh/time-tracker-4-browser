@@ -6,7 +6,7 @@ import LimitToolbar from './LimitToolbar'
 import Menu from "./Menu"
 
 const Footer = defineComponent(() => {
-    const { menu } = useMenu()
+    const menu = useMenu()
 
     return () => (
         <Flex justify="space-between" marginBottom={2} marginInline={1}>

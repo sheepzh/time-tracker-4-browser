@@ -18,7 +18,7 @@ const reference = () => (
 
 const Option = defineComponent(() => {
     const option = useOption()
-    const { menu } = useMenu()
+    const menu = useMenu()
     const isPercentage = computed(() => menu.value === 'percentage')
 
     const toggleName = () => {

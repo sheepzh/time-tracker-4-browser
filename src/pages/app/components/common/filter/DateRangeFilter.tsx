@@ -5,14 +5,14 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { useXsState } from '@hooks'
 import { t } from "@app/locale"
 import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
 import { css } from '@emotion/css'
+import { useXsState } from '@hooks'
+import { dateFormat } from "@i18n/element"
 import Flex from '@pages/components/Flex'
 import { getDatePickerIconSlots } from '@pages/element-ui/rtl'
 import { ElDatePickerShortcut } from '@pages/element-ui/types'
-import { dateFormat } from "@i18n/element"
 import { isRtl } from '@util/document'
 import { MILL_PER_DAY } from '@util/time'
 import { type DatePickerProps, ElButton, ElDatePicker, ElText, useNamespace } from "element-plus"
@@ -23,7 +23,7 @@ const clearShortcut = (): ElDatePickerShortcut => ({
     value: [new Date(0), new Date(0)],
 })
 
-type Props = ModelValue<[Date?, Date?]> & {
+type Props = ModelValue<[number?, number?]> & {
     disabledDate?: (date: Date) => boolean
     startPlaceholder?: string
     endPlaceholder?: string
@@ -58,7 +58,7 @@ const useRange = (props: Props) => {
         if (!start) return true
         const { disabledDate } = props
         if (!disabledDate) return false
-        const lastDay = new Date(start.getTime() - MILL_PER_DAY)
+        const lastDay = new Date(start - MILL_PER_DAY)
         return disabledDate(lastDay)
     })
 
@@ -67,7 +67,7 @@ const useRange = (props: Props) => {
         if (!end) return true
         const { disabledDate } = props
         if (!disabledDate) return false
-        const nextDate = new Date(end.getTime() + MILL_PER_DAY)
+        const nextDate = new Date(end + MILL_PER_DAY)
         return disabledDate(nextDate)
     })
 
@@ -76,8 +76,8 @@ const useRange = (props: Props) => {
         const [start, end] = modelValue ?? []
         if (!start || !end) return
         const millDiff = MILL_PER_DAY * dayNum
-        const newStart = new Date(start.getTime() + millDiff)
-        const newEnd = new Date(end.getTime() + millDiff)
+        const newStart = start + millDiff
+        const newEnd = end + millDiff
         onChange?.([newStart, newEnd])
     }
 
@@ -110,9 +110,9 @@ const DefaultRange = defineComponent<Props>(props => {
         return start && end ? [start, end] : undefined
     })
 
-    const handleUpdate = (innerVal: [Date, Date] | undefined) => {
+    const handleUpdate = (innerVal: [number, number] | undefined) => {
         let value = innerVal ?? [undefined, undefined]
-        if (innerVal?.[0].getTime() === 0 && innerVal[1].getTime() === 0) {
+        if (innerVal?.[0] === 0 && innerVal[1] === 0) {
             // clear shortcuts
             value = [undefined, undefined]
         }
@@ -174,7 +174,7 @@ const DefaultRange = defineComponent<Props>(props => {
 }, { props: ALL_PROPS })
 
 type XsDatePickerProps =
-    & ModelValue<Date | undefined>
+    & ModelValue<number | undefined>
     & Partial<Pick<DatePickerProps, 'placeholder' | 'disabledDate' | 'clearable'>>
 
 const XsDatePicker: FunctionalComponent<XsDatePickerProps> = props => {
@@ -200,9 +200,9 @@ const XsDatePicker: FunctionalComponent<XsDatePickerProps> = props => {
 }
 
 const XsRange = defineComponent<Props>(props => {
-    const handleChange = (start: Date | undefined, end: Date | undefined) => {
+    const handleChange = (start: number | undefined, end: number | undefined) => {
         const needReverse = start && end && start >= end
-        const arr: [Date?, Date?] = needReverse ? [end, start] : [start, end]
+        const arr: [number?, number?] = needReverse ? [end, start] : [start, end]
         props.onChange?.(arr)
     }
 
@@ -227,9 +227,9 @@ const XsRange = defineComponent<Props>(props => {
     )
 }, { props: ALL_PROPS })
 
-const DateRangeFilterItem = defineComponent<Props>(props => {
+const DateRangeFilter = defineComponent<Props>(props => {
     const isXs = useXsState()
     return () => isXs.value ? <XsRange {...props} /> : <DefaultRange {...props} />
 }, { props: ALL_PROPS })
 
-export default DateRangeFilterItem
+export default DateRangeFilter
