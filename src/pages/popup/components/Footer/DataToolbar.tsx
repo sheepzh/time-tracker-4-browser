@@ -9,10 +9,7 @@ import DurationSelect from './DurationSelect'
 
 const DataToolbar = defineComponent(() => {
     const query = useQuery()
-
-    const { mergeItems } = useSiteMerge({
-        onGroupDisabled: () => query.mergeMethod === 'group' && (query.mergeMethod = undefined)
-    })
+    const { methods } = useSiteMerge()
 
     return () => (
         <Flex gap={8}>
@@ -26,7 +23,7 @@ const DataToolbar = defineComponent(() => {
                     style={{ width: '90px' }}
                     options={[
                         { value: '', label: t(msg => msg.shared.merge.mergeMethod.notMerge) },
-                        ...mergeItems.value.map(value => ({ value, label: t(msg => msg.shared.merge.mergeMethod[value]) })),
+                        ...methods.value.map(value => ({ value, label: t(msg => msg.shared.merge.mergeMethod[value]) })),
                     ]}
                 />
             </Flex>

@@ -1,6 +1,6 @@
-import { onMounted, shallowRef } from 'vue'
+import { onMounted, type ShallowRef, shallowRef } from 'vue'
 
-export function useDocumentVisibility() {
+export function useDocumentVisibility(): Readonly<ShallowRef<DocumentVisibilityState>> {
     if (typeof document === 'undefined') return shallowRef('visible')
 
     const visibility = shallowRef(document.visibilityState)

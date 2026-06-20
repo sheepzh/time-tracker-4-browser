@@ -4,28 +4,32 @@ import { Calendar, Collection, Link, Menu } from "@element-plus/icons-vue"
 import { useSiteMerge } from '@hooks'
 import Flex from "@pages/components/Flex"
 import { ElCheckboxButton, ElCheckboxGroup, ElIcon, ElText, ElTooltip } from "element-plus"
-import { computed, defineComponent, StyleValue } from "vue"
-import { type JSX } from "vue/jsx-runtime"
+import { createArrayGuard, createStringUnionGuard } from 'typescript-guard'
+import { type Component, computed, defineComponent, type StyleValue } from "vue"
 import { useRecordFilter } from "../context"
 
-const METHOD_ICONS: Record<tt4b.stat.MergeMethod, JSX.Element> = {
-    cate: <Collection />,
-    date: <Calendar />,
-    domain: <Link />,
-    group: <Menu />,
+const METHOD_ICONS: Record<tt4b.stat.MergeMethod, Component> = {
+    cate: Collection,
+    date: Calendar,
+    domain: Link,
+    group: Menu,
 }
+
+const isMergeMethods = createArrayGuard(
+    createStringUnionGuard<tt4b.stat.MergeMethod>('cate', 'date', 'domain', 'group')
+)
+
+const ICON_STYLE: StyleValue = { margin: '-6px' }
 
 const MergeFilterItem = defineComponent<{}>(() => {
     const filter = useRecordFilter()
     const cate = useCategory()
-    const { mergeItems: siteMergeItems } = useSiteMerge({
-        onGroupDisabled: () => mergeMethod.value.filter(v => v !== 'group')
-    })
-    const mergeItems = computed(() => {
-        const res = ['date', ...siteMergeItems.value] satisfies tt4b.stat.MergeMethod[]
+    const { methods: siteMergeMethods } = useSiteMerge()
+    const items = computed(() => {
+        const res = ['date', ...siteMergeMethods.value] satisfies tt4b.stat.MergeMethod[]
         return cate.enabled ? res : res.filter(m => m !== 'cate')
     })
-    const mergeMethod = computed({
+    const selected = computed({
         get: () => {
             const { mergeDate, siteMerge } = filter
             const res: tt4b.stat.MergeMethod[] = []
@@ -36,7 +40,7 @@ const MergeFilterItem = defineComponent<{}>(() => {
         set: val => {
             filter.mergeDate = val.includes('date')
             const oldSiteMerge = filter.siteMerge
-            const newSiteMerge = siteMergeItems.value
+            const newSiteMerge = siteMergeMethods.value
                 .filter(t => val.includes(t))
                 .sort(t => oldSiteMerge?.includes(t) ? 1 : -1)[0]
             filter.siteMerge = newSiteMerge
@@ -44,19 +48,18 @@ const MergeFilterItem = defineComponent<{}>(() => {
         }
     })
 
+    const handleChange = (val: unknown) => isMergeMethods(val) && (selected.value = val)
+
     return () => (
         <Flex gap={9}>
             <ElText tag="b" type="info">
                 {t(msg => msg.shared.merge.mergeBy)}
             </ElText>
-            <ElCheckboxGroup
-                modelValue={mergeMethod.value}
-                onChange={val => mergeMethod.value = val as tt4b.stat.MergeMethod[]}
-            >
-                {mergeItems.value.map(method => (
+            <ElCheckboxGroup modelValue={selected.value} onChange={handleChange}>
+                {items.value.map(method => (
                     <ElCheckboxButton value={method}>
                         <ElTooltip content={t(msg => msg.shared.merge.mergeMethod[method])} offset={20} placement="top">
-                            <span style={{ margin: '-6px' } satisfies StyleValue}>
+                            <span style={ICON_STYLE}>
                                 <ElIcon>{METHOD_ICONS[method]}</ElIcon>
                             </span>
                         </ElTooltip>
@@ -65,6 +68,6 @@ const MergeFilterItem = defineComponent<{}>(() => {
             </ElCheckboxGroup>
         </Flex>
     )
-}, { props: ['hideCate'] })
+})
 
 export default MergeFilterItem

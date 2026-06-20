@@ -1,11 +1,10 @@
 import { t } from '@app/locale'
 import { InfoFilled } from '@element-plus/icons-vue'
-import { useShadow } from '@hooks'
 import Flex from '@pages/components/Flex'
 import { groupBy } from '@util/array'
 import { MILL_PER_HOUR, MILL_PER_MINUTE } from '@util/time'
 import { ElIcon, ElRate, ElText, ElTooltip } from 'element-plus'
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, type FunctionalComponent } from 'vue'
 import { useTimelineContext } from './context'
 
 const MAX_SCORE = 5
@@ -72,24 +71,21 @@ const analyze = (activities: tt4b.timeline.Activity[]): { busy: number, focus: n
     return { busy, focus }
 }
 
-const Score = defineComponent<{ score: number, label: string, desc: string }>(props => {
-    const [score] = useShadow(() => props.score)
-    return () => (
-        <Flex align='center' column justify='center' gap={10}>
-            <ElText>
-                {`${props.label} `}
-                <ElTooltip content={props.desc}>
-                    <ElText size='small'>
-                        <ElIcon>
-                            <InfoFilled />
-                        </ElIcon>
-                    </ElText>
-                </ElTooltip>
-            </ElText>
-            <ElRate disabled modelValue={parseFloat(score.value.toFixed(1))} showScore />
-        </Flex>
-    )
-}, { props: ['desc', 'label', 'score'] })
+const Score: FunctionalComponent<{ score: number, label: string, desc: string }> = props => (
+    <Flex align='center' column justify='center' gap={10}>
+        <ElText>
+            {`${props.label} `}
+            <ElTooltip content={props.desc}>
+                <ElText size='small'>
+                    <ElIcon>
+                        <InfoFilled />
+                    </ElIcon>
+                </ElText>
+            </ElTooltip>
+        </ElText>
+        <ElRate disabled modelValue={parseFloat(props.score.toFixed(1))} showScore />
+    </Flex>
+)
 
 const Summary = defineComponent<{}>(() => {
     const { activities } = useTimelineContext()

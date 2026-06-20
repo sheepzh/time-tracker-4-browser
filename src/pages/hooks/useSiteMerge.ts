@@ -2,21 +2,17 @@ import { getOption } from '@api/sw/option'
 import { computed } from 'vue'
 import { useRequest } from './useRequest'
 
-type Options = {
-    onGroupDisabled?: NoArgCallback
-}
+export const useSiteMerge = () => {
+    const { data: tabGroupEnabled } = useRequest(async () => {
+        const option = await getOption()
+        return option?.countTabGroup ?? false
+    }, { defaultValue: false })
 
-export const useSiteMerge = ({ onGroupDisabled }: Options) => {
-    const { data: countTabGroup } = useRequest(() => getOption().then(o => o?.countTabGroup ?? false), {
-        defaultValue: false,
-        onSuccess: v => !v && onGroupDisabled?.()
-    })
-
-    const mergeItems = computed(() => {
-        const res: (Exclude<tt4b.stat.MergeMethod, 'date'>)[] = ['cate', 'domain']
-        countTabGroup.value && res.push('group')
+    const methods = computed(() => {
+        const res: Exclude<tt4b.stat.MergeMethod, 'date'>[] = ['cate', 'domain']
+        tabGroupEnabled.value && res.push('group')
         return res
     })
 
-    return { mergeItems, countTabGroup }
+    return { methods, tabGroupEnabled }
 }
