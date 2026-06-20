@@ -31,8 +31,6 @@ export type SiteManageMessage = {
     msg: {
         hostExistWarn: string
         existedTag: string
-        noSelected: string
-        noSupported: string
         disassociatedMsg: string
         batchDeleteMsg: string
     }

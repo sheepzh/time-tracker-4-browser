@@ -11,7 +11,6 @@ export type RecordMessage = {
     exportFileName: string
     total: string
     batchDelete: {
-        noSelectedMsg: string
         confirmMsg: string
         confirmMsgAll: string
         confirmMsgRange: string

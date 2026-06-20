@@ -3,7 +3,6 @@
         "exportFileName": "我的上网时间",
         "total": "合计访问 {visit} 次, 共 {focus}",
         "batchDelete": {
-            "noSelectedMsg": "请先在表格中勾选需要删除的行",
             "confirmMsg": "{example} 等在 {date} 的 {count} 条记录将会被删除！",
             "confirmMsgAll": "{example} 等的 {count} 条记录将会被删除！",
             "confirmMsgRange": "{example} 等在 {start} 至 {end} 之间的 {count} 条记录将会被删除！"
@@ -24,7 +23,6 @@
         "exportFileName": "我的上網時間紀錄",
         "total": "總造訪次數：{visit} 次，總使用時長：{focus}",
         "batchDelete": {
-            "noSelectedMsg": "請先勾選要刪除的資料列",
             "confirmMsg": "將刪除 {example} 等於 {date} 的 {count} 筆紀錄！",
             "confirmMsgAll": "將刪除 {example} 等的 {count} 筆紀錄！",
             "confirmMsgRange": "將刪除 {example} 等從 {start} 至 {end} 的 {count} 筆紀錄！"
@@ -45,7 +43,6 @@
         "exportFileName": "My_Browsing_Time",
         "total": "Total visits: {visit} times, total duration: {focus}",
         "batchDelete": {
-            "noSelectedMsg": "Please select the row you want to delete in the table first",
             "confirmMsg": "{count} records such as [{example}] of {date} will be deleted!",
             "confirmMsgAll": "{count} records such as [{example}] will be deleted!",
             "confirmMsgRange": "{count} records such as [{example}] between {start} and {end} will be deleted!"
@@ -66,7 +63,6 @@
         "exportFileName": "私のウェブ時間データ",
         "total": "合計訪問回数： {visit} 回、合計時間： {focus}",
         "batchDelete": {
-            "noSelectedMsg": "最初にテーブルで削除する行にチェックマークを付けてください",
             "confirmMsg": "{date} の {example} のようなサイトの {count} レコードは削除されます！",
             "confirmMsgAll": "{example} のようなサイトの {count} レコードは削除されます！",
             "confirmMsgRange": "{start} と {end} の間の {example} のようなサイトの {count} レコードが削除されます！"
@@ -87,7 +83,6 @@
         "exportFileName": "Meu_Tempo_de_Navegação",
         "total": "Visitas Totais: {visit} vezes, total duração: {focus}",
         "batchDelete": {
-            "noSelectedMsg": "Por favor, selecione a linha que deseja excluir na tabela primeiro",
             "confirmMsg": "{count} registros de sites como {example} em {date} serão excluídos!",
             "confirmMsgAll": "{count} registros para sites como {example} serão excluídos!",
             "confirmMsgRange": "{count} registros para sites como {example} entre {start} e {end} serão excluídos!"
@@ -107,7 +102,6 @@
     "uk": {
         "total": "Всього відвідувань: {visit} разів, загальна тривалість: {focus}",
         "batchDelete": {
-            "noSelectedMsg": "Спершу виберіть рядок, який ви хочете видалити",
             "confirmMsg": "{count} записів для сайтів, як-от {example}, за {date} будуть видалені!",
             "confirmMsgAll": "{count} записів для сайтів, як-от {example}, будуть видалені!",
             "confirmMsgRange": "{count} записів для сайтів, як-от {example}, між {start} та {end} будуть видалені!"
@@ -128,7 +122,6 @@
         "exportFileName": "Mi_Tiempo_De_Navegación",
         "total": "Visitas totales: {visit} veces, duración total: {focus}",
         "batchDelete": {
-            "noSelectedMsg": "Por favor, selecciona en la tabla primero la fila que deseas eliminar",
             "confirmMsg": "¡Se eliminarán {count} registros de sitios como {example} del {date}!",
             "confirmMsgAll": "¡Se eliminarán {count} registros de sitios como {example}!",
             "confirmMsgRange": "¡Se eliminarán {count} registros de sitios como {example} entre {start} y {end}!"
@@ -149,7 +142,6 @@
         "exportFileName": "Timer_Daten",
         "total": "Besuche Gesamt: {visit}, Gesamtdauer: {focus}",
         "batchDelete": {
-            "noSelectedMsg": "Bitte wählen Sie die Zeile aus, die Sie zuerst in der Tabelle löschen möchten",
             "confirmMsg": "{count} Einträge für Sites wie {example} auf {date} werden gelöscht!",
             "confirmMsgAll": "{count} Einträge für Sites wie {example} werden gelöscht!",
             "confirmMsgRange": "{count} Einträge für Sites wie {example} zwischen {start} und {end} werden gelöscht!"
@@ -170,7 +162,6 @@
         "exportFileName": "Mon_heure_de_navigation",
         "total": "Visites totales : {visit} fois, durée totale : {focus}",
         "batchDelete": {
-            "noSelectedMsg": "Veuillez d'abord sélectionner la ligne que vous souhaitez supprimer dans le tableau",
             "confirmMsg": "{count} enregistrements pour des sites comme {example} le {date} seront supprimés !",
             "confirmMsgAll": "{count} enregistrements pour des sites comme {example} seront supprimés !",
             "confirmMsgRange": "{count} enregistrements pour des sites comme {example} entre {start} et {end} seront supprimés !"
@@ -190,7 +181,6 @@
     "ru": {
         "exportFileName": "Мое_время_просмотра",
         "batchDelete": {
-            "noSelectedMsg": "Пожалуйста, выберите строку, которую вы хотите удалить в таблице",
             "confirmMsg": "{count} записи для таких сайтов, как {example} на {date} будут удалены!",
             "confirmMsgAll": "{count} записи для таких сайтов, как {example}, будут удалены!",
             "confirmMsgRange": "{count} записи для таких сайтов, как {example} между {start} и {end} будут удалены!"
@@ -211,7 +201,6 @@
         "exportFileName": "وقت_التصفح_الخاص_بي",
         "total": "إجمالي الزيارات: {visit} مرة، المدة الإجمالية: {focus}",
         "batchDelete": {
-            "noSelectedMsg": "الرجاء تحديد الصف الذي تريد حذفه من الجدول أولاً",
             "confirmMsg": "سيتم حذف {count} سجلًا لمواقع مثل {example} في {date}!",
             "confirmMsgAll": "سيتم حذف {count} سجلًا للمواقع مثل {example}!",
             "confirmMsgRange": "سيتم حذف {count} سجلًا لمواقع مثل {example} بين {start} و{end}!"
@@ -232,7 +221,6 @@
         "exportFileName": "Gezinti_Zamanım",
         "total": "Toplam ziyaret sayısı: {visit} kez, toplam süre: {focus}",
         "batchDelete": {
-            "noSelectedMsg": "Lütfen önce tabloda silmek istediğiniz satırı seçin",
             "confirmMsg": "{date} tarihine ait [{example}] gibi {count} kayıt silinecektir!",
             "confirmMsgAll": "[{example}] gibi {count} kayıt silinecek!",
             "confirmMsgRange": "{start} ile {end} arasında [{example}] gibi {count} kayıt silinecek!"
@@ -252,7 +240,6 @@
     "pl": {
         "total": "Całkowita liczba wizyt: {visit}, całkowity czas trwania: {focus}",
         "batchDelete": {
-            "noSelectedMsg": "Proszę najpierw wybrać wiersz, który chcesz usunąć z tabeli",
             "confirmMsg": "{count} rekord/y/ów takich jak [{example}] z {date} zostaną usunięte!",
             "confirmMsgAll": "{count} rekord/y/ów takich jak [{example}] zostaną usunięte!",
             "confirmMsgRange": "{count} rekord/y/ów takich jak [{example}] pomiędzy {start} i {end} zostaną usunięte!"
@@ -272,7 +259,6 @@
     "it": {
         "total": "Visite totali: {visit} volte, durata totale: {focus}",
         "batchDelete": {
-            "noSelectedMsg": "Si prega di selezionare la riga che si desidera eliminare nella prima tabella",
             "confirmMsg": "{count} record come [{example}] di {date} saranno eliminati!",
             "confirmMsgAll": "{count} record come [{example}], saranno eliminati!",
             "confirmMsgRange": "{count} record come [{example}] tra {start} ed {end} saranno eliminati!"

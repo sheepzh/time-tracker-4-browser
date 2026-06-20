@@ -254,8 +254,8 @@ export function generateToolbox(getInstance: () => ECharts | undefined): Toolbox
                 onclick: () => {
                     const inst = getInstance()
                     if (!inst) return
-                    inst && void saveWithWatermark(inst).catch(err => {
-                        console.info(err)
+                    saveWithWatermark(inst).catch(err => {
+                        console.info("Save image error:", err)
                         ElMessage.error('Could not save the image.')
                     })
                 },

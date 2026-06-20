@@ -12,7 +12,7 @@ const Footer: FunctionalComponent<{}> = () => {
             if (errMsg) throw new Error(errMsg)
             ElMessage.success('Valid!')
         } catch (e) {
-            const msg = e instanceof Error ? e.message : String(e) ?? 'Unknown error'
+            const msg = e instanceof Error ? e.message : e?.toString() ?? 'Unknown error'
             ElMessage.error(msg)
         }
     }

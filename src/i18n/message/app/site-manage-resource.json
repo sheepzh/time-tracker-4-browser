@@ -36,8 +36,6 @@
         "msg": {
             "hostExistWarn": "{host} 已经存在",
             "existedTag": "已存在",
-            "noSelected": "未选择站点",
-            "noSupported": "所选站点均不能设置类目",
             "disassociatedMsg": "是否需要清除所有已选中站点的类目？",
             "batchDeleteMsg": "是否需要删除所有已选中站点？"
         }
@@ -79,8 +77,6 @@
         "msg": {
             "hostExistWarn": "「{host}」已存在",
             "existedTag": "已存在",
-            "noSelected": "未選取網站",
-            "noSupported": "選取的網站不支援設定分類",
             "disassociatedMsg": "確定要清除所有選取網站的分類嗎？",
             "batchDeleteMsg": "確定要刪除所有選取的網站嗎？"
         }
@@ -122,8 +118,6 @@
         "msg": {
             "hostExistWarn": "{host} exists",
             "existedTag": "EXISTED",
-            "noSelected": "No site selected",
-            "noSupported": "The selected sites cannot set categories",
             "disassociatedMsg": "Do you want to clear the categories of all selected sites?",
             "batchDeleteMsg": "Do you want to delete all selected sites?"
         }
@@ -165,8 +159,6 @@
         "msg": {
             "hostExistWarn": "{host} が存在します",
             "existedTag": "既存",
-            "noSelected": "サイトが選択されていません",
-            "noSupported": "選択されたサイトはカテゴリーを設定できない",
             "disassociatedMsg": "選択したすべてのサイトのカテゴリーを消去しますか？",
             "batchDeleteMsg": "選択したサイトをすべて削除しますか？"
         }
@@ -208,8 +200,6 @@
         "msg": {
             "hostExistWarn": "{host} já existe",
             "existedTag": "EXISTENTE",
-            "noSelected": "Nenhum site selecionado",
-            "noSupported": "Sites selecionados não suportam categorias",
             "disassociatedMsg": "Limpar categorias de todos os sites selecionados?",
             "batchDeleteMsg": "Eliminar todos os sites selecionados?"
         }
@@ -251,8 +241,6 @@
         "msg": {
             "hostExistWarn": "{host} вже існує",
             "existedTag": "ВЖЕ ІСНУЄ",
-            "noSelected": "Сайт не вибрано",
-            "noSupported": "Для вибраних сайтів не можна встановити категорії",
             "disassociatedMsg": "Хочете очистити категорії всіх вибраних сайтів?",
             "batchDeleteMsg": "Хочете видалити всі вибрані сайти?"
         }
@@ -294,8 +282,6 @@
         "msg": {
             "hostExistWarn": "{host} existe",
             "existedTag": "EXISTIÓ",
-            "noSelected": "Ningún sitio seleccionado",
-            "noSupported": "Los sitios seleccionados no pueden establecer categorías",
             "disassociatedMsg": "¿Quieres borrar las categorías de todos los sitios seleccionados?",
             "batchDeleteMsg": "¿Quieres eliminar todos los sitios seleccionados?"
         }
@@ -337,8 +323,6 @@
         "msg": {
             "hostExistWarn": "{host} existiert",
             "existedTag": "EXISTIERT",
-            "noSelected": "Keine Website ausgewählt",
-            "noSupported": "Die ausgewählten Sites können keine Kategorien festlegen",
             "disassociatedMsg": "Möchten Sie die Kategorien aller ausgewählten Sites löschen?",
             "batchDeleteMsg": "Möchten Sie alle ausgewählten Sites löschen?"
         }
@@ -380,8 +364,6 @@
         "msg": {
             "hostExistWarn": "{host} existe",
             "existedTag": "EXISÉ",
-            "noSelected": "Aucun site sélectionné",
-            "noSupported": "Les sites sélectionnés ne peuvent pas définir de catégories",
             "disassociatedMsg": "Voulez-vous effacer les catégories de tous les sites sélectionnés ?",
             "batchDeleteMsg": "Voulez-vous supprimer tous les sites sélectionnés ?"
         }
@@ -420,7 +402,6 @@
         "msg": {
             "hostExistWarn": "{host} существует",
             "existedTag": "ВЫПОЛНЕНО",
-            "noSelected": "Сайт не выбран",
             "batchDeleteMsg": "Вы уверенны, что хотите удалить выбранные сайты?"
         }
     },
@@ -461,8 +442,6 @@
         "msg": {
             "hostExistWarn": "{host} موجود فعلًا",
             "existedTag": "موجودة",
-            "noSelected": "لم يتم تحديد الموقع",
-            "noSupported": "لا يمكن تعيين فئات للمواقع المحددة",
             "disassociatedMsg": "هل تريد إخلاء فئات جميع المواقع المحددة؟",
             "batchDeleteMsg": "هل تريد حذف جميع المواقع المحددة؟"
         }
@@ -504,8 +483,6 @@
         "msg": {
             "hostExistWarn": "{host} zaten mevcut",
             "existedTag": "MEVCUT",
-            "noSelected": "Seçilmiş site yok",
-            "noSupported": "Seçilen siteler için kategori ayarlanamıyor",
             "disassociatedMsg": "Seçilen tüm sitelerin kategorilerini temizlemek ister misiniz?",
             "batchDeleteMsg": "Seçili tüm siteleri silmek istiyor musunuz?"
         }
@@ -547,8 +524,6 @@
         "msg": {
             "hostExistWarn": "{host} istnieje",
             "existedTag": "WYŁĄCZONE",
-            "noSelected": "Nie wybrano żadnej witryny",
-            "noSupported": "Wybrane witryny nie mogą ustawić kategorii",
             "disassociatedMsg": "Czy chcesz wyczyścić kategorie wszystkich wybranych witryn?",
             "batchDeleteMsg": "Czy chcesz usunąć wszystkie wybrane witryny?"
         }
@@ -590,8 +565,6 @@
         "msg": {
             "hostExistWarn": "{host} esiste",
             "existedTag": "ESISTEVA",
-            "noSelected": "Nessun sito selezionato",
-            "noSupported": "I siti selezionati non possono impostare categorie",
             "disassociatedMsg": "Vuoi cancellare le categorie di tutti i siti selezionati?",
             "batchDeleteMsg": "Vuoi eliminare tutti i siti selezionati?"
         }

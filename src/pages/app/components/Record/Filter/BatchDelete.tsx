@@ -11,6 +11,16 @@ import { computed, defineComponent } from "vue"
 import { useRecordComponent, useRecordFilter } from "../context"
 import type { DisplayComponent, RecordFilterOption } from "../types"
 
+async function extractExample(hostExample: string | undefined, groupIdExample: number | undefined): Promise<string> {
+    if (hostExample) return hostExample
+    if (groupIdExample) {
+        const group = await getGroup(groupIdExample)
+        return group?.title ?? `ID:${groupIdExample}`
+    }
+    // Never happen
+    return 'NaN'
+}
+
 async function computeBatchDeleteMsg(selected: tt4b.stat.Row[], mergeDate: boolean, dateRange: [number?, number?]): Promise<string> {
     const hosts: string[] = []
     const groupIds: number[] = []
@@ -18,17 +28,8 @@ async function computeBatchDeleteMsg(selected: tt4b.stat.Row[], mergeDate: boole
         isSite(row) && hosts.push(row.siteKey.host)
         isGroup(row) && groupIds.push(row.groupKey)
     })
-    let example: string | undefined = hosts[0]
-    if (!example) {
-        const groupId = groupIds[0]
-        const group = groupId ? await getGroup(groupId) : undefined
-        example = group?.title ?? `ID:${groupId}`
-    }
-    if (!example) {
-        // Never happen
-        return t(msg => msg.record.batchDelete.noSelectedMsg)
-    }
-    let count2Delete = selected.length ?? 0
+    const example = await extractExample(hosts[0], groupIds[0])
+    let count2Delete = selected.length
     if (mergeDate) {
         // All the items
         const date = cvtDateRange2Str(dateRange) ?? []
@@ -75,11 +76,8 @@ async function computeBatchDeleteMsg(selected: tt4b.stat.Row[], mergeDate: boole
 async function handleBatchDelete(displayComp: DisplayComponent | undefined, filter: RecordFilterOption) {
     if (!displayComp) return
 
-    const selected = displayComp?.getSelected?.() ?? []
-    if (!selected?.length) {
-        ElMessage.info(t(msg => msg.record.batchDelete.noSelectedMsg))
-        return
-    }
+    const selected = displayComp?.getSelected?.()
+    if (!selected?.length) return ElMessage.info("No item selected")
     const { dateRange, mergeDate } = filter
     ElMessageBox({
         message: await computeBatchDeleteMsg(selected, mergeDate, dateRange),
@@ -115,7 +113,7 @@ async function deleteBatch(selected: tt4b.stat.Row[], mergeDate: boolean, dateRa
     }
 }
 
-const BatchDelete = defineComponent(() => {
+const BatchDelete = defineComponent<{}>(() => {
     const filter = useRecordFilter()
     const disabled = computed(() => {
         const { siteMerge } = filter

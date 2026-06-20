@@ -16,10 +16,10 @@ export const useBatch = () => {
 
     const batchChange = () => {
         if (!selected.value.length) {
-            return ElMessage.info(t(msg => msg.siteManage.msg.noSelected))
+            return ElMessage.info("No site selected")
         }
         if (!supported.value.length) {
-            return ElMessage.info(t(msg => msg.siteManage.msg.noSupported))
+            return ElMessage.info("Selected sites don't support category")
         }
         targetCate.value = undefined
         openSelect()
@@ -37,7 +37,7 @@ export const useBatch = () => {
 
     const batchDisassociate = () => {
         if (!selected.value.length) {
-            return ElMessage.info(t(msg => msg.siteManage.msg.noSelected))
+            return ElMessage.info("No site selected")
         }
         ElMessageBox.confirm(
             t(msg => msg.siteManage.msg.disassociatedMsg),
@@ -55,7 +55,7 @@ export const useBatch = () => {
     }
     const batchDelete = () => {
         if (!selected.value.length) {
-            return ElMessage.info(t(msg => msg.siteManage.msg.noSelected))
+            return ElMessage.info("No site selected")
         }
         ElMessageBox.confirm(
             t(msg => msg.siteManage.msg.batchDeleteMsg),
