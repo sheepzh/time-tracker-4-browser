@@ -12,10 +12,10 @@ import CondEditor, { type CondEditorInstance } from '@pages/components/CondEdito
 import Flex from "@pages/components/Flex"
 import { defineComponent, onUpdated, ref } from "vue"
 
-const _default = defineComponent(() => {
+const _default = defineComponent<{}>(() => {
     const { form: data } = useDialogSop<ModifyForm>()
     const editor = ref<CondEditorInstance>()
-    onUpdated(() => editor.value?.focus())
+    onUpdated(() => !data.cond.length && editor.value?.focus())
 
     return () => (
         <Flex column width="100%">

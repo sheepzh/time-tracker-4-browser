@@ -41,6 +41,21 @@ const createInitial = (url?: string): ModifyForm => ({
     locked: false,
 })
 
+const createFormData = (data: tt4b.limit.Item): ModifyForm => ({
+    name: data.name,
+    cond: [...data.cond],
+    enabled: data.enabled,
+    locked: data.locked,
+    allowDelay: data.allowDelay,
+    time: data.time,
+    count: data.count,
+    weekly: data.weekly,
+    weeklyCount: data.weeklyCount,
+    visitTime: data.visitTime,
+    weekdays: data.weekdays,
+    periods: data.periods,
+})
+
 const _default = defineComponent((_, ctx) => {
     const { refresh } = useLimitData()
     const mode = ref<Mode>()
@@ -108,12 +123,11 @@ const _default = defineComponent((_, ctx) => {
             modifyingItem = undefined
         },
         modify(row: tt4b.limit.Item) {
-            open(toRaw(row))
+            open(createFormData(toRaw(row)))
             mode.value = 'modify'
             modifyingItem = { ...row }
         },
     } satisfies ModifyInstance)
-
 
     return () => (
         <DialogSop title={title.value} stepTitles={STEP_TITLES}>

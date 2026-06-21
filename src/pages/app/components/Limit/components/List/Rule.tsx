@@ -4,7 +4,7 @@ import Flex from '@pages/components/Flex'
 import { isEffective, meetLimit, meetTimeLimit, period2Str } from '@util/limit'
 import { formatPeriodCommon, MILL_PER_SECOND } from '@util/time'
 import { ElDescriptions, ElDescriptionsItem, ElTag } from 'element-plus'
-import { defineComponent, type FunctionalComponent, toRefs } from 'vue'
+import { defineComponent, type FunctionalComponent } from 'vue'
 import { DAILY_WEEKLY_TAG_TYPE, PERIOD_TAG_TYPE, VISIT_TAG_TYPE } from '../style'
 
 type Props = {
@@ -48,34 +48,26 @@ const WastePair: FunctionalComponent<WastePairProps> = props => {
     )
 }
 
-const Rule = defineComponent<Props>(({ value }) => {
-    const {
-        time, count, waste, visit,
-        weekly, weeklyCount, weeklyWaste, weeklyVisit,
-        visitTime, periods,
-        weekdays,
-        allowDelay, delayCount, weeklyDelayCount,
-    } = toRefs(value)
-
+const Rule = defineComponent<Props>(props => {
     const delayDuration = useDelayDuration()
 
     return () => <>
         <ElDescriptions border size='small' column={1} labelWidth={130}>
-            <ElDescriptionsItem label={t(msg => msg.shared.limit.daily)} v-show={time?.value || count?.value}>
-                <TimeCountPair time={time?.value} count={count?.value} />
+            <ElDescriptionsItem label={t(msg => msg.shared.limit.daily)} v-show={props.value.time || props.value.count}>
+                <TimeCountPair time={props.value.time} count={props.value.count} />
             </ElDescriptionsItem>
-            <ElDescriptionsItem label={t(msg => msg.shared.limit.weekly)} v-show={weekly?.value || weeklyCount?.value}>
-                <TimeCountPair time={weekly?.value} count={weeklyCount?.value} />
+            <ElDescriptionsItem label={t(msg => msg.shared.limit.weekly)} v-show={props.value.weekly || props.value.weeklyCount}>
+                <TimeCountPair time={props.value.weekly} count={props.value.weeklyCount} />
             </ElDescriptionsItem>
-            {!!visitTime?.value && (
+            {!!props.value.visitTime && (
                 <ElDescriptionsItem label={t(msg => msg.limit.item.visitTime)}>
-                    <ElTag size="small" type={VISIT_TAG_TYPE}>{formatPeriodCommon(visitTime.value * MILL_PER_SECOND, true)}</ElTag>
+                    <ElTag size="small" type={VISIT_TAG_TYPE}>{formatPeriodCommon(props.value.visitTime * MILL_PER_SECOND, true)}</ElTag>
                 </ElDescriptionsItem>
             )}
-            {!!periods?.value?.length && (
+            {!!props.value.periods?.length && (
                 <ElDescriptionsItem label={t(msg => msg.shared.limit.period)}>
                     <Flex gap={2} wrap>
-                        {periods.value.map((p, idx) => (
+                        {props.value.periods.map((p, idx) => (
                             <ElTag key={idx} size="small" type={PERIOD_TAG_TYPE}>{period2Str(p)}</ElTag>
                         ))}
                     </Flex>
@@ -84,12 +76,12 @@ const Rule = defineComponent<Props>(({ value }) => {
         </ElDescriptions>
         <ElDescriptions border size='small' column={1} labelWidth={130}>
             <ElDescriptionsItem label={t(msg => msg.calendar.range.today)}>
-                {isEffective(weekdays?.value) ? (
+                {isEffective(props.value.weekdays) ? (
                     <WastePair
-                        time={{ wasted: waste.value, maxLimit: (time?.value ?? 0) * MILL_PER_SECOND }}
-                        delay={{ count: delayCount.value, duration: delayDuration.value, allow: !!allowDelay.value }}
-                        count={count?.value ?? 0}
-                        visit={visit.value}
+                        time={{ wasted: props.value.waste, maxLimit: (props.value.time ?? 0) * MILL_PER_SECOND }}
+                        delay={{ count: props.value.delayCount, duration: delayDuration.value, allow: props.value.allowDelay }}
+                        count={props.value.count ?? 0}
+                        visit={props.value.visit}
                     />
                 ) : (
                     <ElTag type="info" size="small">
@@ -99,10 +91,10 @@ const Rule = defineComponent<Props>(({ value }) => {
             </ElDescriptionsItem>
             <ElDescriptionsItem label={t(msg => msg.calendar.range.thisWeek)}>
                 <WastePair
-                    time={{ wasted: weeklyWaste.value, maxLimit: (weekly?.value ?? 0) * MILL_PER_SECOND }}
-                    delay={{ count: weeklyDelayCount.value, duration: delayDuration.value, allow: !!allowDelay.value }}
-                    count={weeklyCount?.value ?? 0}
-                    visit={weeklyVisit.value}
+                    time={{ wasted: props.value.weeklyWaste, maxLimit: (props.value.weekly ?? 0) * MILL_PER_SECOND }}
+                    delay={{ count: props.value.weeklyDelayCount, duration: delayDuration.value, allow: props.value.allowDelay }}
+                    count={props.value.weeklyCount ?? 0}
+                    visit={props.value.weeklyVisit}
                 />
             </ElDescriptionsItem>
         </ElDescriptions>
