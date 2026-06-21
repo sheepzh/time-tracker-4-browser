@@ -5,7 +5,7 @@ import { useSiteMerge } from '@hooks'
 import Flex from "@pages/components/Flex"
 import { ElCheckboxButton, ElCheckboxGroup, ElIcon, ElText, ElTooltip } from "element-plus"
 import { createArrayGuard, createStringUnionGuard } from 'typescript-guard'
-import { type Component, computed, defineComponent, type StyleValue } from "vue"
+import { type Component, computed, defineComponent, h, type StyleValue } from "vue"
 import { useRecordFilter } from "../context"
 
 const METHOD_ICONS: Record<tt4b.stat.MergeMethod, Component> = {
@@ -60,7 +60,7 @@ const MergeFilterItem = defineComponent<{}>(() => {
                     <ElCheckboxButton value={method}>
                         <ElTooltip content={t(msg => msg.shared.merge.mergeMethod[method])} offset={20} placement="top">
                             <span style={ICON_STYLE}>
-                                <ElIcon>{METHOD_ICONS[method]}</ElIcon>
+                                <ElIcon>{h(METHOD_ICONS[method])}</ElIcon>
                             </span>
                         </ElTooltip>
                     </ElCheckboxButton>
