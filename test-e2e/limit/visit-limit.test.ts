@@ -1,6 +1,7 @@
 import { useLaunchContext } from '../common/base'
+import { assertOverlayHidden, waitForLimitFrame } from '../common/overlay'
 import { MOCK_URL, sleep } from '../common/util'
-import { createLimitRule, isLimitModalVisible, waitForLimitFrame } from './common'
+import { createLimitRule } from './common'
 
 describe('Time limit per visit', () => {
     const context = useLaunchContext()
@@ -28,9 +29,7 @@ describe('Time limit per visit', () => {
         await button!.click()
 
         // 4. Modal disappear
-        await sleep(.5)
-        const modalExist = await isLimitModalVisible(testPage)
-        expect(modalExist).toBeFalsy()
+        await assertOverlayHidden(testPage)
 
     }, 1000000000)
 })

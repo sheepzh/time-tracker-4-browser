@@ -1,6 +1,7 @@
 import { useLaunchContext } from '../common/base'
+import { assertOverlayHidden, assertOverlayVisible, waitForLimitFrame } from '../common/overlay'
 import { MOCK_URL, sleep } from '../common/util'
-import { createLimitRule, fillTimeLimit, isLimitModalVisible, queryLimitModalVisible, waitForLimitFrame, waitForLimitModal, waitForLimitModalHidden } from './common'
+import { createLimitRule, fillTimeLimit, waitForLimitModal } from './common'
 
 describe('Daily limit', () => {
     const context = useLaunchContext()
@@ -79,9 +80,7 @@ describe('Daily limit', () => {
 
         // 7. Modal disappear
         await testPage.bringToFront()
-        await sleep(.5)
-        const modalExist = await isLimitModalVisible(testPage)
-        expect(modalExist).toBeFalsy()
+        await assertOverlayHidden(testPage)
     }, 60000)
 
     test('blocks expired path after spa navigation', async () => {
@@ -104,7 +103,7 @@ describe('Daily limit', () => {
         await blockedPage.close()
 
         const testPage = await context.newPageAndWaitCsInjected(MOCK_URL)
-        expect(await queryLimitModalVisible(testPage)).toBeFalsy()
+        await assertOverlayHidden(testPage)
 
         await testPage.bringToFront()
         await testPage.evaluate(url => history.pushState({}, '', url), blockedUrl)
@@ -114,11 +113,10 @@ describe('Daily limit', () => {
             const td = document.querySelector('#app .el-descriptions:not([style*="display: none"]) tr td:nth-child(2)')
             return td?.textContent && td.textContent !== '-'
         }, { timeout: 5000 })
-        expect(await queryLimitModalVisible(testPage)).toBeTruthy()
+        await assertOverlayVisible(testPage)
 
         await testPage.evaluate(url => history.pushState({}, '', url), MOCK_URL)
-        await waitForLimitModalHidden(testPage)
-        expect(await queryLimitModalVisible(testPage)).toBeFalsy()
+        await assertOverlayHidden(testPage)
     }, 60000)
 
     test('Daily visit limit', async () => {
@@ -183,8 +181,6 @@ describe('Daily limit', () => {
 
         // 5. The modal disappear
         await testPage.bringToFront()
-        await sleep(.5)
-        const modalExist = await isLimitModalVisible(testPage)
-        expect(modalExist).toBeFalsy()
+        await assertOverlayHidden(testPage)
     }, 60000)
 })

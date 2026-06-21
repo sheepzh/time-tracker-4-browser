@@ -1,5 +1,6 @@
 import { getRuntimeId, getUrl } from '@api/chrome/runtime'
 import { trySendMsg2Runtime } from '@api/sw/common'
+import LocationWatcher from '@cs/location-watcher'
 import { exitFullscreen, isSameReason } from '../common'
 import type { LimitReason, MaskModal } from '../types'
 import { ModalBridge } from './bridge'
@@ -65,29 +66,24 @@ class ScreenLocker {
 }
 
 class ModalInstance implements MaskModal {
-    url: string
     rootElement: RootElement | undefined
     iframe: HTMLIFrameElement | undefined
     delayHandlers: NoArgCallback[] = [
-        () => trySendMsg2Runtime('limit.delay', this.url),
+        () => trySendMsg2Runtime('limit.delay', this.location.url),
     ]
     reasons: LimitReason[] = []
     reason: LimitReason | undefined
     screenLocker = new ScreenLocker()
     private bridge: ModalBridge
 
-    constructor(url: string) {
+    constructor(private location: LocationWatcher) {
         (window as any)['__modal__'] = this
-        this.url = url
         this.bridge = new ModalBridge(MSG_ORIGIN, () => this.iframe?.contentWindow ?? undefined)
             .register('visitTime', () => this.reason?.getVisitTime?.() ?? 0)
             .register('delay', () => this.delayHandlers.forEach(handler => handler()))
-    }
-
-    setUrl(url: string): void {
-        if (url === this.url) return
-        this.url = url
-        this.iframe?.contentWindow && this.bridge.request('url', url).catch(() => { })
+        location.onChange(({ nextUrl }) => {
+            this.iframe?.contentWindow && this.bridge.request('url', nextUrl).catch(() => { })
+        })
     }
 
     addReason(...reasons2Add: LimitReason[]): void {
@@ -131,7 +127,7 @@ class ModalInstance implements MaskModal {
         const root = await this.prepareRoot()
         if (!root) return
         const iframe = document.createElement('iframe')
-        iframe.src = `${MODAL_URL}?url=${encodeURIComponent(this.url)}`
+        iframe.src = `${MODAL_URL}?url=${encodeURIComponent(this.location.url)}`
         iframe.style.width = '100vw'
         iframe.style.height = '100vh'
         iframe.style.border = 'none'
