@@ -1,8 +1,9 @@
 import { formatTimeYMD, MILL_PER_SECOND } from '@util/time'
 import type { Page } from 'puppeteer'
 import { useLaunchContext } from '../common/base'
+import { assertOverlayHidden, assertOverlayVisible } from '../common/overlay'
 import { MOCK_URL, sleep } from '../common/util'
-import { clickDelay, createLimitRule, isLimitModalVisible } from './common'
+import { clickDelay, createLimitRule } from './common'
 
 async function setDelayDuration(page: Page, value: number) {
     const delayInput = await page.waitForSelector('.el-input-number input')
@@ -75,15 +76,15 @@ describe('Limit delay duration', () => {
         const testPage = await context.newPageAndWaitCsInjected(MOCK_URL)
         await sleep(1)
 
-        expect(await isLimitModalVisible(testPage)).toBeTruthy()
+        await assertOverlayVisible(testPage)
 
         await clickDelay(testPage)
 
         // Not disappear if only delay once (1 minute delay)
-        expect(await isLimitModalVisible(testPage)).toBeTruthy()
+        await assertOverlayVisible(testPage)
 
         // Disappear if delay twice (2 minutes delay)
         await clickDelay(testPage)
-        expect(await isLimitModalVisible(testPage)).toBeFalsy()
+        await assertOverlayHidden(testPage)
     }, 45000)
 })

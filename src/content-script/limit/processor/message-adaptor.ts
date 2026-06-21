@@ -1,6 +1,8 @@
 import { trySendMsg2Runtime } from '@api/sw/common'
+import LocationWatcher from '@cs/location-watcher'
 import { hasDailyLimited, hasWeeklyLimited, matches } from "@util/limit"
-import type { LimitReason, ModalContext, Processor, UrlRefreshContext } from '../types'
+import ModalInstance from '../modal/instance'
+import type { LimitReason, Processor } from '../types'
 
 const cvtItem2AddReason = (item: tt4b.limit.Item, delayDuration: number): LimitReason[] => {
     const { cond, allowDelay, id, delayCount, weeklyDelayCount } = item
@@ -11,39 +13,36 @@ const cvtItem2AddReason = (item: tt4b.limit.Item, delayDuration: number): LimitR
 }
 
 class MessageAdaptor implements Processor {
-    constructor(private readonly context: ModalContext, private readonly delayDuration: number) { }
+    constructor(
+        private readonly modal: ModalInstance,
+        private readonly location: LocationWatcher,
+        private readonly delayDuration: number,
+    ) { }
 
-    onLimitTimeMeet(items: tt4b.limit.Item[]): void {
+    async onLimitTimeMeet(items: tt4b.limit.Item[]): Promise<void> {
         if (!items.length) return
-        items.filter(({ cond }) => matches(cond, this.context.url))
+        items.filter(({ cond }) => matches(cond, this.location.url))
             .flatMap(item => cvtItem2AddReason(item, this.delayDuration))
-            .forEach(reason => this.context.modal.addReason(reason))
+            .forEach(reason => this.modal.addReason(reason))
     }
 
     async init(): Promise<void> {
-        this.context.modal.addDelayHandler(() => void this.initRules())
+        this.modal.addDelayHandler(() => void this.reset())
+        await this.reset()
     }
 
-    async onUrlRefreshed({ nextUrl, whitelisted }: UrlRefreshContext): Promise<void> {
-        this.context.modal.removeReasonsByType('DAILY', 'WEEKLY')
-        if (whitelisted) return
-        await this.fetchLimitedRules(nextUrl)
-    }
+    async reset(): Promise<void> {
+        this.modal.removeReasonsByType('DAILY', 'WEEKLY')
+        if (this.location.whitelisted) return
 
-    async initRules(): Promise<void> {
-        await this.onUrlRefreshed({
-            prevUrl: this.context.url,
-            nextUrl: this.context.url,
-            whitelisted: false,
+        const limitedRules = await trySendMsg2Runtime('limit.list', {
+            limited: true, effective: true,
+            url: this.location.url,
         })
-    }
-
-    private async fetchLimitedRules(url: string): Promise<void> {
-        const limitedRules = await trySendMsg2Runtime('limit.list', { limited: true, effective: true, url })
-        if (url !== this.context.url || !limitedRules?.length) return
+        if (!limitedRules?.length) return
 
         const reasons = limitedRules.flatMap(item => cvtItem2AddReason(item, this.delayDuration))
-        this.context.modal.addReason(...reasons)
+        this.modal.addReason(...reasons)
     }
 }
 

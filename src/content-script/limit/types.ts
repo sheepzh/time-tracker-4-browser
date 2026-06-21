@@ -10,25 +10,14 @@ export type LimitReason =
 export interface MaskModal {
     readonly reasons: LimitReason[]
 
-    setUrl(url: string): void
     addReason(...reasons: LimitReason[]): void
     removeReason(...reasons: LimitReason[]): void
     removeReasonsByType(...types: tt4b.limit.ReasonType[]): void
     addDelayHandler(handler: NoArgCallback): void
 }
 
-export type ModalContext = {
-    url: string
-    modal: MaskModal
-}
-
-export type UrlRefreshContext = {
-    prevUrl: string
-    nextUrl: string
-    whitelisted: boolean
-}
-
 export interface Processor {
-    init(): Awaitable<void>
-    onUrlRefreshed(ctx: UrlRefreshContext): Awaitable<void>
+    init(): void
+    // Reset rules and reasons
+    reset(): void
 }

@@ -9,13 +9,11 @@ import { trySendMsg2Runtime } from '@api/sw/common'
 import { initLocale } from "@i18n"
 import Dispatcher from './dispatcher'
 import processLimit from "./limit"
+import LocationWatcher from './location-watcher'
 import printInfo from "./printer"
 import processTimeline from './timeline'
 import NormalTracker from "./tracker/normal"
 import RunTimeTracker from "./tracker/run-time"
-
-const host = document?.location?.host
-const url = document?.location?.href
 
 const FLAG_ID = '__TIMER_INJECTION_FLAG__' + chrome.runtime.id
 
@@ -50,18 +48,20 @@ async function main() {
     })
     normalTracker.init()
     dispatcher.registerAudibleChange(normalTracker)
-    new RunTimeTracker(url).init(dispatcher)
+
+    const location = new LocationWatcher()
+    await location.init()
+
+    new RunTimeTracker(location).init(dispatcher)
 
     // Execute only one time for each dom
     if (getOrSetFlag()) return
-    if (!host || !url) return
 
     void initLocale()
-    await processLimit(url, dispatcher)
-    const isWhitelist = await trySendMsg2Runtime('whitelist.contain', { host, url })
-    if (isWhitelist) return
+    await processLimit(location, dispatcher)
+    if (location.whitelisted) return
 
-    void printInfo(host)
+    void printInfo(location.host)
     processTimeline()
 
     // Increase visit count at the end

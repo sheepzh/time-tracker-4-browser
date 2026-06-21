@@ -1,45 +1,43 @@
 import { trySendMsg2Runtime } from '@api/sw/common'
-import { extractHostname } from '@util/pattern'
+import LocationWatcher from '@cs/location-watcher'
 import Dispatcher from '../dispatcher'
 
 class RunTimeTracker {
-    private start: number = Date.now()
-    // Real host, including builtin hosts
-    private host: string | undefined
+    #start: number = Date.now()
+    #enabled = false
 
-    constructor(private readonly url: string) {
+    constructor(private readonly location: LocationWatcher) {
+        location.onChange(() => {
+            this.collect()
+            this.fetchEnabled()
+        })
     }
 
     init(dispatcher: Dispatcher): void {
-        this.fetchSite()
-        dispatcher.register('siteRunChange', () => void this.fetchSite())
+        this.fetchEnabled()
+        dispatcher.register('siteRunChange', () => void this.fetchEnabled())
         setInterval(() => this.collect(), 1000)
     }
 
-    private async fetchSite() {
-        const { host } = extractHostname(this.url)
-        if (!host) return
-        const enabled = await trySendMsg2Runtime('site.runEnabled', host)
-        this.host = enabled ? host : undefined
+    private async fetchEnabled() {
+        this.#enabled = !this.location.whitelisted
+            && !!(await trySendMsg2Runtime('site.runEnabled', this.location.host))
     }
 
     private async collect() {
         const now = Date.now()
-        const lastTime = this.start
+        const lastTime = this.#start
+        this.#start = now
 
-        try {
-            if (this.host) {
-                const event: tt4b.core.Event = {
-                    start: lastTime,
-                    end: now,
-                    ignoreTabCheck: false,
-                    host: this.host,
-                }
-                await trySendMsg2Runtime('track.runTime', event)
-            }
-            this.start = now
-        } catch {
+        if (!this.#enabled) return
+
+        const event: tt4b.core.Event = {
+            start: lastTime,
+            end: now,
+            ignoreTabCheck: false,
+            host: this.location.host,
         }
+        await trySendMsg2Runtime('track.runTime', event)
     }
 }
 

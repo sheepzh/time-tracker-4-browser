@@ -1,7 +1,9 @@
 import { trySendMsg2Runtime } from '@api/sw/common'
+import LocationWatcher from '@cs/location-watcher'
 import NormalTracker from "@cs/tracker/normal"
 import { MILL_PER_MINUTE, MILL_PER_SECOND } from "@util/time"
-import type { ModalContext, Processor, UrlRefreshContext } from '../types'
+import ModalInstance from '../modal/instance'
+import type { Processor } from '../types'
 
 class VisitProcessor implements Processor {
     private focusTime: number = 0
@@ -9,9 +11,19 @@ class VisitProcessor implements Processor {
     tracker: NormalTracker
     private delayCount: number = 0
 
-    constructor(private readonly context: ModalContext, private readonly delayDuration: number) {
+    constructor(
+        private readonly modal: ModalInstance,
+        private readonly location: LocationWatcher,
+        private readonly delayDuration: number,
+    ) {
         this.tracker = new NormalTracker({
             onReport: data => this.handleTracker(data),
+        })
+        location.onChange(async ({ prevUrl, nextUrl }) => {
+            if (prevUrl === nextUrl) return
+            // reset focus time and delay count when url changed
+            this.focusTime = 0
+            this.delayCount = 0
         })
     }
 
@@ -28,7 +40,7 @@ class VisitProcessor implements Processor {
         this.rules.forEach(rule => {
             if (!this.hasLimited(rule)) return
             const { id, cond, allowDelay } = rule
-            this.context.modal.addReason({
+            this.modal.addReason({
                 id,
                 cond,
                 type: 'VISIT',
@@ -41,26 +53,20 @@ class VisitProcessor implements Processor {
 
     async init(): Promise<void> {
         this.tracker.init()
-        this.context.modal.addDelayHandler(() => this.processDelay())
+        this.modal.addDelayHandler(() => {
+            this.delayCount++
+            this.modal.removeReasonsByType('VISIT')
+        })
+
+        this.reset()
     }
 
-    async onUrlRefreshed({ prevUrl, nextUrl, whitelisted }: UrlRefreshContext): Promise<void> {
+    async reset() {
         this.rules = []
-        if (prevUrl !== nextUrl) {
-            this.focusTime = 0
-            this.delayCount = 0
-        }
-        this.context.modal.removeReasonsByType('VISIT')
-        if (whitelisted) return
+        this.modal.removeReasonsByType('VISIT')
+        if (this.location.whitelisted) return
 
-        const rules = await trySendMsg2Runtime('limit.list', { effective: true, url: nextUrl }) ?? []
-        if (nextUrl !== this.context.url) return
-        this.rules = rules
-    }
-
-    private processDelay() {
-        this.delayCount++
-        this.context.modal.removeReasonsByType('VISIT')
+        this.rules = await trySendMsg2Runtime('limit.list', { effective: true, url: this.location.url }) ?? []
     }
 }
 

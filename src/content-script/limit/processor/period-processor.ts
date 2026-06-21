@@ -1,46 +1,52 @@
 import { trySendMsg2Runtime } from '@api/sw/common'
+import LocationWatcher from '@cs/location-watcher'
 import { date2Idx } from "@util/limit"
 import { MILL_PER_SECOND } from "@util/time"
-import type { LimitReason, ModalContext, Processor, UrlRefreshContext } from '../types'
-
-function processRule(rule: tt4b.limit.Rule, nowSeconds: number, context: ModalContext): ReturnType<typeof setTimeout>[] {
-    const { cond, periods, id } = rule
-    if (!periods?.length) return []
-    return periods.flatMap(p => {
-        const [s, e] = p
-        const startSeconds = s * 60
-        const endSeconds = (e + 1) * 60
-        const reason: LimitReason = { id, cond, type: 'PERIOD' }
-        const timers: ReturnType<typeof setTimeout>[] = []
-        if (nowSeconds < startSeconds) {
-            timers.push(setTimeout(() => context.modal.addReason(reason), (startSeconds - nowSeconds) * MILL_PER_SECOND))
-            timers.push(setTimeout(() => context.modal.removeReason(reason), (endSeconds - nowSeconds) * MILL_PER_SECOND))
-        } else if (nowSeconds >= startSeconds && nowSeconds <= endSeconds) {
-            context.modal.addReason(reason)
-            timers.push(setTimeout(() => context.modal.removeReason(reason), (endSeconds - nowSeconds) * MILL_PER_SECOND))
-        }
-        return timers
-    })
-}
+import ModalInstance from '../modal/instance'
+import type { LimitReason, Processor } from '../types'
 
 class PeriodProcessor implements Processor {
-    private timers: ReturnType<typeof setTimeout>[] = []
+    #timers: ReturnType<typeof setTimeout>[] = []
 
-    constructor(private readonly context: ModalContext) { }
-
-    init(): void {
+    constructor(
+        private readonly modal: ModalInstance,
+        private readonly location: LocationWatcher,
+    ) {
     }
 
-    async onUrlRefreshed({ nextUrl, whitelisted }: UrlRefreshContext): Promise<void> {
-        this.timers.forEach(clearTimeout)
-        this.timers = []
-        this.context.modal.removeReasonsByType('PERIOD')
-        if (whitelisted) return
+    init(): void {
+        this.reset()
+    }
 
-        const rules = await trySendMsg2Runtime('limit.list', { effective: true, url: nextUrl }) ?? []
-        if (nextUrl !== this.context.url) return
+    async reset(): Promise<void> {
+        this.#timers.forEach(clearTimeout)
+        this.#timers = []
+        this.modal.removeReasonsByType('PERIOD')
+        if (this.location.whitelisted) return
+
+        const rules = await trySendMsg2Runtime('limit.list', { effective: true, url: this.location.url }) ?? []
         const nowSeconds = date2Idx(new Date())
-        this.timers = rules.flatMap(r => processRule(r, nowSeconds, this.context))
+        this.#timers = rules.flatMap(r => this.#processRule(r, nowSeconds))
+    }
+
+    #processRule(rule: tt4b.limit.Rule, nowSeconds: number,): ReturnType<typeof setTimeout>[] {
+        const { cond, periods, id } = rule
+        if (!periods?.length) return []
+        return periods.flatMap(p => {
+            const [s, e] = p
+            const startSeconds = s * 60
+            const endSeconds = (e + 1) * 60
+            const reason: LimitReason = { id, cond, type: 'PERIOD' }
+            const timers: ReturnType<typeof setTimeout>[] = []
+            if (nowSeconds < startSeconds) {
+                timers.push(setTimeout(() => this.modal.addReason(reason), (startSeconds - nowSeconds) * MILL_PER_SECOND))
+                timers.push(setTimeout(() => this.modal.removeReason(reason), (endSeconds - nowSeconds) * MILL_PER_SECOND))
+            } else if (nowSeconds >= startSeconds && nowSeconds <= endSeconds) {
+                this.modal.addReason(reason)
+                timers.push(setTimeout(() => this.modal.removeReason(reason), (endSeconds - nowSeconds) * MILL_PER_SECOND))
+            }
+            return timers
+        })
     }
 }
 
