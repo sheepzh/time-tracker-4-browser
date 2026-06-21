@@ -1,8 +1,7 @@
 import { trySendMsg2Runtime } from '@api/sw/common'
 import LocationWatcher from '@cs/location-watcher'
 import { hasDailyLimited, hasWeeklyLimited, matches } from "@util/limit"
-import ModalInstance from '../modal/instance'
-import type { LimitReason, Processor } from '../types'
+import type { LimitReason, MaskModal, Processor } from '../types'
 
 const cvtItem2AddReason = (item: tt4b.limit.Item, delayDuration: number): LimitReason[] => {
     const { cond, allowDelay, id, delayCount, weeklyDelayCount } = item
@@ -14,7 +13,7 @@ const cvtItem2AddReason = (item: tt4b.limit.Item, delayDuration: number): LimitR
 
 class MessageAdaptor implements Processor {
     constructor(
-        private readonly modal: ModalInstance,
+        private readonly modal: MaskModal,
         private readonly location: LocationWatcher,
         private readonly delayDuration: number,
     ) { }

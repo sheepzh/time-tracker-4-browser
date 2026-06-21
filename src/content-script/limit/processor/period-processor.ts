@@ -2,14 +2,13 @@ import { trySendMsg2Runtime } from '@api/sw/common'
 import LocationWatcher from '@cs/location-watcher'
 import { date2Idx } from "@util/limit"
 import { MILL_PER_SECOND } from "@util/time"
-import ModalInstance from '../modal/instance'
-import type { LimitReason, Processor } from '../types'
+import type { LimitReason, MaskModal, Processor } from '../types'
 
 class PeriodProcessor implements Processor {
     #timers: ReturnType<typeof setTimeout>[] = []
 
     constructor(
-        private readonly modal: ModalInstance,
+        private readonly modal: MaskModal,
         private readonly location: LocationWatcher,
     ) {
     }

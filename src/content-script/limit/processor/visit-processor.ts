@@ -2,8 +2,7 @@ import { trySendMsg2Runtime } from '@api/sw/common'
 import LocationWatcher from '@cs/location-watcher'
 import NormalTracker from "@cs/tracker/normal"
 import { MILL_PER_MINUTE, MILL_PER_SECOND } from "@util/time"
-import ModalInstance from '../modal/instance'
-import type { Processor } from '../types'
+import type { MaskModal, Processor } from '../types'
 
 class VisitProcessor implements Processor {
     private focusTime: number = 0
@@ -12,7 +11,7 @@ class VisitProcessor implements Processor {
     private delayCount: number = 0
 
     constructor(
-        private readonly modal: ModalInstance,
+        private readonly modal: MaskModal,
         private readonly location: LocationWatcher,
         private readonly delayDuration: number,
     ) {
