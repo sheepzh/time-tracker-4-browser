@@ -2,6 +2,7 @@ import type { FocusReason } from '@cs/limit/types'
 import { t } from '@cs/locale'
 import Flex from '@pages/components/Flex'
 import { matchUrl } from '@util/limit'
+import { formatPeriodCommon } from '@util/time'
 import { ElDescriptions, ElDescriptionsItem, ElTag } from 'element-plus'
 import { defineComponent } from 'vue'
 import { useApp } from '../../context'
@@ -39,7 +40,7 @@ const Reason = defineComponent<{ value: FocusReason }>(props => {
                     label={t(msg => msg.shared.focus.duration)}
                     labelAlign='right'
                 >
-                    {props.value.currentDuration}
+                    {formatPeriodCommon(props.value.currentDuration)}
                 </ElDescriptionsItem>
             </ElDescriptions>
         </Flex>
