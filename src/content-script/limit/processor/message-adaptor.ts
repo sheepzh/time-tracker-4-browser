@@ -1,11 +1,11 @@
 import { trySendMsg2Runtime } from '@api/sw/common'
 import LocationWatcher from '@cs/location-watcher'
 import { hasDailyLimited, hasWeeklyLimited, matches } from "@util/limit"
-import type { LimitReason, MaskModal, Processor } from '../types'
+import type { MaskModal, Processor, Reason } from '../types'
 
-const cvtItem2AddReason = (item: tt4b.limit.Item, delayDuration: number): LimitReason[] => {
+const cvtItem2AddReason = (item: tt4b.limit.Item, delayDuration: number): Reason[] => {
     const { cond, allowDelay, id, delayCount, weeklyDelayCount } = item
-    const reasons2Add: LimitReason[] = []
+    const reasons2Add: Reason[] = []
     hasDailyLimited(item, delayDuration) && reasons2Add.push({ type: "DAILY", cond, allowDelay, id, delayCount })
     hasWeeklyLimited(item, delayDuration) && reasons2Add.push({ type: 'WEEKLY', cond, allowDelay, id, delayCount: weeklyDelayCount })
     return reasons2Add

@@ -7,7 +7,7 @@ describe('Time limit per visit', () => {
     const context = useLaunchContext()
 
     test("Delay", async () => {
-        const limitPage = await context.openAppPage('/behavior/limit')
+        const limitPage = await context.openAppPage('/productivity/limit')
         const demoRule: tt4b.limit.Rule = {
             id: 1, name: 'TEST DAILY LIMIT',
             cond: [MOCK_URL],
@@ -29,7 +29,6 @@ describe('Time limit per visit', () => {
         await button!.click()
 
         // 4. Modal disappear
-        await assertOverlayHidden(testPage)
-
-    }, 1000000000)
+        await assertOverlayHidden(testPage, 500)
+    }, 60_000)
 })

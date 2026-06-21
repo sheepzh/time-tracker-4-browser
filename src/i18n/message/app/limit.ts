@@ -24,7 +24,6 @@ export type LimitMessage = {
         enabled: string
         locked: string
         effectiveDay: string
-        allowDelay: string
         delayCount: string
         detail: string
         or: string

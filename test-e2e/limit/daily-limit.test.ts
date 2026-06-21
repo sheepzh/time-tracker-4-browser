@@ -8,7 +8,7 @@ describe('Daily limit', () => {
 
     test('basic time limit', async () => {
         const limitTime = 2
-        const limitPage = await context.openAppPage('/behavior/limit')
+        const limitPage = await context.openAppPage('/productivity/limit')
         const demoRule: tt4b.limit.Rule = {
             id: 1, name: 'TEST DAILY LIMIT',
             cond: [MOCK_URL],
@@ -86,7 +86,7 @@ describe('Daily limit', () => {
     test('blocks expired path after spa navigation', async () => {
         const limitTime = 1
         const blockedUrl = `${MOCK_URL}/home`
-        const limitPage = await context.openAppPage('/behavior/limit')
+        const limitPage = await context.openAppPage('/productivity/limit')
         const demoRule: tt4b.limit.Rule = {
             id: 1, name: 'TEST SPA DAILY LIMIT',
             cond: [blockedUrl],
@@ -120,7 +120,7 @@ describe('Daily limit', () => {
     }, 60000)
 
     test('Daily visit limit', async () => {
-        const limitPage = await context.openAppPage('/behavior/limit')
+        const limitPage = await context.openAppPage('/productivity/limit')
         const demoRule: tt4b.limit.Rule = {
             id: 1, name: 'TEST DAILY VISIT LIMIT',
             cond: [MOCK_URL],
@@ -166,15 +166,10 @@ describe('Daily limit', () => {
         // 4. Change visit limit
         await limitPage.bringToFront()
         await limitPage.click('.el-card__body .el-table tr td .el-button--primary')
-
-        await sleep(.1)
+        await limitPage.click('.el-dialog .el-button.el-button--primary')
         await limitPage.click('.el-dialog .el-button.el-button--primary')
 
-        await sleep(.1)
-        await limitPage.click('.el-dialog .el-button.el-button--primary')
-
-        await sleep(.1)
-        const visitInput = await limitPage.$('.el-dialog .el-input-number input')
+        const visitInput = await limitPage.waitForSelector('.el-dialog .el-input-number input')
         await visitInput!.focus()
         await limitPage.keyboard.type('2')
         await limitPage.click('.el-dialog .el-button.el-button--success')

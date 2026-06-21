@@ -7,6 +7,8 @@
 
 import { log } from '@/common/logger'
 import { onRuntimeMessage } from "@api/chrome/runtime"
+import focusPresetDatabase from "@db/focus-preset-database"
+import focusHolder from '@service/focus/holder'
 import cateDatabase from './database/cate-database'
 import { getUsedStorage } from './database/memory-detector'
 import mergeRuleDatabase from "./database/merge-rule-database"
@@ -18,6 +20,7 @@ import { exportData, importData, migrateStorage } from "./service/components/imm
 import { importOther, previewBackup } from "./service/components/import-processor"
 import optionHolder from "./service/components/option-holder"
 import { getWeekStartDay, getWeekStartTime } from "./service/components/week-helper"
+import { handleAction, saveLastPopup } from "./service/focus"
 import { getTodayResult } from './service/item-service'
 import { getInstallTime, getLastBackUp } from "./service/meta-service"
 import notificationProcessor from './service/notification/processor'
@@ -107,6 +110,7 @@ class MessageDispatcher {
             .register('meta.usedStorage', getUsedStorage)
             .register('meta.prepare2fa', prepare2fa)
             .register('meta.check2fa', check2faCode)
+            .register('meta.popup', saveLastPopup)
             // Whitelist & Merge Rule
             .register('whitelist.contain', ({ host, url }) => whitelistHolder.contains(host, url))
             .register('whitelist.all', () => whitelistHolder.all())
@@ -129,6 +133,14 @@ class MessageDispatcher {
             .register('period.list', selectPeriods)
             .register('timeline.list', listTimeline)
             .register('timeline.tick', ev => timelineThrottler.saveEvent(ev))
+            // Focus
+            .register('focus.allPresets', () => focusPresetDatabase.listAll())
+            .register('focus.getPreset', id => focusPresetDatabase.getById(id))
+            .register('focus.addPreset', data => focusPresetDatabase.add(data))
+            .register('focus.savePreset', data => focusPresetDatabase.update(data))
+            .register('focus.deletePreset', id => focusPresetDatabase.remove(id))
+            .register('focus.action', handleAction)
+            .register('focus.current', () => focusHolder.current)
             // Data immigration
             .register('immigration.import', importData)
             .register('immigration.export', exportData)

@@ -183,7 +183,7 @@ const _default = defineComponent((_, ctx) => {
                     )}
                 </ElTableColumn>
                 <ElTableColumn
-                    label={t(msg => msg.limit.item.allowDelay)}
+                    label={t(msg => msg.shared.limit.allowDelay)}
                     minWidth={80}
                     align="center"
                     fixed="right"

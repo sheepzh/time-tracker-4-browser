@@ -12,13 +12,14 @@ import metaMessages, { type MetaMessage } from "../common/meta"
 import sharedMessages, { type SharedMessage } from "../common/shared"
 import { merge, type MessageRoot } from "../merge"
 import contentMessages, { type ContentMessage } from "./content"
+import focusMessages, { type FocusMessage } from './focus'
 import footerMessages, { type FooterMessage } from "./footer"
 import headerMessages, { type HeaderMessage } from "./header"
-
 
 export type PopupMessage = {
     content: ContentMessage
     item: ItemMessage
+    focus: FocusMessage
     meta: MetaMessage
     base: BaseMessage
     header: HeaderMessage
@@ -30,6 +31,7 @@ export type PopupMessage = {
 const MESSAGE_ROOT: MessageRoot<PopupMessage> = {
     content: contentMessages,
     item: itemMessages,
+    focus: focusMessages,
     meta: metaMessages,
     base: baseMessages,
     header: headerMessages,

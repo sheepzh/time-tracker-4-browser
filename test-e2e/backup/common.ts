@@ -98,7 +98,7 @@ export class BackupOptionWrapper {
             await this._page.bringToFront()
             return this._page
         }
-        this._page = await this.context.openAppPage('/additional/option?i=backup')
+        this._page = await this.context.openAppPage('/other/option?i=backup')
         return this._page
     }
 

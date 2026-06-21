@@ -9,7 +9,9 @@
         "defaultPrompt": "This page was blocked!",
         "delay": "{n} more minutes",
         "browsingTime": "Browsing time",
-        "ruleDetail": "Rule details"
+        "ruleDetail": "Rule details",
+        "pomodoroActive": "Pomodoro active",
+        "focusActive": "Focus active"
     },
     "ja": {
         "defaultPrompt": "このページはブロックされました!",

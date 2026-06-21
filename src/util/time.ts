@@ -35,14 +35,13 @@ export function formatTime(time: Date | number, format?: string) {
         s: date.getSeconds(),
         a: date.getDay()
     }
-    const timeStr = format.replace(/{([ymdhisa])+}/g, (_result, key) => {
+    return format.replace(/{([ymdhisa])+}/g, (_result, key) => {
         const value = formatObj[key]
         if (value === undefined) return key
         // Note: getDay() returns 0 on Sunday
-        if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value] }
+        if (key === 'a') return ['日', '一', '二', '三', '四', '五', '六'][value]
         return value.toString().padStart(2, '0')
     })
-    return timeStr
 }
 
 export function formatTimeYMD(time: Date | number): string {

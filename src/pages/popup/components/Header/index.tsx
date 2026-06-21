@@ -6,7 +6,7 @@ import { HEADER_OPTION_SLOT } from '@popup/slot'
 import { IS_ANDROID } from "@util/constant/environment"
 import { getAppPageUrl } from "@util/constant/url"
 import { ElLink } from "element-plus"
-import type { FunctionalComponent } from "vue"
+import { FunctionalComponent } from "vue"
 import DarkSwitch from "./DarkSwitch"
 import Donation from './Donation'
 import LangSelect from "./LangSelect"
@@ -47,7 +47,5 @@ const Header: FunctionalComponent<{}> = () => (
         </Flex>
     </Flex>
 )
-
-Header.displayName = "PopupHeader"
 
 export default Header

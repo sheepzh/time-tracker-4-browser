@@ -17,6 +17,7 @@ import aboutMessages, { type AboutMessage } from "./about"
 import analysisMessages, { type AnalysisMessage } from "./analysis"
 import dashboardMessages, { type DashboardMessage } from "./dashboard"
 import dataManageMessages, { type DataManageMessage } from "./data-manage"
+import focusMessages, { type FocusMessage } from './focus'
 import habitMessages, { type HabitMessage } from "./habit"
 import helpUsMessages, { type HelpUsMessage } from "./help-us"
 import limitMessages, { type LimitMessage } from "./limit"
@@ -31,6 +32,7 @@ import timeFormatMessages, { type TimeFormatMessage } from "./time-format"
 export type AppMessage = {
     about: AboutMessage
     dataManage: DataManageMessage
+    focus: FocusMessage
     item: ItemMessage
     shared: SharedMessage
     record: RecordMessage
@@ -55,6 +57,7 @@ export type AppMessage = {
 const MESSAGE_ROOT: MessageRoot<AppMessage> = {
     about: aboutMessages,
     dataManage: dataManageMessages,
+    focus: focusMessages,
     item: itemMessages,
     shared: sharedMessages,
     record: recordMessages,
