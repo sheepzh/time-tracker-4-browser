@@ -1,63 +1,79 @@
-type UrlChangeHandler = (url: string, prevUrl: string) => void
+import { trySendMsg2Runtime } from '@api/sw/common'
+import { extractHostname } from '@util/pattern'
+
+function getHost(): string {
+    // For file protocol, window.location.host is empty
+    return window.location.host || extractHostname(window.location.href).host
+}
+
+type ChangeEvent = {
+    prevUrl: string
+    prevHost: string
+    nextUrl: string
+    nextHost: string
+}
 
 class LocationWatcher {
-    private url: string
-    private timer: number | undefined
-    private initialized = false
-    private originalPushState: History['pushState'] | undefined
-    private originalReplaceState: History['replaceState'] | undefined
+    url: string
+    host: string
+    whitelisted: boolean
+    #handlers: ArgCallback<ChangeEvent>[] = []
+    #timer: ReturnType<typeof setTimeout>
+
     private readonly handleChangeBound = this.handleChange.bind(this)
 
-    constructor(url: string, private readonly handler: UrlChangeHandler, private readonly interval = 800) {
-        this.url = url
-    }
+    constructor() {
+        this.url = window.location.href
+        this.host = getHost()
+        this.whitelisted = false
 
-    init(): void {
-        if (this.initialized) return
-        this.initialized = true
-
+        // Initialize immediately to catch the initial fields
         window.addEventListener('popstate', this.handleChangeBound)
         window.addEventListener('hashchange', this.handleChangeBound)
-        this.timer = window.setInterval(this.handleChangeBound, this.interval)
 
-        this.originalPushState = history.pushState
-        this.originalReplaceState = history.replaceState
+        // Because content scripts run in a sandboxed environment, overriding history methods is unnecessary
+        // So check URL changed via setTimeout loop instead
+        this.#timer = setInterval(this.handleChangeBound, 500)
+    }
 
-        history.pushState = (...args: Parameters<History['pushState']>) => {
-            this.originalPushState!.apply(history, args)
-            this.handleChangeBound()
-        }
-        history.replaceState = (...args: Parameters<History['replaceState']>) => {
-            this.originalReplaceState!.apply(history, args)
-            this.handleChangeBound()
-        }
+    async init() {
+        await this.#syncWhitelisted()
+    }
+
+    async #syncWhitelisted() {
+        const value = await trySendMsg2Runtime('whitelist.contain', { host: this.host, url: this.url })
+        this.whitelisted = !!value
     }
 
     dispose(): void {
-        if (!this.initialized) return
-        this.initialized = false
-
         window.removeEventListener('popstate', this.handleChangeBound)
         window.removeEventListener('hashchange', this.handleChangeBound)
-        this.timer && clearInterval(this.timer)
-        this.timer = undefined
-
-        if (this.originalPushState) {
-            history.pushState = this.originalPushState
-            this.originalPushState = undefined
-        }
-        if (this.originalReplaceState) {
-            history.replaceState = this.originalReplaceState
-            this.originalReplaceState = undefined
-        }
+        clearInterval(this.#timer)
     }
 
-    private handleChange(): void {
-        const url = window.location.href
-        if (!url || url === this.url) return
+    private async handleChange(): Promise<void> {
+        const nextUrl = window.location.href
+        if (!nextUrl || nextUrl === this.url) return
+        const nextHost = getHost()
+
         const prevUrl = this.url
-        this.url = url
-        this.handler(url, prevUrl)
+        const prevHost = this.host
+
+        this.url = nextUrl
+        this.host = nextHost
+        await this.#syncWhitelisted()
+
+        const ev: ChangeEvent = {
+            prevUrl: prevUrl,
+            nextUrl: nextUrl,
+            prevHost: prevHost,
+            nextHost: nextHost,
+        }
+        this.#handlers.forEach(h => h(ev))
+    }
+
+    onChange(handler: ArgCallback<ChangeEvent>): void {
+        this.#handlers.push(handler)
     }
 }
 

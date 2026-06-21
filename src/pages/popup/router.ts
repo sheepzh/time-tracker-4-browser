@@ -5,6 +5,7 @@ import { createRouter, createWebHashHistory, type RouteRecordRedirect, type Rout
 type Path = `/${tt4b.ui.PopupMenu}`
 type MyRoute =
     | (Omit<RouteRecordSingleView, 'path'> & { path: Path })
+    | (Omit<RouteRecordSingleView, 'path'> & { path: '/' })
     | (Omit<RouteRecordRedirect, 'redirect'> & { redirect: Path })
 
 
@@ -19,7 +20,11 @@ const createRoutes = (): MyRoute[] => [
     }, {
         path: '/limit',
         component: () => import('./components/Limit'),
-    },
+    }, {
+        // Use to remove warnings of "No match found for location with path '/'"
+        path: '/',
+        component: () => import('./components/Percentage'),
+    }
 ]
 
 export const isMenu = createStringUnionGuard<tt4b.ui.PopupMenu>('limit', 'percentage', 'ranking')

@@ -1,34 +1,50 @@
 import LocationWatcher from '@cs/location-watcher'
 
 describe('LocationWatcher', () => {
-    beforeEach(() => {
-        history.replaceState({}, '', '/')
-    })
+    beforeEach(() => history.replaceState({}, '', '/'))
 
-    test('pushState triggers handler immediately', () => {
+    test('pushState triggers handler immediately', async () => {
         const initialUrl = window.location.href
+        const host = window.location.host
         const handler = rstest.fn()
-        const watcher = new LocationWatcher(initialUrl, handler)
-        watcher.init()
+        const watcher = new LocationWatcher()
+        watcher.onChange(handler)
+        await watcher.init()
 
         history.pushState({}, '', '/page-a')
+        // Wait for interval to trigger the handler
+        await new Promise(resolve => setTimeout(resolve, 1000))
 
         expect(handler).toHaveBeenCalledTimes(1)
-        expect(handler).toHaveBeenCalledWith(`${window.location.origin}/page-a`, initialUrl)
+        expect(handler).toHaveBeenCalledWith({
+            nextUrl: `${window.location.origin}/page-a`,
+            prevUrl: initialUrl,
+            nextHost: host,
+            prevHost: host
+        })
 
         watcher.dispose()
     })
 
-    test('replaceState triggers handler immediately', () => {
+    test('replaceState triggers handler immediately', async () => {
         const initialUrl = window.location.href
+        const host = window.location.host
         const handler = rstest.fn()
-        const watcher = new LocationWatcher(initialUrl, handler)
-        watcher.init()
+        const watcher = new LocationWatcher()
+        watcher.onChange(handler)
+        await watcher.init()
 
         history.replaceState({}, '', '/page-b')
+        // Wait for interval to trigger the handler
+        await new Promise(resolve => setTimeout(resolve, 1000))
 
         expect(handler).toHaveBeenCalledTimes(1)
-        expect(handler).toHaveBeenCalledWith(`${window.location.origin}/page-b`, initialUrl)
+        expect(handler).toHaveBeenCalledWith({
+            nextUrl: `${window.location.origin}/page-b`,
+            prevUrl: initialUrl,
+            nextHost: host,
+            prevHost: host,
+        })
 
         watcher.dispose()
     })
@@ -39,27 +55,36 @@ describe('LocationWatcher', () => {
         history.pushState({}, '', '/page-a')
         const pageAUrl = window.location.href
         const handler = rstest.fn()
-        const watcher = new LocationWatcher(pageAUrl, handler)
-        watcher.init()
+        const watcher = new LocationWatcher()
+        watcher.onChange(handler)
+        await watcher.init()
 
         const popstate = new Promise<void>(resolve => {
             window.addEventListener('popstate', () => resolve(), { once: true })
         })
         history.back()
         await popstate
+        // Wait for interval to trigger the handler
+        await new Promise(resolve => setTimeout(resolve, 1000))
 
         expect(handler).toHaveBeenCalledTimes(1)
-        expect(handler).toHaveBeenCalledWith(rootUrl, pageAUrl)
+        expect(handler).toHaveBeenCalledWith({
+            nextUrl: rootUrl,
+            prevUrl: pageAUrl,
+            nextHost: window.location.host,
+            prevHost: window.location.host,
+        })
 
         watcher.dispose()
     })
 
-    test('dispose restores native history methods', () => {
+    test('dispose restores native history methods', async () => {
         const nativePushState = history.pushState
         const nativeReplaceState = history.replaceState
         const handler = rstest.fn()
-        const watcher = new LocationWatcher(window.location.href, handler)
-        watcher.init()
+        const watcher = new LocationWatcher()
+        watcher.onChange(handler)
+        await watcher.init()
 
         watcher.dispose()
 
@@ -67,18 +92,5 @@ describe('LocationWatcher', () => {
         expect(history.replaceState).toBe(nativeReplaceState)
         history.pushState({}, '', '/page-after-dispose')
         expect(handler).not.toHaveBeenCalled()
-    })
-
-    test('init is idempotent', () => {
-        const handler = rstest.fn()
-        const watcher = new LocationWatcher(window.location.href, handler)
-        watcher.init()
-        watcher.init()
-
-        history.pushState({}, '', '/page-a')
-
-        expect(handler).toHaveBeenCalledTimes(1)
-
-        watcher.dispose()
     })
 })

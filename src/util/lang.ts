@@ -1,12 +1,15 @@
-export const mergeObject = <T extends Record<string, any>>(defaults: T, newVal: Partial<T> | undefined): T => {
-    if (newVal === undefined) return defaults
+import { isRecord } from './guard'
 
-    Object.entries(newVal).forEach(([k, v]) => {
-        if (typeof v === 'object' && !!v && !Array.isArray(v) && typeof defaults[k] === 'object' && !!defaults[k]) {
-            (defaults as any)[k] = mergeObject(defaults[k], v as Record<string, any>)
+export const mergeObject = <T extends Record<string, any>>(target: T, toMerge: Partial<T> | undefined): T => {
+    if (toMerge === undefined) return target
+
+    Object.entries(toMerge).forEach(([k, v]) => {
+        const oldV = target[k]
+        if (isRecord(v) && isRecord(oldV)) {
+            (target as any)[k] = mergeObject(oldV, v)
         } else {
-            (defaults as any)[k] = v
+            (target as any)[k] = v
         }
     })
-    return defaults
+    return target
 }
