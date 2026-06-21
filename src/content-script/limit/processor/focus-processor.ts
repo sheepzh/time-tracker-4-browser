@@ -32,6 +32,7 @@ class FocusProcessor implements Processor {
         if (state !== 'running' || phase !== 'focus') return
 
         const url = this.location.url
+        console.log('FocusProcessor#updateBlock', session, url)
         const shouldBlock = policy === 'block' ? matches(cond, url) : !matches(cond, url)
         if (shouldBlock) {
             const presetName = presetId === undefined
