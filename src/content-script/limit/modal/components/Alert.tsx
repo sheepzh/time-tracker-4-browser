@@ -14,7 +14,7 @@ const _default = defineComponent<Props>(props => {
     const isXs = useXsState()
 
     return () => (
-        <Flex marginBottom={80} column align='center'>
+        <Flex marginBottom={50} column align='center'>
             <Flex as='h2' align='center' lineHeight='2em' gap='.4em'>
                 <Img src={getIconUrl()} style={{ width: '1.4em', height: '1.4em' }} />
                 <span>{t(msg => msg.meta.name)?.toUpperCase()}</span>

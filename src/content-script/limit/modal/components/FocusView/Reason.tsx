@@ -1,9 +1,8 @@
 import type { FocusReason } from '@cs/limit/types'
 import { t } from '@cs/locale'
 import Flex from '@pages/components/Flex'
-import { matchCond } from '@util/limit'
-import { formatPeriodCommon } from '@util/time'
-import { ElDescriptions, ElDescriptionsItem } from 'element-plus'
+import { matchUrl } from '@util/limit'
+import { ElDescriptions, ElDescriptionsItem, ElTag } from 'element-plus'
 import { defineComponent } from 'vue'
 import { useApp } from '../../context'
 import { useDescriptions } from '../common'
@@ -25,17 +24,26 @@ const Reason = defineComponent<{ value: FocusReason }>(props => {
                     label={t(msg => msg.shared.focus.policy[props.value.policy].label)}
                     labelAlign='right'
                 >
-                    {matchCond(props.value.cond ?? [], url.value).join(', ')}
+                    <Flex gap={2} wrap align='center'>
+                        {props.value.cond.map(c => (
+                            <ElTag
+                                type={matchUrl(c, url.value) ? 'danger' : 'info'}
+                                size="small"
+                            >
+                                {c}
+                            </ElTag>
+                        ))}
+                    </Flex>
                 </ElDescriptionsItem>
                 <ElDescriptionsItem
                     label={t(msg => msg.shared.focus.duration)}
                     labelAlign='right'
                 >
-                    {formatPeriodCommon(props.value.currentDuration)}
+                    {props.value.currentDuration}
                 </ElDescriptionsItem>
             </ElDescriptions>
         </Flex>
     )
-})
+}, { props: ['value'] })
 
 export default Reason
