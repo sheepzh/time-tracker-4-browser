@@ -4,6 +4,11 @@ All notable changes to Time Tracker will be documented in this file.
 
 It is worth mentioning that the release time of each change refers to the time when the installation package is submitted to the webstore. It is about one week for Firefox to moderate packages, while only 1-2 days for Chrome and Edge.
 
+## [4.3.7] - 2027-06-15
+
+-  Supported custom icons for websites
+-  Fixed some bugs for Mobile
+
 ## [4.3.6] - 2026-06-14
 
 -  Fixed some bugs
