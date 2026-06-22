@@ -1,8 +1,6 @@
-import { listAllCategories } from "@api/sw/cate"
 import { EchartsWrapper } from '@hooks'
 import { getInfoColor, getPrimaryTextColor } from "@pages/util/style"
 import { t } from '@popup/locale'
-import { toMap } from "@util/array"
 import { CATE_NOT_SET_ID } from "@util/site"
 import { isCate } from "@util/stat"
 import type {
@@ -81,7 +79,7 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
 
         if (!result) return {}
 
-        const { rows, query, donutChart } = result
+        const { rows, query, donutChart, cateNameMap } = result
         const { dimension } = query
         const selected: tt4b.stat.Row | undefined = this.selectedCache
             ? rows.filter(isCate).filter(r => r.cateKey === this.selectedCache)[0]
@@ -90,8 +88,6 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
         const textColor = getPrimaryTextColor()
         const inactiveColor = getInfoColor()
 
-        const cates = await listAllCategories()
-        const cateNameMap = toMap(cates, c => c.id, c => c.name)
         cateNameMap[CATE_NOT_SET_ID] = t(msg => msg.shared.cate.notSet)
 
         let legend: LegendComponentOption = {

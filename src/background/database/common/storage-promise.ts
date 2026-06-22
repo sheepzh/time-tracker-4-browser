@@ -5,28 +5,23 @@
  * https://opensource.org/licenses/MIT
  */
 
-/**
- * Copy from chrome.storage
- */
-type NoInferX<T> = T[][T extends any ? 0 : never]
+type StorageArea = chrome.storage.StorageArea
 
 /**
  * Wrap the storage with promise
  */
 export default class StoragePromise {
-    private storage: chrome.storage.StorageArea | undefined
+    private storage: StorageArea | undefined
 
-    constructor(storage?: chrome.storage.StorageArea) {
+    constructor(storage?: StorageArea) {
         this.storage = storage
     }
 
-    private getStorage(): chrome.storage.StorageArea {
+    private getStorage(): StorageArea {
         return this.storage ?? chrome.storage.local
     }
 
-    get<T = { [key: string]: any }>(
-        keys?: NoInferX<keyof T> | Array<NoInferX<keyof T>> | Partial<NoInferX<T>> | null,
-    ): Promise<T> {
+    get<T = { [key: string]: any }>(keys?: Parameters<StorageArea['get']>[0]): Promise<T> {
         return new Promise(resolve => this.getStorage().get(keys ?? null, resolve))
     }
 

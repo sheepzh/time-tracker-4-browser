@@ -1,4 +1,3 @@
-import { createStringUnionGuard } from 'typescript-guard'
 import type { App } from "vue"
 import { createRouter, createWebHashHistory, type RouteRecordRedirect, type RouteRecordSingleView } from "vue-router"
 
@@ -26,8 +25,6 @@ const createRoutes = (): MyRoute[] => [
         component: () => import('./components/Percentage'),
     }
 ]
-
-export const isMenu = createStringUnionGuard<tt4b.ui.PopupMenu>('limit', 'percentage', 'ranking')
 
 export default (app: App) => {
     const routes = createRoutes()

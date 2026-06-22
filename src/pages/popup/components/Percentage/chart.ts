@@ -2,7 +2,7 @@ import { getIconUrl, getRuntimeName } from "@api/chrome/runtime"
 import { createTab } from "@api/chrome/tab"
 import { generateQrCanvas } from "@pages/util/qrcode"
 import { getCssVariable, getInfoColor, getPrimaryTextColor, getSecondaryTextColor } from "@pages/util/style"
-import { calJumpUrl } from "@popup/common"
+import { calJumpUrl } from "@popup/components/stat/common"
 import { t } from '@popup/locale'
 import { sum, toMap } from "@util/array"
 import { IS_SAFARI } from "@util/constant/environment"

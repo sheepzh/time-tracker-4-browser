@@ -1,12 +1,12 @@
 import Flex from "@pages/components/Flex"
 import { defineComponent } from "vue"
 import { RouterView } from "vue-router"
-import Footer from "./components/Footer"
 import Header from "./components/Header"
+import Menu from './components/Menu'
 import { initPopupContext } from "./context"
+import { TOOLBAR_SLOT } from './slot'
 
 const Main = defineComponent(() => {
-
     const appKey = initPopupContext()
 
     return () => (
@@ -15,7 +15,10 @@ const Main = defineComponent(() => {
             <Flex flex={1} height={0}>
                 <RouterView />
             </Flex>
-            <Footer />
+            <Flex justify="space-between" marginBottom={2} marginInline={1}>
+                <Menu />
+                <div id={TOOLBAR_SLOT} />
+            </Flex>
         </Flex>
     )
 })
