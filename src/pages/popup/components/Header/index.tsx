@@ -2,6 +2,7 @@ import { createTab, listTabs, updateTab } from '@api/chrome/tab'
 import { View } from "@element-plus/icons-vue"
 import Flex from "@pages/components/Flex"
 import { t } from '@popup/locale'
+import { HEADER_OPTION_SLOT } from '@popup/slot'
 import { IS_ANDROID } from "@util/constant/environment"
 import { getAppPageUrl } from "@util/constant/url"
 import { ElLink } from "element-plus"
@@ -11,7 +12,6 @@ import Donation from './Donation'
 import LangSelect from "./LangSelect"
 import Logo from "./Logo"
 import MoreInfo from './MoreInfo'
-import Option from "./Option"
 
 const openAppPage = async () => {
     const appPageUrl = getAppPageUrl()
@@ -40,7 +40,7 @@ const Header: FunctionalComponent<{}> = () => (
             <Flex align="center" gap={8} fontSize={30}>
                 <LangSelect />
                 <DarkSwitch />
-                <Option />
+                <div id={HEADER_OPTION_SLOT} />
                 <Donation />
                 <MoreInfo />
             </Flex>

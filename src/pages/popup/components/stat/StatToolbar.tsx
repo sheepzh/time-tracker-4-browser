@@ -1,14 +1,14 @@
 import { useSiteMerge } from '@hooks'
 import Flex from '@pages/components/Flex'
-import { useQuery } from '@popup/context'
 import { t } from '@popup/locale'
 import { ALL_DIMENSIONS } from '@util/stat'
 import { ElSelect, ElText } from 'element-plus'
 import { defineComponent } from 'vue'
 import DurationSelect from './DurationSelect'
+import { useStatQuery } from './context'
 
-const DataToolbar = defineComponent(() => {
-    const query = useQuery()
+const StatToolbar = defineComponent(() => {
+    const query = useStatQuery()
     const { methods } = useSiteMerge()
 
     return () => (
@@ -45,4 +45,4 @@ const DataToolbar = defineComponent(() => {
     )
 })
 
-export default DataToolbar
+export default StatToolbar

@@ -1,15 +1,15 @@
 import { getWeekStartTime } from "@api/sw/option"
 import { listCateStats, listGroupStats, listSiteStats } from '@api/sw/stat'
 import { RECORD_ROUTE, type RecordQuery } from "@app/router/constants"
-import type { PopupDuration, PopupQuery } from "@popup/types"
 import { isRemainHost } from "@util/constant/remain-host"
 import { getAppPageUrl } from "@util/constant/url"
 import { isSite } from "@util/stat"
 import { cvtDateRange2Str, getMonthTime, MILL_PER_DAY, type DateRange } from "@util/time"
+import type { StatDuration, StatQuery } from './context'
 
 type DateRangeCalculator = (now: Date, num?: number) => Awaitable<[Date, Date] | Date | undefined>
 
-const DATE_RANGE_CALCULATORS: { [duration in PopupDuration]: DateRangeCalculator } = {
+const DATE_RANGE_CALCULATORS: { [duration in StatDuration]: DateRangeCalculator } = {
     today: now => now,
     yesterday: now => new Date(now.getTime() - MILL_PER_DAY),
     thisWeek: async now => {
@@ -21,7 +21,7 @@ const DATE_RANGE_CALCULATORS: { [duration in PopupDuration]: DateRangeCalculator
     allTime: () => undefined,
 }
 
-export const queryRows = async (param: PopupQuery): Promise<[rows: tt4b.stat.Row[], date: [Date, Date] | Date | undefined]> => {
+export const queryRows = async (param: StatQuery): Promise<[rows: tt4b.stat.Row[], date: [Date, Date] | Date | undefined]> => {
     const { duration, durationNum, mergeMethod, dimension: sortKey } = param
     const dateRange = await DATE_RANGE_CALCULATORS[duration]?.(new Date(), durationNum)
     const date = cvtDateRange2Str(dateRange)

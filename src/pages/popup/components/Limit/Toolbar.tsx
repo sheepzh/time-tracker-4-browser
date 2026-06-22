@@ -2,12 +2,12 @@ import { APP_LIMIT_ROUTE, AppLimitQuery } from '@/shared/route'
 import { createTab } from '@api/chrome/tab'
 import { Edit, Plus } from '@element-plus/icons-vue'
 import Flex from '@pages/components/Flex'
-import { useLimitSummary } from '@popup/context'
 import { t } from '@popup/locale'
 import { getAppPageUrl } from '@util/constant/url'
 import { isBrowserUrl } from '@util/pattern'
 import { ElButton, ElSelect } from 'element-plus'
 import { computed, defineComponent, type StyleValue } from 'vue'
+import { useLimitContext } from './context'
 
 const findHost = (url: string) => {
     try {
@@ -17,8 +17,9 @@ const findHost = (url: string) => {
     }
 }
 
-const LimitToolbar = defineComponent(() => {
-    const { summary, selected, loading } = useLimitSummary()
+const Toolbar = defineComponent(() => {
+    const { summary, selected, loading } = useLimitContext()
+
     const items = computed(() => summary.value?.items || [])
 
     const handleNew = async () => {
@@ -63,4 +64,4 @@ const LimitToolbar = defineComponent(() => {
     )
 })
 
-export default LimitToolbar
+export default Toolbar

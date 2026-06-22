@@ -1,7 +1,6 @@
 import { Histogram, PieChart, Timer } from '@element-plus/icons-vue'
-import { useMenu } from '@popup/context'
+import { isMenu, useMenu } from '@popup/context'
 import { t } from '@popup/locale'
-import { isMenu } from '@popup/router'
 import { ElIcon, ElRadioButton, ElRadioGroup, ElTooltip } from "element-plus"
 import { type Component, defineComponent, h } from "vue"
 
