@@ -77,7 +77,7 @@ export async function deleteDir(context: WebDAVContext, dirPath: string) {
     if (status === 403) {
         throw new Error("Unauthorized to delete directory")
     }
-    if (status !== 201 && status !== 200) {
+    if (![201, 200, 204].includes(status)) {
         throw new Error("Failed to delete directory: " + status)
     }
 }
@@ -96,7 +96,7 @@ function handleWriteResponse(response: Response) {
     if (status === 403) {
         throw new Error("Unauthorized to write file or create directory")
     }
-    if (status !== 201 && status !== 200) {
+    if (![201, 200, 204].includes(status)) {
         throw new Error("Failed to write file or create directory: " + status)
     }
 }
