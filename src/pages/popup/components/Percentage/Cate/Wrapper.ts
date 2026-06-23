@@ -1,6 +1,5 @@
 import { EchartsWrapper } from '@hooks'
 import { getInfoColor, getPrimaryTextColor } from "@pages/util/style"
-import { t } from '@popup/locale'
 import { CATE_NOT_SET_ID } from "@util/site"
 import { isCate } from "@util/stat"
 import type {
@@ -87,8 +86,6 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
 
         const textColor = getPrimaryTextColor()
         const inactiveColor = getInfoColor()
-
-        cateNameMap[CATE_NOT_SET_ID] = t(msg => msg.shared.cate.notSet)
 
         let legend: LegendComponentOption = {
             type: 'scroll',
