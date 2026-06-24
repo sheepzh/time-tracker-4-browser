@@ -113,14 +113,14 @@ const _default = defineComponent<{}>((_, ctx) => {
                         onClear={() => form.name = ''}
                     />
                 </ElFormItem>
-                <ElFormItem label={t(msg => msg.focus.method)}>
+                <ElFormItem label={t(msg => msg.shared.focus.method)}>
                     <ElRadioGroup modelValue={form.method} onChange={onMethodChange} size="small">
                         {ALL_METHODS.map(method => (
                             <ElRadio value={method} label={t(msg => msg.shared.focus.method[method].label)} />
                         ))}
                     </ElRadioGroup>
                 </ElFormItem>
-                <ElFormItem label={t(msg => msg.focus.policy)} required={form.policy === 'allow'}>
+                <ElFormItem label={t(msg => msg.shared.focus.policy)} required={form.policy === 'allow'}>
                     <Flex column gap={6} width='100%'>
                         <ElRadioGroup modelValue={form.policy} onChange={v => isPolicy(v) && (form.policy = v)}>
                             {ALL_FOCUS_POLICIES.map(policy => (
