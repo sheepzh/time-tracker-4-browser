@@ -37,7 +37,7 @@ const FilterPolicy: FunctionalComponent<Pick<tt4b.focus.Config, 'policy' | 'cond
     if (policy === 'block' && !cond.length) return <UnlimitedTag />
     return <>
         <ElTag size="small" type={policy === 'block' ? 'danger' : 'success'}>
-            {t(msg => msg.shared.focus.policy[policy].label)}
+            {t(msg => msg.focus.policy[policy].label)}
         </ElTag>
         {cond.map(c => <span style={{ display: 'block' }}>{c}</span>)}
     </>
@@ -48,7 +48,7 @@ const Table = defineComponent<{}>(() => {
 
     return () => (
         <ElTable data={presets.value} border fit highlightCurrentRow>
-            <ElTableColumn label={t(msg => msg.shared.focus.presetName)} >
+            <ElTableColumn label={t(msg => msg.focus.presetName)} >
                 {({ row: { id, name } }: Scope) => (
                     <Flex inline align='center' gap={5}>
                         <StateDot session={session.value} presetId={id} />
@@ -57,13 +57,13 @@ const Table = defineComponent<{}>(() => {
                 )}
             </ElTableColumn>
             <ElTableColumn
-                label={t(msg => msg.shared.focus.method.label)}
+                label={t(msg => msg.focus.method.label)}
                 minWidth={100}
                 align="center"
-                formatter={({ method }: tt4b.focus.Preset) => t(msg => msg.shared.focus.method[method].label)}
+                formatter={({ method }: tt4b.focus.Preset) => t(msg => msg.focus.method[method].label)}
             />
             <ElTableColumn
-                label={t(msg => msg.shared.focus.duration)}
+                label={t(msg => msg.focus.duration)}
                 minWidth={120}
                 align="center"
             >
@@ -73,7 +73,7 @@ const Table = defineComponent<{}>(() => {
                 </>}
             </ElTableColumn>
             <ElTableColumn
-                label={t(msg => msg.shared.focus.policy.label)}
+                label={t(msg => msg.focus.policy.label)}
                 minWidth={200}
                 align="center"
             >

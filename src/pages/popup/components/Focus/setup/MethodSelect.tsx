@@ -24,9 +24,9 @@ const Card = defineComponent<CardProps>(props => {
             <ElCard shadow='hover'>
                 <Flex column align='center' gap={10} padding='8px 0'>
                     <span style={{ fontSize: '32px' }}>{props.emoji}</span>
-                    <ElText tag='b' size='large'>{t(msg => msg.shared.focus.method[props.value].label)}</ElText>
+                    <ElText tag='b' size='large'>{t(msg => msg.focus.method[props.value].label)}</ElText>
                     <ElText size='small' type='info' style={{ textAlign: 'center' } satisfies StyleValue}>
-                        {t(msg => msg.shared.focus.method[props.value].desc)}
+                        {t(msg => msg.focus.method[props.value].desc)}
                     </ElText>
                 </Flex>
             </ElCard>
@@ -39,7 +39,7 @@ const MethodSelect = defineComponent<{}>(() => {
 
     return () => (
         <Flex column flex={1} gap={24} align='center' justify='center' padding='20px 8px'>
-            <ElText size='large' tag='b'>{t(msg => msg.focus.chooseMethod)}</ElText>
+            <ElText size='large' tag='b'>{t(msg => msg.focus.method.choose)}</ElText>
             <Flex gap={16} column width='50%'>
                 {Object.entries(METHOD_EMOJIS).map(([value, emoji]) => (
                     <Card

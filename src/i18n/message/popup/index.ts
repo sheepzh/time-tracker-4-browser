@@ -7,12 +7,12 @@
 
 import baseMessages, { type BaseMessage } from "../common/base"
 import calendarMessages, { type CalendarMessage } from "../common/calendar"
+import focusMessages, { type FocusMessage } from '../common/focus'
 import itemMessages, { type ItemMessage } from "../common/item"
 import metaMessages, { type MetaMessage } from "../common/meta"
 import sharedMessages, { type SharedMessage } from "../common/shared"
 import { merge, type MessageRoot } from "../merge"
 import contentMessages, { type ContentMessage } from "./content"
-import focusMessages, { type FocusMessage } from './focus'
 import footerMessages, { type FooterMessage } from "./footer"
 import headerMessages, { type HeaderMessage } from "./header"
 

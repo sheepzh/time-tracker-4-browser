@@ -16,13 +16,13 @@ const Reason = defineComponent<{ value: FocusReason }>(props => {
             <ElDescriptions border column={1} {...descProps.value}>
                 <ElDescriptionsItem
                     v-show={props.value.presetName}
-                    label={t(msg => msg.shared.focus.presetName)}
+                    label={t(msg => msg.focus.presetName)}
                     labelAlign='right'
                 >
                     {props.value.presetName}
                 </ElDescriptionsItem>
                 <ElDescriptionsItem
-                    label={t(msg => msg.shared.focus.policy[props.value.policy].label)}
+                    label={t(msg => msg.focus.policy[props.value.policy].label)}
                     labelAlign='right'
                 >
                     <Flex gap={2} wrap align='center'>
@@ -37,7 +37,7 @@ const Reason = defineComponent<{ value: FocusReason }>(props => {
                     </Flex>
                 </ElDescriptionsItem>
                 <ElDescriptionsItem
-                    label={t(msg => msg.shared.focus.duration)}
+                    label={t(msg => msg.focus.duration)}
                     labelAlign='right'
                 >
                     {formatPeriodCommon(props.value.currentDuration)}

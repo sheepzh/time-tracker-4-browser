@@ -19,7 +19,7 @@ const ADD_FOCUS_URL = getAppPageUrl(APP_FOCUS_ROUTE, { action: 'create' } satisf
 const PresetButton: FunctionalComponent<ButtonProps> = ({ presets, onSelect }) => {
     const button = (
         <ElButton onClick={() => window.open(ADD_FOCUS_URL)} icon={Plus}>
-            {t(msg => msg.focus.button.preset)}
+            {t(msg => msg.focus.preset)}
         </ElButton>
     )
 
@@ -57,7 +57,7 @@ const SetupToolbar = defineComponent<{}>(() => {
         const m = method.value
         if (!m) return <PresetButton presets={presets.value} onSelect={apply} />
         return <>
-            <ElText>{METHOD_EMOJIS[m]} {t(msg => msg.shared.focus.method[m].label)}</ElText>
+            <ElText>{METHOD_EMOJIS[m]} {t(msg => msg.focus.method[m].label)}</ElText>
             <ElButton icon={isRtl() ? Right : Back} onClick={handleBack} />
             <ElButton
                 data-testid='start-btn' nativeType='submit'

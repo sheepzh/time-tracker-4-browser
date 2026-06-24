@@ -21,44 +21,6 @@
             "allowDelay": "Allow Delay",
             "unlimited": "Unlimited"
         },
-        "focus": {
-            "menu": "Focus & Pomodoro",
-            "policy": {
-                "label": "Filter Policy",
-                "allow": {
-                    "label": "Allow only",
-                    "desc": "Only allowed sites are accessible, all others are blocked"
-                },
-                "block": {
-                    "label": "Block",
-                    "desc": "All sites are accessible except blocked ones"
-                }
-            },
-            "duration": "Focus Time",
-            "break": "Break Time",
-            "state": {
-                "running": "Running",
-                "paused": "Paused",
-                "aborted": "Aborted",
-                "done": "Done"
-            },
-            "method": {
-                "label": "Method",
-                "focus": {
-                    "label": "Deep Focus",
-                    "desc": "Focus for a period of time"
-                },
-                "pomodoro": {
-                    "label": "Pomodoro",
-                    "desc": "Timed work/break cycles to stay productive"
-                }
-            },
-            "noAllowUrl": "No allowed sites specified. Please add at least one site to the allow list.",
-            "noBlockUrl": "No blocked sites specified. Start without any site restrictions?",
-            "noTime": "Please set both focus time and break time for Pomodoro",
-            "abort": "Abort",
-            "presetName": "Preset Name"
-        },
         "permGrantConfirm": "This feature requires relevant permissions"
     },
     "zh_CN": {

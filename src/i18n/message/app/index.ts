@@ -8,6 +8,7 @@
 import baseMessages, { type BaseMessage } from "../common/base"
 import buttonMessages, { type ButtonMessage } from "../common/button"
 import calendarMessages, { type CalendarMessage } from "../common/calendar"
+import focusMessages, { type FocusMessage } from '../common/focus'
 import itemMessages, { type ItemMessage } from "../common/item"
 import metaMessages, { type MetaMessage } from "../common/meta"
 import operationMessages, { type OperationMessage } from '../common/operation'
@@ -50,6 +51,7 @@ export type AppMessage = {
     meta: MetaMessage
     base: BaseMessage
     limitModal: ModalMessage
+    focus: FocusMessage
 }
 
 const MESSAGE_ROOT: MessageRoot<AppMessage> = {
@@ -74,6 +76,7 @@ const MESSAGE_ROOT: MessageRoot<AppMessage> = {
     meta: metaMessages,
     base: baseMessages,
     limitModal: limitModalMessages,
+    focus: focusMessages,
 }
 
 const _default = merge<AppMessage>(MESSAGE_ROOT)

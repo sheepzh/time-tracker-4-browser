@@ -34,10 +34,10 @@ const SessionView = defineComponent<Props>(props => {
         <Flex column align='center' justify='center' flex={1} gap={24} style={{ fontVariantNumeric: 'tabular-nums' }}>
             <Flex align='center' column gap={10}>
                 <ElText size='large' tag='b' style={{ fontSize: '32px' }}>
-                    {t(msg => msg.shared.focus.method[props.session.method].label)}
+                    {t(msg => msg.focus.method[props.session.method].label)}
                 </ElText>
                 <ElTag effect='plain' type={STATE_TYPES[props.session.state]} round>
-                    {t(msg => msg.shared.focus.state[props.session.state])}
+                    {t(msg => msg.focus.state[props.session.state])}
                 </ElTag>
             </Flex>
             {progress.value ? (
@@ -55,7 +55,7 @@ const SessionView = defineComponent<Props>(props => {
                             {progress.value[1].toFixed(1)}%
                         </ElText>
                         <ElTag round effect='light' size='small' type='info'>
-                            {t(msg => msg.shared.focus[props.session.phase === 'break' ? 'break' : 'duration'])}
+                            {t(msg => msg.focus[props.session.phase === 'break' ? 'break' : 'duration'])}
                         </ElTag>
                     </Flex>
                 </ElProgress>

@@ -63,11 +63,11 @@ const _default = defineComponent<{}>((_, ctx) => {
         const { id, method, policy, cond, duration, break: breakDuration } = form
 
         if (method === 'pomodoro' && (!duration || !breakDuration)) {
-            return ElMessage.error(t(msg => msg.shared.focus.noTime))
+            return ElMessage.error(t(msg => msg.focus.noTime))
         }
 
         if (method === 'focus' && policy === 'allow' && !cond.length) {
-            return ElMessage.error(t(msg => msg.shared.focus.noAllowUrl))
+            return ElMessage.error(t(msg => msg.focus.noAllowUrl))
         }
 
         if (editing.value && id !== undefined) {
@@ -105,7 +105,7 @@ const _default = defineComponent<{}>((_, ctx) => {
             }}
         >
             <ElForm labelWidth={140}>
-                <ElFormItem required label={t(msg => msg.shared.focus.presetName)}>
+                <ElFormItem required label={t(msg => msg.focus.presetName)}>
                     <ElInput
                         modelValue={form.name}
                         onInput={val => form.name = val}
@@ -113,18 +113,18 @@ const _default = defineComponent<{}>((_, ctx) => {
                         onClear={() => form.name = ''}
                     />
                 </ElFormItem>
-                <ElFormItem label={t(msg => msg.shared.focus.method)}>
+                <ElFormItem label={t(msg => msg.focus.method)}>
                     <ElRadioGroup modelValue={form.method} onChange={onMethodChange} size="small">
                         {ALL_METHODS.map(method => (
-                            <ElRadio value={method} label={t(msg => msg.shared.focus.method[method].label)} />
+                            <ElRadio value={method} label={t(msg => msg.focus.method[method].label)} />
                         ))}
                     </ElRadioGroup>
                 </ElFormItem>
-                <ElFormItem label={t(msg => msg.shared.focus.policy)} required={form.policy === 'allow'}>
+                <ElFormItem label={t(msg => msg.focus.policy)} required={form.policy === 'allow'}>
                     <Flex column gap={6} width='100%'>
                         <ElRadioGroup modelValue={form.policy} onChange={v => isPolicy(v) && (form.policy = v)}>
                             {ALL_FOCUS_POLICIES.map(policy => (
-                                <ElRadio value={policy} label={t(msg => msg.shared.focus.policy[policy].label)} />
+                                <ElRadio value={policy} label={t(msg => msg.focus.policy[policy].label)} />
                             ))}
                         </ElRadioGroup>
                         <CondEditor
@@ -134,7 +134,7 @@ const _default = defineComponent<{}>((_, ctx) => {
                         />
                     </Flex>
                 </ElFormItem>
-                <ElFormItem label={t(msg => msg.shared.focus.duration)}>
+                <ElFormItem label={t(msg => msg.focus.duration)}>
                     <Flex gap={10} align="center" width="100%">
                         <TimeInput
                             modelValue={form.duration}
@@ -156,7 +156,7 @@ const _default = defineComponent<{}>((_, ctx) => {
                     </Flex>
                 </ElFormItem>
                 {form.method === 'pomodoro' && (
-                    <ElFormItem label={t(msg => msg.shared.focus.break)}>
+                    <ElFormItem label={t(msg => msg.focus.break)}>
                         <TimeInput
                             modelValue={form.break}
                             onChange={val => form.break = val}

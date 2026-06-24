@@ -32,7 +32,7 @@ const SessionToolbar = defineComponent<{}>(() => {
                 {t(msg => msg.focus.button.pause)}
             </ElButton>
             <ConfirmButton
-                buttonText={t(msg => msg.shared.focus.abort)}
+                buttonText={t(msg => msg.focus.button.abort)}
                 visible={alive}
                 buttonProps={{ type: 'danger' }}
                 data-testid='abort-btn'

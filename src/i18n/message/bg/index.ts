@@ -1,4 +1,5 @@
 import calendarMessages, { type CalendarMessage } from '../common/calendar'
+import focusMessages, { type FocusMessage } from '../common/focus'
 import initialMessages, { type InitialMessage } from '../common/initial'
 import metaMessages, { type MetaMessage } from '../common/meta'
 import sharedMessages, { type SharedMessage } from '../common/shared'
@@ -11,6 +12,7 @@ export type BgMessage = {
     calendar: CalendarMessage
     notification: NotificationMessage
     initial: InitialMessage
+    focus: FocusMessage
 }
 
 const CHILD_MESSAGES: MessageRoot<BgMessage> = {
@@ -19,6 +21,7 @@ const CHILD_MESSAGES: MessageRoot<BgMessage> = {
     calendar: calendarMessages,
     notification: notificationMessages,
     initial: initialMessages,
+    focus: focusMessages,
 }
 
 export default merge(CHILD_MESSAGES)

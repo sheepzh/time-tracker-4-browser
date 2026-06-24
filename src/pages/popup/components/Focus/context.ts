@@ -113,14 +113,14 @@ export const initFocusContext = () => {
         if (!m) return
 
         if (m === 'pomodoro' && (!form.duration || !form.break)) {
-            return void ElMessage.error(t(msg => msg.shared.focus.noTime))
+            return void ElMessage.error(t(msg => msg.focus.noTime))
         }
         if (m === 'focus' && !form.cond.length) {
             if (form.policy === 'allow') {
-                return void ElMessage.error(t(msg => msg.shared.focus.noAllowUrl))
+                return void ElMessage.error(t(msg => msg.focus.noAllowUrl))
             } else if (form.policy === 'block') {
                 const data = await ElMessageBox.confirm(
-                    t(msg => msg.shared.focus.noBlockUrl),
+                    t(msg => msg.focus.noBlockUrl),
                     { type: 'warning' },
                 )
                 const confirmed = data === 'confirm' || data.action === 'confirm'

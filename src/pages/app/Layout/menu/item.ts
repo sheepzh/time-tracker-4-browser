@@ -79,7 +79,7 @@ export const menuGroups = (): MenuGroup[] => [{
         route: LIMIT_ROUTE,
         icon: Timer,
     }, {
-        title: msg => msg.shared.focus.menu,
+        title: msg => msg.focus.menu,
         route: FOCUS_ROUTE,
         icon: Focus,
         mobile: false,

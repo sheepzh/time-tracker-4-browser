@@ -40,7 +40,7 @@ const SetupForm = defineComponent<{}>(() => {
     return () => (
         <Flex column flex={1} gap={14} paddingBlock={10}>
             <Card v-show={method.value === 'focus'}>
-                <FormItem label={t(msg => msg.shared.focus.duration)}>
+                <FormItem label={t(msg => msg.focus.duration)}>
                     <Flex gap={10} align='center'>
                         <TimeInput
                             modelValue={form.duration}
@@ -63,7 +63,7 @@ const SetupForm = defineComponent<{}>(() => {
             </Card>
             <Card v-show={method.value === 'pomodoro'}>
                 <Flex gap={10}>
-                    <FormItem label={t(msg => msg.shared.focus.duration)} style={{ flex: 1 } satisfies StyleValue}>
+                    <FormItem label={t(msg => msg.focus.duration)} style={{ flex: 1 } satisfies StyleValue}>
                         <TimeInput
                             modelValue={form.duration}
                             onChange={val => form.duration = val}
@@ -72,7 +72,7 @@ const SetupForm = defineComponent<{}>(() => {
                             size='default'
                         />
                     </FormItem>
-                    <FormItem label={t(msg => msg.shared.focus.break)} style={{ flex: 1 } satisfies StyleValue}>
+                    <FormItem label={t(msg => msg.focus.break)} style={{ flex: 1 } satisfies StyleValue}>
                         <TimeInput
                             modelValue={form.break}
                             onChange={val => form.break = val}
@@ -90,12 +90,12 @@ const SetupForm = defineComponent<{}>(() => {
                         {ALL_FOCUS_POLICIES.map(m => (
                             <ElRadioButton
                                 value={m}
-                                label={t(msg => msg.shared.focus.policy[m].label)}
+                                label={t(msg => msg.focus.policy[m].label)}
                             />
                         ))}
                     </ElRadioGroup>
                     <ElText type='info'>
-                        {t(msg => msg.shared.focus.policy[form.policy].desc)}
+                        {t(msg => msg.focus.policy[form.policy].desc)}
                     </ElText>
                 </Flex>
                 <Flex flex={1} width='100%' style={{ minHeight: 0 } satisfies StyleValue}>

@@ -25,7 +25,7 @@ const createItems = (): MenuItem[] => [
         icon: Timer,
     }, {
         route: 'focus',
-        label: t(msg => msg.shared.focus.menu),
+        label: t(msg => msg.focus.menu),
         icon: Aim,
     },
 ]

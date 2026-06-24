@@ -13,9 +13,9 @@ const FocusView = defineComponent<{ value: FocusReason }>(props => {
     return () => <>
         <Alert>
             <Flex gap={10} column align='center'>
-                {t(msg => msg.shared.focus.method[props.value.method])}
+                {t(msg => msg.focus.method[props.value.method])}
                 <ElTag size='small' effect='plain'>
-                    {t(msg => msg.shared.focus.state[props.value.state])}
+                    {t(msg => msg.focus.state[props.value.state])}
                 </ElTag>
             </Flex>
         </Alert>
@@ -27,7 +27,7 @@ const FocusView = defineComponent<{ value: FocusReason }>(props => {
                 onClick={() => bridge.request('abort', undefined)}
                 style={{ marginTop: '16px' } satisfies StyleValue}
             >
-                {t(msg => msg.shared.focus.abort)}
+                {t(msg => msg.focus.button.abort)}
             </ElButton>
         </Flex>
     </>

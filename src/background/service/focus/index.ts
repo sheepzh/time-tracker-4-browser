@@ -17,8 +17,8 @@ function calcNotification(session: tt4b.focus.Session): [title: string, message:
         return [t(msg => msg.notification.focus.completedTitle), t(msg => msg.notification.focus.completedMsg)]
     } else if (method === 'pomodoro') {
         return phase === 'break'
-            ? [t(msg => msg.shared.focus.break), t(msg => msg.notification.focus.breakStartMsg)]
-            : [t(msg => msg.shared.focus.duration), t(msg => msg.notification.focus.focusResumeMsg)]
+            ? [t(msg => msg.focus.break), t(msg => msg.notification.focus.breakStartMsg)]
+            : [t(msg => msg.focus.duration), t(msg => msg.notification.focus.focusResumeMsg)]
     }
     return [null, null]
 }
