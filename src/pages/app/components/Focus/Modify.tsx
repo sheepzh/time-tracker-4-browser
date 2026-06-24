@@ -8,7 +8,8 @@ import TimeInput from '@pages/components/TimeInput'
 import { ALL_FOCUS_POLICIES, FOCUS_COND_PLACEHOLDER, FOCUS_METHOD_DEFAULTS } from '@pages/util/focus'
 import { isMethod, isPolicy } from '@util/focus'
 import {
-    ElButton, ElCheckbox, ElDialog, ElForm, ElFormItem, ElInput, ElMessage, ElRadioButton, ElRadioGroup
+    ElButton, ElCheckbox, ElDialog, ElForm, ElFormItem, ElInput, ElMessage, ElRadio,
+    ElRadioGroup
 } from 'element-plus'
 import { computed, defineComponent, reactive, type StyleValue, toRaw } from 'vue'
 import { type ModifyInstance, useFocusList } from './context'
@@ -31,7 +32,7 @@ const _default = defineComponent<{}>((_, ctx) => {
     const form = reactive(createInitial())
     const editing = computed(() => !!form.id)
 
-    const reset = (data: MakeOptional<tt4b.focus.Preset, 'id'>) => {
+    const apply = (data: Form) => {
         form.id = data.id
         form.name = data.name
         form.method = data.method
@@ -44,11 +45,12 @@ const _default = defineComponent<{}>((_, ctx) => {
 
     ctx.expose({
         create() {
-            reset(createInitial())
+            apply(createInitial())
             open()
         },
         modify(val: tt4b.focus.Preset) {
-            reset(val)
+            const { duration, break: break_, allowDelay } = val
+            apply({ ...val, duration, break: break_, allowDelay })
             open()
         }
     } satisfies ModifyInstance)
@@ -80,22 +82,17 @@ const _default = defineComponent<{}>((_, ctx) => {
         refresh()
     }
 
-    const handleMethodChange = (val: unknown) => {
+    const onMethodChange = (val: unknown) => {
         if (!isMethod(val)) return
         if (val === form.method) return
 
-        form.method = val
-        const defaults = FOCUS_METHOD_DEFAULTS[val]
-        form.policy = defaults.policy
-        form.cond = [...defaults.cond]
-        form.duration = defaults.duration
-        form.break = defaults.break
-        form.allowDelay = defaults.allowDelay
+        const { name, id } = form
+        apply({ ...FOCUS_METHOD_DEFAULTS[val], method: val, name, id })
     }
 
     return () => (
         <ElDialog
-            width={560}
+            width={640}
             title={t(msg => msg.button[editing.value ? 'modify' : 'create'])}
             modelValue={visible.value}
             onClose={close}
@@ -107,7 +104,7 @@ const _default = defineComponent<{}>((_, ctx) => {
                 )
             }}
         >
-            <ElForm labelWidth={120}>
+            <ElForm labelWidth={140}>
                 <ElFormItem required label={t(msg => msg.shared.focus.presetName)}>
                     <ElInput
                         modelValue={form.name}
@@ -117,25 +114,17 @@ const _default = defineComponent<{}>((_, ctx) => {
                     />
                 </ElFormItem>
                 <ElFormItem label={t(msg => msg.focus.method)}>
-                    <ElRadioGroup
-                        modelValue={form.method}
-                        onChange={handleMethodChange}
-                        size="small"
-                    >
+                    <ElRadioGroup modelValue={form.method} onChange={onMethodChange} size="small">
                         {ALL_METHODS.map(method => (
-                            <ElRadioButton value={method} label={t(msg => msg.shared.focus.method[method].label)} />
+                            <ElRadio value={method} label={t(msg => msg.shared.focus.method[method].label)} />
                         ))}
                     </ElRadioGroup>
                 </ElFormItem>
-                <ElFormItem label={t(msg => msg.shared.focus.method[form.method].label)} required={form.policy === 'allow'}>
+                <ElFormItem label={t(msg => msg.focus.policy)} required={form.policy === 'allow'}>
                     <Flex column gap={6} width='100%'>
-                        <ElRadioGroup
-                            modelValue={form.policy}
-                            onChange={val => isPolicy(val) && (form.policy = val)}
-                            size='small'
-                        >
+                        <ElRadioGroup modelValue={form.policy} onChange={v => isPolicy(v) && (form.policy = v)}>
                             {ALL_FOCUS_POLICIES.map(policy => (
-                                <ElRadioButton value={policy} label={t(msg => msg.shared.focus.policy[policy].label)} />
+                                <ElRadio value={policy} label={t(msg => msg.shared.focus.policy[policy].label)} />
                             ))}
                         </ElRadioGroup>
                         <CondEditor
@@ -152,6 +141,7 @@ const _default = defineComponent<{}>((_, ctx) => {
                             onChange={val => form.duration = val}
                             hideSeconds
                             style={{ flex: 1 } satisfies StyleValue}
+                            placeholder={t(msg => msg.shared.limit.unlimited)}
                         />
                         {form.method === 'focus' && (
                             <ElCheckbox

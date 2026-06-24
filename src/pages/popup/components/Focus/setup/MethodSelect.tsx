@@ -34,7 +34,7 @@ const Card = defineComponent<CardProps>(props => {
     )
 }, { props: ['value', 'emoji', 'onClick'] })
 
-const TemplateSelect = defineComponent(() => {
+const MethodSelect = defineComponent<{}>(() => {
     const { apply } = useFocusSetup()
 
     return () => (
@@ -54,4 +54,4 @@ const TemplateSelect = defineComponent(() => {
     )
 })
 
-export default TemplateSelect
+export default MethodSelect

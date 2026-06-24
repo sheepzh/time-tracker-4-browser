@@ -2,16 +2,15 @@ import { deleteFocusPreset, getCurrentSession, listFocusPresets } from '@api/sw/
 import { t } from '@app/locale'
 import { type FocusQuery } from '@app/router/constants'
 import { useManualRequest, useProvide, useProvider, useRequest } from '@hooks'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage } from 'element-plus'
 import { onMounted, ref, type ShallowRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 type ContextValue = {
     presets: ShallowRef<tt4b.focus.Preset[]>
-    loading: ShallowRef<boolean>
     session: ShallowRef<tt4b.focus.Session | undefined>
     refresh: NoArgCallback
-    remove: ArgCallback<tt4b.focus.Preset>
+    remove: ArgCallback<number>
     modifyInst: ShallowRef<ModifyInstance | undefined>
 }
 
@@ -32,16 +31,12 @@ const parseQuery = (): FocusQuery['action'] => {
 export const initFocusManage = () => {
     const action = parseQuery()
 
-    const { data: presets, refresh, loading } = useRequest(listFocusPresets, { defaultValue: [] })
+    const { data: presets, refresh } = useRequest(listFocusPresets, { defaultValue: [] })
     const { data: session } = useRequest(getCurrentSession)
 
     const modifyInst = ref<ModifyInstance>()
 
-    const { refresh: remove } = useManualRequest(async (preset: tt4b.focus.Preset) => {
-        const msg = t(msg => msg.focus.deleteConfirm, { name: preset.name })
-        await ElMessageBox.confirm(msg, t(msg => msg.button.delete), { type: 'warning' })
-        await deleteFocusPreset(preset.id)
-    }, {
+    const { refresh: remove } = useManualRequest(deleteFocusPreset, {
         onSuccess() {
             ElMessage.success(t(msg => msg.operation.successMsg))
             refresh()
@@ -52,11 +47,11 @@ export const initFocusManage = () => {
         onMounted(() => setTimeout(() => modifyInst.value?.create()))
     }
 
-    useProvide<ContextValue>(NAMESPACE, { presets, session, refresh, remove, modifyInst, loading })
+    useProvide<ContextValue>(NAMESPACE, { presets, session, refresh, remove, modifyInst })
 
     return { modifyInst }
 }
 
-export const useFocusList = () => useProvider<ContextValue, 'presets' | 'refresh' | 'session' | 'remove' | 'modifyInst' | 'loading'>(
-    NAMESPACE, 'presets', 'refresh', 'session', 'remove', 'modifyInst', 'loading'
+export const useFocusList = () => useProvider<ContextValue, 'presets' | 'refresh' | 'session' | 'remove' | 'modifyInst'>(
+    NAMESPACE, 'presets', 'refresh', 'session', 'remove', 'modifyInst'
 )

@@ -36,6 +36,7 @@ class VisitProcessor implements Processor {
     private async handleTracker({ start, end }: tt4b.core.Event) {
         const diff = end - start
         this.focusTime += diff
+        this.modal.syncVisitTime(this.focusTime)
         this.rules.forEach(rule => {
             if (!this.hasLimited(rule)) return
             const { id, cond, allowDelay } = rule
@@ -45,7 +46,6 @@ class VisitProcessor implements Processor {
                 type: 'VISIT',
                 allowDelay,
                 delayCount: this.delayCount,
-                getVisitTime: () => this.focusTime,
             })
         })
     }

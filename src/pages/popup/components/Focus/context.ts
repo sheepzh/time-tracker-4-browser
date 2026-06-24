@@ -2,19 +2,19 @@ import { focusAction, getCurrentSession, listFocusPresets } from '@api/sw/focus'
 import { localReactive, localRef, useManualRequest, usePermissionCheck, useProvide, useProvider, useRequest } from '@hooks'
 import { FOCUS_METHOD_DEFAULTS } from '@pages/util/focus'
 import { t } from '@popup/locale'
-import { isMethod, isPolicy } from '@util/focus'
+import { findLastStartTs, isMethod, isPolicy } from '@util/focus'
+import { MILL_PER_SECOND } from '@util/time'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {
     createArrayGuard, createObjectGuard,
     isOptionalBoolean, isOptionalInt, isString
 } from 'typescript-guard'
-import { toRaw, type Ref, type ShallowRef } from 'vue'
+import { computed, onScopeDispose, ref, toRaw, type Ref, type ShallowRef } from 'vue'
 
 type FormData = Omit<tt4b.focus.Config, 'method'> & { presetId: number | undefined }
 
 type ContextValue = {
     session: ShallowRef<tt4b.focus.Session | undefined>
-    refresh: NoArgCallback
     presets: ShallowRef<tt4b.focus.Preset[]>
     method: Ref<tt4b.focus.Method | undefined>
     form: FormData
@@ -64,10 +64,46 @@ function initSetup() {
     return { method, form, apply }
 }
 
+function initElapsed(session: ShallowRef<tt4b.focus.Session | undefined>, refresh: NoArgCallback) {
+    const now = ref(Date.now())
+    const elapsed = computed(() => {
+        const s = session.value
+        if (!s) return 0
+        if (s.state !== 'running') return s.currentDuration
+        const lastPoint = findLastStartTs(s)
+        if (!lastPoint) return 0
+        return Math.max(0, s.currentDuration + (lastPoint ? now.value - lastPoint : 0))
+    })
+
+    const timer = setInterval(() => now.value = Date.now(), 1000)
+
+    const refreshTimer = setInterval(() => {
+        const s = session.value
+        if (!s || s.state !== 'running') return
+        const total = s.phase === 'focus' ? s.duration : s.break
+        if (!total) return
+        const lastPoint = findLastStartTs(s)
+        const liveElapsed = s.currentDuration + (lastPoint ? now.value - lastPoint : 0)
+        if (liveElapsed >= total * MILL_PER_SECOND) {
+            now.value = Date.now()
+            refresh()
+        }
+        now.value = Date.now()
+    }, 1000)
+
+    onScopeDispose(() => {
+        clearInterval(timer)
+        clearInterval(refreshTimer)
+    })
+
+    return elapsed
+}
+
 export const initFocusContext = () => {
-    const { data: session, refresh } = useRequest(getCurrentSession)
+    const { data: session, refresh, loading } = useRequest(getCurrentSession)
     const { data: presets } = useRequest(listFocusPresets, { defaultValue: [] })
     const { method, form, apply } = initSetup()
+    const elapsed = initElapsed(session, refresh)
 
     const { refreshAsync: handleAction } = useManualRequest(focusAction, { onSuccess: refresh })
     const { checkOrRequest } = usePermissionCheck('notifications')
@@ -101,17 +137,16 @@ export const initFocusContext = () => {
 
     useProvide<ContextValue>(NAMESPACE, {
         presets, method, form, session,
-        apply, refresh,
-        handleAction, handleStart,
+        apply, handleAction, handleStart,
     })
 
-    return { session, method }
+    return { session, loading, method, elapsed }
 }
 
 export const useFocusSetup = () => useProvider<ContextValue, 'form' | 'handleStart' | 'method' | 'presets' | 'apply'>(
     NAMESPACE, 'form', 'handleStart', 'method', 'presets', 'apply',
 )
 
-export const useFocusContext = () => useProvider<ContextValue, 'session' | 'refresh' | 'handleAction'>(
-    NAMESPACE, 'session', 'refresh', 'handleAction',
+export const useFocusSession = () => useProvider<ContextValue, 'session' | 'handleAction'>(
+    NAMESPACE, 'session', 'handleAction',
 )

@@ -1,58 +1,45 @@
 {
     "zh_CN": {
-        "confirmTitle": "操作确认",
         "successMsg": "操作成功！"
     },
     "zh_TW": {
-        "confirmTitle": "操作確認",
         "successMsg": "操作成功！"
     },
     "en": {
-        "confirmTitle": "Confirmation",
+        "confirmMsg": "Are you sure?",
         "successMsg": "Successfully!"
     },
     "ja": {
-        "confirmTitle": "動作確認",
         "successMsg": "正常に動作しました！"
     },
     "pt_PT": {
-        "confirmTitle": "Confirmação",
         "successMsg": "Sucesso!"
     },
     "uk": {
-        "confirmTitle": "Підтвердження",
         "successMsg": "Успішно!"
     },
     "es": {
-        "confirmTitle": "Confirmación",
         "successMsg": "¡Exitosamente!"
     },
     "de": {
-        "confirmTitle": "Bestätigung",
         "successMsg": "Erfolgreich!"
     },
     "fr": {
-        "confirmTitle": "Confirmation",
         "successMsg": "Réussi !"
     },
     "ru": {
-        "confirmTitle": "Подтверждение",
         "successMsg": "Успешно!"
     },
     "ar": {
-        "confirmTitle": "تأكيد",
         "successMsg": "بنجاح!"
     },
     "tr": {
-        "confirmTitle": "Doğrulama",
         "successMsg": "Başarılı oldu!"
     },
     "pl": {
-        "confirmTitle": "Potwierdzenie",
         "successMsg": "Pomyślnie!"
     },
     "it": {
-        "confirmTitle": "Conferma",
         "successMsg": "Con successo!"
     }
 }

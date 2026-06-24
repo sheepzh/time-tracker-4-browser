@@ -1,17 +1,11 @@
 {
     "en": {
         "chooseMethod": "Choose Method",
-        "state": {
-            "running": "Running",
-            "paused": "Paused",
-            "aborted": "Aborted",
-            "done": "Done"
-        },
         "button": {
             "resume": "Resume",
             "pause": "Pause",
             "delay": "Delay",
-            "restart": "Restart",
+            "dismiss": "Dismiss",
             "preset": "Preset"
         }
     }

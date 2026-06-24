@@ -8,7 +8,7 @@
 import resource from './operation-resource.json'
 
 export type OperationMessage = {
-    confirmTitle: string
+    confirmMsg: string
     successMsg: string
 }
 

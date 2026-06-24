@@ -100,14 +100,11 @@ class FocusHolder {
 
     async #handleAlarmTick(): Promise<void> {
         const session = this.#session
-        if (!session) return
-        const {
-            method, state, phase,
-            duration, break: breakDur, currentDuration,
-        } = session
-        if (state !== 'running') return
+        if (!session || session.state !== 'running') return
         const now = Date.now()
         await increaseTime(session, now)
+
+        const { method, phase, duration, break: breakDur, currentDuration } = session
 
         if (method === 'focus') {
             if (!duration) return // Never happen
@@ -210,7 +207,7 @@ class FocusHolder {
         await db.save(this.#session)
     }
 
-    async restart(): Promise<void> {
+    async dismiss(): Promise<void> {
         if (this.#session && isAlive(this.#session)) return
         this.#session = undefined
     }
@@ -224,7 +221,7 @@ class FocusHolder {
     }
 
     get badge(): string | null {
-        const session = focusHolder.current
+        const session = this.current
         if (this.#popup !== 'focus') return null
         if (!session) return null
         const { state, phase } = session

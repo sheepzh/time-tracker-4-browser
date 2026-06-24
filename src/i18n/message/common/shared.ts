@@ -21,13 +21,16 @@ export type SharedMessage = {
         policy: Record<tt4b.focus.FilterPolicy, {
             label: string
             desc: string
-        }>
+        }> & { label: string }
         duration: string
         break: string
         method: Record<tt4b.focus.Method, {
             label: string
             desc: string
-        }>
+        }> & {
+            label: string
+        }
+        state: Record<tt4b.focus.State, string>
         noAllowUrl: string
         noBlockUrl: string
         noTime: string

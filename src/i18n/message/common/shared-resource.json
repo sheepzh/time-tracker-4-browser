@@ -24,6 +24,7 @@
         "focus": {
             "menu": "Focus & Pomodoro",
             "policy": {
+                "label": "Filter Policy",
                 "allow": {
                     "label": "Allow only",
                     "desc": "Only allowed sites are accessible, all others are blocked"
@@ -35,13 +36,20 @@
             },
             "duration": "Focus Time",
             "break": "Break Time",
+            "state": {
+                "running": "Running",
+                "paused": "Paused",
+                "aborted": "Aborted",
+                "done": "Done"
+            },
             "method": {
+                "label": "Method",
                 "focus": {
-                    "label": "Focus Mode",
+                    "label": "Deep Focus",
                     "desc": "Focus for a period of time"
                 },
                 "pomodoro": {
-                    "label": "Pomodoro Technique",
+                    "label": "Pomodoro",
                     "desc": "Timed work/break cycles to stay productive"
                 }
             },

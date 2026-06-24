@@ -6,7 +6,7 @@ import { getAppPageUrl } from '@util/constant/url'
 import { isRtl } from '@util/document'
 import { ElButton, ElDropdown, ElDropdownItem, ElDropdownMenu, ElText } from 'element-plus'
 import { defineComponent, type FunctionalComponent } from 'vue'
-import { useFocusContext, useFocusSetup } from '../context'
+import { useFocusSession, useFocusSetup } from '../context'
 import { METHOD_EMOJIS } from './constants'
 
 type ButtonProps = {
@@ -48,7 +48,7 @@ const PresetButton: FunctionalComponent<ButtonProps> = ({ presets, onSelect }) =
 }
 
 const SetupToolbar = defineComponent<{}>(() => {
-    const { session } = useFocusContext()
+    const { session } = useFocusSession()
     const { presets, apply, method, handleStart } = useFocusSetup()
     const handleBack = () => method.value = undefined
 

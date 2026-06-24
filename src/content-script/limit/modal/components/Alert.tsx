@@ -7,10 +7,10 @@ import Img from '@pages/components/Img'
 import { defineComponent } from "vue"
 
 type Props = {
-    prompt: string
+    prompt?: string
 }
 
-const _default = defineComponent<Props>(props => {
+const _default = defineComponent<Props>((props, ctx) => {
     const isXs = useXsState()
 
     return () => (
@@ -24,7 +24,7 @@ const _default = defineComponent<Props>(props => {
                 maxWidth={`${isXs.value ? 80 : 50}vw`}
                 marginBlock={`${isXs.value ? .3 : .67}em`}
             >
-                {props.prompt}
+                {ctx.slots.default?.() ?? props.prompt ?? ''}
             </Box>
         </Flex>
     )

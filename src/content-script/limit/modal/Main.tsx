@@ -12,16 +12,8 @@ const _default = defineComponent(() => {
     return () => {
         const val = reason.value
         if (!val) return null
-        return (
-            <div id="app">
-                <div style={{ width: '100%' }}>
-                    {val.type === 'FOCUS'
-                        ? <FocusView value={val} />
-                        : <LimitView value={val} />
-                    }
-                </div>
-            </div>
-        )
+        const view = val.type === 'FOCUS' ? <FocusView value={val} /> : <LimitView value={val} />
+        return <div style={{ width: '100%' }}>{view}</div>
     }
 })
 

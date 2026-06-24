@@ -10,6 +10,7 @@ import buttonMessages, { type ButtonMessage } from "../common/button"
 import calendarMessages, { type CalendarMessage } from "../common/calendar"
 import itemMessages, { type ItemMessage } from "../common/item"
 import metaMessages, { type MetaMessage } from "../common/meta"
+import operationMessages, { type OperationMessage } from '../common/operation'
 import sharedMessages, { type SharedMessage } from '../common/shared'
 import limitModalMessages, { type ModalMessage } from "../cs/modal"
 import { merge, type MessageRoot } from "../merge"
@@ -17,12 +18,10 @@ import aboutMessages, { type AboutMessage } from "./about"
 import analysisMessages, { type AnalysisMessage } from "./analysis"
 import dashboardMessages, { type DashboardMessage } from "./dashboard"
 import dataManageMessages, { type DataManageMessage } from "./data-manage"
-import focusMessages, { type FocusMessage } from './focus'
 import habitMessages, { type HabitMessage } from "./habit"
 import helpUsMessages, { type HelpUsMessage } from "./help-us"
 import limitMessages, { type LimitMessage } from "./limit"
 import menuMessages, { type MenuMessage } from "./menu"
-import operationMessages, { type OperationMessage } from './operation'
 import optionMessages, { type OptionMessage } from "./option"
 import recordMessages, { type RecordMessage } from "./record"
 import ruleMessages, { type RuleMessage } from "./rule"
@@ -32,7 +31,6 @@ import timeFormatMessages, { type TimeFormatMessage } from "./time-format"
 export type AppMessage = {
     about: AboutMessage
     dataManage: DataManageMessage
-    focus: FocusMessage
     item: ItemMessage
     shared: SharedMessage
     record: RecordMessage
@@ -57,7 +55,6 @@ export type AppMessage = {
 const MESSAGE_ROOT: MessageRoot<AppMessage> = {
     about: aboutMessages,
     dataManage: dataManageMessages,
-    focus: focusMessages,
     item: itemMessages,
     shared: sharedMessages,
     record: recordMessages,

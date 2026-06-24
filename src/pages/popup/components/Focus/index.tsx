@@ -20,29 +20,31 @@ const toolbarCls = css`
     }
 `
 
-const Toolbar: FunctionalComponent<{}> = () => (
-    <Flex gap={8} class={toolbarCls}>
-        <SessionToolbar />
-        <SetupToolbar />
-    </Flex>
-)
+type ContentProps = {
+    session?: tt4b.focus.Session
+    method?: tt4b.focus.Method
+    elapsed: number
+}
 
-const Content: FunctionalComponent<{ session?: tt4b.focus.Session, method?: tt4b.focus.Method }> = props => {
-    if (props.session) return <SessionView session={props.session} />
-    return props.method ? <SetupForm /> : <MethodSelect />
+const Content: FunctionalComponent<ContentProps> = ({ session, method, elapsed }) => {
+    if (session) return <SessionView session={session} elapsed={elapsed} />
+    return method ? <SetupForm /> : <MethodSelect />
 }
 
 const FocusMode = defineComponent<{}>(() => {
-    const { session, method } = initFocusContext()
+    const { session, loading, method, elapsed } = initFocusContext()
 
     return () => <>
         <Teleport defer to={`#${TOOLBAR_SLOT}`} >
-            <Toolbar />
+            <Flex v-show={!loading.value} gap={8} class={toolbarCls}>
+                <SessionToolbar />
+                <SetupToolbar />
+            </Flex>
         </Teleport>
         <Teleport defer to={`#${HEADER_OPTION_SLOT}`}>
             <OptionLink href={FOCUS_URL} />
         </Teleport>
-        <Content session={session.value} method={method.value} />
+        {!loading.value && <Content session={session.value} method={method.value} elapsed={elapsed.value} />}
     </>
 })
 

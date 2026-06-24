@@ -1281,6 +1281,6 @@ declare namespace tt4b {
             action: 'start'
             config: Config
             presetId?: number
-        } | 'pause' | 'resume' | 'abort' | 'delay' | 'restart'
+        } | 'pause' | 'resume' | 'abort' | 'delay' | 'dismiss'
     }
 }

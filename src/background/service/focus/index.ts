@@ -47,7 +47,7 @@ function dispatchAction(action: tt4b.focus.ActionRequest): Promise<void> {
         case 'resume': return focusHolder.resume()
         case 'abort': return focusHolder.abort()
         case 'delay': return focusHolder.delay()
-        case 'restart': return focusHolder.restart()
+        case 'dismiss': return focusHolder.dismiss()
         default: return Promise.resolve()
     }
 }

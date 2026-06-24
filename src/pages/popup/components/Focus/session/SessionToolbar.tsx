@@ -1,11 +1,12 @@
+import ConfirmButton from '@pages/components/ConfirmButton'
 import { t } from '@popup/locale'
 import { isAlive } from '@util/focus'
 import { ElButton } from 'element-plus'
 import { defineComponent } from 'vue'
-import { useFocusContext } from '../context'
+import { useFocusSession } from '../context'
 
 const SessionToolbar = defineComponent<{}>(() => {
-    const { session, handleAction: onClick } = useFocusContext()
+    const { session, handleAction: onClick } = useFocusSession()
 
     return () => {
         const value = session.value
@@ -30,28 +31,27 @@ const SessionToolbar = defineComponent<{}>(() => {
             >
                 {t(msg => msg.focus.button.pause)}
             </ElButton>
-            <ElButton
-                v-show={alive}
-                type='danger'
+            <ConfirmButton
+                buttonText={t(msg => msg.shared.focus.abort)}
+                visible={alive}
+                buttonProps={{ type: 'danger' }}
                 data-testid='abort-btn'
-                onClick={() => onClick('abort')}
-            >
-                {t(msg => msg.shared.focus.abort)}
-            </ElButton>
+                onConfirm={() => onClick('abort')}
+            />
             <ElButton
                 v-show={alive && allowDelay}
                 data-testid='delay-btn'
                 onClick={() => onClick('delay')}
             >
                 {t(msg => msg.focus.button.delay)}
-            </ElButton >
+            </ElButton>
             <ElButton
                 v-show={!alive}
                 type='success'
-                data-testid='restart-btn'
-                onClick={() => onClick('restart')}
+                data-testid='dismiss-btn'
+                onClick={() => onClick('dismiss')}
             >
-                {t(msg => msg.focus.button.restart)}
+                {t(msg => msg.focus.button.dismiss)}
             </ElButton>
         </>
     }
