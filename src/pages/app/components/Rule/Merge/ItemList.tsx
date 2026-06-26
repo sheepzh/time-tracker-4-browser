@@ -30,8 +30,7 @@ const _default = defineComponent<{}>(() => {
 
     const handleDelete = (origin: string) => {
         const message = t(msg => msg.rule.merge.removeConfirmMsg, { origin })
-        const title = t(msg => msg.operation.confirmTitle)
-        ElMessageBox.confirm(message, title).then(() => remove(origin))
+        ElMessageBox.confirm(message).then(() => remove(origin))
     }
 
     async function handleChange(origin: string, merged: string | number, index: number): Promise<void> {
@@ -55,10 +54,9 @@ const _default = defineComponent<{}>(() => {
             ElMessage.warning(t(msg => msg.rule.merge.duplicateMsg, { origin }))
             return false
         }
-        const title = t(msg => msg.operation.confirmTitle)
         const content = t(msg => msg.rule.merge.addConfirmMsg, { origin })
         try {
-            await ElMessageBox.confirm(content, title, { dangerouslyUseHTMLString: true })
+            await ElMessageBox.confirm(content)
             add({ origin, merged })
             return true
         } catch {

@@ -1,6 +1,7 @@
 import limitMessages, { type LimitMessage } from "../app/limit"
 import menuMessages, { type MenuMessage } from "../app/menu"
 import calendarMessages, { type CalendarMessage } from "../common/calendar"
+import focusMessages, { type FocusMessage } from '../common/focus'
 import metaMessages, { type MetaMessage } from "../common/meta"
 import sharedMessages, { type SharedMessage } from '../common/shared'
 import { merge, type MessageRoot } from "../merge"
@@ -15,6 +16,7 @@ export type CsMessage = {
     shared: SharedMessage
     menu: MenuMessage
     calendar: CalendarMessage
+    focus: FocusMessage
 }
 
 const CHILD_MESSAGES: MessageRoot<CsMessage> = {
@@ -25,6 +27,7 @@ const CHILD_MESSAGES: MessageRoot<CsMessage> = {
     shared: sharedMessages,
     menu: menuMessages,
     calendar: calendarMessages,
+    focus: focusMessages,
 }
 
 const _default = merge<CsMessage>(CHILD_MESSAGES)

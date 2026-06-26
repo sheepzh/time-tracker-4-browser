@@ -2,10 +2,9 @@ import { getRuntimeId, getUrl } from '@api/chrome/runtime'
 import { trySendMsg2Runtime } from '@api/sw/common'
 import LocationWatcher from '@cs/location-watcher'
 import { exitFullscreen, isSameReason } from '../common'
-import type { LimitReason, MaskModal } from '../types'
+import type { MaskModal, Reason, ReasonType } from '../types'
 import { ModalBridge } from './bridge'
 import { createRootElement, TAG_NAME, type RootElement } from './element'
-import type { LimitReasonData } from './types'
 
 const MODAL_URL = getUrl('static/limit.html')
 const MSG_ORIGIN = new URL(MODAL_URL).origin
@@ -30,11 +29,56 @@ function pauseAllAudio(): void {
     })
 }
 
-const TYPE_SORT: { [reason in tt4b.limit.ReasonType]: number } = {
+const TYPE_SORT: Record<ReasonType, number> = {
+    FOCUS: -1,
     PERIOD: 0,
     VISIT: 1,
     DAILY: 2,
     WEEKLY: 3,
+}
+
+class ReasonQueue {
+    #items: Reason[] = []
+    #pending = false
+
+    constructor(private onChange: ArgCallback<Reason | undefined>) { }
+
+    get current(): Reason | undefined {
+        return this.#items[0]
+    }
+
+    get all(): Reason[] {
+        return this.#items
+    }
+
+    add(...reasons: Reason[]): void {
+        const filtered = reasons.filter(r => !this.#items.some(item => isSameReason(item, r)))
+        if (!filtered.length) return
+        this.#items.push(...filtered)
+        this.#items.sort((a, b) => TYPE_SORT[a.type] - TYPE_SORT[b.type])
+        this.#notify()
+    }
+
+    remove(...reasons: Reason[]): void {
+        if (!reasons.length) return
+        this.#items = this.#items.filter(item => !reasons.some(r => isSameReason(item, r)))
+        this.#notify()
+    }
+
+    removeByType(...types: ReasonType[]): void {
+        if (!types.length) return
+        this.#items = this.#items.filter(item => !types.includes(item.type))
+        this.#notify()
+    }
+
+    #notify() {
+        if (this.#pending) return
+        this.#pending = true
+        setTimeout(() => {
+            this.#pending = false
+            this.onChange(this.current)
+        })
+    }
 }
 
 class ScreenLocker {
@@ -71,43 +115,36 @@ class ModalInstance implements MaskModal {
     delayHandlers: NoArgCallback[] = [
         () => trySendMsg2Runtime('limit.delay', this.location.url),
     ]
-    reasons: LimitReason[] = []
-    reason: LimitReason | undefined
+    reason: Reason | undefined
     screenLocker = new ScreenLocker()
-    private bridge: ModalBridge
+    #rq: ReasonQueue
+    #bridge: ModalBridge
 
     constructor(private location: LocationWatcher) {
         (window as any)['__modal__'] = this
-        this.bridge = new ModalBridge(MSG_ORIGIN, () => this.iframe?.contentWindow ?? undefined)
-            .register('visitTime', () => this.reason?.getVisitTime?.() ?? 0)
+        this.#rq = new ReasonQueue(current => current ? this.show(current) : this.hide())
+        this.#bridge = new ModalBridge(MSG_ORIGIN, () => this.iframe?.contentWindow ?? undefined)
             .register('delay', () => this.delayHandlers.forEach(handler => handler()))
+            .register('stop', () => trySendMsg2Runtime('focus.action', 'stop'))
         location.onChange(({ nextUrl }) => {
-            this.iframe?.contentWindow && this.bridge.request('url', nextUrl).catch(() => { })
+            this.iframe?.contentWindow && this.#bridge.request('url', nextUrl).catch(() => { })
         })
     }
 
-    addReason(...reasons2Add: LimitReason[]): void {
-        reasons2Add = reasons2Add.filter(r => !this.reasons.some(reason => isSameReason(r, reason)))
-        if (!reasons2Add.length) return
-        this.reasons.push(...reasons2Add)
-        // Sort
-        this.reasons.sort((a, b) => TYPE_SORT[a.type] - TYPE_SORT[b.type])
-        this.refresh()
+    get reasons(): Reason[] {
+        return this.#rq.all
     }
 
-    removeReason(...reasons2Remove: LimitReason[]): void {
-        if (!reasons2Remove?.length) return
-        this.reasons = this.reasons?.filter(reason => {
-            const anyRemove = reasons2Remove.some(r => isSameReason(reason, r))
-            return !anyRemove
-        })
-        this.refresh()
+    addReason(...reasons: Reason[]): void {
+        this.#rq.add(...reasons)
     }
 
-    removeReasonsByType(...types: tt4b.limit.ReasonType[]): void {
-        if (!types.length) return
-        this.reasons = this.reasons.filter(r => !types.includes(r.type))
-        this.refresh()
+    removeReason(...reasons: Reason[]): void {
+        this.#rq.remove(...reasons)
+    }
+
+    removeReasonsByType(...types: ReasonType[]): void {
+        this.#rq.removeByType(...types)
     }
 
     addDelayHandler(handler: NoArgCallback): void {
@@ -115,12 +152,9 @@ class ModalInstance implements MaskModal {
         this.delayHandlers.push(handler)
     }
 
-    private refresh() {
-        // Change reason in new microtask
-        setTimeout(() => {
-            const reason = this.reasons[0]
-            reason ? this.show(reason) : this.hide()
-        })
+    syncVisitTime(time: number): void {
+        if (!this.iframe?.contentWindow) return
+        this.#bridge.request('visitTime', time).catch(() => { })
     }
 
     private async init(): Promise<void> {
@@ -159,7 +193,7 @@ class ModalInstance implements MaskModal {
         })
     }
 
-    private async show(reason: LimitReason) {
+    private async show(reason: Reason) {
         if (!this.rootElement) {
             await this.init()
         } else if (!document.body.contains(this.rootElement)) {
@@ -170,9 +204,9 @@ class ModalInstance implements MaskModal {
         pauseAllAudio()
 
         this.rootElement && (this.rootElement.style.visibility = 'visible')
-        this.setReason(reason)
         this.screenLocker.lock()
         this.iframe && (this.iframe.style.visibility = 'visible')
+        this.setReason(reason)
     }
 
     private hide() {
@@ -182,17 +216,11 @@ class ModalInstance implements MaskModal {
         this.setReason(undefined)
     }
 
-    private setReason(reason: LimitReason | undefined) {
+    private setReason(reason: Reason | undefined) {
         if (!this.iframe?.contentWindow) return
         this.reason = reason
-        this.bridge.request('reason', extractReason(reason)).catch(() => { })
+        this.#bridge.request('reason', reason).catch(() => { })
     }
-}
-
-const extractReason = (reason: LimitReason | undefined): LimitReasonData | undefined => {
-    if (!reason) return undefined
-    const { getVisitTime: _, ...rest } = reason
-    return rest
 }
 
 export default ModalInstance

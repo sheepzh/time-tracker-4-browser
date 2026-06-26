@@ -1,0 +1,48 @@
+{
+    "en": {
+        "menu": "Focus & Pomodoro",
+        "policy": {
+            "label": "Filter Policy",
+            "allow": {
+                "label": "Allow only",
+                "desc": "Only allowed sites are accessible, all others are blocked"
+            },
+            "block": {
+                "label": "Block",
+                "desc": "All sites are accessible except blocked ones"
+            }
+        },
+        "duration": "Focus Time",
+        "break": "Break Time",
+        "state": {
+            "running": "Running",
+            "paused": "Paused",
+            "stopped": "Stopped",
+            "done": "Completed"
+        },
+        "method": {
+            "label": "Method",
+            "choose": "Choose Method",
+            "focus": {
+                "label": "Deep Focus",
+                "desc": "Focus for a period of time"
+            },
+            "pomodoro": {
+                "label": "Pomodoro",
+                "desc": "Timed work/break cycles to stay productive"
+            }
+        },
+        "noAllowUrl": "No allowed sites specified. Please add at least one site to the allow list.",
+        "noBlockUrl": "No blocked sites specified. Start without any site restrictions?",
+        "noTime": "Please set both focus time and break time for Pomodoro",
+        "preset": "Preset",
+        "presetName": "Preset Name",
+        "button": {
+            "pause": "Pause",
+            "resume": "Resume",
+            "delay": "Delay",
+            "stop": "Stop",
+            "dismiss": "Dismiss"
+        }
+    }
+}

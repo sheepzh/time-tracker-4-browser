@@ -76,6 +76,13 @@ export class LaunchContext {
         return page
     }
 
+    async openPopupPage(menu: tt4b.ui.PopupMenu): Promise<Page> {
+        const page = await this.browser.newPage()
+        await page.goto(`chrome-extension://${this.#eid}/static/popup.html#/${menu}`)
+        await waitForNetworkIdleShortly(page)
+        return page
+    }
+
     async newPage(url?: string): Promise<Page> {
         const page = await this.browser.newPage()
         url && await page.goto(url, { waitUntil: 'domcontentloaded' })

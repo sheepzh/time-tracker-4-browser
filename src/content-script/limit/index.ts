@@ -2,6 +2,7 @@ import { getOption } from '@api/sw/option'
 import Dispatcher from '../dispatcher'
 import LocationWatcher from '../location-watcher'
 import ModalInstance from './modal/instance'
+import FocusProcessor from './processor/focus-processor'
 import MessageAdaptor from './processor/message-adaptor'
 import PeriodProcessor from './processor/period-processor'
 import VisitProcessor from './processor/visit-processor'
@@ -14,11 +15,13 @@ export default async function processLimit(location: LocationWatcher, dispatcher
 
     const messageAdaptor = new MessageAdaptor(modal, location, delayDuration)
     const visitProcessor = new VisitProcessor(modal, location, delayDuration)
+    const focusProcessor = new FocusProcessor(modal, location)
 
     const processors: Processor[] = [
         messageAdaptor,
         visitProcessor,
         new PeriodProcessor(modal, location),
+        focusProcessor,
     ]
     await Promise.all(processors.map(p => p.init()))
     location.onChange(() => void processors.forEach(p => void p.reset()))
@@ -30,6 +33,7 @@ export default async function processLimit(location: LocationWatcher, dispatcher
         .register('limitTimeMeet', items => void messageAdaptor.onLimitTimeMeet(items))
         .register('limitReminder', data => void reminder.show(data))
         .register('askVisitHit', ruleId => modal.reasons.some(r => r.type === 'VISIT' && ruleId === r.id))
+        .register('focusChanged', session => void focusProcessor.onFocusChanged(session))
         .registerAudibleChange(visitProcessor.tracker)
 
     return visitProcessor.tracker

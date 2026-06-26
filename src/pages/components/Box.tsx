@@ -1,8 +1,9 @@
 import type { FunctionalComponent } from "vue"
 import { type BaseProps, cvt2BaseStyle } from "./common"
 
-const Box: FunctionalComponent<BaseProps> = (props, { slots }) => (
+const Box: FunctionalComponent<BaseProps> = (props, { slots, attrs }) => (
     <div
+        {...attrs}
         id={props.id}
         class={props.class}
         onClick={props.onClick}

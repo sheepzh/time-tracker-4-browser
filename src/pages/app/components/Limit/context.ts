@@ -9,11 +9,12 @@ import { tryParseInteger } from '@util/number'
 import { ElMessage, ElMessageBox } from "element-plus"
 import { computed, onMounted, reactive, ref, toRaw, watch, type ShallowRef } from "vue"
 import { useRoute, useRouter } from 'vue-router'
-import type { LimitFilterOption, LimitInstance, ModifyInstance, TestInstance } from "./types"
+import type { LimitFilterOption, ModifyInstance, TestInstance } from "./types"
 
 type Context = {
     filter: LimitFilterOption
     list: ShallowRef<tt4b.limit.Item[]>
+    selected: ShallowRef<tt4b.limit.Item[]>
     refresh: NoArgCallback
     batchDelete: NoArgCallback
     batchEnable: NoArgCallback
@@ -65,7 +66,7 @@ const verifyCanModify = async (...items: tt4b.limit.Item[]) => {
     await processVerification(option)
 }
 
-export const useLimitProvider = () => {
+export const initLimitContext = () => {
     const { url, action, id } = initialQuery()
     let modifyTriggered = false
     const initialUrl = action === 'create' ? undefined : url
@@ -111,14 +112,11 @@ export const useLimitProvider = () => {
         }
     })
 
-    const inst = ref<LimitInstance>()
+    const selected = ref<tt4b.limit.Item[]>([])
 
     const selectedAndThen = (then: (list: tt4b.limit.Item[]) => void): void => {
-        const list = inst.value?.getSelected?.()
-        if (!list?.length) {
-            ElMessage.info('No limit rule selected')
-            return
-        }
+        const list = selected.value
+        if (!list.length) return void ElMessage.info('No limit rule selected')
         then(list)
     }
 
@@ -195,20 +193,20 @@ export const useLimitProvider = () => {
     const empty = computed(() => !loading.value && !(list.value?.length))
 
     useProvide<Context>(NAMESPACE, {
-        filter, list, empty, refresh, delayDuration,
+        filter, list, selected, empty, refresh, delayDuration,
         remove, modify, create, test, changeEnabled, changeDelay, changeLocked,
         batchDelete: () => selectedAndThen(handleBatchDelete),
         batchEnable: () => selectedAndThen(handleBatchEnable),
         batchDisable: () => selectedAndThen(handleBatchDisable),
     })
 
-    return { modifyInst, testInst, inst }
+    return { modifyInst, testInst }
 }
 
 export const useLimitFilter = (): LimitFilterOption => useProvider<Context, 'filter'>(NAMESPACE, "filter").filter
 
-export const useLimitData = () => useProvider<Context, 'list' | 'refresh' | 'changeEnabled' | 'changeDelay' | 'changeLocked'>(
-    NAMESPACE, 'list', 'refresh', 'changeEnabled', 'changeDelay', 'changeLocked'
+export const useLimitData = () => useProvider<Context, 'list' | 'selected' | 'refresh' | 'changeEnabled' | 'changeDelay' | 'changeLocked'>(
+    NAMESPACE, 'list', 'selected', 'refresh', 'changeEnabled', 'changeDelay', 'changeLocked'
 )
 
 export const useLimitBatch = () => useProvider<Context, 'batchDelete' | 'batchEnable' | 'batchDisable'>(

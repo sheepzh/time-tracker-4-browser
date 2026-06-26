@@ -40,14 +40,12 @@ const Header: FunctionalComponent<{}> = () => (
             <Flex align="center" gap={8} fontSize={30}>
                 <LangSelect />
                 <DarkSwitch />
-                <div id={HEADER_OPTION_SLOT} />
+                <Flex id={HEADER_OPTION_SLOT} align='center' />
                 <Donation />
                 <MoreInfo />
             </Flex>
         </Flex>
     </Flex>
 )
-
-Header.displayName = "PopupHeader"
 
 export default Header

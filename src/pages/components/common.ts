@@ -24,7 +24,6 @@ export const ALL_BASE_PROPS: (keyof BaseProps)[] = [
     'padding', 'paddingBlock', 'paddingInline',
     'position', 'boxSizing', 'cursor',
     'color', 'fontSize', 'fontWeight', 'bgColor',
-    'id', 'class', 'style',
     'inline',
     'onClick',
 ]

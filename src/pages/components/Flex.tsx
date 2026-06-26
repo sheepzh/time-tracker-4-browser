@@ -22,13 +22,12 @@ type Props = {
     target?: HTMLAnchorElement['target']
 } & BaseProps
 
-const Flex: FunctionalComponent<Props> = (props, { slots }) => {
+const Flex: FunctionalComponent<Props> = (props, { slots, attrs }) => {
     const Comp = props.as ?? 'div'
 
     return (
         <Comp
-            id={props.id}
-            class={props.class}
+            {...attrs}
             onClick={props.onClick}
             style={{
                 display: props.inline ? 'inline-flex' : 'flex',

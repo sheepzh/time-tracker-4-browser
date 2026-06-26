@@ -1,4 +1,4 @@
-import { computed, defineComponent, nextTick, onMounted, onUnmounted, ref, toRef, useSlots } from 'vue'
+import { computed, defineComponent, nextTick, onMounted, onUnmounted, ref, toRef } from 'vue'
 import { ALL_BASE_PROPS, cvt2BaseStyle, cvtPxScale, type BaseProps } from './common'
 
 function useGridPlaceholder() {
@@ -67,8 +67,7 @@ const calcGridGap = (val: Gap | [Gap, Gap] | undefined): string | undefined => {
         : cvtPxScale(val)
 }
 
-const Grid = defineComponent<Props>(props => {
-    const { default: defaultSlots } = useSlots()
+const Grid = defineComponent<Props>((props, { slots }) => {
     const minColumnWidth = toRef(props, 'minColumnWidth', 200)
     const maxColumnWidth = toRef(props, 'maxColumnWidth', '1fr')
     const columnGap = computed(() => calcGridGap(props.columnGap))
@@ -91,7 +90,7 @@ const Grid = defineComponent<Props>(props => {
                 ...cvt2BaseStyle(props),
             }}
         >
-            {defaultSlots?.()}
+            {slots.default?.()}
             {Array.from({ length: placeholderCount.value }, (_, idx) => (
                 <i key={idx} data-grid-placeholder aria-hidden="true" style={{ height: 0, overflow: 'hidden' }} />
             ))}

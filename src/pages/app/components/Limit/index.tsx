@@ -10,17 +10,17 @@ import { defineComponent } from "vue"
 import ContentCard from '../common/ContentCard'
 import ContentContainer from '../common/ContentContainer'
 import { Filter, List, Modify, Table, Test } from "./components"
-import { useLimitProvider } from "./context"
+import { initLimitContext } from "./context"
 
 const _default = defineComponent(() => {
-    const { modifyInst, testInst, inst } = useLimitProvider()
+    const { modifyInst, testInst } = initLimitContext()
     const isXs = useXsState()
 
     return () => (
         <ContentContainer v-slots={{
             filter: () => <Filter />,
             default: () => <>
-                {isXs.value ? <List /> : <ContentCard><Table ref={inst} /></ContentCard>}
+                {isXs.value ? <List /> : <ContentCard><Table /></ContentCard>}
                 <Modify ref={modifyInst} />
                 <Test ref={testInst} />
             </>

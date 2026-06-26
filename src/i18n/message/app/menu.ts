@@ -8,17 +8,17 @@
 import resource from './menu-resource.json'
 
 export type MenuMessage = {
+    tracking: string
     dashboard: string
-    data: string
     record: string
-    siteAnalysis: string
-    dataClear: string
-    behavior: string
-    habit: string
-    additional: string
-    siteManage: string
+    sites: string
     rule: string
+    analysis: string
+    siteAnalysis: string
+    habit: string
+    productivity: string
     other: string
+    migration: string
     about: string
 }
 

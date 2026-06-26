@@ -1,10 +1,10 @@
 
 import HostAlert from '@app/components/common/HostAlert'
-import PopupConfirmButton from '@app/components/common/PopupConfirmButton'
 import { cvt2LocaleTime, periodFormatter } from '@app/util/time'
 import { Calendar, Delete, Mouse, QuartzWatch } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
 import { useTabGroups } from "@hooks"
+import ConfirmButton from '@pages/components/ConfirmButton'
 import Flex from '@pages/components/Flex'
 import TooltipWrapper from '@pages/components/TooltipWrapper'
 import { getComposition, isGroup, isNormalSite, isSite } from "@util/stat"
@@ -83,13 +83,11 @@ const _default = defineComponent<Props>(props => {
                     )}
                 </Flex>
                 {canDelete.value && (
-                    <PopupConfirmButton
-                        buttonIcon={Delete}
-                        buttonType="danger"
-                        buttonStyle={{ padding: 0 }}
+                    <ConfirmButton
+                        buttonProps={{ icon: Delete, type: 'danger', text: true, size: 'small' }}
+                        style={{ padding: 0 }}
                         confirmText={computeDeleteConfirmMsg(props.value, filter, groupMap.value)}
                         onConfirm={onDelete}
-                        text
                     />
                 )}
             </Flex>
