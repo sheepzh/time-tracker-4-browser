@@ -1,5 +1,11 @@
 {
     "en": {
+        "focus": {
+            "completedTitle": "Focus Completed",
+            "completedMsg": "Your focus session has completed. Great job!",
+            "breakStartMsg": "Take a short break. You earned it!",
+            "focusResumeMsg": "Break is over. Time to focus again!"
+        },
         "dailySummary": "Focus time: {focus}, Visits: {visit}, Sites: {siteCount}"
     }
 }

@@ -4,16 +4,15 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { type AppAnalysisQuery } from '@/shared/route'
 import { addWhitelist, deleteWhitelist, listWhitelist } from "@api/sw/whitelist"
-import PopupConfirmButton from '@app/components/common/PopupConfirmButton'
 import { computeDeleteConfirmMsg, handleDelete } from '@app/components/Record/common'
 import { useRecordFilter } from '@app/components/Record/context'
 import { t } from '@app/locale'
-import { ANALYSIS_ROUTE } from '@app/router/constants'
+import { SITE_ANALYSIS_ROUTE, type SiteAnalysisQuery } from '@app/router/constants'
 import { Delete, Open, Plus, Stopwatch } from "@element-plus/icons-vue"
 import { useManualRequest, useRequest, useTabGroups } from '@hooks'
 import { locale } from "@i18n"
+import ConfirmButton from '@pages/components/ConfirmButton'
 import { CATE_NOT_SET_ID } from "@util/site"
 import { isCate, isGroup, isNormalSite, isSite } from "@util/stat"
 import { ElButton, ElMessage, ElTableColumn, type RenderRowData } from "element-plus"
@@ -70,7 +69,7 @@ const _default = defineComponent<Props>(({ onDelete }) => {
     const { refresh: onRemoveWhitelist } = useManualRequest(deleteWhitelist, { onSuccess: onWhitelistSuccess })
 
     const jump2Analysis = (row: tt4b.stat.Row) => {
-        let query: AppAnalysisQuery
+        let query: SiteAnalysisQuery
         if (isCate(row)) {
             query = { cateId: row.cateKey?.toString?.() }
         } else if (isSite(row)) {
@@ -78,7 +77,7 @@ const _default = defineComponent<Props>(({ onDelete }) => {
         } else {
             return
         }
-        router.push({ path: ANALYSIS_ROUTE, query })
+        router.push({ path: SITE_ANALYSIS_ROUTE, query })
     }
 
     return () => (
@@ -101,9 +100,8 @@ const _default = defineComponent<Props>(({ onDelete }) => {
                 )}
                 {/* Delete button */}
                 {deleteVisible(row) && (
-                    <PopupConfirmButton
-                        buttonIcon={Delete}
-                        buttonType="danger"
+                    <ConfirmButton
+                        buttonProps={{ icon: Delete, type: 'danger', size: 'small' }}
                         buttonText={t(msg => msg.button.delete)}
                         confirmText={computeDeleteConfirmMsg(row, filter, groupMap.value)}
                         onConfirm={async () => {
@@ -114,9 +112,8 @@ const _default = defineComponent<Props>(({ onDelete }) => {
                 )}
                 {/* Add 2 whitelist */}
                 {isNormalSite(row) && !whitelist.value.includes(row.siteKey.host) && (
-                    <PopupConfirmButton
-                        buttonIcon={Plus}
-                        buttonType="warning"
+                    <ConfirmButton
+                        buttonProps={{ icon: Plus, type: 'warning', size: 'small' }}
                         buttonText={t(msg => msg.item.operation.add2Whitelist)}
                         confirmText={t(msg => msg.rule.white.addConfirmMsg, { url: row.siteKey?.host })}
                         onConfirm={() => onAddWhitelist(row.siteKey.host)}
@@ -124,11 +121,10 @@ const _default = defineComponent<Props>(({ onDelete }) => {
                 )}
                 {/* Remove from whitelist */}
                 {isNormalSite(row) && whitelist.value.includes(row.siteKey.host) && (
-                    <PopupConfirmButton
-                        buttonIcon={Open}
-                        buttonType="primary"
+                    <ConfirmButton
+                        buttonProps={{ icon: Open, type: 'primary', size: 'small' }}
                         buttonText={t(msg => msg.button.enable)}
-                        confirmText={t(msg => msg.rule.white.removeConfirmMsg, { url: row.siteKey?.host })}
+                        confirmText={t(msg => msg.rule.white.removeConfirmMsg, { url: row.siteKey.host })}
                         onConfirm={() => onRemoveWhitelist(row.siteKey.host)}
                     />
                 )}

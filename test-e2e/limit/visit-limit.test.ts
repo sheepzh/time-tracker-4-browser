@@ -7,7 +7,7 @@ describe('Time limit per visit', () => {
     const context = useLaunchContext()
 
     test("Delay", async () => {
-        const limitPage = await context.openAppPage('/behavior/limit')
+        const limitPage = await context.openAppPage('/productivity/limit')
         const demoRule: tt4b.limit.Rule = {
             id: 1, name: 'TEST DAILY LIMIT',
             cond: [MOCK_URL],
@@ -24,12 +24,9 @@ describe('Time limit per visit', () => {
 
         // 3. Modal exist and then click more 5 minutes
         const limitFrame = await waitForLimitFrame(testPage)
-        const button = await limitFrame.waitForSelector('.el-button--primary')
-        expect(button).toBeTruthy()
-        await button!.click()
+        await limitFrame.locator('.el-button--primary').click()
 
         // 4. Modal disappear
-        await assertOverlayHidden(testPage)
-
-    }, 1000000000)
+        await assertOverlayHidden(testPage, 500)
+    }, 60_000)
 })

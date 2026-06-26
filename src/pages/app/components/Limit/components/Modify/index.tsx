@@ -26,20 +26,23 @@ const STEP_TITLES = [
     t(msg => msg.limit.step.rule),
 ]
 
-const createInitial = (url?: string): ModifyForm => ({
-    name: `RULE-${new String(new Date().getTime() % 10000).padStart(4, '0')}`,
-    time: 3600,
-    weekly: 0,
-    cond: url ? [cleanCond(url)] : [],
-    visitTime: 0,
-    periods: [],
-    enabled: true,
-    weekdays: range(7),
-    count: 0,
-    weeklyCount: 0,
-    allowDelay: false,
-    locked: false,
-})
+const createInitial = (url?: string): ModifyForm => {
+    url = url ? cleanCond(url) : url
+    return {
+        name: `RULE-${String(new Date().getTime() % 10000).padStart(4, '0')}`,
+        time: 3600,
+        weekly: 0,
+        cond: url ? [url] : [],
+        visitTime: 0,
+        periods: [],
+        enabled: true,
+        weekdays: range(7),
+        count: 0,
+        weeklyCount: 0,
+        allowDelay: false,
+        locked: false,
+    }
+}
 
 const createFormData = (data: tt4b.limit.Item): ModifyForm => ({
     name: data.name,
@@ -90,25 +93,21 @@ const _default = defineComponent((_, ctx) => {
             ) {
                 throw new Error(t(msg => msg.limit.message.noRule))
             }
-            let saved: tt4b.limit.Rule
             if (mode.value === 'modify') {
                 if (!modifyingItem) return
-                saved = {
+                await updateLimits([{
                     ...modifyingItem,
                     cond, enabled, name, time, weekly, visitTime, weekdays, count, weeklyCount,
                     // Object to array
-                    periods: periods?.map(i => [i[0], i[1]] satisfies tt4b.limit.Period),
-                } satisfies tt4b.limit.Rule
-                await updateLimits([saved])
+                    periods: periods?.map(i => [i[0], i[1]]),
+                }])
             } else {
-                const toCreate = {
+                await addLimit({
                     cond, enabled, name, time, weekly, visitTime, weekdays, count, weeklyCount,
                     // Object to array
-                    periods: periods?.map(i => [i[0], i[1]] satisfies tt4b.limit.Period),
+                    periods: periods?.map(i => [i[0], i[1]]),
                     allowDelay: false, locked: false,
-                } satisfies MakeOptional<tt4b.limit.Rule, 'id'>
-                const id = await addLimit(toCreate)
-                saved = { ...toCreate, id }
+                })
             }
             refresh?.()
         }
@@ -135,7 +134,6 @@ const _default = defineComponent((_, ctx) => {
             <Step2 v-show={step.value === 1} />
             <Step3 v-show={step.value === 2} />
         </DialogSop>
-
     )
 })
 

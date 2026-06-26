@@ -2,7 +2,7 @@ import { trySendMsg2Runtime } from '@api/sw/common'
 import LocationWatcher from '@cs/location-watcher'
 import { date2Idx } from "@util/limit"
 import { MILL_PER_SECOND } from "@util/time"
-import type { LimitReason, MaskModal, Processor } from '../types'
+import type { MaskModal, Processor, Reason } from '../types'
 
 class PeriodProcessor implements Processor {
     #timers: ReturnType<typeof setTimeout>[] = []
@@ -35,7 +35,7 @@ class PeriodProcessor implements Processor {
             const [s, e] = p
             const startSeconds = s * 60
             const endSeconds = (e + 1) * 60
-            const reason: LimitReason = { id, cond, type: 'PERIOD' }
+            const reason: Reason = { id, cond, type: 'PERIOD' }
             const timers: ReturnType<typeof setTimeout>[] = []
             if (nowSeconds < startSeconds) {
                 timers.push(setTimeout(() => this.modal.addReason(reason), (startSeconds - nowSeconds) * MILL_PER_SECOND))

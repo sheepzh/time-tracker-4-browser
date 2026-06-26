@@ -13,7 +13,6 @@
             "enabled": "启用",
             "locked": "锁定",
             "effectiveDay": "生效日期",
-            "allowDelay": "可延时",
             "or": "或者",
             "notEffective": "未生效",
             "unlimited": "无限制"
@@ -63,7 +62,6 @@
             "enabled": "是否啟用",
             "locked": "已鎖定",
             "effectiveDay": "生效日期",
-            "allowDelay": "允許延遲",
             "or": "或",
             "notEffective": "未生效"
         },
@@ -111,7 +109,6 @@
             "enabled": "Enabled",
             "locked": "Locked",
             "effectiveDay": "Effective On",
-            "allowDelay": "Allow Delay",
             "or": "or",
             "notEffective": "Not effective",
             "unlimited": "Unlimited"
@@ -206,7 +203,6 @@
             "enabled": "Ativo",
             "locked": "Bloqueado",
             "effectiveDay": "Dias de aplicação",
-            "allowDelay": "Permitir atraso",
             "or": "ou",
             "notEffective": "Não aplicável"
         },
@@ -254,7 +250,6 @@
             "enabled": "Увімкнено",
             "locked": "Заблоковано",
             "effectiveDay": "Діє",
-            "allowDelay": "Дозволити затримку",
             "or": "або",
             "notEffective": "Не діє"
         },
@@ -349,7 +344,6 @@
             "enabled": "Aktiviert",
             "locked": "Gesperrt",
             "effectiveDay": "Wirksam auf",
-            "allowDelay": "Verzögerung zulassen",
             "or": "oder",
             "notEffective": "Nicht wirksam"
         },
@@ -399,7 +393,6 @@
             "enabled": "Activé",
             "locked": "Verrouillé",
             "effectiveDay": "Effectif le",
-            "allowDelay": "Retardable",
             "or": "ou",
             "notEffective": "Non efficace"
         },
@@ -449,7 +442,6 @@
             "enabled": "Включено",
             "locked": "Заблокировано",
             "effectiveDay": "Эффективный",
-            "allowDelay": "Разрешить задержку",
             "or": "или",
             "notEffective": "Не активировано"
         },
@@ -543,7 +535,6 @@
             "enabled": "Etkinleştirildi",
             "locked": "Kilitli",
             "effectiveDay": "Geçerli Olduğu Gün(ler)",
-            "allowDelay": "Ertelenebilir",
             "or": "yada",
             "notEffective": "Geçerli değil"
         },
@@ -591,7 +582,6 @@
             "enabled": "Aktywne",
             "locked": "Zablokowany",
             "effectiveDay": "Aktywna w",
-            "allowDelay": "Możliwe do przedłużenia",
             "or": "lub",
             "notEffective": "Nieskuteczny",
             "unlimited": "Nielimitowany"
@@ -642,7 +632,6 @@
             "enabled": "Attivata",
             "locked": "Bloccato",
             "effectiveDay": "Effettivo On",
-            "allowDelay": "Ritardabile",
             "or": "o",
             "notEffective": "Non valido"
         },

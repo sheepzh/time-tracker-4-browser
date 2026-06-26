@@ -3,7 +3,7 @@ import { useDebounceFn, useState, useXsState } from '@hooks'
 import { getStyle } from '@pages/util/style'
 import { range } from "@util/array"
 import {
-    Effect, ElIcon, ElInput, ElPopover, ElScrollbar, InputProps, type ScrollbarInstance, type TimePickerDefaultProps,
+    Effect, ElIcon, ElInput, ElMessage, ElPopover, ElScrollbar, InputProps, type ScrollbarInstance, type TimePickerDefaultProps,
     useLocale, useNamespace,
 } from "element-plus"
 import { computed, CSSProperties, defineComponent, nextTick, onMounted, ref, Transition, watch } from "vue"
@@ -42,7 +42,7 @@ const TimeSpinner = defineComponent<TimeSpinnerProps>(props => {
     }
 
     const adjustSpinner = (value: number) => {
-        let scrollbarEl = getScrollbarElement()
+        const scrollbarEl = getScrollbarElement()
         if (!scrollbarEl) return
 
         scrollbarEl.scrollTop = Math.max(0, value * typeItemHeight())
@@ -52,21 +52,20 @@ const TimeSpinner = defineComponent<TimeSpinnerProps>(props => {
     watch(() => props.visible, () => props.visible && nextTick(() => adjustSpinner(props.modelValue)))
 
     const typeItemHeight = (): number => {
-        const listItem = scrollbar.value?.$el.querySelector('li') as HTMLLinkElement
-        if (listItem) {
-            return Number.parseFloat(getStyle(listItem, 'height')) || 0
-        }
-        return 0
+        const listItem = scrollbar.value?.$el.querySelector('li')
+        if (!(listItem instanceof HTMLElement)) return 0
+        return Number.parseFloat(getStyle(listItem, 'height')) || 0
     }
 
     const bindScroll = () => {
-        let scrollbarEl = getScrollbarElement()
+        const scrollbarEl = getScrollbarElement()
         if (!scrollbarEl) return
 
         scrollbarEl.addEventListener('scroll', () => {
             scrolling.value = true
             const scrollTop = getScrollbarElement()?.scrollTop ?? 0
-            const scrollbarH = (scrollbar.value?.$el as HTMLUListElement)!.offsetHeight ?? 0
+            const ulEl = scrollbar.value?.$el
+            const scrollbarH = ulEl instanceof HTMLUListElement ? ulEl.offsetHeight : 0
             const itemH = typeItemHeight()
             const estimatedIdx = Math.round((scrollTop - (scrollbarH * 0.5 - 10) / itemH + 3) / itemH)
             const value = Math.min(estimatedIdx, props.max - 1)
@@ -139,6 +138,7 @@ type TimeInputProps = Pick<TimePickerDefaultProps, 'size'> & ModelValue<number |
     style?: CSSProperties
     hideSeconds?: boolean
     width?: string
+    clearable?: boolean
 }
 
 /**
@@ -152,6 +152,11 @@ const TimeInput = defineComponent<TimeInputProps>(props => {
         reset, getTotalSecond,
     } = useTimeInput(() => props.modelValue)
 
+    const clearable = computed(() => {
+        const { clearable, placeholder } = props
+        return clearable ?? !!placeholder
+    })
+
     const inputAttr = computed<Pick<InputProps, 'modelValue' | 'clearable'>>(() => {
         const { modelValue, hideSeconds } = props
         // Not support 0 as valid time, treat it as unlimited
@@ -159,7 +164,7 @@ const TimeInput = defineComponent<TimeInputProps>(props => {
         const text = hideSeconds
             ? `${formatTimeVal(hour.value)} h ${formatTimeVal(minute.value)} m`
             : `${formatTimeVal(hour.value)} h ${formatTimeVal(minute.value)} m ${formatTimeVal(second.value)} s`
-        return { modelValue: text, clearable: true }
+        return { modelValue: text, clearable: clearable.value }
     })
 
     const ns = useNamespace('time')
@@ -170,19 +175,18 @@ const TimeInput = defineComponent<TimeInputProps>(props => {
 
     const transitionName = computed(() => popoverVisible.value ? '' : `${ns.namespace.value}-zoom-in-top`)
 
-    const handleCancel = () => {
-        reset()
-        setPopoverVisible(false)
-    }
-
     const handleConfirm = () => {
-        props.onChange?.(getTotalSecond())
+        const value = getTotalSecond()
+        if (!value && !clearable.value) {
+            return ElMessage.warning(tEle('el.datepicker.selectTime'))
+        }
+        props.onChange?.(value)
         setPopoverVisible(false)
     }
 
     const handleVisibleChange = (newVal: boolean) => {
         setPopoverVisible(newVal)
-        !newVal && handleCancel()
+        !newVal && reset()
     }
 
     const handleClear = (ev: MouseEvent) => {
@@ -236,7 +240,7 @@ const TimeInput = defineComponent<TimeInputProps>(props => {
                         <button
                             type="button"
                             class={[ns.be('panel', 'btn'), 'cancel']}
-                            onClick={handleCancel}
+                            onClick={() => handleVisibleChange(false)}
                         >
                             {tEle('el.datepicker.cancel')}
                         </button>
@@ -252,6 +256,6 @@ const TimeInput = defineComponent<TimeInputProps>(props => {
             </Transition>
         </ElPopover>
     )
-}, { props: ['style', 'size', 'placeholder', 'hourMax', 'modelValue', 'onChange', 'hideSeconds', 'width'] })
+}, { props: ['style', 'size', 'placeholder', 'hourMax', 'modelValue', 'onChange', 'hideSeconds', 'width', 'clearable'] })
 
 export default TimeInput

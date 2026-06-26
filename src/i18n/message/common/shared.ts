@@ -13,7 +13,10 @@ export type SharedMessage = {
         weekly: string
         period: string
         visits: string
+        allowDelay: string
+        unlimited: string
     }
+    permGrantConfirm: string
 }
 
 const sharedMessages = resource satisfies Messages<SharedMessage>

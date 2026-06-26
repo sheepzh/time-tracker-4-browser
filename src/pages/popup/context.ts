@@ -17,7 +17,7 @@ type PopupContextValue = {
     menu: ShallowRef<tt4b.ui.PopupMenu | undefined>
 }
 
-export const isMenu = createStringUnionGuard<tt4b.ui.PopupMenu>('limit', 'percentage', 'ranking')
+export const isMenu = createStringUnionGuard<tt4b.ui.PopupMenu>('limit', 'percentage', 'ranking', 'focus')
 
 const initMenu = () => {
     const menu = localRef('popup_menu', isMenu, 'percentage')
@@ -74,6 +74,6 @@ export const usePopupContext = () => useProvider<PopupContextValue, 'reload' | '
     NAMESPACE, 'reload', 'darkMode', 'setDarkMode'
 )
 
-export const useCateNameMap = () => useProvider<PopupContextValue, 'cateNameMap'>(NAMESPACE, 'cateNameMap')?.cateNameMap
+export const useCateNameMap = () => useProvider<PopupContextValue, 'cateNameMap'>(NAMESPACE, 'cateNameMap').cateNameMap
 
 export const useMenu = () => useProvider<PopupContextValue, 'menu'>(NAMESPACE, 'menu').menu

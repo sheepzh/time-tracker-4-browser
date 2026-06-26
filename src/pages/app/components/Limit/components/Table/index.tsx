@@ -7,7 +7,6 @@
 import { getOption, getWeekStartDay } from "@api/sw/option"
 import ColumnHeader from "@app/components/common/ColumnHeader"
 import { useDelayDuration, useLimitAction, useLimitData } from "@app/components/Limit/context"
-import type { LimitInstance } from '@app/components/Limit/types'
 import { t } from '@app/locale'
 import { Delete, Edit } from '@element-plus/icons-vue'
 import { localRef, useRequest } from '@hooks'
@@ -56,14 +55,14 @@ function sortByEffectiveDays(a: tt4b.limit.Item, b: tt4b.limit.Item) {
     return (a.weekdays?.length ?? 0) - (b.weekdays?.length ?? 0)
 }
 
-const _default = defineComponent((_, ctx) => {
+const _default = defineComponent<{}>(() => {
     const { data: weeklyInfo } = useRequest(async () => {
         const offset = await getWeekStartDay()
         const weekStart = t(msg => msg.calendar.weekDays)?.split('|')?.[offset] ?? 'NaN'
         return t(msg => msg.limit.item.weekStartInfo, { weekStart })
     })
 
-    const { list, changeEnabled, changeDelay, changeLocked } = useLimitData()
+    const { list, selected, changeEnabled, changeDelay, changeLocked } = useLimitData()
     const { modify, remove } = useLimitAction()
     const delayDuration = useDelayDuration()
 
@@ -75,10 +74,6 @@ const _default = defineComponent((_, ctx) => {
         return option.limitLevel !== 'nothing'
     }, { defaultValue: false })
 
-    ctx.expose({
-        getSelected: () => (table.value?.getSelectionRows?.() ?? []) as tt4b.limit.Item[],
-    } satisfies LimitInstance)
-
     return () => (
         <ElTable
             ref={table}
@@ -88,6 +83,7 @@ const _default = defineComponent((_, ctx) => {
             data={list.value}
             defaultSort={sort.value}
             onSort-change={val => isSort(val) && (sort.value = val)}
+            onSelection-change={val => selected.value = val}
         >
             <ElTableColumn type="selection" align="center" fixed="left" />
             <ElTableColumn
@@ -183,7 +179,7 @@ const _default = defineComponent((_, ctx) => {
                     )}
                 </ElTableColumn>
                 <ElTableColumn
-                    label={t(msg => msg.limit.item.allowDelay)}
+                    label={t(msg => msg.shared.limit.allowDelay)}
                     minWidth={80}
                     align="center"
                     fixed="right"

@@ -92,7 +92,7 @@ export async function trySendMsg2Tab<C extends tt4b.tab.ReqCode>(
     try {
         return await sendMsg2Tab(tabId, code, data)
     } catch (e) {
-        console.warn(`Errored to send message to tab: tabId=${tabId}, code=${code}, data=${JSON.stringify(data)}`, e)
+        console.info(`Errored to send message to tab: tabId=${tabId}, code=${code}, data=${JSON.stringify(data)}`, e)
         return Promise.resolve(undefined)
     }
 }

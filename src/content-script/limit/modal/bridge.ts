@@ -1,4 +1,23 @@
-import type { BridgeCode, BridgeHandler, BridgeRequest, BridgeResponse } from './types'
+import type { Reason } from '../types'
+
+type Handler<Input extends unknown = void, Output extends unknown = void> = {
+    req: Input
+    res: Output
+}
+
+type MakeRegistry<C extends string, I extends unknown = void, O extends unknown = void> = Record<C, Handler<I, O>>
+
+type BridgeRegistry =
+    & MakeRegistry<'reason', Reason | undefined>
+    & MakeRegistry<'visitTime', number>
+    & MakeRegistry<'delay'>
+    & MakeRegistry<'url', string>
+    & MakeRegistry<'stop'>
+
+type BridgeCode = keyof BridgeRegistry
+type BridgeRequest<C extends BridgeCode> = BridgeRegistry[C]['req']
+type BridgeResponse<C extends BridgeCode> = BridgeRegistry[C]['res']
+type BridgeHandler<T extends BridgeCode> = (req: BridgeRequest<T>) => Awaitable<BridgeResponse<T>>
 
 type RpcBase<C extends BridgeCode> = {
     code: C
@@ -35,12 +54,6 @@ export class ModalBridge {
     constructor(private origin: string, private peer: () => Window | undefined) {
         this.onMessageBound = this.onMessage.bind(this)
         window.addEventListener('message', this.onMessageBound)
-    }
-
-    dispose(): void {
-        window.removeEventListener('message', this.onMessageBound)
-        this.pendingCache.clear()
-        this.handlers.clear()
     }
 
     register<C extends BridgeCode>(code: C, handler: BridgeHandler<C>): ModalBridge {

@@ -5,11 +5,11 @@
  * https://opensource.org/licenses/MIT
  */
 import { deleteSites } from '@api/sw/site'
-import PopupConfirmButton from '@app/components/common/PopupConfirmButton'
 import { useSiteManageTable } from '@app/components/SiteManage/context'
 import { t } from '@app/locale'
 import { Delete } from "@element-plus/icons-vue"
 import { useManualRequest } from '@hooks'
+import ConfirmButton from '@pages/components/ConfirmButton'
 import { ElTableColumn, type RenderRowData } from "element-plus"
 import { defineComponent } from "vue"
 
@@ -23,9 +23,8 @@ const OperationColumn = defineComponent<{}>(() => {
             align="center"
             v-slots={
                 ({ row }: RenderRowData<tt4b.site.SiteInfo>) => (
-                    <PopupConfirmButton
-                        buttonIcon={Delete}
-                        buttonType="danger"
+                    <ConfirmButton
+                        buttonProps={{ icon: Delete, type: 'danger', size: 'small' }}
                         buttonText={t(msg => msg.button.delete)}
                         confirmText={t(msg => msg.siteManage.deleteConfirmMsg, { host: row.host })}
                         onConfirm={() => doDelete(row)}

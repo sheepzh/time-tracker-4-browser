@@ -3,7 +3,7 @@ import { getWeekDay, MILL_PER_MINUTE, MILL_PER_SECOND } from "./time"
 
 const GLOBSTAR_TOKEN = `__GLOBSTAR${Math.random().toString(36).slice(2, 6)}__`
 
-const matchUrl = (cond: string, url: string): boolean => {
+export const matchUrl = (cond: string, url: string): boolean => {
     const normalizedCond = cond.length > 1 ? cond.replace(/\/$/, '') : cond
     const pattern = normalizedCond
         .replace(/\*\*/g, GLOBSTAR_TOKEN)
@@ -18,7 +18,7 @@ const matchUrl = (cond: string, url: string): boolean => {
  * @param cond
  * @param url
  */
-export function matches(cond: tt4b.limit.Item['cond'], url: string): boolean {
+export function matches(cond: string[], url: string): boolean {
     let hit = false
     for (let i = cond.length - 1; i >= 0; i--) {
         const rule = cond[i]
@@ -37,7 +37,7 @@ export function matches(cond: tt4b.limit.Item['cond'], url: string): boolean {
  * @param cond
  * @param url
  */
-export function matchCond(cond: tt4b.limit.Item['cond'], url: string): string[] {
+export function matchCond(cond: string[], url: string): string[] {
     const matchedNormalRules: string[] = []
     for (let i = cond.length - 1; i >= 0; i--) {
         const rule = cond[i]

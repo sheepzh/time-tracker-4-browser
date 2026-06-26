@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { type AppAnalysisQuery } from '@/shared/route'
+import { type AppSiteAnalysisQuery } from '@/shared/route'
 import { listCateStats, listSiteStats } from "@api/sw/stat"
 import { isTimeFormat } from '@app/util/limit/types'
 import { localRef, useProvide, useProvider, useRequest } from "@hooks"
@@ -22,7 +22,7 @@ type Context = {
 
 function parseQuery(): AnalysisTarget | undefined {
     // Process the query param
-    const query = useRoute().query as unknown as AppAnalysisQuery
+    const query = useRoute().query as unknown as AppSiteAnalysisQuery
     useRouter().replace({ query: {} })
     const { host, type: siteType, cateId, url } = query
     if (cateId) return { type: 'cate', key: parseInt(cateId) }

@@ -12,10 +12,6 @@ export type TestInstance = {
     show(): void
 }
 
-export type LimitInstance = {
-    getSelected(): tt4b.limit.Item[]
-}
-
 export type ModifyForm = MakeOptionalUndefined<Omit<tt4b.limit.Rule, 'id'>> & {
     urlMiss?: boolean
 }

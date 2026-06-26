@@ -1,24 +1,20 @@
 import "@pages/element-ui/dark-theme.css"
 import { defineComponent } from "vue"
-import Alert from "./components/Alert"
-import Footer from "./components/Footer"
-import Reason from "./components/Reason"
+import FocusView from './components/FocusView'
+import LimitView from './components/LimitView'
 import { provideRule } from './context'
 import "./style/element-base.css"
 import "./style/modal.css"
 
 const _default = defineComponent(() => {
-    provideRule()
+    const reason = provideRule()
 
-    return () => (
-        <div id="app">
-            <div style={{ width: '100%' }}>
-                <Alert />
-                <Reason />
-                <Footer />
-            </div>
-        </div>
-    )
+    return () => {
+        const val = reason.value
+        if (!val) return null
+        const view = val.type === 'FOCUS' ? <FocusView value={val} /> : <LimitView value={val} />
+        return <div style={{ width: '100%' }}>{view}</div>
+    }
 })
 
 export default _default

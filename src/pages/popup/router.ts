@@ -20,9 +20,12 @@ const createRoutes = (): MyRoute[] => [
         path: '/limit',
         component: () => import('./components/Limit'),
     }, {
+        path: '/focus',
+        component: () => import('./components/Focus'),
+    }, {
         // Use to remove warnings of "No match found for location with path '/'"
         path: '/',
-        component: () => import('./components/Percentage'),
+        component: { render: () => null },
     }
 ]
 

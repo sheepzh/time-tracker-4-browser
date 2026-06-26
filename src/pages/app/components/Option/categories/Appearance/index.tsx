@@ -127,16 +127,12 @@ const _default = defineComponent((_props, ctx) => {
                     />
                 </OptionItem>
                 <OptionItem
-                    label={msg => msg.option.appearance.displayBadgeText}
+                    label={msg => msg.option.appearance.displayBadge}
                     defaultValue={DEFAULT_APPEARANCE.displayBadgeText}
-                    v-slots={{
-                        timeInfo: () => <OptionTag>{t(msg => msg.option.appearance.badgeTextContent)}</OptionTag>,
-                        icon: () => <OptionTag>{t(msg => msg.option.appearance.icon)}</OptionTag>,
-                    }}
                 >
                     <ElSwitch
                         modelValue={option.displayBadgeText}
-                        onChange={val => option.displayBadgeText = val as boolean}
+                        onChange={val => option.displayBadgeText = !!val}
                     />
                 </OptionItem>
                 <OptionItem

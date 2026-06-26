@@ -7,7 +7,7 @@ type _AlarmConfig = {
     when?: () => number | null,
 }
 
-type _Handler = (alarm: ChromeAlarm) => void
+type _Handler = (alarm: ChromeAlarm) => Awaitable<void>
 
 const ALARM_PREFIX = 'timer-alarm-' + getRuntimeId() + '-'
 const ALARM_PREFIX_LENGTH = ALARM_PREFIX.length
@@ -46,7 +46,7 @@ class AlarmManager {
             if (!config) return
             // Handle alarm event
             try {
-                config.handler(alarm)
+                await config.handler(alarm)
             } catch (e) {
                 console.info("Failed to handle alarm event", e)
             } finally {

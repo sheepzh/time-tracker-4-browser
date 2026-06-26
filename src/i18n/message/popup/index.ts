@@ -7,6 +7,7 @@
 
 import baseMessages, { type BaseMessage } from "../common/base"
 import calendarMessages, { type CalendarMessage } from "../common/calendar"
+import focusMessages, { type FocusMessage } from '../common/focus'
 import itemMessages, { type ItemMessage } from "../common/item"
 import metaMessages, { type MetaMessage } from "../common/meta"
 import sharedMessages, { type SharedMessage } from "../common/shared"
@@ -15,10 +16,10 @@ import contentMessages, { type ContentMessage } from "./content"
 import footerMessages, { type FooterMessage } from "./footer"
 import headerMessages, { type HeaderMessage } from "./header"
 
-
 export type PopupMessage = {
     content: ContentMessage
     item: ItemMessage
+    focus: FocusMessage
     meta: MetaMessage
     base: BaseMessage
     header: HeaderMessage
@@ -30,6 +31,7 @@ export type PopupMessage = {
 const MESSAGE_ROOT: MessageRoot<PopupMessage> = {
     content: contentMessages,
     item: itemMessages,
+    focus: focusMessages,
     meta: metaMessages,
     base: baseMessages,
     header: headerMessages,

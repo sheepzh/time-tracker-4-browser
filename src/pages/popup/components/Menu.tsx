@@ -1,4 +1,4 @@
-import { Histogram, PieChart, Timer } from '@element-plus/icons-vue'
+import { Aim, Histogram, PieChart, Timer } from '@element-plus/icons-vue'
 import { isMenu, useMenu } from '@popup/context'
 import { t } from '@popup/locale'
 import { ElIcon, ElRadioButton, ElRadioGroup, ElTooltip } from "element-plus"
@@ -23,8 +23,12 @@ const createItems = (): MenuItem[] => [
         route: 'limit',
         label: t(msg => msg.base.limit),
         icon: Timer,
-    }
-] as const
+    }, {
+        route: 'focus',
+        label: t(msg => msg.focus.menu),
+        icon: Aim,
+    },
+]
 
 const Menu = defineComponent(() => {
     const menu = useMenu()

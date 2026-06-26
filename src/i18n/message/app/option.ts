@@ -12,18 +12,14 @@ export type OptionMessage = {
     on: string
     off: string
     followBrowser: string
-    permGrantConfirm: string
     appearance: {
         title: string
         // whitelist
         displayWhitelist: string
         whitelistItem: string
         contextMenu: string
-        // badge text
-        displayBadgeText: string
+        displayBadge: string
         badgeBgColor: string
-        icon: string
-        badgeTextContent: string
         locale: {
             label: string
             changeConfirm: string
