@@ -285,3 +285,10 @@ export const cvtDateRange2Str = (range: DateRange | [number?, number?]): [string
     const endStr = end === undefined ? undefined : formatTimeYMD(end)
     return [startStr, endStr]
 }
+
+export const cvt2Time = (data: unknown): number | undefined => {
+    if (data === undefined || data === null) return undefined
+    if (typeof data === 'number') return data
+    if (data instanceof Date) return data.getTime()
+    return undefined
+}

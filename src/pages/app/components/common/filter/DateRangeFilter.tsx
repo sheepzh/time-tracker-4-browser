@@ -14,7 +14,7 @@ import Flex from '@pages/components/Flex'
 import { getDatePickerIconSlots } from '@pages/element-ui/rtl'
 import { ElDatePickerShortcut } from '@pages/element-ui/types'
 import { isRtl } from '@util/document'
-import { MILL_PER_DAY } from '@util/time'
+import { cvt2Time, MILL_PER_DAY } from '@util/time'
 import { type DatePickerProps, ElButton, ElDatePicker, ElText, useNamespace } from "element-plus"
 import { computed, defineComponent, type FunctionalComponent, type StyleValue, toRaw, toRef } from "vue"
 
@@ -110,9 +110,15 @@ const DefaultRange = defineComponent<Props>(props => {
         return start && end ? [start, end] : undefined
     })
 
-    const handleUpdate = (innerVal: [number, number] | undefined) => {
-        let value = innerVal ?? [undefined, undefined]
-        if (innerVal?.[0] === 0 && innerVal[1] === 0) {
+    const handleUpdate = (innerVal: any) => {
+        let value: [number | undefined, number | undefined] = [undefined, undefined]
+        if (Array.isArray(innerVal)) {
+            const start = cvt2Time(innerVal[0])
+            const end = cvt2Time(innerVal[1])
+            value = [start, end]
+        }
+
+        if (value[0] === 0 && value[1] === 0) {
             // clear shortcuts
             value = [undefined, undefined]
         }
