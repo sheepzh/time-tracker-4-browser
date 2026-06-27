@@ -3,8 +3,8 @@
         "tracking": "数据追踪",
         "dashboard": "仪表盘",
         "record": "报表明细",
-        "sites": "网站管理",
         "rule": "规则管理",
+        "sites": "网站管理",
         "siteAnalysis": "站点分析",
         "habit": "上网习惯",
         "other": "其他",
@@ -13,9 +13,9 @@
     "zh_TW": {
         "dashboard": "数据总览",
         "record": "報表明細",
+        "sites": "網站管理",
         "siteAnalysis": "網站分析",
         "habit": "習慣分析",
-        "sites": "網站管理",
         "other": "其他",
         "about": "關於"
     },
@@ -36,99 +36,100 @@
     "ja": {
         "dashboard": "ダッシュボード",
         "record": "報告する",
+        "sites": "ウェブサイト管理",
         "siteAnalysis": "ウェブサイト分析",
         "habit": "閲覧の習慣",
-        "sites": "ウェブサイト管理",
         "other": "その他の機能",
         "about": "について"
     },
     "pt_PT": {
         "dashboard": "Painel",
         "record": "Registos",
+        "sites": "Gestão de Sites",
         "siteAnalysis": "Análise de Sites",
         "habit": "Hábitos",
-        "sites": "Gestão de Sites",
         "other": "Outras Opções",
         "about": "Sobre"
     },
     "uk": {
         "dashboard": "Огляд",
         "record": "Записи",
+        "sites": "Керування сайтами",
         "siteAnalysis": "Аналіз сайту",
         "habit": "Звички",
-        "sites": "Керування сайтами",
         "other": "Інші функції",
         "about": "Про нас"
     },
     "es": {
         "dashboard": "Tablero",
         "record": "Registro",
+        "sites": "Gestión de sitios",
         "siteAnalysis": "Análisis de sitios",
         "habit": "Hábitos",
-        "sites": "Gestión de sitios",
         "other": "Otras Funciones",
         "about": "Acerca de"
     },
     "de": {
         "dashboard": "Übersicht",
         "record": "Aufzeichnen",
+        "sites": "Websites",
         "siteAnalysis": "Analysebericht",
         "habit": "Gewohnheit",
-        "sites": "Websites",
         "other": "Andere Eigenschaften",
         "about": "Über uns"
     },
     "fr": {
         "dashboard": "Tableau de bord",
         "record": "Enregistrement",
+        "rule": "Règles",
+        "sites": "Gestion des sites",
         "siteAnalysis": "Analyse du site",
         "habit": "Habitudes",
-        "sites": "Gestion des sites",
         "other": "Autres fonctionnalités",
         "about": "À propos"
     },
     "ru": {
         "dashboard": "Панель Данных",
         "record": "Рекорд",
+        "sites": "Управление сайтом",
         "siteAnalysis": "Анализ сайта",
         "habit": "Привычки",
-        "sites": "Управление сайтом",
         "other": "Другие особенности",
         "about": "О нас"
     },
     "ar": {
         "dashboard": "لوحة التحكم",
         "record": "تسجيل",
+        "sites": "إدارة المواقع",
         "siteAnalysis": "تحليل الموقع",
         "habit": "العادات",
-        "sites": "إدارة المواقع",
         "other": "مميزات اخزي",
         "about": "حول"
     },
     "tr": {
         "dashboard": "Kontrol Paneli",
         "record": "Kayıtlı Veriler",
+        "sites": "Site Yönetimi",
         "siteAnalysis": "Site Analizi",
         "habit": "Alışkanlıklar",
-        "sites": "Site Yönetimi",
         "other": "Diğer Özellikler",
         "about": "Hakkımızda"
     },
     "pl": {
         "dashboard": "Panel",
         "record": "Wpisy",
+        "rule": "Reguła",
+        "sites": "Zarządzanie stronami",
         "siteAnalysis": "Analiza strony",
         "habit": "Nawyki",
-        "sites": "Zarządzanie stronami",
         "other": "Pozostałe funkcje",
         "about": "O rozszerzeniu"
     },
     "it": {
         "dashboard": "Dashboard",
-        "record": "Record",
+        "sites": "Gestione del sito",
         "siteAnalysis": "Analisi Sito",
         "habit": "Abitudini",
-        "sites": "Gestione del sito",
         "other": "Altre funzioni",
         "about": "Info su"
     }
