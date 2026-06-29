@@ -63,7 +63,7 @@ export const menuGroups = (): MenuGroup[] => [{
     title: msg => msg.menu.analysis,
     children: [
         {
-            title: msg => msg.menu.analysis,
+            title: msg => msg.menu.siteAnalysis,
             route: SITE_ANALYSIS_ROUTE,
             icon: Trend,
         }, {
