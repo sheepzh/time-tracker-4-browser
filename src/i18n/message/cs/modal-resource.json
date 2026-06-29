@@ -3,7 +3,9 @@
         "defaultPrompt": "古希腊时间与浏览器之神正在阻止您访问该页面",
         "delay": "延长{n}分钟",
         "browsingTime": "当前浏览时长",
-        "ruleDetail": "规则详情"
+        "ruleDetail": "规则详情",
+        "pomodoroActive": "番茄钟已开启",
+        "focusActive": "深度专注已开启"
     },
     "en": {
         "defaultPrompt": "This page was blocked!",

@@ -5,9 +5,12 @@
         "record": "报表明细",
         "rule": "规则管理",
         "sites": "网站管理",
+        "analysis": "分析",
         "siteAnalysis": "站点分析",
         "habit": "上网习惯",
+        "productivity": "效率",
         "other": "其他",
+        "migration": "数据迁移",
         "about": "关于"
     },
     "zh_TW": {

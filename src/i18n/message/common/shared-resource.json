@@ -42,7 +42,8 @@
             "weekly": "每周上限",
             "period": "不可访问的时间段",
             "visits": "{n}次访问",
-            "allowDelay": "可延时"
+            "allowDelay": "可延时",
+            "unlimited": "无限制"
         },
         "permGrantConfirm": "该功能需要授予相关权限"
     },
@@ -298,7 +299,7 @@
             "mergeBy": "Połącz przez",
             "mergeMethod": {
                 "date": "Data",
-                "domain": "Adres URL",
+                "domain": "URL",
                 "cate": "Kategoria",
                 "group": "Grupa zakładek",
                 "notMerge": "Nie scalaj"

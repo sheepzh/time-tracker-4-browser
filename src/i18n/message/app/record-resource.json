@@ -238,6 +238,7 @@
         "noMore": "Daha Fazla Veri Yok"
     },
     "pl": {
+        "exportFileName": "Mój_Czas_Przeglądania",
         "total": "Całkowita liczba wizyt: {visit}, całkowity czas trwania: {focus}",
         "batchDelete": {
             "confirmMsg": "{count} rekord/y/ów takich jak [{example}] z {date} zostaną usunięte!",
