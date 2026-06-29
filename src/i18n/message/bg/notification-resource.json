@@ -7,5 +7,17 @@
             "focusResumeMsg": "Break is over. Time to focus again!"
         },
         "dailySummary": "Focus time: {focus}, Visits: {visit}, Sites: {siteCount}"
+    },
+    "pl": {
+        "dailySummary": "Czas: {focus}, Wizyty: {visit}, Witryny: {siteCount}"
+    },
+    "zh_CN": {
+        "focus": {
+            "completedTitle": "本次专注已完成",
+            "completedMsg": "您的专注时间已结束。做得太棒了！",
+            "breakStartMsg": "先喝杯水休息一下，放松一下双眼吧！",
+            "focusResumeMsg": "休息结束，该重新集中精力了！"
+        },
+        "dailySummary": "浏览了 {siteCount} 个网站 {visit} 次，合计 {focus}"
     }
 }

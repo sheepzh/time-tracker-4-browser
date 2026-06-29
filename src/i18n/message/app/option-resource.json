@@ -10,6 +10,7 @@
             "displayWhitelist": "{input}  是否在 {contextMenu} 里，显示 {whitelist} 相关功能",
             "whitelistItem": "白名单",
             "contextMenu": "浏览器的右键菜单",
+            "displayBadge": "{input} 是否在扩展图标上显示文本",
             "badgeBgColor": "图标上文本的背景色 {input}",
             "locale": {
                 "label": "语言设置 {input}",
@@ -1265,7 +1266,10 @@
                 "strictTitle": "Подтверждение операции",
                 "strictContent": "При выборе этой опции, если сайт вызывает ежедневное ограничение, вам не будет разрешено разблокировать его вручную, кроме ожидания, до следующего дня. Если правила настроены неправильно, они могут очень затруднять ваши процедуры!",
                 "pswFormLabel": "Пароль",
-                "pswFormAgain": "Введите повторно"
+                "pswFormAgain": "Введите повторно",
+                "2fa": "Для разблокировки необходимо использовать двухфакторный код",
+                "twoFaTitle": "Включить двухфакторную аутентификацию",
+                "twoFaCopyLink": "Копировать ссылку"
             }
         },
         "backup": {
@@ -1321,7 +1325,8 @@
                 "weekly": "Еженедельно"
             },
             "method": {
-                "label": "Метод оповещения {input}"
+                "label": "Метод оповещения {input}",
+                "browser": "Браузер"
             }
         },
         "resetButton": "Сброс",
@@ -1610,7 +1615,7 @@
             },
             "printInConsole": {
                 "label": "{input} Wyświetlanie {info} w {console}",
-                "console": "konsoli",
+                "console": "konsola",
                 "info": "liczby dzisiejszych wizyt na bieżącej stronie"
             },
             "darkMode": {
@@ -1654,8 +1659,14 @@
                 "strictTitle": "Potwierdzenie operacji",
                 "strictContent": "Gdy wybierzesz tę opcję, jeśli witryna osiągnie dzienny limit, nie będzie wolno jej odblokować ręcznie inaczej, niż czekając do następnego dnia. Jeśli reguły nie są poprawnie skonfigurowane, mogą one skutecznie utrudnić twoją rutynę!",
                 "pswFormLabel": "Hasło",
-                "pswFormAgain": "Wprowadź ponownie"
-            }
+                "pswFormAgain": "Wprowadź ponownie",
+                "2fa": "Trzeba użyć kod 2FA do odblokowania",
+                "twoFaTitle": "Włącz 2FA",
+                "twoFaScanHint": "Zeskanuj kod QR za pomocą aplikacji uwierzytelniającej lub zaimportuj link konfiguracyjny do menedżera haseł obsługującego TOTP.",
+                "twoFaCopyLink": "Kopiuj link",
+                "twoFaVerifyLabel": "Wpisz 6-cyfrowy kod do weryfikacji"
+            },
+            "delayDuration": "Opóźnienie dla {input} minut za każdym razem"
         },
         "backup": {
             "title": "Kopia zapasowa danych",

@@ -305,7 +305,8 @@
         "batchEnable": "Włączanie serii",
         "batchDisable": "Seria wyłączenia",
         "collapse": "Zwiń",
-        "expand": "Rozwiń"
+        "expand": "Rozwiń",
+        "copy": "Kopiuj"
     },
     "it": {
         "create": "Nuovo",

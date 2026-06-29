@@ -76,5 +76,11 @@
             "percentage": "Distribuzione",
             "ranking": "Classifica"
         }
+    },
+    "ru": {
+        "route": {
+            "percentage": "Распределение",
+            "ranking": "Ранг"
+        }
     }
 }

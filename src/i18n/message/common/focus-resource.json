@@ -44,5 +44,51 @@
             "stop": "Stop",
             "dismiss": "Dismiss"
         }
+    },
+    "zh_CN": {
+        "menu": "专注模式 & 番茄钟",
+        "policy": {
+            "label": "过滤策略",
+            "allow": {
+                "label": "仅允许",
+                "desc": "只允许访问指定站点，所有其他站点都被阻止"
+            },
+            "block": {
+                "label": "屏蔽",
+                "desc": "除了被屏蔽的站点外，所有站点都可以访问"
+            }
+        },
+        "duration": "专注时长",
+        "break": "休息时长",
+        "state": {
+            "running": "运行中",
+            "paused": "暂停中",
+            "stopped": "已停止",
+            "done": "已完成"
+        },
+        "method": {
+            "label": "方式",
+            "choose": "选择方式",
+            "focus": {
+                "label": "深度专注",
+                "desc": "在未来一段时间内保持专注状态"
+            },
+            "pomodoro": {
+                "label": "番茄钟",
+                "desc": "劳逸结合，让专注更高效"
+            }
+        },
+        "noAllowUrl": "未指定允许的网站。请至少添加一个网站到允许列表。",
+        "noBlockUrl": "未指定阻止网站。是否无限制启动？",
+        "noTime": "番茄钟需要设置专注时长和休息时长",
+        "preset": "预设规则",
+        "presetName": "规则名称",
+        "button": {
+            "pause": "暂停",
+            "resume": "继续",
+            "delay": "延长时间",
+            "stop": "结束",
+            "dismiss": "关闭"
+        }
     }
 }

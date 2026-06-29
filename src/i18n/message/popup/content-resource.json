@@ -313,6 +313,8 @@
                 "lastDays": "Ostatnie dane z {n} dnia/i",
                 "allTime": "Wszystkie dane"
             },
+            "shareTitle": "Udostępnij",
+            "installTip": "Skanuj, aby zainstalować",
             "averageCount": "Średnio {value} razy co dzień",
             "averageTime": "Średnio {value} razy dziennie",
             "totalTime": "Ogółem {totalTime}",
@@ -321,6 +323,15 @@
         },
         "ranking": {
             "includingCount": "Wliczając {siteCount} stron"
+        },
+        "limit": {
+            "noData": "Dla tego URL nie obowiązuje żadna reguła limitu",
+            "newOne": "Nowy",
+            "timeUsed": "{percent} używane",
+            "visitUsed": "{used} liczba odwiedzin",
+            "remain": "{remaining} pozostałe",
+            "noLimit": "Bez limitu",
+            "notHit": "Nie obowiązuje"
         }
     },
     "it": {
