@@ -123,8 +123,11 @@ export async function mergeMessage(
 ): Promise<void> {
     const dirPath = path.join(MSG_BASE, dir)
     const filePath = path.join(dirPath, filename)
-    const existMessages = (await import(`@i18n/message/${dir}/${filename}`))?.default as Messages<Record<string, unknown>>
-    if (!existMessages) {
+    let existMessages: Messages<Record<string, unknown>>
+    try {
+        const module = await import(`@i18n/message/${dir}/${filename}`)
+        existMessages = module.default
+    } catch {
         logError(`Failed to find local code: dir=${dir}, filename=${filename}`)
         return
     }
