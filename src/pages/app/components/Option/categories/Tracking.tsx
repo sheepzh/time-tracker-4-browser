@@ -16,8 +16,8 @@ import { MILL_PER_SECOND } from "@util/time"
 import { ElMessage, ElMessageBox, ElSelect, ElSwitch, ElTimePicker, ElTooltip } from "element-plus"
 import { computed, defineComponent } from "vue"
 import { OptionItem, OptionLines, OptionTag, OptionTooltip } from '../components'
+import type { CategoryInstance } from '../types'
 import { useOption } from "../useOption"
-import type { CategoryInstance } from './types'
 
 const ALL_STORAGES: Record<tt4b.option.StorageType, string> = {
     classic: 'chrome.storage.local',

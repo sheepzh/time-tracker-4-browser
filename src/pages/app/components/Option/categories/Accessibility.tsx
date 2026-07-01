@@ -2,8 +2,8 @@ import { DEFAULT_ACCESSIBILITY } from "@util/constant/option"
 import { ElSwitch } from "element-plus"
 import { defineComponent } from "vue"
 import { OptionItem } from '../components'
+import type { CategoryInstance } from '../types'
 import { useOption } from "../useOption"
-import type { CategoryInstance } from './types'
 
 function copy(target: tt4b.option.AccessibilityOption, source: Readonly<tt4b.option.AccessibilityOption>) {
     target.chartDecal = source.chartDecal

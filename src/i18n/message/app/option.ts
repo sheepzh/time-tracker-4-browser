@@ -20,11 +20,7 @@ export type OptionMessage = {
         contextMenu: string
         displayBadge: string
         badgeBgColor: string
-        locale: {
-            label: string
-            changeConfirm: string
-            reloadButton: string
-        }
+        locale: string
         printInConsole: {
             label: string
             console: string
@@ -137,16 +133,16 @@ export type OptionMessage = {
             }
         }
     }
-    resetButton: string
-    resetSuccess: string
-    exportButton: string
-    importButton: string
-    exportSuccess: string
-    importSuccess: string
-    importError: string
-    importConfirm: string
-    reloadButton: string
+    button: {
+        reset: string
+        export: string
+        import: string
+        reload: string
+        download: string
+        sync: string
+    }
     defaultValue: string
+    applyConfirm: string
 }
 
 const _default: Messages<OptionMessage> = resource

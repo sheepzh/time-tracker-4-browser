@@ -7,7 +7,7 @@
 
 import { addMergeRule, deleteMergeRule, listAllMergeRules } from "@api/sw/merge"
 import { t } from '@app/locale'
-import { useManualRequest, useRequest } from '@hooks'
+import { useOperation, useRequest } from '@hooks'
 import Flex from "@pages/components/Flex"
 import { ElMessage, ElMessageBox } from "element-plus"
 import { defineComponent, ref } from "vue"
@@ -16,37 +16,26 @@ import Item, { type ItemInstance } from './components/Item'
 
 const _default = defineComponent<{}>(() => {
     const { data: items, refresh } = useRequest(listAllMergeRules, { defaultValue: [] })
-    const handleSucc = () => {
-        ElMessage.success(t(msg => msg.operation.successMsg))
-        refresh()
-    }
-    const { refreshAsync: remove } = useManualRequest(deleteMergeRule, { onSuccess: handleSucc })
-    const { refresh: update } = useManualRequest(async (origin: string, merged: string | number) => {
+
+    const handleDelete = useOperation(async (origin: string) => {
+        await ElMessageBox.confirm(t(msg => msg.rule.merge.removeConfirmMsg, { origin }))
         await deleteMergeRule(origin)
-        await addMergeRule({ origin, merged })
-    }, { onSuccess: handleSucc })
+    }, { onSuccess: refresh })
 
-    const itemRefs = ref<ItemInstance[]>([])
-
-    const handleDelete = (origin: string) => {
-        const message = t(msg => msg.rule.merge.removeConfirmMsg, { origin })
-        ElMessageBox.confirm(message).then(() => remove(origin))
-    }
-
-    async function handleChange(origin: string, merged: string | number, index: number): Promise<void> {
+    const handleChange = useOperation(async (origin: string, merged: string | number, index: number) => {
         const hasDuplicate = items.value.some((o, i) => o.origin === origin && i !== index)
         if (hasDuplicate) {
             ElMessage.warning(t(msg => msg.rule.merge.duplicateMsg, { origin }))
             itemRefs.value?.[index]?.forceEdit?.()
-            return
+            return false
         }
-        update(origin, merged)
-    }
+        await deleteMergeRule(origin)
+        await addMergeRule({ origin, merged })
+    }, { onSuccess: refresh })
 
-    const { refresh: add } = useManualRequest(
-        (rule: tt4b.merge.Rule) => addMergeRule(rule),
-        { onSuccess: handleSucc }
-    )
+    const itemRefs = ref<ItemInstance[]>([])
+
+    const add = useOperation(addMergeRule, { onSuccess: refresh })
 
     const handleAdd = async (origin: string, merged: string | number): Promise<boolean> => {
         const alreadyExist = items.value.some(item => item.origin === origin)

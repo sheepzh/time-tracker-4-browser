@@ -8,9 +8,9 @@ import { sendMsg2Runtime } from '@api/sw/common'
 import CategorySelect from '@app/components/common/Category/Select'
 import { t } from '@app/locale'
 import { Check } from "@element-plus/icons-vue"
-import { useSwitch } from '@hooks'
+import { useOperation, useSwitch } from '@hooks'
 import { supportCategory } from "@util/site"
-import { ElButton, ElDialog, ElForm, ElFormItem, ElInput, ElMessage, type FormInstance, type FormItemRule } from "element-plus"
+import { ElButton, ElDialog, ElForm, ElFormItem, ElInput, type FormInstance, type FormItemRule } from "element-plus"
 import { computed, defineComponent, reactive, ref } from "vue"
 import HostSelect from "./HostSelect"
 
@@ -67,7 +67,7 @@ const _default = defineComponent<{ onSave: NoArgCallback }>((props, ctx) => {
     }
     ctx.expose({ add } satisfies ModifyInstance)
 
-    const handleAdd = async () => {
+    const handleAdd = useOperation(async () => {
         const valid = await validateForm(form.value)
         if (!valid) return false
 
@@ -77,11 +77,9 @@ const _default = defineComponent<{ onSave: NoArgCallback }>((props, ctx) => {
         alias = alias?.trim()
         const siteInfo: tt4b.site.SiteInfo = { ...siteKey, alias, cate: formData.category }
         const errMsg = await sendMsg2Runtime('site.add', siteInfo)
-        if (errMsg) return ElMessage.warning(errMsg)
+        if (errMsg) throw errMsg
         close()
-        ElMessage.success(t(msg => msg.operation.successMsg))
-        props.onSave?.()
-    }
+    }, { onSuccess: () => props.onSave?.() })
 
     return () => (
         <ElDialog

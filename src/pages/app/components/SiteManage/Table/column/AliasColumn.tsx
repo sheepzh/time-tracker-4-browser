@@ -10,10 +10,10 @@ import Editable from "@app/components/common/Editable"
 import { useSiteManageTable } from '@app/components/SiteManage/context'
 import { t } from '@app/locale'
 import { MagicStick } from "@element-plus/icons-vue"
-import { useManualRequest } from '@hooks'
+import { useManualRequest, useOperation } from '@hooks'
 import Flex from "@pages/components/Flex"
 import { identifySiteKey } from "@util/site"
-import { ElIcon, ElMessage, ElPopconfirm, ElTableColumn, ElText } from "element-plus"
+import { ElIcon, ElPopconfirm, ElTableColumn, ElText } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
 
 const AliasColumn = defineComponent<{}>(() => {
@@ -23,13 +23,7 @@ const AliasColumn = defineComponent<{}>(() => {
         return modifySite({ type, host, alias, iconUrl })
     }, { onSuccess: refresh })
 
-    const handleBatchGenerate = async () => {
-        let { list } = pagination.value
-        if (!list.length) return ElMessage.info("No data")
-        await fillInitialAlias(list)
-        refresh()
-        ElMessage.success(t(msg => msg.operation.successMsg))
-    }
+    const handleBatchGenerate = useOperation(() => fillInitialAlias(pagination.value.list), { onSuccess: refresh })
 
     const genInitialAlias = async ({ host, type, alias }: tt4b.site.SiteInfo) => {
         if (alias) return alias

@@ -3,7 +3,7 @@ import { listSites } from "@api/sw/site"
 import { useCategory } from "@app/context"
 import { t } from "@app/locale"
 import { Check, Close, Delete, Edit } from "@element-plus/icons-vue"
-import { useManualRequest, useRequest, useState, useSwitch } from "@hooks"
+import { useManualRequest, useOperation, useRequest, useState, useSwitch } from "@hooks"
 import Flex from "@pages/components/Flex"
 import { stopPropagationAfter } from "@util/document"
 import { ElButton, ElInput, ElMessage, ElMessageBox } from "element-plus"
@@ -31,11 +31,8 @@ const OptionItem = defineComponent<{ value: tt4b.site.Cate }>(props => {
         name ? saveCate(name) : ElMessage.warning("Name is blank")
     }
 
-    const { refresh: doRemoveCate } = useManualRequest(() => sendMsg2Runtime('cate.delete', props.value.id), {
-        onSuccess: () => {
-            cate.refresh()
-            ElMessage.success(t(msg => msg.operation.successMsg))
-        }
+    const doRemoveCate = useOperation(() => sendMsg2Runtime('cate.delete', props.value.id), {
+        onSuccess: () => cate.refresh()
     })
     const { data: relatedSites, loading: queryingSites } = useRequest(() => listSites({ cateIds: props.value?.id }))
 

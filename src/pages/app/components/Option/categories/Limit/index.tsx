@@ -14,7 +14,7 @@ import { locale } from '@i18n'
 import { DEFAULT_LIMIT } from "@util/constant/option"
 import { ElButton, ElInput, ElInputNumber, ElMessage, ElMessageBox, ElSelect, ElSwitch, useNamespace } from "element-plus"
 import { defineComponent, FunctionalComponent, type StyleValue } from "vue"
-import type { CategoryInstance } from '../types'
+import type { CategoryInstance } from '../../types'
 import { use2faSetup } from './use2faSetup'
 import { usePswEdit } from "./usePswEdit"
 import { useVerify } from "./useVerify"

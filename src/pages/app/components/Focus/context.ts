@@ -1,8 +1,6 @@
 import { deleteFocusPreset, getCurrentSession, listFocusPresets } from '@api/sw/focus'
-import { t } from '@app/locale'
 import { type FocusQuery } from '@app/router/constants'
-import { useManualRequest, useProvide, useProvider, useRequest } from '@hooks'
-import { ElMessage } from 'element-plus'
+import { useOperation, useProvide, useProvider, useRequest } from '@hooks'
 import { onMounted, ref, type ShallowRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -36,12 +34,7 @@ export const initFocusManage = () => {
 
     const modifyInst = ref<ModifyInstance>()
 
-    const { refresh: remove } = useManualRequest(deleteFocusPreset, {
-        onSuccess() {
-            ElMessage.success(t(msg => msg.operation.successMsg))
-            refresh()
-        }
-    })
+    const remove = useOperation(deleteFocusPreset, { onSuccess: refresh })
 
     if (action === 'create') {
         onMounted(() => setTimeout(() => modifyInst.value?.create()))

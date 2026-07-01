@@ -8,16 +8,17 @@
 import { isSidePanelEnabled, setSidePanelEnabled, SIDE_PANEL_STATE_SUPPORTED_CONTROL } from '@api/chrome/sidePanel'
 import { OptionItem, OptionLines, OptionTag } from '@app/components/Option/components'
 import { useOption } from '@app/components/Option/useOption'
-import { type I18nKey, t, tWith } from '@app/locale'
+import { type I18nKey, t } from '@app/locale'
 import { useRequest } from '@hooks'
 import { ALL_LOCALES, localeSameAsBrowser } from "@i18n"
 import localeMessages from "@i18n/message/common/locale"
 import { processDarkMode } from '@pages/util/dark-mode'
 import { IS_ANDROID } from "@util/constant/environment"
 import { DEFAULT_APPEARANCE } from "@util/constant/option"
-import { ElColorPicker, ElMessageBox, ElSelect, ElSlider, ElSwitch, ElTag, type TagProps } from "element-plus"
+import { ElColorPicker, ElSelect, ElSlider, ElSwitch, ElTag, type TagProps } from "element-plus"
 import { computed, defineComponent, type StyleValue } from "vue"
-import type { CategoryInstance } from '../types'
+import type { CategoryInstance } from '../../types'
+import { confirmReload } from '../common'
 import DarkModeInput from "./DarkModeInput"
 
 const FOLLOW_BROWSER: I18nKey = msg => msg.option.followBrowser
@@ -44,7 +45,6 @@ function copy(target: tt4b.option.AppearanceOption, source: tt4b.option.Appearan
 }
 
 const DEFAULT_SIDE_PANEL_ENABLED = true
-
 
 const _default = defineComponent((_props, ctx) => {
     const { option } = useOption<tt4b.option.AppearanceOption>({
@@ -73,13 +73,7 @@ const _default = defineComponent((_props, ctx) => {
         const realLocale: tt4b.Locale = newVal === "default"
             ? localeSameAsBrowser
             : newVal
-        ElMessageBox({
-            message: tWith(msg => msg.option.appearance.locale.changeConfirm, realLocale),
-            type: "success",
-            confirmButtonText: tWith(msg => msg.option.appearance.locale.reloadButton, realLocale),
-            closeOnPressEscape: false,
-            closeOnClickModal: false
-        }).then(() => { location.reload?.() }).catch(() => {/* do nothing */ })
+        confirmReload(realLocale)
     }
     const animaDurationTagType = computed<TagProps['type']>(() => {
         const val = option.chartAnimationDuration
@@ -102,7 +96,7 @@ const _default = defineComponent((_props, ctx) => {
                     }}
                 />
             </OptionItem>
-            <OptionItem label={msg => msg.option.appearance.locale.label} defaultValue={FOLLOW_BROWSER}>
+            <OptionItem label={msg => msg.option.appearance.locale} defaultValue={FOLLOW_BROWSER}>
                 <ElSelect
                     modelValue={option.locale}
                     size="small"

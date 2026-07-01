@@ -2,8 +2,8 @@ import { OptionItem, OptionLines } from '@app/components/Option/components'
 import { t } from '@app/locale'
 import { QuestionFilled } from '@element-plus/icons-vue'
 import { ElIcon, ElInput, ElLink, ElMessage, ElSelect, ElTimePicker, ElTooltip } from 'element-plus'
-import { computed, defineComponent, StyleValue } from 'vue'
-import type { CategoryInstance } from '../types'
+import { computed, defineComponent, type StyleValue } from 'vue'
+import type { CategoryInstance } from '../../types'
 import Footer from './Footer'
 import { useNotification } from './useNotification'
 import usePermission from './usePermission'
@@ -43,9 +43,7 @@ const Notification = defineComponent((_, ctx) => {
         result ? option.notificationMethod = val : ElMessage.info('Denied by user')
     }
 
-    ctx.expose({
-        reset,
-    } satisfies CategoryInstance)
+    ctx.expose({ reset } satisfies CategoryInstance)
 
     return () => (
         <OptionLines>

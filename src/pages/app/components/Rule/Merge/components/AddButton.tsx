@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { useState, useSwitch } from '@hooks'
 import { t } from '@app/locale'
+import { useState, useSwitch } from '@hooks'
 import { ElButton } from "element-plus"
 import { defineComponent, StyleValue } from "vue"
 import ItemInput from './ItemInput'

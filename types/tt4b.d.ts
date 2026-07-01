@@ -1086,7 +1086,7 @@ declare namespace tt4b {
             & _MakeRegistry<'cs.injected'>
             & _MakeRegistry<'cs.idleChanged', boolean>
             // Content script API
-            & _MakeRegistry<'cs.getAudible', undefined, boolean>
+            & _MakeRegistry<'cs.getAudible', void, boolean>
             // Statistics
             & _MakeRegistry<'stat.today', string, core.Result | undefined>
             & _MakeRegistry<'stat.sites', stat.SiteQuery | undefined, stat.SiteRow[]>
@@ -1102,22 +1102,23 @@ declare namespace tt4b {
             // Items
             & _MakeRegistry<'item.batch', core.RowKey[], core.Row[]>
             // Category
-            & _MakeRegistry<'cate.all', undefined, site.Cate[]>
+            & _MakeRegistry<'cate.all', void, site.Cate[]>
             & _MakeRegistry<'cate.add', string, site.Cate>
             & _MakeRegistry<'cate.change', site.Cate>
             & _MakeRegistry<'cate.delete', number>
             // Option
-            & _MakeRegistry<'option.get', undefined, option.DefaultOption>
+            & _MakeRegistry<'option.get', void, option.DefaultOption>
             & _MakeRegistry<'option.set', Partial<option.AllOption>>
+            & _MakeRegistry<'option.sync' | 'option.download'>
             & _MakeRegistry<'option.changeStorage', option.StorageType>
-            & _MakeRegistry<'option.testNotification', undefined, string | undefined>
-            & _MakeRegistry<'option.weekStartDay', undefined, number>
+            & _MakeRegistry<'option.testNotification', void, string | undefined>
+            & _MakeRegistry<'option.weekStartDay', void, number>
             & _MakeRegistry<'option.weekStartTime', number, number>
             // Meta
-            & _MakeRegistry<'meta.installTs', undefined, number>
-            & _MakeRegistry<'meta.usedStorage', undefined, common.StorageUsage>
+            & _MakeRegistry<'meta.installTs', void, number>
+            & _MakeRegistry<'meta.usedStorage', void, common.StorageUsage>
             & _MakeRegistry<'meta.check2fa', string, boolean>
-            & _MakeRegistry<'meta.prepare2fa', undefined, string>
+            & _MakeRegistry<'meta.prepare2fa', void, string>
             & _MakeRegistry<'meta.popup', ui.PopupMenu | undefined>
             // Site
             & _MakeRegistry<'site.runEnabled', string, boolean>
@@ -1138,30 +1139,30 @@ declare namespace tt4b {
             & _MakeRegistry<'limit.add', Omit<limit.Rule, 'id'>, number>
             & _MakeRegistry<'limit.hitVisit', limit.Item, boolean>
             & _MakeRegistry<'limit.delay', string>
-            & _MakeRegistry<'limit.summary', undefined, limit.Summary | undefined>
+            & _MakeRegistry<'limit.summary', void, limit.Summary | undefined>
             // Focus
-            & _MakeRegistry<'focus.allPresets', undefined, focus.Preset[]>
+            & _MakeRegistry<'focus.allPresets', void, focus.Preset[]>
             & _MakeRegistry<'focus.getPreset', number, focus.Preset | undefined>
             & _MakeRegistry<'focus.addPreset', Omit<focus.Preset, 'id'>, number>
             & _MakeRegistry<'focus.savePreset', focus.Preset>
             & _MakeRegistry<'focus.deletePreset', number>
             & _MakeRegistry<'focus.action', focus.ActionRequest>
-            & _MakeRegistry<'focus.current', undefined, focus.Session | undefined>
+            & _MakeRegistry<'focus.current', void, focus.Session | undefined>
             // Merge
-            & _MakeRegistry<'merge.all', undefined, merge.Rule[]>
+            & _MakeRegistry<'merge.all', void, merge.Rule[]>
             & _MakeRegistry<'merge.delete', string>
             & _MakeRegistry<'merge.add', merge.Rule>
             // Whitelist
-            & _MakeRegistry<'whitelist.all', undefined, string[]>
+            & _MakeRegistry<'whitelist.all', void, string[]>
             & _MakeRegistry<'whitelist.add' | 'whitelist.delete', string>
             & _MakeRegistry<'whitelist.save', string[]>
             & _MakeRegistry<'whitelist.contain', { host: string; url: string }, boolean>
             // Backup
-            & _MakeRegistry<'backup.sync' | 'backup.checkAuth', undefined, string | undefined>
+            & _MakeRegistry<'backup.sync' | 'backup.checkAuth', void, string | undefined>
             & _MakeRegistry<'backup.clear', string, string | undefined>
             & _MakeRegistry<'backup.query', backup.RemoteQuery, backup.Row[]>
             & _MakeRegistry<'backup.lastTs', backup.Type, number | undefined>
-            & _MakeRegistry<'backup.clients', undefined, (backup.Client & { current: boolean })[]>
+            & _MakeRegistry<'backup.clients', void, (backup.Client & { current: boolean })[]>
             // Period
             & _MakeRegistry<'period.list', period.Query, period.Row[]>
             // Timeline
@@ -1170,7 +1171,7 @@ declare namespace tt4b {
             & _MakeRegistry<'backup.preview', backup.RemoteQuery, imported.Row[]>
             & _MakeRegistry<'immigration.importOther', imported.ProcessQuery>
             & _MakeRegistry<'immigration.import', any>
-            & _MakeRegistry<'immigration.export', undefined, backup.ExportData>
+            & _MakeRegistry<'immigration.export', void, backup.ExportData>
 
         type ReqCode = keyof _HandlerRegistry
 
