@@ -340,6 +340,7 @@
             "ondigitalocean": 1,
             "onhercules": 1,
             "pplx": 1,
+            "puter": 1,
             "railway": {
                 "c": {
                     "up": 1
@@ -548,6 +549,7 @@
             },
             "biz": 1,
             "co": 1,
+            "dnshome": 1,
             "funkfeuer": {
                 "c": {
                     "wien": 1
@@ -1288,7 +1290,12 @@
     "banamex": 1,
     "band": 1,
     "bank": 1,
-    "bar": 1,
+    "bar": {
+        "c": {
+            "resolve": 1
+        },
+        "l": 1
+    },
     "barcelona": 1,
     "barclaycard": 1,
     "barclays": 1,
@@ -1372,7 +1379,12 @@
     "beats": 1,
     "beauty": 1,
     "beer": 1,
-    "berlin": 1,
+    "berlin": {
+        "c": {
+            "ddns": 1
+        },
+        "l": 1
+    },
     "best": 1,
     "bestbuy": 1,
     "bet": 1,
@@ -2156,6 +2168,7 @@
                 "l": 1
             },
             "diadem": 1,
+            "dnshome": 1,
             "elementor": 1,
             "emergent": 1,
             "encoway": {
@@ -5121,6 +5134,7 @@
                 },
                 "l": 1
             },
+            "ddnssec": 1,
             "diskussionsbereich": 1,
             "dnshome": 1,
             "dnsupdater": 1,
@@ -5128,6 +5142,7 @@
             "dyn-ip24": 1,
             "dynamisches-dns": 1,
             "dyndns1": 1,
+            "dyndnssec": 1,
             "firewall-gateway": 1,
             "frusky": {
                 "c": {
@@ -5137,6 +5152,7 @@
             "fuettertdasnetz": 1,
             "git-repos": 1,
             "goip": 1,
+            "heimdns": 1,
             "home-webserver": {
                 "c": {
                     "dyn": 1
@@ -5196,6 +5212,7 @@
                 }
             },
             "square7": 1,
+            "srvdns": 1,
             "svn-repos": 1,
             "taifun-dns": 1,
             "test-iserv": 1,
@@ -5784,6 +5801,7 @@
             "cloudns": 1,
             "deuxfleurs": 1,
             "directwp": 1,
+            "dnshome": 1,
             "dogado": {
                 "c": {
                     "jelastic": 1
@@ -5832,7 +5850,12 @@
     "fairwinds": 1,
     "faith": 1,
     "family": 1,
-    "fan": 1,
+    "fan": {
+        "c": {
+            "mkm": 1
+        },
+        "l": 1
+    },
     "fans": 1,
     "farm": {
         "c": {
@@ -6980,6 +7003,7 @@
             "cz": 1,
             "dell-ogliastra": 1,
             "dellogliastra": 1,
+            "dnshome": 1,
             "edu": 1,
             "emilia-romagna": 1,
             "emiliaromagna": 1,
@@ -11743,7 +11767,12 @@
     },
     "nokia": 1,
     "norton": 1,
-    "now": 1,
+    "now": {
+        "c": {
+            "dyn": 1
+        },
+        "l": 1
+    },
     "nowruz": 1,
     "nowtv": 1,
     "np": {
@@ -11841,6 +11870,7 @@
             "book": 1,
             "eero": 1,
             "eero-stage": 1,
+            "heimdns": 1,
             "leapcell": 1,
             "websitebuilder": 1
         },
@@ -13129,6 +13159,7 @@
                     "my": 1
                 }
             },
+            "chatgpt": 1,
             "cloudera": {
                 "c": {
                     "*": 1
@@ -13163,6 +13194,7 @@
                 }
             },
             "preview": 1,
+            "puter": 1,
             "sol": 1,
             "sourcecraft": 1,
             "square": 1,
@@ -13251,6 +13283,7 @@
             "myfast": 1,
             "project": 1,
             "uber": 1,
+            "vibehost": 1,
             "xs4all": 1
         },
         "l": 1
@@ -14685,7 +14718,8 @@
     "woodside": 1,
     "work": {
         "c": {
-            "imagine-proxy": 1
+            "imagine-proxy": 1,
+            "puter": 1
         },
         "l": 1
     },
@@ -14711,7 +14745,12 @@
         "l": 1
     },
     "wtc": 1,
-    "wtf": 1,
+    "wtf": {
+        "c": {
+            "ddns": 1
+        },
+        "l": 1
+    },
     "xbox": 1,
     "xerox": 1,
     "xihuan": 1,
