@@ -12,11 +12,7 @@
             "contextMenu": "浏览器的右键菜单",
             "displayBadge": "{input} 是否在扩展图标上显示文本",
             "badgeBgColor": "图标上文本的背景色 {input}",
-            "locale": {
-                "label": "语言设置 {input}",
-                "changeConfirm": "语言设置成功，请刷新页面！",
-                "reloadButton": "刷新"
-            },
+            "locale": "语言设置 {input}",
             "printInConsole": {
                 "label": "{input}  是否在 {console} 里打印当前网站的 {info}",
                 "console": "浏览器的控制台",
@@ -133,15 +129,12 @@
                 }
             }
         },
-        "resetButton": "恢复默认",
-        "resetSuccess": "成功重置为默认值",
-        "exportButton": "导出设置",
-        "importButton": "导入设置",
-        "exportSuccess": "设置导出成功",
-        "importSuccess": "设置导入成功",
-        "importError": "导入失败：无效的设置文件",
-        "importConfirm": "设置导入成功，请刷新页面以应用更改！",
-        "reloadButton": "刷新",
+        "button": {
+            "reset": "恢复默认",
+            "export": "导出设置",
+            "import": "导入设置",
+            "reload": "刷新"
+        },
         "defaultValue": "默认值: {default}"
     },
     "zh_TW": {
@@ -156,11 +149,7 @@
             "whitelistItem": "白名單",
             "contextMenu": "右鍵選單",
             "badgeBgColor": "圖示文字背景色 {input}",
-            "locale": {
-                "label": "語言設定 {input}",
-                "changeConfirm": "語言設定已更新，請重新整理頁面！",
-                "reloadButton": "重新整理"
-            },
+            "locale": "語言設定 {input}",
             "printInConsole": {
                 "label": "{input} 是否在 {console} 顯示當前網站 {info}",
                 "console": "瀏覽器主控台",
@@ -271,15 +260,12 @@
                 }
             }
         },
-        "resetButton": "重設",
-        "resetSuccess": "已恢復預設值！",
-        "exportButton": "匯出設定",
-        "importButton": "匯入設定",
-        "exportSuccess": "設定匯出成功",
-        "importSuccess": "設定匯入成功",
-        "importError": "匯入失敗：無效的設定檔案",
-        "importConfirm": "設定匯入成功，請重新整理頁面以套用變更！",
-        "reloadButton": "重新整理",
+        "button": {
+            "reset": "重設",
+            "export": "匯出設定",
+            "import": "匯入設定",
+            "reload": "重新整理"
+        },
         "defaultValue": "預設值：{default}"
     },
     "en": {
@@ -295,11 +281,7 @@
             "contextMenu": "the context menu",
             "displayBadge": "{input} Whether to display badge on the icon",
             "badgeBgColor": "The background color of the text on the icon {input}",
-            "locale": {
-                "label": "Language {input}",
-                "changeConfirm": "The language has been changed successfully, please reload this page!",
-                "reloadButton": "Reload"
-            },
+            "locale": "Language {input}",
             "printInConsole": {
                 "label": "{input}  Whether to print {info} in the {console}",
                 "console": "console",
@@ -418,16 +400,16 @@
                 }
             }
         },
-        "resetButton": "Reset",
-        "resetSuccess": "Reset to default successfully!",
-        "exportButton": "Export Settings",
-        "importButton": "Import Settings",
-        "exportSuccess": "Settings exported successfully",
-        "importSuccess": "Settings imported successfully",
-        "importError": "Import failed: Invalid settings file",
-        "importConfirm": "Settings imported successfully, please reload the page to apply changes!",
-        "reloadButton": "Reload",
-        "defaultValue": "Default: {default}"
+        "button": {
+            "reset": "Reset",
+            "export": "Export Settings",
+            "import": "Import Settings",
+            "reload": "Reload",
+            "download": "Download from {account}",
+            "sync": "Sync to {account}"
+        },
+        "defaultValue": "Default: {default}",
+        "applyConfirm": "The options have changed. Please reload to apply the changes!"
     },
     "ja": {
         "yes": "はい",
@@ -441,11 +423,7 @@
             "whitelistItem": "ホワイトリストのショートカット",
             "contextMenu": "コンテキストメニュー",
             "badgeBgColor": "アイコン上のテキストの背景色 {input}",
-            "locale": {
-                "label": "言語設定 {input}",
-                "changeConfirm": "言語が正常に変更されました。このページをリロードしてください。",
-                "reloadButton": "リロード"
-            },
+            "locale": "言語設定 {input}",
             "printInConsole": {
                 "label": "{input}  現在のウェブサイトの {info} を {console} に印刷するかどうか",
                 "console": "コンソール",
@@ -549,15 +527,12 @@
                 }
             }
         },
-        "resetButton": "リセット",
-        "resetSuccess": "デフォルトに正常にリセット",
-        "exportButton": "設定をエクスポート",
-        "importButton": "設定をインポート",
-        "exportSuccess": "設定が正常にエクスポートされました",
-        "importSuccess": "設定が正常にインポートされました",
-        "importError": "インポートに失敗しました：無効な設定ファイル",
-        "importConfirm": "設定が正常にインポートされました。変更を適用するためにページをリロードしてください！",
-        "reloadButton": "リロード",
+        "button": {
+            "reset": "リセット",
+            "export": "設定をエクスポート",
+            "import": "設定をインポート",
+            "reload": "リロード"
+        },
         "defaultValue": "デフォルト値：{default}"
     },
     "pt_PT": {
@@ -572,11 +547,7 @@
             "whitelistItem": "atalhos da lista branca",
             "contextMenu": "menu de contexto",
             "badgeBgColor": "Cor de fundo do texto no ícone {input}",
-            "locale": {
-                "label": "Idioma {input}",
-                "changeConfirm": "Idioma alterado! Recarregue a página.",
-                "reloadButton": "Recarregar"
-            },
+            "locale": "Idioma {input}",
             "printInConsole": {
                 "label": "{input} Mostrar {info} na {console}",
                 "console": "consola",
@@ -669,15 +640,12 @@
             "title": "Acessibilidade",
             "chartDecal": "{input} Mostrar decalque no gráfico"
         },
-        "resetButton": "Repor",
-        "resetSuccess": "Reposição concluída!",
-        "exportButton": "Exportar configurações",
-        "importButton": "Importar configurações",
-        "exportSuccess": "Configurações exportadas com sucesso",
-        "importSuccess": "Configurações importadas com sucesso\n",
-        "importError": "Falha na Importação: Documento de configurações inválido",
-        "importConfirm": "Configurações importadas com sucesso, recarregue a página para aplicar às mudanças!",
-        "reloadButton": "Recarregar",
+        "button": {
+            "reset": "Repor",
+            "export": "Exportar definições",
+            "import": "Importar definições",
+            "reload": "Recarregar"
+        },
         "defaultValue": "Predefinido: {default}"
     },
     "uk": {
@@ -692,11 +660,7 @@
             "whitelistItem": "комбінації клавіш для білого списку",
             "contextMenu": "контекстному меню",
             "badgeBgColor": "Колір заднього плану тексту піктограми {input}",
-            "locale": {
-                "label": "Мова: {input}",
-                "changeConfirm": "Мову успішно змінено. Перезавантажте сторінку!",
-                "reloadButton": "Перезавантажити"
-            },
+            "locale": "Мова: {input}",
             "printInConsole": {
                 "label": "{input}  Показувати {info} в {console}",
                 "console": "консолі",
@@ -787,15 +751,12 @@
             "title": "Доступність",
             "chartDecal": "{input} Показувати наклейку діаграми"
         },
-        "resetButton": "Скинути",
-        "resetSuccess": "Скидання виконано успішно!",
-        "exportButton": "Експортувати налаштування",
-        "importButton": "Імпортувати налаштування",
-        "exportSuccess": "Налаштування успішно експортовано",
-        "importSuccess": "Налаштування успішно імпортовано",
-        "importError": "Помилка імпорту: неприпустимий файл налаштувань",
-        "importConfirm": "Налаштування успішно імпортовано. Перезавантажте сторінку для застосування змін!",
-        "reloadButton": "Перезавантажити",
+        "button": {
+            "reset": "Скинути",
+            "export": "Експортувати налаштування",
+            "import": "Імпортувати налаштування",
+            "reload": "Перезавантажити"
+        },
         "defaultValue": "Типово: {default}"
     },
     "es": {
@@ -810,11 +771,7 @@
             "whitelistItem": "atajos relacionados con la lista blanca",
             "contextMenu": "el menú de contexto",
             "badgeBgColor": "El color de fondo del texto en el icono {input}",
-            "locale": {
-                "label": "Idioma {input}",
-                "changeConfirm": "El idioma se ha cambiado con éxito, ¡por favor recarga esta página!",
-                "reloadButton": "Recargar"
-            },
+            "locale": "Idioma {input}",
             "printInConsole": {
                 "label": "{input}  Imprimir {info} en la {console}",
                 "console": "consola",
@@ -905,15 +862,12 @@
             "title": "Accesibilidad",
             "chartDecal": "{input} Si se debe mostrar la calcomanía del gráfico"
         },
-        "resetButton": "Restablecer",
-        "resetSuccess": "¡Restablecer predeterminado con éxito!",
-        "exportButton": "Exportar configuración",
-        "importButton": "Importar configuración",
-        "exportSuccess": "Configuración exportada correctamente",
-        "importSuccess": "Configuración importada correctamente",
-        "importError": "Error al importar: Archivo de configuración no válido",
-        "importConfirm": "¡Configuración importada! Recarga la página para aplicar los cambios.",
-        "reloadButton": "Recargar",
+        "button": {
+            "reset": "Restablecer",
+            "export": "Exportar configuración",
+            "import": "Importar configuración",
+            "reload": "Recargar"
+        },
         "defaultValue": "Predeterminado: {default}"
     },
     "de": {
@@ -928,11 +882,7 @@
             "whitelistItem": "verwandte Whitelist Verknüpfungen",
             "contextMenu": "Kontextmenü",
             "badgeBgColor": "Die Hintergrundfarbe des Textes auf dem Symbol {input}",
-            "locale": {
-                "label": "Sprache {input}",
-                "changeConfirm": "Die Sprache wurde erfolgreich geändert. Bitte lade diese Seite neu!",
-                "reloadButton": "Neu laden"
-            },
+            "locale": "Sprache {input}",
             "printInConsole": {
                 "label": "{input} {info} in der {console} ausgeben",
                 "console": "Konsole",
@@ -1049,15 +999,12 @@
                 }
             }
         },
-        "resetButton": "Zurücksetzen",
-        "resetSuccess": "Auf Standardwerte zurückgesetzt!",
-        "exportButton": "Einstellungen exportieren",
-        "importButton": "Einstellungen importieren",
-        "exportSuccess": "Einstellungen erfolgreich exportiert",
-        "importSuccess": "Einstellungen erfolgreich importiert",
-        "importError": "Import fehlgeschlagen: Ungültige Konfigurationsdatei",
-        "importConfirm": "Einstellungen erfolgreich importiert. Bitte laden Sie die Seite neu, um die Änderungen zu übernehmen!",
-        "reloadButton": "Neu laden",
+        "button": {
+            "reset": "Zurücksetzen",
+            "export": "Einstellungen exportieren",
+            "import": "Einstellungen importieren",
+            "reload": "Neu laden"
+        },
         "defaultValue": "Standard: {default}"
     },
     "fr": {
@@ -1072,11 +1019,7 @@
             "whitelistItem": "raccourcis liés à la liste blanche",
             "contextMenu": "le menu contextuel",
             "badgeBgColor": "La couleur de fond du texte sur l'icône {input}",
-            "locale": {
-                "label": "Langue {input}",
-                "changeConfirm": "La langue a été modifiée avec succès, veuillez recharger cette page !",
-                "reloadButton": "Redémarrer"
-            },
+            "locale": "Langue {input}",
             "printInConsole": {
                 "label": "{input} S'il faut afficher {info} dans la {console}",
                 "console": "console",
@@ -1193,15 +1136,12 @@
                 }
             }
         },
-        "resetButton": "Réinitialiser",
-        "resetSuccess": "Remise à zéro avec succès !",
-        "exportButton": "Exporter les paramètres",
-        "importButton": "Importer les paramètres",
-        "exportSuccess": "Paramètres exportés avec succès",
-        "importSuccess": "Paramètres importés avec succès",
-        "importError": "Échec de l'import : fichier de paramètres invalide",
-        "importConfirm": "Paramètres importés avec succès, veuillez Actualiser la page pour appliquer les modifications !",
-        "reloadButton": "Actualiser",
+        "button": {
+            "reset": "Réinitialiser",
+            "export": "Exporter les paramètres",
+            "import": "Importer les paramètres",
+            "reload": "Actualiser"
+        },
         "defaultValue": "Par défaut : {default}"
     },
     "ru": {
@@ -1216,11 +1156,7 @@
             "whitelistItem": "список связанных ярлыков",
             "contextMenu": "контекстное меню",
             "badgeBgColor": "Цвет фона текста на иконке {input}",
-            "locale": {
-                "label": "Язык {input}",
-                "changeConfirm": "Язык был успешно изменён, пожалуйста, перезагрузите эту страницу!",
-                "reloadButton": "Обновить"
-            },
+            "locale": "Язык {input}",
             "printInConsole": {
                 "label": "{input} Отображать ли {info} в {console}",
                 "console": "консоль",
@@ -1329,15 +1265,12 @@
                 "browser": "Браузер"
             }
         },
-        "resetButton": "Сброс",
-        "resetSuccess": "Сброс к настройкам по умолчанию выполнен успешно!",
-        "exportButton": "Экспорт настроек",
-        "importButton": "Импорт настроек",
-        "exportSuccess": "Настройки успешно экспортированы",
-        "importSuccess": "Настройки успешно импортированы",
-        "importError": "Не удалось импортировать: недопустимый файл настроек",
-        "importConfirm": "Настройки успешно импортированы, пожалуйста, перезагрузите страницу, чтобы применить изменения!",
-        "reloadButton": "Обновить",
+        "button": {
+            "reset": "Сброс",
+            "export": "Экспорт настроек",
+            "import": "Импорт настроек",
+            "reload": "Обновить"
+        },
         "defaultValue": "По умолчанию: {default}"
     },
     "ar": {
@@ -1352,11 +1285,7 @@
             "whitelistItem": "اختصارات القائمة البيضاء",
             "contextMenu": "قائمة السياق",
             "badgeBgColor": "لون خلفية المؤقت المتواجد على الأيقونة {input}",
-            "locale": {
-                "label": "اللغة {input}",
-                "changeConfirm": "تم تغيير اللغة بنجاح، يرجى إعادة تحميل هذه الصفحة!",
-                "reloadButton": "إعادة التحميل"
-            },
+            "locale": "اللغة {input}",
             "printInConsole": {
                 "label": "{input}  هل يتم طباعة {info} في {console}",
                 "console": "وحدة التحكم",
@@ -1447,15 +1376,12 @@
             "title": "إمكانية الوصول",
             "chartDecal": "{input} هل يتم عرض الزخرفة على الرسم البياني"
         },
-        "resetButton": "إعادة الضبط",
-        "resetSuccess": "تم إعادة الضبط إلى الإعدادات الإفتراضية بنجاح!",
-        "exportButton": "تصدير الإعدادات",
-        "importButton": "استيراد الإعدادات",
-        "exportSuccess": "تم تصدير الإعدادات بنجاح",
-        "importSuccess": "تم استيراد الإعدادات بنجاح",
-        "importError": "فشل الاستيراد: ملف الإعدادات غير صالح",
-        "importConfirm": "تم استيراد الإعدادات بنجاح، يرجى إعادة تحميل الصفحة لتطبيق التغييرات!",
-        "reloadButton": "إعادة التحميل",
+        "button": {
+            "reset": "إعادة الضبط",
+            "export": "تصدير الإعدادات",
+            "import": "استيراد الإعدادات",
+            "reload": "إعادة التحميل"
+        },
         "defaultValue": "الوضع الإفتراضي: {default}"
     },
     "tr": {
@@ -1470,11 +1396,7 @@
             "whitelistItem": "beyaz liste ile ilgili kısayollar",
             "contextMenu": "içerik menüsü",
             "badgeBgColor": "Simge üzerindeki metnin arka plan rengi {input}",
-            "locale": {
-                "label": "Dil {input}",
-                "changeConfirm": "Dil başarıyla değiştirildi, lütfen bu sayfayı yeniden yükleyin!",
-                "reloadButton": "Yeniden yükle"
-            },
+            "locale": "Dil {input}",
             "printInConsole": {
                 "label": "{input}  {console} içinde {info} yazdırılıp yazdırılmayacağını seçin",
                 "console": "konsol",
@@ -1585,15 +1507,12 @@
                 }
             }
         },
-        "resetButton": "Sıfırla",
-        "resetSuccess": "Varsayılan ayarlara sıfırlama işlemi başarıyla tamamlandı!",
-        "exportButton": "Ayarları Dışa Aktar",
-        "importButton": "Ayarları İçe Aktar",
-        "exportSuccess": "Ayarlar başarıyla dışa aktarıldı",
-        "importSuccess": "Ayarlar başarıyla içe aktarıldı",
-        "importError": "İçe aktarma başarısız: Geçersiz ayar dosyası",
-        "importConfirm": "Ayarlar başarıyla içe aktarıldı, değişiklikleri uygulamak için lütfen sayfayı yeniden yükleyin!",
-        "reloadButton": "Yeniden yükle",
+        "button": {
+            "reset": "Sıfırla",
+            "export": "Ayarları Dışa Aktar",
+            "import": "Ayarları İçe Aktar",
+            "reload": "Yeniden yükle"
+        },
         "defaultValue": "Varsayılan: {default}"
     },
     "pl": {
@@ -1608,11 +1527,7 @@
             "whitelistItem": "skrótów związanych z whitelistą",
             "contextMenu": "menu kontekstowym",
             "badgeBgColor": "Kolor tła tekstu na ikonie paska rozszerzeń {input}",
-            "locale": {
-                "label": "Język {input}",
-                "changeConfirm": "Język został zmieniony pomyślnie, proszę odświeżyć tę stronę!",
-                "reloadButton": "Przeładuj"
-            },
+            "locale": "Język {input}",
             "printInConsole": {
                 "label": "{input} Wyświetlanie {info} w {console}",
                 "console": "konsola",
@@ -1729,15 +1644,12 @@
                 }
             }
         },
-        "resetButton": "Reset",
-        "resetSuccess": "Pomyślnie przywrócono ustawienia domyślne!",
-        "exportButton": "Eksportuj ustawienia",
-        "importButton": "Importuj ustawienia",
-        "exportSuccess": "Ustawienia wyeksportowane pomyślnie",
-        "importSuccess": "Ustawienia zaimportowane pomyślnie",
-        "importError": "Import nie powiódł się: Nieprawidłowy plik ustawień",
-        "importConfirm": "Ustawienia zaimportowane pomyślnie, proszę odświeżyć stronę aby zastosować zmiany!",
-        "reloadButton": "Odśwież",
+        "button": {
+            "reset": "Resetuj",
+            "export": "Eksportuj ustawienia",
+            "import": "Importuj ustawienia",
+            "reload": "Odśwież"
+        },
         "defaultValue": "Domyślnie: {default}"
     },
     "it": {
@@ -1752,11 +1664,7 @@
             "whitelistItem": "scorciatoie correlate alla whitelist",
             "contextMenu": "il menu contestuale",
             "badgeBgColor": "Il colore di sfondo del testo sull'icona {input}",
-            "locale": {
-                "label": "Linguaggio {input}",
-                "changeConfirm": "La lingua è stata modificata con successo, si prega di aggiorna questa pagina!",
-                "reloadButton": "Aggiorna"
-            },
+            "locale": "Linguaggio {input}",
             "printInConsole": {
                 "label": "{input}  Se stampare {info} in {console}",
                 "console": "console",
@@ -1873,15 +1781,12 @@
                 }
             }
         },
-        "resetButton": "Reset",
-        "resetSuccess": "Reset completato!",
-        "exportButton": "Impostazioni di esportazione",
-        "importButton": "Impostazioni di importazione",
-        "exportSuccess": "Impostazioni esportate con successo",
-        "importSuccess": "Impostazioni importate con successo",
-        "importError": "Importazione non riuscita: file delle impostazioni non valido",
-        "importConfirm": "Impostazioni importate con successo, aggiorna la pagina per applicare le modifiche!",
-        "reloadButton": "Aggiorna",
+        "button": {
+            "reset": "Reset",
+            "export": "Impostazioni di esportazione",
+            "import": "Impostazioni di importazione",
+            "reload": "Aggiorna"
+        },
         "defaultValue": "Default: {default}"
     }
 }

@@ -1,15 +1,13 @@
 import { addFocusPreset, saveFocusPreset } from '@api/sw/focus'
 import { t } from '@app/locale'
 import { Check } from '@element-plus/icons-vue'
-import { useSwitch } from '@hooks'
+import { useOperation, useSwitch } from '@hooks'
 import CondEditor from '@pages/components/CondEditor'
 import Flex from '@pages/components/Flex'
 import TimeInput from '@pages/components/TimeInput'
 import { ALL_FOCUS_POLICIES, FOCUS_COND_PLACEHOLDER, FOCUS_METHOD_DEFAULTS } from '@pages/util/focus'
 import { isMethod, isPolicy } from '@util/focus'
-import {
-    ElButton, ElCheckbox, ElDialog, ElForm, ElFormItem, ElInput, ElMessage, ElRadio, ElRadioGroup,
-} from 'element-plus'
+import { ElButton, ElCheckbox, ElDialog, ElForm, ElFormItem, ElInput, ElRadio, ElRadioGroup } from 'element-plus'
 import { computed, defineComponent, reactive, type StyleValue, toRaw } from 'vue'
 import { type ModifyInstance, useFocusList } from './context'
 
@@ -54,19 +52,17 @@ const _default = defineComponent<{}>((_, ctx) => {
         }
     } satisfies ModifyInstance)
 
-    const handleSubmit = async () => {
-        if (!form.name.trim()) {
-            return ElMessage.error('Name is required')
-        }
+    const handleSubmit = useOperation(async () => {
+        if (!form.name.trim()) throw 'Name is required'
 
         const { id, method, policy, cond, duration, break: breakDuration } = form
 
         if (method === 'pomodoro' && (!duration || !breakDuration)) {
-            return ElMessage.error(t(msg => msg.focus.noTime))
+            throw t(msg => msg.focus.noTime)
         }
 
         if (method === 'focus' && policy === 'allow' && !cond.length) {
-            return ElMessage.error(t(msg => msg.focus.noAllowUrl))
+            throw t(msg => msg.focus.noAllowUrl)
         }
 
         if (editing.value && id !== undefined) {
@@ -75,11 +71,12 @@ const _default = defineComponent<{}>((_, ctx) => {
             const { id: _, ...data } = toRaw(form)
             await addFocusPreset(data)
         }
-
-        close()
-        ElMessage.success(t(msg => msg.operation.successMsg))
-        refresh()
-    }
+    }, {
+        onSuccess: () => {
+            close()
+            refresh()
+        }
+    })
 
     const onMethodChange = (val: unknown) => {
         if (!isMethod(val)) return

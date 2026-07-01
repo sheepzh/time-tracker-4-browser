@@ -1,20 +1,9 @@
-import { t, type I18nKey } from '@app/locale'
 import { createStringUnionGuard } from 'typescript-guard'
-import { computed, type ShallowRef } from 'vue'
+import { computed } from 'vue'
 import { useRoute, useRouter, type LocationQuery } from 'vue-router'
+import type { OptionCategory } from './types'
 
-export type OptionCategory = 'appearance' | 'tracking' | 'limit' | 'accessibility' | 'backup' | 'notification'
 const isCategory = createStringUnionGuard<OptionCategory>('appearance', 'tracking', 'limit', 'accessibility', 'backup', 'notification')
-
-const CATE_LABELS: Record<OptionCategory, I18nKey> = {
-    appearance: msg => msg.option.appearance.title,
-    tracking: msg => msg.option.tracking.title,
-    limit: msg => msg.base.limit,
-    accessibility: msg => msg.option.accessibility.title,
-    backup: msg => msg.option.backup.title,
-    notification: msg => msg.option.notification.title,
-}
-
 const PARAM = "i"
 
 function parseInit(query: LocationQuery): OptionCategory | undefined {
@@ -23,11 +12,7 @@ function parseInit(query: LocationQuery): OptionCategory | undefined {
     return isCategory(queryVal) ? queryVal : undefined
 }
 
-export const useCategory = (): {
-    category: ShallowRef<OptionCategory>
-    setCategory: (value: unknown) => void
-    getLabel: (cate: unknown) => string | undefined
-} => {
+export const useCategory = () => {
     const route = useRoute()
     const router = useRouter()
 
@@ -44,10 +29,6 @@ export const useCategory = (): {
     })
 
     const setCategory = (value: unknown) => isCategory(value) && (category.value = value)
-    const getLabel = (cate: unknown) => {
-        const key = isCategory(cate) ? CATE_LABELS[cate] : undefined
-        return key ? t(key) : undefined
-    }
 
-    return { category, setCategory, getLabel }
+    return { category, setCategory }
 }

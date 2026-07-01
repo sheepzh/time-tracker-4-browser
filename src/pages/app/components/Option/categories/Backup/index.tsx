@@ -12,7 +12,7 @@ import { OptionItem, OptionLines, OptionTooltip } from '@app/components/Option/c
 import { t } from '@app/locale'
 import { ElInput, ElSelect } from "element-plus"
 import { computed, defineComponent } from "vue"
-import type { CategoryInstance } from '../types'
+import type { CategoryInstance } from '../../types'
 import AutoInput from "./AutoInput"
 import Footer from "./Footer"
 import { useBackup } from "./useBackup"

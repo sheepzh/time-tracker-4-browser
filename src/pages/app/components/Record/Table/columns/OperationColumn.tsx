@@ -10,12 +10,12 @@ import { useRecordFilter } from '@app/components/Record/context'
 import { t } from '@app/locale'
 import { SITE_ANALYSIS_ROUTE, type SiteAnalysisQuery } from '@app/router/constants'
 import { Delete, Open, Plus, Stopwatch } from "@element-plus/icons-vue"
-import { useManualRequest, useRequest, useTabGroups } from '@hooks'
+import { useOperation, useRequest, useTabGroups } from '@hooks'
 import { locale } from "@i18n"
 import ConfirmButton from '@pages/components/ConfirmButton'
 import { CATE_NOT_SET_ID } from "@util/site"
 import { isCate, isGroup, isNormalSite, isSite } from "@util/stat"
-import { ElButton, ElMessage, ElTableColumn, type RenderRowData } from "element-plus"
+import { ElButton, ElTableColumn, type RenderRowData } from "element-plus"
 import { computed, defineComponent } from "vue"
 import { useRouter } from "vue-router"
 
@@ -61,12 +61,9 @@ const _default = defineComponent<Props>(({ onDelete }) => {
     })
     const router = useRouter()
     const { data: whitelist, refresh: refreshWhitelist } = useRequest(listWhitelist, { defaultValue: [] })
-    const onWhitelistSuccess = () => {
-        refreshWhitelist()
-        ElMessage.success(t(msg => msg.operation.successMsg))
-    }
-    const { refresh: onAddWhitelist } = useManualRequest(addWhitelist, { onSuccess: onWhitelistSuccess })
-    const { refresh: onRemoveWhitelist } = useManualRequest(deleteWhitelist, { onSuccess: onWhitelistSuccess })
+
+    const onAddWhitelist = useOperation(addWhitelist, { onSuccess: refreshWhitelist })
+    const onRemoveWhitelist = useOperation(deleteWhitelist, { onSuccess: refreshWhitelist })
 
     const jump2Analysis = (row: tt4b.stat.Row) => {
         let query: SiteAnalysisQuery

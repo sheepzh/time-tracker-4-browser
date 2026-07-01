@@ -96,6 +96,8 @@ class MessageDispatcher {
             // Options
             .register('option.get', () => optionHolder.get())
             .register('option.set', val => optionHolder.set(val))
+            .register('option.sync', () => optionHolder.sync())
+            .register('option.download', () => optionHolder.download())
             .register('option.changeStorage', migrateStorage)
             .register('option.testNotification', () => notificationProcessor.doSend())
             .register('option.weekStartDay', getWeekStartDay)

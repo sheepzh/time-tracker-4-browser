@@ -4,7 +4,7 @@ import { deleteLimits, listLimits, updateLimits } from "@api/sw/limit"
 import { t } from '@app/locale'
 import type { LimitQuery } from '@app/router/constants'
 import { judgeVerificationRequired, processVerification } from '@app/util/limit'
-import { useDocumentVisibility, useManualRequest, useProvide, useProvider, useRequest } from '@hooks'
+import { useDocumentVisibility, useOperation, useProvide, useProvider, useRequest } from '@hooks'
 import { tryParseInteger } from '@util/number'
 import { ElMessage, ElMessageBox } from "element-plus"
 import { computed, onMounted, reactive, ref, toRaw, watch, type ShallowRef } from "vue"
@@ -100,17 +100,12 @@ export const initLimitContext = () => {
     const docVisible = useDocumentVisibility()
     watch(docVisible, () => docVisible.value && refresh())
 
-    const { refresh: remove } = useManualRequest(async (row: tt4b.limit.Item) => {
+    const remove = useOperation(async (row: tt4b.limit.Item) => {
         await verifyCanModify(row)
         const message = t(msg => msg.limit.message.deleteConfirm, { name: row.name })
         await ElMessageBox.confirm(message)
         await deleteLimits([row.id])
-    }, {
-        onSuccess() {
-            ElMessage.success(t(msg => msg.operation.successMsg))
-            refresh()
-        }
-    })
+    }, { onSuccess: refresh })
 
     const selected = ref<tt4b.limit.Item[]>([])
 

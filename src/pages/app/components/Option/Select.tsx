@@ -1,23 +1,21 @@
+import { t } from '@app/locale'
 import { ElCard, ElOption, ElSelect } from "element-plus"
-import { defineComponent, h, useSlots } from "vue"
+import { defineComponent, h } from "vue"
 import ContentContainer from '../common/ContentContainer'
+import { CATE_CONFIG } from './categories'
 import { useCategory } from "./useCategory"
 
-const _default = defineComponent(() => {
-    const { category, setCategory, getLabel } = useCategory()
-    const slots = useSlots()
+const _default = defineComponent<{}>(() => {
+    const { category, setCategory } = useCategory()
 
     return () => (
         <ContentContainer v-slots={{
             filter: () => (
                 <ElSelect modelValue={category.value} onChange={setCategory}>
-                    {Object.keys(slots).map(c => <ElOption value={c} label={getLabel(c)} />)}
+                    {Object.entries(CATE_CONFIG).map(([v, c]) => <ElOption value={v} label={t(c[0])} />)}
                 </ElSelect>
             ),
-            default: () => {
-                const slot = slots[category.value]
-                return !!slot && <ElCard style={{ "--el-card-padding": '20px 10px' }}>{h(slot)}</ElCard>
-            }
+            default: () => <ElCard>{h(CATE_CONFIG[category.value][1])}</ElCard>,
         }} />
     )
 })
