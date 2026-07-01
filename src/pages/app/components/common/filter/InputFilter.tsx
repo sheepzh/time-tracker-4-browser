@@ -31,7 +31,8 @@ const InputFilter = defineComponent<Props>(props => {
 
     const handleKeydown = (ev: Event | KeyboardEvent) => {
         if (ev instanceof KeyboardEvent && ev.key === 'Enter') {
-            props.onSearch?.(modelValue.value)
+            const query = modelValue.value = modelValue.value.trim()
+            props.onSearch?.(query)
         }
     }
 
@@ -39,7 +40,7 @@ const InputFilter = defineComponent<Props>(props => {
         <ElInput
             modelValue={modelValue.value}
             placeholder={props.placeholder}
-            onInput={val => modelValue.value = val.trim()}
+            onInput={val => modelValue.value = val}
             onKeydown={handleKeydown}
             onBlur={handleBlur}
             onFocus={() => setFocused(true)}
