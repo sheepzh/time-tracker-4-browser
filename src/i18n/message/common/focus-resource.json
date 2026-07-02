@@ -90,5 +90,12 @@
             "stop": "结束",
             "dismiss": "关闭"
         }
+    },
+    "fr": {
+        "menu": "Focus & Pomodoro",
+        "duration": "Temps de Focus",
+        "break": "Temps de pause",
+        "noAllowUrl": "Pas de site autorisé. Ajoutez au moins un site dans la liste des autorisations.",
+        "noBlockUrl": "Pas de sites bloqués. Commencer sans restriction ?"
     }
 }

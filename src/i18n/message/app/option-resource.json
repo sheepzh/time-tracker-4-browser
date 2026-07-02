@@ -1782,7 +1782,6 @@
             }
         },
         "button": {
-            "reset": "Reset",
             "export": "Impostazioni di esportazione",
             "import": "Impostazioni di importazione",
             "reload": "Aggiorna"
