@@ -82,13 +82,17 @@
         "about": "Über uns"
     },
     "fr": {
+        "tracking": "Tracking",
         "dashboard": "Tableau de bord",
         "record": "Enregistrement",
         "rule": "Règles",
         "sites": "Gestion des sites",
+        "analysis": "Analyse",
         "siteAnalysis": "Analyse du site",
         "habit": "Habitudes",
+        "productivity": "Productivité",
         "other": "Autres fonctionnalités",
+        "migration": "Migration des données",
         "about": "À propos"
     },
     "ru": {
