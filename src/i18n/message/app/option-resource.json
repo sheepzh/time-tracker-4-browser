@@ -133,9 +133,12 @@
             "reset": "恢复默认",
             "export": "导出设置",
             "import": "导入设置",
-            "reload": "刷新"
+            "reload": "刷新",
+            "download": "从 {account} 下载",
+            "sync": "同步至 {account}"
         },
-        "defaultValue": "默认值: {default}"
+        "defaultValue": "默认值: {default}",
+        "applyConfirm": "选项已更改。请重新加载以应用更改！"
     },
     "zh_TW": {
         "yes": "是",
