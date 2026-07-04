@@ -313,7 +313,8 @@
             "weekly": "Limit tygodniowy",
             "period": "Godziny blokowania",
             "visits": "{n} wizyt",
-            "allowDelay": "Możliwe do przedłużenia"
+            "allowDelay": "Możliwe do przedłużenia",
+            "unlimited": "Bez ograniczeń"
         },
         "permGrantConfirm": "Ta opcja wymaga odpowiednich uprawnień"
     }

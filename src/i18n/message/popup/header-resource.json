@@ -70,7 +70,9 @@
         "discord": "Dołącz do Discord",
         "showSiteName": "Wyświetl nazwę witryny",
         "showTopN": "Wyświetl górną część {n}",
-        "donutChart": "Wyświetlane jako wykresy"
+        "donutChart": "Wyświetlane jako wykresy",
+        "bug": "Zgłoś błąd",
+        "feature": "Zaproponuj nową funkcję"
     },
     "it": {
         "rating": "Invia il tuo voto",
