@@ -8,7 +8,6 @@
 import { listTabs, sendMsg2Tab } from "@api/chrome/tab"
 import siteDatabase from "@db/site-database"
 import { ALL_HOSTS as ALL_FILE_HOSTS, MERGED_HOST as MERGED_FILE_HOST } from '@util/constant/remain-host'
-import { extractHostname, isValidVirtualHost, judgeVirtualFast } from "@util/pattern"
 import { SiteMap, supportCategory } from "@util/site"
 import { toUnicode as punyCode2Unicode } from "punycode"
 import mergeRuleDatabase from '../database/merge-rule-database'
@@ -86,77 +85,43 @@ export async function getSite(siteKey: tt4b.site.SiteKey): Promise<tt4b.site.Sit
     return info ?? siteKey
 }
 
-function moveToFront<T>(arr: T[], idx: number): T[] {
-    const item = arr[idx]
-    if (item === undefined) return arr
-    return [item, ...arr.slice(0, idx), ...arr.slice(idx + 1)]
-}
-
-export async function searchSites(query: string | undefined): Promise<tt4b.site.SiteInfo[]> {
-    query = cleanSearchQuery(query)
-    const filter = query ? (host: string) => host.includes(query) : () => true
-    const [normal, merged] = await listHosts(filter)
+/**
+ * Detect all sites from stat and site database
+ */
+export async function detectSites(): Promise<tt4b.site.SiteInfo[]> {
+    const [normal, merged] = await listHostsOfStat()
 
     const keys: tt4b.site.SiteKey[] = []
     normal.forEach(host => keys.push({ host, type: 'normal' }))
     merged.forEach(host => keys.push({ host, type: 'merged' }))
 
-    ALL_FILE_HOSTS.forEach(fileHost => filter(fileHost) && keys.push({ host: fileHost, type: 'normal' }))
-    filter(MERGED_FILE_HOST) && keys.push({ host: MERGED_FILE_HOST, type: 'merged' })
+    ALL_FILE_HOSTS.forEach(fileHost => keys.push({ host: fileHost, type: 'normal' }))
+    keys.push({ host: MERGED_FILE_HOST, type: 'merged' })
 
     const fromDb = await siteDatabase.getBatch(keys)
     const siteMap = SiteMap.identify(fromDb)
-    const rows = keys.map(k => ({ ...siteMap.get(k), ...k }))
-    const ranked = [...rows.filter(r => !r.alias), ...rows.filter(r => r.alias)]
+    const rows = keys.map(k => ({ ...siteMap.remove(k), ...k }))
 
-    const hitIdx = ranked.findIndex(r => r.host === query)
-    if (hitIdx >= 0) return moveToFront(ranked, hitIdx)
-    if (!query) return ranked
+    // Append sites only in site database
+    siteMap.forEach((_, v) => rows.push(v))
 
-    if (judgeVirtualFast(query) && isValidVirtualHost(query)) {
-        return [{ host: query, type: 'virtual' }, ...ranked]
-    }
-
-    const { host } = extractHostname(query)
-    const hostIdx = ranked.findIndex(r => r.host === host)
-    if (hostIdx >= 0) return moveToFront(ranked, hostIdx)
-
-    return [{ host, type: 'normal' }, ...ranked]
-}
-
-function cleanSearchQuery(query: string | undefined): string | undefined {
-    query = query?.trim?.()
-    if (!query) return undefined
-    try {
-        // Remove protocol and search params, only keep host and path for search
-        const u = new URL(query)
-        query = u.host + u.pathname
-    } catch { }
-    if (query.endsWith('/')) query += '**'
-    return query
+    return rows
 }
 
 /**
  * Query hosts from stat databases
  *
- * @param query the part of host
  * @since 0.0.8
  */
-async function listHosts(filter: (host: string) => boolean): Promise<[normal: string[], merged: string[]]> {
+async function listHostsOfStat(): Promise<[normal: string[], merged: string[]]> {
     const rows = await statDatabase.select({ virtual: false })
-    const hosts = new Set(rows.map(row => row.host))
+    const normal = new Set(rows.map(row => row.host))
 
     const mergeRuleItems = await mergeRuleDatabase.selectAll()
     const mergeRuler = new CustomizedHostMergeRuler(mergeRuleItems)
 
-    const normal = new Set<string>()
     const merged = new Set<string>()
-
-    hosts.forEach(host => {
-        filter(host) && normal.add(host)
-        const mergedHost = mergeRuler.merge(host)
-        filter(mergedHost) && merged.add(mergedHost)
-    })
+    normal.forEach(host => merged.add(mergeRuler.merge(host)))
 
     return [Array.from(normal), Array.from(merged)]
 }

@@ -124,6 +124,13 @@ export class SiteMap<T> {
         return this.innerMap[key]?.[1] ?? null
     }
 
+    public remove(site: tt4b.site.SiteKey): T | null {
+        const key = identifySiteKey(site)
+        const value = this.innerMap[key]?.[1] ?? null
+        delete this.innerMap[key]
+        return value
+    }
+
     public map<R>(mapper: (key: tt4b.site.SiteKey, value: T) => R): R[] {
         return Object.values(this.innerMap).map(([site, val]) => mapper?.(site, val))
     }
