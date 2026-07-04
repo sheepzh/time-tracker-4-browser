@@ -79,7 +79,9 @@
         "defaultPrompt": "Ta strona została zablokowana!",
         "delay": "jeszcze {n} minut",
         "browsingTime": "Czas przeglądania",
-        "ruleDetail": "Szczegóły zasad"
+        "ruleDetail": "Szczegóły zasad",
+        "pomodoroActive": "Pomodoro aktywne",
+        "focusActive": "Koncentracja aktywna"
     },
     "it": {
         "defaultPrompt": "Questa pagina è stata bloccata!",

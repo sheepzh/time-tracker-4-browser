@@ -1529,6 +1529,7 @@
             "displayWhitelist": "{input} Wyświetlanie {whitelist} w {contextMenu}",
             "whitelistItem": "skrótów związanych z whitelistą",
             "contextMenu": "menu kontekstowym",
+            "displayBadge": "{input} Wyświetlaj plakietkę na ikonie",
             "badgeBgColor": "Kolor tła tekstu na ikonie paska rozszerzeń {input}",
             "locale": "Język {input}",
             "printInConsole": {
@@ -1651,9 +1652,12 @@
             "reset": "Resetuj",
             "export": "Eksportuj ustawienia",
             "import": "Importuj ustawienia",
-            "reload": "Odśwież"
+            "reload": "Odśwież",
+            "download": "Pobierz z {account}",
+            "sync": "Synchronizuj do {account}"
         },
-        "defaultValue": "Domyślnie: {default}"
+        "defaultValue": "Domyślnie: {default}",
+        "applyConfirm": "Opcje zostały zmienione. Przeładuj stronę, aby zastosować zmiany!"
     },
     "it": {
         "yes": "Si",

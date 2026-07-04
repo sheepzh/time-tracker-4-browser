@@ -123,13 +123,17 @@
         "about": "Hakkımızda"
     },
     "pl": {
+        "tracking": "Monitorowanie",
         "dashboard": "Panel",
         "record": "Wpisy",
         "rule": "Reguła",
         "sites": "Zarządzanie stronami",
+        "analysis": "Analiza",
         "siteAnalysis": "Analiza strony",
         "habit": "Nawyki",
+        "productivity": "Produktywność",
         "other": "Pozostałe funkcje",
+        "migration": "Przenoszenie danych",
         "about": "O rozszerzeniu"
     },
     "it": {

@@ -97,5 +97,51 @@
         "break": "Temps de pause",
         "noAllowUrl": "Pas de site autorisé. Ajoutez au moins un site dans la liste des autorisations.",
         "noBlockUrl": "Pas de sites bloqués. Commencer sans restriction ?"
+    },
+    "pl": {
+        "menu": "Koncentracja & Pomodoro",
+        "policy": {
+            "label": "Zasady dotyczące filtrów",
+            "allow": {
+                "label": "Dozwól tylko",
+                "desc": "Tylko dozwolone witryny są dostępne, wszystkie pozostałe są zablokowane"
+            },
+            "block": {
+                "label": "Zablokuj",
+                "desc": "Wszystkie strony są dostępne z wyjątkiem zablokowanych"
+            }
+        },
+        "duration": "Czas koncentracji",
+        "break": "Długość przerwy",
+        "state": {
+            "running": "Uruchomiony",
+            "paused": "Wstrzymany",
+            "stopped": "Zatrzymany",
+            "done": "Zakończony"
+        },
+        "method": {
+            "label": "Metoda",
+            "choose": "Wybierz metodę",
+            "focus": {
+                "label": "Głęboka koncentracja",
+                "desc": "Skoncentruj się przez określony czas"
+            },
+            "pomodoro": {
+                "label": "Pomodoro",
+                "desc": "Cykle pracy i przerw o ustalonej długości, by zachować produktywność"
+            }
+        },
+        "noAllowUrl": "Nie określono dozwolonych witryn. Dodaj co najmniej jedną witrynę do listy dozwolonych.",
+        "noBlockUrl": "Nie określono zablokowanych witryn. Zacząć bez ograniczenia żadnej witryny?",
+        "noTime": "Proszę ustawić czas koncentracji i czas przerwy dla Pomodoro",
+        "preset": "Ustawienie wstępne",
+        "presetName": "Nazwa ustawienia wstępnego",
+        "button": {
+            "pause": "Wstrzymaj",
+            "resume": "Wznów",
+            "delay": "Przedłuż",
+            "stop": "Zatrzymaj",
+            "dismiss": "Odrzuć"
+        }
     }
 }

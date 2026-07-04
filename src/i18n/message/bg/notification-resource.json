@@ -9,6 +9,12 @@
         "dailySummary": "Focus time: {focus}, Visits: {visit}, Sites: {siteCount}"
     },
     "pl": {
+        "focus": {
+            "completedTitle": "Koncentracja zakończona",
+            "completedMsg": "Twoja sesja koncentracji dobiegła końca. Świetna robota!",
+            "breakStartMsg": "Zrób krótką przerwę. Zasługujesz na to!",
+            "focusResumeMsg": "Koniec przerwy. Czas na ponowną koncentrację!"
+        },
         "dailySummary": "Czas: {focus}, Wizyty: {visit}, Witryny: {siteCount}"
     },
     "zh_CN": {
