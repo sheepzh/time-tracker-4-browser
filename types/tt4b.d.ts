@@ -1131,7 +1131,7 @@ declare namespace tt4b {
             & _MakeRegistry<'site.fillAlias', site.SiteKey[]>
             & _MakeRegistry<'site.initialAlias', string, string | undefined>
             & _MakeRegistry<'site.changeRun', { key: site.SiteKey; enabled: boolean }>
-            & _MakeRegistry<'site.search', string | undefined, site.SiteInfo[]>
+            & _MakeRegistry<'site.detect', void, site.SiteInfo[]>
             // Time Limit
             & _MakeRegistry<'limit.list', limit.Query | undefined, limit.Item[]>
             & _MakeRegistry<'limit.delete', number[]>

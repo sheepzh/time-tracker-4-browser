@@ -1,4 +1,4 @@
-import { searchSite } from "@api/sw/site"
+import { detectSites } from "@api/sw/site"
 import { useAnalysisTarget } from '@app/components/Analysis/context'
 import type { AnalysisTarget } from '@app/components/Analysis/types'
 import { labelOfHostInfo } from '@app/components/Analysis/util'
@@ -6,7 +6,7 @@ import { useCategory } from '@app/context'
 import { t } from '@app/locale'
 import { useDebounceState, useRequest } from '@hooks'
 import Flex from "@pages/components/Flex"
-import { CATE_NOT_SET_ID, identifySiteKey, parseSiteIdentity, SiteMap } from "@util/site"
+import { CATE_NOT_SET_ID, identifySiteKey, parseSiteIdentity } from "@util/site"
 import { ElSelectV2, ElTag, useNamespace } from "element-plus"
 import type { OptionType } from "element-plus/es/components/select-v2/src/select.types"
 import { computed, defineComponent, type FunctionalComponent, onMounted, ref, type StyleValue } from "vue"
@@ -44,15 +44,20 @@ type TargetItem = AnalysisTarget & {
     label: string
 }
 
+const SITE_TYPE_SORT: Record<tt4b.site.Type, number> = {
+    normal: 0,
+    virtual: 1,
+    merged: 2,
+}
+
 const fetchItems = async (categories: tt4b.site.Cate[]): Promise<[siteItems: TargetItem[], cateItems: TargetItem[]]> => {
     // 1. query categories
     const cateItems: TargetItem[] = categories.map(({ id, name }) => ({ type: 'cate', key: id, label: name }))
 
     // 2. query sites
-    const sites = await searchSite()
-    const siteMap = SiteMap.identify(sites)
-    const siteItems: TargetItem[] = siteMap.map((_, key) => ({ type: 'site', key, label: labelOfHostInfo(key) }))
-
+    const sites = await detectSites()
+    sites.sort((a, b) => SITE_TYPE_SORT[a.type] - SITE_TYPE_SORT[b.type])
+    const siteItems: TargetItem[] = sites.map(key => ({ type: 'site', key, label: labelOfHostInfo(key) }))
     return [cateItems, siteItems]
 }
 

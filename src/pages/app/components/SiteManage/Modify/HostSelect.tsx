@@ -4,18 +4,15 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { searchSite } from '@api/sw/site'
+import { detectSites } from '@api/sw/site'
 import { t } from '@app/locale'
-import { useManualRequest } from '@hooks'
-import { identifySiteKey, parseSiteIdentity } from '@util/site'
-import { ElOption, ElSelect, ElTag } from "element-plus"
+import { useDebounceState, useRequest } from '@hooks'
+import { extractHostname, isValidVirtualHost, judgeVirtualFast } from '@util/pattern'
+import { identifySiteKey, parseSiteIdentity, SiteMap } from '@util/site'
+import { ElSelectV2 } from "element-plus"
 import { computed, defineComponent } from "vue"
 
 type Props = ModelValue<tt4b.site.SiteKey | undefined>
-
-const EXIST_MSG = t(msg => msg.siteManage.msg.existedTag)
-const MERGED_MSG = t(msg => msg.siteManage.type.merged?.name)?.toLocaleUpperCase?.()
-const VIRTUAL_MSG = t(msg => msg.siteManage.type.virtual?.name)?.toLocaleUpperCase?.()
 
 /**
  * Calculate the label of alias key to display
@@ -30,39 +27,54 @@ const VIRTUAL_MSG = t(msg => msg.siteManage.type.virtual?.name)?.toLocaleUpperCa
  */
 function labelOf(site: tt4b.site.SiteInfo): string {
     let { host: label, type, alias } = site
-    const suffix: string[] = []
-    type === 'merged' && suffix.push(MERGED_MSG)
-    type === 'virtual' && suffix.push(VIRTUAL_MSG)
-    alias && suffix.push(EXIST_MSG)
-    suffix.length && (label += `[${suffix.join('-')}]`)
+    const suffix = [
+        type !== 'normal' && t(msg => msg.siteManage.type[type].name).toLocaleUpperCase(),
+        alias && t(msg => msg.siteManage.msg.existedTag),
+    ].filter(Boolean).join('-')
+    suffix && (label += `[${suffix}]`)
     return label
+}
+
+function guessHost(query: string): tt4b.site.SiteKey[] {
+    if (query.endsWith('/')) query += '**'
+    const result: tt4b.site.SiteKey[] = []
+    const { host } = extractHostname(query)
+    if (host) result.push({ host, type: 'merged' }, { host, type: 'normal' })
+
+    if (judgeVirtualFast(query) && isValidVirtualHost(query)) {
+        result.push({ host: query, type: 'virtual' })
+    }
+    return result
 }
 
 const _default = defineComponent<Props>(props => {
     const value = computed(() => identifySiteKey(props.modelValue))
-    const { data: options, loading: searching, refresh: searchOption } = useManualRequest(
-        searchSite, { defaultValue: [] }
-    )
+    const { data: sites } = useRequest(detectSites, { defaultValue: [] })
+    const [query, setQuery] = useDebounceState('', 50)
+    const options = computed(() => {
+        const existed = sites.value
+        const filtered = existed.filter(({ host }) => host.includes(query.value))
+        const siteMap = SiteMap.identify(filtered)
+        const guessed = guessHost(query.value)
+        guessed.forEach(s => !siteMap.get(s) && filtered.unshift(s))
+        return filtered
+            .sort((a, b) => !!a.alias == !!b.alias ? 0 : !!a.alias ? 1 : -1)
+            .map(site => ({
+                label: labelOf(site),
+                value: identifySiteKey(site),
+                disabled: !!site.alias,
+            }))
+    })
 
     return () => (
-        <ElSelect
+        <ElSelectV2
             style={{ width: '100%' }}
             modelValue={value.value}
             filterable
-            remote
-            loading={searching.value}
-            remoteMethod={searchOption}
+            filterMethod={setQuery}
             onChange={val => props.onChange?.(parseSiteIdentity(val) ?? { host: '', type: 'normal' })}
-        >
-            {options.value.map(row => (
-                <ElOption value={identifySiteKey(row)} disabled={!!row.alias} label={labelOf(row)}>
-                    <span>{row.host}</span>
-                    <ElTag v-show={row.type === 'merged'} size="small">{MERGED_MSG}</ElTag>
-                    <ElTag v-show={row.type === 'virtual'} size="small">{VIRTUAL_MSG}</ElTag>
-                    <ElTag v-show={!!row.alias} size="small" type="info">{EXIST_MSG}</ElTag>
-                </ElOption>
-            ))}
-        </ElSelect>
+            options={options.value}
+        />
     )
 }, { props: ['modelValue', 'onChange'] })
 

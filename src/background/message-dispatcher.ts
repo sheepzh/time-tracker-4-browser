@@ -26,7 +26,7 @@ import { getInstallTime, getLastBackUp } from "./service/meta-service"
 import notificationProcessor from './service/notification/processor'
 import { selectPeriods } from "./service/period-service"
 import {
-    addSite, batchChangeCate, fillInitialAlias, getInitialAlias, getSite, removeSites, saveSite, saveSiteRunState, searchSites,
+    addSite, batchChangeCate, detectSites, fillInitialAlias, getInitialAlias, getSite, removeSites, saveSite, saveSiteRunState,
     selectSitePage,
 } from "./service/site-service"
 import {
@@ -92,7 +92,7 @@ class MessageDispatcher {
             .register('site.initialAlias', getInitialAlias)
             .register('site.changeRun', ({ key, enabled }) => saveSiteRunState(key, enabled))
             .register('site.runEnabled', host => getSite({ host, type: 'normal' }).then(s => !!s.run))
-            .register('site.search', searchSites)
+            .register('site.detect', detectSites)
             // Options
             .register('option.get', () => optionHolder.get())
             .register('option.set', val => optionHolder.set(val))

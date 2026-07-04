@@ -22,4 +22,4 @@ export function changeSiteRun(key: tt4b.site.SiteKey, enabled: boolean) {
     return sendMsg2Runtime('site.changeRun', { key, enabled })
 }
 
-export const searchSite = (query?: string) => sendMsg2Runtime('site.search', query)
+export const detectSites = () => sendMsg2Runtime('site.detect')
