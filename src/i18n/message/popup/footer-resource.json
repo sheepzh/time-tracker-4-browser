@@ -9,6 +9,7 @@
     "zh_CN": {
         "route": {
             "percentage": "占比分析",
+            "site": "当前页面",
             "ranking": "数据排名"
         }
     },

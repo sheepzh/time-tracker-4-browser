@@ -26,6 +26,11 @@
             "remain": "剩余 {remaining}",
             "noLimit": "无限制",
             "notHit": "未命中"
+        },
+        "site": {
+            "subpageBtn": "统计子页面",
+            "notTrackable": "当前页面不支持统计",
+            "daily": "每日数据"
         }
     },
     "zh_TW": {
