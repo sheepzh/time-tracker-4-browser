@@ -61,29 +61,21 @@ const fetchItems = async (categories: tt4b.site.Cate[]): Promise<[siteItems: Tar
     return [cateItems, siteItems]
 }
 
-const SiteTypeTag: FunctionalComponent<{ text: string }> = ({ text }) => (
+const SiteTypeTag: FunctionalComponent<{ type: tt4b.site.Type }> = ({ type }) => (
     <span style={{ float: "right", height: "34px" }}>
-        <ElTag size="small">{text}</ElTag>
+        <ElTag size="small">{t(msg => msg.shared.site.type[type])}</ElTag>
     </span>
 )
 
-const SiteOption = defineComponent<{ value: tt4b.site.SiteInfo }>(props => {
-    const alias = computed(() => props.value.alias)
-    const type = computed(() => props.value.type)
-    const mergedText = t(msg => msg.analysis.common.merged)
-    const virtualText = t(msg => msg.analysis.common.virtual)
-
-    return () => (
-        <Flex align="center" gap={4}>
-            <span>{props.value.host}</span>
-            <ElTag v-show={!!alias.value} size="small" type="info">
-                {alias.value}
-            </ElTag>
-            {type.value === 'merged' && < SiteTypeTag text={mergedText} />}
-            {type.value === 'virtual' && <SiteTypeTag text={virtualText} />}
-        </Flex>
-    )
-}, { props: ['value'] })
+const SiteOption: FunctionalComponent<Pick<tt4b.site.SiteInfo, 'alias' | 'type' | 'host'>> = ({ alias, type, host }) => (
+    <Flex align="center" gap={4}>
+        <span>{host}</span>
+        <ElTag v-show={!!alias} size="small" type="info">
+            {alias}
+        </ElTag>
+        {type !== 'normal' && <SiteTypeTag type={type} />}
+    </Flex>
+)
 
 const TargetSelect = defineComponent(() => {
     const cate = useCategory()
@@ -159,8 +151,8 @@ const TargetSelect = defineComponent(() => {
             options={options.value}
             fitInputWidth={false}
             v-slots={({ item }: any) => {
-                const target = (item as any).data as TargetItem
-                return target?.type === 'site' ? <SiteOption value={target?.key} /> : target?.label
+                const target = (item?.data ?? {}) as TargetItem
+                return target.type === 'site' ? <SiteOption {...target.key} /> : target.label
             }}
         />
     )

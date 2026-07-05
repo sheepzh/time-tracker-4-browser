@@ -1,32 +1,41 @@
 import { APP_LIMIT_ROUTE, AppLimitQuery } from '@/shared/route'
 import { createTab } from '@api/chrome/tab'
+import { getLimitSummary } from '@api/sw/limit'
 import { Edit, Plus } from '@element-plus/icons-vue'
+import { useRequest } from '@hooks'
 import Flex from '@pages/components/Flex'
 import { t } from '@popup/locale'
+import { isNotTrackable } from '@util/constant/environment'
 import { getAppPageUrl } from '@util/constant/url'
-import { isBrowserUrl } from '@util/pattern'
-import { ElButton, ElSelect } from 'element-plus'
-import { computed, defineComponent, type StyleValue } from 'vue'
-import { useLimitContext } from './context'
+import { extractHostname } from '@util/pattern'
+import { ElButton, ElResult, ElSelect } from 'element-plus'
+import { computed, CSSProperties, defineComponent, ref, Teleport, type FunctionalComponent } from 'vue'
+import { SITE_TOOLBAR_SLOT } from '../common'
+import Chart from './Chart'
 
-const findHost = (url: string) => {
-    try {
-        return new URL(url).host
-    } catch {
-        return url
-    }
-}
+const Empty: FunctionalComponent<{}> = () => (
+    <Flex column align="center" justify="center" height='100%' gap={20}>
+        <ElResult icon='info' title={t(msg => msg.content.limit.noData)} />
+    </Flex>
+)
 
-const Toolbar = defineComponent(() => {
-    const { summary, selected, loading } = useLimitContext()
-
-    const items = computed(() => summary.value?.items || [])
+const Limit = defineComponent<{}>(() => {
+    const selected = ref<number>()
+    const { data: summary, loading } = useRequest(getLimitSummary, {
+        onSuccess: ({ items }) => {
+            if (!items.some(i => i.id !== selected.value)) {
+                selected.value = items[0]?.id
+            }
+        }
+    })
+    const items = computed(() => summary.value?.items ?? [])
+    const item = computed(() => summary.value?.items.find(i => i.id === selected.value))
 
     const handleNew = async () => {
         let url = summary.value?.url
         const query: AppLimitQuery = { action: 'create' }
-        if (url && !isBrowserUrl(url)) {
-            const host = findHost(url)
+        if (url && !isNotTrackable(url)) {
+            const { host } = extractHostname(url)
             query.url = encodeURIComponent(host)
         }
         await createTab(getAppPageUrl(APP_LIMIT_ROUTE, query))
@@ -38,20 +47,20 @@ const Toolbar = defineComponent(() => {
         await createTab(getAppPageUrl(APP_LIMIT_ROUTE, query))
     }
 
-    return () => (
-        <Flex gap={8} justify='end'>
+    return () => <>
+        <Teleport defer to={`#${SITE_TOOLBAR_SLOT}`}>
             {!!items.value.length && (
                 <Flex gap={4}>
                     <ElSelect
                         modelValue={selected.value}
                         onChange={val => typeof val === 'number' && (selected.value = val)}
                         options={items.value.map(i => ({ value: i.id, label: i.name }))}
-                        style={{ width: '140px' } satisfies StyleValue}
+                        style={{ width: '140px' } satisfies CSSProperties}
                     />
                     <ElButton
                         icon={Edit}
                         onClick={handleEdit}
-                        style={{ width: '40px' } satisfies StyleValue}
+                        style={{ width: '40px' } satisfies CSSProperties}
                     />
                 </Flex>
             )}
@@ -60,8 +69,9 @@ const Toolbar = defineComponent(() => {
                     {t(msg => msg.content.limit.newOne)}
                 </ElButton>
             )}
-        </Flex>
-    )
+        </Teleport>
+        {item.value ? <Chart item={item.value} /> : <Empty />}
+    </>
 })
 
-export default Toolbar
+export default Limit

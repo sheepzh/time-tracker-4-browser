@@ -21,7 +21,7 @@ import type { CategoryInstance } from '../../types'
 import { confirmReload } from '../common'
 import DarkModeInput from "./DarkModeInput"
 
-const FOLLOW_BROWSER: I18nKey = msg => msg.option.followBrowser
+const FOLLOW_BROWSER: I18nKey = msg => msg.shared.followBrowser
 
 const SORTED_LOCALES: tt4b.Locale[] = ALL_LOCALES
     // Keep the locale same as this browser first position

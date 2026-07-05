@@ -14,8 +14,8 @@ export async function addFocusTime(context: ItemIncContext, focusTime: number): 
     const { host, url, groupId } = context
 
     const resultSet: Record<string, tt4b.core.Result> = { [host]: resultOf(focusTime, 0) }
-    const virtualHosts = virtualSiteHolder.findMatched(url)
-    virtualHosts.forEach(virtualHost => resultSet[virtualHost] = resultOf(focusTime, 0))
+    const virtualSites = virtualSiteHolder.findMatched(url)
+    virtualSites.forEach(({ host }) => resultSet[host] = resultOf(focusTime, 0))
 
     const now = new Date()
 
@@ -34,7 +34,7 @@ export async function addRunTime(host: string, dateTime: Record<string, number>)
 export async function increaseVisit(context: ItemIncContext) {
     const { host, url, groupId } = context
     const resultSet = { [host]: resultOf(0, 1) }
-    virtualSiteHolder.findMatched(url).forEach(virtualHost => resultSet[virtualHost] = resultOf(0, 1))
+    virtualSiteHolder.findMatched(url).forEach(({ host }) => resultSet[host] = resultOf(0, 1))
 
     const now = new Date()
 

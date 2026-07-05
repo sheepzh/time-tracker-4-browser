@@ -23,8 +23,6 @@
         "limit": {
             "noData": "此URL无限制规则",
             "newOne": "新建",
-            "timeUsed": "已使用 {percent}",
-            "visitUsed": "已使用 {used} 次",
             "remain": "剩余 {remaining}",
             "noLimit": "无限制",
             "notHit": "未命中"
@@ -74,11 +72,14 @@
         "limit": {
             "noData": "No limit rule effective for this URL",
             "newOne": "New One",
-            "timeUsed": "{percent} used",
-            "visitUsed": "{used} count visited",
             "remain": "{remaining} remaining",
             "noLimit": "No limit",
             "notHit": "Not in effect"
+        },
+        "site": {
+            "subpageBtn": "Track Subpage",
+            "notTrackable": "Current page is not trackable",
+            "daily": "Daily Stats"
         }
     },
     "ja": {
@@ -103,8 +104,6 @@
         "limit": {
             "noData": "このURLには制限が適用されません",
             "newOne": "追加",
-            "timeUsed": "{percent} 使用済み",
-            "visitUsed": "訪問回数{used}回",
             "remain": "残り {remaining}",
             "noLimit": "制限なし",
             "notHit": "無効です"
@@ -154,8 +153,6 @@
         "limit": {
             "noData": "Для цієї URL-адреси не призначене правило обмеження",
             "newOne": "Створити",
-            "timeUsed": "{percent} використано",
-            "visitUsed": "{used} кількість відвіданих",
             "remain": "{remaining} залишилося",
             "noLimit": "Без обмежень",
             "notHit": "Не задіяно"
@@ -205,8 +202,6 @@
         "limit": {
             "noData": "Für diese URL ist keine Regel aktiv",
             "newOne": "Neu",
-            "timeUsed": "{percent} verwendet",
-            "visitUsed": "{used} mal besucht",
             "remain": "{remaining} verbleibend",
             "noLimit": "Kein Limit",
             "notHit": "Nicht aktiv"
@@ -236,8 +231,6 @@
         "limit": {
             "noData": "Pas de règle de limite en vigueur pour cette URL",
             "newOne": "Créer Nouvelle",
-            "timeUsed": "{percent} utilisé",
-            "visitUsed": "{used} visites",
             "remain": "{remaining} restantes",
             "noLimit": "Aucune limite",
             "notHit": "Pas en vigueur"
@@ -327,8 +320,6 @@
         "limit": {
             "noData": "Dla tego URL nie obowiązuje żadna reguła limitu",
             "newOne": "Nowy",
-            "timeUsed": "{percent} używane",
-            "visitUsed": "{used} liczba odwiedzin",
             "remain": "{remaining} pozostałe",
             "noLimit": "Bez limitu",
             "notHit": "Nie obowiązuje"
@@ -358,8 +349,6 @@
         "limit": {
             "noData": "Nessuna regola di limite effettiva per questo URL",
             "newOne": "Nuova",
-            "timeUsed": "{percent} usato",
-            "visitUsed": "Conteggio visite {used}",
             "remain": "{remaining} rimanente",
             "noLimit": "Nessun limite",
             "notHit": "Non funzione"

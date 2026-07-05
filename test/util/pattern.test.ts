@@ -1,17 +1,5 @@
 import { JSON_HOST, PDF_HOST, PIC_HOST, TXT_HOST } from "@util/constant/remain-host"
-import { extractFileHost, extractHostname, isBrowserUrl, isHomepage, isIpAndPort, isValidHost, isValidVirtualHost } from "@util/pattern"
-
-test('browser url', () => {
-    // chrome
-    expect(isBrowserUrl('chrome://settings/')).toBeTruthy()
-    expect(isBrowserUrl('chrome-extension://hkjmfadlepammjmjiihpongliebpcnba/static/app.html#/tracking/record')).toBeTruthy()
-    // firefox
-    expect(isBrowserUrl('about:addons')).toBeTruthy()
-    // edge
-    expect(isBrowserUrl('edge://extensions/')).toBeTruthy()
-    expect(isBrowserUrl('extension://ifckodfehjfpfddhjhpejmidkhelbnpa/static/app.html#/other/option')).toBeTruthy()
-    expect(isBrowserUrl('https://www.jss.com.cn/')).toBeFalsy()
-})
+import { extractFileHost, extractHostname, isHomepage, isIpAndPort, isValidHost, isValidVirtualHost } from "@util/pattern"
 
 test('ip and port', () => {
     expect(isIpAndPort('222.222.22.01')).toBeFalsy()

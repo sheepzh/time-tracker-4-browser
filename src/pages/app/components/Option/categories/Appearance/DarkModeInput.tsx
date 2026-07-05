@@ -10,7 +10,7 @@ import { computed, defineComponent, StyleValue } from "vue"
 
 const ALL_MODES: tt4b.option.DarkMode[] = ["default", "on", "off", "timed"]
 const MODE_LABELS: Record<tt4b.option.DarkMode, string> = {
-    default: t(msg => msg.option.followBrowser),
+    default: t(msg => msg.shared.followBrowser),
     on: t(msg => msg.option.on),
     off: t(msg => msg.option.off),
     timed: t(msg => msg.option.appearance.darkMode.timed)

@@ -7,22 +7,6 @@
 
 import { SUFFIX_HOST_MAP } from "./constant/remain-host"
 
-/**
- * Test whether the url belongs to the browser
- *
- * @param url
- */
-export function isBrowserUrl(url: string) {
-    return /^chrome.*?:\/\/.*$/.test(url)
-        || /^about(-.+)?:/.test(url)
-        // Firefox addons' pages
-        || /^moz-extension:/.test(url)
-        || /^edge.*?:\/\/.*$/.test(url)
-        // Edge extensions' pages
-        || /^extension:/.test(url)
-        || /^safari.*?:\/\/.*/.test(url)
-}
-
 const isNotValidPort = (portStr: string) => {
     const port = parseInt(portStr)
     return port < 0 || port > 65535 || port.toString() !== portStr

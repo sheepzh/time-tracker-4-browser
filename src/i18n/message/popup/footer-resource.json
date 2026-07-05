@@ -2,6 +2,7 @@
     "en": {
         "route": {
             "percentage": "Distribution",
+            "site": "Current Page",
             "ranking": "Ranking"
         }
     },

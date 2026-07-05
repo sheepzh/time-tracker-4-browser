@@ -3,9 +3,8 @@ import { onInstalled, setUninstallURL } from "@api/chrome/runtime"
 import { executeScript } from "@api/chrome/script"
 import { createTabAfterCurrent, listTabs } from "@api/chrome/tab"
 import { updateInstallTime } from "@service/meta-service"
-import { IS_E2E, IS_FROM_STORE } from "@util/constant/environment"
+import { IS_E2E, IS_FROM_STORE, isNotTrackable } from "@util/constant/environment"
 import { getGuidePageUrl, UNINSTALL_QUESTIONNAIRE } from "@util/constant/url"
-import { isBrowserUrl } from "@util/pattern"
 import versionManager from './version'
 
 async function onFirstInstall() {
@@ -17,7 +16,7 @@ async function reloadContentScript() {
     const files = chrome.runtime.getManifest().content_scripts?.[0]?.js
     if (!files?.length) return
     const tabs = await listTabs()
-    tabs.filter(({ url }) => url && !isBrowserUrl(url))
+    tabs.filter(({ url }) => url && !isNotTrackable(url))
         .forEach(({ id: tabId }) => tabId && executeScript(tabId, files))
 }
 

@@ -1,5 +1,5 @@
 import Flex from "@pages/components/Flex"
-import { usePopupContext } from "@popup/context"
+import { useDarkMode } from "@popup/context"
 import { ElIcon } from "element-plus"
 import { defineComponent } from "vue"
 
@@ -16,7 +16,7 @@ const Moon = (
 )
 
 const DarkSwitch = defineComponent(() => {
-    const { darkMode, setDarkMode } = usePopupContext()
+    const { darkMode, setDarkMode } = useDarkMode()
 
     return () => (
         <Flex onClick={() => setDarkMode(!darkMode.value)}>

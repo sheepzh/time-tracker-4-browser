@@ -7,8 +7,6 @@
         "common": {
             "focusTotal": "总计浏览时长",
             "visitTotal": "总计访问次数",
-            "merged": "合并",
-            "virtual": "自定义",
             "hostPlaceholder": "选择要分析的站点或类别",
             "emptyDesc": "未选择站点或类别"
         },
@@ -37,8 +35,6 @@
         "common": {
             "focusTotal": "總瀏覽時數",
             "visitTotal": "總造訪次數",
-            "merged": "合併",
-            "virtual": "自訂",
             "hostPlaceholder": "搜尋想分析的網站",
             "emptyDesc": "未選擇網站"
         },
@@ -67,8 +63,6 @@
         "common": {
             "focusTotal": "Total browsing time",
             "visitTotal": "Total visits",
-            "merged": "Merged",
-            "virtual": "Virtual",
             "hostPlaceholder": "Select the site or category",
             "emptyDesc": "No item selected"
         },
@@ -97,8 +91,6 @@
         "common": {
             "focusTotal": "総閲覧時間",
             "visitTotal": "総訪問数",
-            "merged": "合并",
-            "virtual": "カスタマイズ",
             "hostPlaceholder": "ドメイン名を検索",
             "emptyDesc": "サイトは空です"
         },
@@ -127,8 +119,6 @@
         "common": {
             "focusTotal": "Tempo total de navegação",
             "visitTotal": "Total de visitas",
-            "merged": "Agrupado",
-            "virtual": "Virtual",
             "hostPlaceholder": "Selecione o site ou categoria",
             "emptyDesc": "Nenhum item selecionado"
         },
@@ -157,8 +147,6 @@
         "common": {
             "focusTotal": "Загальний час перегляду",
             "visitTotal": "Всього відвідувань",
-            "merged": "Об'єднано",
-            "virtual": "Віртуальний",
             "hostPlaceholder": "Знайти сайт для аналізу",
             "emptyDesc": "Сайт не вибрано"
         },
@@ -187,8 +175,6 @@
         "common": {
             "focusTotal": "Tiempo total de navegación",
             "visitTotal": "Total de visitas",
-            "merged": "Fusionado",
-            "virtual": "Virtual",
             "hostPlaceholder": "Buscar un sitio para analizar",
             "emptyDesc": "Ningún sitio seleccionado"
         },
@@ -217,8 +203,6 @@
         "common": {
             "focusTotal": "Gesamte Browsingzeit",
             "visitTotal": "Gesamtbesuche",
-            "merged": "Zusammengeführt",
-            "virtual": "Virtuell",
             "hostPlaceholder": "Suchen Sie nach einer Website zur Analyse",
             "emptyDesc": "Keine Website ausgewählt"
         },
@@ -247,8 +231,6 @@
         "common": {
             "focusTotal": "Temps total de navigation",
             "visitTotal": "Nombre total de visites",
-            "merged": "Fusionné",
-            "virtual": "Virtuel",
             "hostPlaceholder": "Chercher un site à analyser",
             "emptyDesc": "Aucun site sélectionné"
         },
@@ -277,8 +259,6 @@
         "common": {
             "focusTotal": "Общее время просмотра",
             "visitTotal": "Всего посещений",
-            "merged": "Объединено",
-            "virtual": "Виртуальное",
             "hostPlaceholder": "Поиск сайта для анализа",
             "emptyDesc": "Сайт не выбран"
         },
@@ -307,8 +287,6 @@
         "common": {
             "focusTotal": "إجمالي وقت التصفح",
             "visitTotal": "مجموع الزيارات",
-            "merged": "تم الدمج",
-            "virtual": "افتراضي",
             "hostPlaceholder": "ابحث عن موقع لتحليله",
             "emptyDesc": "لم يتم تحديد الموقع"
         },
@@ -337,8 +315,6 @@
         "common": {
             "focusTotal": "Toplam gezinme süresi",
             "visitTotal": "Toplam Ziyaretler",
-            "merged": "Birleştirilmiş",
-            "virtual": "Sanal",
             "hostPlaceholder": "Site veya kategoriyi seçin",
             "emptyDesc": "Seçilen öğe yok"
         },
@@ -367,8 +343,6 @@
         "common": {
             "focusTotal": "Całkowity czas przeglądania",
             "visitTotal": "Łącznie wizyt",
-            "merged": "Złączone",
-            "virtual": "Wirtualne",
             "hostPlaceholder": "Wyszukaj stronę do analizy",
             "emptyDesc": "Nie wybrano strony"
         },
@@ -397,8 +371,6 @@
         "common": {
             "focusTotal": "Tempo totale di navigazione",
             "visitTotal": "Visite totali",
-            "merged": "Uniti",
-            "virtual": "Virtuale",
             "hostPlaceholder": "Cerca un sito da analizzare",
             "emptyDesc": "Nessun sito selezionato"
         },

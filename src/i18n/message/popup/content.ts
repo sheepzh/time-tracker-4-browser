@@ -29,11 +29,14 @@ export type ContentMessage = {
     limit: {
         noData: string
         newOne: string
-        timeUsed: string
-        visitUsed: string
         remain: string
         noLimit: string
         notHit: string
+    }
+    site: {
+        daily: string
+        subpageBtn: string
+        notTrackable: string
     }
 }
 

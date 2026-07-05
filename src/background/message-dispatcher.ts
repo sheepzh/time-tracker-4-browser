@@ -26,8 +26,8 @@ import { getInstallTime, getLastBackUp } from "./service/meta-service"
 import notificationProcessor from './service/notification/processor'
 import { selectPeriods } from "./service/period-service"
 import {
-    addSite, batchChangeCate, detectSites, fillInitialAlias, getInitialAlias, getSite, removeSites, saveSite, saveSiteRunState,
-    selectSitePage,
+    addSite, batchChangeCate, detectSites, fillInitialAlias, getCurrentSite, getInitialAlias, getSite, removeSites,
+    saveSite, saveSiteRunState, selectSitePage,
 } from "./service/site-service"
 import {
     batchDelete, countGroup, countSite, selectCate, selectCatePage, selectGroup, selectGroupPage, selectSite,
@@ -82,6 +82,7 @@ class MessageDispatcher {
             .register('stat.today', getTodayResult)
             .register('item.batch', keys => statDatabase.batchSelect(keys))
             // Site management
+            .register('site.current', getCurrentSite)
             .register('site.list', param => siteDatabase.select(param))
             .register('site.page', selectSitePage)
             .register('site.add', addSite)

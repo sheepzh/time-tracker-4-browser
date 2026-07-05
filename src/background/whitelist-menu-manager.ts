@@ -8,9 +8,9 @@
 import { createContextMenu, updateContextMenu } from "@api/chrome/context-menu"
 import { getRuntimeId } from "@api/chrome/runtime"
 import { getTab, onTabActivated, onTabUpdated } from "@api/chrome/tab"
-import { t2Chrome } from "@i18n/chrome/t"
-import { IS_ANDROID } from "@util/constant/environment"
-import { extractHostname, isBrowserUrl } from "@util/pattern"
+import { IS_ANDROID, isNotTrackable } from "@util/constant/environment"
+import { extractHostname } from "@util/pattern"
+import { t } from './i18n'
 import optionHolder from "./service/components/option-holder"
 import whitelistHolder from './service/whitelist/holder'
 
@@ -29,15 +29,14 @@ async function updateContextMenuInner(param: ChromeTab | number | undefined): Pr
     const tab = typeof param === 'number' ? await getTab(currentActiveId) : param
     const { url } = tab ?? {}
 
-    const targetHost = url && !isBrowserUrl(url) ? extractHostname(url).host : undefined
+    const host = url && !isNotTrackable(url) ? extractHostname(url).host : undefined
     const visible = (await optionHolder.get())?.displayWhitelistMenu
     const changeProp: ChromeContextMenuUpdateProps = {}
-    if (targetHost && visible) {
-        const exist = whitelistHolder.containsHost(targetHost)
+    if (host && visible) {
+        const exist = whitelistHolder.containsHost(host)
         changeProp.visible = visible
-        changeProp.title = t2Chrome(root => root.contextMenus[exist ? 'removeFromWhitelist' : 'add2Whitelist'])
-            .replace('{host}', targetHost)
-        changeProp.onclick = () => exist ? whitelistHolder.remove(targetHost) : whitelistHolder.add(targetHost)
+        changeProp.title = t(msg => msg.contextMenus[exist ? 'removeFromWhitelist' : 'add2Whitelist'], { host })
+        changeProp.onclick = () => exist ? whitelistHolder.remove(host) : whitelistHolder.add(host)
     } else {
         // If not a valid host, hide this menu
         changeProp.visible = false

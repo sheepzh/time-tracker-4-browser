@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { sendMsg2Runtime } from '@api/sw/common'
+import { addSite } from '@api/sw/site'
 import CategorySelect from '@app/components/common/Category/Select'
 import { t } from '@app/locale'
 import { Check } from "@element-plus/icons-vue"
@@ -75,8 +75,7 @@ const _default = defineComponent<{ onSave: NoArgCallback }>((props, ctx) => {
         if (!siteKey) return false
 
         alias = alias?.trim()
-        const siteInfo: tt4b.site.SiteInfo = { ...siteKey, alias, cate: formData.category }
-        const errMsg = await sendMsg2Runtime('site.add', siteInfo)
+        const errMsg = await addSite({ ...siteKey, alias, cate: formData.category })
         if (errMsg) throw errMsg
         close()
     }, { onSuccess: () => props.onSave?.() })

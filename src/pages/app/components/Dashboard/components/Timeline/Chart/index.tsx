@@ -72,7 +72,7 @@ const TimelineChart = defineComponent<{}>(() => {
                         {t(msg => msg.dashboard.timeline.title, { n: TIMELINE_DAY_COUNT })}
                     </Flex>
                     <IconRadioGroup
-                        size="small"
+                        size="small" narrow iconSize={12}
                         modelValue={merge.value}
                         onChange={val => setMerge(val as tt4b.timeline.MergeMethod)}
                         options={Object.entries(CHART_CONFIG).map(([value, icon]) => ({ value, icon }))}

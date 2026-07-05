@@ -7,10 +7,10 @@ import { initPopupContext } from "./context"
 import { TOOLBAR_SLOT } from './slot'
 
 const Main = defineComponent(() => {
-    const appKey = initPopupContext()
+    initPopupContext()
 
     return () => (
-        <Flex key={appKey.value} column width='100%' height='100%' gap={10}>
+        <Flex column width='100%' height='100%' gap={10}>
             <Header />
             <Flex flex={1} height={0}>
                 <RouterView />

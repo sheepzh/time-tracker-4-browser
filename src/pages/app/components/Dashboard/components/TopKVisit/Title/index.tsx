@@ -28,6 +28,7 @@ const Title = defineComponent(() => {
             <IconRadioGroup
                 v-show={!isXs.value}
                 modelValue={filter.topKChartType}
+                narrow iconSize={12}
                 onChange={val => filter.topKChartType = val as TopKChartType}
                 options={Object.entries(CHART_CONFIG).map(([value, icon]) => ({ value, icon }))}
             />

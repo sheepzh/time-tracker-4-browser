@@ -7,10 +7,10 @@
 
 import { getOption } from "@api/sw/option"
 import { initLocale } from "@i18n"
+import { createElApp } from '@pages/element-ui/app'
 import { processDarkMode } from '@pages/util/dark-mode'
 import { initEcharts } from "@pages/util/echarts"
 import type { FrameRequest, FrameResponse } from "@popup/types"
-import { createApp } from "vue"
 import Main from "./Main"
 import initRouter from "./router"
 import { injectGlobalCss } from "./style"
@@ -46,7 +46,7 @@ async function main() {
     el.id = 'app'
     document.body.append(el)
 
-    const app = createApp(Main)
+    const app = await createElApp(Main)
     initRouter(app)
     app.mount(el)
 }

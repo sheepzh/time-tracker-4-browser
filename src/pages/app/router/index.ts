@@ -9,7 +9,7 @@ import { type App } from "vue"
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from "vue-router"
 import {
     ABOUT_ROUTE, DASHBOARD_ROUTE, FOCUS_ROUTE, HABIT_ANALYSIS_ROUTE, HELP_ROUTE, LIMIT_ROUTE, MIGRATION_ROUTE,
-    OPTION_ROUTE, RECORD_ROUTE, RULE_ROUTE, SITE_ANALYSIS_ROUTE, SITE_MANAGE_ROUTE,
+    OPTION_ROUTE, RECORD_ROUTE, RULE_ROUTE, SITE_ANALYSIS_ROUTE, SITE_ROUTE,
 } from "./constants"
 
 const trackingRoutes: RouteRecordRaw[] = [
@@ -23,7 +23,7 @@ const trackingRoutes: RouteRecordRaw[] = [
         path: RECORD_ROUTE,
         component: () => import('../components/Record')
     }, {
-        path: SITE_MANAGE_ROUTE,
+        path: SITE_ROUTE,
         component: () => import('../components/SiteManage')
     }, {
         path: RULE_ROUTE,

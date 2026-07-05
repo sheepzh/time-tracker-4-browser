@@ -68,7 +68,7 @@ const Filter = defineComponent<{}>(() => {
                 />
                 <MultiSelectFilter
                     placeholder={t(msg => msg.siteManage.column.type)}
-                    options={ALL_TYPES.map(type => ({ value: type, label: t(msg => msg.siteManage.type[type].name) }))}
+                    options={ALL_TYPES.map(type => ({ value: type, label: t(msg => msg.shared.site.type[type]) }))}
                     modelValue={filter.types ?? []}
                     onChange={val => filter.types = val as tt4b.site.Type[]}
                 />

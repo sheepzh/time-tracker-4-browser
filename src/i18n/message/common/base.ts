@@ -14,6 +14,7 @@ export type BaseMessage = {
     option: string
     sourceCode: string
     limit: string
+    sites: string
     helpUs: string
 }
 

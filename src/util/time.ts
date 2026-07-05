@@ -33,9 +33,8 @@ export function formatTime(time: Date | number, format?: string) {
         h: date.getHours(),
         i: date.getMinutes(),
         s: date.getSeconds(),
-        a: date.getDay()
     }
-    return format.replace(/{([ymdhisa])+}/g, (_result, key) => {
+    return format.replace(/{([ymdhis])+}/g, (_result, key) => {
         const value = formatObj[key]
         if (value === undefined) return key
         // Note: getDay() returns 0 on Sunday

@@ -6,19 +6,26 @@
  */
 import { changeSiteRun, modifySite } from '@api/sw/site'
 import Category from '@app/components/common/Category'
+import ColumnHeader from '@app/components/common/ColumnHeader'
 import HostAlert from '@app/components/common/HostAlert'
 import { t } from '@app/locale'
 import { useManualRequest } from '@hooks'
 import EditableImg from '@pages/components/EditableImg'
 import Flex from '@pages/components/Flex'
-import { ElSwitch, ElTable, ElTableColumn, type RenderRowData } from "element-plus"
+import { ElSwitch, ElTable, ElTableColumn, ElTag, TagProps, type RenderRowData } from "element-plus"
 import { defineComponent } from "vue"
+import { ALL_TYPES } from '../common'
 import { useSiteManageTable } from '../context'
 import AliasColumn from "./column/AliasColumn"
 import OperationColumn from "./column/OperationColumn"
-import TypeColumn from "./column/TypeColumn"
 
 type RenderParam = RenderRowData<tt4b.site.SiteInfo>
+
+const TYPE_TAG: Record<tt4b.site.Type, TagProps['type']> = {
+    normal: undefined,
+    merged: 'info',
+    virtual: 'success'
+}
 
 const _default = defineComponent<{}>(() => {
     const { selected, refresh, pagination } = useSiteManageTable()
@@ -48,7 +55,28 @@ const _default = defineComponent<{}>(() => {
                     </div>
                 )}
             />
-            <TypeColumn />
+            <ElTableColumn
+                minWidth={130}
+                align="center"
+                v-slots={{
+                    header: () => (
+                        <ColumnHeader
+                            label={t(msg => msg.siteManage.column.type)}
+                            v-slots={{
+                                tooltipContent: () => ALL_TYPES.flatMap((type, idx) => {
+                                    const text = `${t(msg => msg.shared.site.type[type])} - ${t(msg => msg.siteManage.typeInfo[type])}`
+                                    return idx === 0 ? [text] : [<br />, text]
+                                }),
+                            }}
+                        />
+                    ),
+                    default: ({ row: { type } }: RenderRowData<tt4b.site.SiteInfo>) => (
+                        <ElTag size="small" type={TYPE_TAG[type]}>
+                            {t(msg => msg.shared.site.type[type])}
+                        </ElTag>
+                    )
+                }}
+            />
             <ElTableColumn
                 label={t(msg => msg.siteManage.column.icon)}
                 minWidth={100}

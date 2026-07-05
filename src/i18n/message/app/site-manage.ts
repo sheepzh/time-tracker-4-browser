@@ -8,7 +8,6 @@
 import resource from './site-manage-resource.json'
 
 export type SiteManageMessage = {
-    deleteConfirmMsg: string
     genAliasConfirmMsg: string
     column: {
         type: string
@@ -16,7 +15,7 @@ export type SiteManageMessage = {
         cate: string
         icon: string
     }
-    type: Record<tt4b.site.Type, Record<'name' | 'info', string>>
+    typeInfo: Record<tt4b.site.Type, string>
     cate: {
         name: string
         relatedMsg: string

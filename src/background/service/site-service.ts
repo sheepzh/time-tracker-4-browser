@@ -8,6 +8,7 @@
 import { listTabs, sendMsg2Tab } from "@api/chrome/tab"
 import siteDatabase from "@db/site-database"
 import { ALL_HOSTS as ALL_FILE_HOSTS, MERGED_HOST as MERGED_FILE_HOST } from '@util/constant/remain-host'
+import { extractHostname } from "@util/pattern"
 import { SiteMap, supportCategory } from "@util/site"
 import { toUnicode as punyCode2Unicode } from "punycode"
 import mergeRuleDatabase from '../database/merge-rule-database'
@@ -30,8 +31,9 @@ export async function saveSite(param: tt4b.site.ModifyParam, overwrite: boolean)
     } else if (exist.alias === alias && exist.iconUrl === iconUrl) {
         return
     }
-
-    await siteDatabase.save({ ...exist, ...param, alias, iconUrl })
+    const toSave = { ...exist, ...param, alias, iconUrl }
+    await siteDatabase.save(toSave)
+    virtualSiteHolder.buildWith(toSave)
 }
 
 export async function saveSiteRunState(key: tt4b.site.SiteKey, enabled: boolean) {
@@ -167,4 +169,20 @@ async function batchSaveAlias(siteMap: SiteMap<string>): Promise<void> {
         toSave.push({ ...exist ?? k, alias })
     })
     await siteDatabase.save(...toSave)
+}
+
+export async function getCurrentSite(): Promise<tt4b.site.Current | undefined> {
+    const tabs = await listTabs({ currentWindow: true, active: true })
+    const url = tabs[0]?.url
+    if (!url) return undefined
+    const { host } = extractHostname(url)
+    const normal = await getSite({ host, type: 'normal' })
+
+    const others = virtualSiteHolder.findMatched(url)
+    const mergedRules = await mergeRuleDatabase.selectAll()
+    const mergeRuler = new CustomizedHostMergeRuler(mergedRules)
+    const merged = mergeRuler.merge(host)
+    const mergedSite = await getSite({ host: merged, type: 'merged' })
+    others.push(mergedSite)
+    return { url, normal, others }
 }
