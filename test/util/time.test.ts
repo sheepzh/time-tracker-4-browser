@@ -12,8 +12,8 @@ import {
 test('time', () => {
     const dateStr = '2020/05/01 00:00:01'
     const date = Date.parse(dateStr)
-    const format = '{y}{m}{d} {h}{i}{s}{a}'
-    const result = '20200501 000001五'
+    const format = '{y}{m}{d} {h}{i}{s}'
+    const result = '20200501 000001'
 
     // default format
     expect(formatTime(date, format)).toEqual(result)

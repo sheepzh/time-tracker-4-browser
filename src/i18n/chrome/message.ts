@@ -5,59 +5,17 @@
  * https://opensource.org/licenses/MIT
  */
 
-import baseMessages, { type BaseMessage } from "../message/common/base"
-import contextMenusMessages, { type ContextMenusMessage } from "../message/common/context-menus"
 import metaMessages, { type MetaMessage } from "../message/common/meta"
 import { merge, type MessageRoot } from "../message/merge"
 
-export type ChromeMessage = {
+type ChromeMessage = {
     meta: MetaMessage
-    base: BaseMessage
-    contextMenus: ContextMenusMessage
 }
 
 const MESSAGE_ROOT: MessageRoot<ChromeMessage> = {
     meta: metaMessages,
-    base: baseMessages,
-    contextMenus: contextMenusMessages,
 }
 
 const messages = merge<ChromeMessage>(MESSAGE_ROOT)
 
 export default messages
-
-const placeholder: ChromeMessage = {
-    meta: {
-        name: '',
-        description: '',
-        marketName: '',
-    },
-    base: {
-        allFunction: '',
-        guidePage: '',
-        changeLog: '',
-        option: '',
-        sourceCode: '',
-        limit: '',
-        helpUs: '',
-    },
-    contextMenus: {
-        add2Whitelist: '',
-        removeFromWhitelist: '',
-    },
-}
-
-function routerPath(root: any, parentPath = '') {
-    Object.entries(root)
-        .forEach(([key, value]) => {
-            const currentPath = parentPath ? `${parentPath}_${key}` : key
-            if (typeof value === 'string') {
-                root[key] = currentPath
-            } else {
-                root[key] = routerPath(value, currentPath)
-            }
-        })
-    return root
-}
-
-export const router: ChromeMessage = routerPath(placeholder) as unknown as ChromeMessage

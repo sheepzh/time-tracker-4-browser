@@ -26,7 +26,6 @@ const OperationColumn = defineComponent<{}>(() => {
                     <ConfirmButton
                         buttonProps={{ icon: Delete, type: 'danger', size: 'small' }}
                         buttonText={t(msg => msg.button.delete)}
-                        confirmText={t(msg => msg.siteManage.deleteConfirmMsg, { host: row.host })}
                         onConfirm={() => doDelete(row)}
                     />
                 )}

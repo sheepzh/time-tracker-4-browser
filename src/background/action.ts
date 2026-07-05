@@ -9,9 +9,9 @@ import { onIconClick } from "@api/chrome/action"
 import { createContextMenu } from "@api/chrome/context-menu"
 import { getRuntimeId } from "@api/chrome/runtime"
 import { createTab } from "@api/chrome/tab"
-import { t2Chrome } from "@i18n/chrome/t"
 import { IS_ANDROID, IS_MV3, IS_SAFARI } from "@util/constant/environment"
 import { CHANGE_LOG_PAGE, SOURCE_CODE_PAGE, getAppPageUrl, getGuidePageUrl } from "@util/constant/url"
+import { t } from './i18n'
 
 const APP_PAGE_URL = getAppPageUrl()
 
@@ -34,35 +34,35 @@ function titleOf(prefixEmoji: string, title: string) {
 
 const allFunctionProps: ChromeContextMenuCreateProps = {
     id: getRuntimeId() + '_timer_menu_item_app_link',
-    title: titleOf('🏷️', t2Chrome(msg => msg.base.allFunction)),
+    title: titleOf('🏷️', t(msg => msg.base.allFunction)),
     onclick: () => createTab(APP_PAGE_URL),
     ...baseProps
 }
 
 const optionPageProps: ChromeContextMenuCreateProps = {
     id: getRuntimeId() + '_timer_menu_item_option_link',
-    title: titleOf('🥰', t2Chrome(msg => msg.base.option)),
+    title: titleOf('🥰', t(msg => msg.base.option)),
     onclick: () => createTab(getAppPageUrl(APP_OPTION_ROUTE)),
     ...baseProps
 }
 
 const repoPageProps: ChromeContextMenuCreateProps = {
     id: getRuntimeId() + '_timer_menu_item_repo_link',
-    title: titleOf('🍻', t2Chrome(msg => msg.base.sourceCode)),
+    title: titleOf('🍻', t(msg => msg.base.sourceCode)),
     onclick: () => createTab(SOURCE_CODE_PAGE),
     ...baseProps
 }
 
 const guidePageProps: ChromeContextMenuCreateProps = {
     id: getRuntimeId() + '_timer_menu_item_guide_link',
-    title: titleOf('📖', t2Chrome(msg => msg.base.guidePage)),
+    title: titleOf('📖', t(msg => msg.base.guidePage)),
     onclick: () => createTab(getGuidePageUrl()),
     ...baseProps
 }
 
 const changeLogProps: ChromeContextMenuCreateProps = {
     id: getRuntimeId() + '_timer_menu_item_changelog',
-    title: titleOf('📆', t2Chrome(msg => msg.base.changeLog)),
+    title: titleOf('📆', t(msg => msg.base.changeLog)),
     onclick: () => createTab(CHANGE_LOG_PAGE),
     ...baseProps
 }

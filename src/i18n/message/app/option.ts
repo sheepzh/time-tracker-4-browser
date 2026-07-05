@@ -11,7 +11,6 @@ export type OptionMessage = {
     no: string
     on: string
     off: string
-    followBrowser: string
     appearance: {
         title: string
         // whitelist

@@ -1,5 +1,7 @@
 import { sendMsg2Runtime } from "./common"
 
+export const getCurrentSite = () => sendMsg2Runtime('site.current')
+
 export const listSites = (param?: tt4b.site.Query) => sendMsg2Runtime('site.list', param)
 
 export function getSitePage(param?: tt4b.site.Query, page?: tt4b.common.PageQuery) {
@@ -11,6 +13,8 @@ export const deleteSites = (...keys: tt4b.site.SiteKey[]) => sendMsg2Runtime('si
 export function changeSitesCate(cateId: number | undefined, ...keys: tt4b.site.SiteKey[]) {
     return sendMsg2Runtime('site.changeCate', { keys, cateId })
 }
+
+export const addSite = (siteInfo: tt4b.site.SiteInfo) => sendMsg2Runtime('site.add', siteInfo)
 
 export const modifySite = (param: tt4b.site.ModifyParam) => sendMsg2Runtime('site.modify', param)
 

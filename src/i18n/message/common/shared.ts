@@ -16,7 +16,11 @@ export type SharedMessage = {
         allowDelay: string
         unlimited: string
     }
+    site: {
+        type: Record<tt4b.site.Type, string>
+    },
     permGrantConfirm: string
+    followBrowser: string
 }
 
 const sharedMessages = resource satisfies Messages<SharedMessage>

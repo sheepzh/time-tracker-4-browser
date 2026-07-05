@@ -9,8 +9,8 @@ import { setBadgeBgColor, setBadgeText } from "@api/chrome/action"
 import { listTabs, onTabUpdated } from "@api/chrome/tab"
 import { getLastFocusedId, isNoneWindowId, onWindowFocusChanged } from "@api/chrome/window"
 import focusHolder from '@service/focus/holder'
-import { IS_ANDROID } from "@util/constant/environment"
-import { extractHostname, isBrowserUrl } from "@util/pattern"
+import { IS_ANDROID, isNotTrackable } from "@util/constant/environment"
+import { extractHostname } from "@util/pattern"
 import { MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND } from "@util/time"
 import statDatabase from "./database/stat-database"
 import type MessageDispatcher from './message-dispatcher'
@@ -47,7 +47,7 @@ async function findActiveTab(windowId?: number): Promise<BadgeLocation | undefin
     const tabs = await listTabs({ windowId, active: true })
     // Fix #131 — Edge can return two active tabs (e.g. edge://newtab/).
     for (const { id: tabId, url } of tabs) {
-        if (!tabId || !url || isBrowserUrl(url)) continue
+        if (!tabId || !url || isNotTrackable(url)) continue
         return { tabId, url }
     }
     return undefined
@@ -134,7 +134,7 @@ class BadgeManager {
     private async resolveBadgeText(): Promise<string> {
         if (!this.#current || !this.#visible) return ''
         const { url, tabId } = this.#current
-        if (isBrowserUrl(url)) return '∅'
+        if (isNotTrackable(url)) return '∅'
         const { host, protocol } = extractHostname(url)
         if (protocol === 'file' && !this.#countLocalFiles) return '∅'
         if (whitelistHolder.contains(host, url)) return 'W'

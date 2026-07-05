@@ -76,12 +76,17 @@ export function identifySiteKey(site: tt4b.site.SiteKey | undefined): string {
     return (TYPE_PREFIX_MAP[type] ?? ' ') + (host || '')
 }
 
+export function isSameSite(a: tt4b.site.SiteKey | undefined, b: tt4b.site.SiteKey | undefined): boolean {
+    return a?.host === b?.host && a?.type === b?.type
+}
+
 export function parseSiteIdentity(identity: string | undefined): tt4b.site.SiteKey | undefined {
     if (!identity) return
-    const type = PREFIX_TYPE_MAP[identity.charAt(0) as SiteIdentityPrefix]
-    if (!type) return
+    const prefixMap: Record<string, tt4b.site.Type> = PREFIX_TYPE_MAP
+    const type = prefixMap[identity.charAt(0)]
+    if (!type) return undefined
     const host = identity.substring(1).trim()
-    if (!host) return
+    if (!host) return undefined
     return { type, host }
 }
 

@@ -13,11 +13,11 @@ const createRoutes = (): MyRoute[] => [
         path: '/percentage',
         component: () => import('./components/Percentage'),
     }, {
+        path: '/site',
+        component: () => import('./components/Site'),
+    }, {
         path: '/ranking',
         component: () => import('./components/Ranking'),
-    }, {
-        path: '/limit',
-        component: () => import('./components/Limit'),
     }, {
         path: '/focus',
         component: () => import('./components/Focus'),

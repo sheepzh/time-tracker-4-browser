@@ -7,8 +7,8 @@
 
 import { getTab } from '@api/chrome/tab'
 import { saveSite } from '@service/site-service'
-import { IS_ANDROID, IS_CHROME, IS_FIREFOX, IS_SAFARI } from "@util/constant/environment"
-import { extractHostname, isBrowserUrl, isHomepage } from "@util/pattern"
+import { IS_ANDROID, IS_CHROME, IS_FIREFOX, IS_SAFARI, isNotTrackable } from "@util/constant/environment"
+import { extractHostname, isHomepage } from "@util/pattern"
 import { extractSiteName } from "@util/site"
 import badgeManager from "./badge-manager"
 import MessageDispatcher from "./message-dispatcher"
@@ -22,7 +22,7 @@ async function processTabInfo(tab: ChromeTab): Promise<void> {
     if (IS_ANDROID) return
     let { favIconUrl: iconUrl, url, title } = tab
     if (!url || !title) return
-    if (isBrowserUrl(url)) return
+    if (isNotTrackable(url)) return
     const hostInfo = extractHostname(url)
     const host = hostInfo.host
     if (!host) return

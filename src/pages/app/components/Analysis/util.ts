@@ -14,11 +14,8 @@ import type { ValueFormatter } from '../common/kanban/types'
 export function labelOfHostInfo(site: tt4b.site.SiteKey | undefined): string {
     if (!site) return ''
     const { host, type } = site
-    if (!host) return ''
-    let label = ''
-    type === 'merged' && (label = `[${t(msg => msg.analysis.common.merged)}]`)
-    type === 'virtual' && (label = `[${t(msg => msg.analysis.common.virtual)}]`)
-    return `${host}${label}`
+    if (type === 'normal') return host
+    return `${host}[${t(msg => msg.shared.site.type[type])}]`
 }
 
 export const formatValue = (val: number | undefined, formatter?: ValueFormatter) => formatter ? formatter(val) : val?.toString() || '-'

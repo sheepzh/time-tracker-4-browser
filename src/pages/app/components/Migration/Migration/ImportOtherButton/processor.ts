@@ -7,8 +7,8 @@
 
 import { AUTHOR_EMAIL } from "@/package"
 import { sendMsg2Runtime } from '@api/sw/common'
-import { IS_WINDOWS } from "@util/constant/environment"
-import { extractHostname, isBrowserUrl } from "@util/pattern"
+import { IS_WINDOWS, isNotTrackable } from "@util/constant/environment"
+import { extractHostname } from "@util/pattern"
 import { mergeWith } from '@util/stat'
 import { formatTimeYMD, MILL_PER_SECOND } from "@util/time"
 import type { OtherExtension } from './types'
@@ -153,7 +153,7 @@ async function parseWebtimeTracker(file: File): Promise<tt4b.imported.Row[]> {
 function parseHistoryTrendsUnlimitedLine(line: string, data: { [dateAndHost: string]: number }) {
     const cells = line.split('\t')
     const url = cells[0]
-    if (!url || isBrowserUrl(url)) return
+    if (!url || isNotTrackable(url)) return
     const tsMaybe = cells?.[1]?.trim?.()
     if (tsMaybe && /^U\d{13,}(\.\d*)?$/.test(tsMaybe)) {
         // Backup data

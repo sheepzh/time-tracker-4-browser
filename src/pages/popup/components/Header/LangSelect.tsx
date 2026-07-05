@@ -2,12 +2,10 @@ import { createTab } from "@api/chrome/tab"
 import { sendMsg2Runtime } from '@api/sw/common'
 import { getOption } from "@api/sw/option"
 import { useManualRequest, useRequest } from "@hooks"
-import { ALL_LOCALES, handleLocaleOption, localeSameAsBrowser, t } from "@i18n"
-import optionMessages from "@i18n/message/app/option"
+import { ALL_LOCALES, handleLocaleOption, localeSameAsBrowser } from "@i18n"
 import localeMessages from "@i18n/message/common/locale"
 import Flex from "@pages/components/Flex"
-import { usePopupContext } from "@popup/context"
-import { t as tPopup } from '@popup/locale'
+import { t } from '@popup/locale'
 import { CROWDIN_HOMEPAGE } from "@util/constant/url"
 import { ElDropdown, ElDropdownItem, ElDropdownMenu, ElIcon, ElText } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
@@ -26,14 +24,12 @@ const LangSelect = defineComponent(() => {
         return option?.locale
     })
 
-    const { reload: reloadPopup } = usePopupContext()
-
     const { refresh: saveLocale } = useManualRequest(
         async (opt: tt4b.option.LocaleOption) => {
             await sendMsg2Runtime('option.set', { locale: opt })
             handleLocaleOption(opt)
         },
-        { onSuccess: reloadPopup },
+        { onSuccess: () => window.location.reload() },
     )
 
     return () => (
@@ -72,13 +68,13 @@ const LangSelect = defineComponent(() => {
                             onClick={() => saveLocale('default')}
                             style={current.value === 'default' ? SELECTED_STYLES : null}
                         >
-                            {t(optionMessages, { key: m => m.followBrowser })}
+                            {t(msg => msg.shared.followBrowser)}
                         </ElDropdownItem>
                         <ElDropdownItem
                             onClick={() => createTab(CROWDIN_HOMEPAGE)}
                             divided
                         >
-                            {tPopup(msg => msg.base.helpUs)}
+                            {t(msg => msg.base.helpUs)}
                         </ElDropdownItem>
                     </ElDropdownMenu>
                 )

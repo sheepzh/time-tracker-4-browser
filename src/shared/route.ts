@@ -46,3 +46,5 @@ export type AppRecordQuery = {
 export const APP_FOCUS_ROUTE = '/productivity/focus'
 
 export type AppFocusQuery = { action?: 'create' }
+
+export const APP_SITE_ROUTE = '/tracking/sites'

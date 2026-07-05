@@ -15,8 +15,6 @@ export type AnalysisMessage = {
     common: {
         focusTotal: string
         visitTotal: string
-        merged: string
-        virtual: string
         hostPlaceholder: string
         emptyDesc: string
     }

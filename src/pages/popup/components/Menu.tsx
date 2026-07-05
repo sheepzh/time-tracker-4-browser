@@ -1,49 +1,60 @@
-import { Aim, Histogram, PieChart, Timer } from '@element-plus/icons-vue'
-import { isMenu, useMenu } from '@popup/context'
+import { Aim, Histogram, PieChart } from '@element-plus/icons-vue'
+import { localRef } from '@hooks'
+import IconRadioGroup, { IconRadioOption } from '@pages/components/IconRadioGroup'
+import { Website } from '@pages/icons'
 import { t } from '@popup/locale'
-import { ElIcon, ElRadioButton, ElRadioGroup, ElTooltip } from "element-plus"
-import { type Component, defineComponent, h } from "vue"
+import { createStringUnionGuard } from 'typescript-guard'
+import { defineComponent, onBeforeMount, watch } from "vue"
+import { useRoute, useRouter } from 'vue-router'
 
-type MenuItem = {
-    icon: Component
-    route: tt4b.ui.PopupMenu
-    label: string
+const isMenu = createStringUnionGuard<tt4b.ui.PopupMenu>('site', 'percentage', 'ranking', 'focus')
+
+const useMenu = () => {
+    const menu = localRef('popup_menu', isMenu, 'percentage')
+    const route = useRoute()
+    const router = useRouter()
+
+    onBeforeMount(async () => {
+        await router.isReady()
+        const initial = route.path.substring(1)
+        if (isMenu(initial)) {
+            menu.value = initial
+        } else {
+            // Replace with valid menu
+            router.replace(`/${menu.value}`)
+        }
+    })
+
+    watch(menu, val => router.push(`/${val}`))
+    const setMenu = (val: unknown) => isMenu(val) && (menu.value = val)
+
+    return { menu, setMenu }
 }
 
-const createItems = (): MenuItem[] => [
+const OPTIONS: IconRadioOption<tt4b.ui.PopupMenu>[] = [
     {
-        route: 'percentage',
-        label: t(msg => msg.footer.route.percentage),
+        value: 'percentage',
+        tooltip: t(msg => msg.footer.route.percentage),
         icon: PieChart,
     }, {
-        route: 'ranking',
-        label: t(msg => msg.footer.route.ranking),
+        value: 'ranking',
+        tooltip: t(msg => msg.footer.route.ranking),
         icon: Histogram,
     }, {
-        route: 'limit',
-        label: t(msg => msg.base.limit),
-        icon: Timer,
+        value: 'site',
+        tooltip: t(msg => msg.footer.route.site),
+        icon: Website,
     }, {
-        route: 'focus',
-        label: t(msg => msg.focus.menu),
+        value: 'focus',
+        tooltip: t(msg => msg.focus.menu),
         icon: Aim,
     },
 ]
 
 const Menu = defineComponent(() => {
-    const menu = useMenu()
+    const { menu, setMenu } = useMenu()
 
-    return () => (
-        <ElRadioGroup modelValue={menu.value} onChange={v => isMenu(v) && (menu.value = v)}>
-            {createItems().map(({ route, label, icon }) => (
-                <ElRadioButton value={route}>
-                    <ElTooltip content={label}>
-                        <ElIcon>{h(icon)}</ElIcon>
-                    </ElTooltip>
-                </ElRadioButton>
-            ))}
-        </ElRadioGroup>
-    )
+    return () => <IconRadioGroup modelValue={menu.value} onChange={setMenu} options={OPTIONS} />
 })
 
 export default Menu

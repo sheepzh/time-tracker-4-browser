@@ -4,7 +4,6 @@
         "no": "否",
         "on": "始终开启",
         "off": "始终关闭",
-        "followBrowser": "跟随浏览器",
         "appearance": {
             "title": "外观",
             "displayWhitelist": "{input}  是否在 {contextMenu} 里，显示 {whitelist} 相关功能",
@@ -145,7 +144,6 @@
         "no": "否",
         "on": "始終開啟",
         "off": "始終關閉",
-        "followBrowser": "跟隨瀏覽器",
         "appearance": {
             "title": "外觀設定",
             "displayWhitelist": "{input} 是否在 {contextMenu} 顯示 {whitelist} 功能",
@@ -276,7 +274,6 @@
         "no": "No",
         "on": "Always on",
         "off": "Always off",
-        "followBrowser": "Follow browser",
         "appearance": {
             "title": "Appearance",
             "displayWhitelist": "{input}  Whether to display {whitelist} in {contextMenu}",
@@ -419,7 +416,6 @@
         "no": "いいえ",
         "on": "常にオン",
         "off": "常にオフ",
-        "followBrowser": "ブラウザと同じ",
         "appearance": {
             "title": "外観",
             "displayWhitelist": "{input}  {contextMenu} に {whitelist} を表示するかどうか",
@@ -543,7 +539,6 @@
         "no": "Não",
         "on": "Sempre ativo",
         "off": "Sempre inativo",
-        "followBrowser": "Usar do navegador",
         "appearance": {
             "title": "Aparência",
             "displayWhitelist": "{input} Mostrar {whitelist} no {contextMenu}",
@@ -656,7 +651,6 @@
         "no": "Ні",
         "on": "Завжди ввімкнено",
         "off": "Завжди вимкнено",
-        "followBrowser": "Як у браузері",
         "appearance": {
             "title": "Зовнішній вигляд",
             "displayWhitelist": "{input}  Показувати {whitelist} в {contextMenu}",
@@ -767,7 +761,6 @@
         "no": "No",
         "on": "Siempre encendido",
         "off": "Siempre apagado",
-        "followBrowser": "Igual que el navegador",
         "appearance": {
             "title": "Apariencia",
             "displayWhitelist": "{input}  Mostrar {whitelist} en {contextMenu}",
@@ -878,7 +871,6 @@
         "no": "Nein",
         "on": "Immer an",
         "off": "Immer aus",
-        "followBrowser": "Browser verfolgen",
         "appearance": {
             "title": "Aussehen",
             "displayWhitelist": "{input} {whitelist} in {contextMenu} anzeigen",
@@ -1015,7 +1007,6 @@
         "no": "Non",
         "on": "Toujours activé",
         "off": "Toujours éteint",
-        "followBrowser": "Suivre le navigateur",
         "appearance": {
             "title": "Apparence",
             "displayWhitelist": "{input} S'il faut afficher les {whitelist} dans {contextMenu}",
@@ -1152,7 +1143,6 @@
         "no": "Нет",
         "on": "Всегда включен",
         "off": "Всегда выключен",
-        "followBrowser": "Как в браузере",
         "appearance": {
             "title": "Появление",
             "displayWhitelist": "{input} Отображать ли {whitelist} в {contextMenu}",
@@ -1281,7 +1271,6 @@
         "no": "لا",
         "on": "تفعيل دائم",
         "off": "إيقاف دائم",
-        "followBrowser": "نفس وضع المتصفح",
         "appearance": {
             "title": "المظهر",
             "displayWhitelist": "{input} هل يتم عرض {whitelist} في {contextMenu}",
@@ -1392,7 +1381,6 @@
         "no": "Hayır",
         "on": "Her zaman açık",
         "off": "Her zaman kapalı",
-        "followBrowser": "Tarayıcıyı takip et",
         "appearance": {
             "title": "Görünüm",
             "displayWhitelist": "{input}  {contextMenu} içinde {whitelist} gösterilip gösterilmeyeceğini seçin",
@@ -1523,7 +1511,6 @@
         "no": "Nie",
         "on": "Zawsze włączone",
         "off": "Zawsze wyłączone",
-        "followBrowser": "Śledź przeglądarkę",
         "appearance": {
             "title": "Wygląd",
             "displayWhitelist": "{input} Wyświetlanie {whitelist} w {contextMenu}",
@@ -1664,7 +1651,6 @@
         "no": "No",
         "on": "Sempre acceso",
         "off": "Sempre spento",
-        "followBrowser": "Segui browser",
         "appearance": {
             "title": "Apparenza",
             "displayWhitelist": "{input}  Se visualizzare {whitelist} in {contextMenu}",

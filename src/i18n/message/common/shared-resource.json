@@ -21,7 +21,15 @@
             "allowDelay": "Allow Delay",
             "unlimited": "Unlimited"
         },
-        "permGrantConfirm": "This feature requires relevant permissions"
+        "permGrantConfirm": "This feature requires relevant permissions",
+        "site": {
+            "type": {
+                "normal": "normal",
+                "merged": "merged",
+                "virtual": "subpage"
+            }
+        },
+        "followBrowser": "Follow browser"
     },
     "zh_CN": {
         "merge": {
@@ -45,7 +53,14 @@
             "allowDelay": "可延时",
             "unlimited": "无限制"
         },
-        "permGrantConfirm": "该功能需要授予相关权限"
+        "permGrantConfirm": "该功能需要授予相关权限",
+        "site": {
+            "type": {
+                "normal": "普通站点",
+                "merged": "合并站点"
+            }
+        },
+        "followBrowser": "跟随浏览器"
     },
     "ja": {
         "merge": {
@@ -66,7 +81,14 @@
             "weekly": "週間の限度",
             "period": "許可されない期間",
             "visits": "{n}訪問"
-        }
+        },
+        "site": {
+            "type": {
+                "normal": "普通",
+                "merged": "合并"
+            }
+        },
+        "followBrowser": "ブラウザと同じ"
     },
     "zh_TW": {
         "merge": {
@@ -89,7 +111,14 @@
             "visits": "{n}次造訪",
             "allowDelay": "允許延遲"
         },
-        "permGrantConfirm": "此功能需要相關權限才能運作"
+        "permGrantConfirm": "此功能需要相關權限才能運作",
+        "site": {
+            "type": {
+                "normal": "一般網站",
+                "merged": "合併網站"
+            }
+        },
+        "followBrowser": "跟隨瀏覽器"
     },
     "pt_PT": {
         "merge": {
@@ -112,7 +141,14 @@
             "visits": "{n} visitas",
             "allowDelay": "Permitir atraso"
         },
-        "permGrantConfirm": "Esta funcionalidade precisa de permissões relevantes"
+        "permGrantConfirm": "Esta funcionalidade precisa de permissões relevantes",
+        "site": {
+            "type": {
+                "normal": "normal",
+                "merged": "agrupado"
+            }
+        },
+        "followBrowser": "Usar do navegador"
     },
     "uk": {
         "merge": {
@@ -135,7 +171,14 @@
             "visits": "{n} відвідування",
             "allowDelay": "Дозволити затримку"
         },
-        "permGrantConfirm": "Ця функція потребує відповідних дозволів"
+        "permGrantConfirm": "Ця функція потребує відповідних дозволів",
+        "site": {
+            "type": {
+                "normal": "звичайний",
+                "merged": "об'єднано"
+            }
+        },
+        "followBrowser": "Як у браузері"
     },
     "it": {
         "merge": {
@@ -158,7 +201,14 @@
             "visits": "{n} visite",
             "allowDelay": "Ritardabile"
         },
-        "permGrantConfirm": "Questa funzione richiede autorizzazioni rilevanti"
+        "permGrantConfirm": "Questa funzione richiede autorizzazioni rilevanti",
+        "site": {
+            "type": {
+                "normal": "normale",
+                "merged": "uniti"
+            }
+        },
+        "followBrowser": "Segui browser"
     },
     "es": {
         "merge": {
@@ -180,7 +230,14 @@
             "period": "Periodos no permitidos",
             "visits": "{n} visitas"
         },
-        "permGrantConfirm": "Esta función requiere permisos pertinentes"
+        "permGrantConfirm": "Esta función requiere permisos pertinentes",
+        "site": {
+            "type": {
+                "normal": "normal",
+                "merged": "fusionado"
+            }
+        },
+        "followBrowser": "Igual que el navegador"
     },
     "de": {
         "merge": {
@@ -203,7 +260,14 @@
             "visits": "{n} Besuche",
             "allowDelay": "Verzögerung zulassen"
         },
-        "permGrantConfirm": "Dieses Feature benötigt entsprechende Berechtigungen"
+        "permGrantConfirm": "Dieses Feature benötigt entsprechende Berechtigungen",
+        "site": {
+            "type": {
+                "normal": "normal",
+                "merged": "zusammengeführt"
+            }
+        },
+        "followBrowser": "Browser verfolgen"
     },
     "fr": {
         "merge": {
@@ -226,7 +290,14 @@
             "visits": "{n} visites",
             "allowDelay": "Retardable"
         },
-        "permGrantConfirm": "Cette fonctionnalité nécessite des autorisations appropriées"
+        "permGrantConfirm": "Cette fonctionnalité nécessite des autorisations appropriées",
+        "site": {
+            "type": {
+                "normal": "normal",
+                "merged": "fusionné"
+            }
+        },
+        "followBrowser": "Suivre le navigateur"
     },
     "ru": {
         "merge": {
@@ -248,7 +319,14 @@
             "period": "Заблокированное время",
             "visits": "{n} посещения",
             "allowDelay": "Разрешить задержку"
-        }
+        },
+        "site": {
+            "type": {
+                "normal": "нормальный",
+                "merged": "соединено"
+            }
+        },
+        "followBrowser": "Как в браузере"
     },
     "ar": {
         "merge": {
@@ -269,7 +347,14 @@
             "weekly": "الحد الأسبوعي",
             "period": "فترات محظورة",
             "visits": "{n} زيارة"
-        }
+        },
+        "site": {
+            "type": {
+                "normal": "طبيعي",
+                "merged": "اندمجت"
+            }
+        },
+        "followBrowser": "نفس وضع المتصفح"
     },
     "tr": {
         "merge": {
@@ -292,7 +377,14 @@
             "visits": "{n} ziyaretler",
             "allowDelay": "Ertelenebilir"
         },
-        "permGrantConfirm": "Bu özellik ilgili izinleri gerektirir"
+        "permGrantConfirm": "Bu özellik ilgili izinleri gerektirir",
+        "site": {
+            "type": {
+                "normal": "normal",
+                "merged": "birleştirildi"
+            }
+        },
+        "followBrowser": "Tarayıcıyı takip et"
     },
     "pl": {
         "merge": {
@@ -316,6 +408,13 @@
             "allowDelay": "Możliwe do przedłużenia",
             "unlimited": "Bez ograniczeń"
         },
-        "permGrantConfirm": "Ta opcja wymaga odpowiednich uprawnień"
+        "permGrantConfirm": "Ta opcja wymaga odpowiednich uprawnień",
+        "site": {
+            "type": {
+                "normal": "normalny",
+                "merged": "scalone"
+            }
+        },
+        "followBrowser": "Śledź przeglądarkę"
     }
 }

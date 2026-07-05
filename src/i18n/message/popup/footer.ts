@@ -10,6 +10,7 @@ import resource from './footer-resource.json'
 export type FooterMessage = {
     route: {
         percentage: string
+        site: string
         ranking: string
     }
 }

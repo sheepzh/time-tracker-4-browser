@@ -99,7 +99,7 @@ declare namespace tt4b {
             | "minute"
             | "hour"
 
-        type PopupMenu = 'percentage' | 'ranking' | 'limit' | 'focus'
+        type PopupMenu = 'percentage' | 'site' | 'ranking' | 'focus'
     }
 
     namespace common {
@@ -228,6 +228,12 @@ declare namespace tt4b {
         }
 
         type ModifyParam = MakeOptionalUndefined<Pick<tt4b.site.SiteInfo, 'host' | 'type' | 'alias' | 'iconUrl'>>
+
+        type Current = {
+            url: string
+            normal: SiteInfo
+            others: SiteInfo[]
+        }
     }
 
     namespace merge {
@@ -1122,6 +1128,7 @@ declare namespace tt4b {
             & _MakeRegistry<'meta.popup', ui.PopupMenu | undefined>
             // Site
             & _MakeRegistry<'site.runEnabled', string, boolean>
+            & _MakeRegistry<'site.current', void, site.Current | undefined>
             & _MakeRegistry<'site.list', site.Query | undefined, site.SiteInfo[]>
             & _MakeRegistry<'site.page', site.PageQuery | undefined, common.PageResult<site.SiteInfo>>
             & _MakeRegistry<'site.add', site.SiteInfo, string | undefined>

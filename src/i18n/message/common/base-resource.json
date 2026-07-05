@@ -7,7 +7,8 @@
         "sourceCode": "Source Code",
         "changeLog": "Release Notes",
         "limit": "Time Limit",
-        "helpUs": "Help Translation"
+        "helpUs": "Help Translation",
+        "sites": "Site Management"
     },
     "zh_CN": {
         "sidebar": "侧边栏",
@@ -17,7 +18,8 @@
         "sourceCode": "源代码",
         "changeLog": "版本日志",
         "limit": "时间限制",
-        "helpUs": "帮助翻译"
+        "helpUs": "帮助翻译",
+        "sites": "网站管理"
     },
     "zh_TW": {
         "sidebar": "側邊欄",
@@ -27,7 +29,8 @@
         "sourceCode": "原始碼",
         "changeLog": "版本紀錄",
         "limit": "時間限制",
-        "helpUs": "協助翻譯"
+        "helpUs": "協助翻譯",
+        "sites": "網站管理"
     },
     "ja": {
         "sidebar": "サイドバー",
@@ -37,7 +40,8 @@
         "sourceCode": "ソースコード",
         "changeLog": "リリースノート",
         "limit": "時間制限",
-        "helpUs": "協力する"
+        "helpUs": "協力する",
+        "sites": "ウェブサイト管理"
     },
     "pt_PT": {
         "sidebar": "Barra Lateral",
@@ -47,7 +51,8 @@
         "sourceCode": "Código Fonte",
         "changeLog": "Notas de Lançamento",
         "limit": "Limite de Tempo",
-        "helpUs": "Ajudar a Traduzir"
+        "helpUs": "Ajudar a Traduzir",
+        "sites": "Gestão de Sites"
     },
     "uk": {
         "sidebar": "Бічна панель",
@@ -57,7 +62,8 @@
         "sourceCode": "Програмний код",
         "changeLog": "Журнал змін",
         "limit": "Обмеження часу",
-        "helpUs": "Допомогти нам"
+        "helpUs": "Допомогти нам",
+        "sites": "Керування сайтами"
     },
     "es": {
         "sidebar": "Barra Lateral",
@@ -67,7 +73,8 @@
         "sourceCode": "Código Fuente",
         "changeLog": "Notas de Versión",
         "limit": "Límite de tiempo",
-        "helpUs": "Ayúdanos"
+        "helpUs": "Ayúdanos",
+        "sites": "Gestión de sitios"
     },
     "de": {
         "sidebar": "Seitenleiste",
@@ -77,7 +84,8 @@
         "sourceCode": "Quellcode",
         "changeLog": "Versionshinweise",
         "limit": "Zeitlimit",
-        "helpUs": "Hilfe bei der Übersetzung"
+        "helpUs": "Hilfe bei der Übersetzung",
+        "sites": "Websites"
     },
     "fr": {
         "sidebar": "Barre Latérale",
@@ -87,7 +95,8 @@
         "sourceCode": "Code Source",
         "changeLog": "Notes de Version",
         "limit": "Limite de temps",
-        "helpUs": "Aider à la traduction"
+        "helpUs": "Aider à la traduction",
+        "sites": "Gestion des sites"
     },
     "ru": {
         "sidebar": "Боковая панель",
@@ -97,7 +106,8 @@
         "sourceCode": "Исходный код",
         "changeLog": "Версионные изменения",
         "limit": "Ограничение по времени",
-        "helpUs": "Помогите перевести"
+        "helpUs": "Помогите перевести",
+        "sites": "Управление сайтом"
     },
     "ar": {
         "sidebar": "الشريط الجانبي",
@@ -107,7 +117,8 @@
         "sourceCode": "الكود المصدري",
         "changeLog": "ملاحظات الإصدار",
         "limit": "المهلة",
-        "helpUs": "ساعدني في التَّرْجَمَةً"
+        "helpUs": "ساعدني في التَّرْجَمَةً",
+        "sites": "إدارة المواقع"
     },
     "tr": {
         "sidebar": "Kenar Çubuğu",
@@ -117,7 +128,8 @@
         "sourceCode": "Kaynak Kodu",
         "changeLog": "Sürüm Notları",
         "limit": "Zaman Sınırı",
-        "helpUs": "Çeviriye yardım et"
+        "helpUs": "Çeviriye yardım et",
+        "sites": "Site Yönetimi"
     },
     "pl": {
         "sidebar": "Pasek boczny",
@@ -127,7 +139,8 @@
         "sourceCode": "Kod źródłowy",
         "changeLog": "Lista Zmian",
         "limit": "Limit czasu",
-        "helpUs": "Pomóż w tłumaczeniu"
+        "helpUs": "Pomóż w tłumaczeniu",
+        "sites": "Zarządzanie stronami"
     },
     "it": {
         "sidebar": "Barra laterale",
@@ -137,6 +150,7 @@
         "sourceCode": "Codice sorgente",
         "changeLog": "Note di Rilascio",
         "limit": "Limite di tempo",
-        "helpUs": "Aiuto Traduzione"
+        "helpUs": "Aiuto Traduzione",
+        "sites": "Gestione del sito"
     }
 }

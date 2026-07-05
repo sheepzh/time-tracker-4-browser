@@ -80,3 +80,27 @@ export const IS_FROM_STORE = (IS_CHROME && id === CHROME_ID)
     || (IS_FIREFOX && id === FIREFOX_ID)
 
 export const IS_E2E = getRuntimeName() === E2E_NAME
+
+const CWS_URL = /^https?:\/\/(chromewebstore|chrome)\.google\.com(\/|$)/
+const EDGE_URL = /^https?:\/\/(microsoftedge|explore)\.microsoft\.com(\/|$)/
+const FIREFOX_URL = /^https?:\/\/addons\.mozilla\.org(\/|$)/
+const FIREFOX_ACC_URL = /^https?:\/\/accounts\.mozilla\.org(\/|$)/
+
+export const isNotTrackable = (url: string) => {
+    if (/^chrome.*?:\/\/.*$/.test(url)
+        || /^about(-.+)?:/.test(url)
+        // Firefox addons' pages
+        || /^moz-extension:/.test(url)
+        || /^edge.*?:\/\/.*$/.test(url)
+        // Edge extensions' pages
+        || /^extension:/.test(url)
+        || /^safari.*?:\/\/.*/.test(url)
+    ) return true
+
+    if (IS_CHROME && CWS_URL.test(url)) return true
+    if (IS_EDGE && EDGE_URL.test(url)) return true
+    if (IS_FIREFOX) {
+        if (FIREFOX_URL.test(url) || FIREFOX_ACC_URL.test(url)) return true
+    }
+    return false
+}

@@ -1,5 +1,5 @@
-import { usePopupContext } from "@popup/context"
 import { useEcharts } from '@hooks'
+import { useDarkMode } from "@popup/context"
 import { defineComponent, toRef } from "vue"
 import { type PercentageResult } from "../query"
 import Wrapper from "./Wrapper"
@@ -9,7 +9,7 @@ type Props = {
 }
 
 const Cate = defineComponent<Props>(props => {
-    const { darkMode } = usePopupContext()
+    const { darkMode } = useDarkMode()
     const data = toRef(props, 'value')
     const { elRef } = useEcharts(Wrapper, data, { deps: darkMode })
 

@@ -28,7 +28,7 @@ type Props = ModelValue<tt4b.site.SiteKey | undefined>
 function labelOf(site: tt4b.site.SiteInfo): string {
     let { host: label, type, alias } = site
     const suffix = [
-        type !== 'normal' && t(msg => msg.siteManage.type[type].name).toLocaleUpperCase(),
+        type !== 'normal' && t(msg => msg.shared.site.type[type]).toLocaleUpperCase(),
         alias && t(msg => msg.siteManage.msg.existedTag),
     ].filter(Boolean).join('-')
     suffix && (label += `[${suffix}]`)
