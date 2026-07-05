@@ -4,13 +4,19 @@ All notable changes to Time Tracker will be documented in this file.
 
 It is worth mentioning that the release time of each change refers to the time when the installation package is submitted to the webstore. It is about one week for Firefox to moderate packages, while only 1-2 days for Chrome and Edge.
 
-## [4.4.0] - 2027-06-29
+## [4.4.1] - 2026-07-06
+
+-  Added the view of current page on the popup page
+-  Improved the performance when adding a site
+-  Added option syncing with Google/Edge/Firefox account
+
+## [4.4.0] - 2026-06-29
 
 -  Added Focus & Pomodoro
 -  Refactored the background page
 -  Fixed some bugs
 
-## [4.3.7] - 2027-06-15
+## [4.3.7] - 2026-06-15
 
 -  Supported custom icons for websites
 -  Fixed some bugs for Mobile
