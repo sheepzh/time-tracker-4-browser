@@ -60,7 +60,6 @@ async function processStrings(
     await client.batchDeleteString(strings2Delete.map(s => s.id))
 }
 
-
 async function processByDir(client: CrowdinClient, dir: Dir, branch: SourceFilesModel.Branch): Promise<void> {
     // 1. init directory
     const dirKey: NameKey = { name: dir, branchId: branch.id }

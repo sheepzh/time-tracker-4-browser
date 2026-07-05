@@ -40,7 +40,6 @@ export async function judgeVerificationRequired(item: tt4b.limit.Item, delayDura
     return false
 }
 
-
 const ANSWER_CANVAS_FONT_SIZE = 24
 
 const AnswerCanvas = defineComponent(((props: { text: string }) => {

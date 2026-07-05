@@ -21,5 +21,4 @@ export function labelOfHostInfo(site: tt4b.site.SiteKey | undefined): string {
     return `${host}${label}`
 }
 
-
 export const formatValue = (val: number | undefined, formatter?: ValueFormatter) => formatter ? formatter(val) : val?.toString() || '-'

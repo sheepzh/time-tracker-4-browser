@@ -84,7 +84,6 @@ export abstract class EchartsWrapper<BizOption, EchartsOption> {
     }
 }
 
-
 type WrapperResult<BizOption, EchartsOption, EW extends EchartsWrapper<BizOption, EchartsOption>> = {
     elRef: Ref<HTMLDivElement | undefined>
     wrapper: EW

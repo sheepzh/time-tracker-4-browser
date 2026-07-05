@@ -85,7 +85,6 @@ It is worth mentioning that the release time of each change refers to the time w
 
 -  Fixed some issue for Gist
 
-
 ## [4.1.3] - 2026-03-24
 
 -  Add data collection permission for Firefox

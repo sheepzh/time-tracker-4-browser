@@ -22,7 +22,6 @@ const createInitial = (): Form => ({
     ...FOCUS_METHOD_DEFAULTS['focus'],
 })
 
-
 const _default = defineComponent<{}>((_, ctx) => {
     const { refresh } = useFocusList()
     const [visible, open, close] = useSwitch()

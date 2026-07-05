@@ -189,5 +189,4 @@ class Wrapper extends EchartsWrapper<BizOption, EcOption> {
     }
 }
 
-
 export default Wrapper

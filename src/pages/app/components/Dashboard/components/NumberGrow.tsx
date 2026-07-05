@@ -27,5 +27,4 @@ const NumberGrow = defineComponent<Props>(props => {
     >{text.value}</a>
 }, { props: ['value', 'duration', 'fontSize'] })
 
-
 export default NumberGrow

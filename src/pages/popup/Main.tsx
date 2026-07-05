@@ -24,5 +24,3 @@ const Main = defineComponent(() => {
 })
 
 export default Main
-
-

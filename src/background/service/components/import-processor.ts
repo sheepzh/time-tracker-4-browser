@@ -35,7 +35,6 @@ async function processAcc(data: tt4b.imported.Data): Promise<void> {
     }))
 }
 
-
 export async function previewBackup(param: tt4b.backup.RemoteQuery): Promise<tt4b.imported.Row[]> {
     const remoteRows = await backupProcessor.query(param)
     const rows: tt4b.imported.Row[] = remoteRows.map(rr => ({

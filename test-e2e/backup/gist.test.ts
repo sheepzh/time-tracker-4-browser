@@ -35,7 +35,6 @@ describeOptional('Backup with gist', () => {
         await sleep(.5)
         await option.assertTestValid()
 
-
         // Visit site
         const sitePage = await context.newPageAndWaitCsInjected(MOCK_URL)
         await sleep(2)

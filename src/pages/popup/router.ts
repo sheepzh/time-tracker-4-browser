@@ -7,7 +7,6 @@ type MyRoute =
     | (Omit<RouteRecordSingleView, 'path'> & { path: '/' })
     | (Omit<RouteRecordRedirect, 'redirect'> & { redirect: Path })
 
-
 // Not to set redirect path for '/', which is managed by menu context
 const createRoutes = (): MyRoute[] => [
     {

@@ -24,7 +24,6 @@ export type BizOption = {
     timeFormat: tt4b.ui.TimeFormat
 }
 
-
 function formatTimeOfEcharts(params: TopLevelFormatterParams, timeFormat: tt4b.ui.TimeFormat): string {
     const format = Array.isArray(params) ? params[0] : params
     if (!format) return 'NaN'

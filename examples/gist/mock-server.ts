@@ -137,7 +137,6 @@ function updateExistingGist(origin: string, gist: Gist, form: GistForm): Gist {
     return next
 }
 
-
 class Handler {
     private readonly req: IncomingMessage
     private readonly res: ServerResponse

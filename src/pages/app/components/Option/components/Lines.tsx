@@ -52,5 +52,4 @@ const Lines: FunctionalComponent<{}> = (_, { slots }) => {
 }
 Lines.displayName = 'OptionLines'
 
-
 export default Lines

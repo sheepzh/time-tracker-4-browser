@@ -223,5 +223,3 @@ export async function checkMainBranch(client: CrowdinClient): Promise<SourceFile
     const branch = await client.getMainBranch()
     return branch ?? exitWith("Main branch is null")
 }
-
-

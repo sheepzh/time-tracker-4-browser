@@ -38,7 +38,6 @@ const totalTitle = (totalMb: number) => totalMb
     ? t(msg => msg.dataManage.totalMemoryAlert, { size: totalMb })
     : t(msg => msg.dataManage.totalMemoryAlert1)
 
-
 const _default = defineComponent(() => {
     const { memory } = useDataMemory()
     const { data: option } = useRequest(getOption)

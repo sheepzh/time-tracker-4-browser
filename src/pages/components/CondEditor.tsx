@@ -75,7 +75,6 @@ const AUTOCOMPLETE_STYLE: StyleValue = {
     '--el-input-focus-border-color': 'transparent',
 }
 
-
 const TagList: FunctionalComponent<{ list: string[], onRemove: ArgCallback<string> }> = ({ list, onRemove }) => (
     <div v-show={list.length} style={{ minHeight: 0, overflow: 'hidden' }}>
         <ElScrollbar height="100%">

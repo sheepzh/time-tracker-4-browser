@@ -16,7 +16,6 @@ import {
     createLimitRule, delayLimit, noticeLimitChanged, removeLimitRules, selectLimit, updateLimitRules,
 } from "./service/limit-service"
 
-
 function initDailyBroadcast() {
     // Broadcast rules at the start of each day
     alarmManager.setWhen(

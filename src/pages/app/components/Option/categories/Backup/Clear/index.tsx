@@ -59,7 +59,6 @@ const _default = defineComponent(() => {
         openSop()
     }
 
-
     return () => <>
         <ElButton type="danger" icon={Delete} onClick={open}>
             {t(msg => msg.option.backup.clear.btn)}
