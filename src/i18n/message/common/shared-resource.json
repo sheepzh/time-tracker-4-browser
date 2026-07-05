@@ -57,7 +57,8 @@
         "site": {
             "type": {
                 "normal": "普通站点",
-                "merged": "合并站点"
+                "merged": "合并站点",
+                "virtual": "子页面"
             }
         },
         "followBrowser": "跟随浏览器"
@@ -144,7 +145,6 @@
         "permGrantConfirm": "Esta funcionalidade precisa de permissões relevantes",
         "site": {
             "type": {
-                "normal": "normal",
                 "merged": "agrupado"
             }
         },
@@ -233,7 +233,6 @@
         "permGrantConfirm": "Esta función requiere permisos pertinentes",
         "site": {
             "type": {
-                "normal": "normal",
                 "merged": "fusionado"
             }
         },
@@ -263,7 +262,6 @@
         "permGrantConfirm": "Dieses Feature benötigt entsprechende Berechtigungen",
         "site": {
             "type": {
-                "normal": "normal",
                 "merged": "zusammengeführt"
             }
         },
@@ -293,7 +291,6 @@
         "permGrantConfirm": "Cette fonctionnalité nécessite des autorisations appropriées",
         "site": {
             "type": {
-                "normal": "normal",
                 "merged": "fusionné"
             }
         },
@@ -380,7 +377,6 @@
         "permGrantConfirm": "Bu özellik ilgili izinleri gerektirir",
         "site": {
             "type": {
-                "normal": "normal",
                 "merged": "birleştirildi"
             }
         },
