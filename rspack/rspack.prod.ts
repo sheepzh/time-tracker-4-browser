@@ -1,10 +1,9 @@
 import path from "path"
+import { name, version } from "../package.json"
 import manifest from "../src/manifest"
 import { FileManagerPlugin } from "./plugins/file-manager"
 import optionGenerator from "./rspack.common"
 import { enhancePluginWith } from './util'
-
-const { name, version } = require(path.join(__dirname, '..', 'package.json'))
 
 const outputPath = path.resolve(__dirname, '..', 'dist_prod')
 const marketPkgPath = path.resolve(__dirname, '..', 'market_packages')

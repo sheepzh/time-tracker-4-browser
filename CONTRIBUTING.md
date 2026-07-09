@@ -290,7 +290,7 @@ Please use the code formatting tools that come with VSCode. Please <u>**disable 
 -   No semicolon at the end of the line
 -   Please use LF (\n). In Windows, you need to execute the following command to turn off the warning:
 
-```
+```shell
 git config core.autocrlf false
 ```
 
@@ -310,17 +310,17 @@ Crowdin is a collaborative translation platform that allows native speakers to h
 
 1. Upload English text and other language text in code
 
-```
+```shell
 # Upload original English text
-ts-node ./script/crowdin/sync-source.ts
+npx tsx --tsconfig tsconfig.node.json ./script/crowdin/sync-source.ts
 # Upload texts in other languages ​​in local code
-ts-node ./script/crowdin/sync-translation.ts
+npx tsx --tsconfig tsconfig.node.json ./script/crowdin/sync-translation.ts
 ```
 
 Because the above two scripts rely on the Crowdin access secret in the environment variable, I integrated them into Github's [Action](https://github.com/sheepzh/time-tracker-4-browser/actions/workflows/crowdin-sync.yml)
 
 2. Export translations from Crowdin
 
-```
-ts-node ./script/crowdin/export-translation.ts
+```shell
+npx tsx --tsconfig tsconfig.node.json ./script/crowdin/export-translation.ts
 ```

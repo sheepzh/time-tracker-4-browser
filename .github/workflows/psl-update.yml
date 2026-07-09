@@ -8,20 +8,18 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Prepare branch
-              uses: actions/checkout@v4
+              uses: actions/checkout@v7
               with:
                   fetch-depth: 1
                   token: ${{secrets.GITHUB_TOKEN}}
             - name: Test using Node.js
-              uses: actions/setup-node@v1
+              uses: actions/setup-node@v6
               with:
-                  node-version: "v22"
-            - name: Install ts-node
-              run: npm i -g ts-node
+                  node-version: "v24"
             - name: Install dependencies
               run: npm install
             - name: Update psl
-              run: ts-node -P tsconfig.node.json ./script/psl.ts
+              run: npx tsx --tsconfig ./tsconfig.node.json ./script/psl.ts
             - name: Create Pull Request
               uses: peter-evans/create-pull-request@v7
               with:

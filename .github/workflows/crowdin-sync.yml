@@ -6,16 +6,16 @@ jobs:
         env:
             TIMER_CROWDIN_AUTH: ${{ secrets.TIMER_CROWDIN_AUTH }}
         steps:
-            - uses: actions/checkout@v2
-            - name: Test using Node.js
-              uses: actions/setup-node@v1
+            - uses: actions/checkout@v7
               with:
-                  node-version: "v22"
-            - name: Install ts-node
-              run: npm i -g ts-node
+                  fetch-depth: 1
+            - name: Test using Node.js
+              uses: actions/setup-node@v6
+              with:
+                  node-version: "v24"
             - name: Install dependencies
               run: npm install
             - name: Sync source
-              run: ts-node --project ./tsconfig.node.json ./script/crowdin/sync-source.ts
+              run: npx tsx --tsconfig ./tsconfig.node.json ./script/crowdin/sync-source.ts
             - name: Sync translations
-              run: ts-node --project ./tsconfig.node.json ./script/crowdin/sync-translation.ts
+              run: npx tsx --tsconfig ./tsconfig.node.json ./script/crowdin/sync-translation.ts

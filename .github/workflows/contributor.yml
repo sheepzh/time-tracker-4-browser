@@ -22,7 +22,7 @@ jobs:
               run: npm install
 
             - name: Run Script
-              run: npx ts-node -P tsconfig.node.json ./script/contributor.ts
+              run: npx tsx --tsconfig tsconfig.node.json ./script/contributor.ts
               env:
                   TIMER_USER_COUNT_GIST_TOKEN: ${{ secrets.GIST_PAT }}
                   TIMER_CROWDIN_AUTH: ${{ secrets.TIMER_CROWDIN_AUTH }}

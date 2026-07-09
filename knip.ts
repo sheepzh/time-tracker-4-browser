@@ -13,7 +13,6 @@ const config: KnipConfig = {
     ],
     ignoreDependencies: [
         "@rstest/coverage-istanbul",
-        "tsconfig-paths",
     ],
     rspack: {
         config: ["rspack/rspack.{dev,prod,e2e,analyze}*.ts"],
