@@ -4,15 +4,15 @@
     "private": true,
     "description": "Standalone examples package for local/e2e servers",
     "scripts": {
-        "start:gist": "ts-node gist/mock-server.ts",
-        "start:notification": "ts-node notification/demo-server.ts"
+        "start:gist": "npx tsx gist/mock-server.ts",
+        "start:notification": "npx tsx notification/demo-server.ts"
     },
     "dependencies": {
         "hash.js": "^1.1.7"
     },
     "devDependencies": {
-        "@types/node": "^25.5.0",
-        "ts-node": "^10.9.2",
-        "typescript": "6.0.2"
+        "@types/node": "^26.1.1",
+        "tsx": "^4.23.0",
+        "typescript": "7.0.2"
     }
 }

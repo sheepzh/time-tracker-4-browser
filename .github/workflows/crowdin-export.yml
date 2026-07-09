@@ -25,7 +25,7 @@ jobs:
 
             - name: Export translations
               run: |
-                  npx ts-node --project ./tsconfig.node.json ./script/crowdin/export-translation.ts 2>&1 | tee /tmp/export-output.log
+                  npx tsx --tsconfig ./tsconfig.node.json ./script/crowdin/export-translation.ts 2>&1 | tee /tmp/export-output.log
                   exit ${PIPESTATUS[0]}
               continue-on-error: true
 
