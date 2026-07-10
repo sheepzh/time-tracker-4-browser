@@ -33,7 +33,7 @@ export function req2Promise<T = unknown>(req: IDBRequest<T>): Promise<T | undefi
 export async function iterateCursor<T = unknown>(
     req: IDBRequest<IDBCursorWithValue | null>
 ): Promise<readonly T[]>
-export async function iterateCursor<T = unknown>(
+export async function iterateCursor(
     req: IDBRequest<IDBCursorWithValue | null>,
     processor: (cursor: IDBCursorWithValue) => void | Promise<void>
 ): Promise<void>

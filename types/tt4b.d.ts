@@ -665,27 +665,23 @@ declare namespace tt4b {
             composition?: RemoteComposition
         }
 
-        /** StatCondition.date fields only (mq / stat-database queries). */
-        type _BaseQuery = {
+        type BaseQuery = {
             date?: string | [string?, string?]
             mergeDate?: boolean
+            query?: string
+            focusRange?: Tuple<number | undefined, 2>
+            timeRange?: Tuple<number | undefined, 2>
         }
 
         type SiteQuery =
-            & _BaseQuery
-            & {
-                focusRange?: Vector<2>
-                timeRange?: [number, number?]
-                virtual?: boolean
-            }
+            & BaseQuery
             & common.SortBy<'date' | 'host' | core.Dimension>
             & {
-                query?: string
+                virtual?: boolean
                 host?: string | string[]
                 mergeHost?: boolean
                 inclusiveRemote?: boolean
                 cateIds?: number[]
-                ignoreSite?: boolean
             }
 
         type SiteDeleteQuery = ({
@@ -730,10 +726,9 @@ declare namespace tt4b {
 
         type SiteRow = SiteRowFlat & SiteMergeExtend
 
-        type CateQuery = _BaseQuery
+        type CateQuery = BaseQuery
             & common.SortBy<'date' | 'focus' | 'time'>
             & {
-                query?: string
                 inclusiveRemote?: boolean
                 cateIds?: number[]
             }
@@ -763,14 +758,9 @@ declare namespace tt4b {
                 title: string | undefined
             }
 
-        type GroupQuery = _BaseQuery
-            & {
-                focusRange?: Vector<2>
-                timeRange?: [number, number?]
-            }
+        type GroupQuery = BaseQuery
             & common.SortBy<'date' | 'title' | 'focus' | 'time'>
             & {
-                query?: string
                 groupIds?: number[]
             }
 

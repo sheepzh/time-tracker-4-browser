@@ -5,7 +5,7 @@ import { createObjectGuard, isOptionalInt } from 'typescript-guard'
 import BaseDatabase from '../common/base-database'
 import { REMAIN_WORD_PREFIX } from '../common/constant'
 import { cvtGroupId2Host, formatDateStr, GROUP_PREFIX, increase, zeroResult } from './common'
-import { filterDate, filterHost, filterNumberRange, processCondition, type ProcessedCondition } from './condition'
+import { filterDate, filterHost, processCondition, type ProcessedCondition } from './condition'
 import type { StatCondition, StatDatabase } from './types'
 
 /**
@@ -26,14 +26,9 @@ const isPartialResult = createObjectGuard<Partial<tt4b.core.Result>>({
     run: isOptionalInt,
 })
 
-function filterRow(row: tt4b.core.Row, condition: ProcessedCondition): boolean {
-    const { host, date, focus, time } = row
-    const { timeStart, timeEnd, focusStart, focusEnd, keys, virtual } = condition
-
-    return filterHost(host, keys, virtual)
-        && filterDate(date, condition)
-        && filterNumberRange(time, [timeStart, timeEnd])
-        && filterNumberRange(focus, [focusStart, focusEnd])
+function filterRow({ host, date }: tt4b.core.Row, condition: ProcessedCondition): boolean {
+    const { keys, virtual } = condition
+    return filterHost(host, keys, virtual) && filterDate(date, condition)
 }
 
 /**

@@ -77,16 +77,17 @@ const cvtOrderDir = (order: RecordSort['order']): tt4b.common.SortDirection | un
 }
 
 const cvt2GroupQuery = (
-    { query, mergeDate, dateRange: date }: RecordFilterOption,
+    { query, mergeDate, dateRange: date, focusRange, timeRange }: RecordFilterOption,
     { prop, order }: RecordSort,
 ): tt4b.stat.GroupQuery => ({
     date: cvtDateRange2Str(date), mergeDate, query,
     sortKey: prop !== 'host' && prop !== 'run' ? prop : undefined,
     sortDirection: cvtOrderDir(order),
+    focusRange, timeRange,
 })
 
 const cvt2SiteQuery = (
-    { dateRange: date, mergeDate, siteMerge, query, cateIds, readRemote: inclusiveRemote }: RecordFilterOption,
+    { dateRange: date, mergeDate, siteMerge, query, cateIds, readRemote: inclusiveRemote, focusRange, timeRange }: RecordFilterOption,
     { prop, order }: RecordSort,
 ): tt4b.stat.SiteQuery => ({
     date: cvtDateRange2Str(date), mergeDate,
@@ -95,15 +96,17 @@ const cvt2SiteQuery = (
     virtual: true,
     sortKey: prop,
     sortDirection: cvtOrderDir(order),
+    focusRange, timeRange,
 })
 
 const cvt2CateQuery = (
-    { dateRange: date, mergeDate, query, cateIds, readRemote: inclusiveRemote }: RecordFilterOption,
+    { dateRange: date, mergeDate, query, cateIds, readRemote: inclusiveRemote, focusRange, timeRange }: RecordFilterOption,
     { prop, order }: RecordSort,
 ): tt4b.stat.CateQuery => ({
     date: cvtDateRange2Str(date), mergeDate, query, cateIds, inclusiveRemote,
     sortKey: prop !== 'host' && prop !== 'run' ? prop : undefined,
     sortDirection: cvtOrderDir(order),
+    focusRange, timeRange,
 })
 
 export const queryPage = async (filter: RecordFilterOption, sort: RecordSort, page: tt4b.common.PageQuery): Promise<tt4b.common.PageResult<tt4b.stat.Row>> => {

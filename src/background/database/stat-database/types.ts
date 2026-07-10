@@ -6,18 +6,6 @@ export type StatCondition = {
      */
     date?: string | [string?, string?]
     /**
-     * Focus range, milliseconds
-     *
-     * @since 0.0.9
-     */
-    focusRange?: Vector<2>
-    /**
-     * Time range
-     *
-     * @since 0.0.9
-     */
-    timeRange?: [number, number?]
-    /**
      * Whether to include virtual sites
      *
      * @since 1.6.1

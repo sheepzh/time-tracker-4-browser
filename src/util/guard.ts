@@ -1,5 +1,12 @@
-import { isInt } from 'typescript-guard'
+import { isInt, TypeGuard } from 'typescript-guard'
 
 export const isRecord = (unk: unknown): unk is Record<string, unknown> => typeof unk === 'object' && unk !== null && !Array.isArray(unk)
 
-export const isVector2 = (unk: unknown): unk is Vector<2> => Array.isArray(unk) && unk.length === 2 && unk.every(isInt)
+export function createTupleGuard<T, const L extends number>(
+    itemGuard: TypeGuard<T>,
+    length: L,
+): TypeGuard<Tuple<T, L>> {
+    return (unk: unknown): unk is Tuple<T, L> => Array.isArray(unk) && unk.length === length && unk.every(itemGuard)
+}
+
+export const isVector2 = createTupleGuard(isInt, 2)

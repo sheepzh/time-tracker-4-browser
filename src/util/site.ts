@@ -90,22 +90,6 @@ export function parseSiteIdentity(identity: string | undefined): tt4b.site.SiteK
     return { type, host }
 }
 
-function cloneSiteKey(origin: tt4b.site.SiteKey | undefined): tt4b.site.SiteKey | undefined {
-    if (!origin) return
-    return { host: origin.host, type: origin.type }
-}
-
-export function distinctSites(list: tt4b.site.SiteKey[]): tt4b.site.SiteKey[] {
-    const map: Record<string, tt4b.site.SiteKey> = {}
-    list?.forEach(ele => {
-        const key = identifySiteKey(ele)
-        if (map[key]) return
-        const cloned = cloneSiteKey(ele)
-        cloned && (map[key] = cloned)
-    })
-    return Object.values(map)
-}
-
 export class SiteMap<T> {
     private innerMap: Record<string, [tt4b.site.SiteKey, T]>
 

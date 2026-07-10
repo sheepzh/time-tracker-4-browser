@@ -5,6 +5,7 @@ import {
 import { default as VueBabelPluginJsx } from "@vue/babel-plugin-jsx"
 import path, { join } from "path"
 import postcssRTLCSS from 'postcss-rtlcss'
+import { TsCheckerRspackPlugin } from "ts-checker-rspack-plugin"
 import ElementPlus from 'unplugin-element-plus/rspack'
 import i18nChrome from "../src/i18n/chrome"
 import { compilerOptions } from "../tsconfig.json"
@@ -207,6 +208,15 @@ const generateOption = ({ outputPath, manifest, mode }: Option) => {
     const plugins = [
         ...generateJsonPlugins,
         ElementPlus({}),
+        new TsCheckerRspackPlugin({
+            issue: {
+                exclude: [
+                    { file: 'test/**' },
+                    { file: 'test-e2e/**' },
+                    { file: 'script/**' },
+                ],
+            },
+        }),
         new GenerateJsonPlugin(MANIFEST_JSON_NAME, manifest),
         new ImportCheckerPlugin(),
         // copy static resources
