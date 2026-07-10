@@ -6,10 +6,6 @@ export type ProcessedCondition = StatCondition & {
     exactDateStr?: string
     startDateStr?: string
     endDateStr?: string
-    timeStart?: number
-    timeEnd?: number
-    focusStart?: number
-    focusEnd?: number
 }
 
 export function filterHost(host: string, keys: ProcessedCondition['keys'], virtual?: boolean): boolean {
@@ -31,38 +27,17 @@ export function filterDate(
     return true
 }
 
-export function filterNumberRange(val: number, [start, end]: [start?: number, end?: number]): boolean {
-    if (start !== null && start !== undefined && start > val) return false
-    if (end !== null && end !== undefined && end < val) return false
-    return true
-}
-
 export function processCondition(condition?: StatCondition): ProcessedCondition {
     const result: ProcessedCondition = { ...condition }
 
     const paramDate = condition?.date
-    if (paramDate) {
-        if (typeof paramDate === 'string') {
-            result.useExactDate = true
-            result.exactDateStr = paramDate
-        } else {
-            const [startDate, endDate] = paramDate
-            result.useExactDate = false
-            result.startDateStr = startDate
-            result.endDateStr = endDate
-        }
-    }
 
-    const paramTime = condition?.timeRange
-    if (paramTime) {
-        paramTime.length >= 2 && (result.timeEnd = paramTime[1])
-        paramTime.length >= 1 && (result.timeStart = paramTime[0])
-    }
-
-    const paramFocus = condition?.focusRange
-    if (paramFocus) {
-        paramFocus.length >= 2 && (result.focusEnd = paramFocus[1])
-        paramFocus.length >= 1 && (result.focusStart = paramFocus[0])
+    if (typeof paramDate === 'string') {
+        result.useExactDate = true
+        result.exactDateStr = paramDate
+    } else if (paramDate) {
+        result.startDateStr = paramDate[0]
+        result.endDateStr = paramDate[1]
     }
 
     return result

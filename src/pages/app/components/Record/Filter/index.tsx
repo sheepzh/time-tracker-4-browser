@@ -15,6 +15,7 @@ import { useRecordFilter } from "../context"
 import BatchDelete from "./BatchDelete"
 import DownloadFile from "./DownloadFile"
 import MergeFilterItem from "./MergeFilterItem"
+import RangeFilter from './RangeFilter'
 import RemoteClient from "./RemoteClient"
 
 const shortcut = (text: string, agoOfStart?: number, agoOfEnd?: number): ElDatePickerShortcut => (
@@ -35,10 +36,7 @@ const _default = defineComponent<{}>(() => {
     return () => (
         <Flex justify="space-between" width="100%" gap={10} wrap>
             <Flex gap={10} wrap>
-                <InputFilter
-                    defaultValue={filter.query}
-                    onSearch={str => filter.query = str}
-                />
+                <InputFilter defaultValue={filter.query} onSearch={str => filter.query = str} />
                 <DateRangeFilter
                     startPlaceholder={t(msg => msg.calendar.label.startDate)}
                     endPlaceholder={t(msg => msg.calendar.label.endDate)}
@@ -55,6 +53,14 @@ const _default = defineComponent<{}>(() => {
                 <TimeFormatFilter
                     modelValue={filter.timeFormat}
                     onChange={val => filter.timeFormat = val}
+                />
+                <RangeFilter
+                    time={filter.timeRange}
+                    focus={filter.focusRange}
+                    onChange={(time, focus) => {
+                        filter.timeRange = time
+                        filter.focusRange = focus
+                    }}
                 />
                 <MergeFilterItem />
             </Flex>

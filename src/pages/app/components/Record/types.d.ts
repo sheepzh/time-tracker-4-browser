@@ -15,6 +15,11 @@ export type RecordFilterOption = {
      */
     timeFormat: tt4b.ui.TimeFormat
     readRemote?: boolean
+    /**
+     * @since 4.4.2
+     */
+    focusRange?: Tuple<number | undefined, 2>
+    timeRange?: Tuple<number | undefined, 2>
 }
 
 export interface DisplayComponent {

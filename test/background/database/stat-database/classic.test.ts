@@ -82,18 +82,6 @@ describe('stat-database/classic', () => {
         // If start is after end, nothing returned
         cond.date = [now, yesterday]
         expect(await db.select(cond)).toEqual([])
-
-        // test item
-        cond = {}
-
-        // focus [0,10]
-        cond.focusRange = [0, 10]
-        expect((await db.select(cond)).length).toEqual(3)
-
-        // time [2, 3]
-        cond.timeRange = [2, 3]
-        cond.focusRange = undefined
-        expect((await db.select(cond)).length).toEqual(2)
     })
 
     test('accumulate and delete by key/date', async () => {

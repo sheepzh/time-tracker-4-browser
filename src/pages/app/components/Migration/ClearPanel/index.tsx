@@ -21,8 +21,8 @@ type FilterOption = {
 }
 
 type ClearFilterRanges = {
-    focusRange: [number, number]
-    timeRange: [number, number?]
+    focusRange: Tuple<number | undefined, 2>
+    timeRange: Tuple<number | undefined, 2>
 }
 
 function buildClearStatQuery(option: FilterOption): (tt4b.stat.SiteQuery & tt4b.stat.GroupQuery) | undefined {
@@ -59,7 +59,7 @@ const seconds2Milliseconds = (a: number) => a * MILL_PER_SECOND
 function checkParam(option: FilterOption): ClearFilterRanges | undefined {
     const { focus, time } = option
     let hasError = false
-    const focusRange = str2Range(focus, seconds2Milliseconds) as [number, number]
+    const focusRange = str2Range(focus, seconds2Milliseconds)
     hasError = hasError || assertQueryParam(focusRange)
     const timeRange = str2Range(time)
     hasError = hasError || assertQueryParam(timeRange, true)

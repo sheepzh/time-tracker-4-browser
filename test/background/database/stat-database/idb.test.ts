@@ -143,36 +143,6 @@ describe('stat-database/idb', () => {
         expect(await db.select({ date: '20240603', keys: GITHUB_VIRTUAL, virtual: true })).toEqual([
             { host: GITHUB_VIRTUAL, date: '20240603', focus: 5, time: 10 },
         ] satisfies tt4b.core.Row[])
-
-        // Query by time index
-        expect(await db.select({ timeRange: [10, 20] })).toEqual([
-            { host: GITHUB, date: '20240602', focus: 10, time: 20 },
-            { host: GITHUB, date: '20240603', focus: 10, time: 20 },
-        ] satisfies tt4b.core.Row[])
-        expect(await db.select({ timeRange: [10, 20], virtual: true })).toEqual([
-            { host: GITHUB_VIRTUAL, date: '20240603', focus: 5, time: 10 },
-            { host: GITHUB, date: '20240602', focus: 10, time: 20 },
-            { host: GITHUB, date: '20240603', focus: 10, time: 20 },
-        ] satisfies tt4b.core.Row[])
-        expect(await db.select({ timeRange: [10, 20], date: '20240603', virtual: true })).toEqual([
-            { host: GITHUB, date: '20240603', focus: 10, time: 20 },
-            { host: GITHUB_VIRTUAL, date: '20240603', focus: 5, time: 10 },
-        ] satisfies tt4b.core.Row[])
-
-        // Query by focus index
-        expect(await db.select({ focusRange: [5, 10] })).toEqual([
-            { host: GITHUB, date: '20240602', focus: 10, time: 20 },
-            { host: GITHUB, date: '20240603', focus: 10, time: 20 },
-        ] satisfies tt4b.core.Row[])
-        expect(await db.select({ focusRange: [5, 10], virtual: true })).toEqual([
-            { host: GITHUB_VIRTUAL, date: '20240603', focus: 5, time: 10 },
-            { host: GITHUB, date: '20240602', focus: 10, time: 20 },
-            { host: GITHUB, date: '20240603', focus: 10, time: 20 },
-        ] satisfies tt4b.core.Row[])
-        expect(await db.select({ focusRange: [5, 10], date: '20240603', virtual: true })).toEqual([
-            { host: GITHUB, date: '20240603', focus: 10, time: 20 },
-            { host: GITHUB_VIRTUAL, date: '20240603', focus: 5, time: 10 },
-        ] satisfies tt4b.core.Row[])
     })
 
     test('delete', async () => {

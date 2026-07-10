@@ -1,6 +1,6 @@
 import { BaseIDBStorage, closedRangeKey, IndexResult, iterateCursor, type Key, req2Promise, type Table } from '../common/indexed-storage'
 import { cvtGroupId2Host, formatDateStr, increase, zeroRow } from './common'
-import { filterDate, filterHost, filterNumberRange, processCondition, type ProcessedCondition } from './condition'
+import { filterDate, filterHost, processCondition, type ProcessedCondition } from './condition'
 import type { StatCondition, StatDatabase } from './types'
 
 type StoredRow = tt4b.core.Row & {
@@ -19,20 +19,10 @@ const isGroup = (row: StoredRow): boolean => row.groupId !== undefined
 type IndexCoverage = {
     date?: boolean
     host?: boolean
-    time?: boolean
-    focus?: boolean
 }
 
 function buildFilter(cond: ProcessedCondition, coverage: IndexCoverage): (row: StoredRow) => boolean {
     return (row: StoredRow) => {
-        if (!coverage.time && !filterNumberRange(row.time, [cond.timeStart, cond.timeEnd])) {
-            return false
-        }
-
-        if (!coverage.focus && !filterNumberRange(row.focus, [cond.focusStart, cond.focusEnd])) {
-            return false
-        }
-
         if (!coverage.date && !filterDate(row.date, cond)) {
             return false
         }
@@ -79,15 +69,10 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
 
     private judgeIndex(store: IDBObjectStore, cond: ProcessedCondition, expectGroup: boolean): IndexResult<IndexCoverage> {
         const keys = typeof cond.keys === 'string' ? [cond.keys] : cond.keys
-        const {
-            useExactDate, exactDateStr,
-            timeStart, timeEnd,
-            focusStart, focusEnd,
-            startDateStr, endDateStr,
-        } = cond
+        const { useExactDate, exactDateStr, startDateStr, endDateStr } = cond
 
         if (expectGroup) {
-            const groupId = keys?.length === 1 ? parseInt(keys[0] ?? 'NaN') : NaN
+            const groupId = parseInt(keys?.[0] ?? 'NaN')
             return isNaN(groupId) ? {
                 cursorReq: this.assertIndexCursor(store, 'groupId', IDBKeyRange.lowerBound(0)),
             } : {
@@ -110,22 +95,6 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
             return {
                 cursorReq: this.assertIndexCursor(store, 'date', dateRange),
                 coverage: { date: true }
-            }
-        }
-
-        const timeRange = closedRangeKey(timeStart, timeEnd)
-        if (timeRange) {
-            return {
-                cursorReq: super.assertIndexCursor(store, 'time', timeRange),
-                coverage: { time: true }
-            }
-        }
-
-        const focusRange = closedRangeKey(focusStart, focusEnd)
-        if (focusRange) {
-            return {
-                cursorReq: super.assertIndexCursor(store, 'focus', focusRange),
-                coverage: { focus: true }
             }
         }
 

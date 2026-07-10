@@ -188,8 +188,8 @@ const _default = defineComponent((_, ctx) => {
                         onChange={setPage}
                     />
                 </Flex>
-            </Flex >
-        </ContentCard >
+            </Flex>
+        </ContentCard>
     )
 })
 

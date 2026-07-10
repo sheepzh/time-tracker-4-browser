@@ -1,9 +1,10 @@
 import type { RecordQuery } from '@app/router/constants'
 import { isOptionalIntArray, isTimeFormat } from '@app/util/limit/types'
 import { localReactive, useProvide, useProvider } from '@hooks'
+import { createTupleGuard } from '@util/guard'
 import { getBirthday } from "@util/time"
 import {
-    createObjectGuard, createOptionalGuard, createStringUnionGuard, isBoolean, isOptionalString,
+    createObjectGuard, createOptionalGuard, createStringUnionGuard, isBoolean, isOptionalInt, isOptionalString,
 } from 'typescript-guard'
 import { reactive, ref, type ShallowRef, toRefs } from "vue"
 import { useRoute, useRouter } from "vue-router"
@@ -52,12 +53,15 @@ function initQuery(filter: RecordFilterOption): RecordSort['prop'] | undefined {
 
 type CacheValue = Omit<RecordFilterOption, 'dateRange' | 'readRemote'>
 
+const isRange = createOptionalGuard(createTupleGuard(isOptionalInt, 2))
 const isCacheValue = createObjectGuard<CacheValue>({
     query: isOptionalString,
     mergeDate: isBoolean,
     siteMerge: createOptionalGuard(isSiteMerge),
     cateIds: isOptionalIntArray,
     timeFormat: isTimeFormat,
+    focusRange: isRange,
+    timeRange: isRange,
 })
 
 export const initRecordContext = () => {
