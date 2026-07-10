@@ -122,9 +122,17 @@ const _default = defineComponent((_, ctx) => {
                         onSelection-change={setSelection}
                         onSort-change={val => isRecordSort(val) && (sort.value = val)}
                     >
-                        {visible.value.index && <ElTableColumn type="selection" align="center" fixed="left" />}
+                        {visible.value.index && (
+                            <ElTableColumn
+                                key="index"
+                                type="selection"
+                                align="center"
+                                fixed="left"
+                            />
+                        )}
                         {visible.value.date && (
                             <ElTableColumn
+                                key='date'
                                 prop={'date' satisfies RecordSort['prop']}
                                 label={t(msg => msg.item.date)}
                                 minWidth={135}
