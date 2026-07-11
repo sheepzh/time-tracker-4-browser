@@ -138,7 +138,7 @@ function render2Svg(chartData: ChartData): string {
     const de = xAxis[xAxis.length - 1]
     const option: EcOption = {
         title: {
-            text: 'Total Active User Count',
+            text: 'Weekly Active Users',
             subtext: `${ds} to ${de}  |  currently ${total}  |  YoY ${yoy}%  |  MoM ${month}%`
         },
         legend: { data: ALL_BROWSERS },
