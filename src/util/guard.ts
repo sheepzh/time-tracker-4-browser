@@ -2,7 +2,7 @@ import { isInt, TypeGuard } from 'typescript-guard'
 
 export const isRecord = (unk: unknown): unk is Record<string, unknown> => typeof unk === 'object' && unk !== null && !Array.isArray(unk)
 
-export function createTupleGuard<T, const L extends number>(
+function createTupleGuard<T, const L extends number>(
     itemGuard: TypeGuard<T>,
     length: L,
 ): TypeGuard<Tuple<T, L>> {

@@ -14,10 +14,9 @@ export type DataManageMessage = {
     idbAlert: string
     operationAlert: string
     filterItems: string
-    filterFocus: string
-    filterTime: string
+    focusLtOrEq: string
+    visitLtOrEq: string
     filterDate: string
-    paramError: string
     deleteConfirm: string
     migrationAlert: string
     importError: string

@@ -6,8 +6,6 @@
         "idbAlert": "可以将数据移动到 IndexedDB 来减少存储空间占用",
         "operationAlert": "您可以删除那些无关紧要的数据，来减小内存空间",
         "filterItems": "数据筛选",
-        "filterFocus": "当日阅览时间在 {start} 秒至 {end} 秒之间。",
-        "filterTime": "当日打开次数在 {start} 次至 {end} 次之间。",
         "filterDate": "{picker} 产生的数据。",
         "importOther": {
             "step1": "选择数据",
@@ -24,7 +22,6 @@
             "fileNotSelected": "未选择文件",
             "conflictNotSelected": "未选择数据处理方式"
         },
-        "paramError": "参数错误，请检查！",
         "deleteConfirm": "共筛选出 {count} 条数据，是否全部删除？",
         "migrationAlert": "使用导入/导出在不同浏览器之间迁移数据",
         "importError": "文件格式错误",
@@ -39,8 +36,6 @@
         "idbAlert": "將追蹤資料移到IndexedDB以釋放儲存空間",
         "operationAlert": "您可以刪除不重要的資料來釋放儲存空間",
         "filterItems": "資料篩選",
-        "filterFocus": "當日瀏覽時間：{start}～{end} 秒",
-        "filterTime": "當日造訪次數：{start}～{end} 次",
         "filterDate": "{picker} 產生的資料",
         "importOther": {
             "step1": "選擇資料",
@@ -57,7 +52,6 @@
             "fileNotSelected": "未選取檔案",
             "conflictNotSelected": "未選擇衝突處理方式"
         },
-        "paramError": "參數錯誤，請檢查！",
         "deleteConfirm": "共篩選出 {count} 筆資料，是否全部刪除？",
         "migrationAlert": "使用匯入/匯出功能在不同瀏覽器間轉移資料",
         "importError": "檔案格式錯誤"
@@ -69,8 +63,8 @@
         "idbAlert": "Move tracking data to IndexedDB to reduce storage usage",
         "operationAlert": "You can delete those unimportant data to reduce storage usage",
         "filterItems": "Filter data",
-        "filterFocus": "The browsing time of the day is between {start} seconds and {end} seconds",
-        "filterTime": "The number of visits for the day is between {start} and {end}",
+        "focusLtOrEq": "The browsing time of the day is less than or equal to {value} seconds",
+        "visitLtOrEq": "The visit count for the day is less than or equal to {value}",
         "filterDate": "Recorded between {picker}",
         "importOther": {
             "step1": "Select data",
@@ -87,7 +81,6 @@
             "fileNotSelected": "File not selected",
             "conflictNotSelected": "Conflict resolution not selected"
         },
-        "paramError": "The parameter is wrong, please check!",
         "deleteConfirm": "A total of {count} records have been filtered out. Do you want to delete them all?",
         "migrationAlert": "Migrate data between browsers using import and export",
         "importError": "Wrong file extension",
@@ -101,8 +94,6 @@
         "usedMemoryAlert": "現在 {size}MB が使用されています",
         "operationAlert": "これらの重要でないデータを削除して、メモリ使用量を減らすことができます",
         "filterItems": "データフィルタリング",
-        "filterFocus": "当日の閲覧時間は、{start} 秒から {end} 秒の間です。",
-        "filterTime": "当日のオープン数は {start} から {end} の間です。",
         "filterDate": "{picker} までに生成されたデータ",
         "importOther": {
             "step1": "データを選択",
@@ -119,7 +110,6 @@
             "fileNotSelected": "ファイルが選択されていません",
             "conflictNotSelected": "競合する解像度が選択されていません"
         },
-        "paramError": "パラメータエラー、確認してください！",
         "deleteConfirm": "合計 {count} 個のデータが除外されました。すべて削除しますか？",
         "migrationAlert": "インポート/エクスポートを使用して、異なるブラウザ間でデータを移行します",
         "importError": "ファイル形式エラー"
@@ -130,8 +120,6 @@
         "usedMemoryAlert": "{size}MB atualmente utilizados",
         "operationAlert": "Pode apagar dados menos importantes para reduzir o uso",
         "filterItems": "Filtrar dados",
-        "filterFocus": "Tempo de navegação entre {start}s e {end}s",
-        "filterTime": "Número de visitas entre {start} e {end}",
         "filterDate": "Registado entre {picker}",
         "importOther": {
             "step1": "Selecionar dados",
@@ -148,7 +136,6 @@
             "fileNotSelected": "Ficheiro não selecionado",
             "conflictNotSelected": "Resolução não selecionada"
         },
-        "paramError": "Parâmetro incorreto, por favor verifique!",
         "deleteConfirm": "Filtrados {count} registos. Apagar tudo?",
         "migrationAlert": "Migre dados entre navegadores usando importação/exportação",
         "importError": "Extensão de ficheiro incorreta"
@@ -160,8 +147,6 @@
         "idbAlert": "Перемістити дані відстеження до IndexedDB для зменшення використання сховища",
         "operationAlert": "Ви можете видалити ці неважливі дані, щоб зменшити використання пам'яті",
         "filterItems": "Фільтрувати дані",
-        "filterFocus": "Час перегляду для дня – між {start} секунд і {end} секунд",
-        "filterTime": "Кількість відвідувань для дня – між {start} і {end}",
         "filterDate": "Записано між {picker}",
         "importOther": {
             "step1": "Виберіть дані",
@@ -178,7 +163,6 @@
             "fileNotSelected": "Файл не вибрано",
             "conflictNotSelected": "Розв'язання конфліктів не вибрано"
         },
-        "paramError": "Хибний параметр. Будь ласка, перевірте!",
         "deleteConfirm": "Всього відфільтровано {count} записів. Ви хочете видалити їх усі?",
         "migrationAlert": "Переносьте дані між браузерами за допомогою імпорту й експорту",
         "importError": "Неправильне розширення файлу",
@@ -192,8 +176,6 @@
         "usedMemoryAlert": "{size}MB actualmente en uso",
         "operationAlert": "Puedes eliminar esos datos no importantes para reducir el uso de memoria",
         "filterItems": "Filtrar datos",
-        "filterFocus": "El tiempo de navegación del día está entre {start} segundos y {end} segundos",
-        "filterTime": "El número de visitas del día está entre {start} y {end}",
         "filterDate": "Registrado entre {picker}",
         "importOther": {
             "step1": "Seleccionar datos",
@@ -210,7 +192,6 @@
             "fileNotSelected": "Archivo no seleccionado",
             "conflictNotSelected": "Resolución del conflicto no seleccionada"
         },
-        "paramError": "El parámetro es incorrecto, ¡por favor revísalo!",
         "deleteConfirm": "Se han filtrado un total de {count} registros. ¿Deseas eliminarlos todos?",
         "migrationAlert": "Migrar los datos entre navegadores usando importar y exportar",
         "importError": "Extensión de archivo incorrecta"
@@ -222,8 +203,6 @@
         "idbAlert": "Bewege Tracking Daten nach IndexedDB um Speichernutzung zu Reduzieren",
         "operationAlert": "Sie können diese unwichtigen Daten löschen, um den Speicherverbrauch zu reduzieren",
         "filterItems": "Daten filtern",
-        "filterFocus": "Die Browsing-Zeit am Tag liegt zwischen {start} Sekunden und {end} Sekunden",
-        "filterTime": "Die Anzahl der Besuche für den Tag liegt zwischen {start} und {end}",
         "filterDate": "Aufgenommen zwischen {picker}",
         "importOther": {
             "step1": "Daten auswählen",
@@ -240,7 +219,6 @@
             "fileNotSelected": "Datei nicht ausgewählt",
             "conflictNotSelected": "Konfliktlösung nicht ausgewählt"
         },
-        "paramError": "Parameterfehler, bitte überprüfen!",
         "deleteConfirm": "Insgesamt wurden {count} Datensätze herausgefiltert. Möchten Sie sie alle löschen?",
         "migrationAlert": "Migrieren Sie Daten zwischen Browsern mithilfe von Import und Export",
         "importError": "Falsche Dateierweiterung",
@@ -255,8 +233,6 @@
         "idbAlert": "Déplacer les données de suivi vers IndexedDB pour réduire l'utilisation du stockage",
         "operationAlert": "Vous pouvez supprimer ces données sans importance afin de réduire l'utilisation de la mémoire",
         "filterItems": "Filtrer les données",
-        "filterFocus": "Le temps de navigation de la journée est compris entre {start} et {end} secondes",
-        "filterTime": "Le nombre de visites du jour se situe entre {start} et {end}",
         "filterDate": "Enregistré entre {picker}",
         "importOther": {
             "step1": "Sélectionner les données",
@@ -273,7 +249,6 @@
             "fileNotSelected": "Aucun fichier sélectionné",
             "conflictNotSelected": "Aucune résolution de conflit sélectionnée"
         },
-        "paramError": "Le paramètre est incorrect, veuillez vérifier!",
         "deleteConfirm": "Un total de {count} enregistrements a été filtré. Souhaitez-vous tous les supprimer ?",
         "migrationAlert": "Migrer les données entre les navigateurs à l'aide de l'importation et de l'exportation",
         "importError": "Mauvaise extension de fichier",
@@ -288,8 +263,6 @@
         "idbAlert": "Переместить данные для отслеживания в IndexedDB для уменьшения использования хранилища",
         "operationAlert": "Вы можете удалить эти неважные данные для уменьшения использования памяти",
         "filterItems": "Фильтровать данные",
-        "filterFocus": "Время просмотра дня между {start} секунд и {end} секунд",
-        "filterTime": "Количество посещений за день между {start} и {end}",
         "filterDate": "Запись между {picker}",
         "importOther": {
             "step1": "Выбор данных",
@@ -306,7 +279,6 @@
             "fileNotSelected": "Файл не выбран",
             "conflictNotSelected": "Разрешение конфликтов не выбрано"
         },
-        "paramError": "Неверный параметр, пожалуйста, проверьте!",
         "deleteConfirm": "В общей сложности {count} записи были отфильтрованы. Вы хотите удалить их все?",
         "migrationAlert": "Миграция данных между браузерами, используя импорт и экспорт",
         "importError": "Неправильный формат файла"
@@ -317,8 +289,6 @@
         "usedMemoryAlert": "يتم استخدام {size}MB حاليًا",
         "operationAlert": "يمكنك حذف تلك البيانات غير المهمة لتقليل استخدام الذاكرة",
         "filterItems": "تصفية البيانات",
-        "filterFocus": "وقت التصفح لهذا اليوم هو بين {start} ثانية و {end} ثانية",
-        "filterTime": "عدد الزيارات لهذا اليوم يتراوح بين {start} و {end}",
         "filterDate": "تم التسجيل بين {picker}",
         "importOther": {
             "step1": "حدد البيانات",
@@ -335,7 +305,6 @@
             "fileNotSelected": "المِلَفّ غير محدد",
             "conflictNotSelected": "لم يتم تحديد حل النزاع"
         },
-        "paramError": "المعلمة خاطئة، يرجى التحقق!",
         "deleteConfirm": "تم تصفية إجمالي {count} من السجلات. هل تريد حذفها جميعًا؟",
         "migrationAlert": "نقل البيانات بين المتصفحات باستخدام الاستيراد والتصدير",
         "importError": "ملحق الملف خاطئ"
@@ -347,8 +316,6 @@
         "idbAlert": "Depolama kullanımını azaltmak için verilerinizi IndexedDB'ye taşı",
         "operationAlert": "Depolama alanını azaltmak için önemsiz verileri silebilirsiniz",
         "filterItems": "Verileri filtrele",
-        "filterFocus": "Günün gezinme süresi {start} saniye ile {end} saniye arasındadır",
-        "filterTime": "Günün ziyaret sayısı {start} ile {end} arasındadır",
         "filterDate": "{picker} arasında kaydedildi",
         "importOther": {
             "step1": "Verileri seçin",
@@ -365,7 +332,6 @@
             "fileNotSelected": "Dosya seçilmedi",
             "conflictNotSelected": "Çakışma çözümü seçilmedi"
         },
-        "paramError": "Parametre yanlış, lütfen kontrol edin!",
         "deleteConfirm": "Toplam {count} kayıt filtrelenmiştir. Hepsini silmek istiyor musunuz?",
         "migrationAlert": "İçe aktarma ve dışa aktarma özelliğini kullanarak tarayıcılar arasında verinizi aktarın",
         "importError": "Yanlış dosya uzantısı"
@@ -377,8 +343,6 @@
         "idbAlert": "Przenieś dane do IndexedDB, aby zmniejszyć zużycie pamięci",
         "operationAlert": "Możesz usunąć te nieważne dane, aby zmniejszyć zużycie pamięci",
         "filterItems": "Filtruj dane",
-        "filterFocus": "Czas przeglądania w ciągu dnia wynosi od {start} do {end} sekund",
-        "filterTime": "Liczba odwiedzin w ciągu dnia wynosi od {start} do {end}",
         "filterDate": "Zebrane pomiędzy {picker}",
         "importOther": {
             "step1": "Wybierz dane",
@@ -395,7 +359,6 @@
             "fileNotSelected": "Nie wybrano pliku",
             "conflictNotSelected": "Rozwiązywanie konfliktów nie zostało zaznaczone"
         },
-        "paramError": "Sprawdź poprawność parametrów!",
         "deleteConfirm": "Wyfiltrowano w sumie {count} wpisów. Czy chcesz je usunąć?",
         "migrationAlert": "Przenieś dane między przeglądarkami za pomocą importu i eksportu",
         "importError": "Błędne rozszerzenie pliku",
@@ -410,8 +373,6 @@
         "idbAlert": "Sposta i dati di tracciamento su IndexedDB per ridurre l'utilizzo dello storage",
         "operationAlert": "È possibile eliminare i dati non importanti per ridurre l'utilizzo della memoria",
         "filterItems": "Filtro dati",
-        "filterFocus": "L'ora di navigazione del giorno è tra {start} secondi e {end} secondi",
-        "filterTime": "Il numero di visite per il giorno è compreso tra {start} e {end}",
         "filterDate": "Registrato tra {picker}",
         "importOther": {
             "step1": "Seleziona dati",
@@ -428,7 +389,6 @@
             "fileNotSelected": "File non selezionato",
             "conflictNotSelected": "Risoluzione dei conflitti non selezionata"
         },
-        "paramError": "Il parametro è errato, per favore controlla!",
         "deleteConfirm": "Un totale di {count} record sono stati filtrati. Vuoi eliminarli tutti?",
         "migrationAlert": "Migrare i dati tra browser utilizzando importazione ed esportazione",
         "importError": "Estensione del file sbagliata",

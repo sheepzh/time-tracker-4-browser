@@ -12,82 +12,36 @@ import { ElCard, ElMessage, ElMessageBox } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
 import { useDataMemory } from "../context"
 import DataManageAlert from '../DataManageAlert'
-import ClearFilter from "./ClearFilter"
+import ClearFilter, { type FilterOption } from "./ClearFilter"
 
-type FilterOption = {
-    date: [Date, Date] | undefined
-    focus: [string?, string?]
-    time: [string?, string?]
-}
-
-type ClearFilterRanges = {
-    focusRange: Tuple<number | undefined, 2>
-    timeRange: Tuple<number | undefined, 2>
-}
-
-function buildClearStatQuery(option: FilterOption): (tt4b.stat.SiteQuery & tt4b.stat.GroupQuery) | undefined {
-    const param = checkParam(option)
-    if (!param) return undefined
-    const { date } = option
-    let [
+function buildClearStatQuery(option: FilterOption): tt4b.stat.BaseQuery {
+    const { date, focus, visit } = option
+    const focusMax = str2Num(focus, MILL_PER_SECOND)
+    const visitMax = str2Num(visit)
+    const [
         start = getBirthday(),
         end = new Date(Date.now() - MILL_PER_DAY),
     ] = date ?? []
-    return { ...param, date: cvtDateRange2Str([start, end]) }
-}
-
-/**
- * Assert query param with numeric range
- *
- * @param range       numeric range, 2-length array
- * @param mustInteger must be integer?
- * @returns true when has error, or false
- */
-function assertQueryParam(range: [number, number?], mustInteger?: boolean): boolean {
-    const reg = mustInteger ? /^[0-9]+$/ : /^[0-9]+.?[0-9]*$/
-    const [start, end] = range || []
-    const noStart = start !== undefined && start !== null
-    const noEnd = end !== undefined && end !== null
-    return (noStart && !reg.test(start.toString()))
-        || (noEnd && !reg.test(end.toString()))
-        || (noStart && noEnd && start > end)
-}
-
-const str2Num = (str: string | undefined) => str ? parseInt(str) : undefined
-const seconds2Milliseconds = (a: number) => a * MILL_PER_SECOND
-
-function checkParam(option: FilterOption): ClearFilterRanges | undefined {
-    const { focus, time } = option
-    let hasError = false
-    const focusRange = str2Range(focus, seconds2Milliseconds)
-    hasError = hasError || assertQueryParam(focusRange)
-    const timeRange = str2Range(time)
-    hasError = hasError || assertQueryParam(timeRange, true)
-    if (hasError) {
-        return undefined
+    return {
+        date: cvtDateRange2Str([start, end]),
+        focusRange: [, focusMax],
+        timeRange: [, visitMax],
     }
-    return { focusRange, timeRange }
 }
 
-function str2Range(startAndEnd: [string?, string?], numAmplifier?: (origin: number) => number): [number, number | undefined] {
-    const startStr = startAndEnd[0]
-    const endStr = startAndEnd[1]
-    let start = str2Num(startStr) ?? 0
-    numAmplifier && (start = numAmplifier(start))
-    let end = str2Num(endStr)
-    end && numAmplifier && (end = numAmplifier(end))
-    return [start, end]
+const str2Num = (str: string | undefined, multiplier?: number): number | undefined => {
+    if (!str) return undefined
+    let num = Number(str)
+    if (isNaN(num)) return undefined
+    return multiplier !== undefined ? num * multiplier : num
 }
 
-const _default = defineComponent(() => {
+const _default = defineComponent<{}>(() => {
     const { refreshMemory } = useDataMemory()
-    async function handleClick(option: FilterOption) {
+    const onDelete = async (option: FilterOption) => {
         const q = buildClearStatQuery(option)
-        if (!q) {
-            ElMessage.warning(t(msg => msg.dataManage.paramError))
-            return
-        }
-        const siteRows = await listSiteStats(q)
+        if (!q) return ElMessage.warning("Param error")
+        const siteRows = await listSiteStats({ ...q, virtual: true })
         const groupRows = await listGroupStats(q)
 
         const count = siteRows.length + groupRows.length
@@ -107,7 +61,7 @@ const _default = defineComponent(() => {
     return () => (
         <ElCard style={{ width: '100%' } satisfies StyleValue}>
             <DataManageAlert text={msg => msg.dataManage.operationAlert} />
-            <ClearFilter onDelete={(date, focus, time) => handleClick({ date, focus, time })} />
+            <ClearFilter onDelete={onDelete} />
         </ElCard>
     )
 })
