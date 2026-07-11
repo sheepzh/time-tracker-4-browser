@@ -28,6 +28,35 @@ type ChartData = {
 
 const VALID_DATE_RE = /^\d{4}-\d{2}-\d{2}$/
 
+const parseDate = (date: string): Date => new Date(`${date}T00:00:00Z`)
+const formatDate = (date: Date): string => date.toISOString().slice(0, 10)
+const computeGrowth = (current: number, base: number | undefined): string => {
+    if (!base) return '0'
+    const growth = ((current - base) / base) * 100
+    return growth > 0 ? `+${growth.toFixed(2)}` : growth.toFixed(2)
+}
+
+const computeSummary = ({ xAxis, yAxises }: ChartData) => {
+    const totals = xAxis.map((_, idx) => ALL_BROWSERS.reduce((sum, browser) => sum + (yAxises[browser][idx] ?? 0), 0))
+    const total = totals[totals.length - 1] ?? 0
+    const latest = xAxis[xAxis.length - 1]
+    if (!latest) return { total, yoy: '0', month: '0' }
+
+    const latestDate = parseDate(latest)
+    const lastYearDate = new Date(latestDate)
+    lastYearDate.setUTCFullYear(lastYearDate.getUTCFullYear() - 1)
+    const lastMonthDate = new Date(latestDate)
+    lastMonthDate.setUTCMonth(lastMonthDate.getUTCMonth() - 1)
+
+    const indexByDate = new Map(xAxis.map((date, idx) => [date, idx]))
+    const yoyBase = totals[indexByDate.get(formatDate(lastYearDate)) ?? -1]
+    const monthBase = totals[indexByDate.get(formatDate(lastMonthDate)) ?? -1]
+    const yoy = computeGrowth(total, yoyBase)
+    const month = computeGrowth(total, monthBase)
+
+    return { total, yoy, month }
+}
+
 function preProcess(originData: OriginData): ChartData {
     // 1. sort dates
     const dateSet = new Set<string>()
@@ -104,13 +133,13 @@ function render2Svg(chartData: ChartData): string {
         width: 960,
         height: 640
     })
-    const totalUserCount = Object.values(yAxises)
-        .map(v => v[v.length - 1] ?? 0)
-        .reduce((a, b) => a + b)
+    const { total, yoy, month } = computeSummary(chartData)
+    const ds = xAxis[0]
+    const de = xAxis[xAxis.length - 1]
     const option: EcOption = {
         title: {
             text: 'Total Active User Count',
-            subtext: `${xAxis[0]} to ${xAxis[xAxis.length - 1]}  |  currently ${totalUserCount} `
+            subtext: `${ds} to ${de}  |  currently ${total}  |  YoY ${yoy}%  |  MoM ${month}%`
         },
         legend: { data: ALL_BROWSERS },
         grid: {
