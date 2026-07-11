@@ -1,6 +1,7 @@
 import { type SourceFilesModel } from '@crowdin/crowdin-api-client'
 import fs from 'fs'
 import path from 'path'
+import { fileURLToPath } from 'url'
 import { exitWith } from '../util/process'
 import { type CrowdinClient } from './client'
 
@@ -83,7 +84,8 @@ export function isIgnored(dir: Dir, fileName: string) {
     return !!IGNORED_FILE[dir]?.includes(fileName)
 }
 
-const MSG_BASE = path.join(__dirname, '..', '..', 'src', 'i18n', 'message')
+const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url))
+const MSG_BASE = path.join(SCRIPT_DIR, '..', '..', 'src', 'i18n', 'message')
 export const RSC_FILE_SUFFIX = "-resource.json"
 
 /**

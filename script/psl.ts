@@ -5,9 +5,11 @@ import { fetchGet } from '@api/http'
 import { type PslTree } from '@bg/psl'
 import { writeFileSync } from 'fs'
 import path from 'path'
+import { fileURLToPath } from 'url'
 
 const LIST_URL = "https://publicsuffix.org/list/effective_tld_names.dat"
-const JSON_PATH = path.join(__dirname, "..", "src", "background", "psl", "rules.json")
+const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url))
+const JSON_PATH = path.join(SCRIPT_DIR, "..", "src", "background", "psl", "rules.json")
 
 const downloadList = async (): Promise<string> => {
     const response = await fetchGet(LIST_URL)

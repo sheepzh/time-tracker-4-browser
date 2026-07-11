@@ -1,4 +1,5 @@
-import Crowdin, {
+import {
+    Client,
     type Credentials,
     type Pagination,
     type PatchRequest,
@@ -145,13 +146,13 @@ type TranslationKey = {
  * The wrapper of client with auth
  */
 export class CrowdinClient {
-    crowdin: Crowdin
+    crowdin: Client
 
     constructor(token: string) {
         const credentials: Credentials = {
             token: token
         }
-        this.crowdin = new Crowdin(credentials)
+        this.crowdin = new Client(credentials)
         console.info("Initialized client successfully")
     }
 
