@@ -23,7 +23,7 @@ const NAMESPACE = '_'
 export const initAppContext = () => {
     const { refresh: refreshCategories } = useRequest(listAllCategories, {
         onSuccess: categories => {
-            category.all = categories
+            category.all = categories.sort((a, b) => a.name.localeCompare(b.name))
             const map = toMap(categories, c => c.id, c => c.name)
             map[CATE_NOT_SET_ID] = t(msg => msg.shared.cate.notSet)
             category.nameMap = map
