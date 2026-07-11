@@ -136,7 +136,7 @@ async function renderSvg(coders: Contributor[], translators: Contributor[]): Pro
     for (const coder of coders) {
         coder.avatarUrl = await getBase64Avatar(coder.avatarUrl)
     }
-    const { height: coderHeight, svg: coderSvg } = renderSection('Code Contributors', coders, y)
+    const { height: coderHeight, svg: coderSvg } = renderSection(`Code Contributors [${coders.length}]`, coders, y)
     sections.push(coderSvg)
     y += coderHeight + SECTION_GAP
 
@@ -144,7 +144,7 @@ async function renderSvg(coders: Contributor[], translators: Contributor[]): Pro
     for (const translator of translators) {
         translator.avatarUrl = await getBase64Avatar(translator.avatarUrl)
     }
-    const cdSection = renderSection('Translation Contributors', translators, y)
+    const cdSection = renderSection(`Translation Contributors [${translators.length}]`, translators, y)
     sections.push(cdSection.svg)
     y += cdSection.height + V_PADDING
 
