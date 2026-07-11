@@ -13,22 +13,26 @@ import { defineComponent } from "vue"
 import DateFilter from "./DateFilter"
 import NumberFilter from "./NumberFilter"
 
-type Props = {
-    onDelete?: (date: [Date, Date] | undefined, focus: [string?, string?], time: [string?, string?]) => void
+export type FilterOption = {
+    date: [Date, Date] | undefined
+    focus: string
+    visit: string
 }
+
+type Props = { onDelete?: ArgCallback<FilterOption> }
 
 const _default = defineComponent<Props>(props => {
     const [date, setDate] = useState<[Date, Date]>()
-    const [focus, setFocus] = useState<[string?, string?]>(['0', '2'])
-    const [time, setTime] = useState<[string?, string?]>(['0',])
-    const handleDelete = () => props.onDelete?.(date.value, focus.value, time.value)
+    const [focus, setFocus] = useState<string>('2')
+    const [visit, setVisit] = useState<string>('')
+    const handleDelete = () => props.onDelete?.({ date: date.value, focus: focus.value, visit: visit.value })
 
     return () => (
         <div style={{ paddingInlineStart: '30px', paddingTop: '40px' }}>
             <h3>{t(msg => msg.dataManage.filterItems)}</h3>
             <DateFilter modelValue={date.value} onChange={setDate} />
-            <NumberFilter i18nKey="filterFocus" lineNo={2} modelValue={focus.value} onChange={setFocus} />
-            <NumberFilter i18nKey="filterTime" lineNo={3} modelValue={time.value} onChange={setTime} />
+            <NumberFilter i18nKey='focusLtOrEq' lineNo={2} modelValue={focus.value} onChange={setFocus} />
+            <NumberFilter i18nKey='visitLtOrEq' lineNo={3} modelValue={visit.value} onChange={setVisit} />
             <Box marginTop={40}>
                 <ElButton icon={Delete} type="danger" onClick={handleDelete}>
                     {t(msg => msg.button.delete)}

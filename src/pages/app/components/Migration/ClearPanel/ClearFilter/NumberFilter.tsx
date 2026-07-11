@@ -6,37 +6,32 @@
  */
 
 import { tN } from "@app/locale"
-import { type DataManageMessage } from "@i18n/message/app/data-manage"
+import type { DataManageMessage } from "@i18n/message/app/data-manage"
 import { ElInput } from "element-plus"
-import { defineComponent, type StyleValue } from "vue"
+import type { FunctionalComponent, StyleValue } from "vue"
 
-const elInput = (value: string | undefined, onChange: ArgCallback<string | undefined>, placeholder: string) => (
-    <ElInput
-        placeholder={placeholder}
-        clearable
-        size="small"
-        modelValue={value}
-        onInput={onChange}
-        onClear={() => onChange(undefined)}
-        style={{ width: '60px' } satisfies StyleValue}
-    />
-)
-
-type Props = ModelValue<[string?, string?]> & {
+type Props = ModelValue<string> & {
     i18nKey: keyof DataManageMessage
     lineNo: number
 }
 
-const _default = defineComponent<Props>(props => {
-    return () => (
-        <p>
-            <a style={{ marginInlineEnd: '10px' }}>{props.lineNo}.</a>
-            {tN(msg => msg.dataManage[props.i18nKey], {
-                start: elInput(props.modelValue[0], val => props.onChange?.([val, props.modelValue[1]]), '0'),
-                end: elInput(props.modelValue[1], val => props.onChange?.([props.modelValue[0], val]), '∞'),
-            })}
-        </p>
-    )
-}, { props: ['modelValue', 'onChange', 'lineNo', 'i18nKey'] })
+const NumberFilter: FunctionalComponent<Props> = ({ lineNo, i18nKey, modelValue, onChange }) => (
+    <p>
+        <a style={{ marginInlineEnd: '10px' }}>{lineNo}.</a>
+        {tN(msg => msg.dataManage[i18nKey], {
+            value: <ElInput
+                placeholder='∞'
+                clearable
+                size="small"
+                modelValue={modelValue}
+                // `onChange` is bound to <p> element
+                onChange={(_, ev) => ev?.stopPropagation()}
+                onUpdate:modelValue={onChange}
+                onClear={() => onChange?.('')}
+                style={{ width: '60px' } satisfies StyleValue}
+            />
+        })}
+    </p>
+)
 
-export default _default
+export default NumberFilter

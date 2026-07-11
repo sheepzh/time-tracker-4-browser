@@ -1,12 +1,11 @@
 import type { RecordQuery } from '@app/router/constants'
 import { isOptionalIntArray, isTimeFormat } from '@app/util/limit/types'
 import { localReactive, useProvide, useProvider } from '@hooks'
-import { createTupleGuard } from '@util/guard'
 import { getBirthday } from "@util/time"
 import {
-    createObjectGuard, createOptionalGuard, createStringUnionGuard, isBoolean, isOptionalInt, isOptionalString,
+    createObjectGuard, createOptionalGuard, createStringUnionGuard, isBoolean, isOptionalString,
 } from 'typescript-guard'
-import { reactive, ref, type ShallowRef, toRefs } from "vue"
+import { reactive, ref, type ShallowRef } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import type { DisplayComponent, RecordFilterOption, RecordSort } from "./types"
 
@@ -51,17 +50,14 @@ function initQuery(filter: RecordFilterOption): RecordSort['prop'] | undefined {
     return isSortProp(sc) ? sc : undefined
 }
 
-type CacheValue = Omit<RecordFilterOption, 'dateRange' | 'readRemote'>
+type CacheValue = Omit<RecordFilterOption, 'dateRange' | 'readRemote' | 'timeRange' | 'focusRange'>
 
-const isRange = createOptionalGuard(createTupleGuard(isOptionalInt, 2))
 const isCacheValue = createObjectGuard<CacheValue>({
     query: isOptionalString,
     mergeDate: isBoolean,
     siteMerge: createOptionalGuard(isSiteMerge),
     cateIds: isOptionalIntArray,
     timeFormat: isTimeFormat,
-    focusRange: isRange,
-    timeRange: isRange,
 })
 
 export const initRecordContext = () => {
@@ -71,7 +67,16 @@ export const initRecordContext = () => {
         timeFormat: 'default',
     })
     const filter: RecordFilterOption = reactive({
-        ...toRefs(cached),
+        get query() { return cached.query },
+        set query(val) { cached.query = val },
+        get mergeDate() { return cached.mergeDate },
+        set mergeDate(val) { cached.mergeDate = val },
+        get siteMerge() { return cached.siteMerge },
+        set siteMerge(val) { cached.siteMerge = val },
+        get cateIds() { return cached.cateIds },
+        set cateIds(val) { cached.cateIds = val },
+        get timeFormat() { return cached.timeFormat },
+        set timeFormat(val) { cached.timeFormat = val },
         readRemote: false,
         dateRange: [Date.now(), Date.now()],
     })
