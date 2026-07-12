@@ -1,7 +1,7 @@
 import { rstest } from '@rstest/core'
 import {
-    dateMinute2Idx, hasLimited, hasWeeklyLimited, isEffective, matchCond, matches, meetLimit, meetTimeLimit,
-    period2Str,
+    dateMinute2Idx, hasLimited, hasWeeklyLimited, isEffective, isInPeriod, matchCond, matches, meetLimit,
+    meetTimeLimit, period2Str,
 } from "@util/limit"
 
 describe('util/limit', () => {
@@ -69,9 +69,10 @@ describe('util/limit', () => {
     })
 
     test('period2Str', () => {
-        expect(period2Str(undefined)).toBe('00:00-00:00')
         expect(period2Str([0, 100])).toBe('00:00-01:40')
         expect(period2Str([100, 900])).toBe('01:40-15:00')
+        expect(period2Str([100, 100])).toBe('01:40-01:40')
+        expect(period2Str([900, 100])).toBe('15:00-01:40(+1)')
     })
 
     test('dateMinute2Idx', () => {
@@ -156,5 +157,14 @@ describe('util/limit', () => {
 
         assert(item => item.weeklyWaste = 1000, false)
         assert(item => item.weeklyWaste = 1001, true)
+    })
+
+    test('isInPeriod', () => {
+        expect(isInPeriod(50, [0, 100])).toBe(true)
+        expect(isInPeriod(150, [0, 100])).toBe(false)
+        expect(isInPeriod(50, [100, 0])).toBe(false)
+        expect(isInPeriod(150, [100, 0])).toBe(true)
+        expect(isInPeriod(150, [150, 0])).toBe(true)
+        expect(isInPeriod(0, [150, 0])).toBe(true)
     })
 })

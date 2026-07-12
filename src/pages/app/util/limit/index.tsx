@@ -5,7 +5,7 @@ import { type I18nKey, type I18nResultItem, locale, t as t_, tN as tN_ } from "@
 import limitMessages, { type LimitMessage } from "@i18n/message/app/limit"
 import buttonMessages from "@i18n/message/common/button"
 import { getCssVariable } from "@pages/util/style"
-import { dateMinute2Idx, hasLimited, isEffective } from "@util/limit"
+import { dateMinute2Idx, hasLimited, isEffective, isInPeriod } from "@util/limit"
 import { ElMessage, ElMessageBox, type InputType, useId, useNamespace } from "element-plus"
 import { defineComponent, onMounted, ref, type VNode } from "vue"
 import verificationProcessor from './processor'
@@ -28,7 +28,7 @@ export async function judgeVerificationRequired(item: tt4b.limit.Item, delayDura
     // Period
     if (periods?.length) {
         const idx = dateMinute2Idx(new Date())
-        const hitPeriod = periods?.some(([s, e]) => s <= idx && e >= idx)
+        const hitPeriod = periods?.some(p => isInPeriod(idx, p))
         if (hitPeriod) return true
     }
     // Visit

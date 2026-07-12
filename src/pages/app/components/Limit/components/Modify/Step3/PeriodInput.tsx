@@ -10,10 +10,10 @@ import { Check, Close, Plus } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
 import { useState, useSwitch, useXsState } from '@hooks'
 import Flex from "@pages/components/Flex"
-import { dateMinute2Idx, period2Str } from "@util/limit"
+import { dateMinute2Idx, isInPeriod, period2Str } from "@util/limit"
 import { MILL_PER_HOUR } from "@util/time"
 import { ElButton, ElTag, ElTimePicker, useNamespace } from "element-plus"
-import { type StyleValue, defineComponent } from "vue"
+import { type StyleValue, computed, defineComponent } from "vue"
 
 const BUTTON_STYLE: StyleValue = {
     padding: '8px',
@@ -21,99 +21,144 @@ const BUTTON_STYLE: StyleValue = {
     lineHeight: '32px',
 }
 
-const range2Period = (range: [Date, Date]): [number, number] => {
-    const [start, end] = range
-    const startIdx = dateMinute2Idx(start)
-    const endIdx = dateMinute2Idx(end)
-    return [Math.min(startIdx, endIdx), Math.max(startIdx, endIdx)]
+const FULL: tt4b.limit.Period = [0, 1440]
+const isFull = (p: tt4b.limit.Period): boolean => p[0] === FULL[0] && p[1] === FULL[1]
+
+const mergePeriod = (p1: tt4b.limit.Period, p2: tt4b.limit.Period): tt4b.limit.Period | undefined => {
+    if (isFull(p1) || isFull(p2)) return FULL
+    // The same single point
+    if (p1[0] === p1[1] && p1[1] === p2[0] && p2[0] === p2[1]) return p1
+
+    const isImpact = isInPeriod(p1[0], p2) || isInPeriod(p1[1], p2) || isInPeriod(p2[0], p1) || isInPeriod(p2[1], p1)
+    if (!isImpact) return undefined
+
+    const pts: Vector<4> = [p1[0], p1[1], p2[0], p2[1]]
+    pts.sort((a, b) => a - b)
+
+    const segments: Vector<2>[] = [
+        [pts[0], pts[1]],
+        [pts[1], pts[2]],
+        [pts[2], pts[3]],
+        [pts[3], pts[0]],
+    ]
+
+    let gap: tt4b.limit.Period | null = null
+    for (const [s, e] of segments) {
+        if (s === e) continue
+        const mid = s < e ? (s + e) / 2 : (s + e + 1440) / 2 % 1440
+        if (!isInPeriod(mid, p1) && !isInPeriod(mid, p2)) {
+            gap = [s, e]
+            break
+        }
+    }
+
+    return gap ? [gap[1], gap[0]] : FULL
 }
 
 const insertPeriods = (periods: tt4b.limit.Period[], toInsert: tt4b.limit.Period) => {
-    if (!toInsert || !periods) return
-    let len = periods.length
-    if (!len) {
-        periods.push(toInsert)
-        return
-    }
-    for (let i = 0; i < len; i++) {
-        const pre = periods[i]
-        if (!pre) continue
-        const next = periods[i + 1]
-        if (checkImpact(pre, toInsert)) {
-            mergePeriod(pre, toInsert)
-            if (next && checkImpact(pre, next)) {
-                mergePeriod(pre, next)
-                periods.splice(i + 1, 1)
-            }
-            return
-        }
-        if (next && checkImpact(toInsert, next)) {
-            mergePeriod(next, toInsert)
-            return
-        }
-    }
-    // Append
     periods.push(toInsert)
+
+    let merged = true
+    while (merged) {
+        merged = false
+        for (let i = 0; i < periods.length; i++) {
+            const pi = periods[i]
+            if (!pi) continue
+            for (let j = i + 1; j < periods.length; j++) {
+                const pj = periods[j]
+                if (!pj) continue
+
+                const newMerged = mergePeriod(pi, pj)
+                if (newMerged) {
+                    periods[i] = newMerged
+                    periods.splice(j, 1)
+                    merged = true
+                    break
+                }
+            }
+            if (merged) break
+        }
+    }
     periods.sort((a, b) => a[0] - b[0])
 }
 
-const mergePeriod = (target: tt4b.limit.Period, toMerge: tt4b.limit.Period) => {
-    if (!target || !toMerge) return
-    target[0] = Math.min(target[0], toMerge[0])
-    target[1] = Math.max(target[1], toMerge[1])
-}
-
-const checkImpact = (p1: tt4b.limit.Period, p2: tt4b.limit.Period): boolean => {
-    if (!p1 || !p2) return false
-    const [s1, e1] = p1
-    const [s2, e2] = p2
-    return (s1 >= s2 && s1 <= e2) || (s2 >= s1 && s2 <= e1)
-}
-
 const rangeInitial = (): [Date, Date] => {
-    const now = new Date()
-    if (now.getHours() >= 23) {
-        const start = new Date(now)
-        start.setHours(23, 0, 0, 0)
-        const end = new Date(now)
-        end.setHours(23, 59, 0, 0)
-        return [start, end]
-    }
-    return [now, new Date(now.getTime() + MILL_PER_HOUR)]
+    const now = Date.now()
+    return [new Date(now), new Date(now + MILL_PER_HOUR)]
 }
+
+const useRange = () => {
+    const initial = rangeInitial()
+    const [start, setStart] = useState(initial[0])
+    const [end, setEnd] = useState(initial[1])
+    const init = () => {
+        const initial = rangeInitial()
+        setStart(initial[0])
+        setEnd(initial[1])
+    }
+    const period = computed<tt4b.limit.Period>(() => [dateMinute2Idx(start.value), dateMinute2Idx(end.value)])
+    const endFormat = computed(() => {
+        const [s, e] = period.value
+        return s <= e ? 'HH:mm' : 'HH:mm(+1)'
+    })
+    return { start, end, setStart, setEnd, init, period, endFormat }
+}
+
+const useRangeWrapperStyle = () => css`
+    border: 1px solid var(--el-border-color);
+    border-right: none;
+    border-top-left-radius: var(--el-border-radius-base);
+    border-bottom-left-radius: var(--el-border-radius-base);
+    background-color: var(--el-input-bg-color, var(--el-fill-color-blank));
+    padding: 0 4px;
+    height: 32px;
+    box-sizing: border-box;
+    transition: border-color var(--el-transition-duration);
+
+    &:hover {
+        border-color: var(--el-border-color-hover);
+    }
+    &:focus-within {
+        border-color: var(--el-color-primary);
+    }
+`
 
 const usePickerStyle = () => {
-    const rangeNs = useNamespace('range')
+    const inputNs = useNamespace('input')
     return css`
-        width: 120px !important;
-        padding: 0 5px !important;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
+        width: 62px !important;
 
-        & .${rangeNs.e('close-icon')} {
-            width: 0;
+        & .${inputNs.e('wrapper')} {
+            box-shadow: none !important;
+            padding: 0 !important;
+            background: transparent !important;
+        }
+        
+        & .${inputNs.e('inner')} {
+            text-align: center;
+            height: 28px;
         }
 
-        & .${rangeNs.b('input')} {
-            height: 28px;
+        // Hide the timer icon
+        & .${inputNs.e('prefix')} {
+            display: none !important;
         }
     `
 }
 
 const PeriodInput = defineComponent<ModelValue<tt4b.limit.Period[]>>(props => {
     const [editing, openEditing, closeEditing] = useSwitch(false)
-    const [editingRange, setEditingRange] = useState(rangeInitial())
+    const { start, end, setStart, setEnd, init, period, endFormat } = useRange()
     const isXs = useXsState()
 
     const handleEdit = () => {
         openEditing()
-        setEditingRange(rangeInitial())
+        init()
     }
 
     const handleSave = () => {
-        const val = range2Period(editingRange.value)
         const oldPeriods = props.modelValue.map(p => [p[0], p[1]] satisfies tt4b.limit.Period)
-        insertPeriods(oldPeriods, val)
+        insertPeriods(oldPeriods, period.value)
         props.onChange?.(oldPeriods)
         closeEditing()
     }
@@ -124,31 +169,41 @@ const PeriodInput = defineComponent<ModelValue<tt4b.limit.Period[]>>(props => {
         props.onChange?.(newPeriods)
     }
 
+    const wrapperCls = useRangeWrapperStyle()
     const pickerCls = usePickerStyle()
 
     return () => (
         <Flex gap={5} column={isXs.value}>
-            <Flex v-show={!!props.modelValue.length} gap={5} wrap>
-                {props.modelValue?.map((p, idx) =>
+            <Flex v-show={props.modelValue.length} gap={5} wrap>
+                {props.modelValue.map((p, idx) => p && (
                     <ElTag
+                        key={idx}
                         size={isXs.value ? 'small' : 'large'}
                         closable
                         onClose={() => handleDelete(idx)}
                     >
                         {period2Str(p)}
                     </ElTag>
-                )}
+                ))}
             </Flex>
             <Flex v-show={editing.value} wrap={false}>
-                <ElTimePicker
-                    class={pickerCls}
-                    modelValue={editingRange.value}
-                    onUpdate:modelValue={setEditingRange}
-                    isRange
-                    rangeSeparator="-"
-                    format="HH:mm"
-                    clearable={false}
-                />
+                <Flex align='center' class={wrapperCls} gap={2}>
+                    <ElTimePicker
+                        class={pickerCls}
+                        modelValue={start.value}
+                        onUpdate:modelValue={val => val && setStart(val)}
+                        format="HH:mm"
+                        clearable={false}
+                    />
+                    <span style={{ color: 'var(--el-text-color-secondary)' }}>-</span>
+                    <ElTimePicker
+                        class={pickerCls}
+                        modelValue={end.value}
+                        onUpdate:modelValue={val => val && setEnd(val)}
+                        format={endFormat.value}
+                        clearable={false}
+                    />
+                </Flex>
                 <ElButton
                     icon={Close}
                     onClick={closeEditing}
