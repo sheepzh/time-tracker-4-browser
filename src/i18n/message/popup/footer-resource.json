@@ -52,6 +52,7 @@
     "fr": {
         "route": {
             "percentage": "Répartition",
+            "site": "Page actuelle",
             "ranking": "Classement"
         }
     },

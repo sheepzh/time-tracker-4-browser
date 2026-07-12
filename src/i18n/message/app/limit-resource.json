@@ -394,7 +394,8 @@
             "locked": "Verrouillé",
             "effectiveDay": "Effectif le",
             "or": "ou",
-            "notEffective": "Non efficace"
+            "notEffective": "Non efficace",
+            "unlimited": "Illimité"
         },
         "step": {
             "base": "Informations de base",

@@ -286,12 +286,15 @@
             "weekly": "Limite hebdomadaire",
             "period": "Périodes bloquées",
             "visits": "{n} visites",
-            "allowDelay": "Retardable"
+            "allowDelay": "Retardable",
+            "unlimited": "Illimité"
         },
         "permGrantConfirm": "Cette fonctionnalité nécessite des autorisations appropriées",
         "site": {
             "type": {
-                "merged": "fusionné"
+                "normal": "normal",
+                "merged": "fusionné",
+                "virtual": "sous-page"
             }
         },
         "followBrowser": "Suivre le navigateur"

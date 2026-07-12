@@ -6,6 +6,8 @@
         "idbAlert": "可以将数据移动到 IndexedDB 来减少存储空间占用",
         "operationAlert": "您可以删除那些无关紧要的数据，来减小内存空间",
         "filterItems": "数据筛选",
+        "focusLtOrEq": "每日浏览时间不超过 {value} 秒",
+        "visitLtOrEq": "每日访问次数不超过 {value} 次",
         "filterDate": "{picker} 产生的数据。",
         "importOther": {
             "step1": "选择数据",
@@ -233,6 +235,8 @@
         "idbAlert": "Déplacer les données de suivi vers IndexedDB pour réduire l'utilisation du stockage",
         "operationAlert": "Vous pouvez supprimer ces données sans importance afin de réduire l'utilisation de la mémoire",
         "filterItems": "Filtrer les données",
+        "focusLtOrEq": "Le temps de navigation de la journée est inférieur ou égal à {value} secondes",
+        "visitLtOrEq": "Le nombre de visites pour la journée est inférieur ou égal à {value}",
         "filterDate": "Enregistré entre {picker}",
         "importOther": {
             "step1": "Sélectionner les données",
@@ -251,7 +255,7 @@
         },
         "deleteConfirm": "Un total de {count} enregistrements a été filtré. Souhaitez-vous tous les supprimer ?",
         "migrationAlert": "Migrer les données entre les navigateurs à l'aide de l'importation et de l'exportation",
-        "importError": "Mauvaise extension de fichier",
+        "importError": "Extension de fichier incorrecte",
         "exportData": "Exporter les données",
         "restoreData": "Restaurer les données",
         "restoreFromOther": "Restaurer depuis {ext}"

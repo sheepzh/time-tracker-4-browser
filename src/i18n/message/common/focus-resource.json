@@ -93,10 +93,49 @@
     },
     "fr": {
         "menu": "Focus & Pomodoro",
+        "policy": {
+            "label": "Règle de filtrage",
+            "allow": {
+                "label": "Autoriser uniquement",
+                "desc": "Seuls les sites autorisés sont accessibles, tous les autres sont bloqués"
+            },
+            "block": {
+                "label": "Bloquer",
+                "desc": "Tous les sites sont accessibles à l'exception des sites bloqués"
+            }
+        },
         "duration": "Temps de Focus",
         "break": "Temps de pause",
-        "noAllowUrl": "Pas de site autorisé. Ajoutez au moins un site dans la liste des autorisations.",
-        "noBlockUrl": "Pas de sites bloqués. Commencer sans restriction ?"
+        "state": {
+            "running": "En cours",
+            "paused": "Interrompu",
+            "stopped": "Arrêté",
+            "done": "Complété"
+        },
+        "method": {
+            "label": "Méthode",
+            "choose": "Choisir la méthode",
+            "focus": {
+                "label": "Focus profond",
+                "desc": "Focus sur une période de temps"
+            },
+            "pomodoro": {
+                "label": "Pomodoro",
+                "desc": "Cycles de travail/pause chronométrés pour rester productifs"
+            }
+        },
+        "noAllowUrl": "Aucun site autorisé. Veuillez ajouter au moins un site à la liste des autorisations.",
+        "noBlockUrl": "Aucun site bloqué. Commencer sans aucune restriction ?",
+        "noTime": "Veuillez définir à la fois le temps de mise au point et le temps de pause pour Pomodoro",
+        "preset": "Pré-réglage",
+        "presetName": "Nom du préréglage",
+        "button": {
+            "pause": "Pause",
+            "resume": "Reprendre",
+            "delay": "Délayer",
+            "stop": "Arrêter",
+            "dismiss": "Ignorer"
+        }
     },
     "pl": {
         "menu": "Koncentracja & Pomodoro",
