@@ -6,6 +6,18 @@ import { createWhitelist } from "../common/whitelist"
 describe('Run time tracking', () => {
     const context = useLaunchContext()
 
+    async function waitForRunTimeAtLeast(minSecond: number, timeoutMs = 5000): Promise<number> {
+        const start = Date.now()
+        let latest = 0
+        while (Date.now() - start < timeoutMs) {
+            const records = await readRecordsOfFirstPage(context)
+            latest = parseTime2Sec(records[0]?.runTime) ?? 0
+            if (latest >= minSecond) return latest
+            await sleep(0.2)
+        }
+        return latest
+    }
+
     async function clickRunTimeChange(siteHost: string): Promise<void> {
         const sitePage = await context.openAppPage("/tracking/sites")
         await sitePage.focus('input[placeholder]')
@@ -34,8 +46,7 @@ describe('Run time tracking', () => {
         const emptyPage = await context.newPage()
         await sleep(1.1)
 
-        records = await readRecordsOfFirstPage(context)
-        const runTime1 = parseTime2Sec(records[0]?.runTime) ?? 0
+        const runTime1 = await waitForRunTimeAtLeast(1)
         expect(runTime1).toBeGreaterThanOrEqual(1)
 
         // 3. Add another page sharing the same run time with old page
