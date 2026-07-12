@@ -257,6 +257,7 @@ declare namespace tt4b {
          * Restricted periods
          * [0, 1] means from 00:00 to 00:01
          * [0, 120] means from 00:00 to 02:00
+         * [1439, 2] means from 23:59 to 00:02(+1 day)
          * @since 2.0.0
          */
         type Period = Vector<2>
