@@ -4,6 +4,13 @@ All notable changes to Time Tracker will be documented in this file.
 
 It is worth mentioning that the release time of each change refers to the time when the installation package is submitted to the webstore. It is about one week for Firefox to moderate packages, while only 1-2 days for Chrome and Edge.
 
+## [4.4.2] - 2026-07-12
+
+-  Supported block periods to span cross days
+-  Categories is sorted alphabetically now
+-  Added range filter of record page
+-  Fixed some bugs
+
 ## [4.4.1] - 2026-07-06
 
 -  Added the view of current page on the popup page
