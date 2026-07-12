@@ -239,6 +239,11 @@
             "remain": "{remaining} restantes",
             "noLimit": "Aucune limite",
             "notHit": "Pas en vigueur"
+        },
+        "site": {
+            "subpageBtn": "Tracer la sous-page",
+            "notTrackable": "La page actuelle n'est pas traçable",
+            "daily": "Stats quotidiennes"
         }
     },
     "ru": {

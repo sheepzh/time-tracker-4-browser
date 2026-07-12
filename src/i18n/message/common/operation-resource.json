@@ -26,6 +26,7 @@
         "successMsg": "Erfolgreich!"
     },
     "fr": {
+        "confirmMsg": "Êtes-vous certain ?",
         "successMsg": "Réussi !"
     },
     "ru": {

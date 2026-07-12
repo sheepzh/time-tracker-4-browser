@@ -25,5 +25,14 @@
             "focusResumeMsg": "休息结束，该重新集中精力了！"
         },
         "dailySummary": "浏览了 {siteCount} 个网站 {visit} 次，合计 {focus}"
+    },
+    "fr": {
+        "focus": {
+            "completedTitle": "Focus terminé",
+            "completedMsg": "Votre session de focus est terminée. Bravo !",
+            "breakStartMsg": "Faites une courte pause. Vous l'avez mérité !",
+            "focusResumeMsg": "La pause est terminée. Il est temps de se recentrer !"
+        },
+        "dailySummary": "Temps de focus : {focus}, Visites : {visit}, Sites : {siteCount}"
     }
 }

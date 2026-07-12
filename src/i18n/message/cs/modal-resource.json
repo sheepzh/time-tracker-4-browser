@@ -43,7 +43,9 @@
         "defaultPrompt": "Cette page a été bloquée !",
         "delay": "{n} minutes supplémentaires",
         "browsingTime": "Temps de navigation",
-        "ruleDetail": "Détails des règles"
+        "ruleDetail": "Détails des règles",
+        "pomodoroActive": "Pomodoro est activé",
+        "focusActive": "Focus activé"
     },
     "es": {
         "defaultPrompt": "¡Esta página fue bloqueada!",

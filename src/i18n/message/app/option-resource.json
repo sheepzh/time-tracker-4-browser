@@ -1012,10 +1012,11 @@
             "displayWhitelist": "{input} S'il faut afficher les {whitelist} dans {contextMenu}",
             "whitelistItem": "raccourcis liés à la liste blanche",
             "contextMenu": "le menu contextuel",
+            "displayBadge": "{input} Afficher ou non le badge sur l'icône",
             "badgeBgColor": "La couleur de fond du texte sur l'icône {input}",
             "locale": "Langue {input}",
             "printInConsole": {
-                "label": "{input} S'il faut afficher {info} dans la {console}",
+                "label": "{input} S'il faut afficher ou non {info} dans la {console}",
                 "console": "console",
                 "info": "le nombre de visites du site actuel aujourd'hui"
             },
@@ -1134,9 +1135,12 @@
             "reset": "Réinitialiser",
             "export": "Exporter les paramètres",
             "import": "Importer les paramètres",
-            "reload": "Actualiser"
+            "reload": "Actualiser",
+            "download": "Télécharger depuis {account}",
+            "sync": "Synchroniser vers {account}"
         },
-        "defaultValue": "Par défaut : {default}"
+        "defaultValue": "Par défaut : {default}",
+        "applyConfirm": "Les options ont changé. Veuillez recharger pour appliquer les modifications !"
     },
     "ru": {
         "yes": "Да",
