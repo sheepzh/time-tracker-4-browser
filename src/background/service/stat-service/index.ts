@@ -86,7 +86,7 @@ export async function selectSite(param?: tt4b.stat.SiteQuery): Promise<tt4b.stat
     // Merge with rules
     needMerge && (siteRows = await mergeHost(siteRows))
     // Fill site info
-    if (query) await fillSite(siteRows)
+    await fillSite(siteRows)
     // Identify Filter
     const hosts = typeof host === 'string' ? [host] : (host?.length ? host : undefined)
     siteRows = siteRows
