@@ -29,11 +29,7 @@ function buildFilter(cond: ProcessedCondition, coverage: IndexCoverage): (row: S
 
         // Only check virtual if host keys are not fully covered by index
         const keys = coverage.host ? undefined : cond.keys
-        if (!filterHost(row.host, keys, cond.virtual)) {
-            return false
-        }
-
-        return true
+        return filterHost(row.host, keys, cond.virtual)
     }
 }
 
@@ -176,8 +172,7 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
         return this.withStore(async store => {
             const index = super.assertIndex(store, ['date', 'host'])
             for (const { host, date } of rows) {
-                const dateStr = formatDateStr(date)
-                const req = index.getKey([dateStr, host])
+                const req = index.getKey([date, host])
                 const key = await req2Promise(req)
                 if (key) {
                     await req2Promise(store.delete(key))

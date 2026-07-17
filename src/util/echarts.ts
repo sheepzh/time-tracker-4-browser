@@ -138,13 +138,9 @@ const processArrayLike = <T,>(arr: T | T[] | undefined, processor: (t: T) => voi
     }
 }
 
-const someArrayLike = <T,>(arr: T | T[], test: (t: T) => boolean) => {
-    if (!arr || !test) return false
-    if (Array.isArray(arr)) {
-        arr.some(test)
-    } else {
-        return test(arr)
-    }
+const someArrayLike = <T,>(arr: T | T[] | undefined | null, test: (t: T) => boolean) => {
+    if (arr === undefined || arr === null) return false
+    return Array.isArray(arr) ? arr.some(test) : test(arr)
 }
 
 const processGridRtl = (option: GridComponentOption) => {
