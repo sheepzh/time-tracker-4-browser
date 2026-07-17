@@ -19,8 +19,7 @@ type AuthCheckResult = {
     ext: tt4b.backup.TypeExt
     type: tt4b.backup.Type
     coordinator: tt4b.backup.Coordinator<unknown>
-    errorMsg?: string
-}
+} | string
 
 class CoordinatorContextWrapper<Cache> implements tt4b.backup.CoordinatorContext<Cache> {
     auth: tt4b.backup.Auth
@@ -76,26 +75,20 @@ function prepareAuth(option: tt4b.option.BackupOption): tt4b.backup.Auth {
     return { token, login }
 }
 
+const COORDINATORS: Record<Exclude<tt4b.backup.Type, 'none'>, tt4b.backup.Coordinator<unknown>> = {
+    gist: new GistCoordinator(),
+    obsidian_local_rest_api: new ObsidianCoordinator(),
+    web_dav: new WebDAVCoordinator(),
+}
+
 class Processor {
-    coordinators: {
-        [type in tt4b.backup.Type]: tt4b.backup.Coordinator<unknown>
-    }
-
-    constructor() {
-        this.coordinators = {
-            none: null as unknown as tt4b.backup.Coordinator<never>,
-            gist: new GistCoordinator(),
-            obsidian_local_rest_api: new ObsidianCoordinator(),
-            web_dav: new WebDAVCoordinator(),
-        }
-    }
-
     async syncData(): Promise<string | undefined> {
-        const { option, auth, ext, type, coordinator, errorMsg } = await this.checkAuth()
-        if (errorMsg) return errorMsg
+        const authRes = await this.checkAuth()
+        if (typeof authRes === 'string') return authRes
+        const { option, auth, ext, type, coordinator } = authRes
 
         const cid = await getCid()
-        const context: tt4b.backup.CoordinatorContext<unknown> = await new CoordinatorContextWrapper<unknown>(cid, auth, ext, type).init()
+        const context = await new CoordinatorContextWrapper<unknown>(cid, auth, ext, type).init()
         const client: tt4b.backup.Client = {
             id: cid,
             name: option.clientName,
@@ -116,8 +109,9 @@ class Processor {
     }
 
     async listClients(): Promise<(tt4b.backup.Client & { current: boolean })[]> {
-        const { auth, ext, type, coordinator, errorMsg } = await this.checkAuth()
-        if (errorMsg) throw new Error(errorMsg)
+        const authRes = await this.checkAuth()
+        if (typeof authRes === 'string') throw new Error(authRes)
+        const { auth, ext, type, coordinator } = authRes
         const cid = await getCid()
         const context = await new CoordinatorContextWrapper<unknown>(cid, auth, ext, type).init()
         const clients = await coordinator.listAllClients(context)
@@ -127,33 +121,28 @@ class Processor {
     async checkAuth(): Promise<AuthCheckResult> {
         const option = await optionHolder.get()
         const { backupType: type, backupExts } = option
+        if (type === 'none') return "Invalid type"
         const ext = backupExts?.[type] ?? {}
         const auth = prepareAuth(option)
 
-        const coordinator: tt4b.backup.Coordinator<unknown> = type && this.coordinators[type]
-        if (!coordinator) {
-            // no coordinator, do nothing
-            return { option, auth, ext, type, coordinator, errorMsg: "Invalid type" }
-        }
-        let errorMsg
+        const coordinator = COORDINATORS[type]
         try {
-            errorMsg = await coordinator.testAuth(auth, ext)
+            const errorMsg = await coordinator.testAuth(auth, ext)
+            return errorMsg ?? { option, auth, ext, type, coordinator }
         } catch (e) {
-            errorMsg = (e as Error)?.message || 'Unknown error'
+            return e instanceof Error ? e.message : String(e ?? 'Unknown Error')
         }
-        return { option, auth, ext, type, coordinator, errorMsg }
     }
 
     async query(param: tt4b.backup.RemoteQuery): Promise<tt4b.backup.Row[]> {
-        const { type, coordinator, auth, ext, errorMsg } = await this.checkAuth()
-        if (errorMsg || !coordinator) {
-            return []
-        }
+        const authRes = await this.checkAuth()
+        if (typeof authRes === 'string') return []
+        const { auth, ext, type, coordinator } = authRes
 
         const { start, end, specCid, excludeLocal } = param
         let localCid = await getCid()
         // 1. init context
-        const context: tt4b.backup.CoordinatorContext<unknown> = await new CoordinatorContextWrapper<unknown>(localCid, auth, ext, type).init()
+        const context = await new CoordinatorContextWrapper<unknown>(localCid, auth, ext, type).init()
         // 2. query all clients, and filter them
         const allClients = (await coordinator.listAllClients(context))
             .filter(c => filterClient(c, !!excludeLocal, localCid, start, end))
@@ -176,10 +165,11 @@ class Processor {
     }
 
     async clear(cid: string): Promise<string | undefined> {
-        const { auth, ext, type, coordinator, errorMsg } = await this.checkAuth()
-        if (errorMsg) return errorMsg
+        const authRes = await this.checkAuth()
+        if (typeof authRes === 'string') return authRes
+        const { auth, ext, type, coordinator } = authRes
         let localCid = await getCid()
-        const context: tt4b.backup.CoordinatorContext<unknown> = await new CoordinatorContextWrapper<unknown>(localCid, auth, ext, type).init()
+        const context = await new CoordinatorContextWrapper<unknown>(localCid, auth, ext, type).init()
         // 1. Find the client
         const allClients = await coordinator.listAllClients(context)
         const client = allClients?.filter(c => c?.id === cid)?.[0]

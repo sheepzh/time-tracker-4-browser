@@ -15,7 +15,8 @@ import type { PieSeriesOption, TitleComponentOption, ToolboxComponentOption } fr
 import type { ECharts } from "echarts/core"
 import type { CallbackDataParams, TopLevelFormatterParams } from "echarts/types/dist/shared"
 import { ElMessage } from "element-plus"
-import { type PercentageResult } from "./query"
+import type { StatQuery } from '../stat/context'
+import type { PercentageResult } from "./query"
 
 function combineDate(start: Date, end: Date, format: string): string {
     const startStr = formatTime(start, format)
@@ -60,49 +61,31 @@ function formatDateStr(date: Date | [Date, Date?] | undefined, dataDate: [string
     return end ? combineDate(start, end, format) : formatTime(start, format)
 }
 
-function formatTotalStr(rows: tt4b.stat.Row[], type: tt4b.core.Dimension | undefined): string {
-    if (type === 'focus') {
-        const total = sum(rows.map(r => r?.focus ?? 0))
-        const totalTime = formatPeriodCommon(total)
-        return t(msg => msg.content.percentage.totalTime, { totalTime })
-    } else if (type === 'time') {
-        const totalCount = sum(rows.map(r => r.time ?? 0))
-        return t(msg => msg.content.percentage.totalCount, { totalCount })
-    } else {
-        return ''
-    }
+type FormatterRegistry = Record<'total' | 'avg', Converter<number, string>>
+
+const FORMATTERS: Record<StatQuery['dimension'], FormatterRegistry> = {
+    focus: {
+        total: total => t(msg => msg.content.percentage.totalTime, { totalTime: formatPeriodCommon(total) }),
+        avg: avg => t(msg => msg.content.percentage.averageTime, { value: formatPeriodCommon(parseInt(avg.toFixed(0))) }),
+    },
+    time: {
+        total: total => t(msg => msg.content.percentage.totalCount, { totalCount: total }),
+        avg: avg => t(msg => msg.content.percentage.averageCount, { value: avg.toFixed(1) }),
+    },
 }
 
 function calculateSubTitleText(result: PercentageResult): string {
-    let { date, dataDate, rows, query: { dimension, duration } = {}, dateLength } = result
+    let { date, dataDate, rows, query: { dimension, duration }, dateLength } = result
+    const formatter = FORMATTERS[dimension]
     const dateStr = dataDate ? formatDateStr(date, dataDate) : ''
-    const totalStr = formatTotalStr(rows, dimension)
-    let firstLineParts = [totalStr, dateStr].filter(s => !!s)
-    isRtl() && (firstLineParts = firstLineParts.reverse())
-    const firstLine = firstLineParts.join(' ')
-
-    // Calculate average per day
-    let averageStr = ''
-    // Don't show averages for single-day durations (today/yesterday)
+    const total = sum(rows.map(r => r[dimension]))
+    const totalStr = formatter.total(total)
+    const firstLineParts = [totalStr, dateStr].filter(s => !!s)
     const isSingleDay = duration === 'today' || duration === 'yesterday'
-
-    if (dateLength && dateLength > 0 && !isSingleDay) {
-        if (dimension === 'focus') {
-            // Average time per day
-            const total = sum(rows.map(r => r?.focus ?? 0))
-            const averagePerDay = total / dateLength
-            const averageTime = formatPeriodCommon(averagePerDay)
-            averageStr = t(msg => msg.content.percentage.averageTime, { value: averageTime })
-        } else if (dimension === 'time') {
-            // Average visits per day
-            const totalCount = sum(rows.map(r => r.time ?? 0))
-            const averagePerDay = totalCount / dateLength
-            const averageCount = averagePerDay.toFixed(1)
-            averageStr = t(msg => msg.content.percentage.averageCount, { value: averageCount })
-        }
-    }
-
-    return [firstLine, averageStr].filter(s => !!s).join('\n')
+    return [
+        (isRtl() ? firstLineParts.reverse() : firstLineParts).join(' '),
+        dateLength && !isSingleDay && formatter.avg(total / dateLength),
+    ].filter(Boolean).join('\n')
 }
 
 export function generateTitleOption(result: PercentageResult, suffix?: string): TitleComponentOption {
@@ -437,15 +420,6 @@ function calcRealRadius(
     }
 }
 
-function calculateAverageText(type: tt4b.core.Dimension, averageValue: number): string | undefined {
-    if (type === 'focus') {
-        return t(msg => msg.content.percentage.averageTime, { value: formatPeriodCommon(parseInt(averageValue.toFixed(0))) })
-    } else if (type === 'time') {
-        return t(msg => msg.content.percentage.averageCount, { value: averageValue.toFixed(1) })
-    }
-    return undefined
-}
-
 /**
  * Generate tooltip text
  */
@@ -468,11 +442,11 @@ export function formatTooltip({ query, dateLength }: PercentageResult, params: T
         // Don't show averages for single-day durations (today/yesterday)
         const isSingleDay = duration === 'today' || duration === 'yesterday'
 
-        if (dateLength && dateLength > 1 && !isSingleDay) {
-            averageLine = calculateAverageText(dimension, itemValue / dateLength)
+        if (dateLength > 1 && !isSingleDay) {
+            averageLine = FORMATTERS[dimension].avg(itemValue / dateLength)
         }
     }
-    return [nameLine, valueLine, averageLine].filter(l => !!l).join('<br />')
+    return [nameLine, valueLine, averageLine].filter(Boolean).join('<br />')
 }
 
 /**

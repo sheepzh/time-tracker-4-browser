@@ -126,7 +126,7 @@ class MessageDispatcher {
             .register('merge.add', rule => mergeRuleDatabase.add(rule))
             // Backup
             .register('backup.sync', () => backupProcessor.syncData())
-            .register('backup.checkAuth', () => backupProcessor.checkAuth().then(res => res.errorMsg))
+            .register('backup.checkAuth', () => backupProcessor.checkAuth().then(res => typeof res === 'string' ? res : undefined))
             .register('backup.clear', cid => backupProcessor.clear(cid))
             .register('backup.query', param => backupProcessor.query(param))
             .register('backup.lastTs', getLastBackUp)
