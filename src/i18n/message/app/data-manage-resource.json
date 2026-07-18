@@ -347,6 +347,8 @@
         "idbAlert": "Przenieś dane do IndexedDB, aby zmniejszyć zużycie pamięci",
         "operationAlert": "Możesz usunąć te nieważne dane, aby zmniejszyć zużycie pamięci",
         "filterItems": "Filtruj dane",
+        "focusLtOrEq": "Czas przeglądania dla danego dnia wynosi {value} sekund lub mniej",
+        "visitLtOrEq": "Liczba odwiedzin dla danego dnia wynosi {value} lub mniej",
         "filterDate": "Zebrane pomiędzy {picker}",
         "importOther": {
             "step1": "Wybierz dane",

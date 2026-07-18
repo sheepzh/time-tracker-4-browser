@@ -71,6 +71,7 @@
     "pl": {
         "route": {
             "percentage": "Rozkład",
+            "site": "Bieżąca strona",
             "ranking": "Ranking"
         }
     },
