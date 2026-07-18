@@ -411,7 +411,8 @@
         "site": {
             "type": {
                 "normal": "normalny",
-                "merged": "scalone"
+                "merged": "scalone",
+                "virtual": "podstrona"
             }
         },
         "followBrowser": "Śledź przeglądarkę"

@@ -333,6 +333,11 @@
             "remain": "{remaining} pozostałe",
             "noLimit": "Bez limitu",
             "notHit": "Nie obowiązuje"
+        },
+        "site": {
+            "subpageBtn": "Monitoruj podstronę",
+            "notTrackable": "Bieżąca strona nie podlega monitorowaniu czasu",
+            "daily": "Dzienne statystyki"
         }
     },
     "it": {
