@@ -1,6 +1,6 @@
 import { t } from '@app/locale'
 import Flex from "@pages/components/Flex"
-import { period2Str } from '@util/limit'
+import { period2Str } from '@pages/util/limit'
 import { formatPeriodCommon, MILL_PER_SECOND } from '@util/time'
 import { ElTag, TagProps } from 'element-plus'
 import { defineComponent, type FunctionalComponent, toRef } from "vue"

@@ -42,7 +42,7 @@ const Reason = defineComponent<{ value: FocusReason }>(props => {
                 >
                     {props.value.duration
                         ? formatPeriodCommon(props.value.duration * MILL_PER_SECOND)
-                        : t(msg => msg.shared.limit.unlimited)}
+                        : t(msg => msg.shared.unlimited)}
                 </ElDescriptionsItem>
                 <ElDescriptionsItem
                     v-show={props.value.method === 'pomodoro'}

@@ -11,7 +11,7 @@ import { getAppPageUrl } from '@util/constant/url'
 import { meetTimeLimit } from '@util/limit'
 import { MILL_PER_SECOND } from '@util/time'
 import { ElButton } from "element-plus"
-import { computed, defineComponent } from "vue"
+import { computed, defineComponent, toRaw } from "vue"
 import { useApp, useRule } from '../../context'
 import { useLimitReason } from './context'
 
@@ -26,6 +26,7 @@ const _default = defineComponent(() => {
     const showDelay = computed(() => {
         const { type, allowDelay, delayCount = 0 } = reason.value
         if (!allowDelay) return false
+        if (type === 'PERIOD') return true
 
         const { time, weekly, visitTime, waste, weeklyWaste } = rule.value ?? {}
         let maxLimitMs = 0, wasted = 0
@@ -43,7 +44,7 @@ const _default = defineComponent(() => {
         }
         return meetTimeLimit(
             { wasted, maxLimit: maxLimitMs },
-            { count: delayCount, duration: delayDuration.value, allow: !!allowDelay },
+            { count: delayCount, duration: delayDuration.value, allow: true },
         )
     })
 
@@ -51,7 +52,7 @@ const _default = defineComponent(() => {
         const option = await trySendMsg2Runtime('option.get')
         try {
             if (option) await processVerification(option)
-            await bridge.request('delay', undefined)
+            await bridge.request('delay', toRaw(reason.value))
         } catch {
         }
     }

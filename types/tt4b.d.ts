@@ -1056,8 +1056,8 @@ declare namespace tt4b {
         type _HandlerIO<Input extends _TransmitValue = undefined, Output extends _TransmitValue = undefined> = [Input, Output]
         type _MakeRegistry<
             Codes extends string,
-            Param extends _TransmitValue = undefined,
-            Result extends _TransmitValue = undefined,
+            Param extends _TransmitValue = void,
+            Result extends _TransmitValue = void,
         > = Record<Codes, _HandlerIO<Param, Result>>
 
         type _MqReqData<R, K extends keyof R> = R[K] extends [infer In, unknown] ? In : never

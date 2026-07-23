@@ -17,9 +17,7 @@
             "daily": "Daily limit",
             "weekly": "Weekly limit",
             "period": "Blocked periods",
-            "visits": "{n} visits",
-            "allowDelay": "Allow Delay",
-            "unlimited": "Unlimited"
+            "visits": "{n} visits"
         },
         "permGrantConfirm": "This feature requires relevant permissions",
         "site": {
@@ -29,7 +27,9 @@
                 "virtual": "subpage"
             }
         },
-        "followBrowser": "Follow browser"
+        "followBrowser": "Follow browser",
+        "allowUnblocking": "Allow unblocking",
+        "unlimited": "Unlimited"
     },
     "zh_CN": {
         "merge": {
@@ -49,9 +49,7 @@
             "daily": "每日上限",
             "weekly": "每周上限",
             "period": "不可访问的时间段",
-            "visits": "{n}次访问",
-            "allowDelay": "可延时",
-            "unlimited": "无限制"
+            "visits": "{n}次访问"
         },
         "permGrantConfirm": "该功能需要授予相关权限",
         "site": {
@@ -61,7 +59,8 @@
                 "virtual": "子页面"
             }
         },
-        "followBrowser": "跟随浏览器"
+        "followBrowser": "跟随浏览器",
+        "unlimited": "无限制"
     },
     "ja": {
         "merge": {
@@ -109,8 +108,7 @@
             "daily": "每日上限",
             "weekly": "每週上限",
             "period": "限制時段",
-            "visits": "{n}次造訪",
-            "allowDelay": "允許延遲"
+            "visits": "{n}次造訪"
         },
         "permGrantConfirm": "此功能需要相關權限才能運作",
         "site": {
@@ -139,8 +137,7 @@
             "daily": "Limite diário",
             "weekly": "Limite semanal",
             "period": "Períodos bloqueados",
-            "visits": "{n} visitas",
-            "allowDelay": "Permitir atraso"
+            "visits": "{n} visitas"
         },
         "permGrantConfirm": "Esta funcionalidade precisa de permissões relevantes",
         "site": {
@@ -168,8 +165,7 @@
             "daily": "Денний ліміт",
             "weekly": "Тижневий ліміт",
             "period": "Недозволені періоди",
-            "visits": "{n} відвідування",
-            "allowDelay": "Дозволити затримку"
+            "visits": "{n} відвідування"
         },
         "permGrantConfirm": "Ця функція потребує відповідних дозволів",
         "site": {
@@ -198,8 +194,7 @@
             "daily": "Limite giornaliero",
             "weekly": "Limite settimanale",
             "period": "Periodi bloccati",
-            "visits": "{n} visite",
-            "allowDelay": "Ritardabile"
+            "visits": "{n} visite"
         },
         "permGrantConfirm": "Questa funzione richiede autorizzazioni rilevanti",
         "site": {
@@ -256,8 +251,7 @@
             "daily": "Tägliches Limit",
             "weekly": "Wöchentliches Limit",
             "period": "Unzulässiger Zeitraum",
-            "visits": "{n} Besuche",
-            "allowDelay": "Verzögerung zulassen"
+            "visits": "{n} Besuche"
         },
         "permGrantConfirm": "Dieses Feature benötigt entsprechende Berechtigungen",
         "site": {
@@ -285,9 +279,7 @@
             "daily": "Limite quotidienne",
             "weekly": "Limite hebdomadaire",
             "period": "Périodes bloquées",
-            "visits": "{n} visites",
-            "allowDelay": "Retardable",
-            "unlimited": "Illimité"
+            "visits": "{n} visites"
         },
         "permGrantConfirm": "Cette fonctionnalité nécessite des autorisations appropriées",
         "site": {
@@ -297,7 +289,8 @@
                 "virtual": "sous-page"
             }
         },
-        "followBrowser": "Suivre le navigateur"
+        "followBrowser": "Suivre le navigateur",
+        "unlimited": "Illimité"
     },
     "ru": {
         "merge": {
@@ -317,8 +310,7 @@
             "daily": "Дневной лимит",
             "weekly": "Недельный лимит",
             "period": "Заблокированное время",
-            "visits": "{n} посещения",
-            "allowDelay": "Разрешить задержку"
+            "visits": "{n} посещения"
         },
         "site": {
             "type": {
@@ -374,8 +366,7 @@
             "daily": "Günlük limit",
             "weekly": "Haftalık limit",
             "period": "Engellenen periyotlar",
-            "visits": "{n} ziyaretler",
-            "allowDelay": "Ertelenebilir"
+            "visits": "{n} ziyaretler"
         },
         "permGrantConfirm": "Bu özellik ilgili izinleri gerektirir",
         "site": {
@@ -403,9 +394,7 @@
             "daily": "Dzienny limit",
             "weekly": "Limit tygodniowy",
             "period": "Godziny blokowania",
-            "visits": "{n} wizyt",
-            "allowDelay": "Możliwe do przedłużenia",
-            "unlimited": "Bez ograniczeń"
+            "visits": "{n} wizyt"
         },
         "permGrantConfirm": "Ta opcja wymaga odpowiednich uprawnień",
         "site": {
@@ -415,6 +404,7 @@
                 "virtual": "podstrona"
             }
         },
-        "followBrowser": "Śledź przeglądarkę"
+        "followBrowser": "Śledź przeglądarkę",
+        "unlimited": "Bez ograniczeń"
     }
 }

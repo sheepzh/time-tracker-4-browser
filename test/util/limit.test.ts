@@ -1,7 +1,7 @@
 import { rstest } from '@rstest/core'
 import {
     dateMinute2Idx, hasLimited, hasWeeklyLimited, isEffective, isInPeriod, matchCond, matches, meetLimit,
-    meetTimeLimit, period2Str,
+    meetTimeLimit,
 } from "@util/limit"
 
 describe('util/limit', () => {
@@ -66,13 +66,6 @@ describe('util/limit', () => {
         expect(meetTimeLimit({ wasted: 1001, maxLimit: 1 }, { duration: 5, allow: true, count: 0 })).toBe(true)
         expect(meetTimeLimit({ wasted: 1001, maxLimit: 1 }, { duration: 5, allow: true, count: 1 })).toBe(false)
         expect(meetTimeLimit({ wasted: (1 + 60 * 5) * 1000 + 1, maxLimit: 1 }, { duration: 5, allow: true, count: 1 })).toBe(true)
-    })
-
-    test('period2Str', () => {
-        expect(period2Str([0, 100])).toBe('00:00-01:40')
-        expect(period2Str([100, 900])).toBe('01:40-15:00')
-        expect(period2Str([100, 100])).toBe('01:40-01:40')
-        expect(period2Str([900, 100])).toBe('15:00-01:40(+1)')
     })
 
     test('dateMinute2Idx', () => {

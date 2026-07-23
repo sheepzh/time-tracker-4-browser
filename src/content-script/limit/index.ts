@@ -1,40 +1,35 @@
 import { getOption } from '@api/sw/option'
 import Dispatcher from '../dispatcher'
 import LocationWatcher from '../location-watcher'
-import ModalInstance from './modal/instance'
-import FocusProcessor from './processor/focus-processor'
-import MessageAdaptor from './processor/message-adaptor'
-import PeriodProcessor from './processor/period-processor'
-import VisitProcessor from './processor/visit-processor'
+import ModalManager from './manager'
+import DelayCoordinator from './manager/delay-coordinator'
+import LimitState from './manager/state'
+import { DailyWeeklyProcessor, FocusProcessor, PeriodProcessor, VisitProcessor } from './processor'
 import Reminder from './reminder'
-import type { Processor } from './types'
 
 export default async function processLimit(location: LocationWatcher, dispatcher: Dispatcher) {
     const { limitDelayDuration: delayDuration } = await getOption()
-    const modal = new ModalInstance(location)
+    const state = new LimitState()
+    const delayCoord = new DelayCoordinator()
 
-    const messageAdaptor = new MessageAdaptor(modal, location, delayDuration)
-    const visitProcessor = new VisitProcessor(modal, location, delayDuration)
-    const focusProcessor = new FocusProcessor(modal, location)
+    const dailyWeeklyPsr = new DailyWeeklyProcessor(state, delayCoord, location, delayDuration)
+    const visitPsr = new VisitProcessor(state, delayCoord, location, delayDuration)
+    const focusPsr = new FocusProcessor(state, location)
+    const periodPsr = new PeriodProcessor(state, delayCoord, location, delayDuration)
 
-    const processors: Processor[] = [
-        messageAdaptor,
-        visitProcessor,
-        new PeriodProcessor(modal, location),
-        focusProcessor,
-    ]
+    const processors = [dailyWeeklyPsr, visitPsr, periodPsr, focusPsr]
     await Promise.all(processors.map(p => p.init()))
     location.onChange(() => void processors.forEach(p => void p.reset()))
+
+    new ModalManager(location).init(state, delayCoord, visitPsr)
 
     const reminder = new Reminder()
 
     dispatcher
-        .register('limitChanged', () => void processors.forEach(p => void p.reset()))
-        .register('limitTimeMeet', items => void messageAdaptor.onLimitTimeMeet(items))
-        .register('limitReminder', data => void reminder.show(data))
-        .register('askVisitHit', ruleId => modal.reasons.some(r => r.type === 'VISIT' && ruleId === r.id))
-        .register('focusChanged', session => void focusProcessor.onFocusChanged(session))
-        .registerAudibleChange(visitProcessor.tracker)
-
-    return visitProcessor.tracker
+        .register('limitChanged', () => processors.forEach(p => void p.reset()))
+        .register('limitTimeMeet', items => dailyWeeklyPsr.onTimeMeet(items))
+        .register('limitReminder', data => reminder.show(data))
+        .register('askVisitHit', ruleId => state.reasons.some(r => r.type === 'VISIT' && ruleId === r.id))
+        .register('focusChanged', session => focusPsr.onFocusChanged(session))
+        .registerAudibleChange(visitPsr)
 }

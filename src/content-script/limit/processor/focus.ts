@@ -2,11 +2,12 @@ import { trySendMsg2Runtime } from '@api/sw/common'
 import { getFocusPreset } from '@api/sw/focus'
 import LocationWatcher from '@cs/location-watcher'
 import { matches } from '@util/limit'
-import type { MaskModal, Processor } from '../types'
+import type LimitState from '../manager/state'
+import type { Processor } from '../types'
 
 class FocusProcessor implements Processor {
     constructor(
-        private readonly modal: MaskModal,
+        private readonly state: LimitState,
         private readonly location: LocationWatcher,
     ) { }
 
@@ -25,7 +26,7 @@ class FocusProcessor implements Processor {
     }
 
     async #refresh(session: tt4b.focus.Session | undefined) {
-        this.modal.removeReasonsByType('FOCUS')
+        this.state.removeByType('FOCUS')
 
         if (!session) return
         const { state, phase, cond, policy, presetId } = session
@@ -37,7 +38,7 @@ class FocusProcessor implements Processor {
             const presetName = presetId === undefined
                 ? undefined
                 : await getFocusPreset(presetId).then(p => p?.name)
-            this.modal.addReason({ type: 'FOCUS', ...session, presetName })
+            this.state.add({ type: 'FOCUS', ...session, presetName })
         }
     }
 }

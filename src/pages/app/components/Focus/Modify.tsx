@@ -136,7 +136,7 @@ const _default = defineComponent<{}>((_, ctx) => {
                             onChange={val => form.duration = val}
                             hideSeconds
                             style={{ flex: 1 } satisfies StyleValue}
-                            placeholder={t(msg => msg.shared.limit.unlimited)}
+                            placeholder={t(msg => msg.shared.unlimited)}
                             clearable={form.method === 'focus'}
                         />
                         {form.method === 'focus' && (
@@ -144,8 +144,8 @@ const _default = defineComponent<{}>((_, ctx) => {
                                 disabled={!form.duration}
                                 modelValue={!!form.duration && form.allowDelay}
                                 onChange={v => form.allowDelay = Boolean(v)}
-                                label={t(msg => msg.shared.limit.allowDelay)}
-                                ariaLabel={t(msg => msg.shared.limit.allowDelay)}
+                                label={t(msg => msg.shared.allowUnblocking)}
+                                ariaLabel={t(msg => msg.shared.allowUnblocking)}
                                 border
                             />
                         )}

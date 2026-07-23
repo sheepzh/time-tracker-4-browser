@@ -1,6 +1,7 @@
 import { t } from "@cs/locale"
 import Flex from "@pages/components/Flex"
-import { matchCond, meetLimit, meetTimeLimit, period2Str } from "@util/limit"
+import { period2Str } from '@pages/util/limit'
+import { matchCond, meetLimit, meetTimeLimit } from "@util/limit"
 import { formatPeriodCommon, MILL_PER_SECOND } from "@util/time"
 import { ElDescriptions, ElDescriptionsItem, ElTag } from 'element-plus'
 import { computed, defineComponent } from "vue"
