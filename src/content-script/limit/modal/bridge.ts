@@ -1,4 +1,4 @@
-import type { Reason } from '../types'
+import type { LimitReason, Reason } from '../types'
 
 type Handler<Input extends unknown = void, Output extends unknown = void> = {
     req: Input
@@ -10,7 +10,7 @@ type MakeRegistry<C extends string, I extends unknown = void, O extends unknown 
 type BridgeRegistry =
     & MakeRegistry<'reason', Reason | undefined>
     & MakeRegistry<'visitTime', number>
-    & MakeRegistry<'delay'>
+    & MakeRegistry<'delay', LimitReason>
     & MakeRegistry<'url', string>
     & MakeRegistry<'stop'>
 

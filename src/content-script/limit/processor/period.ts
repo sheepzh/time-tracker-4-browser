@@ -1,7 +1,10 @@
 import { trySendMsg2Runtime } from '@api/sw/common'
 import LocationWatcher from '@cs/location-watcher'
 import { isInPeriod } from '@util/limit'
-import type { MaskModal, Processor, Reason } from '../types'
+import { MILL_PER_MINUTE } from '@util/time'
+import DelayCoordinator from '../manager/delay-coordinator'
+import LimitState from '../manager/state'
+import type { Processor, Reason } from '../types'
 
 type EffectiveResult = {
     effective: boolean
@@ -33,19 +36,24 @@ class PeriodProcessor implements Processor {
     #timers: ReturnType<typeof setTimeout>[] = []
 
     constructor(
-        private readonly modal: MaskModal,
+        private readonly state: LimitState,
+        private readonly delayCoord: DelayCoordinator,
         private readonly location: LocationWatcher,
+        private readonly delayDuration: number,
     ) {
     }
 
-    init(): void {
-        void this.reset()
+    async init(): Promise<void> {
+        await this.reset()
+        this.delayCoord.register(() => {
+            this.#clean()
+            const resumeTimer = setTimeout(() => void this.reset(), MILL_PER_MINUTE * this.delayDuration)
+            this.#timers.push(resumeTimer)
+        }, 'PERIOD')
     }
 
     async reset(): Promise<void> {
-        this.#timers.forEach(clearTimeout)
-        this.#timers = []
-        this.modal.removeReasonsByType('PERIOD')
+        this.#clean()
         if (this.location.whitelisted) return
 
         const rules = await trySendMsg2Runtime('limit.list', { effective: true, url: this.location.url }) ?? []
@@ -54,26 +62,32 @@ class PeriodProcessor implements Processor {
     }
 
     #processRule(rule: tt4b.limit.Rule, now: Date): ReturnType<typeof setTimeout>[] {
-        const { cond, periods, id } = rule
+        const { cond, periods, id, allowDelay } = rule
         if (!periods?.length) return []
         const nowTs = now.getTime()
         return periods.flatMap(p => {
             const { effective, startTime, endTime } = calcEffective(p, now)
-            const reason: Reason = { id, cond, type: 'PERIOD' }
+            const reason: Reason = { id, cond, type: 'PERIOD', allowDelay }
             const timers: ReturnType<typeof setTimeout>[] = [
                 setTimeout(() => {
-                    this.modal.removeReason(reason)
+                    this.state.remove(reason)
                     void this.reset()
                 }, endTime.getTime() - nowTs),
             ]
             if (effective) {
-                this.modal.addReason(reason)
+                this.state.add(reason)
             } else if (startTime) {
-                const startTimer = setTimeout(() => this.modal.addReason(reason), startTime.getTime() - nowTs)
+                const startTimer = setTimeout(() => this.state.add(reason), startTime.getTime() - nowTs)
                 timers.push(startTimer)
             }
             return timers
         })
+    }
+
+    #clean() {
+        this.#timers.forEach(clearTimeout)
+        this.#timers = []
+        this.state.removeByType('PERIOD')
     }
 }
 

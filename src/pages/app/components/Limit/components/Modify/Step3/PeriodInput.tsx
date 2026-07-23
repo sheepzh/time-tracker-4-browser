@@ -10,15 +10,18 @@ import { Check, Close, Plus } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
 import { useState, useSwitch, useXsState } from '@hooks'
 import Flex from "@pages/components/Flex"
-import { dateMinute2Idx, isInPeriod, period2Str } from "@util/limit"
+import { Forbidden } from '@pages/icons'
+import { FULL_PERIOD, period2Str } from '@pages/util/limit'
+import { dateMinute2Idx, isInPeriod } from "@util/limit"
 import { MILL_PER_HOUR } from "@util/time"
-import { ElButton, ElTag, ElTimePicker, useNamespace } from "element-plus"
+import { ElButton, ElTag, ElTimePicker, ElTooltip, useNamespace } from "element-plus"
 import { type StyleValue, computed, defineComponent } from "vue"
 
 const BUTTON_STYLE: StyleValue = {
     padding: '8px',
     height: '32px',
     lineHeight: '32px',
+    marginInlineStart: 0,
 }
 
 const FULL: tt4b.limit.Period = [0, 1440]
@@ -163,6 +166,11 @@ const PeriodInput = defineComponent<ModelValue<tt4b.limit.Period[]>>(props => {
         closeEditing()
     }
 
+    const handleSetAllTime = () => {
+        props.onChange?.([[FULL_PERIOD[0], FULL_PERIOD[1]]])
+        closeEditing()
+    }
+
     const handleDelete = (idx: number) => {
         const newPeriods = props.modelValue.filter((_, i) => i !== idx)
             .map(p => [p[0], p[1]] satisfies tt4b.limit.Period)
@@ -173,7 +181,7 @@ const PeriodInput = defineComponent<ModelValue<tt4b.limit.Period[]>>(props => {
     const pickerCls = usePickerStyle()
 
     return () => (
-        <Flex gap={5} column={isXs.value}>
+        <Flex data-testid="limit-period" gap={5} column={isXs.value}>
             <Flex v-show={props.modelValue.length} gap={5} wrap>
                 {props.modelValue.map((p, idx) => p && (
                     <ElTag
@@ -205,18 +213,33 @@ const PeriodInput = defineComponent<ModelValue<tt4b.limit.Period[]>>(props => {
                     />
                 </Flex>
                 <ElButton
+                    data-testid="close"
                     icon={Close}
                     onClick={closeEditing}
                     style={{ ...BUTTON_STYLE, borderRadius: 0 } satisfies StyleValue}
                 />
                 <ElButton
+                    data-testid="save"
                     icon={Check}
                     onClick={handleSave}
-                    style={{ ...BUTTON_STYLE, marginInlineStart: 0 } satisfies StyleValue}
+                    style={{ ...BUTTON_STYLE, borderRadius: 0 } satisfies StyleValue}
                 />
+                <ElTooltip
+                    placement="top"
+                    content={t(msg => msg.calendar.range.allTime)}
+                >
+                    <ElButton
+                        data-testid="all-time"
+                        icon={Forbidden}
+                        onClick={handleSetAllTime}
+                        style={BUTTON_STYLE}
+                        aria-label={t(msg => msg.calendar.range.allTime)}
+                    />
+                </ElTooltip>
             </Flex>
             <Flex>
                 <ElButton
+                    data-testid="create"
                     v-show={!editing.value}
                     icon={Plus}
                     onClick={handleEdit}

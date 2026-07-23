@@ -60,7 +60,8 @@ type LimitInfo = { wasted: number, maxLimit: number | undefined }
 type DelayInfo = { count: number, duration: number, allow: boolean }
 
 export const meetTimeLimit = (limit: LimitInfo, delay: DelayInfo) => {
-    const { wasted, maxLimit = 0 } = limit
+    const { wasted, maxLimit } = limit
+    if (!maxLimit) return false
     const { count, duration, allow } = delay
     const realLimit = allow ? maxLimit + duration * MILL_PER_MINUTE * (count ?? 0) : maxLimit
     return meetLimit(realLimit, wasted)
@@ -90,15 +91,6 @@ export function isEffective(weekdays: tt4b.limit.Rule['weekdays'], weekday?: num
     return weekdays.includes(weekday ?? getWeekDay(new Date()))
 }
 
-const idx2Str = (time: number | undefined): string => {
-    time = time ?? 0
-    const hour = Math.floor(time / 60)
-    const min = time - hour * 60
-    const hourStr = (hour < 10 ? "0" : "") + hour
-    const minStr = (min < 10 ? "0" : "") + min
-    return `${hourStr}:${minStr}`
-}
-
 export const dateMinute2Idx = (date: Date): number => {
     const hour = date.getHours()
     const min = date.getMinutes()
@@ -108,8 +100,4 @@ export const dateMinute2Idx = (date: Date): number => {
 export const isInPeriod = (point: number, [s, e]: tt4b.limit.Period): boolean => {
     if (s <= e) return point >= s && point <= e
     return point >= s || point <= e
-}
-
-export const period2Str = ([start, end]: tt4b.limit.Period): string => {
-    return `${idx2Str(start)}-${idx2Str(end)}${start <= end ? '' : '(+1)'}`
 }

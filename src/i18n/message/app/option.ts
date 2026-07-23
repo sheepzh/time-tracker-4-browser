@@ -68,7 +68,7 @@ export type OptionMessage = {
             twoFaCopyLink: string
             twoFaVerifyLabel: string
         }
-        delayDuration: string
+        unblockDuration: string
     }
     backup: {
         title: string

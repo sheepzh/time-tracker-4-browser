@@ -48,14 +48,14 @@ const SetupForm = defineComponent<{}>(() => {
                             hideSeconds
                             style={{ flex: 1 }}
                             size='default'
-                            placeholder={t(msg => msg.shared.limit.unlimited)}
+                            placeholder={t(msg => msg.shared.unlimited)}
                         />
                         <ElCheckbox
                             disabled={!form.duration}
                             modelValue={!!form.duration && form.allowDelay}
                             onChange={v => form.allowDelay = Boolean(v)}
-                            label={t(msg => msg.shared.limit.allowDelay)}
-                            ariaLabel={t(msg => msg.shared.limit.allowDelay)}
+                            label={t(msg => msg.shared.allowUnblocking)}
+                            ariaLabel={t(msg => msg.shared.allowUnblocking)}
                             border
                         />
                     </Flex>

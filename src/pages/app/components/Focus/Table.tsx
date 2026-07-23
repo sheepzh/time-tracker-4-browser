@@ -10,8 +10,8 @@ import { useFocusList } from './context'
 
 type Scope = RenderRowData<tt4b.focus.Preset>
 
-const formatDuration = (durSec: number | undefined): string => {
-    if (!durSec) return t(msg => msg.shared.limit.unlimited)
+const formatDuration = (durSec: number): string => {
+    if (!durSec) return t(msg => msg.shared.unlimited)
     return formatPeriodCommon(durSec * 1000)
 }
 
@@ -30,7 +30,7 @@ const StateDot: FunctionalComponent<{ session: tt4b.focus.Session | undefined, p
 }
 
 const UnlimitedTag: FunctionalComponent<{}> = () => (
-    <ElTag type="info" size="small" effect="plain">{t(msg => msg.shared.limit.unlimited)}</ElTag>
+    <ElTag type="info" size="small" effect="plain">{t(msg => msg.shared.unlimited)}</ElTag>
 )
 
 const Duration: FunctionalComponent<Pick<tt4b.focus.Preset, 'duration' | 'break'>> = ({ duration, break: break_ }) => {

@@ -137,7 +137,10 @@ const _default = defineComponent((_, ctx) => {
     const levelSelectStyle = useLevelSelectStyle()
 
     return () => <OptionLines>
-        <OptionItem label={msg => msg.option.limit.delayDuration} defaultValue={DEFAULT_LIMIT.limitDelayDuration}>
+        <OptionItem
+            label={msg => msg.option.limit.unblockDuration}
+            defaultValue={DEFAULT_LIMIT.limitDelayDuration}
+        >
             <ElInputNumber
                 modelValue={option.limitDelayDuration}
                 size="small" min={1} max={20}

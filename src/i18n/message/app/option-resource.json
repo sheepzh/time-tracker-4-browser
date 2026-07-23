@@ -65,7 +65,7 @@
                 "twoFaCopyLink": "复制链接",
                 "twoFaVerifyLabel": "请输入您的身份程序里的 6 位编码以验证正确导入"
             },
-            "delayDuration": "每次延迟 {input} 分钟"
+            "unblockDuration": "每次临时解锁 {input} 分钟"
         },
         "backup": {
             "title": "数据备份",
@@ -335,7 +335,7 @@
                 "twoFaCopyLink": "Copy link",
                 "twoFaVerifyLabel": "Enter the 6-digit code to verify"
             },
-            "delayDuration": "Delay for {input} minutes per time"
+            "unblockDuration": "Snooze for {input} minutes each time"
         },
         "backup": {
             "title": "Data Backup",
@@ -930,8 +930,7 @@
                 "twoFaScanHint": "Scanne den QR‑Code mit einer Authentifikation‑App oder importiere den Einrichtungslink in einen TOTP‑fähigen Passwortmanager.",
                 "twoFaCopyLink": "Link kopieren",
                 "twoFaVerifyLabel": "Zur Bestätigung den 6‑stelligen Code eingeben"
-            },
-            "delayDuration": "Verzögerung für {input} Minuten pro Vorgang"
+            }
         },
         "backup": {
             "title": "Datensicherung",
@@ -1067,8 +1066,7 @@
                 "twoFaScanHint": "Scannez le code QR avec une application d'authentification ou importez le lien d'installation dans un gestionnaire de mots de passe qui prend en charge TOTP.",
                 "twoFaCopyLink": "Copier le lien",
                 "twoFaVerifyLabel": "Entrez le code à 6 chiffres pour verifier"
-            },
-            "delayDuration": "Délai additionnel de {input} minutes à chaque fois"
+            }
         },
         "backup": {
             "title": "Sauvegarde des données",
@@ -1575,8 +1573,7 @@
                 "twoFaScanHint": "Zeskanuj kod QR za pomocą aplikacji uwierzytelniającej lub zaimportuj link konfiguracyjny do menedżera haseł obsługującego TOTP.",
                 "twoFaCopyLink": "Kopiuj link",
                 "twoFaVerifyLabel": "Wpisz 6-cyfrowy kod do weryfikacji"
-            },
-            "delayDuration": "Opóźnienie dla {input} minut za każdym razem"
+            }
         },
         "backup": {
             "title": "Kopia zapasowa danych",
@@ -1714,8 +1711,7 @@
                 "twoFaScanHint": "Scansiona il codice QR con un'app di autenticazione o importa il link di configurazione in un gestore di password che supporta TOTP.",
                 "twoFaCopyLink": "Copia link",
                 "twoFaVerifyLabel": "Inserisci il codice a 6 cifre da verificare"
-            },
-            "delayDuration": "Ritardo per {input} minuti per volta"
+            }
         },
         "backup": {
             "title": "Backup Dati",
