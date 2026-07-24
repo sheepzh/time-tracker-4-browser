@@ -60,6 +60,7 @@
             }
         },
         "followBrowser": "跟随浏览器",
+        "allowUnblocking": "可解锁",
         "unlimited": "无限制"
     },
     "ja": {
