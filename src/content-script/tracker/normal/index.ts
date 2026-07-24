@@ -1,6 +1,6 @@
 import Dispatcher from '@cs/dispatcher'
-import DocVisibleDetector from './doc-visible-detector'
-import IdleDetector from './idle-detector'
+import DocVisibleDetector from './pause/doc-visible-detector'
+import IdleDetector from './pause/idle-detector'
 import { PauseDetector, PauseReason } from './types'
 
 const INTERVAL = 1000
@@ -16,18 +16,10 @@ type NormalTrackerOption = {
  */
 export default class NormalTracker {
     #start: number = Date.now()
-    #detectors: PauseDetector[]
+    #detectors: PauseDetector[] = []
     #wasPaused: [boolean, PauseReason | undefined]
 
-    constructor(
-        dispatcher: Dispatcher,
-        private readonly option: NormalTrackerOption,
-        ...pauseDetectors: PauseDetector[]
-    ) {
-        const idle = new IdleDetector()
-        dispatcher.registerAudibleChange(idle)
-        const docVisible = new DocVisibleDetector()
-        this.#detectors = [...pauseDetectors, idle, docVisible]
+    constructor(private readonly option: NormalTrackerOption) {
         this.#wasPaused = [this.paused, 'initial']
     }
 
@@ -35,10 +27,15 @@ export default class NormalTracker {
         return this.#detectors.some(d => d.paused)
     }
 
-    init() {
+    init(dispatcher: Dispatcher, ...pauseDetectors: PauseDetector[]) {
+        const idle = new IdleDetector()
+        const docVisible = new DocVisibleDetector()
+        dispatcher.registerAudibleChange(idle)
+        this.#detectors.push(...pauseDetectors, idle, docVisible)
+        this.#detectors.forEach(d => d.onPauseChange(target => this.#reconcile(target.reason)))
+
         // Resume if idle before reloading
         this.resume('idle')
-        this.#detectors.forEach(d => d.onPauseChange(target => this.#reconcile(target.reason)))
 
         setInterval(() => !this.paused && this.collect(), INTERVAL)
     }

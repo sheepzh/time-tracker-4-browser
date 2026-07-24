@@ -1,9 +1,10 @@
 import { trySendMsg2Runtime } from '@api/sw/common'
 import { getOption } from '@api/sw/option'
 import { AudibleChangeHandler } from '@cs/types'
-import { PauseDetector, PauseReason } from './types'
+import { PauseDetector, PauseReason } from '../types'
+import BasePauseDetector from './base'
 
-export default class IdleDetector implements PauseDetector, AudibleChangeHandler {
+export default class IdleDetector extends BasePauseDetector implements PauseDetector, AudibleChangeHandler {
     reason: PauseReason = 'idle'
 
     #fullScreen: boolean = false
@@ -13,12 +14,16 @@ export default class IdleDetector implements PauseDetector, AudibleChangeHandler
     #autoPauseInterval?: number
     #lastActiveTime: number = Date.now()
     #pauseTimeout?: ReturnType<typeof setTimeout>
-    #listener?: ArgCallback<PauseDetector>
 
     get paused() {
         if (this.#fullScreen || this.#audible) return false
         if (!this.#autoPauseInterval) return false
         return this.#lastActiveTime + this.#autoPauseInterval <= Date.now()
+    }
+
+    constructor() {
+        super()
+        void this.init()
     }
 
     async init() {
@@ -27,7 +32,7 @@ export default class IdleDetector implements PauseDetector, AudibleChangeHandler
 
         const handleActive = this.#throttle(() => {
             this.#lastActiveTime = Date.now()
-            this.#notify()
+            this.notify()
             this.#scheduleTimeout()
         }, 100)
 
@@ -39,28 +44,24 @@ export default class IdleDetector implements PauseDetector, AudibleChangeHandler
 
         document?.addEventListener('fullscreenchange', () => {
             this.#fullScreen = !!document.fullscreenElement
-            this.#notify()
+            this.notify()
             this.#scheduleTimeout()
         })
 
         document?.addEventListener('visibilitychange', async () => {
             document.visibilityState === 'visible' && await this.#syncOptions()
-            this.#notify()
+            this.notify()
         })
 
         trySendMsg2Runtime('cs.getAudible').then(val => {
             this.#audible = !!val
-            this.#notify()
+            this.notify()
         })
-    }
-
-    onPauseChange(listener: ArgCallback<PauseDetector>) {
-        this.#listener = listener
     }
 
     onAudibleChange(audible: boolean): void {
         this.#audible = audible
-        this.#notify()
+        this.notify()
     }
 
     async #syncOptions() {
@@ -69,7 +70,7 @@ export default class IdleDetector implements PauseDetector, AudibleChangeHandler
             const enabled = autoPauseTracking && autoPauseInterval > 0
             this.#autoPauseInterval = enabled ? autoPauseInterval * 1000 : undefined
 
-            this.#notify()
+            this.notify()
             this.#scheduleTimeout()
         } catch (e) {
             console.info("[tt4b] Failed to query limit option", e)
@@ -78,7 +79,7 @@ export default class IdleDetector implements PauseDetector, AudibleChangeHandler
 
     #onTimeout() {
         this.#pauseTimeout = undefined
-        this.#notify()
+        this.notify()
         !this.paused && this.#scheduleTimeout()
     }
 
@@ -108,10 +109,6 @@ export default class IdleDetector implements PauseDetector, AudibleChangeHandler
         const pollInterval = setInterval(() => this.#syncOptions(), 60_000)
         const cleanup = () => clearInterval(pollInterval)
         window.addEventListener('beforeunload', cleanup)
-    }
-
-    #notify() {
-        this.#listener?.(this)
     }
 
     #throttle(fn: NoArgCallback, ms: number): NoArgCallback {

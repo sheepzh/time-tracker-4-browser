@@ -12,11 +12,7 @@ const MODAL_URL = getUrl('static/limit.html')
 const MSG_ORIGIN = new URL(MODAL_URL).origin
 const TAG_NAME = 'extension-time-tracker-overlay'
 
-class RootElement extends HTMLElement {
-    constructor() {
-        super()
-    }
-}
+class RootElement extends HTMLElement { }
 
 function createRootElement(): RootElement {
     const element = document.createElement(TAG_NAME) as RootElement

@@ -43,12 +43,12 @@ async function main() {
     const limitState = new LimitState()
 
     // Execute in every injection
-    const normalTracker = new NormalTracker(dispatcher, {
+    const normalTracker = new NormalTracker({
         onReport: data => trySendMsg2Runtime('track.time', data),
         onResume: reason => reason === 'idle' && trySendMsg2Runtime('cs.idleChanged', false),
         onPause: reason => reason === 'idle' && trySendMsg2Runtime('cs.idleChanged', true),
-    }, limitState)
-    normalTracker.init()
+    })
+    normalTracker.init(dispatcher, limitState)
 
     const location = new LocationWatcher()
     await location.init()

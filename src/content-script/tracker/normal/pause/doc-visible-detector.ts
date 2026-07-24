@@ -1,22 +1,18 @@
-import type { PauseDetector, PauseReason } from './types'
+import type { PauseDetector, PauseReason } from '../types'
+import BasePauseDetector from './base'
 
-class DocVisibleDetector implements PauseDetector {
+class DocVisibleDetector extends BasePauseDetector implements PauseDetector {
     reason: PauseReason = 'visible'
     paused: boolean
-    #listener?: ArgCallback<PauseDetector>
 
     constructor() {
+        super()
         this.paused = document?.visibilityState !== 'visible'
         document?.addEventListener('visibilitychange', () => {
             this.paused = document?.visibilityState !== 'visible'
-            this.#listener?.(this)
+            this.notify()
         })
     }
-
-    onPauseChange(listener: ArgCallback<PauseDetector>): void {
-        this.#listener = listener
-    }
-
 }
 
 export default DocVisibleDetector

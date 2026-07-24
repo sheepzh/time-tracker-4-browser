@@ -15,15 +15,15 @@ class VisitProcessor implements Processor {
     #listener?: ArgCallback<number>
 
     constructor(
-        dispatcher: Dispatcher,
+        private readonly dispatcher: Dispatcher,
         private readonly state: LimitState,
         private readonly delayCoord: DelayCoordinator,
         private readonly location: LocationWatcher,
         private readonly delayDuration: number,
     ) {
-        this.#tracker = new NormalTracker(dispatcher, {
+        this.#tracker = new NormalTracker({
             onReport: data => this.handleTracker(data),
-        }, state)
+        })
         location.onChange(async ({ prevUrl, nextUrl }) => {
             if (prevUrl === nextUrl) return
             // reset focus time and delay count when url changed
@@ -68,7 +68,7 @@ class VisitProcessor implements Processor {
     }
 
     async init(): Promise<void> {
-        this.#tracker.init()
+        this.#tracker.init(this.dispatcher, this.state)
         this.delayCoord.register(() => {
             this.#delayCount++
             this.state.removeByType('VISIT')
