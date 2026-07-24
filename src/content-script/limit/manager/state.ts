@@ -1,5 +1,6 @@
+import type { PauseDetector, PauseReason } from '@cs/tracker/normal/types'
 import { isSameReason } from '../common'
-import { Reason, ReasonType } from '../types'
+import type { Reason, ReasonType } from '../types'
 
 const TYPE_SORT: Record<ReasonType, number> = {
     FOCUS: -1,
@@ -9,17 +10,27 @@ const TYPE_SORT: Record<ReasonType, number> = {
     WEEKLY: 3,
 }
 
-class LimitState {
+class LimitState implements PauseDetector {
+    reason: PauseReason = 'limit'
     #items: Reason[] = []
     #listener?: ArgCallback<Reason | undefined>
+    #pauseListener?: ArgCallback<PauseDetector>
 
-    get reasons(): Readonly<Reason[]> {
+    get reasons() {
         return this.#items
+    }
+
+    get paused() {
+        return !!this.#items.length
     }
 
     onChange(listener: ArgCallback<Reason | undefined>) {
         this.#listener = listener
         this.#notify()
+    }
+
+    onPauseChange(listener: ArgCallback<PauseDetector>) {
+        this.#pauseListener = listener
     }
 
     add(...reasons: Reason[]): void {
@@ -44,6 +55,7 @@ class LimitState {
 
     #notify() {
         this.#listener?.(this.#items[0])
+        this.#pauseListener?.(this)
     }
 }
 

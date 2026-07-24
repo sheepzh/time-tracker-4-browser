@@ -1,78 +1,59 @@
-import type { AudibleChangeHandler } from '@cs/types'
-import IdleDetector from "./idle-detector"
+import Dispatcher from '@cs/dispatcher'
+import DocVisibleDetector from './doc-visible-detector'
+import IdleDetector from './idle-detector'
+import { PauseDetector, PauseReason } from './types'
 
 const INTERVAL = 1000
 
-type StateChangeReason = 'visible' | 'idle' | 'initial'
-
-class TrackContext {
-    docVisible: boolean = false
-    idleDetector: IdleDetector
-
-    constructor(
-        private readonly onPause: ArgCallback<StateChangeReason>,
-        private readonly onResume: ArgCallback<StateChangeReason>,
-    ) {
-        this.detectDocVisible()
-        document?.addEventListener('visibilitychange', () => this.detectDocVisible())
-
-        this.idleDetector = new IdleDetector(
-            () => this.onPause('idle'),
-            () => this.docVisible && this.onResume('idle'),
-        )
-    }
-
-    private detectDocVisible() {
-        const before = this.isActive()
-        this.docVisible = document?.visibilityState === 'visible'
-        const after = this.isActive()
-
-        before && !after && this.onPause?.('visible')
-        !before && after && this.onResume?.('visible')
-    }
-
-    isActive(): boolean {
-        if (!this.docVisible) return false
-        return !this.idleDetector?.needTimeout() || !this.idleDetector?.isIdle()
-    }
-}
-
 type NormalTrackerOption = {
     onReport: (ev: tt4b.core.Event) => Promise<void>
-    onResume?: (reason: StateChangeReason) => void
-    onPause?: (reason: StateChangeReason) => void
+    onResume?: ArgCallback<PauseReason>
+    onPause?: ArgCallback<PauseReason>
 }
 
 /**
  * Normal tracker
  */
-export default class NormalTracker implements AudibleChangeHandler {
-    context: TrackContext
-    start: number = Date.now()
+export default class NormalTracker {
+    #start: number = Date.now()
+    #detectors: PauseDetector[]
+    #wasPaused: [boolean, PauseReason | undefined]
 
-    constructor(private readonly option: NormalTrackerOption) {
-        this.context = new TrackContext(
-            reason => this.pause(reason),
-            reason => this.resume(reason),
-        )
+    constructor(
+        dispatcher: Dispatcher,
+        private readonly option: NormalTrackerOption,
+        ...pauseDetectors: PauseDetector[]
+    ) {
+        const idle = new IdleDetector()
+        dispatcher.registerAudibleChange(idle)
+        const docVisible = new DocVisibleDetector()
+        this.#detectors = [...pauseDetectors, idle, docVisible]
+        this.#wasPaused = [this.paused, 'initial']
+    }
+
+    get paused() {
+        return this.#detectors.some(d => d.paused)
     }
 
     init() {
         // Resume if idle before reloading
         this.resume('idle')
-        this.context.idleDetector.init()
+        this.#detectors.forEach(d => d.onPauseChange(target => this.#reconcile(target.reason)))
 
-        setInterval(() => {
-            if (!this.context.isActive()) return
+        setInterval(() => !this.paused && this.collect(), INTERVAL)
+    }
 
-            this.collect()
-        }, INTERVAL)
+    #reconcile(reason: PauseReason) {
+        const now = this.paused
+        if (now === this.#wasPaused[0] && reason === this.#wasPaused[1]) return
+        this.#wasPaused = [now, reason]
+        now ? this.pause(reason) : this.resume(reason)
     }
 
     private async collect(ignoreTabCheck?: boolean) {
         const now = Date.now()
-        const lastTime = this.start
-        this.start = now
+        const lastTime = this.#start
+        this.#start = now
         const interval = now - lastTime
         if (interval <= 0 || interval > INTERVAL * 2) {
             // Invalid time
@@ -89,19 +70,15 @@ export default class NormalTracker implements AudibleChangeHandler {
         } catch (_) { }
     }
 
-    private pause(reason: StateChangeReason) {
+    private pause(reason: PauseReason) {
         this.option?.onPause?.(reason)
 
         this.collect(true)
     }
 
-    private resume(reason: StateChangeReason) {
+    private resume(reason: PauseReason) {
         this.option?.onResume?.(reason)
 
-        this.start = Date.now()
-    }
-
-    onAudibleChange(audible: boolean) {
-        this.context.idleDetector.audible = audible
+        this.#start = Date.now()
     }
 }
