@@ -9,6 +9,7 @@ import { trySendMsg2Runtime } from '@api/sw/common'
 import { initLocale } from "@i18n"
 import Dispatcher from './dispatcher'
 import processLimit from "./limit"
+import LimitState from './limit/manager/state'
 import LocationWatcher from './location-watcher'
 import printInfo from "./printer"
 import processTimeline from './timeline'
@@ -39,6 +40,7 @@ function getOrSetFlag(): boolean {
 
 async function main() {
     const dispatcher = new Dispatcher()
+    const limitState = new LimitState()
 
     // Execute in every injection
     const normalTracker = new NormalTracker({
@@ -46,8 +48,7 @@ async function main() {
         onResume: reason => reason === 'idle' && trySendMsg2Runtime('cs.idleChanged', false),
         onPause: reason => reason === 'idle' && trySendMsg2Runtime('cs.idleChanged', true),
     })
-    normalTracker.init()
-    dispatcher.registerAudibleChange(normalTracker)
+    normalTracker.init(dispatcher, limitState)
 
     const location = new LocationWatcher()
     await location.init()
@@ -58,7 +59,7 @@ async function main() {
     if (getOrSetFlag()) return
 
     void initLocale()
-    await processLimit(location, dispatcher)
+    await processLimit(limitState, location, dispatcher)
     if (location.whitelisted) return
 
     void printInfo(location.host)

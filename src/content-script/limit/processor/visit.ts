@@ -1,13 +1,13 @@
 import { trySendMsg2Runtime } from '@api/sw/common'
+import type Dispatcher from '@cs/dispatcher'
 import LocationWatcher from '@cs/location-watcher'
 import NormalTracker from "@cs/tracker/normal"
-import { AudibleChangeHandler } from '@cs/types'
 import { MILL_PER_MINUTE, MILL_PER_SECOND } from "@util/time"
 import DelayCoordinator from '../manager/delay-coordinator'
 import LimitState from '../manager/state'
 import type { LimitReason, Processor } from '../types'
 
-class VisitProcessor implements Processor, AudibleChangeHandler {
+class VisitProcessor implements Processor {
     #mills: number = 0
     #rules: tt4b.limit.Rule[] = []
     #tracker: NormalTracker
@@ -15,6 +15,7 @@ class VisitProcessor implements Processor, AudibleChangeHandler {
     #listener?: ArgCallback<number>
 
     constructor(
+        private readonly dispatcher: Dispatcher,
         private readonly state: LimitState,
         private readonly delayCoord: DelayCoordinator,
         private readonly location: LocationWatcher,
@@ -30,10 +31,6 @@ class VisitProcessor implements Processor, AudibleChangeHandler {
             this.#delayCount = 0
             this.#notify()
         })
-    }
-
-    onAudibleChange(audible: boolean): void {
-        this.#tracker.onAudibleChange(audible)
     }
 
     onChange(listener: ArgCallback<number>) {
@@ -71,7 +68,7 @@ class VisitProcessor implements Processor, AudibleChangeHandler {
     }
 
     async init(): Promise<void> {
-        this.#tracker.init()
+        this.#tracker.init(this.dispatcher, this.state)
         this.delayCoord.register(() => {
             this.#delayCount++
             this.state.removeByType('VISIT')

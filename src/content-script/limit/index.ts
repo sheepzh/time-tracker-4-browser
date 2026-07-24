@@ -7,13 +7,12 @@ import LimitState from './manager/state'
 import { DailyWeeklyProcessor, FocusProcessor, PeriodProcessor, VisitProcessor } from './processor'
 import Reminder from './reminder'
 
-export default async function processLimit(location: LocationWatcher, dispatcher: Dispatcher) {
+export default async function processLimit(state: LimitState, location: LocationWatcher, dispatcher: Dispatcher) {
     const { limitDelayDuration: delayDuration } = await getOption()
-    const state = new LimitState()
     const delayCoord = new DelayCoordinator()
 
     const dailyWeeklyPsr = new DailyWeeklyProcessor(state, delayCoord, location, delayDuration)
-    const visitPsr = new VisitProcessor(state, delayCoord, location, delayDuration)
+    const visitPsr = new VisitProcessor(dispatcher, state, delayCoord, location, delayDuration)
     const focusPsr = new FocusProcessor(state, location)
     const periodPsr = new PeriodProcessor(state, delayCoord, location, delayDuration)
 
@@ -31,5 +30,4 @@ export default async function processLimit(location: LocationWatcher, dispatcher
         .register('limitReminder', data => reminder.show(data))
         .register('askVisitHit', ruleId => state.reasons.some(r => r.type === 'VISIT' && ruleId === r.id))
         .register('focusChanged', session => focusPsr.onFocusChanged(session))
-        .registerAudibleChange(visitPsr)
 }
