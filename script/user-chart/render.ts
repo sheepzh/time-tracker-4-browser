@@ -1,11 +1,8 @@
 import {
-    createGist, findTarget, getJsonFileContent, updateGist,
-    type FileForm, type GistForm,
+    createGist, findTarget, getJsonFileContent, updateGist, type FileForm, type GistForm,
 } from "@api/gist"
 import {
-    init,
-    type ComposeOption,
-    type GridComponentOption, type LineSeriesOption, type TitleComponentOption
+    init, type ComposeOption, type GridComponentOption, type LineSeriesOption, type TitleComponentOption
 } from "echarts"
 import { writeFileSync } from "fs"
 import { exit } from 'process'
@@ -28,9 +25,15 @@ type ChartData = {
 
 const VALID_DATE_RE = /^\d{4}-\d{2}-\d{2}$/
 
-const parseDate = (date: string): Date => new Date(`${date}T00:00:00Z`)
-const formatDate = (date: Date): string => date.toISOString().slice(0, 10)
-const computeGrowth = (current: number, base: number | undefined): string => {
+const calcAvg = (arr: number[]): number => {
+    const l = arr.length
+    if (l === 0) return 0
+    return arr.reduce((acc, val) => acc + val, 0) / l
+}
+
+const computeGrowth = (totals: number[], dayCount: number): string => {
+    const current = calcAvg(totals.slice(-dayCount))
+    const base = calcAvg(totals.slice(-2 * dayCount, -dayCount))
     if (!base) return '0'
     const growth = ((current - base) / base) * 100
     return growth > 0 ? `+${growth.toFixed(2)}` : growth.toFixed(2)
@@ -42,18 +45,8 @@ const computeSummary = ({ xAxis, yAxises }: ChartData) => {
     const latest = xAxis[xAxis.length - 1]
     if (!latest) return { total, yoy: '0', month: '0' }
 
-    const latestDate = parseDate(latest)
-    const lastYearDate = new Date(latestDate)
-    lastYearDate.setUTCFullYear(lastYearDate.getUTCFullYear() - 1)
-    const lastMonthDate = new Date(latestDate)
-    lastMonthDate.setUTCMonth(lastMonthDate.getUTCMonth() - 1)
-
-    const indexByDate = new Map(xAxis.map((date, idx) => [date, idx]))
-    const yoyBase = totals[indexByDate.get(formatDate(lastYearDate)) ?? -1]
-    const monthBase = totals[indexByDate.get(formatDate(lastMonthDate)) ?? -1]
-    const yoy = computeGrowth(total, yoyBase)
-    const month = computeGrowth(total, monthBase)
-
+    const yoy = computeGrowth(totals, 365)
+    const month = computeGrowth(totals, 30)
     return { total, yoy, month }
 }
 
