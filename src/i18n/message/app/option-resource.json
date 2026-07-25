@@ -1573,7 +1573,8 @@
                 "twoFaScanHint": "Zeskanuj kod QR za pomocą aplikacji uwierzytelniającej lub zaimportuj link konfiguracyjny do menedżera haseł obsługującego TOTP.",
                 "twoFaCopyLink": "Kopiuj link",
                 "twoFaVerifyLabel": "Wpisz 6-cyfrowy kod do weryfikacji"
-            }
+            },
+            "unblockDuration": "Opóźnij zablokowanie każdorazowo o {input} minut"
         },
         "backup": {
             "title": "Kopia zapasowa danych",

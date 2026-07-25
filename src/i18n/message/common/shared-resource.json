@@ -406,6 +406,7 @@
             }
         },
         "followBrowser": "Śledź przeglądarkę",
+        "allowUnblocking": "Zezwól na odblokowanie",
         "unlimited": "Bez ograniczeń"
     }
 }
