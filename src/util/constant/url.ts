@@ -12,7 +12,7 @@ import { BROWSER_MAJOR_VERSION, BROWSER_NAME, IS_ANDROID, IS_LINUX, IS_MAC, IS_W
 export const FIREFOX_HOMEPAGE = 'https://addons.mozilla.org/firefox/addon/besttimetracker'
 export const CHROME_HOMEPAGE = 'https://chromewebstore.google.com/detail/time-tracker/dkdhhcbjijekmneelocdllcldcpmekmm'
 export const EDGE_HOMEPAGE = 'https://microsoftedge.microsoft.com/addons/detail/timer-the-web-time-is-e/fepjgblalcnepokjblgbgmapmlkgfahc'
-export const INSTALL_PAGE = 'https://www.wfhg.cc/en/install'
+export const INSTALL_PAGE = 'https://time-tracker-4-browser.app/en/install'
 
 /**
  * @since 0.4.0
@@ -40,7 +40,7 @@ const issueTemplatePage = (type: 'bug' | 'feature') => {
 export const GITHUB_ISSUE_BUG = issueTemplatePage('bug')
 export const GITHUB_ISSUE_FEATURE = issueTemplatePage('feature')
 
-export const PRIVACY_PAGE = 'https://www.wfhg.cc/en/privacy.html'
+export const PRIVACY_PAGE = 'https://time-tracker-4-browser.app/en/privacy.html'
 
 export const LICENSE_PAGE = 'https://github.com/sheepzh/time-tracker-4-browser/blob/main/LICENSE'
 
@@ -66,7 +66,7 @@ export function getAppPageUrl(route?: string, query?: any): string {
     return url
 }
 
-export const HOMEPAGE = "https://www.wfhg.cc"
+export const HOMEPAGE = "https://time-tracker-4-browser.app"
 const HOMEPAGE_LOCALES: tt4b.Locale[] = [
     "zh_CN", "zh_TW", "en",
     "ja", "de", "ru",

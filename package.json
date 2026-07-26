@@ -2,7 +2,7 @@
     "name": "tt4b",
     "version": "4.4.4",
     "description": "Time tracker for browser",
-    "homepage": "https://www.wfhg.cc",
+    "homepage": "https://time-tracker-4-browser.app",
     "type": "module",
     "scripts": {
         "pure-install": "npm install --include=optional --ignore-scripts",
