@@ -12,11 +12,7 @@ const MODAL_URL = getUrl('static/limit.html')
 const MSG_ORIGIN = new URL(MODAL_URL).origin
 const TAG_NAME = 'extension-time-tracker-overlay'
 
-class RootElement extends HTMLElement {
-    constructor() {
-        super()
-    }
-}
+class RootElement extends HTMLElement { }
 
 function createRootElement(): RootElement {
     const element = document.createElement(TAG_NAME) as RootElement
@@ -34,11 +30,12 @@ class ModalManager {
     #iframe?: HTMLIFrameElement
     #sl = new ScreenLocker()
     #bridge: ModalBridge
+    #reqQueue: Parameters<ModalBridge['request']>[] = []
 
     constructor(private location: LocationWatcher) {
         this.#bridge = new ModalBridge(MSG_ORIGIN, () => this.#iframe?.contentWindow ?? undefined)
 
-        location.onChange(({ nextUrl }) => this.#notifyUrl(nextUrl))
+        location.onChange(({ nextUrl }) => this.#notify('url', nextUrl))
     }
 
     init(state: LimitState, delayCoord: DelayCoordinator, visitProcessor: VisitProcessor) {
@@ -47,29 +44,22 @@ class ModalManager {
             // fixme: refactor this, this action should be handled by the focus processor
             .register('stop', () => trySendMsg2Runtime('focus.action', 'stop'))
 
-        this.#notifyUrl(this.location.url)
+        this.#notify('url', this.location.url)
 
-        visitProcessor.onChange(time => this.#notifyVisitTime(time))
+        visitProcessor.onChange(time => this.#notify('visitTime', time))
         state.onChange(current => current ? this.#show(current) : this.#hide())
     }
 
-    #notifyUrl(url: string): void {
-        if (!this.#iframe?.contentWindow) return
-        this.#bridge.request('url', url).catch(() => { })
-    }
-
-    #notifyVisitTime(time: number): void {
-        if (!this.#iframe?.contentWindow) return
-        this.#bridge.request('visitTime', time).catch(() => { })
-    }
-
-    #notifyReason(reason: Reason | undefined) {
-        if (!this.#iframe?.contentWindow) return
-        this.#bridge.request('reason', reason).catch(() => { })
+    #notify(...params: Parameters<ModalBridge['request']>) {
+        if (!this.#iframe?.contentWindow) {
+            this.#reqQueue.push(params)
+            return
+        }
+        this.#bridge.request(...params).catch(() => { })
     }
 
     async #initFrame(): Promise<void> {
-        const root = await this.prepareRoot()
+        const root = await this.#prepareRoot()
         if (!root) return
         const iframe = document.createElement('iframe')
         iframe.src = `${MODAL_URL}?url=${encodeURIComponent(this.location.url)}`
@@ -80,10 +70,17 @@ class ModalManager {
 
         this.#iframe = iframe
 
-        return new Promise(resolve => iframe.onload = () => resolve(undefined))
+        return new Promise(resolve => iframe.onload = () => {
+            for (const params of this.#reqQueue) {
+                this.#bridge.request(...params).catch(() => { })
+            }
+            this.#reqQueue = []
+
+            resolve(undefined)
+        })
     }
 
-    private async prepareRoot(): Promise<ShadowRoot | null> {
+    async #prepareRoot(): Promise<ShadowRoot | null> {
         const inner = (): ShadowRoot | null => {
             const exist = this.#el ?? document.querySelector(TAG_NAME) as RootElement
             if (exist) {
@@ -114,14 +111,14 @@ class ModalManager {
         this.#el && (this.#el.style.visibility = 'visible')
         await this.#sl.lock()
         this.#iframe && (this.#iframe.style.visibility = 'visible')
-        this.#notifyReason(reason)
+        this.#notify('reason', reason)
     }
 
     #hide() {
         this.#el && (this.#el.style.visibility = 'hidden')
         this.#sl.unlock()
         this.#iframe && (this.#iframe.style.visibility = 'hidden')
-        this.#notifyReason(undefined)
+        this.#notify('reason', undefined)
     }
 }
 

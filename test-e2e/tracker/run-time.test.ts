@@ -32,7 +32,7 @@ describe('Run time tracking', () => {
 
     test('Basically track', async () => {
         await context.newPageAndWaitCsInjected(MOCK_URL)
-        await sleep(1.1)
+        await sleep(1.5)
         let records = await readRecordsOfFirstPage(context)
         let record = records[0]
         expect(parseTime2Sec(record?.time)).toBeGreaterThanOrEqual(1)
