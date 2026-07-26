@@ -1,7 +1,7 @@
 {
     "name": "tt4b",
     "version": "4.4.4",
-    "description": "Time tracker for browser",
+    "description": "Time Tracker - Web Habit Builder. A browser extension that helps users track time and improve productivity.",
     "homepage": "https://time-tracker-4-browser.app",
     "type": "module",
     "scripts": {

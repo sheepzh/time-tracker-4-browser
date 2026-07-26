@@ -1,4 +1,4 @@
-# Time Tracker for Browser
+# Time Tracker - Web Habit Builder
 
 [![codecov](https://codecov.io/gh/sheepzh/time-tracker-4-browser/branch/main/graph/badge.svg?token=S98QSBSKCR&style=flat-square)](https://codecov.io/gh/sheepzh/time-tracker-4-browser)
 [![](https://img.shields.io/badge/license-Anti%20996-blue)](https://github.com/996icu/996.ICU)
@@ -13,7 +13,7 @@
 
 \[ English | [简体中文](./README-zh.md) \]
 
-Time Tracker is a browser extension to track the time you spent on all websites. It's built by rspack, TypeScript and Element-plus. And you can install it for Firefox, Chrome and Edge.
+Time Tracker - Web Habit Builder is a browser extension to track the time you spent on all websites. It's built by rspack, TypeScript and Element-plus. And you can install it for Firefox, Chrome and Edge.
 
 ## Download
 
