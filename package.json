@@ -48,7 +48,7 @@
         "decompress": "^4.2.1",
         "fake-indexeddb": "^6.2.5",
         "husky": "^9.1.7",
-        "jsdom": "^29.1.1",
+        "jsdom": "^30.0.0",
         "jszip": "^3.10.1",
         "knip": "^6.29.0",
         "postcss": "^8.5.23",
