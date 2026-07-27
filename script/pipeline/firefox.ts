@@ -73,6 +73,8 @@ export async function listFirefoxVersions(): Promise<Version[]> {
     }
 }
 
+// one request per 20 seconds
+const UPDATE_THROTTLER = new Throttler(1, 1 / 21)
 export async function updateFirefoxReleaseNote(version: string, content: string) {
     const url = `${BASE_URL}/versions/${version}/`
 
@@ -81,7 +83,7 @@ export async function updateFirefoxReleaseNote(version: string, content: string)
         release_notes: { 'en-US': content }
     }
 
-    await THROTTLER.acquire()
+    await UPDATE_THROTTLER.acquire()
     const response = await fetch(url, { headers, method: 'PATCH', body: JSON.stringify(body) })
     const jsonResp = await response.json()
     if (!isVersion(jsonResp)) {
