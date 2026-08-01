@@ -18,7 +18,8 @@
             "gov": 1,
             "mil": 1,
             "net": 1,
-            "org": 1
+            "org": 1,
+            "sch": 1
         },
         "l": 1
     },
@@ -274,7 +275,6 @@
                 },
                 "l": 1
             },
-            "deta": 1,
             "developer": {
                 "c": {
                     "*": 1
@@ -547,7 +547,6 @@
                 },
                 "l": 1
             },
-            "biz": 1,
             "co": 1,
             "dnshome": 1,
             "funkfeuer": {
@@ -573,7 +572,6 @@
             "futurehosting": 1,
             "futuremailing": 1,
             "gv": 1,
-            "info": 1,
             "lima-city": 1,
             "my": 1,
             "myspreadshop": 1,
@@ -4695,7 +4693,6 @@
             "on-aptible": 1,
             "on-forge": 1,
             "on-vapor": 1,
-            "onfabrica": 1,
             "onrender": 1,
             "onthewifi": 1,
             "ooguy": 1,
@@ -4830,11 +4827,6 @@
             "smushcdn": 1,
             "space-to-rent": 1,
             "stackhero-network": 1,
-            "stdlib": {
-                "c": {
-                    "api": 1
-                }
-            },
             "strapiapp": {
                 "c": {
                     "media": 1
@@ -5000,13 +4992,15 @@
     "cv": {
         "c": {
             "com": 1,
+            "dev": 1,
             "edu": 1,
             "id": 1,
             "int": 1,
             "net": 1,
             "nome": 1,
             "org": 1,
-            "publ": 1
+            "publ": 1,
+            "store": 1
         },
         "l": 1
     },
@@ -5159,6 +5153,7 @@
                 },
                 "l": 1
             },
+            "home64": 1,
             "hs-heilbronn": {
                 "c": {
                     "it": {
@@ -5175,6 +5170,7 @@
             "in-dsl": 1,
             "in-vpn": 1,
             "internet-dns": 1,
+            "ipv64": 1,
             "iservschule": 1,
             "isteingeek": 1,
             "istmein": 1,
@@ -5375,7 +5371,6 @@
             },
             "deno": 1,
             "deno-staging": 1,
-            "deta": 1,
             "erp": {
                 "c": {
                     "web": 1
@@ -5857,12 +5852,7 @@
         "l": 1
     },
     "fans": 1,
-    "farm": {
-        "c": {
-            "storj": 1
-        },
-        "l": 1
-    },
+    "farm": 1,
     "farmers": 1,
     "fashion": 1,
     "fast": 1,
@@ -6060,12 +6050,16 @@
     "ge": {
         "c": {
             "com": 1,
+            "cyb": 1,
             "edu": 1,
             "gov": 1,
+            "llc": 1,
             "net": 1,
+            "online": 1,
             "org": 1,
             "pvt": 1,
-            "school": 1
+            "school": 1,
+            "tnx": 1
         },
         "l": 1
     },
@@ -6534,7 +6528,9 @@
             "5g": 1,
             "6g": 1,
             "ac": 1,
+            "aero": 1,
             "ai": 1,
+            "alumni": 1,
             "am": 1,
             "bank": 1,
             "barsy": 1,
@@ -6572,9 +6568,11 @@
             "post": 1,
             "pro": 1,
             "res": 1,
+            "school": 1,
             "supabase": 1,
             "travel": 1,
             "tv": 1,
+            "ub": 1,
             "uk": 1,
             "up": 1,
             "us": 1,
@@ -6651,11 +6649,6 @@
                     "sekd1": 1
                 }
             },
-            "bigv": {
-                "c": {
-                    "uk0": 1
-                }
-            },
             "bitbucket": 1,
             "bluebite": 1,
             "boxfuse": 1,
@@ -6705,7 +6698,6 @@
             "hasura-app": 1,
             "hostyhosting": 1,
             "hypernode": 1,
-            "hzc": 1,
             "icp0": {
                 "c": {
                     "raw": {
@@ -6765,11 +6757,6 @@
                 }
             },
             "nom": 1,
-            "on-acorn": {
-                "c": {
-                    "*": 1
-                }
-            },
             "on-k3s": {
                 "c": {
                     "*": 1
@@ -6782,7 +6769,6 @@
             },
             "org": 1,
             "pantheonsite": 1,
-            "protonet": 1,
             "pstmn": {
                 "c": {
                     "mock": 1
@@ -6923,7 +6909,6 @@
             "aoste": 1,
             "ap": 1,
             "aq": 1,
-            "aquila": 1,
             "ar": 1,
             "arezzo": 1,
             "ascoli-piceno": 1,
@@ -7196,6 +7181,9 @@
             "sp": 1,
             "sr": 1,
             "ss": 1,
+            "su": 1,
+            "sud-sardegna": 1,
+            "sudsardegna": 1,
             "suedtirol": 1,
             "sv": 1,
             "syncloud": 1,
@@ -7241,7 +7229,6 @@
             "trentinos-tirol": 1,
             "trentinostirol": 1,
             "trentinosud-tirol": 1,
-            "trentinosudtirol": 1,
             "trentinosued-tirol": 1,
             "trentinosuedtirol": 1,
             "trentinsud-tirol": 1,
@@ -7265,7 +7252,6 @@
             "val-d-aosta": 1,
             "val-daosta": 1,
             "vald-aosta": 1,
-            "valdaosta": 1,
             "valle-aosta": 1,
             "valle-d-aosta": 1,
             "valle-daosta": 1,
@@ -7287,6 +7273,7 @@
             "venezia": 1,
             "venice": 1,
             "verbania": 1,
+            "verbano-cusio-ossola": 1,
             "vercelli": 1,
             "verona": 1,
             "vi": 1,
@@ -10044,6 +10031,7 @@
             "filegear": 1,
             "filegear-sg": 1,
             "gov": 1,
+            "grok": 1,
             "hooc": {
                 "c": {
                     "seprox": 1
@@ -10466,11 +10454,6 @@
             },
             "cloudycluster": 1,
             "community-pro": 1,
-            "cryptonomic": {
-                "c": {
-                    "*": 1
-                }
-            },
             "ctfcloud": 1,
             "dattolocal": 1,
             "ddns": 1,
@@ -10565,6 +10548,7 @@
             "in-vpn": 1,
             "iobb": 1,
             "ipifony": 1,
+            "ipv64": 1,
             "is-a-chef": 1,
             "is-a-geek": 1,
             "isa-geek": 1,
@@ -10927,7 +10911,7 @@
             "askoy": 1,
             "askvoll": 1,
             "asnes": 1,
-            "audnedaln": 1,
+            "audnedal": 1,
             "aukra": 1,
             "aure": 1,
             "aurland": 1,
@@ -11041,7 +11025,6 @@
             "fosnes": 1,
             "frana": 1,
             "fredrikstad": 1,
-            "frei": 1,
             "frogn": 1,
             "froland": 1,
             "frosta": 1,
@@ -11058,6 +11041,7 @@
             "gaular": 1,
             "gausdal": 1,
             "giehtavuoatna": 1,
+            "gielda": 1,
             "gildeskal": 1,
             "giske": 1,
             "gjemnes": 1,
@@ -11364,6 +11348,7 @@
             "rana": 1,
             "randaberg": 1,
             "rauma": 1,
+            "re": 1,
             "rendalen": 1,
             "rennebu": 1,
             "rennesoy": 1,
@@ -11478,6 +11463,7 @@
             "suldal": 1,
             "sund": 1,
             "sunndal": 1,
+            "suohkan": 1,
             "surnadal": 1,
             "svalbard": {
                 "c": {
@@ -11500,6 +11486,7 @@
             "tingvoll": 1,
             "tinn": 1,
             "tjeldsund": 1,
+            "tjielte": 1,
             "tjome": 1,
             "tm": {
                 "c": {
@@ -11532,8 +11519,10 @@
             "tysfjord": 1,
             "tysnes": 1,
             "tysvar": 1,
+            "uenorge": 1,
             "ullensaker": 1,
             "ullensvang": 1,
+            "ulstein": 1,
             "ulvik": 1,
             "unjarga": 1,
             "utsira": 1,
@@ -11623,6 +11612,7 @@
             "xn--gjvik-wua": 1,
             "xn--gls-elac": 1,
             "xn--h-2fa": 1,
+            "xn--hamary-fya": 1,
             "xn--hbmer-xqa": 1,
             "xn--hcesuolo-7ya35b": 1,
             "xn--hgebostad-g3a": 1,
@@ -11636,6 +11626,7 @@
             "xn--indery-fya": 1,
             "xn--jlster-bya": 1,
             "xn--jrpeland-54a": 1,
+            "xn--karlsy-fya": 1,
             "xn--karmy-yua": 1,
             "xn--kfjord-iua": 1,
             "xn--klbu-woa": 1,
@@ -12056,7 +12047,6 @@
             "jpn": 1,
             "js": 1,
             "kicks-ass": 1,
-            "mayfirst": 1,
             "misconfused": 1,
             "mlbfan": 1,
             "my-firewall": 1,
@@ -12997,6 +12987,7 @@
                 "l": 1
             },
             "me": 1,
+            "mygov": 1,
             "org": 1
         },
         "l": 1
@@ -13193,6 +13184,7 @@
                     "*": 1
                 }
             },
+            "playcode": 1,
             "preview": 1,
             "puter": 1,
             "sol": 1,
@@ -13535,7 +13527,6 @@
     "tirol": 1,
     "tj": {
         "c": {
-            "ac": 1,
             "biz": 1,
             "co": 1,
             "com": 1,
@@ -13884,12 +13875,6 @@
                     "adimo": 1,
                     "barsy": 1,
                     "barsyonline": 1,
-                    "bytemark": {
-                        "c": {
-                            "dh": 1,
-                            "vm": 1
-                        }
-                    },
                     "layershift": {
                         "c": {
                             "j": 1
@@ -14682,6 +14667,7 @@
     "watches": 1,
     "weather": 1,
     "weatherchannel": 1,
+    "web": 1,
     "webcam": 1,
     "weber": 1,
     "website": {
