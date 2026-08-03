@@ -4,6 +4,10 @@ All notable changes to Time Tracker will be documented in this file.
 
 It is worth mentioning that the release time of each change refers to the time when the installation package is submitted to the webstore. It is about one week for Firefox to moderate packages, while only 1-2 days for Chrome and Edge.
 
+## [4.4.5] - 2026-08-03
+
+- Not to track the time after blocked
+
 ## [4.4.4] - 2026-07-24
 
 - Supported unblocking when the period limit triggers
