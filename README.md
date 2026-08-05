@@ -13,7 +13,28 @@
 
 \[ English | [简体中文](./README-zh.md) \]
 
-Time Tracker - Web Habit Builder is a browser extension to track the time you spent on all websites. It's built by rspack, TypeScript and Element-plus. And you can install it for Firefox, Chrome and Edge.
+Time Tracker - Web Habit Builder is a browser extension that tracks the time you spend on websites and helps you understand your browsing habits.
+
+It includes detailed browsing records, dashboards and analytical reports, website management, limits and page blocking, Focus and Pomodoro sessions, and tools for synchronizing, backing up, and migrating data.
+
+It is built with Rspack, TypeScript, Vue 3, Element Plus, and ECharts. You can install it for Firefox, Chrome, and Microsoft Edge.
+
+## Features
+
+-   Track browsing time and visit counts
+-   Review detailed records and daily activity
+-   View dashboards, website analysis, and habit reports
+-   Manage websites and configure whitelist and merge rules
+-   Set daily, weekly, and per-visit website limits
+-   Block pages when configured limits are reached
+-   Create and run Focus and Pomodoro sessions
+-   Export and import settings
+-   Synchronize data through the supported browser account
+-   Back up data with GitHub Gist, WebDAV, or Obsidian Local REST API
+-   Use data migration, storage information, and record-clearing tools
+-   Customize appearance, tracking, accessibility, limits, backups, and notifications
+
+See the [official guide](https://time-tracker-4-browser.app/en/guide/start) for detailed instructions.
 
 ## Download
 
@@ -30,27 +51,27 @@ Time Tracker - Web Habit Builder is a browser extension to track the time you sp
 ## Screenshots
 
 <div align="center">
-    <img src="./doc/screenshot/popup.png" width="100%">
+    <img src="./doc/screenshot/popup.png" width="100%" alt="Daily browsing percentage">
     <p>Daily percentage</p>
 </div>
 
 <div align="center">
-    <img src="./doc/screenshot/app.png" width="100%">
+    <img src="./doc/screenshot/app.png" width="100%" alt="Time Tracker dashboard">
     <p>Dashboard</p>
 </div>
 
 <div align="center">
-    <img src="./doc/screenshot/analyze.png" width="100%">
+    <img src="./doc/screenshot/analyze.png" width="100%" alt="Analytical report">
     <p>Analytical Report</p>
 </div>
 
 <div align="center">
-    <img src="./doc/screenshot/habit.png" width="100%">
+    <img src="./doc/screenshot/habit.png" width="100%" alt="Browsing habit report">
     <p>Habit Report</p>
 </div>
 
 <div align="center">
-    <img src="./doc/screenshot/block.png" width="100%">
+    <img src="./doc/screenshot/block.png" width="100%" alt="Page blocking">
     <p>Page Blocking</p>
 </div>
 
@@ -68,27 +89,33 @@ Join our [Discord community](https://discord.gg/yXCngD8pKS) to chat directly wit
 
 #### 3. Create a Discussion
 
-Start a topic in [GitHub Discussions](https://github.com/sheepzh/time-tracker-4-browser/discussions) — great for sharing experiences or open-ended conversations.
+Start a topic in [GitHub Discussions](https://github.com/sheepzh/time-tracker-4-browser/discussions) to share experiences, ask questions, or discuss open-ended ideas.
 
 ## Contribution
 
-There are some things you can do to contribute to this software.
+There are several ways you can contribute to this software.
 
 #### 1. Participate in development
 
-If you know how to develop browser extensions and are familiar with the project's technology stack (TypeScript + Vue3 + Element Plus + Echarts), you can also contribute code
+If you know how to develop browser extensions and are familiar with the project's technology stack—TypeScript, Vue 3, Element Plus, and ECharts—you can contribute code, tests, or documentation.
 
-See the [Development Guide](./CONTRIBUTING.md)
+See the [Development Guide](./CONTRIBUTING.md).
 
-#### 3. Perfect translation
+#### 2. Improve translations
 
-Most of the software's localization relies on machine translation. You can also submit translation suggestions on [Crowdin](https://crowdin.com/project/timer-chrome-edge-firefox).
+Most of the software's localization relies on machine translation. You can submit translation suggestions on [Crowdin](https://crowdin.com/project/timer-chrome-edge-firefox).
 
-#### 4. Rate 5 stars
+#### 3. Rate the extension
 
-[Firefox](https://addons.mozilla.org/firefox/addon/besttimetracker) / [Chrome](https://chrome.google.com/webstore/detail/%E7%BD%91%E8%B4%B9%E5%BE%88%E8%B4%B5-%E4%B8%8A%E7%BD%91%E6%97%B6%E9%97%B4%E7%BB%9F%E8%AE%A1/dkdhhcbjijekmneelocdllcldcpmekmm) / [Edge](https://microsoftedge.microsoft.com/addons/detail/timer-the-web-time-is-e/fepjgblalcnepokjblgbgmapmlkgfahc)
+You can support the project by leaving a review:
 
-It's simple and much helpful!
+[Firefox](https://addons.mozilla.org/firefox/addon/besttimetracker) /
+[Chrome](https://chromewebstore.google.com/detail/time-tracker/dkdhhcbjijekmneelocdllcldcpmekmm/reviews) /
+[Edge](https://microsoftedge.microsoft.com/addons/detail/timer-the-web-time-is-e/fepjgblalcnepokjblgbgmapmlkgfahc)
+
+It is simple and helpful. Your feedback supports the project.
+
+For information about data handling, see the [Privacy Policy](https://time-tracker-4-browser.app/en/privacy.html).
 
 ## ❤️ Thanks To
 
