@@ -1,5 +1,4 @@
 import BasePauseDetector from '@cs/tracker/normal/pause/base'
-import type { PauseReason } from '@cs/tracker/normal/types'
 import { isSameReason } from '../common'
 import type { Reason, ReasonType } from '../types'
 
@@ -12,7 +11,6 @@ const TYPE_SORT: Record<ReasonType, number> = {
 }
 
 class LimitState extends BasePauseDetector {
-    reason: PauseReason = 'limit'
     #items: Reason[] = []
     #listener?: ArgCallback<Reason | undefined>
 

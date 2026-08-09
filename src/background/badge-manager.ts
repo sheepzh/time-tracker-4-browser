@@ -72,9 +72,9 @@ class BadgeManager {
         await this.processOption(option)
         optionHolder.addChangeListener(opt => this.processOption(opt))
         whitelistHolder.addPostHandler(() => this.render())
-        messageDispatcher.register('cs.idleChanged', (isIdle, sender) => {
+        messageDispatcher.register('cs.trackingPauseChanged', (isPaused, sender) => {
             const tabId = sender?.tab?.id
-            void (isIdle ? this.pause(tabId) : this.resume(tabId))
+            void (isPaused ? this.pause(tabId) : this.resume(tabId))
         })
         onWindowFocusChanged(async windowId => {
             this.#current = await findActiveTab(windowId)

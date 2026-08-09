@@ -1,8 +1,7 @@
-import type { PauseDetector, PauseReason } from '../types'
+import type { PauseDetector } from '../types'
 import BasePauseDetector from './base'
 
 class DocVisibleDetector extends BasePauseDetector implements PauseDetector {
-    reason: PauseReason = 'visible'
     paused: boolean
 
     constructor() {

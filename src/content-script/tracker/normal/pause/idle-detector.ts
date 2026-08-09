@@ -1,12 +1,10 @@
 import { trySendMsg2Runtime } from '@api/sw/common'
 import { getOption } from '@api/sw/option'
 import type { AudibleChangeHandler } from '@cs/types'
-import type { PauseDetector, PauseReason } from '../types'
+import type { PauseDetector } from '../types'
 import BasePauseDetector from './base'
 
 export default class IdleDetector extends BasePauseDetector implements PauseDetector, AudibleChangeHandler {
-    reason: PauseReason = 'idle'
-
     #fullScreen: boolean = false
     // default to true, try not to affect tracking
     #audible: boolean = true
