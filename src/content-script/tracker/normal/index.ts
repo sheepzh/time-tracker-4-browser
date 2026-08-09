@@ -1,14 +1,14 @@
 import Dispatcher from '@cs/dispatcher'
 import DocVisibleDetector from './pause/doc-visible-detector'
 import IdleDetector from './pause/idle-detector'
-import type { PauseDetector, PauseReason } from './types'
+import type { PauseDetector } from './types'
 
 const INTERVAL = 1000
 
 type NormalTrackerOption = {
     onReport: (ev: tt4b.core.Event) => Promise<void>
-    onResume?: ArgCallback<PauseReason>
-    onPause?: ArgCallback<PauseReason>
+    onResume?: NoArgCallback
+    onPause?: NoArgCallback
 }
 
 /**
@@ -32,22 +32,22 @@ export default class NormalTracker {
         const docVisible = new DocVisibleDetector()
         dispatcher.registerAudibleChange(idle)
         this.#detectors.push(...pauseDetectors, idle, docVisible)
-        this.#detectors.forEach(d => d.onPauseChange(target => this.#reconcile(target.reason)))
+        this.#detectors.forEach(d => d.onPauseChange(() => this.#reconcile()))
 
         // Resume if idle before reloading
-        this.resume('idle')
+        this.#resume()
 
-        setInterval(() => !this.paused && this.collect(), INTERVAL)
+        setInterval(() => !this.paused && this.#collect(), INTERVAL)
     }
 
-    #reconcile(reason: PauseReason) {
+    #reconcile() {
         const now = this.paused
         if (now === this.#wasPaused) return
         this.#wasPaused = now
-        now ? this.pause(reason) : this.resume(reason)
+        now ? this.#pause() : this.#resume()
     }
 
-    private async collect(ignoreTabCheck?: boolean) {
+    async #collect(ignoreTabCheck?: boolean) {
         const now = Date.now()
         const lastTime = this.#start
         this.#start = now
@@ -67,15 +67,13 @@ export default class NormalTracker {
         } catch (_) { }
     }
 
-    private pause(reason: PauseReason) {
-        this.option?.onPause?.(reason)
-
-        this.collect(true)
+    #pause() {
+        this.option?.onPause?.()
+        this.#collect(true)
     }
 
-    private resume(reason: PauseReason) {
-        this.option?.onResume?.(reason)
-
+    #resume() {
+        this.option?.onResume?.()
         this.#start = Date.now()
     }
 }

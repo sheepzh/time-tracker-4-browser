@@ -1081,7 +1081,7 @@ declare namespace tt4b {
             & _MakeRegistry<'track.time' | 'track.runTime', core.Event>
             // Content script events
             & _MakeRegistry<'cs.injected'>
-            & _MakeRegistry<'cs.idleChanged', boolean>
+            & _MakeRegistry<'cs.trackingPauseChanged', boolean>
             // Content script API
             & _MakeRegistry<'cs.getAudible', void, boolean>
             // Statistics

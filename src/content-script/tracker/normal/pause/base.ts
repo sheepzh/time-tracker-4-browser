@@ -1,16 +1,15 @@
-import type { PauseDetector, PauseReason } from '../types'
+import type { PauseDetector } from '../types'
 
 abstract class BasePauseDetector implements PauseDetector {
-    abstract reason: PauseReason
     abstract paused: boolean
-    #pauseListener?: ArgCallback<PauseDetector>
+    #pauseListener?: NoArgCallback
 
-    onPauseChange(listener: ArgCallback<PauseDetector>) {
+    onPauseChange(listener: NoArgCallback) {
         this.#pauseListener = listener
     }
 
     protected notify() {
-        this.#pauseListener?.(this)
+        this.#pauseListener?.()
     }
 }
 

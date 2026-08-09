@@ -1,7 +1,4 @@
 export interface PauseDetector {
-    readonly reason: PauseReason
     readonly paused: boolean
-    onPauseChange(listener: ArgCallback<PauseDetector>): void
+    onPauseChange(listener: NoArgCallback): void
 }
-
-export type PauseReason = 'visible' | 'idle' | 'limit'
