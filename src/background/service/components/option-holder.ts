@@ -2,7 +2,10 @@ import { onPermRemoved } from "@api/chrome/permission"
 import db from "@db/option-database"
 import { defaultOption } from '@util/constant/option'
 
-type ChangeListener = (newVal: tt4b.option.DefaultOption, oldVal: tt4b.option.DefaultOption) => void
+type ChangeListener = (
+    newVal: Readonly<tt4b.option.DefaultOption>,
+    oldVal: Readonly<tt4b.option.DefaultOption>,
+) => void
 
 class OptionHolder {
     #value: tt4b.option.DefaultOption | undefined
@@ -40,8 +43,11 @@ class OptionHolder {
     }
 
     async download(): Promise<void> {
+        const before = this.#value
         await db.download()
         await this.#reset()
+        const after = this.#value
+        before && after && this.#listeners.forEach(listener => listener(after, before))
     }
 }
 
