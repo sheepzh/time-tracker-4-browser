@@ -6,11 +6,37 @@
  */
 
 import { Search } from "@element-plus/icons-vue"
-import { useState } from "@hooks"
+import { useHotKey, useKeyPressed, useState } from "@hooks"
 import { cvtPxScale } from '@pages/components/common'
+import Flex from '@pages/components/Flex'
 import { Enter } from '@pages/icons'
-import { ElIcon, ElInput } from "element-plus"
-import { defineComponent, ref, type StyleValue } from "vue"
+import { colorUsage, colorVariant, textColor } from '@pages/util/style'
+import { IS_ANDROID, IS_MAC } from '@util/constant/environment'
+import { ElIcon, ElInput, type InputInstance } from "element-plus"
+import { defineComponent, type FunctionalComponent, nextTick, ref, type StyleValue } from "vue"
+
+const SHORTCUT = "K"
+
+const KeyButtonIcon: FunctionalComponent<{ active?: boolean }> = (props, { slots }) => (
+    <Flex
+        as='span' inline
+        justify='center' align='center'
+        lineHeight={20} height={22} padding="0 2px"
+        fontSize={13}
+        boxSizing='border-box'
+        color={`var(${props.active ? colorVariant('primary') : textColor('secondary')})`}
+        bgColor={props.active ? `var(${colorVariant('primary', 'light', 9)})` : 'transparent'}
+        style={{
+            minWidth: '22px',
+            borderRadius: '6px',
+            border: `1px solid var(${props.active ? colorVariant('primary') : colorUsage('border')})`,
+            transition: 'all .15s ease',
+            userSelect: 'none',
+        }}
+    >
+        {slots.default?.()}
+    </Flex>
+)
 
 type Props = {
     defaultValue?: string
@@ -23,21 +49,32 @@ const InputFilter = defineComponent<Props>(props => {
     const modelValue = ref(props.defaultValue ?? '')
 
     const [focused, setFocused] = useState(false)
+    const inputRef = ref<InputInstance>()
+    const modifierPressed = useKeyPressed('Meta', 'Control')
 
     const handleBlur = () => {
         setFocused(false)
-        props.onSearch?.(modelValue.value)
+        props.onSearch?.(modelValue.value = modelValue.value.trim())
     }
 
     const handleKeydown = (ev: Event | KeyboardEvent) => {
-        if (ev instanceof KeyboardEvent && ev.key === 'Enter') {
-            const query = modelValue.value = modelValue.value.trim()
-            props.onSearch?.(query)
-        }
+        if (!(ev instanceof KeyboardEvent)) return
+        if (ev.key !== 'Enter') return
+        inputRef.value?.blur() // do searching after blur triggered
     }
+
+    useHotKey(
+        ev => (ev.metaKey || ev.ctrlKey) && ev.key.toLowerCase() === SHORTCUT.toLowerCase(),
+        ev => {
+            ev.preventDefault()
+            inputRef.value?.focus()
+            nextTick(() => inputRef.value?.select())
+        }
+    )
 
     return () => (
         <ElInput
+            ref={inputRef}
             modelValue={modelValue.value}
             placeholder={props.placeholder}
             onInput={val => modelValue.value = val}
@@ -45,12 +82,21 @@ const InputFilter = defineComponent<Props>(props => {
             onBlur={handleBlur}
             onFocus={() => setFocused(true)}
             style={{ width: cvtPxScale(props.width) ?? '180px' } satisfies StyleValue}
-            suffixIcon={(
-                <ElIcon color={focused.value ? 'var(--el-color-primary)' : undefined}>
-                    <Enter />
-                </ElIcon>
-            )}
             prefixIcon={Search}
+            v-slots={{
+                suffix: () => {
+                    if (IS_ANDROID) return null
+                    if (focused.value) return <ElIcon><Enter /></ElIcon>
+                    return (
+                        <Flex gap={4} marginInline='0 2px'>
+                            <KeyButtonIcon active={modifierPressed.value}>
+                                {IS_MAC ? '⌘' : '^'}
+                            </KeyButtonIcon>
+                            <KeyButtonIcon>{SHORTCUT}</KeyButtonIcon>
+                        </Flex>
+                    )
+                }
+            }}
         />
     )
 }, { props: ['defaultValue', 'placeholder', 'width', 'onSearch'] })

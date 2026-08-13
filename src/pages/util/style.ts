@@ -12,7 +12,7 @@ export type ColorVariant = Variant
 
 type TextVariant = "primary" | "regular" | "secondary"
 
-type ColorUsage = 'fill'
+type ColorUsage = 'fill' | 'border'
 
 export const colorVariant = (variant: Variant, effect?: 'dark' | 'light', level?: number) => {
     let res = `--el-color-${variant}`
@@ -27,7 +27,7 @@ export const colorVariant = (variant: Variant, effect?: 'dark' | 'light', level?
 
 export const colorUsage = (usage: ColorUsage) => `--el-${usage}-color`
 
-const textColor = (variant: TextVariant) => `--el-text-color-${variant}`
+export const textColor = (variant: TextVariant) => `--el-text-color-${variant}`
 
 export const getStyle = (
     element: HTMLElement,

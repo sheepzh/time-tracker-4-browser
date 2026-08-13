@@ -64,7 +64,7 @@ const Filter = defineComponent<{}>(() => {
                 <InputFilter
                     placeholder={`${t(msg => msg.item.host)} / ${t(msg => msg.siteManage.column.alias)}`}
                     onSearch={val => filter.query = val}
-                    width={200}
+                    width={240}
                 />
                 <MultiSelectFilter
                     placeholder={t(msg => msg.siteManage.column.type)}
