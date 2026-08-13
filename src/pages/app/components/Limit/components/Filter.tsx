@@ -71,6 +71,7 @@ const _default = defineComponent(() => {
         <Flex justify="space-between" gap={10}>
             <Flex gap={10}>
                 <InputFilter
+                    width={200}
                     defaultValue={filter.url}
                     placeholder={t(msg => msg.limit.item.condition)}
                     onSearch={val => filter.url = val}
