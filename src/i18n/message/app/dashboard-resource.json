@@ -10,7 +10,7 @@
         "indicator": {
             "installedDays": "已使用 {number} 天",
             "visitCount": "累计访问过 {site} 个网站共 {visit} 次",
-            "browsingTime": "浏览时长超过 {minute} 分钟",
+            "browsingTime": "浏览时长超过 {hour} 小时",
             "mostUse": "最喜欢在 {start} 点至 {end} 点之间打开浏览器"
         },
         "monthOnMonth": {
@@ -35,7 +35,7 @@
         "indicator": {
             "installedDays": "已使用 {number} 天",
             "visitCount": "造訪過 {site} 個網站共 {visit} 次",
-            "browsingTime": "累積瀏覽超過 {minute} 分鐘",
+            "browsingTime": "累積瀏覽超過 {hour} 小時",
             "mostUse": "最常上網時段 {start} 點～{end} 點"
         },
         "monthOnMonth": {
@@ -60,7 +60,7 @@
         "indicator": {
             "installedDays": "Installed for {number} days",
             "visitCount": "Visited {site} websites {visit} times",
-            "browsingTime": "Browsed over {minute} minutes",
+            "browsingTime": "Browsed over {hour} hours",
             "mostUse": "Favorite browsing between {start} and {end} o'clock"
         },
         "monthOnMonth": {
@@ -85,7 +85,7 @@
         "indicator": {
             "installedDays": "{number}日間使用しました",
             "visitCount": "{site} つのサイトへの合計 {visit} 回の拜訪",
-            "browsingTime": "{minute} 分以上ウェブを閲覧する",
+            "browsingTime": "{hour} 時間以上ウェブを閲覧する",
             "mostUse": "{start}:00 から {end}:00 までのお気に入りのインターネットアクセス"
         },
         "monthOnMonth": {
@@ -106,7 +106,7 @@
         "indicator": {
             "installedDays": "Instalado há {number} dias",
             "visitCount": "Visitou sites {site} {visit} vezes",
-            "browsingTime": "Navegou mais de {minute} minutos",
+            "browsingTime": "Navegou mais de {hour} horas",
             "mostUse": "Prefere navegar entre {start} h às {end} h"
         },
         "monthOnMonth": {
@@ -131,7 +131,7 @@
         "indicator": {
             "installedDays": "Встановлено впродовж {number} днів",
             "visitCount": "Відвідано {site} вебсайтів {visit} разів",
-            "browsingTime": "Перегляд понад {minute} хвилин",
+            "browsingTime": "Перегляд понад {hour} годин",
             "mostUse": "Улюблений перегляд між {start} і {end} годинами"
         },
         "monthOnMonth": {
@@ -156,7 +156,7 @@
         "indicator": {
             "installedDays": "Instalado durante {number} días",
             "visitCount": "Visitó {site} sitios web {visit} veces",
-            "browsingTime": "Navegó más de {minute} minutos",
+            "browsingTime": "Navegó más de {hour} horas",
             "mostUse": "Prefiere navegar entre las {start} y las {end} horas"
         },
         "monthOnMonth": {
@@ -181,7 +181,7 @@
         "indicator": {
             "installedDays": "Für {number} Tage installiert",
             "visitCount": "Besuchte {site} Websites {visit} mal",
-            "browsingTime": "Durchsucht über {minute} Minuten",
+            "browsingTime": "Durchsucht über {hour} Stunden",
             "mostUse": "Favoriten zwischen {start} und {end} Uhr"
         },
         "monthOnMonth": {
@@ -206,7 +206,7 @@
         "indicator": {
             "installedDays": "Installé depuis {number} jours",
             "visitCount": "{site} sites visités {visit} fois",
-            "browsingTime": "Visité pendant {minute} minutes",
+            "browsingTime": "Visité pendant {hour} heures",
             "mostUse": "Navigation la plus fréquente entre {start} et {end} heure"
         },
         "monthOnMonth": {
@@ -231,7 +231,7 @@
         "indicator": {
             "installedDays": "Прошло дней с установки: {number}",
             "visitCount": "Посещено {site} сайтов {visit} раз",
-            "browsingTime": "Минут за просмотром сайтов: {minute}",
+            "browsingTime": "Часов за просмотром сайтов: {hour}",
             "mostUse": "Чаще всего браузер используется между {start} и {end} часами"
         },
         "monthOnMonth": {
@@ -256,7 +256,7 @@
         "indicator": {
             "installedDays": "تم التثبيت لمدة {number} أيام",
             "visitCount": "تم زيارة {visit} مواقع {site} مرة",
-            "browsingTime": "تم التصفح لأكثر من {minute} دقائق",
+            "browsingTime": "تم التصفح لأكثر من {hour} ساعات",
             "mostUse": "أحب التصفح بين الساعة {start} و {end}"
         },
         "monthOnMonth": {
@@ -279,7 +279,7 @@
         "indicator": {
             "installedDays": "{number} gündür kurulu",
             "visitCount": "{site} web sitelerini {visit} kez ziyaret ettin",
-            "browsingTime": "{minute} dakikadan fazla göz attın",
+            "browsingTime": "{hour} saatten fazla göz attın",
             "mostUse": "{start} ile {end} arası favori gezinti saatlerin"
         },
         "monthOnMonth": {
@@ -304,7 +304,7 @@
         "indicator": {
             "installedDays": "Zainstalowane przez {number} dni",
             "visitCount": "Odwiedzono {site} różnych stron, łącznie {visit} razy",
-            "browsingTime": "Przeglądano przez {minute} minut",
+            "browsingTime": "Przeglądano przez {hour} godzin",
             "mostUse": "Najchętniej przeglądano w godzinach od {start} do {end}"
         },
         "monthOnMonth": {
@@ -329,7 +329,7 @@
         "indicator": {
             "installedDays": "Installato per {number} giorni",
             "visitCount": "Visitato {site}  {visit} volte",
-            "browsingTime": "Navigato per {minute} minuti",
+            "browsingTime": "Navigato per {hour} ore",
             "mostUse": "Navigazione preferita tra le {start} e le {end}"
         },
         "monthOnMonth": {

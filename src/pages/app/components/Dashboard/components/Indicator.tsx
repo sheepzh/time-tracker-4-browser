@@ -12,7 +12,7 @@ import { Sunrise } from "@element-plus/icons-vue"
 import { useRequest, useXsState } from "@hooks"
 import Flex from "@pages/components/Flex"
 import { groupBy, sum } from '@util/array'
-import { getStartOfDay, MILL_PER_DAY, MILL_PER_HOUR, MILL_PER_MINUTE } from "@util/time"
+import { getStartOfDay, MILL_PER_DAY, MILL_PER_HOUR } from "@util/time"
 import { ElIcon, ElScrollbar } from "element-plus"
 import { computed, defineComponent, toRef, type VNode } from "vue"
 import NumberGrow from "./NumberGrow"
@@ -131,7 +131,7 @@ const _default = defineComponent(() => {
                 />
                 <IndicatorLabel
                     path={msg => msg.dashboard.indicator.browsingTime}
-                    param={{ minute: Math.floor((data.value?.browsingTime || 0) / MILL_PER_MINUTE) }}
+                    param={{ hour: (data.value?.browsingTime ?? 0) / MILL_PER_HOUR }}
                     duration={2}
                 />
                 <IndicatorLabel
