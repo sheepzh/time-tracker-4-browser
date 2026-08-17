@@ -46,21 +46,32 @@ type Props = {
 }
 
 const InputFilter = defineComponent<Props>(props => {
-    const modelValue = ref(props.defaultValue ?? '')
+    const initial = props.defaultValue ?? ''
+    const modelValue = ref(initial)
+    let lastSearch = initial
 
     const [focused, setFocused] = useState(false)
     const inputRef = ref<InputInstance>()
     const modifierPressed = useKeyPressed('Meta', 'Control')
+    const doSearch = () => {
+        lastSearch = modelValue.value = modelValue.value.trim()
+        props.onSearch?.(lastSearch)
+    }
 
     const handleBlur = () => {
         setFocused(false)
-        props.onSearch?.(modelValue.value = modelValue.value.trim())
+        doSearch()
     }
 
     const handleKeydown = (ev: Event | KeyboardEvent) => {
         if (!(ev instanceof KeyboardEvent)) return
-        if (ev.key !== 'Enter') return
-        inputRef.value?.blur() // do searching after blur triggered
+        const { key } = ev
+        if (key === 'Enter') {
+            doSearch()
+        } else if (key === 'Escape') {
+            modelValue.value = lastSearch
+            inputRef.value?.blur()
+        }
     }
 
     useHotKey(
