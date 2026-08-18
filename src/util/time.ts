@@ -273,15 +273,15 @@ export function parseTime(dateStr: string | undefined): Date | undefined {
 export type DateRange = Date | [Date?, Date?] | undefined
 
 export const cvtDateRange2Str = (range: DateRange | [number?, number?]): [string?, string?] | undefined => {
-    if (range === undefined) return undefined
+    if (!range) return undefined
     if (range instanceof Date) {
         // The same day
         const date = formatTimeYMD(range)
         return [date, date]
     }
     const [start, end] = range
-    const startStr = start === undefined ? undefined : formatTimeYMD(start)
-    const endStr = end === undefined ? undefined : formatTimeYMD(end)
+    const startStr = start ? formatTimeYMD(start) : undefined
+    const endStr = end ? formatTimeYMD(end) : undefined
     return [startStr, endStr]
 }
 
