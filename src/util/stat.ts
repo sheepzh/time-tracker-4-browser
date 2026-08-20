@@ -1,3 +1,4 @@
+import { createStringUnionGuard } from 'typescript-guard'
 import { toMap } from './array'
 import { identifySiteKey } from "./site"
 
@@ -16,6 +17,8 @@ export function resultOf(focus: number, time: number): tt4b.core.Result {
 }
 
 export const ALL_DIMENSIONS: tt4b.core.Dimension[] = ['focus', 'time']
+
+export const isDimension = createStringUnionGuard<tt4b.core.Dimension>(...ALL_DIMENSIONS)
 
 export function identifyTargetKey(targetKey: tt4b.stat.TargetKey): string {
     if ('cateKey' in targetKey) {
@@ -67,7 +70,7 @@ export const getRelatedCateId = (row: tt4b.stat.Row): number | undefined => {
     return undefined
 }
 
-export const getComposition = (row: tt4b.stat.Row, dimension: tt4b.core.Dimension): tt4b.stat.RemoteCompositionVal[] => {
+export const getComposition = (row: tt4b.stat.Row, dimension: keyof tt4b.stat.RemoteComposition): tt4b.stat.RemoteCompositionVal[] => {
     return 'composition' in row ? row.composition?.[dimension] ?? [] : []
 }
 

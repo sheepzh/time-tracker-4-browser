@@ -17,7 +17,7 @@ type Context = {
 
 const NAMESPACE = 'record'
 
-const isSortProp = createStringUnionGuard<RecordSort['prop']>('date', 'host', 'focus', 'run', 'time')
+const isSortProp = createStringUnionGuard<RecordSort['prop']>('date', 'host', 'focus', 'time')
 const isSiteMerge = createStringUnionGuard<Exclude<RecordFilterOption['siteMerge'], undefined>>(
     'cate', 'domain', 'group',
 )

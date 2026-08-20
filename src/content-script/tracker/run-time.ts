@@ -1,27 +1,15 @@
 import { trySendMsg2Runtime } from '@api/sw/common'
 import LocationWatcher from '@cs/location-watcher'
-import Dispatcher from '../dispatcher'
 
 class RunTimeTracker {
     #start: number = Date.now()
-    #enabled = false
 
     constructor(private readonly location: LocationWatcher) {
-        location.onChange(() => {
-            this.collect()
-            this.fetchEnabled()
-        })
+        location.onCurrChange(() => this.collect())
     }
 
-    init(dispatcher: Dispatcher): void {
-        void this.fetchEnabled()
-        dispatcher.register('siteRunChange', () => void this.fetchEnabled())
+    init(): void {
         setInterval(() => this.collect(), 1000)
-    }
-
-    private async fetchEnabled() {
-        this.#enabled = !this.location.whitelisted
-            && !!(await trySendMsg2Runtime('site.runEnabled', this.location.host))
     }
 
     private async collect() {
@@ -29,7 +17,9 @@ class RunTimeTracker {
         const lastTime = this.#start
         this.#start = now
 
-        if (!this.#enabled) return
+        if (this.location.isWhite) return
+        // Run time tracking only available for normal site
+        if (!this.location.current?.normal.options?.run) return
 
         const event: tt4b.core.Event = {
             start: lastTime,

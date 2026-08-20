@@ -1,7 +1,7 @@
 import { useLaunchContext } from '../common/base'
 import { readRecordsOfFirstPage } from "../common/record"
+import { setSiteOption } from '../common/site'
 import { MOCK_HOST, MOCK_URL, MOCK_URL_2, sleep } from '../common/util'
-import { createWhitelist } from "../common/whitelist"
 
 describe('Tracking', () => {
     const context = useLaunchContext()
@@ -42,7 +42,7 @@ describe('Tracking', () => {
         const time = timeStr ? parseInt(timeStr.replace('s', '').trim()) : NaN
         expect(time >= 2)
 
-        await createWhitelist(context, MOCK_HOST)
+        await setSiteOption(context, MOCK_HOST, 'white', true)
         await page.bringToFront()
         await page.reload()
         await sleep(2)

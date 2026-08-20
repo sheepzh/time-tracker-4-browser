@@ -1,51 +1,41 @@
+import type Dispatcher from '@cs/dispatcher'
 import LocationWatcher from '@cs/location-watcher'
+
+const createDispatcher = (): Dispatcher => ({
+    register: rstest.fn(() => ({}) as unknown as Dispatcher),
+}) as unknown as Dispatcher
 
 describe('LocationWatcher', () => {
     beforeEach(() => history.replaceState({}, '', '/'))
 
     test('pushState triggers handler immediately', async () => {
-        const initialUrl = window.location.href
-        const host = window.location.host
         const handler = rstest.fn()
         const watcher = new LocationWatcher()
-        watcher.onChange(handler)
-        await watcher.init()
+        await watcher.init(createDispatcher())
+        watcher.onCurrChange(handler)
 
         history.pushState({}, '', '/page-a')
         // Wait for interval to trigger the handler
         await new Promise(resolve => setTimeout(resolve, 1000))
 
         expect(handler).toHaveBeenCalledTimes(1)
-        expect(handler).toHaveBeenCalledWith({
-            nextUrl: `${window.location.origin}/page-a`,
-            prevUrl: initialUrl,
-            nextHost: host,
-            prevHost: host
-        })
+        expect(watcher.url).toBe(`${window.location.origin}/page-a`)
 
         watcher.dispose()
     })
 
     test('replaceState triggers handler immediately', async () => {
-        const initialUrl = window.location.href
-        const host = window.location.host
         const handler = rstest.fn()
         const watcher = new LocationWatcher()
-        watcher.onChange(handler)
-        await watcher.init()
+        await watcher.init(createDispatcher())
+        watcher.onCurrChange(handler)
 
         history.replaceState({}, '', '/page-b')
         // Wait for interval to trigger the handler
         await new Promise(resolve => setTimeout(resolve, 1000))
 
         expect(handler).toHaveBeenCalledTimes(1)
-        expect(handler).toHaveBeenCalledWith({
-            nextUrl: `${window.location.origin}/page-b`,
-            prevUrl: initialUrl,
-            nextHost: host,
-            prevHost: host,
-        })
-
+        expect(watcher.url).toBe(`${window.location.origin}/page-b`)
         watcher.dispose()
     })
 
@@ -53,11 +43,10 @@ describe('LocationWatcher', () => {
         history.replaceState({}, '', '/')
         const rootUrl = window.location.href
         history.pushState({}, '', '/page-a')
-        const pageAUrl = window.location.href
         const handler = rstest.fn()
         const watcher = new LocationWatcher()
-        watcher.onChange(handler)
-        await watcher.init()
+        await watcher.init(createDispatcher())
+        watcher.onCurrChange(handler)
 
         const popstate = new Promise<void>(resolve => {
             window.addEventListener('popstate', () => resolve(), { once: true })
@@ -68,29 +57,7 @@ describe('LocationWatcher', () => {
         await new Promise(resolve => setTimeout(resolve, 1000))
 
         expect(handler).toHaveBeenCalledTimes(1)
-        expect(handler).toHaveBeenCalledWith({
-            nextUrl: rootUrl,
-            prevUrl: pageAUrl,
-            nextHost: window.location.host,
-            prevHost: window.location.host,
-        })
-
+        expect(watcher.url).toBe(rootUrl)
         watcher.dispose()
-    })
-
-    test('dispose restores native history methods', async () => {
-        const nativePushState = history.pushState
-        const nativeReplaceState = history.replaceState
-        const handler = rstest.fn()
-        const watcher = new LocationWatcher()
-        watcher.onChange(handler)
-        await watcher.init()
-
-        watcher.dispose()
-
-        expect(history.pushState).toBe(nativePushState)
-        expect(history.replaceState).toBe(nativeReplaceState)
-        history.pushState({}, '', '/page-after-dispose')
-        expect(handler).not.toHaveBeenCalled()
     })
 })

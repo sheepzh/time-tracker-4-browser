@@ -8,7 +8,7 @@ import ConfirmButton from '@pages/components/ConfirmButton'
 import Flex from '@pages/components/Flex'
 import TooltipWrapper from '@pages/components/TooltipWrapper'
 import { getComposition, isGroup, isNormalSite, isSite } from "@util/stat"
-import { Effect, ElCheckbox, ElDivider, ElIcon, ElTag, useNamespace } from "element-plus"
+import { Effect, ElCard, ElCheckbox, ElDivider, ElIcon, ElTag, useNamespace } from "element-plus"
 import { computed, defineComponent, ref, StyleValue, watch } from "vue"
 import { computeDeleteConfirmMsg, handleDelete } from "../common"
 import CompositionTable from "../components/CompositionTable"
@@ -35,7 +35,7 @@ const useContentStyle = () => {
     `
 }
 
-const _default = defineComponent<Props>(props => {
+const Card = defineComponent<Props>(props => {
     const filter = useRecordFilter()
     const { groupMap } = useTabGroups()
     const formatter = (focus: number): string => periodFormatter(focus, { format: filter?.timeFormat })
@@ -53,7 +53,7 @@ const _default = defineComponent<Props>(props => {
     const contentCls = useContentStyle()
 
     return () => (
-        <div>
+        <ElCard shadow='never' bodyStyle={{ padding: '15px' }}>
             <Flex justify='space-between'>
                 <Flex inline align='center' gap={2}>
                     <ElCheckbox
@@ -126,8 +126,8 @@ const _default = defineComponent<Props>(props => {
                     </ElTag>
                 </TooltipWrapper>
             </Flex>
-        </div>
+        </ElCard>
     )
 }, { props: ['onDelete', 'onSelectedChange', 'value'] })
 
-export default _default
+export default Card

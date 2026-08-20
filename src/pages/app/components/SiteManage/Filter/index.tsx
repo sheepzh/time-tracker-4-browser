@@ -9,24 +9,29 @@ import { ButtonFilter, CategoryFilter, InputFilter, MultiSelectFilter, } from '@
 import { useCategory } from "@app/context"
 import { t } from '@app/locale'
 import { Check, Close, Connection, Delete, Grid, Plus } from "@element-plus/icons-vue"
+import { useSwitch, useXsState } from '@hooks'
 import Flex from "@pages/components/Flex"
+import { Rule } from '@pages/icons'
 import { ElButton, ElDialog, ElForm, ElFormItem } from 'element-plus'
 import { computed, defineComponent, watch } from "vue"
 import DropdownButton, { type DropdownButtonItem } from '../../common/DropdownButton'
 import { ALL_TYPES } from "../common"
-import { useSiteManageFilter } from '../context'
+import { useSiteManage } from '../context'
+import Merge from '../Merge'
 import { useBatch } from './useBatch'
 
 type BatchOpt = 'change' | 'disassociate' | 'delete'
 
 const Filter = defineComponent<{}>(() => {
     const cate = useCategory()
-    const { filter, modifyInst } = useSiteManageFilter()
+    const { filter, modifyInst } = useSiteManage()
     const {
         batchChange, batchDisassociate, batchDelete,
         selectVisible, closeSelect, targetCate,
         onCateChangeConfirm,
     } = useBatch()
+    const isXs = useXsState()
+    const [mergeVisible, openMerge, closeMerge] = useSwitch()
 
     const cateDisabled = computed(() => {
         const types = filter.types
@@ -79,8 +84,15 @@ const Filter = defineComponent<{}>(() => {
                 />
             </Flex>
             <Flex gap={10}>
-                <DropdownButton items={items} />
+                <DropdownButton v-show={!isXs.value} items={items} />
                 <ButtonFilter
+                    text={msg => msg.siteManage.merge.label}
+                    icon={Rule}
+                    type='primary'
+                    onClick={openMerge}
+                />
+                <ButtonFilter
+                    v-show={!isXs.value}
                     text={msg => msg.button.create}
                     icon={Plus}
                     type="success"
@@ -112,6 +124,15 @@ const Filter = defineComponent<{}>(() => {
                     </>
                 }}
             />
+            <ElDialog
+                title={t(msg => msg.siteManage.merge.label)}
+                fullscreen
+                modelValue={mergeVisible.value}
+                destroyOnClose={true}
+                onClose={closeMerge}
+            >
+                <Merge />
+            </ElDialog>
         </Flex>
     )
 })

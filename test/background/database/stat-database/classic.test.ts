@@ -36,6 +36,13 @@ describe('stat-database/classic', () => {
         expect(data).toEqual({ host: baidu, date: now, focus: 400, time: 1 } satisfies tt4b.core.Row)
     })
 
+    test('accumulate merges run and media', async () => {
+        await db.accumulate(baidu, now, { focus: 0, time: 0, run: 2, media: 3 })
+        await db.accumulate(baidu, now, { focus: 0, time: 0, run: 5, media: 7 })
+        const data = await db.get(baidu, now)
+        expect(data).toEqual({ host: baidu, date: now, focus: 0, time: 0, run: 7, media: 10 } satisfies tt4b.core.Row)
+    })
+
     test('batchAccumulate and select with condition/date range', async () => {
         await db.batchAccumulate(
             {

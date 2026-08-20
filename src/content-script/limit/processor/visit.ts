@@ -13,6 +13,7 @@ class VisitProcessor implements Processor {
     #tracker: NormalTracker
     #delayCount: number = 0
     #listener?: ArgCallback<number>
+    #lastUrl: string
 
     constructor(
         private readonly dispatcher: Dispatcher,
@@ -21,16 +22,20 @@ class VisitProcessor implements Processor {
         private readonly location: LocationWatcher,
         private readonly delayDuration: number,
     ) {
+        this.#lastUrl = location.url
         this.#tracker = new NormalTracker({
             onReport: data => this.handleTracker(data),
         })
-        location.onChange(async ({ prevUrl, nextUrl }) => {
-            if (prevUrl === nextUrl) return
+        location.onCurrChange(async () => {
+            const newUrl = this.location.url
+            if (this.#lastUrl === newUrl) return
+            this.#lastUrl = newUrl
             // reset focus time and delay count when url changed
             this.#mills = 0
             this.#delayCount = 0
             this.#notify()
         })
+        location.onCurrChange(() => void this.reset())
     }
 
     onChange(listener: ArgCallback<number>) {
@@ -51,6 +56,7 @@ class VisitProcessor implements Processor {
     private async handleTracker({ start, end }: tt4b.core.Event) {
         const diff = end - start
         this.#mills += diff
+        if (this.location.isWhite) return
         this.#notify()
         const reasons: LimitReason[] = []
         this.#rules.forEach(rule => {
@@ -80,7 +86,7 @@ class VisitProcessor implements Processor {
     async reset() {
         this.#rules = []
         this.state.removeByType('VISIT')
-        if (this.location.whitelisted) return
+        if (this.location.isWhite) return
 
         this.#rules = await trySendMsg2Runtime('limit.list', { effective: true, url: this.location.url }) ?? []
     }

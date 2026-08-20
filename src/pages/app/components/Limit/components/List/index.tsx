@@ -4,24 +4,18 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import ScrollList from '@app/components/common/ScrollList'
 import { useLimitData } from "@app/components/Limit/context"
-import Flex from '@pages/components/Flex'
-import { ElScrollbar } from 'element-plus'
 import { defineComponent } from "vue"
 import Card from "./Card"
 
-const _default = defineComponent(() => {
+const _default = defineComponent<{}>(() => {
     const { list } = useLimitData()
 
     return () => (
-        <ElScrollbar>
-            <Flex
-                column padding={8} gap={15} height="100%"
-                style={{ overflow: 'auto' }}
-            >
-                {list.value.map(row => <Card key={row.id} value={row} />)}
-            </Flex>
-        </ElScrollbar>
+        <ScrollList>
+            {list.value.map(row => <Card key={row.id} value={row} />)}
+        </ScrollList>
     )
 })
 

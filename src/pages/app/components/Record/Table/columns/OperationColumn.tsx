@@ -4,36 +4,35 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { addWhitelist, deleteWhitelist, listWhitelist } from "@api/sw/whitelist"
 import { computeDeleteConfirmMsg, handleDelete } from '@app/components/Record/common'
 import { useRecordFilter } from '@app/components/Record/context'
 import { t } from '@app/locale'
 import { SITE_ANALYSIS_ROUTE, type SiteAnalysisQuery } from '@app/router/constants'
-import { Delete, Open, Plus, Stopwatch } from "@element-plus/icons-vue"
-import { useOperation, useRequest, useTabGroups } from '@hooks'
+import { Delete, Stopwatch } from "@element-plus/icons-vue"
+import { useTabGroups } from '@hooks'
 import { locale } from "@i18n"
 import ConfirmButton from '@pages/components/ConfirmButton'
 import { CATE_NOT_SET_ID } from "@util/site"
-import { isCate, isGroup, isNormalSite, isSite } from "@util/stat"
+import { isCate, isGroup, isSite } from "@util/stat"
 import { ElButton, ElTableColumn, type RenderRowData } from "element-plus"
 import { computed, defineComponent } from "vue"
 import { useRouter } from "vue-router"
 
 const LOCALE_WIDTH: { [locale in tt4b.Locale]: number } = {
-    en: 330,
-    zh_CN: 290,
-    ja: 360,
-    zh_TW: 290,
-    pt_PT: 340,
-    uk: 400,
-    es: 360,
-    de: 370,
-    fr: 330,
-    ru: 350,
-    ar: 320,
-    tr: 320,
-    pl: 320,
-    it: 320,
+    en: 180,
+    zh_CN: 150,
+    ja: 150,
+    zh_TW: 150,
+    pt_PT: 180,
+    uk: 180,
+    es: 180,
+    de: 180,
+    fr: 190,
+    ru: 180,
+    ar: 150,
+    tr: 160,
+    pl: 160,
+    it: 180,
 }
 
 type Props = {
@@ -60,10 +59,6 @@ const _default = defineComponent<Props>(({ onDelete }) => {
         return !siteMerge || siteMerge === 'group' ? LOCALE_WIDTH[locale] : 110
     })
     const router = useRouter()
-    const { data: whitelist, refresh: refreshWhitelist } = useRequest(listWhitelist, { defaultValue: [] })
-
-    const onAddWhitelist = useOperation(addWhitelist, { onSuccess: refreshWhitelist })
-    const onRemoveWhitelist = useOperation(deleteWhitelist, { onSuccess: refreshWhitelist })
 
     const jump2Analysis = (row: tt4b.stat.Row) => {
         let query: SiteAnalysisQuery
@@ -82,6 +77,7 @@ const _default = defineComponent<Props>(({ onDelete }) => {
             width={width.value}
             label={t(msg => msg.button.operation)}
             align="center"
+            fixed='right'
         >
             {({ row }: RenderRowData<tt4b.stat.Row>) => <>
                 {/* Analysis */}
@@ -89,7 +85,7 @@ const _default = defineComponent<Props>(({ onDelete }) => {
                     <ElButton
                         icon={Stopwatch}
                         size="small"
-                        type="primary"
+                        link type="primary"
                         onClick={() => jump2Analysis(row)}
                     >
                         {t(msg => msg.item.operation.analysis)}
@@ -98,31 +94,13 @@ const _default = defineComponent<Props>(({ onDelete }) => {
                 {/* Delete button */}
                 {deleteVisible(row) && (
                     <ConfirmButton
-                        buttonProps={{ icon: Delete, type: 'danger', size: 'small' }}
+                        buttonProps={{ icon: Delete, type: 'danger', size: 'small', link: true }}
                         buttonText={t(msg => msg.button.delete)}
                         confirmText={computeDeleteConfirmMsg(row, filter, groupMap.value)}
                         onConfirm={async () => {
                             await handleDelete(row, filter)
                             onDelete?.(row)
                         }}
-                    />
-                )}
-                {/* Add 2 whitelist */}
-                {isNormalSite(row) && !whitelist.value.includes(row.siteKey.host) && (
-                    <ConfirmButton
-                        buttonProps={{ icon: Plus, type: 'warning', size: 'small' }}
-                        buttonText={t(msg => msg.item.operation.add2Whitelist)}
-                        confirmText={t(msg => msg.rule.white.addConfirmMsg, { url: row.siteKey?.host })}
-                        onConfirm={() => onAddWhitelist(row.siteKey.host)}
-                    />
-                )}
-                {/* Remove from whitelist */}
-                {isNormalSite(row) && whitelist.value.includes(row.siteKey.host) && (
-                    <ConfirmButton
-                        buttonProps={{ icon: Open, type: 'primary', size: 'small' }}
-                        buttonText={t(msg => msg.button.enable)}
-                        confirmText={t(msg => msg.rule.white.removeConfirmMsg, { url: row.siteKey.host })}
-                        onConfirm={() => onRemoveWhitelist(row.siteKey.host)}
                     />
                 )}
             </>}

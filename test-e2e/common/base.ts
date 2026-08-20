@@ -1,6 +1,5 @@
 import { type Browser, type CDPSession, launch, type Page, type Target } from "puppeteer"
 import { E2E_OUTPUT_PATH } from "../../rspack/constant"
-import { removeAllWhitelist } from './whitelist'
 
 const USE_HEADLESS_PUPPETEER = !!process.env['USE_HEADLESS_PUPPETEER']
 
@@ -57,8 +56,6 @@ export class LaunchContext {
         this.#b = browser
         this.#cdp = cdpSession ?? null
         this.#eid = extensionId
-        // remove whitelist added by service_worker
-        await removeAllWhitelist(this)
     }
 
     async close(): Promise<void> {

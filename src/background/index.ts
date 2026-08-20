@@ -16,7 +16,6 @@ import MessageDispatcher from "./message-dispatcher"
 import { initScheduler } from './scheduler'
 import TabListener from './tab-listener'
 import initTrackServer from "./track-server"
-import initWhitelistMenuManager from "./whitelist-menu-manager"
 
 initAfterInstalled()
 
@@ -42,9 +41,6 @@ initTrackServer(messageDispatcher)
 
 // scheduler
 initScheduler()
-
-// Manage the context menus
-initWhitelistMenuManager()
 
 // Badge manager
 badgeManager.init(messageDispatcher)

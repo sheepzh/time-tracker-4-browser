@@ -7,7 +7,7 @@ export const useVerify = (option: tt4b.option.LimitOption) => {
 
     const verify = async (): Promise<void> => {
         if (verified.value) return
-        const items = await listLimits()
+        const items = await listLimits({ enabled: true, effective: true })
         const delayDuration = option.limitDelayDuration
         const triggerResults = await Promise.all(items.map(item => judgeVerificationRequired(item, delayDuration)))
         const anyTrigger = triggerResults.some(t => t)

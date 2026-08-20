@@ -1,6 +1,5 @@
 import baseMessages, { type BaseMessage } from '../common/base'
 import calendarMessages, { type CalendarMessage } from '../common/calendar'
-import contextMenusMessages, { type ContextMenusMessage } from '../common/context-menus'
 import focusMessages, { type FocusMessage } from '../common/focus'
 import initialMessages, { type InitialMessage } from '../common/initial'
 import metaMessages, { type MetaMessage } from '../common/meta'
@@ -16,7 +15,6 @@ export type BgMessage = {
     initial: InitialMessage
     focus: FocusMessage
     base: BaseMessage
-    contextMenus: ContextMenusMessage
 }
 
 const CHILD_MESSAGES: MessageRoot<BgMessage> = {
@@ -27,7 +25,6 @@ const CHILD_MESSAGES: MessageRoot<BgMessage> = {
     initial: initialMessages,
     focus: focusMessages,
     base: baseMessages,
-    contextMenus: contextMenusMessages,
 }
 
 export default merge(CHILD_MESSAGES)

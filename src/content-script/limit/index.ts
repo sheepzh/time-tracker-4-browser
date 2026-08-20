@@ -18,7 +18,7 @@ export default async function processLimit(state: LimitState, location: Location
 
     const processors = [dailyWeeklyPsr, visitPsr, periodPsr, focusPsr]
     await Promise.all(processors.map(p => p.init()))
-    location.onChange(() => void processors.forEach(p => void p.reset()))
+    location.onCurrChange(() => void processors.forEach(p => void p.reset()))
 
     new ModalManager(location).init(state, delayCoord, visitPsr)
 

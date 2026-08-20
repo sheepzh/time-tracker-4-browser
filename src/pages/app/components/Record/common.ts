@@ -81,7 +81,7 @@ const cvt2GroupQuery = (
     { prop, order }: RecordSort,
 ): tt4b.stat.GroupQuery => ({
     date: cvtDateRange2Str(date), mergeDate, query,
-    sortKey: prop !== 'host' && prop !== 'run' ? prop : undefined,
+    sortKey: prop !== 'host' ? prop : undefined,
     sortDirection: cvtOrderDir(order),
     focusRange, timeRange,
 })
@@ -104,7 +104,7 @@ const cvt2CateQuery = (
     { prop, order }: RecordSort,
 ): tt4b.stat.CateQuery => ({
     date: cvtDateRange2Str(date), mergeDate, query, cateIds, inclusiveRemote,
-    sortKey: prop !== 'host' && prop !== 'run' ? prop : undefined,
+    sortKey: prop !== 'host' ? prop : undefined,
     sortDirection: cvtOrderDir(order),
     focusRange, timeRange,
 })

@@ -12,7 +12,6 @@ export type ItemMessage = {
     host: string
     group: string
     operation: {
-        add2Whitelist: string
         deleteConfirmMsgAll: string
         deleteConfirmMsgRange: string
         deleteConfirmMsg: string
@@ -20,6 +19,8 @@ export type ItemMessage = {
     }
 } & {
     [dimension in tt4b.core.Dimension]: string
+} & {
+    [dimension in tt4b.core.DimensionOptional]: string
 }
 
 const _default: Messages<ItemMessage> = resource

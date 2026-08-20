@@ -5,25 +5,26 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { fillInitialAlias, getInitialAlias, modifySite } from "@api/sw/site"
+import { getInitialAlias, modifySite } from "@api/sw/site"
 import Editable from "@app/components/common/Editable"
-import { useSiteManageTable } from '@app/components/SiteManage/context'
 import { t } from '@app/locale'
 import { MagicStick } from "@element-plus/icons-vue"
-import { useManualRequest, useOperation } from '@hooks'
+import { useManualRequest } from '@hooks'
 import Flex from "@pages/components/Flex"
 import { identifySiteKey } from "@util/site"
 import { ElIcon, ElPopconfirm, ElTableColumn, ElText } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
 
-const AliasColumn = defineComponent<{}>(() => {
-    const { pagination, refresh } = useSiteManageTable()
+type Props = {
+    onFillAlias: NoArgCallback
+    onChanged: NoArgCallback
+}
+
+const AliasColumn = defineComponent<Props>(props => {
     const { refresh: doChange } = useManualRequest((row: tt4b.site.SiteInfo, alias: string | undefined) => {
         const { type, host, iconUrl } = row
         return modifySite({ type, host, alias, iconUrl })
-    }, { onSuccess: refresh })
-
-    const handleBatchGenerate = useOperation(() => fillInitialAlias(pagination.value.list), { onSuccess: refresh })
+    }, { onSuccess: props.onChanged })
 
     const genInitialAlias = async ({ host, type, alias }: tt4b.site.SiteInfo) => {
         if (alias) return alias
@@ -42,7 +43,7 @@ const AliasColumn = defineComponent<{}>(() => {
                         <ElPopconfirm
                             title={t(msg => msg.siteManage.genAliasConfirmMsg)}
                             width={400}
-                            onConfirm={handleBatchGenerate}
+                            onConfirm={props.onFillAlias}
                             v-slots={{
                                 reference: () => (
                                     <Flex height='100%'>

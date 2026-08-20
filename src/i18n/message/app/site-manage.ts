@@ -14,6 +14,8 @@ export type SiteManageMessage = {
         alias: string
         cate: string
         icon: string
+        white: string
+        whiteInfo: string
     }
     typeInfo: Record<tt4b.site.Type, string>
     cate: {
@@ -32,6 +34,26 @@ export type SiteManageMessage = {
         existedTag: string
         disassociatedMsg: string
         batchDeleteMsg: string
+    }
+    merge: {
+        label: string
+        removeConfirmMsg: string
+        originPlaceholder: string
+        mergedPlaceholder: string
+        errorOrigin: string
+        duplicateMsg: string
+        addConfirmMsg: string
+        infoAlertTitle: string
+        infoAlert0: string
+        infoAlert1: string
+        infoAlert2: string
+        infoAlert3: string
+        infoAlert4: string
+        infoAlert5: string
+        tagResult: {
+            blank: string
+            level: string
+        }
     }
 }
 

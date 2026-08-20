@@ -16,8 +16,7 @@
                 "value": "对应数值",
                 "percentage": "百分比"
             }
-        },
-        "noMore": "没有更多了"
+        }
     },
     "zh_TW": {
         "exportFileName": "我的上網時間紀錄",
@@ -36,8 +35,7 @@
                 "value": "數值",
                 "percentage": "百分比"
             }
-        },
-        "noMore": "已無更多資料"
+        }
     },
     "en": {
         "exportFileName": "My_Browsing_Time",
@@ -56,8 +54,7 @@
                 "value": "Value",
                 "percentage": "Percentage"
             }
-        },
-        "noMore": "No More"
+        }
     },
     "ja": {
         "exportFileName": "私のウェブ時間データ",
@@ -76,8 +73,7 @@
                 "value": "対応する値",
                 "percentage": "パーセンテージ"
             }
-        },
-        "noMore": "これ以上なし"
+        }
     },
     "pt_PT": {
         "exportFileName": "Meu_Tempo_de_Navegação",
@@ -96,8 +92,7 @@
                 "value": "Valor",
                 "percentage": "Percentagem"
             }
-        },
-        "noMore": "Não mais"
+        }
     },
     "uk": {
         "total": "Всього відвідувань: {visit} разів, загальна тривалість: {focus}",
@@ -115,8 +110,7 @@
                 "value": "Значення",
                 "percentage": "Відсоток"
             }
-        },
-        "noMore": "Більше немає"
+        }
     },
     "es": {
         "exportFileName": "Mi_Tiempo_De_Navegación",
@@ -135,8 +129,7 @@
                 "value": "Valor",
                 "percentage": "Porcentaje"
             }
-        },
-        "noMore": "No más"
+        }
     },
     "de": {
         "exportFileName": "Timer_Daten",
@@ -155,8 +148,7 @@
                 "value": "Wert",
                 "percentage": "Prozentsatz"
             }
-        },
-        "noMore": "Nicht mehr"
+        }
     },
     "fr": {
         "exportFileName": "Mon_heure_de_navigation",
@@ -175,8 +167,7 @@
                 "value": "Valeur",
                 "percentage": "Pourcentage"
             }
-        },
-        "noMore": "Pas plus"
+        }
     },
     "ru": {
         "exportFileName": "Мое_время_просмотра",
@@ -194,8 +185,7 @@
                 "value": "Значение",
                 "percentage": "Проценты"
             }
-        },
-        "noMore": "Больше нет"
+        }
     },
     "ar": {
         "exportFileName": "وقت_التصفح_الخاص_بي",
@@ -214,8 +204,7 @@
                 "value": "قيمة",
                 "percentage": "نسبة مئوية"
             }
-        },
-        "noMore": "لا مزيد"
+        }
     },
     "tr": {
         "exportFileName": "Gezinti_Zamanım",
@@ -234,8 +223,7 @@
                 "value": "Değeri",
                 "percentage": "Yüzdesi"
             }
-        },
-        "noMore": "Daha Fazla Veri Yok"
+        }
     },
     "pl": {
         "exportFileName": "Mój_Czas_Przeglądania",
@@ -254,8 +242,7 @@
                 "value": "Wartość",
                 "percentage": "Procent"
             }
-        },
-        "noMore": "Nie więcej"
+        }
     },
     "it": {
         "total": "Visite totali: {visit} volte, durata totale: {focus}",
@@ -273,7 +260,6 @@
                 "value": "Valore",
                 "percentage": "Percentuale"
             }
-        },
-        "noMore": "Nient'altro"
+        }
     }
 }

@@ -6,6 +6,7 @@
  */
 import { getOption, getWeekStartDay } from "@api/sw/option"
 import ColumnHeader from "@app/components/common/ColumnHeader"
+import ContentCard from '@app/components/common/ContentCard'
 import { useDelayDuration, useLimitAction, useLimitData } from "@app/components/Limit/context"
 import { t } from '@app/locale'
 import { Delete, Edit } from '@element-plus/icons-vue'
@@ -23,20 +24,20 @@ import Waste from "./Waste"
 import Weekday from "./Weekday"
 
 const ACTION_WIDTH: { [locale in tt4b.Locale]: number } = {
-    en: 220,
-    zh_CN: 200,
-    ja: 200,
-    zh_TW: 200,
-    pt_PT: 250,
-    uk: 260,
-    es: 240,
-    de: 250,
-    fr: 230,
-    ru: 240,
-    ar: 220,
-    tr: 220,
-    pl: 220,
-    it: 220,
+    en: 150,
+    zh_CN: 150,
+    ja: 150,
+    zh_TW: 150,
+    pt_PT: 170,
+    uk: 190,
+    es: 170,
+    de: 190,
+    fr: 190,
+    ru: 210,
+    ar: 130,
+    tr: 150,
+    pl: 150,
+    it: 170,
 }
 
 type SortCol = 'waste' | 'weeklyWaste'
@@ -75,147 +76,149 @@ const _default = defineComponent<{}>(() => {
     }, { defaultValue: false })
 
     return () => (
-        <ElTable
-            ref={table}
-            border fit highlightCurrentRow
-            style={{ width: "100%" }}
-            height="100%"
-            data={list.value}
-            defaultSort={sort.value}
-            onSort-change={val => isSort(val) && (sort.value = val)}
-            onSelection-change={val => selected.value = val}
-        >
-            <ElTableColumn type="selection" align="center" fixed="left" />
-            <ElTableColumn
-                prop='name'
-                label={t(msg => msg.limit.item.name)}
-                minWidth={120}
-                align="center"
-                formatter={({ name }: tt4b.limit.Item) => name || '-'}
-                fixed
-                sortable
-                sortBy={(row: tt4b.limit.Item) => row.name}
-            />
-            <ElTableColumn
-                label={t(msg => msg.limit.item.condition)}
-                minWidth={180}
-                align="center"
-                formatter={({ cond }: tt4b.limit.Item) => <>{cond?.map?.(c => <span style={{ display: "block" }}>{c}</span>) || ''}</>}
-            />
-            <ElTableColumn
-                label={t(msg => msg.limit.item.detail)}
-                minWidth={200}
-                align="center"
+        <ContentCard>
+            <ElTable
+                ref={table}
+                border fit highlightCurrentRow
+                style={{ width: "100%" }}
+                height="100%"
+                data={list.value}
+                defaultSort={sort.value}
+                onSort-change={val => isSort(val) && (sort.value = val)}
+                onSelection-change={val => selected.value = val}
             >
-                {({ row }: RenderRowData<tt4b.limit.Item>) => <Rule value={row} />}
-            </ElTableColumn>
-            <ElTableColumn
-                prop='effectiveDays'
-                label={t(msg => msg.limit.item.effectiveDay)}
-                minWidth={170}
-                align="center"
-                sortable
-                sortMethod={sortByEffectiveDays}
-            >
-                {({ row: { weekdays } }: RenderRowData<tt4b.limit.Item>) => <Weekday value={weekdays} />}
-            </ElTableColumn>
-            <ElTableColumn
-                prop={'waste' satisfies SortCol}
-                sortable
-                sortMethod={createSorter('waste')}
-                label={t(msg => msg.calendar.range.today)}
-                minWidth={90}
-                align="center"
-            >
-                {({ row }: RenderRowData<tt4b.limit.Item>) => isEffective(row.weekdays) ? (
-                    <Waste
-                        time={{ wasted: row.waste, maxLimit: (row.time ?? 0) * MILL_PER_SECOND }}
-                        delay={{ count: row.delayCount, duration: delayDuration.value, allow: !!row.allowDelay }}
-                        count={row.count ?? 0}
-                        visit={row.visit ?? 0}
-                    />
-                ) : (
-                    <ElTag type="info" size="small">
-                        {t(msg => msg.limit.item.notEffective)}
-                    </ElTag>
-                )}
-            </ElTableColumn>
-            <ElTableColumn
-                prop={'weeklyWaste' satisfies SortCol}
-                minWidth={110}
-                align="center"
-                sortable
-                sortMethod={createSorter('weeklyWaste')}
-                v-slots={{
-                    header: () => (
-                        <ColumnHeader
-                            label={t(msg => msg.calendar.range.thisWeek)}
-                            tooltipContent={weeklyInfo.value}
-                        />
-                    ),
-                    default: ({ row: {
-                        weeklyWaste, weekly,
-                        weeklyVisit, weeklyCount,
-                        weeklyDelayCount, allowDelay,
-                    } }: RenderRowData<tt4b.limit.Item>) => (
+                <ElTableColumn type="selection" align="center" fixed="left" />
+                <ElTableColumn
+                    prop='name'
+                    label={t(msg => msg.limit.item.name)}
+                    minWidth={120}
+                    align="center"
+                    formatter={({ name }: tt4b.limit.Item) => name || '-'}
+                    fixed
+                    sortable
+                    sortBy={(row: tt4b.limit.Item) => row.name}
+                />
+                <ElTableColumn
+                    label={t(msg => msg.limit.item.condition)}
+                    minWidth={180}
+                    align="center"
+                    formatter={({ cond }: tt4b.limit.Item) => <>{cond?.map?.(c => <span style={{ display: "block" }}>{c}</span>) || ''}</>}
+                />
+                <ElTableColumn
+                    label={t(msg => msg.limit.item.detail)}
+                    minWidth={200}
+                    align="center"
+                >
+                    {({ row }: RenderRowData<tt4b.limit.Item>) => <Rule value={row} />}
+                </ElTableColumn>
+                <ElTableColumn
+                    prop='effectiveDays'
+                    label={t(msg => msg.limit.item.effectiveDay)}
+                    minWidth={170}
+                    align="center"
+                    sortable
+                    sortMethod={sortByEffectiveDays}
+                >
+                    {({ row: { weekdays } }: RenderRowData<tt4b.limit.Item>) => <Weekday value={weekdays} />}
+                </ElTableColumn>
+                <ElTableColumn
+                    prop={'waste' satisfies SortCol}
+                    sortable
+                    sortMethod={createSorter('waste')}
+                    label={t(msg => msg.calendar.range.today)}
+                    minWidth={90}
+                    align="center"
+                >
+                    {({ row }: RenderRowData<tt4b.limit.Item>) => isEffective(row.weekdays) ? (
                         <Waste
-                            time={{ wasted: weeklyWaste, maxLimit: (weekly ?? 0) * MILL_PER_SECOND }}
-                            delay={{ count: weeklyDelayCount, duration: delayDuration.value, allow: !!allowDelay }}
-                            count={weeklyCount ?? 0}
-                            visit={weeklyVisit ?? 0}
+                            time={{ wasted: row.waste, maxLimit: (row.time ?? 0) * MILL_PER_SECOND }}
+                            delay={{ count: row.delayCount, duration: delayDuration.value, allow: !!row.allowDelay }}
+                            count={row.count ?? 0}
+                            visit={row.visit ?? 0}
                         />
-                    ),
-                }}
-            />
-            <ElTableColumn label={t(msg => msg.button.configuration)}>
-                <ElTableColumn
-                    label={t(msg => msg.limit.item.enabled)}
-                    minWidth={80}
-                    align="center"
-                    fixed="right"
-                >
-                    {({ row }: RenderRowData<tt4b.limit.Item>) => (
-                        <ElSwitch size="small" modelValue={row.enabled} onChange={v => changeEnabled(row, !!v)} />
+                    ) : (
+                        <ElTag type="info" size="small">
+                            {t(msg => msg.limit.item.notEffective)}
+                        </ElTag>
                     )}
                 </ElTableColumn>
                 <ElTableColumn
-                    label={t(msg => msg.shared.allowUnblocking)}
-                    minWidth={80}
+                    prop={'weeklyWaste' satisfies SortCol}
+                    minWidth={110}
                     align="center"
-                    fixed="right"
-                >
-                    {({ row }: RenderRowData<tt4b.limit.Item>) => (
-                        <ElSwitch size="small" modelValue={row.allowDelay} onChange={v => changeDelay(row, !!v)} />
-                    )}
-                </ElTableColumn>
-                {lockVisible.value && (
+                    sortable
+                    sortMethod={createSorter('weeklyWaste')}
+                    v-slots={{
+                        header: () => (
+                            <ColumnHeader
+                                label={t(msg => msg.calendar.range.thisWeek)}
+                                tooltip={weeklyInfo.value}
+                            />
+                        ),
+                        default: ({ row: {
+                            weeklyWaste, weekly,
+                            weeklyVisit, weeklyCount,
+                            weeklyDelayCount, allowDelay,
+                        } }: RenderRowData<tt4b.limit.Item>) => (
+                            <Waste
+                                time={{ wasted: weeklyWaste, maxLimit: (weekly ?? 0) * MILL_PER_SECOND }}
+                                delay={{ count: weeklyDelayCount, duration: delayDuration.value, allow: !!allowDelay }}
+                                count={weeklyCount ?? 0}
+                                visit={weeklyVisit ?? 0}
+                            />
+                        ),
+                    }}
+                />
+                <ElTableColumn label={t(msg => msg.button.configuration)}>
                     <ElTableColumn
-                        label={t(msg => msg.limit.item.locked)}
+                        label={t(msg => msg.limit.item.enabled)}
                         minWidth={80}
                         align="center"
                         fixed="right"
                     >
                         {({ row }: RenderRowData<tt4b.limit.Item>) => (
-                            <ElSwitch size="small" modelValue={row.locked} onChange={v => changeLocked(row, !!v)} />
+                            <ElSwitch size="small" modelValue={row.enabled} onChange={v => changeEnabled(row, !!v)} />
                         )}
                     </ElTableColumn>
-                )}
-            </ElTableColumn>
-            <ElTableColumn
-                label={t(msg => msg.button.operation)}
-                width={ACTION_WIDTH[locale]}
-                align="center"
-                fixed="right"
-                v-slots={({ row }: RenderRowData<tt4b.limit.Item>) => <>
-                    <ElButton type="danger" size="small" icon={Delete} onClick={() => remove(row)}>
-                        {t(msg => msg.button.delete)}
-                    </ElButton>
-                    <ElButton type="primary" size="small" icon={Edit} onClick={() => modify(row)}>
-                        {t(msg => msg.button.modify)}
-                    </ElButton>
-                </>}
-            />
-        </ElTable>
+                    <ElTableColumn
+                        label={t(msg => msg.shared.allowUnblocking)}
+                        minWidth={80}
+                        align="center"
+                        fixed="right"
+                    >
+                        {({ row }: RenderRowData<tt4b.limit.Item>) => (
+                            <ElSwitch size="small" modelValue={row.allowDelay} onChange={v => changeDelay(row, !!v)} />
+                        )}
+                    </ElTableColumn>
+                    {lockVisible.value && (
+                        <ElTableColumn
+                            label={t(msg => msg.limit.item.locked)}
+                            minWidth={80}
+                            align="center"
+                            fixed="right"
+                        >
+                            {({ row }: RenderRowData<tt4b.limit.Item>) => (
+                                <ElSwitch size="small" modelValue={row.locked} onChange={v => changeLocked(row, !!v)} />
+                            )}
+                        </ElTableColumn>
+                    )}
+                </ElTableColumn>
+                <ElTableColumn
+                    label={t(msg => msg.button.operation)}
+                    width={ACTION_WIDTH[locale]}
+                    align="center"
+                    fixed="right"
+                    v-slots={({ row }: RenderRowData<tt4b.limit.Item>) => <>
+                        <ElButton type="danger" size="small" icon={Delete} onClick={() => remove(row)} link>
+                            {t(msg => msg.button.delete)}
+                        </ElButton>
+                        <ElButton type="primary" size="small" icon={Edit} onClick={() => modify(row)} link>
+                            {t(msg => msg.button.modify)}
+                        </ElButton>
+                    </>}
+                />
+            </ElTable>
+        </ContentCard>
     )
 })
 

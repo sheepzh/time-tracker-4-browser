@@ -12,20 +12,15 @@ type _RemoteCompositionMap = Record<'_' | string, tt4b.stat.RemoteCompositionVal
 function mergeComposition(c1: tt4b.stat.RemoteComposition | undefined, c2: tt4b.stat.RemoteComposition | undefined): tt4b.stat.RemoteComposition {
     const focusMap: _RemoteCompositionMap = {}
     const timeMap: _RemoteCompositionMap = {}
-    const runMap: _RemoteCompositionMap = {}
     c1?.focus?.forEach(e => accCompositionValue(focusMap, e))
     c2?.focus?.forEach(e => accCompositionValue(focusMap, e))
     c1?.time?.forEach(e => accCompositionValue(timeMap, e))
     c2?.time?.forEach(e => accCompositionValue(timeMap, e))
-    c1?.run?.forEach(e => accCompositionValue(runMap, e))
-    c2?.run?.forEach(e => accCompositionValue(runMap, e))
 
-    const result = {
+    return {
         focus: Object.values(focusMap),
         time: Object.values(timeMap),
-        run: Object.values(runMap),
     }
-    return result
 }
 
 function accCompositionValue(map: _RemoteCompositionMap, value: tt4b.stat.RemoteCompositionVal) {
@@ -49,9 +44,11 @@ function accCompositionValue(map: _RemoteCompositionMap, value: tt4b.stat.Remote
 }
 
 export function mergeResult(target: tt4b.stat.Row, delta: tt4b.stat.Row) {
-    const { focus, time } = delta
+    const { focus, time, run, media } = delta
     target.focus += focus ?? 0
     target.time += time ?? 0
+    target.run = (target.run ?? 0) + (run ?? 0)
+    target.media = (target.media ?? 0) + (media ?? 0)
     if (!isGroup(target) && !isGroup(delta)) {
         target.composition = mergeComposition(target.composition, delta.composition)
     }

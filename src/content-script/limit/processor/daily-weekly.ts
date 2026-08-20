@@ -23,7 +23,7 @@ class DailyWeeklyProcessor implements Processor {
 
     async onTimeMeet(items: tt4b.limit.Item[]): Promise<void> {
         if (!items.length) return
-        if (this.location.whitelisted) return
+        if (this.location.isWhite) return
 
         items.filter(({ cond }) => matches(cond, this.location.url))
             .flatMap(item => cvtItem2AddReason(item, this.delayDuration))
@@ -37,7 +37,7 @@ class DailyWeeklyProcessor implements Processor {
 
     async reset(): Promise<void> {
         this.state.removeByType('DAILY', 'WEEKLY')
-        if (this.location.whitelisted) return
+        if (this.location.isWhite) return
 
         const limitedRules = await trySendMsg2Runtime('limit.list', {
             limited: true, effective: true,

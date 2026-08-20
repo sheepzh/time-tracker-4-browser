@@ -13,10 +13,6 @@ export type OptionMessage = {
     off: string
     appearance: {
         title: string
-        // whitelist
-        displayWhitelist: string
-        whitelistItem: string
-        contextMenu: string
         displayBadge: string
         badgeBgColor: string
         locale: string

@@ -6,9 +6,6 @@
         "off": "始终关闭",
         "appearance": {
             "title": "外观",
-            "displayWhitelist": "{input}  是否在 {contextMenu} 里，显示 {whitelist} 相关功能",
-            "whitelistItem": "白名单",
-            "contextMenu": "浏览器的右键菜单",
             "displayBadge": "{input} 是否在扩展图标上显示文本",
             "badgeBgColor": "图标上文本的背景色 {input}",
             "locale": "语言设置 {input}",
@@ -146,9 +143,6 @@
         "off": "始終關閉",
         "appearance": {
             "title": "外觀設定",
-            "displayWhitelist": "{input} 是否在 {contextMenu} 顯示 {whitelist} 功能",
-            "whitelistItem": "白名單",
-            "contextMenu": "右鍵選單",
             "badgeBgColor": "圖示文字背景色 {input}",
             "locale": "語言設定 {input}",
             "printInConsole": {
@@ -276,9 +270,6 @@
         "off": "Always off",
         "appearance": {
             "title": "Appearance",
-            "displayWhitelist": "{input}  Whether to display {whitelist} in {contextMenu}",
-            "whitelistItem": "whitelist related shortcuts",
-            "contextMenu": "the context menu",
             "displayBadge": "{input} Whether to display badge on the icon",
             "badgeBgColor": "The background color of the text on the icon {input}",
             "locale": "Language {input}",
@@ -418,9 +409,6 @@
         "off": "常にオフ",
         "appearance": {
             "title": "外観",
-            "displayWhitelist": "{input}  {contextMenu} に {whitelist} を表示するかどうか",
-            "whitelistItem": "ホワイトリストのショートカット",
-            "contextMenu": "コンテキストメニュー",
             "badgeBgColor": "アイコン上のテキストの背景色 {input}",
             "locale": "言語設定 {input}",
             "printInConsole": {
@@ -541,9 +529,6 @@
         "off": "Sempre inativo",
         "appearance": {
             "title": "Aparência",
-            "displayWhitelist": "{input} Mostrar {whitelist} no {contextMenu}",
-            "whitelistItem": "atalhos da lista branca",
-            "contextMenu": "menu de contexto",
             "badgeBgColor": "Cor de fundo do texto no ícone {input}",
             "locale": "Idioma {input}",
             "printInConsole": {
@@ -653,9 +638,6 @@
         "off": "Завжди вимкнено",
         "appearance": {
             "title": "Зовнішній вигляд",
-            "displayWhitelist": "{input}  Показувати {whitelist} в {contextMenu}",
-            "whitelistItem": "комбінації клавіш для білого списку",
-            "contextMenu": "контекстному меню",
             "badgeBgColor": "Колір заднього плану тексту піктограми {input}",
             "locale": "Мова: {input}",
             "printInConsole": {
@@ -763,9 +745,6 @@
         "off": "Siempre apagado",
         "appearance": {
             "title": "Apariencia",
-            "displayWhitelist": "{input}  Mostrar {whitelist} en {contextMenu}",
-            "whitelistItem": "atajos relacionados con la lista blanca",
-            "contextMenu": "el menú de contexto",
             "badgeBgColor": "El color de fondo del texto en el icono {input}",
             "locale": "Idioma {input}",
             "printInConsole": {
@@ -873,9 +852,6 @@
         "off": "Immer aus",
         "appearance": {
             "title": "Aussehen",
-            "displayWhitelist": "{input} {whitelist} in {contextMenu} anzeigen",
-            "whitelistItem": "verwandte Whitelist Verknüpfungen",
-            "contextMenu": "Kontextmenü",
             "badgeBgColor": "Die Hintergrundfarbe des Textes auf dem Symbol {input}",
             "locale": "Sprache {input}",
             "printInConsole": {
@@ -1008,9 +984,6 @@
         "off": "Toujours éteint",
         "appearance": {
             "title": "Apparence",
-            "displayWhitelist": "{input} S'il faut afficher les {whitelist} dans {contextMenu}",
-            "whitelistItem": "raccourcis liés à la liste blanche",
-            "contextMenu": "le menu contextuel",
             "displayBadge": "{input} Afficher ou non le badge sur l'icône",
             "badgeBgColor": "La couleur de fond du texte sur l'icône {input}",
             "locale": "Langue {input}",
@@ -1147,9 +1120,6 @@
         "off": "Всегда выключен",
         "appearance": {
             "title": "Появление",
-            "displayWhitelist": "{input} Отображать ли {whitelist} в {contextMenu}",
-            "whitelistItem": "список связанных ярлыков",
-            "contextMenu": "контекстное меню",
             "badgeBgColor": "Цвет фона текста на иконке {input}",
             "locale": "Язык {input}",
             "printInConsole": {
@@ -1275,9 +1245,6 @@
         "off": "إيقاف دائم",
         "appearance": {
             "title": "المظهر",
-            "displayWhitelist": "{input} هل يتم عرض {whitelist} في {contextMenu}",
-            "whitelistItem": "اختصارات القائمة البيضاء",
-            "contextMenu": "قائمة السياق",
             "badgeBgColor": "لون خلفية المؤقت المتواجد على الأيقونة {input}",
             "locale": "اللغة {input}",
             "printInConsole": {
@@ -1385,9 +1352,6 @@
         "off": "Her zaman kapalı",
         "appearance": {
             "title": "Görünüm",
-            "displayWhitelist": "{input}  {contextMenu} içinde {whitelist} gösterilip gösterilmeyeceğini seçin",
-            "whitelistItem": "beyaz liste ile ilgili kısayollar",
-            "contextMenu": "içerik menüsü",
             "badgeBgColor": "Simge üzerindeki metnin arka plan rengi {input}",
             "locale": "Dil {input}",
             "printInConsole": {
@@ -1515,9 +1479,6 @@
         "off": "Zawsze wyłączone",
         "appearance": {
             "title": "Wygląd",
-            "displayWhitelist": "{input} Wyświetlanie {whitelist} w {contextMenu}",
-            "whitelistItem": "skrótów związanych z whitelistą",
-            "contextMenu": "menu kontekstowym",
             "displayBadge": "{input} Wyświetlaj plakietkę na ikonie",
             "badgeBgColor": "Kolor tła tekstu na ikonie paska rozszerzeń {input}",
             "locale": "Język {input}",
@@ -1655,9 +1616,6 @@
         "off": "Sempre spento",
         "appearance": {
             "title": "Apparenza",
-            "displayWhitelist": "{input}  Se visualizzare {whitelist} in {contextMenu}",
-            "whitelistItem": "scorciatoie correlate alla whitelist",
-            "contextMenu": "il menu contestuale",
             "badgeBgColor": "Il colore di sfondo del testo sull'icona {input}",
             "locale": "Linguaggio {input}",
             "printInConsole": {

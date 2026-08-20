@@ -6,7 +6,7 @@ import type { PauseDetector } from './types'
 const INTERVAL = 1000
 
 type NormalTrackerOption = {
-    onReport: (ev: tt4b.core.Event) => Promise<void>
+    onReport: (ev: tt4b.core.Event) => Awaitable<void>
     onResume?: NoArgCallback
     onPause?: NoArgCallback
 }
@@ -30,7 +30,7 @@ export default class NormalTracker {
     init(dispatcher: Dispatcher, ...pauseDetectors: PauseDetector[]) {
         const idle = new IdleDetector()
         const docVisible = new DocVisibleDetector()
-        dispatcher.registerAudibleChange(idle)
+        dispatcher.register('syncAudible', val => idle.onAudibleChange(val))
         this.#detectors.push(...pauseDetectors, idle, docVisible)
         this.#detectors.forEach(d => d.onPauseChange(() => this.#reconcile()))
 

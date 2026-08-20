@@ -6,7 +6,6 @@
  */
 
 export const DEFAULT_APPEARANCE: tt4b.option.AppearanceRequired = {
-    displayWhitelistMenu: false,
     // Change false to true @since 0.8.4
     displayBadgeText: true,
     locale: "default",

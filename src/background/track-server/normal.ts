@@ -5,8 +5,8 @@ import {
     addFocusTime as addItemFocusTime, increaseVisit as increaseItemVisit, type ItemIncContext,
 } from "@service/item-service"
 import { addLimitFocusTime, incLimitVisit } from '@service/limit-service'
+import siteHolder from '@service/site-service/holder'
 import periodThrottler from '@service/throttler/period-throttler'
-import whitelistHolder from "@service/whitelist/holder"
 import { IS_ANDROID } from "@util/constant/environment"
 import { extractHostname } from "@util/pattern"
 import badgeManager from "../badge-manager"
@@ -43,7 +43,7 @@ export async function handleTrackTimeEvent(event: tt4b.core.Event, tab: ChromeTa
     const { countLocalFiles } = await optionHolder.get()
     if (protocol === "file" && !countLocalFiles) return
 
-    if (whitelistHolder.contains(host, url)) return
+    if (siteHolder.isWhitelist(host, url)) return
 
     await handleTime({ host, url, groupId }, [start, end], tabId)
     if (tabId) {

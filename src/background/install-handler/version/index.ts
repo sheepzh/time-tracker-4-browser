@@ -9,6 +9,7 @@ import { getVersion } from "@api/chrome/runtime"
 import CateInitializer from "./cate-initializer"
 import HostMergeInitializer from "./host-merge-initializer"
 import LocalFileInitializer from "./local-file-initializer"
+import SiteMigrator from './site-migrator'
 import type { Migrator } from "./types"
 import WhitelistInitializer from "./whitelist-initializer"
 
@@ -26,6 +27,7 @@ class VersionManager {
             new LocalFileInitializer(),
             new WhitelistInitializer(),
             new CateInitializer(),
+            new SiteMigrator(),
         )
     }
 

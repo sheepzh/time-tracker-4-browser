@@ -20,10 +20,9 @@ const generateHostReg = (host: string): RegExp => RegExp(`^\\d{8}${escapeRegExp(
 const generateGroupKey = (groupId: number, date: Date | string) => formatDateStr(date) + cvtGroupId2Host(groupId)
 const generateGroupReg = (groupId: number): RegExp => RegExp(`^\\d{8}${escapeRegExp(cvtGroupId2Host(groupId))}$`)
 
-const isPartialResult = createObjectGuard<Partial<tt4b.core.Result>>({
+const isPartialResult = createObjectGuard<Partial<Record<tt4b.core.Dimension, number>>>({
     focus: isOptionalInt,
     time: isOptionalInt,
-    run: isOptionalInt,
 })
 
 function filterRow({ host, date }: tt4b.core.Row, condition: ProcessedCondition): boolean {
@@ -117,9 +116,8 @@ export class ClassicStatDatabase extends BaseDatabase implements StatDatabase {
             } else if (host.startsWith(GROUP_PREFIX)) {
                 return
             }
-            const { focus, time, run } = value as tt4b.core.Result
-            const row: tt4b.core.Row = { host, date, focus, time }
-            run !== undefined && (row.run = run)
+            const { focus, time, run, media } = value as tt4b.core.Result
+            const row: tt4b.core.Row = { host, date, focus, time, run, media }
             filterRow(row, cond) && result.push(row)
         })
         return result
@@ -185,10 +183,9 @@ export class ClassicStatDatabase extends BaseDatabase implements StatDatabase {
      * @since 1.4.3
      */
     forceUpdate(...rows: tt4b.core.Row[]): Promise<void> {
-        const toSet = Object.fromEntries(rows.map(({ host, date, time, focus, run }) => {
+        const toSet = Object.fromEntries(rows.map(({ host, date, time, focus, run, media }) => {
             const key = generateKey(host, date)
-            const result: tt4b.core.Result = { time, focus }
-            run && (result.run = run)
+            const result: tt4b.core.Result = { time, focus, run, media }
             return [key, result]
         }))
 
@@ -196,10 +193,9 @@ export class ClassicStatDatabase extends BaseDatabase implements StatDatabase {
     }
 
     forceUpdateGroup(...rows: tt4b.core.Row[]): Promise<void> {
-        const toSet = Object.fromEntries(rows.map(({ host, date, time, focus, run }) => {
+        const toSet = Object.fromEntries(rows.map(({ host, date, time, focus, run, media }) => {
             const key = generateGroupKey(Number(host), date)
-            const result: tt4b.core.Result = { time, focus }
-            run && (result.run = run)
+            const result: tt4b.core.Result = { time, focus, run, media }
             return [key, result]
         }))
 

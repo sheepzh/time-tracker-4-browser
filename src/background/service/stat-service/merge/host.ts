@@ -24,7 +24,7 @@ export async function mergeHost(origin: tt4b.stat.SiteRow[]): Promise<tt4b.stat.
                 focus: 0,
                 time: 0,
                 mergedRows: [],
-                composition: { focus: [], time: [], run: [] },
+                composition: { focus: [], time: [] },
             } satisfies tt4b.stat.Row
         }
         mergeResult(exist, ele)

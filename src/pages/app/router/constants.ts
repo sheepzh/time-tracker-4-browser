@@ -13,7 +13,6 @@ export {
 } from "@/shared/route"
 
 export const DASHBOARD_ROUTE = '/tracking/dashboard'
-export const RULE_ROUTE = '/tracking/rule'
 
 export const HABIT_ANALYSIS_ROUTE = '/analysis/habit'
 
