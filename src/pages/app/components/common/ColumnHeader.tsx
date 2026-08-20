@@ -5,17 +5,17 @@ import { FunctionalComponent } from 'vue'
 
 type Props = {
     label: string
-    tooltipContent?: string
+    tooltip?: string
 }
 
-const ColumnHeader: FunctionalComponent<Props> = ({ label, tooltipContent }, { slots }) => (
+const ColumnHeader: FunctionalComponent<Props> = ({ label, tooltip }, { slots }) => (
     <Flex justify="center" align="center" gap={4}>
         <span>{label}</span>
         <ElTooltip
-            content={tooltipContent}
+            content={tooltip}
             placement="top"
             v-slots={{
-                content: slots.tooltipContent,
+                content: slots.tooltip,
                 default: () => (
                     <Flex height='100%'>
                         <ElIcon>

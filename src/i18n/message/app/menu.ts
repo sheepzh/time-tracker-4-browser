@@ -11,7 +11,6 @@ export type MenuMessage = {
     tracking: string
     dashboard: string
     record: string
-    rule: string
     analysis: string
     siteAnalysis: string
     habit: string

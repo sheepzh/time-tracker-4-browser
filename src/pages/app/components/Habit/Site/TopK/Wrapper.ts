@@ -65,7 +65,7 @@ function mergeDate(origin: tt4b.stat.Row[]): tt4b.stat.Row[] {
             time: 0,
             mergedRows: [],
             mergedDates: [],
-            composition: { focus: [], time: [], run: [] },
+            composition: { focus: [], time: [] },
         })
         exist.focus += focus ?? 0
         exist.time += time ?? 0

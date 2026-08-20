@@ -39,7 +39,7 @@ const NAMESPACE = 'popup_site'
 
 export const initSiteContext = () => {
     const tab = localRef<SiteTab>(`${NAMESPACE}-tab`, isSiteTab, 'calendar')
-    const { data, loading, refresh } = useRequest(getCurrentSite)
+    const { data, loading, refresh } = useRequest(() => getCurrentSite())
     const url = computed(() => data.value?.url)
     const trackable = computed(() => !loading.value && !!url.value && !isNotTrackable(url.value))
     const { site, sites } = initSite(data)

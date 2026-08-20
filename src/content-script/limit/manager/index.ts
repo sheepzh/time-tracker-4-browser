@@ -34,8 +34,7 @@ class ModalManager {
 
     constructor(private location: LocationWatcher) {
         this.#bridge = new ModalBridge(MSG_ORIGIN, () => this.#iframe?.contentWindow ?? undefined)
-
-        location.onChange(({ nextUrl }) => this.#notify('url', nextUrl))
+        location.onCurrChange(() => this.#notify('url', location.url))
     }
 
     init(state: LimitState, delayCoord: DelayCoordinator, visitProcessor: VisitProcessor) {

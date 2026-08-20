@@ -26,8 +26,8 @@ import { getInstallTime, getLastBackUp } from "./service/meta-service"
 import notificationProcessor from './service/notification/processor'
 import { selectPeriods } from "./service/period-service"
 import {
-    addSite, batchChangeCate, detectSites, fillInitialAlias, getCurrentSite, getInitialAlias, getSite, removeSites,
-    saveSite, saveSiteRunState, selectSitePage,
+    addSite, batchChangeCate, detectSites, fillInitialAlias, getCurrentSite, getInitialAlias, removeSites, saveSite,
+    selectSitePage,
 } from "./service/site-service"
 import {
     batchDelete, countGroup, countSite, selectCate, selectCatePage, selectGroup, selectGroupPage, selectSite,
@@ -35,7 +35,6 @@ import {
 } from "./service/stat-service"
 import timelineThrottler from './service/throttler/timeline-throttler'
 import { listTimeline } from "./service/timeline-service"
-import whitelistHolder from './service/whitelist/holder'
 
 function processParam(param: unknown): unknown {
     if (param === null || param === undefined) {
@@ -91,8 +90,6 @@ class MessageDispatcher {
             .register('site.modify', param => saveSite(param, true))
             .register('site.fillAlias', fillInitialAlias)
             .register('site.initialAlias', getInitialAlias)
-            .register('site.changeRun', ({ key, enabled }) => saveSiteRunState(key, enabled))
-            .register('site.runEnabled', host => getSite({ host, type: 'normal' }).then(s => !!s.run))
             .register('site.detect', detectSites)
             // Options
             .register('option.get', () => optionHolder.get())
@@ -114,12 +111,6 @@ class MessageDispatcher {
             .register('meta.prepare2fa', prepare2fa)
             .register('meta.check2fa', check2faCode)
             .register('meta.popup', saveLastPopup)
-            // Whitelist & Merge Rule
-            .register('whitelist.contain', ({ host, url }) => whitelistHolder.contains(host, url))
-            .register('whitelist.all', () => whitelistHolder.all())
-            .register('whitelist.add', white => whitelistHolder.add(white))
-            .register('whitelist.delete', white => whitelistHolder.remove(white))
-            .register('whitelist.save', list => whitelistHolder.saveAll(list))
             // Merge rule
             .register('merge.all', () => mergeRuleDatabase.selectAll())
             .register('merge.delete', origin => mergeRuleDatabase.remove(origin))

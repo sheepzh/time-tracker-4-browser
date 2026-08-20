@@ -25,7 +25,6 @@ export type RecordMessage = {
             percentage: string
         }
     }
-    noMore: string
 }
 
 const _default: Messages<RecordMessage> = resource

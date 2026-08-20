@@ -1,7 +1,5 @@
 import { zeroResult, zeroRow } from '@db/stat-database/common'
 import { IDBStatDatabase } from '@db/stat-database/idb'
-import 'fake-indexeddb/auto'
-import { mockRuntime } from '../../../__mock__/runtime'
 
 const GOOGLE = 'www.google.com'
 const GITHUB = 'www.github.com'
@@ -14,7 +12,6 @@ let db: IDBStatDatabase
 
 describe('stat-database/idb', () => {
     beforeAll(async () => {
-        mockRuntime()
         db = new IDBStatDatabase()
         await db.upgrade()
     })
@@ -72,6 +69,14 @@ describe('stat-database/idb', () => {
         await db.batchAccumulate({ [GOOGLE]: { focus: 0, time: 1 } }, '20240602')
 
         expect(await db.get(GOOGLE, '20240602')).toEqual({ host: GOOGLE, date: '20240602', focus: 1, time: 1 } satisfies tt4b.core.Row)
+    })
+
+    test('accumulate merges run and media', async () => {
+        await db.accumulate(GITHUB, '20240604', { focus: 0, time: 0, run: 2, media: 3 })
+        await db.accumulate(GITHUB, '20240604', { focus: 0, time: 0, run: 5, media: 7 })
+
+        expect(await db.get(GITHUB, '20240604'))
+            .toEqual({ host: GITHUB, date: '20240604', focus: 0, time: 0, run: 7, media: 10 } satisfies tt4b.core.Row)
     })
 
     test('multiple indexes', async () => {

@@ -19,7 +19,6 @@ export async function processRemote(origin: tt4b.stat.SiteRow[], param?: StatCon
         composition: {
             focus: [row.focus],
             time: [row.time],
-            run: row.run ? [row.run] : [],
         }
     })
     // Predicate with host
@@ -52,11 +51,7 @@ function processRemoteRow(rowMap: Record<string, MakeRequired<tt4b.stat.SiteRow,
         siteKey: row.siteKey,
         time: 0,
         focus: 0,
-        composition: {
-            focus: [],
-            time: [],
-            run: [],
-        },
+        composition: { focus: [], time: [] },
     } satisfies MakeRequired<tt4b.stat.SiteRow, 'composition'>)
 
     const { focus = 0, time = 0, run = 0, cid = '', cname } = row
@@ -66,5 +61,4 @@ function processRemoteRow(rowMap: Record<string, MakeRequired<tt4b.stat.SiteRow,
     run && (exist.run = run)
     focus && exist.composition.focus.push({ cid, cname, value: focus })
     time && exist.composition.time.push({ cid, cname, value: time })
-    run && exist.composition.run.push({ cid, cname, value: run })
 }

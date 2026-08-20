@@ -25,7 +25,6 @@ import limitMessages, { type LimitMessage } from "./limit"
 import menuMessages, { type MenuMessage } from "./menu"
 import optionMessages, { type OptionMessage } from "./option"
 import recordMessages, { type RecordMessage } from "./record"
-import ruleMessages, { type RuleMessage } from "./rule"
 import siteManageManages, { type SiteManageMessage } from "./site-manage"
 import timeFormatMessages, { type TimeFormatMessage } from "./time-format"
 
@@ -35,7 +34,6 @@ export type AppMessage = {
     item: ItemMessage
     shared: SharedMessage
     record: RecordMessage
-    rule: RuleMessage
     option: OptionMessage
     analysis: AnalysisMessage
     menu: MenuMessage
@@ -60,7 +58,6 @@ const MESSAGE_ROOT: MessageRoot<AppMessage> = {
     item: itemMessages,
     shared: sharedMessages,
     record: recordMessages,
-    rule: ruleMessages,
     option: optionMessages,
     analysis: analysisMessages,
     menu: menuMessages,

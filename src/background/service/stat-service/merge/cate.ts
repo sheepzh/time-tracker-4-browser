@@ -16,7 +16,7 @@ export function mergeCate(origin: tt4b.stat.SiteRow[], cates: tt4b.site.Cate[]):
                 focus: 0,
                 time: 0,
                 mergedRows: [],
-                composition: { focus: [], time: [], run: [] },
+                composition: { focus: [], time: [] },
             } satisfies tt4b.stat.CateRow
         }
         mergeResult(exist, ele)

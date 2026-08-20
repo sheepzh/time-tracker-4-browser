@@ -7,7 +7,6 @@
         "run": "运行时长",
         "time": "访问次数",
         "operation": {
-            "add2Whitelist": "白名单",
             "analysis": "分析",
             "deleteConfirmMsgAll": "将删除 {url} 的所有访问记录",
             "deleteConfirmMsgRange": "将删除 {url} 在 {start} 至 {end} 期间的访问记录",
@@ -22,7 +21,6 @@
         "run": "執行時間",
         "time": "造訪次數",
         "operation": {
-            "add2Whitelist": "白名單",
             "analysis": "分析",
             "deleteConfirmMsgAll": "將刪除 {url} 的所有瀏覽紀錄",
             "deleteConfirmMsgRange": "將刪除 {url} 在 {start} 至 {end} 期間的瀏覽紀錄",
@@ -35,9 +33,9 @@
         "group": "Tab Group",
         "focus": "Duration",
         "run": "Run Time",
+        "media": "Media Time",
         "time": "Visits",
         "operation": {
-            "add2Whitelist": "Whitelist",
             "analysis": "Analyze",
             "deleteConfirmMsgAll": "All visit records for [{url}] will be deleted",
             "deleteConfirmMsgRange": "Visit records for [{url}] between {start} and {end} will be deleted",
@@ -52,7 +50,6 @@
         "run": "実行時間",
         "time": "訪問回数",
         "operation": {
-            "add2Whitelist": "ホワイトリストに追加",
             "analysis": "分析",
             "deleteConfirmMsgAll": "{url} の全ての訪問記録を削除します",
             "deleteConfirmMsgRange": "{url} の {start} から {end} までの訪問記録を削除します",
@@ -67,7 +64,6 @@
         "run": "Tempo de Execução",
         "time": "Visitas",
         "operation": {
-            "add2Whitelist": "Lista de Permissões",
             "analysis": "Analisar",
             "deleteConfirmMsgAll": "Todos os registos de visitas de {url} serão eliminados",
             "deleteConfirmMsgRange": "Os registos de visitas de {url} entre {start} e {end} serão eliminados",
@@ -82,7 +78,6 @@
         "run": "Час роботи",
         "time": "Відвідування сайту",
         "operation": {
-            "add2Whitelist": "Білий список",
             "analysis": "Аналіз",
             "deleteConfirmMsgAll": "Усі записи для {url} будуть видалені!",
             "deleteConfirmMsgRange": "Усі записи для {url} між {start} і {end} будуть видалені!",
@@ -97,7 +92,6 @@
         "run": "Tiempo de ejecución",
         "time": "Visitas",
         "operation": {
-            "add2Whitelist": "Lista blanca",
             "analysis": "Analizar",
             "deleteConfirmMsgAll": "Se eliminarán todos los registros de {url}",
             "deleteConfirmMsgRange": "Se eliminarán los registros de {url} entre {start} y {end}",
@@ -112,7 +106,6 @@
         "run": "Laufzeit",
         "time": "Besuche",
         "operation": {
-            "add2Whitelist": "Whitelist",
             "analysis": "Analyse",
             "deleteConfirmMsgAll": "Alle Datensätze von {url} werden gelöscht",
             "deleteConfirmMsgRange": "Alle Einträge von {url} zwischen {start} und {end} werden gelöscht",
@@ -127,7 +120,6 @@
         "run": "Durée d'exécution",
         "time": "Visites",
         "operation": {
-            "add2Whitelist": "Liste blanche",
             "analysis": "Analyser",
             "deleteConfirmMsgAll": "Tous les enregistrements de {url} seront supprimés",
             "deleteConfirmMsgRange": "Les enregistrements de {url} entre {start} et {end} seront supprimés",
@@ -142,7 +134,6 @@
         "run": "Время работы",
         "time": "Визиты",
         "operation": {
-            "add2Whitelist": "Белый список",
             "analysis": "Анализ",
             "deleteConfirmMsgAll": "Все записи {url} будут удалены",
             "deleteConfirmMsgRange": "Записи {url} с {start} по {end} будут удалены",
@@ -157,7 +148,6 @@
         "run": "وقت التشغيل",
         "time": "الزيارات",
         "operation": {
-            "add2Whitelist": "القائمة البيضاء",
             "analysis": "تحليل",
             "deleteConfirmMsgAll": "سيتم حذف جميع سجلات {url}",
             "deleteConfirmMsgRange": "سيتم حذف سجلات {url} بين {start} و{end}",
@@ -172,7 +162,6 @@
         "run": "Çalışma Süresi",
         "time": "Ziyaretler",
         "operation": {
-            "add2Whitelist": "Beyaz Liste",
             "analysis": "Analiz et",
             "deleteConfirmMsgAll": "[{url}] adresine ait tüm ziyaret kayıtları silinecektir",
             "deleteConfirmMsgRange": "{start} ile {end} arasındaki [{url}] ziyaret kayıtları silinecektir",
@@ -187,7 +176,6 @@
         "run": "Czas pracy",
         "time": "Liczba wizyt",
         "operation": {
-            "add2Whitelist": "Whitelista",
             "analysis": "Analizuj",
             "deleteConfirmMsgAll": "Wszystkie wpisy wizyt dla [{url}] zostaną usunięte",
             "deleteConfirmMsgRange": "Sprawdź wpisy dla [{url}] pomiędzy {start} a {end} zostaną usunięte",
@@ -202,7 +190,6 @@
         "run": "Tempo Di Esecuzione",
         "time": "Visite",
         "operation": {
-            "add2Whitelist": "Whitelist",
             "analysis": "Analizza",
             "deleteConfirmMsgAll": "Tutti i record di visita per [{url}] verranno eliminati",
             "deleteConfirmMsgRange": "Record di visite per [{url}] tra {start} ed {end} saranno eliminati",

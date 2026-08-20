@@ -22,13 +22,3 @@ export async function createContextMenu(props: ChromeContextMenuCreateProps): Pr
         resolve()
     }))
 }
-
-export async function updateContextMenu(menuId: string, props: ChromeContextMenuUpdateProps): Promise<void> {
-    if (IS_ANDROID) {
-        return
-    }
-    return new Promise(resolve => chrome.contextMenus?.update?.(menuId, props, () => {
-        handleError('updateContextMenu')
-        resolve()
-    }))
-}

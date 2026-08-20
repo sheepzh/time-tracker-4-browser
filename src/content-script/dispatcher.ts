@@ -5,13 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 
-import type { AudibleChangeHandler } from './types'
-
 type Handler<Code extends tt4b.tab.ReqCode> = (data: tt4b.tab.ReqData<Code>) => tt4b.tab.ResData<Code>
 
 class Dispatcher {
-    private handlers: Partial<Record<tt4b.tab.ReqCode, Handler<tt4b.tab.ReqCode>>> = {}
-    private audibleChangeHandlers: AudibleChangeHandler[] = []
+    #handlers = new Map<tt4b.tab.ReqCode, Handler<tt4b.tab.ReqCode>[]>()
 
     constructor() {
         // Be careful!!!
@@ -28,17 +25,12 @@ class Dispatcher {
             // @see https://github.com/mozilla/webextension-polyfill/issues/130
             return true
         })
-
-        this.register('syncAudible', audible => void this.audibleChangeHandlers.forEach(h => h.onAudibleChange(audible)))
     }
 
     register<Code extends tt4b.tab.ReqCode>(code: Code, handler: Handler<Code>): Dispatcher {
-        this.handlers[code] = handler
-        return this
-    }
-
-    registerAudibleChange(handler: AudibleChangeHandler): Dispatcher {
-        this.audibleChangeHandlers.push(handler)
+        const handlers = this.#handlers.get(code) ?? []
+        this.#handlers.set(code, handlers)
+        !handlers.includes(handler) && handlers.push(handler)
         return this
     }
 
@@ -47,11 +39,11 @@ class Dispatcher {
         if (!code) {
             return { code: 'ignore' }
         }
-        const handler = this.handlers[code]
-        if (!handler) return { code: 'ignore' }
+        const handlers = this.#handlers.get(code)
+        if (!handlers?.length) return { code: 'ignore' }
         try {
-            const res = handler(message.data as tt4b.tab.ReqData<tt4b.tab.ReqCode>)
-            return { code: "success", data: res as tt4b.tab.ResData<typeof code> }
+            const results = handlers.map(h => h(message.data))
+            return { code: "success", data: results[0] }
         } catch (error) {
             const msg = error instanceof Error ? error.message : (error?.toString?.() ?? 'Unknown error')
             return { code: 'fail', msg }

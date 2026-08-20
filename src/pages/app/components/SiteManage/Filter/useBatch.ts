@@ -4,21 +4,23 @@ import { WarnTriangleFilled } from '@element-plus/icons-vue'
 import { useOperation, useSwitch } from '@hooks'
 import { supportCategory } from '@util/site'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { computed, markRaw, ref } from 'vue'
-import { useSiteManageTable } from '../context'
+import { markRaw, ref } from 'vue'
+import { useSiteManage } from '../context'
 
 export const useBatch = () => {
-    const { refresh, selected } = useSiteManageTable()
-
-    const supported = computed(() => selected.value.filter(supportCategory))
+    const { comp } = useSiteManage()
+    const getSelected = () => comp.value?.getSelected() ?? []
+    const refresh = () => comp.value?.refresh()
     const [selectVisible, openSelect, closeSelect] = useSwitch(false)
     const targetCate = ref<number>()
 
     const batchChange = () => {
-        if (!selected.value.length) {
+        const selected = getSelected()
+        if (!selected.length) {
             return ElMessage.info("No site selected")
         }
-        if (!supported.value.length) {
+        const supported = selected.filter(supportCategory)
+        if (!supported.length) {
             return ElMessage.info("Selected sites don't support category")
         }
         targetCate.value = undefined
@@ -28,8 +30,8 @@ export const useBatch = () => {
     const onCateChangeConfirm = useOperation(async () => {
         const cateId = targetCate.value
         if (!cateId) throw "Category not selected"
-
-        await changeSitesCate(cateId, ...supported.value)
+        const supported = getSelected().filter(supportCategory)
+        await changeSitesCate(cateId, ...supported)
     }, {
         onSuccess: () => {
             closeSelect()
@@ -38,7 +40,8 @@ export const useBatch = () => {
     })
 
     const batchDisassociate = useOperation(async () => {
-        if (!selected.value.length) throw "No site selected"
+        const selected = getSelected()
+        if (!selected.length) throw "No site selected"
         await ElMessageBox.confirm(
             t(msg => msg.siteManage.msg.disassociatedMsg),
             {
@@ -47,12 +50,13 @@ export const useBatch = () => {
                 closeOnClickModal: true,
             }
         )
-        const need2Clear = supported.value.filter(s => s.cate)
+        const supported = selected.filter(supportCategory)
+        const need2Clear = supported.filter(s => s.cate)
         need2Clear.length && await changeSitesCate(undefined, ...need2Clear)
     }, { onSuccess: refresh })
 
     const batchDelete = useOperation(async () => {
-        const list = selected.value
+        const list = getSelected()
         if (!list.length) throw "No site selected"
         await ElMessageBox.confirm(
             t(msg => msg.siteManage.msg.batchDeleteMsg),

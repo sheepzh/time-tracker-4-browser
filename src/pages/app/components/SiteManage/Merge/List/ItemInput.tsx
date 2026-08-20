@@ -45,7 +45,7 @@ const _default = defineComponent<Props>(props => {
         if (originVal && isValidHost(originVal)) {
             props.onSave?.(originVal, mergedVal)
         } else {
-            ElMessage.warning(t(msg => msg.rule.merge.errorOrigin))
+            ElMessage.warning(t(msg => msg.siteManage.merge.errorOrigin))
         }
     }
 
@@ -59,7 +59,7 @@ const _default = defineComponent<Props>(props => {
         <Box style={{ marginInlineEnd: props.end ? 'auto' : undefined }}>
             <ElInput
                 modelValue={origin.value}
-                placeholder={t(msg => msg.rule.merge.originPlaceholder)}
+                placeholder={t(msg => msg.siteManage.merge.originPlaceholder)}
                 clearable
                 onClear={() => setOrigin('')}
                 onInput={setOrigin}
@@ -68,7 +68,7 @@ const _default = defineComponent<Props>(props => {
             />
             <ElInput
                 modelValue={mergedTxt.value}
-                placeholder={t(msg => msg.rule.merge.mergedPlaceholder)}
+                placeholder={t(msg => msg.siteManage.merge.mergedPlaceholder)}
                 clearable
                 onClear={() => mergedTxt.value = ''}
                 onInput={val => mergedTxt.value = val}

@@ -9,10 +9,10 @@
 import { type I18nKey } from '@app/locale'
 import {
     ABOUT_ROUTE, DASHBOARD_ROUTE, FOCUS_ROUTE, HABIT_ANALYSIS_ROUTE, HELP_ROUTE, LIMIT_ROUTE, MIGRATION_ROUTE,
-    OPTION_ROUTE, RECORD_ROUTE, RULE_ROUTE, SITE_ANALYSIS_ROUTE, SITE_ROUTE,
+    OPTION_ROUTE, RECORD_ROUTE, SITE_ANALYSIS_ROUTE, SITE_ROUTE,
 } from '@app/router/constants'
 import { Aim, HelpFilled, Memo, SetUp, Stopwatch, Timer } from "@element-plus/icons-vue"
-import { About, Database, Focus, Rule, Table, Trend, Website } from '@pages/icons'
+import { About, Database, Focus, Table, Trend, Website } from '@pages/icons'
 import { getGuidePageUrl } from "@util/constant/url"
 import { type Component } from 'vue'
 
@@ -53,11 +53,6 @@ export const menuGroups = (): MenuGroup[] => [{
         title: msg => msg.base.sites,
         route: SITE_ROUTE,
         icon: Website,
-        mobile: false,
-    }, {
-        title: msg => msg.menu.rule,
-        route: RULE_ROUTE,
-        icon: Rule,
     }]
 }, {
     title: msg => msg.menu.analysis,

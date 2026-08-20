@@ -86,16 +86,16 @@ const Table = defineComponent<{}>(() => {
             </ElTableColumn>
             <ElTableColumn
                 label={t(msg => msg.button.operation)}
-                width={220}
+                width={200}
                 align="center"
             >
                 {({ row }: Scope) => <>
-                    <ElButton size="small" type="primary" onClick={() => modifyInst.value?.modify(row)}>
+                    <ElButton size="small" type="primary" onClick={() => modifyInst.value?.modify(row)} link>
                         {t(msg => msg.button.modify)}
                     </ElButton>
                     <ConfirmButton
                         buttonText={t(msg => msg.button.delete)}
-                        buttonProps={{ size: 'small', type: 'danger', icon: Delete }}
+                        buttonProps={{ size: 'small', type: 'danger', icon: Delete, link: true }}
                         onConfirm={() => remove(row.id)}
                     />
                 </>}

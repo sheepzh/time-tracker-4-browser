@@ -4,7 +4,7 @@ import type MessageDispatcher from "../message-dispatcher"
 import FileTracker from './file-tracker'
 import { initTabGroup } from './group'
 import { handleTrackTimeEvent } from './normal'
-import { handleTrackRunTimeEvent } from './runtime'
+import { handleMediaTime, handleRunTime } from './optional'
 
 export default function initTrackServer(messageDispatcher: MessageDispatcher) {
     messageDispatcher
@@ -14,7 +14,8 @@ export default function initTrackServer(messageDispatcher: MessageDispatcher) {
             if (IS_FIREFOX && url && isFileUrl(url)) return
             await handleTrackTimeEvent(ev, tab)
         })
-        .register('track.runTime', (ev, { url }) => handleTrackRunTimeEvent(ev, url))
+        .register('track.runTime', handleRunTime)
+        .register('track.mediaTime', handleMediaTime)
 
     initTabGroup()
 

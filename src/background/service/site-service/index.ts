@@ -11,57 +11,50 @@ import { ALL_HOSTS as ALL_FILE_HOSTS, MERGED_HOST as MERGED_FILE_HOST } from '@u
 import { extractHostname } from "@util/pattern"
 import { SiteMap, supportCategory } from "@util/site"
 import { toUnicode as punyCode2Unicode } from "punycode"
-import mergeRuleDatabase from '../database/merge-rule-database'
-import statDatabase from '../database/stat-database'
-import { getPslSuffix } from '../psl'
-import CustomizedHostMergeRuler from './components/host-merge-ruler'
-import { slicePageResult } from "./components/page-info"
-import virtualSiteHolder from './components/virtual-site-holder'
+import mergeRuleDatabase from '../../database/merge-rule-database'
+import statDatabase from '../../database/stat-database'
+import { getPslSuffix } from '../../psl'
+import CustomizedHostMergeRuler from '../components/host-merge-ruler'
+import { slicePageResult } from "../components/page-info"
+import siteHolder from './holder'
 
-export async function saveSite(param: tt4b.site.ModifyParam, overwrite: boolean): Promise<void> {
+export async function saveSite(param: tt4b.site.SiteInfo, overwrite: boolean): Promise<void> {
     const exist = await siteDatabase.get(param)
     const alias = overwrite ? param.alias : exist?.alias ?? param.alias
     const iconUrl = param.type === 'normal'
         ? (overwrite ? param.iconUrl : exist?.iconUrl ?? param.iconUrl)
         : undefined
 
-    // Avoid unnecessary chrome.storage writes
-    if (!exist) {
-        if (alias === undefined && iconUrl === undefined) return
-    } else if (exist.alias === alias && exist.iconUrl === iconUrl) {
-        return
-    }
     const toSave = { ...exist, ...param, alias, iconUrl }
     await siteDatabase.save(toSave)
-    virtualSiteHolder.buildWith(toSave)
-}
-
-export async function saveSiteRunState(key: tt4b.site.SiteKey, enabled: boolean) {
-    const exist = await siteDatabase.get(key)
-    if (!exist) return
-    exist.run = enabled
-    await siteDatabase.save(exist)
-    // send msg to tabs
-    const tabs = await listTabs()
-    for (const { id } of tabs) {
-        try {
-            id && await sendMsg2Tab(id, 'siteRunChange')
-        } catch { }
-    }
+    siteHolder.buildWith(toSave)
+    void notifyTabs()
 }
 
 export async function addSite(siteInfo: tt4b.site.SiteInfo): Promise<string | undefined> {
-    if (await siteDatabase.exist(siteInfo)) {
+    if (await siteDatabase.get(siteInfo)) {
         return 'Site already exists'
     }
     if (!supportCategory(siteInfo)) siteInfo.cate = undefined
     await siteDatabase.save(siteInfo)
-    virtualSiteHolder.buildWith(siteInfo)
+    siteHolder.buildWith(siteInfo)
+    void notifyTabs()
+}
+
+async function notifyTabs() {
+    const tabs = await listTabs()
+    for (const tab of tabs) {
+        try {
+            const tabId = tab.id
+            tabId && await sendMsg2Tab(tabId, 'siteChanged')
+        } catch (ignored) { }
+    }
 }
 
 export async function removeSites(keys: tt4b.site.SiteKey[]): Promise<void> {
     await siteDatabase.remove(keys)
-    keys.forEach(key => virtualSiteHolder.onDeleted(key))
+    keys.forEach(key => siteHolder.onDeleted(key))
+    void notifyTabs()
 }
 
 export async function selectSitePage(param?: tt4b.site.PageQuery): Promise<tt4b.common.PageResult<tt4b.site.SiteInfo>> {
@@ -83,8 +76,7 @@ export async function batchChangeCate(cateId: number | undefined, keys: tt4b.sit
  * @since 0.9.0
  */
 export async function getSite(siteKey: tt4b.site.SiteKey): Promise<tt4b.site.SiteInfo> {
-    const info = await siteDatabase.get(siteKey)
-    return info ?? siteKey
+    return await siteDatabase.get(siteKey) ?? siteKey
 }
 
 /**
@@ -171,18 +163,21 @@ async function batchSaveAlias(siteMap: SiteMap<string>): Promise<void> {
     await siteDatabase.save(...toSave)
 }
 
-export async function getCurrentSite(): Promise<tt4b.site.Current | undefined> {
-    const tabs = await listTabs({ currentWindow: true, active: true })
-    const url = tabs[0]?.url
+export async function getCurrentSite(url?: string): Promise<tt4b.site.Current | undefined> {
+    if (!url) {
+        const tabs = await listTabs({ currentWindow: true, active: true })
+        url = tabs[0]?.url
+    }
     if (!url) return undefined
     const { host } = extractHostname(url)
     const normal = await getSite({ host, type: 'normal' })
 
-    const others = virtualSiteHolder.findMatched(url)
+    const others = siteHolder.matchVirtual(url)
     const mergedRules = await mergeRuleDatabase.selectAll()
     const mergeRuler = new CustomizedHostMergeRuler(mergedRules)
     const merged = mergeRuler.merge(host)
     const mergedSite = await getSite({ host: merged, type: 'merged' })
     others.push(mergedSite)
-    return { url, normal, others }
+    const white = siteHolder.isWhitelist(host, url)
+    return { url, normal, others, white }
 }

@@ -13,6 +13,7 @@ import LimitState from './limit/manager/state'
 import LocationWatcher from './location-watcher'
 import printInfo from "./printer"
 import processTimeline from './timeline'
+import MediaTimeTracker from './tracker/media-time'
 import NormalTracker from "./tracker/normal"
 import RunTimeTracker from "./tracker/run-time"
 
@@ -42,25 +43,26 @@ async function main() {
     const dispatcher = new Dispatcher()
     const limitState = new LimitState()
 
+    const location = new LocationWatcher()
+    await location.init(dispatcher)
+
     // Execute in every injection
     const normalTracker = new NormalTracker({
-        onReport: data => trySendMsg2Runtime('track.time', data),
+        onReport: async data => void (!location.isWhite && await trySendMsg2Runtime('track.time', data)),
         onResume: () => trySendMsg2Runtime('cs.trackingPauseChanged', false),
         onPause: () => trySendMsg2Runtime('cs.trackingPauseChanged', true),
     })
     normalTracker.init(dispatcher, limitState)
 
-    const location = new LocationWatcher()
-    await location.init()
-
-    new RunTimeTracker(location).init(dispatcher)
+    new RunTimeTracker(location).init()
+    new MediaTimeTracker(location).init(dispatcher)
 
     // Execute only one time for each dom
     if (getOrSetFlag()) return
 
     void initLocale()
     await processLimit(limitState, location, dispatcher)
-    if (location.whitelisted) return
+    if (location.isWhite) return
 
     void printInfo(location.host)
     processTimeline()

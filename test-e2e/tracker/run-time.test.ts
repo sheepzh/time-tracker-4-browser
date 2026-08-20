@@ -1,7 +1,7 @@
 import { useLaunchContext } from '../common/base'
 import { parseTime2Sec, readRecordsOfFirstPage } from "../common/record"
+import { setSiteOption } from '../common/site'
 import { MOCK_HOST, MOCK_URL, sleep } from '../common/util'
-import { createWhitelist } from "../common/whitelist"
 
 describe('Run time tracking', () => {
     const context = useLaunchContext()
@@ -18,18 +18,6 @@ describe('Run time tracking', () => {
         return latest
     }
 
-    async function clickRunTimeChange(siteHost: string): Promise<void> {
-        const sitePage = await context.openAppPage("/tracking/sites")
-        await sitePage.focus('input[placeholder]')
-        await sitePage.keyboard.type(siteHost)
-        await sitePage.keyboard.press('Enter')
-        await sleep(.1)
-        await sitePage.evaluate(() => {
-            const runTimeSwitch = document.querySelector<HTMLDivElement>('table > tbody > tr > td.el-table_1_column_7 .el-switch')
-            runTimeSwitch?.click()
-        })
-    }
-
     test('Basically track', async () => {
         await context.newPageAndWaitCsInjected(MOCK_URL)
         await sleep(1.5)
@@ -40,7 +28,7 @@ describe('Run time tracking', () => {
 
         // 1. Enable run time tracking
         const enableTs = Date.now()
-        await clickRunTimeChange(MOCK_HOST)
+        await setSiteOption(context, MOCK_HOST, 'run', true)
 
         // 2. Sleep
         const emptyPage = await context.newPage()
@@ -53,15 +41,15 @@ describe('Run time tracking', () => {
         await context.newPageAndWaitCsInjected(MOCK_URL)
         // jump to new page
         await emptyPage.bringToFront()
-        await sleep(1)
+        await sleep(2)
 
         records = await readRecordsOfFirstPage(context)
         const runTime2 = parseTime2Sec(records[0]?.runTime)
-        expect(runTime2).toBeGreaterThanOrEqual(runTime1 + 1)
+        expect(runTime2).toBeGreaterThan(runTime1)
         expect(runTime2).toBeLessThan((Date.now() - enableTs) / 1000)
 
         // 3. Disable run time tracking
-        await clickRunTimeChange(MOCK_HOST)
+        await setSiteOption(context, MOCK_HOST, 'run', false)
         const disableTs = Date.now()
         await emptyPage.bringToFront()
         await sleep(4)
@@ -71,25 +59,23 @@ describe('Run time tracking', () => {
     }, 60000)
 
     test('white list', async () => {
-        await context.newPage(MOCK_URL)
+        await context.newPageAndWaitCsInjected(MOCK_URL)
 
         // 1. Enable
-        await clickRunTimeChange(MOCK_HOST)
+        await setSiteOption(context, MOCK_HOST, 'run', true)
         const enableTs = Date.now()
-        await sleep(4)
 
-        let records = await readRecordsOfFirstPage(context)
-        const runTime = parseTime2Sec(records[0]?.runTime)
+        const runTime = await waitForRunTimeAtLeast(1)
         expect(runTime).toBeTruthy()
         expect(runTime).toBeLessThanOrEqual((Date.now() - enableTs) / 1000 + 1)
 
         // 2. Add whitelist
-        await createWhitelist(context, MOCK_HOST)
+        await setSiteOption(context, MOCK_HOST, 'white', true)
         const disableTs = Date.now()
 
         await sleep(2)
 
-        records = await readRecordsOfFirstPage(context)
+        const records = await readRecordsOfFirstPage(context)
         const runTime1 = parseTime2Sec(records[0]?.runTime)
         expect(runTime1).toBeLessThan((disableTs - enableTs) / 1000 + 1)
     }, 60000)

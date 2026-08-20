@@ -7,9 +7,8 @@
 import { useLimitAction } from "@app/components/Limit/context"
 import { t } from '@app/locale'
 import { Delete, EditPen } from "@element-plus/icons-vue"
-import { css } from '@emotion/css'
 import Flex from "@pages/components/Flex"
-import { ElButton, ElCard, ElDivider, ElTag, type TagProps, useNamespace } from "element-plus"
+import { ElButton, ElCard, ElDivider, ElTag, type TagProps } from "element-plus"
 import { defineComponent, type FunctionalComponent, type StyleValue } from "vue"
 import Rule from "./Rule"
 
@@ -18,16 +17,6 @@ type Props = {
 }
 
 const CARD_PADDING = 10
-
-const useStyle = () => {
-    const cardNs = useNamespace('card')
-    const cardCls = css`
-        .${cardNs.e('body')}  {
-            padding: ${CARD_PADDING}px;
-        }
-    `
-    return cardCls
-}
 
 const ALL_WEEKDAYS = t(msg => msg.calendar.weekDays).split('|')
 
@@ -56,10 +45,9 @@ const EffectiveDays: FunctionalComponent<{ weekdays?: number[] }> = ({ weekdays 
 
 const _default = defineComponent<Props>(props => {
     const { modify, remove } = useLimitAction()
-    const clz = useStyle()
 
     return () => (
-        <ElCard class={clz} shadow="hover">
+        <ElCard shadow="never" bodyStyle={{ padding: `${CARD_PADDING}px` }}>
             <Flex column gap={8}>
                 <Flex justify="space-between" align="center">
                     <Flex align="center" gap={8}>

@@ -12,11 +12,8 @@ import { useOperation, useSwitch } from '@hooks'
 import { supportCategory } from "@util/site"
 import { ElButton, ElDialog, ElForm, ElFormItem, ElInput, type FormInstance, type FormItemRule } from "element-plus"
 import { computed, defineComponent, reactive, ref } from "vue"
+import type { ModifyInstance } from '../types'
 import HostSelect from "./HostSelect"
-
-export type ModifyInstance = {
-    add(): void
-}
 
 type _FormData = {
     /**

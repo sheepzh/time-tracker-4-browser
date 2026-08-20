@@ -10,13 +10,11 @@ import limitDatabase from "@db/limit-database"
 import mergeRuleDatabase from "@db/merge-rule-database"
 import statDatabase from "@db/stat-database"
 import type { BrowserMigratable, StorageMigratable } from '@db/types'
-import whitelistDatabase from "@db/whitelist-database"
 
 const BROWSER_MIGRATABLES: BrowserMigratable[] = [
     statDatabase,
     limitDatabase,
     mergeRuleDatabase,
-    whitelistDatabase,
 ]
 
 const STORAGE_MIGRATABLES: StorageMigratable<unknown>[] = [

@@ -155,20 +155,19 @@ declare namespace tt4b {
         /**
          * The dimension to statistics
          */
-        type Dimension =
-            // Focus time
-            | 'focus'
-            // Visit count
-            | 'time'
-            // Run time
-            | 'run'
+        type Dimension = 'focus' | 'time'
+
+        /**
+         * Optional dimension
+         */
+        type DimensionOptional = 'run' | 'media'
 
         /**
          * The stat result of host
          *
          * @since 0.0.1
          */
-        type Result = MakeOptional<{ [item in Dimension]: number }, 'run'>
+        type Result = Record<Dimension, number> & Partial<Record<DimensionOptional, number>>
 
         /**
          * The unique key of each data row
@@ -195,12 +194,26 @@ declare namespace tt4b {
              * @since 3.0.0
              */
             cate?: number
+            options?: Options
+        }
+
+        type Options = {
+            /**
+             * Whitelist
+             */
+            white?: boolean
             /**
              * Whether to count the running time
              *
              * @since 3.2.0
              */
             run?: boolean
+            /**
+             * Whether to count the media time
+             *
+             * @since 4.6.0
+             */
+            media?: boolean
         }
         type Type = 'normal' | 'merged' | 'virtual'
         /**
@@ -214,6 +227,7 @@ declare namespace tt4b {
         }
 
         type Query = {
+            host?: string
             fuzzyQuery?: string
             cateIds?: Arrayable<number>
             types?: Arrayable<Type>
@@ -227,12 +241,11 @@ declare namespace tt4b {
             keys: SiteKey[]
         }
 
-        type ModifyParam = MakeOptionalUndefined<Pick<tt4b.site.SiteInfo, 'host' | 'type' | 'alias' | 'iconUrl'>>
-
         type Current = {
             url: string
             normal: SiteInfo
             others: SiteInfo[]
+            white: boolean
         }
     }
 
@@ -608,7 +621,6 @@ declare namespace tt4b {
             __stat__?: core.Row[]
             __limit__?: limit.Rule[]
             __merge__?: merge.Rule[]
-            __whitelist__?: string[]
             __cate__?: site.Cate[]
         }
     }
@@ -795,9 +807,7 @@ declare namespace tt4b {
         /**
          * @since 1.4.7
          */
-        type RemoteComposition = {
-            [item in core.Dimension]: RemoteCompositionVal[]
-        }
+        type RemoteComposition = Record<core.Dimension, RemoteCompositionVal[]>
 
         /**
          * @since 3.0.0
@@ -829,12 +839,6 @@ declare namespace tt4b {
             | "timed"
 
         type AppearanceOption = {
-            /**
-             * Whether to display the whitelist button in the context menu
-             *
-             * @since 0.3.2
-             */
-            displayWhitelistMenu: boolean
             /**
              * Whether to display the badge text on icon
              *
@@ -1078,7 +1082,7 @@ declare namespace tt4b {
 
         type _HandlerRegistry =
             // Track event
-            & _MakeRegistry<'track.time' | 'track.runTime', core.Event>
+            & _MakeRegistry<'track.time' | 'track.runTime' | 'track.mediaTime', core.Event>
             // Content script events
             & _MakeRegistry<'cs.injected'>
             & _MakeRegistry<'cs.trackingPauseChanged', boolean>
@@ -1118,17 +1122,16 @@ declare namespace tt4b {
             & _MakeRegistry<'meta.prepare2fa', void, string>
             & _MakeRegistry<'meta.popup', ui.PopupMenu | undefined>
             // Site
-            & _MakeRegistry<'site.runEnabled', string, boolean>
-            & _MakeRegistry<'site.current', void, site.Current | undefined>
+            & _MakeRegistry<'site.current', string | undefined, site.Current | undefined>
             & _MakeRegistry<'site.list', site.Query | undefined, site.SiteInfo[]>
             & _MakeRegistry<'site.page', site.PageQuery | undefined, common.PageResult<site.SiteInfo>>
             & _MakeRegistry<'site.add', site.SiteInfo, string | undefined>
-            & _MakeRegistry<'site.modify', site.ModifyParam>
+            & _MakeRegistry<'site.parse', string, site.SiteInfo[]>
+            & _MakeRegistry<'site.modify', site.SiteInfo>
             & _MakeRegistry<'site.delete', site.SiteKey[]>
             & _MakeRegistry<'site.changeCate', site.ChangeCateParam>
             & _MakeRegistry<'site.fillAlias', site.SiteKey[]>
             & _MakeRegistry<'site.initialAlias', string, string | undefined>
-            & _MakeRegistry<'site.changeRun', { key: site.SiteKey; enabled: boolean }>
             & _MakeRegistry<'site.detect', void, site.SiteInfo[]>
             // Time Limit
             & _MakeRegistry<'limit.list', limit.Query | undefined, limit.Item[]>
@@ -1150,11 +1153,6 @@ declare namespace tt4b {
             & _MakeRegistry<'merge.all', void, merge.Rule[]>
             & _MakeRegistry<'merge.delete', string>
             & _MakeRegistry<'merge.add', merge.Rule>
-            // Whitelist
-            & _MakeRegistry<'whitelist.all', void, string[]>
-            & _MakeRegistry<'whitelist.add' | 'whitelist.delete', string>
-            & _MakeRegistry<'whitelist.save', string[]>
-            & _MakeRegistry<'whitelist.contain', { host: string; url: string }, boolean>
             // Backup
             & _MakeRegistry<'backup.sync' | 'backup.checkAuth', void, string | undefined>
             & _MakeRegistry<'backup.clear', string, string | undefined>
@@ -1203,7 +1201,7 @@ declare namespace tt4b {
      */
     namespace tab {
         type _HandlerRegistry =
-            & mq._MakeRegistry<'siteRunChange'>
+            & mq._MakeRegistry<'siteChanged'>
             & mq._MakeRegistry<'syncAudible', boolean>
             & mq._MakeRegistry<'limitTimeMeet', limit.Item[]>
             & mq._MakeRegistry<'limitChanged'>

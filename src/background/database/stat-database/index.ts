@@ -26,6 +26,7 @@ const isValidImportRow = createObjectGuard<ValidImportRow>({
     focus: isOptionalInt,
     time: isOptionalInt,
     run: isOptionalInt,
+    media: isOptionalInt,
     date: isString,
     host: isString,
 })
@@ -136,7 +137,8 @@ class StatDatabaseWrapper implements StateDatabaseComposite {
                 date: item.date,
                 time: item.time ?? 0,
                 focus: item.focus ?? 0,
-                run: item.run ?? 0,
+                run: item.run || undefined,
+                media: item.media || undefined,
             }
             isNotZeroResult(row) && rows.push(row)
         }

@@ -12,7 +12,7 @@ import { hasLimited, isEffective, matches, meetTimeLimit } from "@util/limit"
 import { formatTimeYMD, getWeekDay, MILL_PER_MINUTE, MILL_PER_SECOND } from "@util/time"
 import optionHolder from "./components/option-holder"
 import { getWeekStartTime } from './components/week-helper'
-import whitelistHolder from "./whitelist/holder"
+import siteHolder from './site-service/holder'
 
 export async function selectLimit(param?: tt4b.limit.Query): Promise<tt4b.limit.Item[]> {
     const { enabled, url, id, limited, effective } = param ?? {}
@@ -91,7 +91,7 @@ type IncreaseResult = {
  * @returns the rules is limit cause of this operation
  */
 export async function addLimitFocusTime(host: string, url: string, focusTime: number): Promise<IncreaseResult> {
-    if (whitelistHolder.contains(host, url)) return { limited: [] }
+    if (siteHolder.isWhitelist(host, url)) return { limited: [] }
 
     const allEffective = await selectLimit({ url, effective: true })
 
@@ -159,7 +159,7 @@ function addFocusForEach(item: tt4b.limit.Item, focusTime: number, durationMill:
  * @returns the rules is limited
  */
 export async function incLimitVisit(host: string, url: string): Promise<tt4b.limit.Item[]> {
-    if (whitelistHolder.contains(host, url)) return []
+    if (siteHolder.isWhitelist(host, url)) return []
 
     const allEnabled = await selectLimit({ enabled: true, url })
     const { limitDelayDuration: delayDuration } = await optionHolder.get()

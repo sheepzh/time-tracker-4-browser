@@ -16,7 +16,7 @@ export function mergeDate<T extends tt4b.stat.Row>(origin: T[]): T[] {
             time: 0,
             mergedRows: [],
             mergedDates: [],
-            composition: { focus: [], time: [], run: [] },
+            composition: { focus: [], time: [] },
         })
         mergeResult(exist, ele)
         isSite(ele) && isSite(exist) && exist.mergedRows.push(...(ele.mergedRows ?? []))

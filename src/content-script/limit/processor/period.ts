@@ -54,7 +54,7 @@ class PeriodProcessor implements Processor {
 
     async reset(): Promise<void> {
         this.#clean()
-        if (this.location.whitelisted) return
+        if (this.location.isWhite) return
 
         const rules = await trySendMsg2Runtime('limit.list', { effective: true, url: this.location.url }) ?? []
         const now = new Date()

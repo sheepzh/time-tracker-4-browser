@@ -1,9 +1,14 @@
-import whitelistHolder from '@service/whitelist/holder'
+import { saveSite } from '@service/site-service'
 import type { Migrator } from "./types"
 
 export default class WhitelistInitializer implements Migrator {
     onInstall(): void {
-        whitelistHolder.add('localhost:*/**')
+        // Set whitelist for localhost
+        void saveSite({
+            host: 'localhost:*/**', type: 'virtual',
+            alias: 'localhost with ports',
+            options: { white: true },
+        }, true)
     }
 
     onUpdate(_version: string): void {

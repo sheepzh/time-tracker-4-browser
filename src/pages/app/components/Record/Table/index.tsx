@@ -46,7 +46,7 @@ const computeVisible = (filter: RecordFilterOption): ColumnVisible => {
 
 const isRecordSort = createObjectGuard<RecordSort>({
     order: createStringUnionGuard<RecordSort['order']>('ascending', 'descending'),
-    prop: createStringUnionGuard<RecordSort['prop']>('date', 'host', 'focus', 'run', 'time'),
+    prop: createStringUnionGuard<RecordSort['prop']>('date', 'host', 'focus', 'time'),
     init: isAny,
     silent: isAny,
 })
@@ -86,7 +86,8 @@ const _default = defineComponent((_, ctx) => {
         return { visit, focus }
     }, { defaultValue: { visit: 0, focus: 0 } })
 
-    const runColVisible = computed(() => data.value.list.some(r => r.run))
+    const runVisible = computed(() => data.value.list.some(r => r.run))
+    const mediaVisible = computed(() => data.value.list.some(r => r.media))
     // Query data if document become visible
     const docVisible = useDocumentVisibility()
     watch(docVisible, () => docVisible.value && refresh())
@@ -159,7 +160,8 @@ const _default = defineComponent((_, ctx) => {
                         {visible.value.group && <GroupColumn />}
                         {visible.value.cate && <CateColumn onChange={refresh} />}
                         <TimeColumn dimension="focus" />
-                        {runColVisible.value && <TimeColumn dimension="run" />}
+                        {runVisible.value && <TimeColumn dimension="run" sortable={false} />}
+                        {mediaVisible.value && <TimeColumn dimension="media" sortable={false} />}
                         <VisitColumn />
                         <OperationColumn onDelete={refresh} />
                     </ElTable >

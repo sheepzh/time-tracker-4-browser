@@ -33,7 +33,6 @@ const allLocaleOptions = (["default", ...SORTED_LOCALES] satisfies tt4b.option.L
 }))
 
 function copy(target: tt4b.option.AppearanceOption, source: tt4b.option.AppearanceOption) {
-    target.displayWhitelistMenu = source.displayWhitelistMenu
     target.displayBadgeText = source.displayBadgeText
     target.badgeBgColor = source.badgeBgColor
     target.locale = source.locale
@@ -107,19 +106,6 @@ const _default = defineComponent((_props, ctx) => {
                 />
             </OptionItem>
             {!IS_ANDROID && <>
-                <OptionItem
-                    label={msg => msg.option.appearance.displayWhitelist}
-                    defaultValue={DEFAULT_APPEARANCE.displayWhitelistMenu}
-                    v-slots={{
-                        whitelist: () => <OptionTag>{t(msg => msg.option.appearance.whitelistItem)}</OptionTag>,
-                        contextMenu: () => <OptionTag>{t(msg => msg.option.appearance.contextMenu)}</OptionTag>,
-                    }}
-                >
-                    <ElSwitch
-                        modelValue={option.displayWhitelistMenu}
-                        onChange={val => option.displayWhitelistMenu = val as boolean}
-                    />
-                </OptionItem>
                 <OptionItem
                     label={msg => msg.option.appearance.displayBadge}
                     defaultValue={DEFAULT_APPEARANCE.displayBadgeText}

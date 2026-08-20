@@ -1,31 +1,28 @@
 import { trySendMsg2Runtime } from '@api/sw/common'
 import { extractHostname } from '@util/pattern'
+import Dispatcher from './dispatcher'
 
 function getHost(): string {
     // For file protocol, window.location.host is empty
     return window.location.host || extractHostname(window.location.href).host
 }
 
-type ChangeEvent = {
-    prevUrl: string
-    prevHost: string
-    nextUrl: string
-    nextHost: string
-}
-
 class LocationWatcher {
     url: string
     host: string
-    whitelisted: boolean
-    #handlers: ArgCallback<ChangeEvent>[] = []
+    current: tt4b.site.Current | undefined
+    #currHandlers: NoArgCallback[] = []
     #timer: ReturnType<typeof setTimeout>
+
+    get isWhite(): boolean {
+        return !!this.current?.white
+    }
 
     private readonly handleChangeBound = this.handleChange.bind(this)
 
     constructor() {
         this.url = window.location.href
         this.host = getHost()
-        this.whitelisted = false
 
         // Initialize immediately to catch the initial fields
         window.addEventListener('popstate', this.handleChangeBound)
@@ -36,13 +33,14 @@ class LocationWatcher {
         this.#timer = setInterval(this.handleChangeBound, 500)
     }
 
-    async init() {
-        await this.#syncWhitelisted()
+    async init(dispatcher: Dispatcher) {
+        await this.#syncCurrent()
+        dispatcher.register('siteChanged', () => void this.#syncCurrent())
     }
 
-    async #syncWhitelisted() {
-        const value = await trySendMsg2Runtime('whitelist.contain', { host: this.host, url: this.url })
-        this.whitelisted = !!value
+    async #syncCurrent() {
+        this.current = await trySendMsg2Runtime('site.current', this.url)
+        this.#currHandlers.forEach(h => h())
     }
 
     dispose(): void {
@@ -54,26 +52,13 @@ class LocationWatcher {
     private async handleChange(): Promise<void> {
         const nextUrl = window.location.href
         if (!nextUrl || nextUrl === this.url) return
-        const nextHost = getHost()
-
-        const prevUrl = this.url
-        const prevHost = this.host
-
         this.url = nextUrl
-        this.host = nextHost
-        await this.#syncWhitelisted()
-
-        const ev: ChangeEvent = {
-            prevUrl: prevUrl,
-            nextUrl: nextUrl,
-            prevHost: prevHost,
-            nextHost: nextHost,
-        }
-        this.#handlers.forEach(h => h(ev))
+        this.host = getHost()
+        await this.#syncCurrent()
     }
 
-    onChange(handler: ArgCallback<ChangeEvent>): void {
-        this.#handlers.push(handler)
+    onCurrChange(handler: NoArgCallback) {
+        this.#currHandlers.push(handler)
     }
 }
 

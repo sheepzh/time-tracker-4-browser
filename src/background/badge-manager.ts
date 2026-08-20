@@ -9,13 +9,13 @@ import { setBadgeBgColor, setBadgeText } from "@api/chrome/action"
 import { listTabs, onTabUpdated } from "@api/chrome/tab"
 import { getLastFocusedId, isNoneWindowId, onWindowFocusChanged } from "@api/chrome/window"
 import focusHolder from '@service/focus/holder'
+import siteHolder from '@service/site-service/holder'
 import { IS_ANDROID, isNotTrackable } from "@util/constant/environment"
 import { extractHostname } from "@util/pattern"
 import { MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND } from "@util/time"
 import statDatabase from "./database/stat-database"
 import type MessageDispatcher from './message-dispatcher'
 import optionHolder from "./service/components/option-holder"
-import whitelistHolder from "./service/whitelist/holder"
 
 type BadgeLocation = {
     /**
@@ -71,7 +71,6 @@ class BadgeManager {
         const option = await optionHolder.get()
         await this.processOption(option)
         optionHolder.addChangeListener(opt => this.processOption(opt))
-        whitelistHolder.addPostHandler(() => this.render())
         messageDispatcher.register('cs.trackingPauseChanged', (isPaused, sender) => {
             const tabId = sender?.tab?.id
             void (isPaused ? this.pause(tabId) : this.resume(tabId))
@@ -137,7 +136,7 @@ class BadgeManager {
         if (isNotTrackable(url)) return '∅'
         const { host, protocol } = extractHostname(url)
         if (protocol === 'file' && !this.#countLocalFiles) return '∅'
-        if (whitelistHolder.contains(host, url)) return 'W'
+        if (siteHolder.isWhitelist(host, url)) return 'W'
         if (this.#pausedTabId === tabId) return 'P'
         const { focus } = await statDatabase.get(host, new Date())
         return mill2Str(focus)

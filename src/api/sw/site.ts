@@ -1,6 +1,6 @@
 import { sendMsg2Runtime } from "./common"
 
-export const getCurrentSite = () => sendMsg2Runtime('site.current')
+export const getCurrentSite = (url?: string) => sendMsg2Runtime('site.current', url)
 
 export const listSites = (param?: tt4b.site.Query) => sendMsg2Runtime('site.list', param)
 
@@ -16,14 +16,10 @@ export function changeSitesCate(cateId: number | undefined, ...keys: tt4b.site.S
 
 export const addSite = (siteInfo: tt4b.site.SiteInfo) => sendMsg2Runtime('site.add', siteInfo)
 
-export const modifySite = (param: tt4b.site.ModifyParam) => sendMsg2Runtime('site.modify', param)
+export const modifySite = (param: tt4b.site.SiteInfo) => sendMsg2Runtime('site.modify', param)
 
 export const fillInitialAlias = (keys: tt4b.site.SiteKey[]) => sendMsg2Runtime('site.fillAlias', keys)
 
 export const getInitialAlias = (host: string) => sendMsg2Runtime('site.initialAlias', host)
-
-export function changeSiteRun(key: tt4b.site.SiteKey, enabled: boolean) {
-    return sendMsg2Runtime('site.changeRun', { key, enabled })
-}
 
 export const detectSites = () => sendMsg2Runtime('site.detect')
