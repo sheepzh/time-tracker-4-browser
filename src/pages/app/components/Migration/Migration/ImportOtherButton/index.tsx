@@ -23,13 +23,13 @@ import type { ImportForm, OtherExtension } from './types'
 
 type Config = {
     name: string
-    Icon: Component
+    icon: Component
 }
 
 const EXTENSION_CONFIGS: Record<OtherExtension, Config> = {
     webtime_tracker: {
         name: "Webtime Tracker",
-        Icon: () => (
+        icon: (
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
                 <g><path style="opacity:1" fill="#3896fa" d="M 52.5,-0.5 C 54.1667,-0.5 55.8333,-0.5 57.5,-0.5C 58.8309,8.13683 58.8309,16.8035 57.5,25.5C 53.6019,26.975 49.6019,28.1417 45.5,29C 41.6563,31.5153 37.823,34.0153 34,36.5C 27.7055,32.376 21.5388,28.0426 15.5,23.5C 14.3691,21.9255 14.2025,20.2588 15,18.5C 25.3653,7.73449 37.8653,1.40116 52.5,-0.5 Z" /></g>
                 <g><path style="opacity:1" fill="#f9645c" d="M 61.5,-0.5 C 63.1667,-0.5 64.8333,-0.5 66.5,-0.5C 96.5,4.83333 114.167,22.5 119.5,52.5C 119.5,57.1667 119.5,61.8333 119.5,66.5C 114.167,96.5 96.5,114.167 66.5,119.5C 62.5,119.5 58.5,119.5 54.5,119.5C 41.2903,118.898 29.957,113.898 20.5,104.5C 26.0177,98.8165 31.351,92.9832 36.5,87C 43.7447,89.8929 51.4114,91.7263 59.5,92.5C 73.6465,92.5144 83.8132,86.181 90,73.5C 97.1507,47.4534 87.6507,31.4534 61.5,25.5C 60.1691,16.8035 60.1691,8.13683 61.5,-0.5 Z" /></g>
@@ -39,7 +39,7 @@ const EXTENSION_CONFIGS: Record<OtherExtension, Config> = {
     },
     web_activity_time_tracker: {
         name: "Web Activity Time Tracker",
-        Icon: () => (
+        icon: (
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
                 <g><path style="opacity:1" fill="#023750" d="M 45.5,-0.5 C 54.8333,-0.5 64.1667,-0.5 73.5,-0.5C 74.7785,2.00241 74.7785,4.50241 73.5,7C 70.1832,7.49834 66.8499,7.66501 63.5,7.5C 63.5,9.83333 63.5,12.1667 63.5,14.5C 74.5659,14.5351 84.2325,18.2017 92.5,25.5C 94.3586,23.8076 96.3586,22.3076 98.5,21C 105.333,19.8333 108.167,22.6667 107,29.5C 105.692,31.6414 104.192,33.6414 102.5,35.5C 120.15,66.7322 114.483,92.8989 85.5,114C 80.285,116.571 74.9516,118.404 69.5,119.5C 62.8333,119.5 56.1667,119.5 49.5,119.5C 26.929,113.761 12.7623,99.4278 7,76.5C 4.65865,61.5335 7.82532,47.8669 16.5,35.5C 14.4346,32.9573 13.1012,30.1239 12.5,27C 13.0621,21.4471 16.0621,19.4471 21.5,21C 23.5852,22.0414 25.2519,23.5414 26.5,25.5C 34.7685,18.2011 44.4352,14.5344 55.5,14.5C 55.5,12.1667 55.5,9.83333 55.5,7.5C 52.1501,7.66501 48.8168,7.49834 45.5,7C 44.2215,4.50241 44.2215,2.00241 45.5,-0.5 Z" /></g>
                 <g><path style="opacity:1" fill="#eff2f0" d="M 52.5,21.5 C 71.0342,20.1879 85.8675,26.8546 97,41.5C 108.799,63.1963 106.299,83.0297 89.5,101C 64.3901,118.657 41.8901,115.824 22,92.5C 11.2242,73.4867 12.2242,55.1534 25,37.5C 32.8691,29.7679 42.0357,24.4345 52.5,21.5 Z" /></g>
@@ -50,7 +50,7 @@ const EXTENSION_CONFIGS: Record<OtherExtension, Config> = {
     },
     history_trends_unlimited: {
         name: "History Trends Unlimited",
-        Icon: () => (
+        icon: (
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
                 <g><path style="opacity:1" fill="#e6e000" d="M 59.5,5.5 C 59.5,23.8333 59.5,42.1667 59.5,60.5C 42.4539,65.6783 25.4539,71.0117 8.5,76.5C 1.16551,47.0244 10.8322,24.8577 37.5,10C 44.4758,6.7715 51.8091,5.2715 59.5,5.5 Z" /></g>
                 <g><path style="opacity:1" fill="#446fa1" d="M 59.5,5.5 C 87.1275,6.95499 104.961,20.955 113,47.5C 115.24,57.3463 114.74,67.013 111.5,76.5C 94.1807,71.1767 76.8474,65.8433 59.5,60.5C 59.5,42.1667 59.5,23.8333 59.5,5.5 Z" /></g>
@@ -116,10 +116,9 @@ const _default = defineComponent(() => {
             v-slots={{
                 dropdown: () => (
                     <ElDropdownMenu>
-                        {Object.entries(EXTENSION_CONFIGS).map(([ext, config]) => (
+                        {Object.entries(EXTENSION_CONFIGS).map(([ext, { name, icon }]) => (
                             <ElDropdownItem key={ext} command={ext}>
-                                <ElIcon>{h(config.Icon)}</ElIcon>
-                                {config.name}
+                                <ElIcon>{h(icon)}</ElIcon>{name}
                             </ElDropdownItem>
                         ))}
                     </ElDropdownMenu>
@@ -127,7 +126,7 @@ const _default = defineComponent(() => {
             }}
         >
             <Flex gap={2} align='center'>
-                <ElIcon size='1.4em'>{h(EXTENSION_CONFIGS[ext.value].Icon)}</ElIcon>
+                <ElIcon size='1.4em'>{h(EXTENSION_CONFIGS[ext.value].icon)}</ElIcon>
                 <ElText truncated style={{ minWidth: 0, color: 'inherit', fontSize: 'inherit', lineHeight: 'inherit' }}>{buttonText.value}</ElText>
             </Flex>
         </ElDropdown>
