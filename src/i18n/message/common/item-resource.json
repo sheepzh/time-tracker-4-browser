@@ -5,6 +5,7 @@
         "group": "标签组",
         "focus": "浏览时长",
         "run": "运行时长",
+        "media": "媒体时间",
         "time": "访问次数",
         "operation": {
             "analysis": "分析",
