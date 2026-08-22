@@ -225,7 +225,15 @@ const generateOption = ({ outputPath, manifest, mode }: Option) => {
                 {
                     from: path.join(__dirname, '..', 'public', 'images'),
                     to: path.join(outputPath, 'static', 'images'),
-                }
+                },
+                {
+                    from: path.join(__dirname, '..', 'public', 'sounds'),
+                    to: path.join(outputPath, 'static', 'sounds'),
+                },
+                {
+                    from: path.join(__dirname, '..', 'public', 'offscreen'),
+                    to: path.join(outputPath, 'static', 'offscreen'),
+                },
             ]
         }),
         new CssExtractRspackPlugin({ ignoreOrder: true }),

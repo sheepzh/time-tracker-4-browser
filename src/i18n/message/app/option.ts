@@ -127,6 +127,7 @@ export type OptionMessage = {
                 url: string
             }
         }
+        focusSound: string
     }
     button: {
         reset: string

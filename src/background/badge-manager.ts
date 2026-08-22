@@ -6,7 +6,7 @@
  */
 
 import { setBadgeBgColor, setBadgeText } from "@api/chrome/action"
-import { listTabs, onTabUpdated } from "@api/chrome/tab"
+import { getTab, listTabs, onTabUpdated } from "@api/chrome/tab"
 import { getLastFocusedId, isNoneWindowId, onWindowFocusChanged } from "@api/chrome/window"
 import focusHolder from '@service/focus/holder'
 import siteHolder from '@service/site-service/holder'
@@ -56,7 +56,12 @@ async function findActiveTab(windowId?: number): Promise<BadgeLocation | undefin
 async function clearAllBadge(): Promise<void> {
     const tabs = await listTabs()
     if (!tabs?.length) return
-    for (const { id } of tabs) id != null && await setBadgeText('', id)
+    await Promise.all(tabs.map(async ({ id }) => {
+        if (id == null) return
+        const tab = await getTab(id)
+        if (!tab) return
+        await setBadgeText('', id)
+    }))
 }
 
 class BadgeManager {
@@ -127,7 +132,18 @@ class BadgeManager {
             return await setBadgeText(focusBadge)
         }
         const badgeText = await this.resolveBadgeText()
-        await setBadgeText(badgeText, this.#current?.tabId)
+        const tabId = this.#current?.tabId
+        if (tabId == null) {
+            await setBadgeText(badgeText)
+            return
+        }
+        const tab = await getTab(tabId)
+        if (!tab) {
+            this.#current = undefined
+            await setBadgeText(badgeText)
+            return
+        }
+        await setBadgeText(badgeText, tabId)
     }
 
     private async resolveBadgeText(): Promise<string> {

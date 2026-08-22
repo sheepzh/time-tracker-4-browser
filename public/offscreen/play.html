@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Focus Sound Player</title>
+</head>
+<body>
+<audio id="focusSound" preload="auto"></audio>
+<script>
+    (async () => {
+        const audio = document.getElementById('focusSound')
+        const params = new URLSearchParams(location.search)
+        const src = params.get('src') || chrome.runtime.getURL('static/sounds/relentless.wav')
+        audio.src = src
+        audio.volume = 1
+
+        const closePlayer = () => {
+            if (chrome.offscreen?.closeDocument) {
+                void chrome.offscreen.closeDocument()
+                return
+            }
+            window.close()
+        }
+
+        try {
+            await audio.play()
+            audio.addEventListener('ended', closePlayer, { once: true })
+            window.setTimeout(closePlayer, 15000)
+        } catch (error) {
+            console.error('[focus-sound] offscreen play failed:', error)
+            closePlayer()
+        }
+    })()
+</script>
+</body>
+</html>

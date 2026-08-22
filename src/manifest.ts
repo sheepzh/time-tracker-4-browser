@@ -49,6 +49,7 @@ const _default: chrome.runtime.ManifestV3 = {
         'alarms',
         'scripting',
         'sidePanel',
+        'offscreen',
     ],
     optional_permissions: [
         'tabGroups',
@@ -63,6 +64,8 @@ const _default: chrome.runtime.ManifestV3 = {
             'content_scripts_limit.js',
             'vendor/*.js',
             'static/images/*',
+            'static/sounds/*',
+            'static/offscreen/*',
             'static/popup.html',
             'static/limit.html',
         ],

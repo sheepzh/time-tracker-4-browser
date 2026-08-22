@@ -1026,6 +1026,10 @@ declare namespace tt4b {
              * Auth token for HTTP callback (optional)
              */
             notificationAuthToken?: string
+            /**
+             * Play a sound when focus or pomodoro phase completes
+             */
+            focusSoundEnabled: boolean
         }
 
         export type DefaultOption =
@@ -1208,6 +1212,7 @@ declare namespace tt4b {
             & mq._MakeRegistry<'limitReminder', limit.ReminderInfo>
             & mq._MakeRegistry<'askVisitHit', number, boolean>
             & mq._MakeRegistry<'focusChanged', focus.Session | undefined>
+            & mq._MakeRegistry<'playFocusSound', { title: string, message: string }, boolean>
 
         type ReqCode = keyof _HandlerRegistry
 

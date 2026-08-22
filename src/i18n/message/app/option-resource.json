@@ -389,7 +389,8 @@
                     "label": "HTTP Callback",
                     "url": "Callback URL {input}"
                 }
-            }
+            },
+            "focusSound": "{input} Play a sound when focus or pomodoro phase completes"
         },
         "button": {
             "reset": "Reset",

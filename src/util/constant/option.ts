@@ -58,6 +58,7 @@ export const DEFAULT_NOTIFICATION: tt4b.option.NotificationOption = {
     notificationCycle: 'none',
     notificationMethod: 'browser',
     notificationOffset: 0,
+    focusSoundEnabled: true,
 } as const
 
 export const defaultOption = () => structuredClone({

@@ -1,7 +1,7 @@
 import { OptionItem, OptionLines } from '@app/components/Option/components'
 import { t } from '@app/locale'
 import { QuestionFilled } from '@element-plus/icons-vue'
-import { ElIcon, ElInput, ElLink, ElMessage, ElSelect, ElTimePicker, ElTooltip } from 'element-plus'
+import { ElIcon, ElInput, ElLink, ElMessage, ElSelect, ElSwitch, ElTimePicker, ElTooltip } from 'element-plus'
 import { computed, defineComponent, type StyleValue } from 'vue'
 import type { CategoryInstance } from '../../types'
 import Footer from './Footer'
@@ -75,6 +75,12 @@ const Notification = defineComponent((_, ctx) => {
                         clearable={false}
                     />
                 )}
+            </OptionItem>
+            <OptionItem label={msg => msg.option.notification.focusSound}>
+                <ElSwitch
+                    modelValue={option.focusSoundEnabled}
+                    onChange={val => option.focusSoundEnabled = !!val}
+                />
             </OptionItem>
             <OptionItem v-show={isNotNone.value} label={msg => msg.option.notification.method.label}>
                 <ElSelect
