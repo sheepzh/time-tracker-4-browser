@@ -46,8 +46,7 @@
             "tagResult": {
                 "blank": "不合并",
                 "level": "{level} 级域名"
-            },
-            "label": "子域名合并"
+            }
         }
     },
     "zh_TW": {
@@ -97,8 +96,7 @@
             "tagResult": {
                 "blank": "保持原網域",
                 "level": "{level} 層網域"
-            },
-            "label": "網站合併規則"
+            }
         }
     },
     "en": {
@@ -201,8 +199,7 @@
             "tagResult": {
                 "blank": "不合并",
                 "level": "{level} 次ドメイン"
-            },
-            "label": "ドメイン合併"
+            }
         }
     },
     "pt_PT": {
@@ -252,8 +249,7 @@
             "tagResult": {
                 "blank": "Não Agrupar",
                 "level": "Manter Nível {level}"
-            },
-            "label": "Regras de Agrupamento"
+            }
         }
     },
     "uk": {
@@ -303,8 +299,7 @@
             "tagResult": {
                 "blank": "Не об'єднувати",
                 "level": "Зберегти рівень {level}"
-            },
-            "label": "Правила об'єднання сайтів"
+            }
         }
     },
     "es": {
@@ -354,8 +349,7 @@
             "tagResult": {
                 "blank": "No fusionar",
                 "level": "Mantener en nivel {level}"
-            },
-            "label": "Reglas de fusión de sitios"
+            }
         }
     },
     "de": {
@@ -405,8 +399,7 @@
             "tagResult": {
                 "blank": "Nicht zusammenführen",
                 "level": "Level behalten {level}"
-            },
-            "label": "Regeln zusammenführen"
+            }
         }
     },
     "fr": {
@@ -456,8 +449,7 @@
             "tagResult": {
                 "blank": "Non Fusionner",
                 "level": "Garder le niveau {level}"
-            },
-            "label": "Fusionner les règles du site"
+            }
         }
     },
     "ru": {
@@ -507,8 +499,7 @@
             "tagResult": {
                 "blank": "Не объединять",
                 "level": "Сохранять уровень {level}"
-            },
-            "label": "Объединение сайтов"
+            }
         }
     },
     "ar": {
@@ -558,8 +549,7 @@
             "tagResult": {
                 "blank": "لا دمج",
                 "level": "الحفاظ على المستوى {level}"
-            },
-            "label": "دمج قواعد الموقع"
+            }
         }
     },
     "tr": {
@@ -609,8 +599,7 @@
             "tagResult": {
                 "blank": "Birleştirilemez",
                 "level": "Seviyeyi {level} koruyun"
-            },
-            "label": "Birleştirme Kuralları"
+            }
         }
     },
     "pl": {
@@ -660,8 +649,7 @@
             "tagResult": {
                 "blank": "Nie scalaj",
                 "level": "Zachowaj poziom {level}"
-            },
-            "label": "Reguły łączenia stron"
+            }
         }
     },
     "it": {
@@ -711,8 +699,7 @@
             "tagResult": {
                 "blank": "Non unite",
                 "level": "Mantiene Livello {level}"
-            },
-            "label": "Raggruppa regole dei siti"
+            }
         }
     }
 }
