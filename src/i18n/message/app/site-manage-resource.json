@@ -5,7 +5,9 @@
             "type": "网站类型",
             "alias": "网站名称",
             "cate": "网站类目",
-            "icon": "网站图标"
+            "icon": "网站图标",
+            "white": "白名单",
+            "whiteInfo": "白名单内的网站不会被追踪或拦截。"
         },
         "typeInfo": {
             "normal": "按域名的维度统计",
@@ -30,6 +32,7 @@
             "batchDeleteMsg": "是否需要删除所有已选中站点？"
         },
         "merge": {
+            "label": "网站合并",
             "removeConfirmMsg": "自定义合并规则 {origin} 将被移除",
             "originPlaceholder": "原域名",
             "mergedPlaceholder": "合并后域名",
