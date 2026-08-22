@@ -30,6 +30,12 @@ const INIT_CLIENT_JSON: FileForm = {
     content: "[]"
 }
 
+const newFiles = (...forms: FileForm[]): Record<string, FileForm> => {
+    const result: Record<string, FileForm> = {}
+    forms.forEach(form => result[form.filename] = form)
+    return result
+}
+
 /**
  * Local cache of gist
  */
@@ -73,12 +79,11 @@ export default class GistCoordinator implements tt4b.backup.Coordinator<Cache> {
         if (!gist) {
             return
         }
-        const files: { [filename: string]: FileForm } = {}
-        files[README_FILE_NAME] = INIT_README_MD
-        files[CLIENT_FILE_NAME] = {
+        const clientForm = {
             filename: CLIENT_FILE_NAME,
-            content: JSON.stringify(clients)
+            content: JSON.stringify(clients),
         }
+        const files = newFiles(INIT_README_MD, clientForm)
         await updateGist(checkTokenExist(context), gist.id, { description: gist.description, public: false, files })
     }
 
@@ -155,9 +160,7 @@ export default class GistCoordinator implements tt4b.backup.Coordinator<Cache> {
             return anotherGist
         }
         // 3. Create new one
-        const files: Record<string, FileForm> = {}
-        files[INIT_README_MD.filename] = INIT_README_MD
-        files[INIT_CLIENT_JSON.filename] = INIT_CLIENT_JSON
+        const files = newFiles(INIT_README_MD, INIT_CLIENT_JSON)
         const gist2Create: GistForm = { description: TIMER_META_GIST_DESC, files, public: false }
         const created = await createGist(token, gist2Create)
         const newId = created?.id
@@ -183,8 +186,7 @@ export default class GistCoordinator implements tt4b.backup.Coordinator<Cache> {
             return anotherGist
         }
         // 3. Create new one
-        const files: Record<string, FileForm> = {}
-        files[README_FILE_NAME] = INIT_README_MD
+        const files = newFiles(INIT_README_MD)
         const gist2Create: GistForm = { description: TIMER_DATA_GIST_DESC, files, public: false }
         const created = await createGist(token, gist2Create)
         const newId = created?.id
@@ -204,13 +206,11 @@ export default class GistCoordinator implements tt4b.backup.Coordinator<Cache> {
         const allBuckets = calcAllBuckets(minDate, maxDate)
         const allFileNames = allBuckets.map(bucket => bucket2filename(bucket, cid))
         const gist = await this.getStatGist(context)
-        const deletingFileNames = Object.keys(gist?.files || {}).filter(fileName => allFileNames.includes(fileName))
+        const toDelete = Object.keys(gist?.files || {}).filter(fileName => allFileNames.includes(fileName))
         // 2. delete
-        const files2Delete: { [filename: string]: FileForm | null } = {}
-        deletingFileNames.forEach(fileName => files2Delete[fileName] = null)
         const gist2update: GistForm = {
             public: false,
-            files: files2Delete,
+            files: Object.fromEntries(toDelete.map(f => ([f, null]))),
             description: TIMER_DATA_GIST_DESC
         }
         await updateGist(checkTokenExist(context), gist.id, gist2update)
