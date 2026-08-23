@@ -125,7 +125,7 @@ const generateOption = (biz: BizOption): EcOption => {
             axisTick: { show: false },
             min: 0,
             max: currData.length,
-            offset: -borderRadius * 2,
+            offset: -10,
         },
         yAxis: {
             type: 'value',
