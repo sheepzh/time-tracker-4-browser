@@ -8,16 +8,14 @@
 import { useHabitFilter } from "@app/components/Habit/context"
 import { useEcharts } from '@hooks'
 import { computed, defineComponent } from "vue"
-import { useDateMergedRows } from "../context"
-import Wrapper from "./Wrapper"
+import Wrapper, { type BizOption } from "./Wrapper"
 
-const _default = defineComponent(() => {
-    const rows = useDateMergedRows()
+const _default = defineComponent<{ merged: tt4b.stat.SiteRow[] }>(props => {
     const filter = useHabitFilter()
-    const bizOption = computed(() => ({ rows: rows.value, timeFormat: filter.timeFormat }))
+    const bizOption = computed<BizOption>(() => ({ rows: props.merged, timeFormat: filter.timeFormat }))
     const { elRef } = useEcharts(Wrapper, bizOption, { manual: true })
 
     return () => <div style={{ width: '100%' }} ref={elRef} />
-})
+}, { props: ['merged'] })
 
 export default _default

@@ -1,5 +1,5 @@
 import type { RecordQuery } from '@app/router/constants'
-import { isOptionalIntArray, isTimeFormat } from '@app/util/limit/types'
+import { isOptionalIntArray, isTimeFormat } from '@app/util/types'
 import { localReactive, useProvide, useProvider } from '@hooks'
 import { getBirthday } from "@util/time"
 import {

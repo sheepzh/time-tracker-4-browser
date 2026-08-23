@@ -7,7 +7,8 @@
 
 import { useEcharts } from "@hooks"
 import { computed, defineComponent, type StyleValue } from "vue"
-import { usePeriodFilter, usePeriodRange, usePeriodValue } from "../context"
+import { usePeriodFilter, usePeriodValue } from "../context"
+import type { PeriodRange } from '../types'
 import Wrapper, { type BizOption } from "./Wrapper"
 
 const CONTAINER_STYLE: StyleValue = {
@@ -15,13 +16,12 @@ const CONTAINER_STYLE: StyleValue = {
     height: "100%",
 }
 
-const _default = defineComponent(() => {
+const _default = defineComponent<{ range: PeriodRange }>(props => {
     const value = usePeriodValue()
     const filter = usePeriodFilter()
-    const periodRange = usePeriodRange()
     const bizOption = computed<BizOption>(() => {
-        const { curr, prev } = value.value || {}
-        const { curr: currRange, prev: prevRange } = periodRange.value || {}
+        const { curr, prev } = value.value
+        const { curr: currRange, prev: prevRange } = props.range
         const { periodSize } = filter
         return {
             curr, prev,
@@ -31,6 +31,6 @@ const _default = defineComponent(() => {
     })
     const { elRef } = useEcharts(Wrapper, bizOption, { manual: true })
     return () => <div style={CONTAINER_STYLE} ref={elRef} />
-})
+}, { props: ['range'] })
 
 export default _default

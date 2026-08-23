@@ -5,43 +5,66 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { listSiteStats } from '@api/sw/stat'
+import { CategoryFilter } from '@app/components/common/filter'
 import { GRID_CELL_STYLE, GRID_WRAPPER_STYLE } from '@app/components/common/grid'
 import { KanbanCard } from "@app/components/common/kanban"
-import { useXsState } from '@hooks'
+import { isOptionalIntArray } from '@app/util/types'
+import { localReactive, useRequest, useXsState } from '@hooks'
 import Flex from "@pages/components/Flex"
-import { computed, defineComponent, type StyleValue } from "vue"
-import { initProvider } from "./context"
+import { cvtDateRange2Str, getDayLength } from '@util/time'
+import { createObjectGuard } from 'typescript-guard'
+import { computed, defineComponent } from "vue"
+import { useHabitFilter } from '../context'
 import DailyTrend from "./DailyTrend"
 import Distribution from "./Distribution"
 import Summary from "./Summary"
 import TopK from "./TopK"
 
-const DISTRIBUTION_MIN_DAY_LENGTH = 15
+const TREND_MIN_DAY = 15
 
-const _default = defineComponent(() => {
-    const dateRangeLength = initProvider()
+type FilterOption = { cateIds?: number[] }
+const isFilter = createObjectGuard<FilterOption>({ cateIds: isOptionalIntArray })
+
+const _default = defineComponent<{}>(() => {
+    const { dateRange } = useHabitFilter()
+    const filter = localReactive<{ cateIds?: number[] }>('habit_site_filter', isFilter, {})
+    const query = computed<tt4b.stat.SiteQuery>(() => ({
+        date: cvtDateRange2Str(dateRange),
+        cateIds: filter.cateIds,
+    }))
+    const dateLength = computed(() => getDayLength(dateRange[0], dateRange[1]))
+    const { data: rows } = useRequest(
+        () => listSiteStats(query.value),
+        { deps: query, defaultValue: [] },
+    )
+    const { data: merged } = useRequest(
+        () => listSiteStats({ ...query.value, mergeDate: true }),
+        { deps: query, defaultValue: [] },
+    )
+
     const isXs = useXsState()
-    const topKStyle = computed(() => ({
-        ...GRID_CELL_STYLE,
-        height: isXs.value ? '200px' : undefined,
-    } satisfies StyleValue))
+
     return () => (
-        <KanbanCard title={msg => msg.habit.site.title}>
-            <Flex gap={1} column={isXs.value} style={GRID_WRAPPER_STYLE}>
-                <Summary />
-                <Flex flex={isXs.value ? undefined : 4} style={topKStyle.value}>
-                    <TopK />
-                </Flex>
-                {!isXs.value && (
-                    <Flex flex={8} style={GRID_CELL_STYLE}>
-                        {dateRangeLength.value >= DISTRIBUTION_MIN_DAY_LENGTH
-                            ? <DailyTrend />
-                            : <Distribution />
-                        }
+        <KanbanCard title={msg => msg.habit.site.title} v-slots={{
+            filter: () => <CategoryFilter modelValue={filter.cateIds} onChange={v => filter.cateIds = v} />,
+            default: () => (
+                <Flex gap={1} column={isXs.value} style={GRID_WRAPPER_STYLE}>
+                    <Summary rows={rows.value} />
+                    <Flex
+                        flex={isXs.value ? undefined : 4}
+                        style={{ height: isXs.value ? '200px' : undefined, ...GRID_CELL_STYLE }}
+                    >
+                        <TopK merged={merged.value} />
                     </Flex>
-                )}
-            </Flex>
-        </KanbanCard>
+                    <Flex v-show={!isXs.value} flex={8} style={GRID_CELL_STYLE}>
+                        {dateLength.value >= TREND_MIN_DAY
+                            ? <DailyTrend rows={rows.value} />
+                            : <Distribution merged={merged.value} />}
+                    </Flex>
+                </Flex>
+            )
+        }} />
     )
 })
 

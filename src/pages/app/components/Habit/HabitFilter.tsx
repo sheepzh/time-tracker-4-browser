@@ -13,9 +13,7 @@ import { daysAgo, MILL_PER_DAY } from "@util/time"
 import { defineComponent } from "vue"
 import { useHabitFilter } from "./context"
 
-type ShortCutProp = [label: string, dayAgo: number]
-
-const shortcutProps: ShortCutProp[] = [
+const shortcutProps: [label: string, dayAgo: number][] = [
     [t(msg => msg.calendar.range.today), 0],
     [t(msg => msg.calendar.range.lastDays, { n: 3 }), 3],
     [t(msg => msg.calendar.range.lastDays, { n: 7 }), 7],
@@ -27,7 +25,7 @@ const shortcutProps: ShortCutProp[] = [
 
 const SHORTCUTS: ElDatePickerShortcut[] = shortcutProps.map(([text, agoOfStart]) => ({ text, value: daysAgo(agoOfStart, 0) }))
 
-const _default = defineComponent(() => {
+const HabitFilter = defineComponent<{}>(() => {
     const filter = useHabitFilter()
 
     return () => (
@@ -39,12 +37,9 @@ const _default = defineComponent(() => {
                 onChange={([s, e]) => s && e && (filter.dateRange = [s, e])}
                 disabledDate={d => d.getTime() < Date.now() - MILL_PER_DAY * 366}
             />
-            <TimeFormatFilter
-                modelValue={filter.timeFormat}
-                onChange={v => filter.timeFormat = v}
-            />
+            <TimeFormatFilter modelValue={filter.timeFormat} onChange={v => filter.timeFormat = v} />
         </Flex>
     )
 })
 
-export default _default
+export default HabitFilter

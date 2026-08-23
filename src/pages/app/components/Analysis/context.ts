@@ -7,7 +7,7 @@
 
 import { type AppSiteAnalysisQuery } from '@/shared/route'
 import { listCateStats, listSiteStats } from "@api/sw/stat"
-import { isTimeFormat } from '@app/util/limit/types'
+import { isTimeFormat } from '@app/util/types'
 import { localRef, useProvide, useProvider, useRequest } from "@hooks"
 import { extractHostname } from '@util/pattern'
 import { ref, type Ref } from "vue"

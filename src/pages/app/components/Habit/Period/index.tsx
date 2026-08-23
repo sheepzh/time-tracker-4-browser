@@ -18,7 +18,7 @@ import Summary from "./Summary"
 import Trend from "./Trend"
 
 const _default = defineComponent(() => {
-    const filter = initProvider()
+    const { filter, periodRange } = initProvider()
     const isXs = useXsState()
 
     return () => (
@@ -31,12 +31,9 @@ const _default = defineComponent(() => {
                 <Summary />
                 <Flex
                     flex={isXs.value ? undefined : 3}
-                    style={{
-                        height: isXs.value ? '200px' : undefined,
-                        ...GRID_CELL_STYLE,
-                    }}
+                    style={{ height: isXs.value ? '200px' : undefined, ...GRID_CELL_STYLE }}
                 >
-                    {filter.chartType === 'average' && <Average />}
+                    {filter.chartType === 'average' && <Average range={periodRange.value} />}
                     {filter.chartType === 'trend' && <Trend />}
                     {filter.chartType === 'stack' && <Stack />}
                 </Flex>

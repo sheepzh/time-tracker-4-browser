@@ -9,20 +9,18 @@ import { listPeriods } from '@api/sw/period'
 import { localReactive, useProvide, useProvider, useRequest } from '@hooks'
 import { keyOf, MAX_PERIOD_ORDER } from "@util/period"
 import { getDayLength, MILL_PER_DAY } from "@util/time"
-import { createObjectGuard, createStringUnionGuard, isInt } from 'typescript-guard'
+import { createObjectGuard } from 'typescript-guard'
 import { computed, type Ref } from "vue"
 import { useHabitFilter } from "../context"
-
-export type ChartType = 'average' | 'trend' | 'stack'
-export const isChartType = createStringUnionGuard<ChartType>('average', 'trend', 'stack')
+import { isChartType, isPeriodSize, type ChartType, type PeriodRange, type PeriodSize } from './types'
 
 type FilterOption = {
-    periodSize: number
+    periodSize: PeriodSize
     chartType: ChartType
 }
 
 const isFilterOption = createObjectGuard<FilterOption>({
-    periodSize: isInt,
+    periodSize: isPeriodSize,
     chartType: isChartType,
 })
 
@@ -31,15 +29,9 @@ type Value = {
     prev: tt4b.period.Row[]
 }
 
-type PeriodRange = {
-    curr: tt4b.period.KeyRange
-    prev: tt4b.period.KeyRange
-}
-
 type Context = {
     value: Ref<Value>
     filter: FilterOption
-    periodRange: Ref<PeriodRange>
 }
 
 const computeRange = (dateRange: [number, number]): PeriodRange => {
@@ -75,13 +67,11 @@ export const initProvider = () => {
         defaultValue: { curr: [], prev: [] },
     })
 
-    useProvide<Context>(NAMESPACE, { value, filter, periodRange })
+    useProvide<Context>(NAMESPACE, { value, filter })
 
-    return filter
+    return { filter, periodRange }
 }
 
 export const usePeriodValue = () => useProvider<Context, 'value'>(NAMESPACE, "value").value
 
 export const usePeriodFilter = () => useProvider<Context, 'filter'>(NAMESPACE, "filter").filter
-
-export const usePeriodRange = () => useProvider<Context, 'periodRange'>(NAMESPACE, "periodRange").periodRange

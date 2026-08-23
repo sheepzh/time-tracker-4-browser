@@ -7,9 +7,8 @@ import Flex from "@pages/components/Flex"
 import { sum } from "@util/array"
 import { getHost } from "@util/stat"
 import { computed, defineComponent } from "vue"
-import { FilterOption, useHabitFilter } from "../context"
+import { useHabitFilter } from "../context"
 import { computeAverageLen } from "./common"
-import { useRows } from "./context"
 
 type Result = {
     focus: {
@@ -24,8 +23,8 @@ type Result = {
     exclusiveToday4Average: boolean
 }
 
-const computeSummary = (rows: tt4b.stat.Row[] = [], filter: FilterOption): Result => {
-    const [averageLen, exclusiveToday4Average, exclusiveDate] = computeAverageLen(filter.dateRange)
+const computeSummary = (rows: tt4b.stat.Row[], dateRange: [number, number]): Result => {
+    const [averageLen, exclusiveToday4Average, exclusiveDate] = computeAverageLen(dateRange)
     const totalFocus = sum(rows.map(r => r.focus))
     const totalFocus4Average = exclusiveDate ? sum(rows.filter(r => r.date !== exclusiveDate).map(r => r.focus)) : totalFocus
     const totalTime = sum(rows.map(r => r.time))
@@ -51,10 +50,9 @@ const computeCountText = (count: Result['count']): string => {
     return [time ? `${time}` : '-', site ? `${site}` : '-'].join(" / ")
 }
 
-const _default = defineComponent(() => {
+const _default = defineComponent<{ rows: tt4b.stat.Row[] }>(props => {
     const filter = useHabitFilter()
-    const rows = useRows()
-    const summary = computed(() => computeSummary(rows.value, filter))
+    const summary = computed(() => computeSummary(props.rows, filter.dateRange))
     const isXs = useXsState()
 
     return () => (
@@ -77,6 +75,6 @@ const _default = defineComponent(() => {
             />
         </Flex>
     )
-})
+}, { props: ['rows'] })
 
 export default _default

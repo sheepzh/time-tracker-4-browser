@@ -24,7 +24,7 @@ type EcOption = ComposeOption<
     | TitleComponentOption
 >
 
-type BizOption = {
+export type BizOption = {
     rows: tt4b.stat.Row[]
     timeFormat: tt4b.ui.TimeFormat
 }

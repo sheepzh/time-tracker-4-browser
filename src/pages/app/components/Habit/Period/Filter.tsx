@@ -7,30 +7,20 @@
 
 import { SelectFilter } from '@app/components/common/filter'
 import { t } from '@app/locale'
-import { type HabitMessage } from '@i18n/message/app/habit'
 import Flex from '@pages/components/Flex'
 import { ElRadioButton, ElRadioGroup } from 'element-plus'
 import { defineComponent } from 'vue'
-import { type ChartType, isChartType, usePeriodFilter } from './context'
+import { usePeriodFilter } from './context'
+import { type ChartType, isChartType, isPeriodSize, type PeriodSize } from './types'
 
-// [value, label]
-type _SizeOption = [number, keyof HabitMessage['period']['sizes']]
-
-function allOptions(): Record<number, string> {
-    const allOptions: Record<number, string> = {}
-    const allSizes: _SizeOption[] = [
-        [1, 'fifteen'],
-        [2, 'halfHour'],
-        [4, 'hour'],
-        [8, 'twoHour'],
-    ]
-    allSizes.forEach(
-        ([size, msg]) => (allOptions[size] = t((root) => root.habit.period.sizes[msg]))
-    )
-    return allOptions
+const PERIODS: Record<PeriodSize, string> = {
+    1: t(msg => msg.habit.period.sizes.fifteen),
+    2: t(msg => msg.habit.period.sizes.halfHour),
+    4: t(msg => msg.habit.period.sizes.hour),
+    8: t(msg => msg.habit.period.sizes.twoHour),
 }
 
-const CHART_CONFIG: Record<ChartType, string> = {
+const CHARTS: Record<ChartType, string> = {
     average: t(msg => msg.habit.period.chartType.average),
     trend: t(msg => msg.habit.period.chartType.trend),
     stack: t(msg => msg.habit.period.chartType.stack),
@@ -42,24 +32,18 @@ const _default = defineComponent(() => {
     return () => (
         <Flex justify="space-between">
             <SelectFilter
-                modelValue={filter.periodSize?.toString?.()}
-                options={allOptions()}
+                modelValue={`${filter.periodSize}`}
+                options={PERIODS}
                 onChange={val => {
-                    if (!val) return
-                    const newPeriodSize = parseInt(val)
-                    if (isNaN(newPeriodSize)) return
-                    filter.periodSize = newPeriodSize
+                    const intVal = parseInt(val ?? '')
+                    isPeriodSize(intVal) && (filter.periodSize = intVal)
                 }}
             />
             <ElRadioGroup
                 modelValue={filter.chartType}
                 onChange={val => isChartType(val) && (filter.chartType = val)}
             >
-                {Object.entries(CHART_CONFIG).map(([type, name]) => (
-                    <ElRadioButton value={type}>
-                        {name}
-                    </ElRadioButton>
-                ))}
+                {Object.entries(CHARTS).map(([value, label]) => <ElRadioButton {...{ value, label }} />)}
             </ElRadioGroup>
         </Flex>
     )

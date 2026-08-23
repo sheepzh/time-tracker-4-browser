@@ -1,4 +1,4 @@
-import { isOptionalIntArray } from '@app/util/limit/types'
+import { isOptionalIntArray } from '@app/util/types'
 import { localReactive, useProvide, useProvider } from '@hooks'
 import { createObjectGuard } from 'typescript-guard'
 import { reactive, Ref, ref, toRefs } from 'vue'
