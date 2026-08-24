@@ -16,6 +16,10 @@ export type SiteManageMessage = {
         icon: string
         white: string
         whiteInfo: string
+        runtime: string
+        runtimeInfo: string
+        mediaTime: string
+        mediaTimeInfo: string
     }
     typeInfo: Record<tt4b.site.Type, string>
     cate: {
