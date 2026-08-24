@@ -34,28 +34,44 @@ const OptionsColumn = defineComponent<{ onChanged: NoArgCallback }>(props => {
                 }}
             />
             <ElTableColumn
-                label={t(msg => msg.item.run)}
+                label={t(msg => msg.siteManage.column.runtime)}
                 align='center'
-                v-slots={({ row }: RenderParam) => (
-                    <ElSwitch
-                        data-testid='run'
-                        size='small'
-                        modelValue={row.options?.run}
-                        onChange={val => changeOption(row, 'run', val)}
-                    />
-                )}
+                v-slots={{
+                    header: () => (
+                        <ColumnHeader
+                            label={t(msg => msg.siteManage.column.runtime)}
+                            tooltip={t(msg => msg.siteManage.column.runtimeInfo)}
+                        />
+                    ),
+                    default: ({ row }: RenderParam) => (
+                        <ElSwitch
+                            data-testid='run'
+                            size='small'
+                            modelValue={row.options?.run}
+                            onChange={val => changeOption(row, 'run', val)}
+                        />
+                    )
+                }}
             />
             <ElTableColumn
-                label={t(msg => msg.item.media)}
+                label={t(msg => msg.siteManage.column.mediaTime)}
                 align='center'
-                v-slots={({ row }: RenderParam) => (
-                    <ElSwitch
-                        data-testid='media'
-                        size='small'
-                        modelValue={row.options?.media}
-                        onChange={val => changeOption(row, 'media', val)}
-                    />
-                )}
+                v-slots={{
+                    header: () => (
+                        <ColumnHeader
+                            label={t(msg => msg.siteManage.column.mediaTime)}
+                            tooltip={t(msg => msg.siteManage.column.mediaTimeInfo)}
+                        />
+                    ),
+                    default: ({ row }: RenderParam) => (
+                        <ElSwitch
+                            data-testid='media'
+                            size='small'
+                            modelValue={row.options?.media}
+                            onChange={val => changeOption(row, 'media', val)}
+                        />
+                    )
+                }}
             />
         </ElTableColumn>
     )
