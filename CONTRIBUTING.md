@@ -283,7 +283,7 @@ time-tracker-4-browser/
 
 ## Code format
 
-Please use the code formatting tools that come with VSCode. Please <u>**disable Prettier Eslint**</u> and other formatting tools
+Please use the code formatting tools that come with VSCode. Please <u>**disable Prettier, Eslint**</u> and other formatting tools. Prettier and ESLint are disabled automatically via the configuration for this project.
 
 -   Use single quotes whenever possible
 -   Keep the code as concise as possible while being grammatically correct.
