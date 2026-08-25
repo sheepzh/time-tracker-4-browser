@@ -8,6 +8,8 @@
     },
     "editor.foldingImportsByDefault": true,
     "editor.trimAutoWhitespace": true,
+    "eslint.enable": false,
+    "prettier.enable": false,
     "js/ts.format.insertSpaceAfterCommaDelimiter": true,
     "js/ts.preferences.quoteStyle": "single",
     "js/ts.format.semicolons": "remove",
