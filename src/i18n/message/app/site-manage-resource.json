@@ -111,9 +111,7 @@
             "icon": "Icon",
             "white": "Whitelist",
             "whiteInfo": "Whitelisted sites are not tracked or blocked.",
-            "runtime": "Run Time",
             "runtimeInfo": "Record the time a website is open. Does not require the website's tab to active, or the window to be focused.",
-            "mediaTime": "Media Time",
             "mediaTimeInfo": "Record the time a website is playing audio."
         },
         "typeInfo": {
