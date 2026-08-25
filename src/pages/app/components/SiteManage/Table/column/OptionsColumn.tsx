@@ -14,7 +14,6 @@ const OptionsColumn = defineComponent<{ onChanged: NoArgCallback }>(props => {
     return () => (
         <ElTableColumn align='center' label={t(msg => msg.button.configuration)}>
             <ElTableColumn
-                label={t(msg => msg.siteManage.column.white)}
                 align='center'
                 v-slots={{
                     header: () => (
@@ -34,12 +33,11 @@ const OptionsColumn = defineComponent<{ onChanged: NoArgCallback }>(props => {
                 }}
             />
             <ElTableColumn
-                label={t(msg => msg.siteManage.column.runtime)}
                 align='center'
                 v-slots={{
                     header: () => (
                         <ColumnHeader
-                            label={t(msg => msg.siteManage.column.runtime)}
+                            label={t(msg => msg.item.run)}
                             tooltip={t(msg => msg.siteManage.column.runtimeInfo)}
                         />
                     ),
@@ -54,12 +52,11 @@ const OptionsColumn = defineComponent<{ onChanged: NoArgCallback }>(props => {
                 }}
             />
             <ElTableColumn
-                label={t(msg => msg.siteManage.column.mediaTime)}
                 align='center'
                 v-slots={{
                     header: () => (
                         <ColumnHeader
-                            label={t(msg => msg.siteManage.column.mediaTime)}
+                            label={t(msg => msg.item.media)}
                             tooltip={t(msg => msg.siteManage.column.mediaTimeInfo)}
                         />
                     ),
