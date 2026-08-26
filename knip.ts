@@ -8,11 +8,10 @@ const config: KnipConfig = {
         "src/content-script/index.ts",
         "src/content-script/limit/modal/index.ts",
         "script/user-chart/{add,render}.ts",
-        "examples/gist/mock-server.ts",
-        "examples/notification/demo-server.ts",
         // The setup file is referenced by `test/rstest.config.mts`.
         "test/__setup__.ts",
     ],
+    ignore: "examples/**",
     ignoreDependencies: [
         "@rstest/coverage-istanbul",
     ],

@@ -1,20 +1,27 @@
 import { IS_FIREFOX } from '@util/constant/environment'
-import hash from 'hash.js'
 import type { NotificationData, NotificationMeta, NotificationRequest, Notifier } from '../types'
 
-function buildHeaders(meta: NotificationMeta, token: string | undefined): Record<string, string> {
+async function buildHeaders(meta: NotificationMeta, token: string | undefined): Promise<Record<string, string>> {
     const headers: Record<string, string> = {
         'Content-Type': 'application/json',
     }
     if (token) {
-        const sign = genSign(meta, token)
+        const sign = await genSign(meta, token)
         headers['Tt4b-Sign'] = sign
     }
     return headers
 }
 
-function genSign(meta: NotificationMeta, auth: string): string {
-    return hash.hmac(hash.sha256 as any, auth).update(meta).digest('hex')
+const textEncoder = new TextEncoder()
+
+async function genSign(meta: NotificationMeta, auth: string): Promise<string> {
+    const key = await crypto.subtle.importKey(
+        'raw', textEncoder.encode(auth),
+        { name: 'HMAC', hash: 'SHA-256' },
+        false, ['sign'],
+    )
+    const signature = await crypto.subtle.sign('HMAC', key, textEncoder.encode(JSON.stringify(meta)))
+    return Array.from(new Uint8Array(signature)).map(b => b.toString(16).padStart(2, '0')).join('')
 }
 
 export default class CallbackNotifier implements Notifier {
@@ -49,7 +56,7 @@ export default class CallbackNotifier implements Notifier {
         }
 
         const { meta } = data
-        const headers = buildHeaders(meta, authToken)
+        const headers = await buildHeaders(meta, authToken)
 
         const response = await fetch(endpoint, {
             method: 'POST', headers,
