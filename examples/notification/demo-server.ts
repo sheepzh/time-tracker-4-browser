@@ -4,7 +4,7 @@ import { createServer } from "http"
 const AUTH: string | undefined = process.env.AUTH
 
 function genSign(meta: any, auth: string): string {
-    return hash.hmac(hash.sha256 as any, auth).update(meta).digest('hex')
+    return hash.hmac(hash.sha256 as any, auth).update(JSON.stringify(meta)).digest('hex')
 }
 
 function verifySign(meta: any, receivedSign: string | string[] | undefined): boolean {
