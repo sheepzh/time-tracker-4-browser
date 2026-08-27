@@ -7,7 +7,9 @@
             "cate": "网站类目",
             "icon": "网站图标",
             "white": "白名单",
-            "whiteInfo": "白名单内的网站不会被追踪或拦截。"
+            "whiteInfo": "白名单内的网站不会被追踪或拦截。",
+            "runtimeInfo": "记录网站运行的时间。不需要网站处于焦点状态。",
+            "mediaTimeInfo": "记录网站播放音频或者视频的时间。"
         },
         "typeInfo": {
             "normal": "按域名的维度统计",
