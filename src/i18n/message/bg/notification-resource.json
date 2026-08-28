@@ -34,5 +34,11 @@
             "focusResumeMsg": "La pause est terminée. Il est temps de se recentrer !"
         },
         "dailySummary": "Temps de focus : {focus}, Visites : {visit}, Sites : {siteCount}"
+    },
+    "pt_PT": {
+        "focus": {
+            "breakStartMsg": "Faça uma pequena pausa. Parabéns!"
+        },
+        "dailySummary": "Tempo de foco: {focus}, Visitas: {visit}, Sites: {siteCount}"
     }
 }

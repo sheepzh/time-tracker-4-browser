@@ -230,8 +230,8 @@
             "batchDisassociate": "Desassociar categorias"
         },
         "form": {
-            "emptyAlias": "Introduza o nome do site",
-            "emptyHost": "Introduza o URL do site"
+            "emptyAlias": "Insira o nome do site",
+            "emptyHost": "Insira o URL do site"
         },
         "msg": {
             "hostExistWarn": "{host} já existe",
