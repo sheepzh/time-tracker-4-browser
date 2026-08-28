@@ -575,8 +575,11 @@
                 "strictTitle": "Confirmação",
                 "strictContent": "Se selecionado, não poderá desbloquear manualmente - apenas esperar até ao dia seguinte. Configurações incorretas podem afetar sua rotina!",
                 "pswFormLabel": "Senha",
-                "pswFormAgain": "Confirmar senha"
-            }
+                "pswFormAgain": "Confirmar senha",
+                "twoFaCopyLink": "Copiar link",
+                "twoFaVerifyLabel": "Insira o código de 6 dígitos para verificar"
+            },
+            "unblockDuration": "Adiar por {input} minutos a cada vez"
         },
         "backup": {
             "title": "Cópia de Segurança",
@@ -622,6 +625,13 @@
         "accessibility": {
             "title": "Acessibilidade",
             "chartDecal": "{input} Mostrar decalque no gráfico"
+        },
+        "notification": {
+            "title": "Notificações",
+            "cycle": {
+                "daily": "Diariamente",
+                "weekly": "Semanalmente"
+            }
         },
         "button": {
             "reset": "Repor",

@@ -40,11 +40,15 @@
         "about": "について"
     },
     "pt_PT": {
+        "tracking": "Rastreamento",
         "dashboard": "Painel",
         "record": "Registos",
+        "analysis": "Estatísticas",
         "siteAnalysis": "Análise de Sites",
         "habit": "Hábitos",
+        "productivity": "Produtividade",
         "other": "Outras Opções",
+        "migration": "Migração de dados",
         "about": "Sobre"
     },
     "uk": {
