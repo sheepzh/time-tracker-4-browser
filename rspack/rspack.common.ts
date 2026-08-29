@@ -78,7 +78,7 @@ const staticOptions: Configuration = {
         rules: [
             {
                 test: /\.tsx?$/,
-                exclude: /^(node_modules|test|script)/,
+                exclude: /^(node_modules|test|script|examples)/,
                 use: [{
                     loader: 'babel-loader',
                     options: {
@@ -214,6 +214,7 @@ const generateOption = ({ outputPath, manifest, mode }: Option) => {
                     { file: 'test/**' },
                     { file: 'test-e2e/**' },
                     { file: 'script/**' },
+                    { file: 'examples/**' }
                 ],
             },
         }),
