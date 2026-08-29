@@ -6,6 +6,7 @@
  */
 
 import { listTabs, sendMsg2Tab } from "@api/chrome/tab"
+import optionHolder from '@service/components/option-holder'
 import { getSite } from '@service/site-service'
 import { matches } from "@util/limit"
 import { extractHostname } from '@util/pattern'
@@ -23,6 +24,18 @@ function initDailyBroadcast() {
         () => getStartOfDay(new Date()) + MILL_PER_DAY,
         noticeLimitChanged,
     )
+}
+
+function initCountdownBroadcast() {
+    optionHolder.addChangeListener(async (newVal, oldVal) => {
+        if (newVal.limitCountdown === oldVal.limitCountdown) return
+        const tabs = await listTabs()
+        for (const { id: tabId } of tabs) {
+            try {
+                tabId && await sendMsg2Tab(tabId, 'limitCountdownChanged')
+            } catch { }
+        }
+    })
 }
 
 const processAskHitVisit = async (item: tt4b.limit.Item) => {
@@ -55,6 +68,7 @@ async function querySummary(): Promise<tt4b.limit.Summary | undefined> {
 
 export default function init(dispatcher: MessageDispatcher) {
     initDailyBroadcast()
+    initCountdownBroadcast()
 
     dispatcher
         .register('limit.list', selectLimit)

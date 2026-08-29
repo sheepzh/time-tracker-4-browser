@@ -12,7 +12,7 @@ class VisitProcessor implements Processor {
     #rules: tt4b.limit.Rule[] = []
     #tracker: NormalTracker
     #delayCount: number = 0
-    #listener?: ArgCallback<number>
+    #listeners: ArgCallback<number>[] = []
     #lastUrl: string
 
     constructor(
@@ -39,11 +39,12 @@ class VisitProcessor implements Processor {
     }
 
     onChange(listener: ArgCallback<number>) {
-        this.#listener = listener
+        this.#listeners.push(listener)
+        listener(this.#mills)
     }
 
     #notify() {
-        this.#listener?.(this.#mills)
+        this.#listeners.forEach(l => l(this.#mills))
     }
 
     private hasLimited(rule: tt4b.limit.Rule): boolean {

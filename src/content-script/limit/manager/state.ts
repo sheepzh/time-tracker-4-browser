@@ -12,10 +12,14 @@ const TYPE_SORT: Record<ReasonType, number> = {
 
 class LimitState extends BasePauseDetector {
     #items: Reason[] = []
-    #listener?: ArgCallback<Reason | undefined>
+    #listeners: ArgCallback<Reason | undefined>[] = []
 
     get reasons() {
         return this.#items
+    }
+
+    get #current() {
+        return this.#items[0]
     }
 
     get paused() {
@@ -23,8 +27,8 @@ class LimitState extends BasePauseDetector {
     }
 
     onChange(listener: ArgCallback<Reason | undefined>) {
-        this.#listener = listener
-        this.#notify()
+        this.#listeners.push(listener)
+        listener(this.#current)
     }
 
     add(...reasons: Reason[]): void {
@@ -48,7 +52,8 @@ class LimitState extends BasePauseDetector {
     }
 
     #notify() {
-        this.#listener?.(this.#items[0])
+        const curr = this.#current
+        this.#listeners.forEach(l => l(curr))
         super.notify()
     }
 }

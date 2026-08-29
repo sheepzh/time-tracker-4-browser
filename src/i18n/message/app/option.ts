@@ -65,6 +65,7 @@ export type OptionMessage = {
             twoFaVerifyLabel: string
         }
         unblockDuration: string
+        countdown: string
     }
     backup: {
         title: string
