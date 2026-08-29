@@ -73,6 +73,10 @@
     },
     "exclude": [
         "node_modules",
-        "dist"
+        "dist",
+        "test",
+        "test-e2e",
+        "script",
+        "examples"
     ]
 }
