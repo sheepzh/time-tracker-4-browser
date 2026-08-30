@@ -1,17 +1,21 @@
 import { t } from '@cs/locale'
 import { formatPeriodCommon, MILL_PER_MINUTE, MILL_PER_SECOND } from '@util/time'
 import { mountStyle } from '../style'
-import { CountdownData, Dimension, HALF_SIZE, ICON_SIZE, Position, RemainingItem } from './common'
+import type { CountdownData, Dimension, RemainingItem } from './types'
 
 const CONTAINER_CLS = 'countdown-container'
 const TOOLTIP_CLS = 'tooltip'
+const ICON_SIZE = 40
+const HALF_SIZE = ICON_SIZE / 2
 const STROKE_WIDTH = 3
 const RADIUS = (ICON_SIZE - STROKE_WIDTH) / 2
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS
 
 type Stage = 'enough' | 'warning' | 'short'
 
-type Edge = 'left' | 'right' | 'top' | 'bottom'
+type Edge = 'left' | 'right'
+
+type Position = { x: number, y: number }
 
 const DIMENSION_LABELS: Record<Dimension, string> = {
     daily: t(msg => msg.calendar.range.today),
@@ -23,6 +27,29 @@ const STAGE_COLORS: Record<Stage, string> = {
     enough: '#67C23A',
     warning: '#E6A23C',
     short: '#F56C6C',
+}
+
+
+
+abstract class VNode<State, K extends keyof HTMLElementTagNameMap> {
+    el: HTMLElementTagNameMap[K]
+
+    constructor(protected state: State | null = null) {
+        this.el = this.init()
+    }
+
+    protected abstract init(): HTMLElementTagNameMap[K]
+
+    render(state: State) {
+        if (this.sameAsCurrent(state)) return
+        this.doRender(this.state = state)
+    }
+
+    protected sameAsCurrent(newState: State) {
+        return newState === this.state
+    }
+
+    protected abstract doRender(state: State): void
 }
 
 function getStage(remaining: number, total: number): Stage {
@@ -70,19 +97,24 @@ function createSvgRing() {
     return { svg, circle }
 }
 
-function createTextEl() {
-    const el = document.createElement('span')
-    mountStyle(el, {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        fontSize: '12px',
-        fontWeight: 'bold',
-        color: '#303133',
-        userSelect: 'none',
-    })
-    return el
+class CenterText extends VNode<string, 'span'> {
+    protected init(): HTMLSpanElement {
+        const el = document.createElement('span')
+        mountStyle(el, {
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            fontSize: '11px',
+            color: '#303133',
+            userSelect: 'none',
+        })
+        return el
+    }
+
+    protected doRender(state: string): void {
+        this.el.innerText = state
+    }
 }
 
 function createTooltip() {
@@ -165,8 +197,6 @@ function createIcon(): IconInstance {
         .pulse { animation: pulse 1.5s ease-in-out infinite; }
         .edge-left { transform: translateX(${HALF_SIZE}px); }
         .edge-right { transform: translateX(-${HALF_SIZE}px); }
-        .edge-top { transform: translateY(${HALF_SIZE}px); }
-        .edge-bottom { transform: translateY(-${HALF_SIZE}px); }
         .${TOOLTIP_CLS} {
             position: absolute;
             opacity: 0;
@@ -189,20 +219,6 @@ function createIcon(): IconInstance {
             bottom: auto;
             transform: translateY(-50%);
         }
-        .edge-top .${TOOLTIP_CLS} {
-            top: calc(100% + 8px);
-            bottom: auto;
-            left: 50%;
-            right: auto;
-            transform: translateX(-50%);
-        }
-        .edge-bottom .${TOOLTIP_CLS} {
-            top: auto;
-            bottom: calc(100% + 8px);
-            left: 50%;
-            right: auto;
-            transform: translateX(-50%);
-        }
     `
     shadow.append(style)
 
@@ -212,21 +228,31 @@ function createIcon(): IconInstance {
     const { svg, circle } = createSvgRing()
     container.append(svg)
 
-    const textEl = createTextEl()
-    container.append(textEl)
+    const text = new CenterText()
+    container.append(text.el)
 
     const tooltip = createTooltip()
     container.append(tooltip)
 
-    const render = (position: Position, { remaining, total, all }: CountdownData) => {
-        const stage = getStage(remaining, total)
-        textEl.innerText = getCenterText(remaining)
-        circle.setAttribute('stroke', STAGE_COLORS[stage])
-        circle.setAttribute('stroke-dashoffset', String(CIRCUMFERENCE * (1 - remaining / total)))
+    let lastStage: Stage | null = null
+    let lastEdge: Edge | null = null
 
-        container.classList.toggle('pulse', stage === 'short')
-        container.classList.remove('edge-left', 'edge-right', 'edge-top', 'edge-bottom')
-        container.classList.add(`edge-${getEdge(position)}`)
+    const render = (position: Position, { remaining, total, all }: CountdownData) => {
+        text.render(getCenterText(remaining))
+        const stage = getStage(remaining, total)
+        const edge = getEdge(position)
+        if (stage !== lastStage) {
+            lastStage = stage
+            circle.setAttribute('stroke', STAGE_COLORS[stage])
+            container.classList.toggle('pulse', stage === 'short')
+        }
+
+        circle.setAttribute('stroke-dashoffset', String(CIRCUMFERENCE * (1 - remaining / total)))
+        if (lastEdge !== edge) {
+            lastEdge = edge
+            container.classList.remove('edge-left', 'edge-right')
+            container.classList.add(`edge-${edge}`)
+        }
 
         updateTooltip(tooltip, all)
     }
@@ -245,16 +271,9 @@ function clampPosition({ x, y }: Position): Position {
 }
 
 function getEdge(position: Position): Edge {
-    const { w, h } = getViewportSize()
-    let { x, y } = clampPosition(position)
-
-    const distances: Record<Edge, number> = {
-        left: x, right: w - x,
-        top: y, bottom: h - y,
-    }
-    const minDistance = Object.entries(distances)
-        .sort((a, b) => a[1] - b[1])[0]
-    return (minDistance?.[0] ?? 'right') as Edge
+    const { w } = getViewportSize()
+    let { x } = clampPosition(position)
+    return x < w - x ? 'left' : 'right'
 }
 
 function defaultPosition(): Position {
@@ -265,18 +284,11 @@ function defaultPosition(): Position {
 function snapPosition(position: Position): Position {
     const { w, h } = getViewportSize()
     const { x, y } = clampPosition(position)
-    const distances: Record<Edge, number> = {
-        left: x, right: w - x,
-        top: y, bottom: h - y,
-    }
-    const edge: Edge = (Object.entries(distances)
-        .sort((a, b) => a[1] - b[1])[0]?.[0] ?? 'right') as Edge
+    const edge = x < w - x ? 'left' : 'right'
     const clamp = (value: number, max: number) => Math.max(HALF_SIZE, Math.min(max - HALF_SIZE, value))
     const strategies: Record<Edge, () => Position> = {
         left: () => ({ x: 0, y: clamp(y, h) }),
         right: () => ({ x: w, y: clamp(y, h) }),
-        top: () => ({ x: clamp(x, w), y: 0 }),
-        bottom: () => ({ x: clamp(x, y), y: h }),
     }
     return strategies[edge]()
 }

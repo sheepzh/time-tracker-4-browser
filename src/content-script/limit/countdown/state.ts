@@ -1,29 +1,32 @@
-import { MILL_PER_MINUTE } from '@util/time'
-import { CountdownData, Dimension, RemainingItem, TIMER_INTERVAL } from './common'
+import { MILL_PER_MINUTE, MILL_PER_SECOND } from '@util/time'
+import type { CountdownData, Dimension, RemainingItem } from './types'
 
 const ALL_DIMENSIONS: Dimension[] = ['daily', 'weekly', 'visit']
 
-export class CountdownModel {
-    enabled: boolean = false
-    limited: boolean = false
+export class CountdownState {
     delayDuration: number = 0
+    #delayCount: number = 0
     #rules: tt4b.limit.Item[] = []
     #visitMills: number = 0
     #activeMills: number = 0
-    #delayCount: number = 0
 
+    /**
+     * Calculate the milliseconds of each dimension
+     */
     #dimStrategy: Record<Dimension, (item: tt4b.limit.Item) => [total: number, used: number] | undefined> = {
-        daily: ({ time: total, waste, delayCount }) => {
-            if (!total) return undefined
+        daily: ({ time, waste, delayCount }) => {
+            if (!time) return undefined
+            const total = time * MILL_PER_SECOND
             const used = waste + this.#activeMills - delayCount * this.delayDuration * MILL_PER_MINUTE
             return [total, used]
         },
-        weekly: ({ weekly: total, weeklyWaste: waste, weeklyDelayCount: delayCount }) => {
-            if (!total) return undefined
+        weekly: ({ weekly, weeklyWaste: waste, weeklyDelayCount: delayCount }) => {
+            if (!weekly) return undefined
+            const total = weekly * MILL_PER_SECOND
             const used = waste + this.#activeMills - delayCount * this.delayDuration * MILL_PER_MINUTE
             return [total, used]
         },
-        visit: ({ visitTime: total }) => total ? [total, this.#visitMills] : undefined,
+        visit: ({ visitTime }) => visitTime ? [visitTime * MILL_PER_SECOND, this.#visitMills] : undefined,
     }
 
     set rules(rules: tt4b.limit.Item[]) {
@@ -36,12 +39,12 @@ export class CountdownModel {
         this.#visitMills = val
     }
 
-    onDelay() {
+    incDelayCount() {
         this.#delayCount++
     }
 
-    onActiveTick() {
-        this.#activeMills += TIMER_INTERVAL
+    addActiveTime(mills: number) {
+        this.#activeMills += mills
     }
 
     resetTime() {

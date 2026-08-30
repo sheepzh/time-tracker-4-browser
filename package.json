@@ -56,7 +56,7 @@
         "postcss-rtlcss": "^6.0.0",
         "puppeteer": "^25.9.0",
         "ts-checker-rspack-plugin": "^1.6.1",
-        "tsx": "^4.23.12",
+        "tsx": "^4.23.13",
         "typescript": "7.0.2",
         "unplugin-element-plus": "^0.11.2"
     },
