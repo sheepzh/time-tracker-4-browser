@@ -24,8 +24,7 @@ const openAppPage = async () => {
             await updateTab(tabId2Jump, { highlighted: true, active: true })
             return
         }
-    } catch (ignored) {
-    }
+    } catch { }
     // fall back to open new tab
     await createTab(appPageUrl)
 }

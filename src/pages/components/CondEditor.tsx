@@ -81,6 +81,7 @@ const TagList: FunctionalComponent<{ list: string[], onRemove: ArgCallback<strin
             <Flex width="100%" wrap gap={4}>
                 {list.map(url => (
                     <ElTag
+                        key={url}
                         type={tagType(url)}
                         disableTransitions
                         closable

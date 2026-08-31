@@ -81,7 +81,7 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
         const { rows, query, donutChart, cateNameMap } = result
         const { dimension } = query
         const selected: tt4b.stat.Row | undefined = this.selectedCache
-            ? rows.filter(isCate).filter(r => r.cateKey === this.selectedCache)[0]
+            ? rows.filter(isCate).find(r => r.cateKey === this.selectedCache)
             : undefined
 
         const textColor = getPrimaryTextColor()

@@ -16,7 +16,7 @@ function normalizeIndex<T = Record<string, number>>(index: Index<T>): IndexConfi
 }
 
 function formatIdxName<T = Record<string, number>>(key: IndexConfig<T>['key']): string {
-    const keyStr = Array.isArray(key) ? [...key].sort().join('_') : key
+    const keyStr = Array.isArray(key) ? [...key].sort((a, b) => a.localeCompare(b)).join('_') : key
     return `idx_${keyStr}`
 }
 
@@ -25,7 +25,7 @@ export function req2Promise<T = unknown>(req: IDBRequest<T>): Promise<T | undefi
         req.onsuccess = () => resolve(req.result)
         req.onerror = (ev) => {
             console.error("Failed to request indexed-db", ev, req.error)
-            reject(req.error)
+            reject(new Error("Failed to request indexed-db", { cause: req.error }))
         }
     })
 }
@@ -59,7 +59,7 @@ export async function iterateCursor<T = unknown>(
             }
         }
 
-        req.onerror = () => reject(req.error)
+        req.onerror = () => reject(new Error("Failed to iterate cursor", { cause: req.error }))
     })
 }
 
@@ -103,9 +103,9 @@ export type IndexResult<FilterCoverage> = {
 }
 
 export abstract class BaseIDBStorage<T = Record<string, unknown>> {
-    #DB_NAME = `tt4b_${chrome.runtime.id}` as const
+    readonly #DB_NAME = `tt4b_${chrome.runtime.id}` as const
     #db: IDBDatabase | undefined
-    static #initPromises = new Map<string, Promise<IDBDatabase>>()
+    static readonly #initPromises = new Map<string, Promise<IDBDatabase>>()
 
     abstract indexes: Index<T>[]
     abstract key: Key<T> | Key<T>[]
@@ -277,7 +277,7 @@ export abstract class BaseIDBStorage<T = Record<string, unknown>> {
                 const transaction = trans
                 await new Promise<void>((resolve, reject) => {
                     transaction.oncomplete = () => resolve()
-                    transaction.onerror = () => reject(transaction.error)
+                    transaction.onerror = () => reject(new Error("Transaction error", { cause: transaction.error }))
                     transaction.onabort = () => reject(new Error('Transaction aborted'))
                 })
                 return result
@@ -289,7 +289,7 @@ export abstract class BaseIDBStorage<T = Record<string, unknown>> {
                     if (trans && !trans.error && trans.mode !== 'readonly') {
                         try {
                             trans.abort()
-                        } catch (ignored) { }
+                        } catch { }
                     }
                     throw e
                 }

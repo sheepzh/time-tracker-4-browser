@@ -21,11 +21,8 @@ async function reloadContentScript() {
 }
 
 function initQuestionnaire() {
-    try {
-        setUninstallURL(UNINSTALL_QUESTIONNAIRE[locale] ?? UNINSTALL_QUESTIONNAIRE['en'])
-    } catch (e) {
-        console.error("Failed to set uninstall URL", e)
-    }
+    setUninstallURL(UNINSTALL_QUESTIONNAIRE[locale] ?? UNINSTALL_QUESTIONNAIRE['en'])
+        .catch(e => console.error("Failed to set uninstall URL", e))
 }
 
 export function initAfterInstalled() {

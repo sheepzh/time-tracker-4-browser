@@ -23,7 +23,7 @@ const DropButton: FunctionalComponent<DropButtonProps> = ({ options, ...buttonPr
     <ElDropdown v-slots={{
         default: () => <ElButton {...buttonProps} style={{ cursor: 'default' }} />,
         dropdown: () => <ElDropdownMenu>
-            {Object.entries(options).map(([l, action]) => <ElDropdownItem onClick={action}>{l}</ElDropdownItem>)}
+            {Object.entries(options).map(([l, action]) => <ElDropdownItem key={l} onClick={action}>{l}</ElDropdownItem>)}
         </ElDropdownMenu>
     }} />
 )

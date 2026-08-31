@@ -24,7 +24,7 @@ const CategoryEditable = defineComponent<Props>(props => {
     })
 
     const { refresh: doSave } = useManualRequest(async (cateId: number | string | undefined) => {
-        const realCateId = typeof cateId === 'string' ? parseInt(cateId) : cateId
+        const realCateId = typeof cateId === 'string' ? Number.parseInt(cateId) : cateId
         await changeSitesCate(realCateId, props.siteKey)
         return realCateId
     }, {

@@ -83,7 +83,7 @@ function initElapsed(
         now.value = Date.now()
 
         const s = session.value
-        if (!s || s.state !== 'running' || loading.value) return
+        if (s?.state !== 'running' || loading.value) return
         const total = s.phase === 'focus' ? s.duration : s.break
         if (!total) return
         const lastPoint = findLastStartTs(s)
@@ -110,11 +110,13 @@ export const initFocusContext = () => {
         if (!m) return
 
         if (m === 'pomodoro' && (!form.duration || !form.break)) {
-            return void ElMessage.error(t(msg => msg.focus.noTime))
+            ElMessage.error(t(msg => msg.focus.noTime))
+            return
         }
         if (m === 'focus' && !form.cond.length) {
             if (form.policy === 'allow') {
-                return void ElMessage.error(t(msg => msg.focus.noAllowUrl))
+                ElMessage.error(t(msg => msg.focus.noAllowUrl))
+                return
             } else if (form.policy === 'block') {
                 const data = await ElMessageBox.confirm(
                     t(msg => msg.focus.noBlockUrl),

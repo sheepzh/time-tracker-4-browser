@@ -29,7 +29,7 @@ const STEP_TITLES = [
 const createInitial = (url?: string): ModifyForm => {
     url = url ? cleanCond(url) : url
     return {
-        name: `RULE-${String(new Date().getTime() % 10000).padStart(4, '0')}`,
+        name: `RULE-${String(Date.now() % 10000).padStart(4, '0')}`,
         time: 3600,
         weekly: 0,
         cond: url ? [url] : [],
@@ -73,7 +73,7 @@ const _default = defineComponent((_, ctx) => {
                 const weekdaysVal = form.weekdays
                 if (!nameVal) {
                     throw new Error("Name is empty")
-                } if (!weekdaysVal?.length) {
+                } else if (!weekdaysVal?.length) {
                     throw new Error("Effective days are empty")
                 }
             } else if (current === 1) {

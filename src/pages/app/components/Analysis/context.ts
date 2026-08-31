@@ -25,7 +25,7 @@ function parseQuery(): AnalysisTarget | undefined {
     const query = useRoute().query as unknown as AppSiteAnalysisQuery
     useRouter().replace({ query: {} })
     const { host, type: siteType, cateId, url } = query
-    if (cateId) return { type: 'cate', key: parseInt(cateId) }
+    if (cateId) return { type: 'cate', key: Number.parseInt(cateId) }
     if (host && siteType) return { type: 'site', key: { host, type: siteType } }
     if (url) return { type: 'site', key: { host: extractHostname(url).host, type: 'normal' } }
     return undefined

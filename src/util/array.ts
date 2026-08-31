@@ -94,7 +94,7 @@ export function rotate<T>(arr: T[], count?: number, rightOrLeft?: boolean): void
     if (count && count > 1) {
         realTime = count
     }
-    const operation = !!rightOrLeft
+    const operation = rightOrLeft
         // Right
         ? (a: T[]) => {
             const first = a.pop()

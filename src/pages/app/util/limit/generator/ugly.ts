@@ -9,7 +9,7 @@ import { range } from "@util/array"
 import { randomIntBetween } from "@util/number"
 import type { VerificationContext, VerificationGenerator, VerificationPair } from "../types"
 
-const BASE = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\`-=[]/.,:\"<>?!@#$%^&*()_+;'/i18n".replaceAll(/[01IlLOo]/g, "")
+const BASE = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`-=[]/.,:\"<>?!@#$%^&*()_+;'/i18n".replaceAll(/[01IlLOo]/g, "")
 const BASE_LEN = BASE.length
 
 class UglyGenerator implements VerificationGenerator {

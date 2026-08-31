@@ -37,7 +37,7 @@ const IconRadioGroup: FunctionalComponent<Props> = ({
         {options.map(({ value, icon, tooltip }) => {
             const iconComp = <ElIcon size={iconSize}>{h(icon)}</ElIcon>
             return (
-                <ElRadioButton value={value} class={narrow && NARROW_CLS} >
+                <ElRadioButton key={value} value={value} class={narrow && NARROW_CLS} >
                     {tooltip ? <ElTooltip content={tooltip}>{iconComp}</ElTooltip> : iconComp}
                 </ElRadioButton>
             )

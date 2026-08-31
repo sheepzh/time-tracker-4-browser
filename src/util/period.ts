@@ -17,9 +17,7 @@ export function keyOf(time: Date | number, order?: number): tt4b.period.Key {
     const year = time.getFullYear()
     const month = time.getMonth() + 1
     const date = time.getDate()
-    order = order === undefined
-        ? time.getHours() * 4 + Math.floor(time.getMinutes() / MINUTE_PER_PERIOD)
-        : order
+    order = order ?? time.getHours() * 4 + Math.floor(time.getMinutes() / MINUTE_PER_PERIOD)
     return { year, month, date, order }
 }
 
@@ -48,9 +46,7 @@ export function getDateString(key: tt4b.period.Key) {
     return `${key.year}${key.month < 10 ? '0' : ''}${key.month}${key.date < 10 ? '0' : ''}${key.date}`
 }
 
-export function rowOf(endKey: tt4b.period.Key, duration?: number, milliseconds?: number): tt4b.period.Row {
-    duration = duration || 1
-    milliseconds = milliseconds || 0
+export function rowOf(endKey: tt4b.period.Key, duration = 1, milliseconds = 0): tt4b.period.Row {
     const date = getDateString(endKey)
     const endStart = startOfKey(endKey)
     const endTime = endStart.getTime() + MILL_PER_PERIOD
@@ -89,7 +85,7 @@ function cvt2AverageResult(map: Map<number, number>, periodSize: number, dateNum
 export function averageByDay(data: tt4b.period.Row[], periodSize: number): tt4b.period.Row[] {
     if (!data?.length) return []
     const rangeStart = data[0]?.startTime
-    const rangeEnd = data[data.length - 1]?.endTime
+    const rangeEnd = data.at(-1)?.endTime
     if (!rangeStart || !rangeEnd) return []
     const dateNum = (rangeEnd - rangeStart) / MILL_PER_DAY
     const map = generateOrderMap(data, periodSize)

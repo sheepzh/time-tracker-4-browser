@@ -31,7 +31,7 @@ const _default = defineComponent<Props>(props => {
 
     return () => (
         <p>
-            <a style={{ marginInlineEnd: '10px' }}>1.</a>
+            <span style={{ marginInlineEnd: '10px' }}>1.</span>
             {tN(msg => msg.dataManage.filterDate, {
                 picker: <ElDatePicker
                     modelValue={props.modelValue}

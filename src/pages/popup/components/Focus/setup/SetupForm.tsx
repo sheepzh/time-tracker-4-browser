@@ -88,10 +88,7 @@ const SetupForm = defineComponent<{}>(() => {
                 <Flex width='100%' justify='space-between' gap={5}>
                     <ElRadioGroup modelValue={form.policy} onChange={v => isPolicy(v) && (form.policy = v)}>
                         {ALL_FOCUS_POLICIES.map(m => (
-                            <ElRadioButton
-                                value={m}
-                                label={t(msg => msg.focus.policy[m].label)}
-                            />
+                            <ElRadioButton key={m} value={m} label={t(msg => msg.focus.policy[m].label)} />
                         ))}
                     </ElRadioGroup>
                     <ElText type='info'>

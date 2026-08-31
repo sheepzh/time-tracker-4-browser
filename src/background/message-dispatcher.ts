@@ -55,7 +55,7 @@ class MessageDispatcher {
         this.initServiceHandlers()
     }
 
-    register<C extends tt4b.mq.ReqCode>(code: C, handler: tt4b.mq.Handler<C>): MessageDispatcher {
+    register<C extends tt4b.mq.ReqCode>(code: C, handler: tt4b.mq.Handler<C>): this {
         if (this.handlers[code]) {
             throw new Error(`Duplicate handler: code=${code}`)
         }

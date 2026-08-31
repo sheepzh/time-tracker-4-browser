@@ -102,7 +102,9 @@ const _default = defineComponent<{}>(() => {
                     label={t(msg => msg.limit.item.condition)}
                     minWidth={180}
                     align="center"
-                    formatter={({ cond }: tt4b.limit.Item) => <>{cond?.map?.(c => <span style={{ display: "block" }}>{c}</span>) || ''}</>}
+                    formatter={({ cond }: tt4b.limit.Item) => <>{
+                        cond?.map?.(c => <span key={c} style={{ display: "block" }}>{c}</span>) || ''
+                    }</>}
                 />
                 <ElTableColumn
                     label={t(msg => msg.limit.item.detail)}

@@ -2,8 +2,8 @@ import {
     CopyRspackPlugin, CssExtractRspackPlugin, DefinePlugin, HtmlRspackPlugin,
     type Chunk, type Configuration, type Module, type RspackPluginInstance, type RuleSetRule
 } from "@rspack/core"
-import { default as VueBabelPluginJsx } from "@vue/babel-plugin-jsx"
-import path, { join } from "path"
+import VueBabelPluginJsx from "@vue/babel-plugin-jsx"
+import path, { join } from "node:path"
 import postcssRTLCSS from 'postcss-rtlcss'
 import { TsCheckerRspackPlugin } from "ts-checker-rspack-plugin"
 import ElementPlus from 'unplugin-element-plus/rspack'

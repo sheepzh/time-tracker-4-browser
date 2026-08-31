@@ -34,8 +34,8 @@ const isValidImportRow = createObjectGuard<ValidImportRow>({
 const isValidImportRows = createArrayGuard(isValidImportRow)
 
 class StatDatabaseWrapper implements StateDatabaseComposite {
-    namespace: '__stat__' = '__stat__'
-    private holder = new StorageHolder<StatDatabase>({
+    namespace = '__stat__' as const
+    private readonly holder = new StorageHolder<StatDatabase>({
         classic: new ClassicStatDatabase(),
         indexed_db: new IDBStatDatabase(),
     })
@@ -108,7 +108,7 @@ class StatDatabaseWrapper implements StateDatabaseComposite {
 
     async afterStorageMigrated([tabs, groups]: [tt4b.core.Row[], tt4b.core.Row[]]): Promise<void> {
         await this.#current.delete(...tabs)
-        const groupKeys = groups.map(({ host, date }) => [parseInt(host), date] satisfies [number, string])
+        const groupKeys = groups.map(({ host, date }) => [Number.parseInt(host), date] satisfies [number, string])
         await this.#current.deleteGroup(...groupKeys)
     }
 

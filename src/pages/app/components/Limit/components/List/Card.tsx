@@ -67,7 +67,7 @@ const _default = defineComponent<Props>(props => {
                 <Divider />
                 {/* Sites */}
                 <Flex gap={2}>
-                    {props.value.cond.map((c, idx) => <ElTag key={idx} type='info'>{c}</ElTag>)}
+                    {props.value.cond.map((c, idx) => <ElTag key={`${c}-${idx}`} type='info'>{c}</ElTag>)}
                 </Flex>
                 <Divider />
                 {/** Content */}

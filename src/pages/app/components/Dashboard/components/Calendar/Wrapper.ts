@@ -55,7 +55,7 @@ function getXAxisLabelMap(data: ChartValue[]): { [x: string]: string } {
         const currentMonth = Array.from(monthSet)[0]
         if (!currentMonth || currentMonth === lastMonth) return
         lastMonth = currentMonth
-        const monthNum = parseInt(currentMonth)
+        const monthNum = Number.parseInt(currentMonth)
         const label = allMonthLabel[monthNum - 1]
         label && (result[x] = label)
     })
@@ -113,7 +113,7 @@ function optionOf(data: ChartValue[], weekDays: string[], dom: HTMLElement): EcO
     const gridCellSize = colCount ? w * gridWidth / colCount * 0.75 : 0
 
     const maxVal = Math.max(...data.map(a => a[2]))
-    const minVal = Math.min(...data.map(a => a[2]).filter(v => v))
+    const minVal = Math.min(...data.map(a => a[2]).filter(Boolean))
     return {
         tooltip: {
             borderWidth: 0,
@@ -177,7 +177,7 @@ class Wrapper extends EchartsWrapper<BizOption, EcOption> {
         const data: ChartValue[] = []
         allDates.forEach((date, index) => {
             const dailyMills = value[date] || 0
-            const colIndex = parseInt((index / 7).toString())
+            const colIndex = Number.parseInt((index / 7).toString())
             const weekDay = index % 7
             const x = colIndex, y = 7 - (1 + weekDay)
             data.push([x, y, dailyMills, date])

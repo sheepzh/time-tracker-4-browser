@@ -13,7 +13,7 @@ export const useCopy = (text: MaybeRefOrGetter<string>) => {
             copied.value = true
             setTimeout(() => copied.value = false, 1000)
         } catch (e) {
-            const errMsg = e instanceof Error ? e.message : e ?? 'Unknown error'
+            const errMsg = e instanceof Error ? e.message : e?.toString() ?? 'Unknown error'
             ElMessage.error(`Copy failed: ${errMsg}`)
         }
     }

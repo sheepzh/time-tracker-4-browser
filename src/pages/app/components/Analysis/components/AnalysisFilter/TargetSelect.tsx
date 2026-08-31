@@ -33,7 +33,7 @@ const cvtKey2Target = (key: string | undefined): AnalysisTarget | undefined => {
     } else if (prefix === CATE_PREFIX) {
         let cateId: number | undefined
         try {
-            cateId = parseInt(content)
+            cateId = Number.parseInt(content)
         } catch { }
         if (cateId) return { type: 'cate', key: cateId }
     }

@@ -25,6 +25,7 @@ const _default = defineComponent(() => {
             <Flex wrap gap={15} justify="space-around" marginInline="auto" paddingBlock={5}>
                 {list.value?.map(({ avatarUrl, username }, idx, arr) => (
                     <a
+                        key={username}
                         href={`https://crowdin.com/profile/${username}`}
                         target="_blank"
                         style={idx === (arr.length - 1) ? { marginInlineEnd: 'auto' } : undefined}
