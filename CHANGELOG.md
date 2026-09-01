@@ -4,32 +4,36 @@ All notable changes to Time Tracker will be documented in this file.
 
 It is worth mentioning that the release time of each change refers to the time when the installation package is submitted to the webstore. It is about one week for Firefox to moderate packages, while only 1-2 days for Chrome and Edge.
 
+## [4.5.2] - 2026-09-01
+
+-  Fixed a bug of focus timer (#889)
+
 ## [4.5.1] - 2026-08-29
 
-- Added the category filter for site habit
-- Added tooltips to site management tab
-- Prevent the removal of the limit mask
+-  Added the category filter for site habit
+-  Added tooltips to site management tab
+-  Prevent the removal of the limit mask
 
 ## [4.5.0] - 2026-08-22
 
-- Refactored site management and integrated the site rules into it
-- Added media playback time tracking
-- Added keyboard shortcuts for the search input
-- Added an icon for backup methods
-- Fixed an issue with the date range filter on mobile
-- Optimized data display on the dashboard page
+-  Refactored site management and integrated the site rules into it
+-  Added media playback time tracking
+-  Added keyboard shortcuts for the search input
+-  Added an icon for backup methods
+-  Fixed an issue with the date range filter on mobile
+-  Optimized data display on the dashboard page
 
 ## [4.4.6] - 2026-08-11
 
-- Fixed some bugs
+-  Fixed some bugs
 
 ## [4.4.5] - 2026-08-03
 
-- Not to track the time after blocked
+-  Not to track the time after blocked
 
 ## [4.4.4] - 2026-07-24
 
-- Supported unblocking when the period limit triggers
+-  Supported unblocking when the period limit triggers
 
 ## [4.4.3] - 2026-07-13
 
