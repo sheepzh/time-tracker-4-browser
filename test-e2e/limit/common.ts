@@ -22,7 +22,9 @@ type RuleCreate = Omit<tt4b.limit.Rule, 'id' | 'enabled' | 'blocked' | 'locked'>
 
 export async function createLimitRule(rule: RuleCreate, page: Page) {
     const { name, cond, time, weekly, visitTime, count, weeklyCount, periods } = rule
-    const createButton = await page.$('.el-card:first-child .el-button:last-child')
+    const createBtnSelector = '.el-card:first-child .el-button:last-child'
+    await page.waitForSelector(createBtnSelector)
+    const createButton = await page.$(createBtnSelector)
     await createButton!.click()
     // 1 Fill the name
     await page.waitForSelector('.el-dialog .el-input input')

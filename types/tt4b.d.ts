@@ -1265,10 +1265,6 @@ declare namespace tt4b {
             start: number
             end: number
             presetId?: number
-            // Actual duration(milliseconds) in this cycle
-            currentDuration: number
-            // Total actual focus duration(milliseconds)
-            totalFocus: number
             state: State
             phase: Phase
             logs: { action: Action, ts: number, phase: Phase }[]

@@ -2,7 +2,7 @@ import { focusAction, getCurrentSession, listFocusPresets } from '@api/sw/focus'
 import { localReactive, localRef, useManualRequest, usePermissionCheck, useProvide, useProvider, useRequest } from '@hooks'
 import { FOCUS_METHOD_DEFAULTS } from '@pages/util/focus'
 import { t } from '@popup/locale'
-import { findLastStartTs, isMethod, isPolicy } from '@util/focus'
+import { calcPhaseDuration, isMethod, isPolicy } from '@util/focus'
 import { MILL_PER_SECOND } from '@util/time'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {
@@ -73,22 +73,17 @@ function initElapsed(
     const elapsed = computed(() => {
         const s = session.value
         if (!s) return 0
-        if (s.state !== 'running') return s.currentDuration
-        const lastPoint = findLastStartTs(s)
-        if (!lastPoint) return 0
-        return Math.max(0, s.currentDuration + now.value - lastPoint)
+        return Math.max(0, calcPhaseDuration(s, now.value))
     })
 
     const timer = setInterval(() => {
         now.value = Date.now()
 
         const s = session.value
-        if (!s || s.state !== 'running' || loading.value) return
+        if (s?.state !== 'running' || loading.value) return
         const total = s.phase === 'focus' ? s.duration : s.break
         if (!total) return
-        const lastPoint = findLastStartTs(s)
-        const liveElapsed = s.currentDuration + (lastPoint ? now.value - lastPoint : 0)
-        if (liveElapsed >= total * MILL_PER_SECOND) refresh()
+        if (elapsed.value >= total * MILL_PER_SECOND) refresh()
     }, 1000)
 
     onScopeDispose(() => clearInterval(timer))
@@ -110,11 +105,13 @@ export const initFocusContext = () => {
         if (!m) return
 
         if (m === 'pomodoro' && (!form.duration || !form.break)) {
-            return void ElMessage.error(t(msg => msg.focus.noTime))
+            ElMessage.error(t(msg => msg.focus.noTime))
+            return
         }
         if (m === 'focus' && !form.cond.length) {
             if (form.policy === 'allow') {
-                return void ElMessage.error(t(msg => msg.focus.noAllowUrl))
+                ElMessage.error(t(msg => msg.focus.noAllowUrl))
+                return
             } else if (form.policy === 'block') {
                 const data = await ElMessageBox.confirm(
                     t(msg => msg.focus.noBlockUrl),

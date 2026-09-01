@@ -1,12 +1,6 @@
 import type { KnipConfig } from "knip"
 const config: KnipConfig = {
     entry: [
-        "src/background/index.ts",
-        "src/pages/app/index.ts",
-        "src/pages/popup/{index,skeleton}.ts",
-        "src/pages/side/index.ts",
-        "src/content-script/index.ts",
-        "src/content-script/limit/modal/index.ts",
         "script/user-chart/{add,render}.ts",
         // The setup file is referenced by `test/rstest.config.mts`.
         "test/__setup__.ts",
