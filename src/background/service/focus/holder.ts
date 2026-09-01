@@ -1,58 +1,26 @@
 import alarmManager from '@bg/alarm-manager'
 import db from "@db/focus-record-database"
 import metaDatabase from '@db/meta-database'
-import { isAlive } from '@util/focus'
+import { calcPhaseDuration, isAlive } from '@util/focus'
 import { MILL_PER_SECOND } from '@util/time'
 
 async function stop(record: tt4b.focus.Session): Promise<void> {
     const now = Date.now()
     const { state, phase } = record
-    if (state === 'running') {
-        await increaseTime(record, now)
-    } else if (state !== 'paused') {
-        return
-    }
+    if (state !== 'running' && state !== 'paused') return
     record.state = 'stopped'
     record.end = now
     record.logs.push({ action: 'stop', ts: now, phase })
-    record.totalFocus = calcTotalFocus(record.logs)
     await db.save(record)
-}
-
-async function increaseTime(record: tt4b.focus.Session, now: number) {
-    const checkpoint = [...record.logs]
-        .sort((a, b) => b.ts - a.ts)
-        .find(({ action }) => action === 'resume' || action === 'start')
-    if (!checkpoint) {
-        console.info("[WARNING] NO FOCUS CHECKPOINT FOUND")
-        return
-    }
-    const thisDuration = now - checkpoint.ts
-    record.currentDuration += thisDuration
-}
-
-function calcTotalFocus(logs: tt4b.focus.Session['logs']) {
-    let total = 0
-    let openTs: number | undefined = undefined
-    for (const { action, ts, phase } of logs) {
-        if (phase !== 'focus') {
-            openTs = undefined
-        } else if (action === 'start' || action === 'resume') {
-            openTs = ts
-        } else if (action === 'finish' || action === 'pause' || action === 'stop') {
-            if (openTs === undefined) continue
-            total += ts - openTs
-            openTs = undefined
-        }
-    }
-    return total
 }
 
 const ALARM_NAME = 'focus-session'
 const calcAlarmWhen = (session: tt4b.focus.Session | undefined): number | null => {
     if (!session) return null
-    const { state, duration, currentDuration, break: breakDur, phase } = session
+    const { state, duration, break: breakDur, phase } = session
     if (state !== 'running') return null
+    const now = Date.now()
+    const currentDuration = calcPhaseDuration(session, now)
     let remaining: number
     if (phase === 'focus') {
         if (!duration) return null
@@ -63,7 +31,7 @@ const calcAlarmWhen = (session: tt4b.focus.Session | undefined): number | null =
     } else {
         return null
     }
-    return Date.now() + remaining
+    return now + remaining
 }
 
 type OnTick = (session: tt4b.focus.Session) => Promise<void>
@@ -80,15 +48,13 @@ class FocusHolder {
 
     async #init() {
         const records = await db.list({ state: ['running', 'paused'] })
-        const [latest, ...others] = records.sort((a, b) => b.end - a.end)
+        const [latest, ...others] = records.toSorted((a, b) => b.end - a.end)
         for (const other of others) {
             await stop(other)
         }
         this.#session = latest
 
         if (this.#session && this.#session.state === 'running') {
-            await increaseTime(this.#session, Date.now())
-            await db.save(this.#session)
             await this.#startNewAlarm()
         }
 
@@ -100,11 +66,11 @@ class FocusHolder {
 
     async #handleAlarmTick(): Promise<void> {
         const session = this.#session
-        if (!session || session.state !== 'running') return
+        if (session?.state !== 'running') return
         const now = Date.now()
-        await increaseTime(session, now)
 
-        const { method, phase, duration, break: breakDur, currentDuration } = session
+        const { method, phase, duration, break: breakDur } = session
+        const currentDuration = calcPhaseDuration(session, now)
 
         if (method === 'focus') {
             if (!duration) return // Never happen
@@ -113,7 +79,6 @@ class FocusHolder {
             session.state = 'done'
             session.end = now
             session.logs.push({ action: 'finish', ts: now, phase: 'focus' })
-            session.totalFocus = calcTotalFocus(session.logs)
             await db.save(session)
             await alarmManager.remove(ALARM_NAME)
         } else if (method === 'pomodoro') {
@@ -125,7 +90,6 @@ class FocusHolder {
             const nextPhase: tt4b.focus.Phase = phase === 'focus' ? 'break' : 'focus'
             session.logs.push({ action: 'finish', ts: now, phase: prevPhase })
             session.phase = nextPhase
-            session.currentDuration = 0
             session.logs.push({ action: 'start', ts: now, phase: nextPhase })
             await db.save(session)
         }
@@ -154,8 +118,6 @@ class FocusHolder {
             presetId,
             start: now,
             end: now,
-            totalFocus: 0,
-            currentDuration: 0,
             phase: 'focus',
             state: 'running',
             logs: [{ action: 'start', ts: now, phase: 'focus' }],
@@ -171,7 +133,6 @@ class FocusHolder {
         if (this.#session.state !== 'running') return
 
         const now = Date.now()
-        await increaseTime(this.#session, now)
         this.#session.end = now
         this.#session.state = 'paused'
         this.#session.logs.push({ action: 'pause', ts: now, phase: this.#session.phase })
