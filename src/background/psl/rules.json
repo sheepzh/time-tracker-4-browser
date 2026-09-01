@@ -244,7 +244,6 @@
     "apartments": 1,
     "app": {
         "c": {
-            "adaptable": 1,
             "aiven": 1,
             "base44": 1,
             "beget": {
@@ -267,6 +266,7 @@
             "clerk": 1,
             "clerkstage": 1,
             "cloudflare": 1,
+            "codepen": 1,
             "convex": 1,
             "corespeed": 1,
             "csb": {
@@ -635,11 +635,6 @@
                     "wa": 1
                 },
                 "l": 1
-            },
-            "hrsn": {
-                "c": {
-                    "vps": 1
-                }
             },
             "id": 1,
             "net": 1,
@@ -2239,6 +2234,7 @@
                     "*": 1
                 }
             },
+            "online-server": 1,
             "onstackit": {
                 "c": {
                     "runs": 1
@@ -2691,7 +2687,11 @@
                 "l": 1
             },
             "africa": 1,
-            "aivencloud": 1,
+            "aivencloud": {
+                "c": {
+                    "*": 1
+                }
+            },
             "aliases121": 1,
             "alibabacloudcs": 1,
             "alpha-myqnapcloud": 1,
@@ -4224,6 +4224,12 @@
             "cechire": 1,
             "cf-ipfs": 1,
             "ciscofreak": 1,
+            "claudeusercontent": {
+                "c": {
+                    "frame": 1
+                },
+                "l": 1
+            },
             "clever-cloud": {
                 "c": {
                     "services": {
@@ -4258,6 +4264,11 @@
             "codespot": 1,
             "cprapid": 1,
             "cpserver": 1,
+            "cursorusercontent": {
+                "c": {
+                    "*": 1
+                }
+            },
             "customer-oci": {
                 "c": {
                     "*": 1,
@@ -5260,6 +5271,7 @@
                 },
                 "l": 1
             },
+            "codepen": 1,
             "crm": {
                 "c": {
                     "aa": {
@@ -10536,6 +10548,11 @@
             "homeip": 1,
             "homelinux": 1,
             "homeunix": 1,
+            "hrsn": {
+                "c": {
+                    "vps": 1
+                }
+            },
             "hu": 1,
             "icp": {
                 "c": {
@@ -11760,7 +11777,8 @@
     "norton": 1,
     "now": {
         "c": {
-            "dyn": 1
+            "dyn": 1,
+            "here": 1
         },
         "l": 1
     },
@@ -13187,6 +13205,13 @@
             "playcode": 1,
             "preview": 1,
             "puter": 1,
+            "scw": {
+                "c": {
+                    "ams": 1,
+                    "waw": 1
+                },
+                "l": 1
+            },
             "sol": 1,
             "sourcecraft": 1,
             "square": 1,
