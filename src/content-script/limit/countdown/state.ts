@@ -1,5 +1,5 @@
 import { MILL_PER_MINUTE, MILL_PER_SECOND } from '@util/time'
-import type { CountdownData, Dimension, RemainingItem } from './types'
+import type { CountdownData, Dimension, RemainingData, RemainingItem } from './types'
 
 const ALL_DIMENSIONS: Dimension[] = ['daily', 'weekly', 'visit']
 
@@ -58,22 +58,35 @@ export class CountdownState {
     }
 
     get data(): CountdownData | undefined {
-        const all: RemainingItem[] = []
+        const all: RemainingData[] = []
+        let targetData: RemainingData | undefined
+        let targetItem: RemainingItem | undefined
+        let minRemaining: number = Number.MAX_SAFE_INTEGER
+
         this.#rules.forEach(item => {
-            const name = item.name
+            const { id: ruleId, name: ruleName } = item
+            const items: RemainingItem[] = []
             ALL_DIMENSIONS.forEach(dimension => {
                 const data = this.#dimStrategy[dimension](item)
                 if (!data) return
                 const [total, used] = data
                 const remaining = Math.max(0, total - used)
-                all.push({ remaining, total, dimension, name })
+                items.push({ remaining, total, dimension })
             })
+            if (!items.length) return
+            const data: RemainingData = { ruleId, ruleName, items }
+            items.sort((a, b) => a.remaining - b.remaining)
+            const first = items[0]
+            if (first && first.remaining < minRemaining) {
+                targetData = data
+                targetItem = first
+                minRemaining = first.remaining
+            }
+            all.push({ ruleId, ruleName, items })
         })
 
-        if (!all.length) return undefined
-
-        all.sort((a, b) => a.remaining - b.remaining)
-        const shortest = all[0]
-        return shortest && { ...shortest, all }
+        if (!targetItem || !targetData) return undefined
+        const { ruleId, ruleName } = targetData
+        return { target: { ruleId, ruleName, ...targetItem }, all }
     }
 }

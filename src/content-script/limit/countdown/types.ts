@@ -4,7 +4,15 @@ export type RemainingItem = {
     remaining: number
     total: number
     dimension: Dimension
-    name: string
 }
 
-export type CountdownData = RemainingItem & { all: RemainingItem[] }
+export type RemainingData = {
+    ruleId: number
+    ruleName: string
+    items: RemainingItem[]
+}
+
+export type CountdownData = {
+    target: Pick<RemainingData, 'ruleId' | 'ruleName'> & RemainingItem
+    all: RemainingData[]
+}
