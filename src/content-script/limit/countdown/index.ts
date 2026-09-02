@@ -1,5 +1,4 @@
 import { trySendMsg2Runtime } from '@api/sw/common'
-import { getOption } from '@api/sw/option'
 import LocationWatcher from '@cs/location-watcher'
 import DelayCoordinator from '../manager/delay-coordinator'
 import LimitState from '../manager/state'
@@ -12,17 +11,17 @@ const TIMER_INTERVAL = 1000
 export default class Countdown {
     #enabled: boolean = false
     #visible: boolean = false
-    #state = new CountdownState()
-    #component = new CountdownComponent()
     #interval?: ReturnType<typeof setInterval>
-    #onVisibleChange = () => document.visibilityState === 'visible' && this.#sync()
+    readonly #state = new CountdownState()
+    readonly #component = new CountdownComponent()
+    readonly #onVisibleChange = () => document.visibilityState === 'visible' && this.#sync()
 
     get isEffective() {
         return this.#enabled && !this.#visible && !this.location.isWhite
     }
 
     constructor(private readonly location: LocationWatcher, initialOption: tt4b.option.LimitOption) {
-        this.#applyOption(initialOption)
+        this.applyOption(initialOption)
     }
 
     async init(state: LimitState, visit: VisitProcessor, delayCoord: DelayCoordinator) {
@@ -57,15 +56,10 @@ export default class Countdown {
         document.removeEventListener('visibilitychange', this.#onVisibleChange)
     }
 
-    async fetchOption() {
-        const option = await getOption()
-        this.#applyOption(option)
-        this.#sync()
-    }
-
-    #applyOption(option: tt4b.option.LimitOption) {
+    applyOption(option: tt4b.option.LimitOption) {
         this.#state.delayDuration = option.limitDelayDuration
         this.#enabled = option.limitCountdown
+        this.#sync()
     }
 
     async #sync() {
@@ -91,7 +85,7 @@ export default class Countdown {
         this.#interval = undefined
     }
 
-    async #render() {
+    #render() {
         const data = this.#state.data
         this.#component.render(data)
         data ? this.#startTimer() : this.#stopTimer()

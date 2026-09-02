@@ -13,7 +13,7 @@ export class CountdownState {
     /**
      * Calculate the milliseconds of each dimension
      */
-    #dimStrategy: Record<Dimension, (item: tt4b.limit.Item) => [total: number, used: number] | undefined> = {
+    readonly #dimStrategy: Record<Dimension, (item: tt4b.limit.Item) => [total: number, used: number] | undefined> = {
         daily: ({ time, waste, delayCount }) => {
             if (!time) return undefined
             const total = time * MILL_PER_SECOND
@@ -26,7 +26,11 @@ export class CountdownState {
             const used = waste + this.#activeMills - delayCount * this.delayDuration * MILL_PER_MINUTE
             return [total, used]
         },
-        visit: ({ visitTime }) => visitTime ? [visitTime * MILL_PER_SECOND, this.#visitMills] : undefined,
+        visit: ({ visitTime }) => {
+            if (!visitTime) return undefined
+            const used = Math.max(0, this.#visitMills - this.#delayCount * this.delayDuration * MILL_PER_MINUTE)
+            return [visitTime * MILL_PER_SECOND, used]
+        },
     }
 
     set rules(rules: tt4b.limit.Item[]) {

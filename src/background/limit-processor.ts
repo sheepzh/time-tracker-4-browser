@@ -26,13 +26,21 @@ function initDailyBroadcast() {
     )
 }
 
-function initCountdownBroadcast() {
+function anyChanged(
+    newVal: tt4b.option.LimitOption,
+    oldVal: tt4b.option.LimitOption,
+    ...keys: (keyof tt4b.option.LimitOption)[]
+) {
+    return keys.some(key => newVal[key] !== oldVal[key])
+}
+
+function initOptionBroadcast() {
     optionHolder.addChangeListener(async (newVal, oldVal) => {
-        if (newVal.limitCountdown === oldVal.limitCountdown) return
+        if (!anyChanged(newVal, oldVal, 'limitCountdown', 'limitDelayDuration')) return
         const tabs = await listTabs()
         for (const { id: tabId } of tabs) {
             try {
-                tabId && await sendMsg2Tab(tabId, 'limitCountdownChanged')
+                tabId && await sendMsg2Tab(tabId, 'limitOptionChanged', newVal)
             } catch { }
         }
     })
@@ -68,7 +76,7 @@ async function querySummary(): Promise<tt4b.limit.Summary | undefined> {
 
 export default function init(dispatcher: MessageDispatcher) {
     initDailyBroadcast()
-    initCountdownBroadcast()
+    initOptionBroadcast()
 
     dispatcher
         .register('limit.list', selectLimit)

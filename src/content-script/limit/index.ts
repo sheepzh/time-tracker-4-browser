@@ -20,7 +20,7 @@ export default async function processLimit(state: LimitState, location: Location
 
     const processors = [dailyWeeklyPsr, visitPsr, periodPsr, focusPsr]
     await Promise.all(processors.map(p => p.init()))
-    location.onCurrChange(() => void processors.forEach(p => void p.reset()))
+    location.onCurrChange(() => processors.forEach(p => void p.reset()))
 
     new ModalManager(location).init(state, delayCoord, visitPsr)
 
@@ -32,7 +32,7 @@ export default async function processLimit(state: LimitState, location: Location
         .register('limitChanged', () => processors.forEach(p => void p.reset()))
         .register('limitTimeMeet', items => dailyWeeklyPsr.onTimeMeet(items))
         .register('limitReminder', data => reminder.show(data))
-        .register('limitCountdownChanged', () => countdown.fetchOption())
+        .register('limitOptionChanged', val => countdown.applyOption(val))
         .register('askVisitHit', ruleId => state.reasons.some(r => r.type === 'VISIT' && ruleId === r.id))
         .register('focusChanged', session => focusPsr.onFocusChanged(session))
 }
