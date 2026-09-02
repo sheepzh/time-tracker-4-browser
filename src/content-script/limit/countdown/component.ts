@@ -142,13 +142,13 @@ class TooltipNode extends VNode<RemainingData[], HTMLDivElement> {
 
     set y(y: number) {
         const state = this.state
-        const rowCount = state?.length ?? 0
-        const dividers = Math.max(0, rowCount - 1)
+        const rowCount = state?.reduce((sum, rule) => sum + rule.items.length, 0) ?? 0
+        const dividers = Math.max(0, (state?.length ?? 0) - 1)
         const height = TOOLTIP_PADDING + rowCount * TOOLTIP_ROW_HEIGHT + dividers * TOOLTIP_DIVIDER_HEIGHT
         const { h } = getViewportSize()
         const centeredTop = y - height / 2
         const clampedTop = Math.max(VIEWPORT_MARGIN, Math.min(h - VIEWPORT_MARGIN - height, centeredTop))
-        mountStyle(this.el, { top: `${clampedTop - (y - HALF_SIZE)}px`, transform: 'transformY(0)' })
+        mountStyle(this.el, { top: `${clampedTop - (y - HALF_SIZE)}px`, transform: 'translateY(0)' })
     }
 
     render(state: RemainingData[]): void {
@@ -166,7 +166,7 @@ class TooltipNode extends VNode<RemainingData[], HTMLDivElement> {
     }
 
     protected sameAsCurrent(_any: RemainingData[]): boolean {
-        return true
+        return false
     }
 
     protected doRender(state: RemainingData[]): void {
@@ -264,7 +264,6 @@ class Container extends VNode<Edge, HTMLElement> {
     }
 }
 
-
 function getStage(remaining: number, total: number): Stage {
     const progress = remaining / total
     if (progress < 0.2 || remaining < 30 * MILL_PER_SECOND) return 'short'
@@ -287,10 +286,6 @@ function createSvgEl<K extends keyof SVGElementTagNameMap>(tag: K, attributes: R
     Object.entries(attributes).forEach(([k, v]) => el.setAttribute(k, String(v)))
     return el
 }
-
-
-
-
 
 type IconInstance = {
     el: HTMLElement
@@ -409,7 +404,6 @@ function getTooltipEdge(position: Position): Edge {
     const { x } = clampPosition(position)
     const spaceRight = w - x - HALF_SIZE
     const spaceLeft = x - HALF_SIZE
-    // todo no need to compare with TOOLTIP_MAX_WIDTH here
     if (spaceRight >= TOOLTIP_MAX_WIDTH) return 'right'
     if (spaceLeft >= TOOLTIP_MAX_WIDTH) return 'left'
     return spaceRight >= spaceLeft ? 'right' : 'left'
@@ -497,7 +491,7 @@ function initDrag(el: HTMLElement, position: Position, onChange: ArgCallback<Pos
 
     const onPointerUp = (ev: PointerEvent) => {
         pressed = false
-        el.releasePointerCapture(ev.pointerId)
+        el.hasPointerCapture(ev.pointerId) && el.releasePointerCapture(ev.pointerId)
         mountStyle(el, { transition: '', cursor: '' })
 
         if (!dragging) return
@@ -544,7 +538,10 @@ export class CountdownComponent {
             this.#dragCleanup = initDrag(
                 this.#icon.el,
                 this.#position,
-                pos => this.#position = pos,
+                pos => {
+                    this.#position = pos
+                    this.#icon?.setPosition(pos)
+                },
             )
             document.body.append(this.#icon.el)
         }
