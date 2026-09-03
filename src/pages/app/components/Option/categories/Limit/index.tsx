@@ -97,7 +97,7 @@ const TestButton: FunctionalComponent<{ onClick: NoArgCallback }> = props => (
 
 const _default = defineComponent((_, ctx) => {
     const { option } = useOption<tt4b.option.LimitOption>({ defaultValue: DEFAULT_LIMIT, copy })
-    const { verified, verify } = useVerify(option)
+    const { verified, verify } = useVerify(option, true)
     const { modifyPsw } = usePswEdit({ reset: () => option.limitPassword })
     const { setup2fa } = use2faSetup()
 

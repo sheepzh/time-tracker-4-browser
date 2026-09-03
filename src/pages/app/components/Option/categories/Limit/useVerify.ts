@@ -2,7 +2,10 @@ import { listLimits } from "@api/sw/limit"
 import { judgeVerificationRequired, processVerification } from "@app/util/limit/index"
 import { ref } from "vue"
 
-export const useVerify = (option: tt4b.option.LimitOption) => {
+/**
+ * @param pswRequired must verify password even not triggered yet
+ */
+export const useVerify = (option: tt4b.option.LimitOption, pswRequired?: boolean) => {
     const verified = ref(false)
 
     const verify = async (): Promise<void> => {
@@ -11,7 +14,9 @@ export const useVerify = (option: tt4b.option.LimitOption) => {
         const delayDuration = option.limitDelayDuration
         const triggerResults = await Promise.all(items.map(item => judgeVerificationRequired(item, delayDuration)))
         const anyTrigger = triggerResults.some(t => t)
-        if (anyTrigger) await processVerification(option)
+        // Need to verify password at the first time
+        const verifyPsw = pswRequired && option.limitLevel === 'password'
+        if (anyTrigger || verifyPsw) await processVerification(option)
         verified.value = true
     }
 
