@@ -60,12 +60,12 @@ const isTopMemberData = createObjectGuard<TopMemberData>({
  */
 class PaginationIterator<T> {
     private offset = 0
-    private limit = 500
+    private readonly limit = 500
     private isEnd = false
     private buf: T[] = []
     private cursor = 0
 
-    constructor(private query: (pagination: Pagination) => Promise<ResponseList<T>>) {
+    constructor(private readonly query: (pagination: Pagination) => Promise<ResponseList<T>>) {
     }
 
     reset(): void {
@@ -185,10 +185,7 @@ export class CrowdinClient {
     }
 
     async getOrCreateMainBranch(): Promise<SourceFilesModel.Branch> {
-        let branch = await this.getMainBranch()
-        if (!branch) {
-            branch = await this.createMainBranch()
-        }
+        const branch = await this.getMainBranch() ?? await this.createMainBranch()
         console.info("getOrCreateMainBranch: " + JSON.stringify(branch))
         return branch
     }

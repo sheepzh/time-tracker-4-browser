@@ -75,10 +75,10 @@ function mergeDate(origin: tt4b.stat.Row[]): tt4b.stat.Row[] {
     return newRows
 }
 
-async function generateOption(rows: tt4b.stat.Row[] = [], timeFormat: tt4b.ui.TimeFormat, dom: HTMLElement): Promise<EcOption> {
+async function generateOption(rows: tt4b.stat.Row[], timeFormat: tt4b.ui.TimeFormat, dom: HTMLElement): Promise<EcOption> {
     const merged = mergeDate(rows)
-    const topList = merged.sort((a, b) => b.focus - a.focus).splice(0, TOP_NUM).reverse()
-    const max = topList[topList.length - 1]?.focus ?? 0
+    const topList = merged.toSorted((a, b) => b.focus - a.focus).splice(0, TOP_NUM).reverse()
+    const max = topList.at(-1)?.focus ?? 0
     const hosts = topList.map(r => isSite(r) ? r.alias ?? r.siteKey.host : '').filter(s => !!s)
 
     const domW = dom.getBoundingClientRect().width

@@ -20,7 +20,7 @@ import { computed, defineComponent } from "vue"
 import Wrapper, { type BizOption, type ChartValue } from "./Wrapper"
 
 const titleText = (option: Result | undefined) => {
-    const { value, yearAgo } = option || {}
+    const { value, yearAgo } = option ?? {}
     const start = yearAgo ? formatTimeYMD(yearAgo) : '-'
     const statValues = Object.entries(value || {}).filter(([date]) => date.localeCompare(start) >= 0).map(([, v]) => v)
     const totalMills = sum(statValues)
@@ -54,9 +54,9 @@ function handleClick(value: ChartValue): void {
         return
     }
 
-    const currentYear = parseInt(currentDate.substring(0, 4))
-    const currentMonth = parseInt(currentDate.substring(4, 6)) - 1
-    const currentDay = parseInt(currentDate.substring(6, 8))
+    const currentYear = Number.parseInt(currentDate.substring(0, 4))
+    const currentMonth = Number.parseInt(currentDate.substring(4, 6)) - 1
+    const currentDay = Number.parseInt(currentDate.substring(6, 8))
     const currentTs = (new Date(currentYear, currentMonth, currentDay).getTime() + 1000).toString()
 
     const url = getAppPageUrl(RECORD_ROUTE, { ds: currentTs, de: currentTs } satisfies RecordQuery)

@@ -37,7 +37,7 @@ export const getStepColors = (count: number, gradientFactor?: number): string[] 
  */
 const cvtColor2Vector = (color: string): Vector<3> => {
     return [color.substring(1, 3), color.substring(3, 5), color.substring(5, 7)]
-        .map(c => parseInt('0x' + c)) as [number, number, number]
+        .map(c => Number.parseInt('0x' + c)) as [number, number, number]
 }
 
 export const getSeriesPalette = (): string[] => {
@@ -83,8 +83,7 @@ export const tooltipDot = (color: string) => {
     return `<div style="display:inline-block; background-color: ${color}; width: 8px; height: 8px; border-radius: 4px; margin-top: 1px; margin-bottom: 1px;"></div>`
 }
 
-export const tooltipFlexLine = (left: string, right: string, gap?: number): string => {
-    gap = gap ?? 20
+export const tooltipFlexLine = (left: string, right: string, gap = 20): string => {
     return `
         <div style="display: flex; justify-content: space-between; margin: 0px; gap: ${gap}px">
             <span>
@@ -97,8 +96,7 @@ export const tooltipFlexLine = (left: string, right: string, gap?: number): stri
     `
 }
 
-export const tooltipSpaceLine = (height?: number): string => {
-    height = height ?? 4
+export const tooltipSpaceLine = (height = 4): string => {
     return `<div style="width: 100%; height: ${height}px; background-color: transparent"></div>`
 }
 

@@ -11,8 +11,8 @@ class LocationWatcher {
     url: string
     host: string
     current: tt4b.site.Current | undefined
-    #currHandlers: NoArgCallback[] = []
-    #timer: ReturnType<typeof setTimeout>
+    readonly #currHandlers: NoArgCallback[] = []
+    readonly #timer: ReturnType<typeof setTimeout>
 
     get isWhite(): boolean {
         return !!this.current?.white

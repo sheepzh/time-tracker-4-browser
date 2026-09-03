@@ -13,10 +13,10 @@ export const isLegacyVersion = (data: unknown): data is tt4b.backup.ExportData =
     if (!isExportData(data)) return false
 
     const version = data.__meta__.version
-    const match = version.match(/^(\d+)\.(\d+)\.(\d+)/)
+    const match = new RegExp(/^(\d+)\.(\d+)\.(\d+)/).exec(version)
     const majorStr = match?.[1]
     if (!majorStr) return true
-    const major = parseInt(majorStr)
+    const major = Number.parseInt(majorStr)
 
     return major < 4
 }

@@ -37,13 +37,13 @@ function isValidFrame(iframe: HTMLIFrameElement): boolean {
 class ModalManager {
     #el?: HTMLElement
     #iframe?: HTMLIFrameElement
-    #sl = new ScreenLocker()
-    #bridge: ModalBridge
+    readonly #sl = new ScreenLocker()
+    readonly #bridge: ModalBridge
     #reqQueue: Parameters<ModalBridge['request']>[] = []
     #content?: ShowArgs
     #observer?: MutationObserver
 
-    constructor(private location: LocationWatcher) {
+    constructor(private readonly location: LocationWatcher) {
         this.#bridge = new ModalBridge(MSG_ORIGIN, () => this.#iframe?.contentWindow ?? undefined)
         location.onCurrChange(() => this.#notify('url', location.url))
     }

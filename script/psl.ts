@@ -3,9 +3,9 @@
  */
 import { fetchGet } from '@api/http'
 import { type PslTree } from '@bg/psl'
-import { writeFileSync } from 'fs'
-import path from 'path'
-import { fileURLToPath } from 'url'
+import { writeFileSync } from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 const LIST_URL = "https://publicsuffix.org/list/effective_tld_names.dat"
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url))
@@ -59,4 +59,4 @@ async function main() {
     writeFileSync(JSON_PATH, JSON.stringify(tree, null, 4), { encoding: "utf-8" })
 }
 
-main()
+await main()

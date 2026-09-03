@@ -15,10 +15,10 @@ import type { StatCondition, StatDatabase } from './types'
  * @param date date
  */
 const generateKey = (host: string, date: Date | string) => formatDateStr(date) + host
-const generateHostReg = (host: string): RegExp => RegExp(`^\\d{8}${escapeRegExp(host)}$`)
+const generateHostReg = (host: string): RegExp => new RegExp(String.raw`^\d{8}${escapeRegExp(host)}$`)
 
 const generateGroupKey = (groupId: number, date: Date | string) => formatDateStr(date) + cvtGroupId2Host(groupId)
-const generateGroupReg = (groupId: number): RegExp => RegExp(`^\\d{8}${escapeRegExp(cvtGroupId2Host(groupId))}$`)
+const generateGroupReg = (groupId: number): RegExp => new RegExp(String.raw`^\d{8}${escapeRegExp(cvtGroupId2Host(groupId))}$`)
 
 const isPartialResult = createObjectGuard<Partial<Record<tt4b.core.Dimension, number>>>({
     focus: isOptionalInt,

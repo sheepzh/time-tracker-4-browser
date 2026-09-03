@@ -11,7 +11,7 @@
  * @since 0.1.2
  */
 export interface Migrator {
-    onInstall(): void
+    onInstall(): Awaitable<void>
 
-    onUpdate(version: string): void
+    onUpdate(version: string): Awaitable<void>
 }

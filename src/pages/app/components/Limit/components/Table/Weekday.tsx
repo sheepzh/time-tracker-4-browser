@@ -19,7 +19,7 @@ const Weekday = defineComponent({
             </ElTag>
         ) : (
             <Flex justify="center" wrap="wrap" gap={5} style={{ margin: "0 10px" }}>
-                {weekdays.value?.map(w => <ElTag size="small">{ALL_WEEKDAYS[w]}</ElTag>)}
+                {weekdays.value?.map(w => <ElTag key={w} size="small">{ALL_WEEKDAYS[w]}</ElTag>)}
             </Flex>
         )
     },

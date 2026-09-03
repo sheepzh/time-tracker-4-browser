@@ -28,7 +28,8 @@ const _default = defineComponent<{}>((_, ctx) => {
     const handleSelectedChange = (val: boolean, idx: number) => {
         const newSelected = selected.value.filter(v => v !== idx)
         val && newSelected.push(idx)
-        return selected.value = newSelected
+        selected.value = newSelected
+        return newSelected
     }
 
     return () => (

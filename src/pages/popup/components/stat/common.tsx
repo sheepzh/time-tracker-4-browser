@@ -17,7 +17,7 @@ const DATE_RANGE_CALCULATORS: { [duration in StatDuration]: DateRangeCalculator 
         return [start, now]
     },
     thisMonth: now => [getMonthTime(now)[0], now],
-    lastDays: (now, num) => [new Date(now.getTime() - MILL_PER_DAY * (num ?? 1 - 1)), now],
+    lastDays: (now, num) => [new Date(now.getTime() - MILL_PER_DAY * ((num ?? 1) - 1)), now],
     allTime: () => undefined,
 }
 
@@ -54,9 +54,9 @@ function buildRecordQuery(siteType: tt4b.site.Type, date: DateRange | undefined,
             query.ds = date[0]?.getTime?.()?.toString?.()
             // End is now
             // Not the end of this week/month
-            query.de = new Date().getTime().toString()
+            query.de = Date.now().toString()
         }
-    } else if (!!date) {
+    } else if (date) {
         query.ds = query.de = date.getTime?.()?.toString?.()
     }
     // Sorted column

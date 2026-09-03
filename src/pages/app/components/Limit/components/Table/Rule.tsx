@@ -36,7 +36,7 @@ const PeriodTag: FunctionalComponent<{ periods?: tt4b.limit.Period[], }> = ({ pe
             <ElTag size="small" type="info">{t(msg => msg.shared.limit.period)}</ElTag>
         </div>
         <Flex justify="center" gap={4} wrap="wrap">
-            {periods.map((p, idx) => <ElTag key={idx} size="small" type="info">{period2Str(p)}</ElTag>)}
+            {periods.map(p => <ElTag key={`${p[0]}-${p[1]}`} size="small" type="info">{period2Str(p)}</ElTag>)}
         </Flex>
     </>
 }

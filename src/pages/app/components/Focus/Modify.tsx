@@ -52,7 +52,7 @@ const _default = defineComponent<{}>((_, ctx) => {
     } satisfies ModifyInstance)
 
     const handleSubmit = useOperation(async () => {
-        if (!form.name.trim()) throw 'Name is required'
+        if (!form.name.trim()) throw new Error('Name is required')
 
         const { id, method, policy, cond, duration, break: breakDuration } = form
 
@@ -111,15 +111,15 @@ const _default = defineComponent<{}>((_, ctx) => {
                 <ElFormItem label={t(msg => msg.focus.method.label)}>
                     <ElRadioGroup modelValue={form.method} onChange={onMethodChange}>
                         {ALL_METHODS.map(method => (
-                            <ElRadio value={method} label={t(msg => msg.focus.method[method].label)} />
+                            <ElRadio key={method} value={method} label={t(msg => msg.focus.method[method].label)} />
                         ))}
                     </ElRadioGroup>
                 </ElFormItem>
                 <ElFormItem label={t(msg => msg.focus.policy.label)} required={form.policy === 'allow'}>
                     <Flex column gap={6} width='100%'>
                         <ElRadioGroup modelValue={form.policy} onChange={v => isPolicy(v) && (form.policy = v)}>
-                            {ALL_FOCUS_POLICIES.map(policy => (
-                                <ElRadio value={policy} label={t(msg => msg.focus.policy[policy].label)} />
+                            {ALL_FOCUS_POLICIES.map(p => (
+                                <ElRadio key={p} value={p} label={t(msg => msg.focus.policy[p].label)} />
                             ))}
                         </ElRadioGroup>
                         <CondEditor

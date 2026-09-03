@@ -6,15 +6,13 @@
  */
 import { camelize, type CSSProperties } from "vue"
 
-type Variant = "primary" | "success" | "warning" | "info" | "danger"
-
-export type ColorVariant = Variant
+export type ColorVariant = "primary" | "success" | "warning" | "info" | "danger"
 
 type TextVariant = "primary" | "regular" | "secondary"
 
 type ColorUsage = 'fill' | 'border'
 
-export const colorVariant = (variant: Variant, effect?: 'dark' | 'light', level?: number) => {
+export const colorVariant = (variant: ColorVariant, effect?: 'dark' | 'light', level?: number) => {
     let res = `--el-color-${variant}`
     if (effect) {
         res += `-${effect}`
@@ -72,7 +70,7 @@ export function getInfoColor(): string | undefined {
     return getColor('info')
 }
 
-export function getColor(variant: Variant): string | undefined {
+export function getColor(variant: ColorVariant): string | undefined {
     return getCssVariable(colorVariant(variant))
 }
 

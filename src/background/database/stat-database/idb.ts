@@ -68,8 +68,8 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
         const { useExactDate, exactDateStr, startDateStr, endDateStr } = cond
 
         if (expectGroup) {
-            const groupId = parseInt(keys?.[0] ?? 'NaN')
-            return isNaN(groupId) ? {
+            const groupId = Number.parseInt(keys?.[0] ?? 'NaN')
+            return Number.isNaN(groupId) ? {
                 cursorReq: this.assertIndexCursor(store, 'groupId', IDBKeyRange.lowerBound(0)),
             } : {
                 cursorReq: this.assertIndexCursor(store, 'groupId', IDBKeyRange.only(groupId)),
@@ -198,7 +198,6 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
             // Delete by range
             const index = super.assertIndex(store, 'host')
             const cursorReq = index.openCursor(IDBKeyRange.only(host))
-            const deletedDates = new Set<string>()
 
             await iterateCursor(cursorReq, cursor => {
                 const r = cursor.value as StoredRow | undefined
@@ -206,10 +205,7 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
 
                 const dateStr = r.date
                 const inRange = (!start || start <= dateStr) && (!end || dateStr <= end)
-                if (inRange) {
-                    cursor.delete()
-                    deletedDates.add(dateStr)
-                }
+                inRange && cursor.delete()
             })
         }, 'readwrite')
     }
@@ -287,9 +283,9 @@ export class IDBStatDatabase extends BaseIDBStorage<StoredRow> implements StatDa
         return this.withStore(store => {
             for (const row of rows) {
                 const { host, date, time, focus, run } = row
-                const groupId = parseInt(host)
-                if (isNaN(groupId)) {
-                    throw new Error(`Invalid group host: ${host}`)
+                const groupId = Number.parseInt(host)
+                if (Number.isNaN(groupId)) {
+                    throw new TypeError(`Invalid group host: ${host}`)
                 }
                 const newData: StoredRow = { host, date, time, focus, run, groupId }
                 store.put(newData)

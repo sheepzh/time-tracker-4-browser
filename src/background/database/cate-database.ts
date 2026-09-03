@@ -38,7 +38,7 @@ class CateDatabase extends BaseDatabase {
         const items = await this.getItems()
         return Object.entries(items).map(([id, { n = '' } = {}]) => {
             return {
-                id: parseInt(id),
+                id: Number.parseInt(id),
                 name: n,
             } satisfies tt4b.site.Cate
         })
@@ -49,7 +49,7 @@ class CateDatabase extends BaseDatabase {
         const existId = Object.entries(items).find(([_, v]) => v.n === name)?.[0]
         if (existId) {
             // Exist already
-            return { id: parseInt(existId), name }
+            return { id: Number.parseInt(existId), name }
         }
 
         const ids = Object.keys(items).map(Number).filter(Number.isFinite)
@@ -70,7 +70,7 @@ class CateDatabase extends BaseDatabase {
             return
         }
 
-        items[id] = { ...items[id] || {}, n: name }
+        items[id] = { ...items[id], n: name }
         await this.saveItems(items)
     }
 

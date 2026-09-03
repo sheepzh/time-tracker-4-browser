@@ -89,7 +89,11 @@ const _default = defineComponent<{}>(() => {
             <div class={menuWrapperCls} v-show={showMenu.value}>
                 <ElMenu>
                     {menus.map(item => (
-                        <ElMenuItem index={indexOfItem(item)} onClick={() => handleItemClick(item)}>
+                        <ElMenuItem
+                            key={'route' in item ? item.route : item.href}
+                            index={indexOfItem(item)}
+                            onClick={() => handleItemClick(item)}
+                        >
                             <ElIcon>{h(item.icon)}</ElIcon>
                             <span>{t(item.title)}</span>
                         </ElMenuItem>

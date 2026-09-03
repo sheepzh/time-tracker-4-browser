@@ -34,11 +34,11 @@ function readRecords(): RecordRow[] {
 export function parseTime2Sec(timeStr: string | undefined): number | undefined {
     if (!timeStr || timeStr === '-') return undefined
     const regRes = /^(\s*(?<hour>\d+)\s*h)?(\s*(?<min>\d+)\s*m)?(\s*(?<sec>\d+)\s*s)$/.exec(timeStr)
-    if (!regRes) return NaN
+    if (!regRes) return Number.NaN
     const { hour, min, sec } = regRes.groups || {}
-    let res = parseInt(sec ?? '0')
-    min && (res += 60 * parseInt(min))
-    hour && (res += 3600 * parseInt(hour))
+    let res = Number.parseInt(sec ?? '0')
+    min && (res += 60 * Number.parseInt(min))
+    hour && (res += 3600 * Number.parseInt(hour))
     return res
 }
 

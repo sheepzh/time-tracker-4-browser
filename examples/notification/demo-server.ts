@@ -1,5 +1,5 @@
 import hash from "hash.js"
-import { createServer } from "http"
+import { createServer } from "node:http"
 
 const AUTH: string | undefined = process.env.AUTH
 

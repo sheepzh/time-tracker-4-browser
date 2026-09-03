@@ -1,4 +1,4 @@
-import path from "path"
+import path from "node:path"
 import { name, version } from "../package.json"
 import manifest from "../src/manifest"
 import { FileManagerPlugin } from "./plugins/file-manager"

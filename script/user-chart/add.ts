@@ -7,7 +7,7 @@ import {
     updateGist as updateGistApi
 } from "@api/gist"
 import { CHROME_ID } from "@util/constant/meta"
-import fs from "fs"
+import fs from "node:fs"
 import { validateTokenFromEnv } from '../util/gist'
 import { exitWith } from "../util/process"
 import { type Browser, descriptionOf, filenameOf, getExistGist, type UserCount } from "./common"
@@ -105,10 +105,9 @@ async function updateGist(token: string, browser: Browser, data: UserCount, gist
 
 function parseChrome(content: string): UserCount {
     const lines = content.split('\n')
+    if (lines.length <= 2) return {}
+
     const result: Record<string, number> = {}
-    if (!(lines.length > 2)) {
-        return result
-    }
     lines.slice(2).forEach(line => {
         const [dateStr, numberStr] = line.split(',')
         if (!dateStr || !numberStr) {
@@ -118,7 +117,7 @@ function parseChrome(content: string): UserCount {
         const [, y, m, d] = /^(\d{4})\/(\d{1,2})\/(\d{1,2})$/.exec(dateStr.trim()) ?? []
         if (!y || !m || !d) return
         const date = `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`
-        const number = parseInt(numberStr)
+        const number = Number.parseInt(numberStr)
         number && (result[date] = number)
     })
     return result
@@ -126,10 +125,9 @@ function parseChrome(content: string): UserCount {
 
 function parseEdge(content: string): UserCount {
     const lines = content.split('\n')
+    if (lines.length <= 1) return {}
+
     const result: Record<string, number> = {}
-    if (!(lines.length > 1)) {
-        return result
-    }
     lines.slice(1).forEach(line => {
         const splits = line.split(',')
         const dateStr = splits[5]
@@ -139,7 +137,7 @@ function parseEdge(content: string): UserCount {
         }
         // Replace '/' to '-', then rjust month and date
         const date = dateStr.split('/').map(str => rjust(str, 2, '0')).join('-')
-        const number = parseInt(numberStr)
+        const number = Number.parseInt(numberStr)
         date && number && (result[date] = number)
     })
     return result
@@ -147,10 +145,9 @@ function parseEdge(content: string): UserCount {
 
 function parseFirefox(content: string): UserCount {
     const lines = content.split('\n')
+    if (lines.length <= 4) return {}
+
     const result: Record<string, number> = {}
-    if (!(lines.length > 4)) {
-        return result
-    }
     lines.slice(4).forEach(line => {
         const splits = line.split(',')
         const date = splits[0]
@@ -158,7 +155,7 @@ function parseFirefox(content: string): UserCount {
         if (!date || !numberStr) {
             return
         }
-        const number = parseInt(numberStr)
+        const number = Number.parseInt(numberStr)
         date && number && (result[date] = number)
     })
     return result
@@ -260,4 +257,4 @@ async function main() {
     }
 }
 
-main()
+await main()

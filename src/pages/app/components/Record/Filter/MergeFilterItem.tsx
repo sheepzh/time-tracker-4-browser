@@ -57,7 +57,7 @@ const MergeFilterItem = defineComponent<{}>(() => {
             </ElText>
             <ElCheckboxGroup modelValue={selected.value} onChange={handleChange}>
                 {items.value.map(method => (
-                    <ElCheckboxButton value={method}>
+                    <ElCheckboxButton key={method} value={method}>
                         <ElTooltip content={t(msg => msg.shared.merge.mergeMethod[method])} offset={20} placement="top">
                             <span style={ICON_STYLE}>
                                 <ElIcon>{h(METHOD_ICONS[method])}</ElIcon>

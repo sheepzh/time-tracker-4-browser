@@ -28,6 +28,7 @@ const Reason = defineComponent<{ value: FocusReason }>(props => {
                     <Flex gap={2} wrap align='center'>
                         {props.value.cond.map(c => (
                             <ElTag
+                                key={c}
                                 type={matchUrl(c, url.value) ? 'danger' : 'info'}
                                 size="small"
                             >

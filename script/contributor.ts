@@ -1,5 +1,5 @@
 import { createGist, findTarget, updateGist, type FileForm, type GistForm } from '@api/gist'
-import { writeFileSync } from 'fs'
+import { writeFileSync } from 'node:fs'
 import { createArrayGuard, createObjectGuard, isInt, isString } from 'typescript-guard'
 import { getClientFromEnv, TopMember } from './crowdin/client'
 import { validateTokenFromEnv } from './util/gist'
@@ -80,7 +80,7 @@ function renderCard(x: number, y: number, contributor: Contributor): string {
 
     const shortName = name.length > 8 ? name.slice(0, 7) + '…' : name
     const shortSub = sub.length > 10 ? sub.slice(0, 9) + '…' : sub
-    const safeAvatarUrl = avatarUrl.replace(/&/g, '&amp;')
+    const safeAvatarUrl = avatarUrl.replaceAll('&', '&amp;')
 
     return `
         <clipPath id="clip-${cx}-${ay}">
@@ -228,5 +228,4 @@ async function main(): Promise<void> {
     console.log('Done!')
 }
 
-main()
-
+await main()

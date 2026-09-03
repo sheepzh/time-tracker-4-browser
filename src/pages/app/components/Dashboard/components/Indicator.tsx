@@ -64,11 +64,11 @@ async function query(): Promise<_Value> {
     }
 
     // 2. if not exist, calculate from all data items
-    const firstDate = allData.map(a => a.date).filter(d => d.length === 8).sort()[0]
+    const firstDate = allData.map(a => a.date).filter(d => d.length === 8).sort((a, b) => a.localeCompare(b))[0]
     if (firstDate) {
-        const year = parseInt(firstDate.substring(0, 4))
-        const month = parseInt(firstDate.substring(4, 6)) - 1
-        const date = parseInt(firstDate.substring(6, 8))
+        const year = Number.parseInt(firstDate.substring(0, 4))
+        const month = Number.parseInt(firstDate.substring(4, 6)) - 1
+        const date = Number.parseInt(firstDate.substring(6, 8))
         const installTime = new Date(year, month, date)
         result.installedDays = calculateInstallDays(installTime, new Date())
     }
@@ -77,7 +77,7 @@ async function query(): Promise<_Value> {
 
 const computeI18nParam = (valueParam: Record<string, number>, duration?: number): Record<string, VNode> => {
     return Object.fromEntries(
-        Object.entries(valueParam || {}).map(([key, val]) => [key, <NumberGrow value={val} duration={duration} />])
+        Object.entries(valueParam || {}).map(([k, v]) => [k, <NumberGrow key={k} value={v} duration={duration} />])
     )
 }
 type Props = {
@@ -99,7 +99,7 @@ const IndicatorLabel = defineComponent<Props>(props => {
 
 const computeMost2HourParam = (value: _Value | undefined): { start: number, end: number } => {
     const { busiestClock } = value ?? {}
-    const [start, end] = busiestClock === undefined || isNaN(busiestClock)
+    const [start, end] = busiestClock === undefined || Number.isNaN(busiestClock)
         ? [0, 0]
         : [busiestClock, busiestClock + 2]
     return { start, end }

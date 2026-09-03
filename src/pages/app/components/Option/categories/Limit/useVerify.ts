@@ -10,7 +10,7 @@ export const useVerify = (option: tt4b.option.LimitOption) => {
         const items = await listLimits({ enabled: true, effective: true })
         const delayDuration = option.limitDelayDuration
         const triggerResults = await Promise.all(items.map(item => judgeVerificationRequired(item, delayDuration)))
-        const anyTrigger = triggerResults.some(t => t)
+        const anyTrigger = triggerResults.some(Boolean)
         if (anyTrigger) await processVerification(option)
         verified.value = true
     }

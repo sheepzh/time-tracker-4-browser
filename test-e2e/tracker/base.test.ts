@@ -16,8 +16,8 @@ describe('Tracking', () => {
         // 1 visit
         expect(visitStr).toEqual("1")
         // >= 2 s
-        const time = timeStr ? parseInt(timeStr.replace('s', '').trim()) : NaN
-        expect(time >= 2)
+        const time = timeStr ? Number.parseInt(timeStr.replace('s', '').trim()) : NaN
+        expect(time).toBeGreaterThanOrEqual(2)
 
         // Another page
         await page.bringToFront()
@@ -26,7 +26,7 @@ describe('Tracking', () => {
         records = await readRecordsOfFirstPage(context)
         expect(records.length).toEqual(2)
         const urls = records.map(r => r.url)
-        expect(urls.includes(MOCK_HOST))
+        expect(urls).include(MOCK_HOST)
     }, 60000)
 
     test('white list', async () => {
@@ -39,8 +39,8 @@ describe('Tracking', () => {
         // 1 visit
         expect(visitStr).toEqual("1")
         // >= 2 s
-        const time = timeStr ? parseInt(timeStr.replace('s', '').trim()) : NaN
-        expect(time >= 2)
+        const time = timeStr ? Number.parseInt(timeStr.replace('s', '').trim()) : NaN
+        expect(time).toBeGreaterThanOrEqual(2)
 
         await setSiteOption(context, MOCK_HOST, 'white', true)
         await page.bringToFront()

@@ -27,7 +27,7 @@ const options = (): CascaderOption[] => [
             })),
         ],
     },
-    ...(['thisMonth', 'thisWeek', 'yesterday', 'today'] satisfies StatDuration[]).map(cvt2Opt),
+    ...(['thisMonth', 'thisWeek', 'yesterday', 'today'] satisfies StatDuration[]).map(e => cvt2Opt(e)),
 ]
 
 type DurationValue = [StatDuration, number?]

@@ -1,7 +1,7 @@
 import type { Compiler, RspackPluginInstance } from '@rspack/core'
-import fs from 'fs'
 import JSZip from 'jszip'
-import path from 'path'
+import fs from 'node:fs'
+import path from 'node:path'
 
 type PosOpt = {
     source: string
@@ -25,7 +25,7 @@ interface FileManagerOptions {
 
 export class FileManagerPlugin implements RspackPluginInstance {
     private static readonly NAME = 'FileManagerPlugin'
-    private options: FileManagerOptions
+    private readonly options: FileManagerOptions
     private outputPath: string
 
     constructor(options: FileManagerOptions) {
@@ -142,7 +142,7 @@ export class FileManagerPlugin implements RspackPluginInstance {
     private resolvePath(target: string) {
         return path.resolve(
             this.options.context!,
-            target.replace(/\$\{outputPath\}/g, this.outputPath)
+            target.replaceAll('${outputPath}', this.outputPath)
         )
     }
 }

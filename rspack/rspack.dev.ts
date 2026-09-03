@@ -1,4 +1,4 @@
-import path from "path"
+import path from "node:path"
 import manifest from "../src/manifest"
 import generateOption from "./rspack.common"
 

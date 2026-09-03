@@ -8,8 +8,7 @@ import {
 } from "element-plus"
 import { computed, CSSProperties, defineComponent, nextTick, onMounted, ref, Transition, watch } from "vue"
 
-function computeSecond2LimitInfo(time: number): [number, number, number] {
-    time = time || 0
+function computeSecond2LimitInfo(time = 0): [number, number, number] {
     const second = time % 60
     const totalMinutes = (time - second) / 60
     const minute = totalMinutes % 60

@@ -89,4 +89,5 @@ const router = createRouter({
     routes,
 })
 
-export default (app: App) => app.use(router)
+const initRouter = (app: App) => app.use(router)
+export default initRouter

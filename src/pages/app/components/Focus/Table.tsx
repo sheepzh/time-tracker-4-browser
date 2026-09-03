@@ -16,7 +16,7 @@ const formatDuration = (durSec: number): string => {
 }
 
 const StateDot: FunctionalComponent<{ session: tt4b.focus.Session | undefined, presetId: number }> = ({ session, presetId }) => {
-    if (!session || session.presetId !== presetId) return null
+    if (session?.presetId !== presetId) return null
     const { state, phase } = session
     if (state !== 'running' && state !== 'paused') return null
     const color = phase === 'break' ? getColor('warning') : state === 'paused' ? getColor('info') : getColor('success')
@@ -47,7 +47,7 @@ const FilterPolicy: FunctionalComponent<Pick<tt4b.focus.Config, 'policy' | 'cond
         <ElTag size="small" type={policy === 'block' ? 'danger' : 'success'}>
             {t(msg => msg.focus.policy[policy].label)}
         </ElTag>
-        {cond.map(c => <span style={{ display: 'block' }}>{c}</span>)}
+        {cond.map(c => <span key={c} style={{ display: 'block' }}>{c}</span>)}
     </Flex>
 }
 

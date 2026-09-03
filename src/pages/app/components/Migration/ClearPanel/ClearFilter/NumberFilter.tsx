@@ -17,7 +17,7 @@ type Props = ModelValue<string> & {
 
 const NumberFilter: FunctionalComponent<Props> = ({ lineNo, i18nKey, modelValue, onChange }) => (
     <p>
-        <a style={{ marginInlineEnd: '10px' }}>{lineNo}.</a>
+        <span style={{ marginInlineEnd: '10px' }}>{lineNo}.</span>
         {tN(msg => msg.dataManage[i18nKey], {
             value: <ElInput
                 placeholder='∞'

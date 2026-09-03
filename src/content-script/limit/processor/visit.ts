@@ -10,7 +10,7 @@ import type { LimitReason, Processor } from '../types'
 class VisitProcessor implements Processor {
     #mills: number = 0
     #rules: tt4b.limit.Rule[] = []
-    #tracker: NormalTracker
+    readonly #tracker: NormalTracker
     #delayCount: number = 0
     #listener?: ArgCallback<number>
     #lastUrl: string

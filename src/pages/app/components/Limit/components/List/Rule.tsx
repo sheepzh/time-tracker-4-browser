@@ -68,8 +68,8 @@ const Rule = defineComponent<Props>(props => {
             {!!props.value.periods?.length && (
                 <ElDescriptionsItem label={t(msg => msg.shared.limit.period)}>
                     <Flex gap={2} wrap>
-                        {props.value.periods.map((p, idx) => (
-                            <ElTag key={idx} size="small" type={PERIOD_TAG_TYPE}>{period2Str(p)}</ElTag>
+                        {props.value.periods.map(p => (
+                            <ElTag key={`${p[0]}-${p[1]}`} size="small" type={PERIOD_TAG_TYPE}>{period2Str(p)}</ElTag>
                         ))}
                     </Flex>
                 </ElDescriptionsItem>
