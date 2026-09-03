@@ -6,7 +6,7 @@
  */
 
 import { CATE_NOT_SET_ID } from '@util/site'
-import { BaseIDBStorage, iterateCursor, type Key, req2Promise, type Table } from '../common/indexed-storage'
+import { BaseIDBStorage, iterateCursor, type Key, req2Promise, type Table } from './common/indexed-storage'
 
 const INDEXES: (Key<tt4b.site.SiteInfo> | Key<tt4b.site.SiteInfo>[])[] = [
     'host',

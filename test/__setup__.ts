@@ -31,7 +31,8 @@ beforeAll(() => {
     global.chrome = {
         runtime: {
             id: 'mock_runtime_id',
-        } satisfies Pick<typeof chrome.runtime, 'id'>
+            getManifest: () => ({ manifest_version: 3, name: 'mock_manifest', version: 'foo.bar' }),
+        } satisfies Pick<typeof chrome.runtime, 'id' | 'getManifest'>
     } as unknown as typeof global.chrome
 })
 

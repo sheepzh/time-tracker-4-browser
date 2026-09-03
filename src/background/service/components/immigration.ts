@@ -9,13 +9,15 @@ import packageInfo from "@/package"
 import limitDatabase from "@db/limit-database"
 import mergeRuleDatabase from "@db/merge-rule-database"
 import statDatabase from "@db/stat-database"
-import type { BrowserMigratable, StorageMigratable } from '@db/types'
+import type { BrowserMigratable, BrowserMigratableNamespace, StorageMigratable } from '@db/types'
+import siteMigrator from '@service/site-service/migrator'
 
-const BROWSER_MIGRATABLES: BrowserMigratable[] = [
-    statDatabase,
-    limitDatabase,
-    mergeRuleDatabase,
-]
+const BROWSER_REGISTRY: Record<BrowserMigratableNamespace, BrowserMigratable> = {
+    __stat__: statDatabase,
+    __limit__: limitDatabase,
+    __merge__: mergeRuleDatabase,
+    __site__: siteMigrator,
+}
 
 const STORAGE_MIGRATABLES: StorageMigratable<unknown>[] = [
     statDatabase,
@@ -25,7 +27,7 @@ export async function exportData(): Promise<tt4b.backup.ExportData> {
     const data: tt4b.backup.ExportData = {
         __meta__: { version: packageInfo.version, ts: Date.now() },
     }
-    for (const migratable of BROWSER_MIGRATABLES) {
+    for (const migratable of Object.values(BROWSER_REGISTRY)) {
         const namespace = migratable.namespace
         const dataAny = data as any
         dataAny[namespace] = await migratable.exportData()
@@ -34,7 +36,7 @@ export async function exportData(): Promise<tt4b.backup.ExportData> {
 }
 
 export async function importData(data: unknown): Promise<void> {
-    for (const db of BROWSER_MIGRATABLES) await db.importData(data)
+    for (const db of Object.values(BROWSER_REGISTRY)) await db.importData(data)
 }
 
 export async function migrateStorage(type: tt4b.option.StorageType): Promise<void> {

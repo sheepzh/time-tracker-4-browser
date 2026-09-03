@@ -20,7 +20,7 @@ const isMergeValue = createUnionGuard(isString, isInt)
 
 const isMergeRuleSet = createRecordGuard(isMergeValue)
 
-const isMergeRule = createObjectGuard<tt4b.merge.Rule>({
+const isMergeRule = createObjectGuard<tt4b.site.MergeRule>({
     origin: isString,
     merged: isMergeValue,
 })
@@ -42,10 +42,9 @@ class MergeRuleDatabase extends BaseDatabase implements BrowserMigratable<'__mer
         return this.setByKey(DB_KEY, data)
     }
 
-    async selectAll(): Promise<tt4b.merge.Rule[]> {
+    async selectAll(): Promise<tt4b.site.MergeRule[]> {
         const set = await this.refresh()
-        return Object.entries(set)
-            .map(([origin, merged]) => ({ origin, merged } satisfies tt4b.merge.Rule))
+        return Object.entries(set).map(([origin, merged]) => ({ origin, merged }))
     }
 
     async remove(origin: string): Promise<void> {
@@ -57,7 +56,7 @@ class MergeRuleDatabase extends BaseDatabase implements BrowserMigratable<'__mer
     /**
      * Add to the db
      */
-    async add(...toAdd: tt4b.merge.Rule[]): Promise<void> {
+    async add(...toAdd: tt4b.site.MergeRule[]): Promise<void> {
         const set = await this.refresh()
         // Not rewrite
         toAdd.forEach(({ origin, merged }) => set[origin] = set[origin] ?? merged)
@@ -87,7 +86,7 @@ class MergeRuleDatabase extends BaseDatabase implements BrowserMigratable<'__mer
         await this.update(exist)
     }
 
-    exportData(): Promise<tt4b.merge.Rule[]> {
+    exportData(): Promise<tt4b.site.MergeRule[]> {
         return this.selectAll()
     }
 }

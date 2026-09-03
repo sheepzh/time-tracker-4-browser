@@ -18,16 +18,10 @@ import CustomizedHostMergeRuler from '../components/host-merge-ruler'
 import { slicePageResult } from "../components/page-info"
 import siteHolder from './holder'
 
-export async function saveSite(param: tt4b.site.SiteInfo, overwrite: boolean): Promise<void> {
-    const exist = await siteDatabase.get(param)
-    const alias = overwrite ? param.alias : exist?.alias ?? param.alias
-    const iconUrl = param.type === 'normal'
-        ? (overwrite ? param.iconUrl : exist?.iconUrl ?? param.iconUrl)
-        : undefined
-
-    const toSave = { ...exist, ...param, alias, iconUrl }
-    await siteDatabase.save(toSave)
-    siteHolder.buildWith(toSave)
+export async function saveSite(...sites: tt4b.site.SiteInfo[]): Promise<void> {
+    if (!sites.length) return
+    await siteDatabase.save(...sites)
+    sites.forEach(site => siteHolder.buildWith(site))
     void notifyTabs()
 }
 

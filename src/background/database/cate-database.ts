@@ -54,7 +54,7 @@ class CateDatabase extends BaseDatabase {
 
         const ids = Object.keys(items).map(Number).filter(Number.isFinite)
         const id = (ids.length ? Math.max(...ids) : 0) + 1
-        items[id] = {n: name}
+        items[id] = { n: name }
 
         await this.saveItems(items)
         return { name, id }

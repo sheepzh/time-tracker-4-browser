@@ -8,7 +8,7 @@ export default class WhitelistInitializer implements Migrator {
             host: 'localhost:*/**', type: 'virtual',
             alias: 'localhost with ports',
             options: { white: true },
-        }, true)
+        })
     }
 
     onUpdate(_version: string): void {
