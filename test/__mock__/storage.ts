@@ -71,7 +71,9 @@ const onChanged = {
 
 export const mockStorage = () => {
     global.chrome = {
+        ...global.chrome,
         storage: {
+            ...global.chrome?.storage,
             local, sync, managed, onChanged,
             session: local,
             AccessLevel: {

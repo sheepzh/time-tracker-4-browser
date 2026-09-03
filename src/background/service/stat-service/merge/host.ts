@@ -7,7 +7,7 @@ export async function mergeHost(origin: tt4b.stat.SiteRow[]): Promise<tt4b.stat.
     const map: Record<string, MakeRequired<tt4b.stat.SiteRow, 'mergedRows'>> = {}
 
     // Generate ruler
-    const mergeRuleItems: tt4b.merge.Rule[] = await mergeRuleDatabase.selectAll()
+    const mergeRuleItems = await mergeRuleDatabase.selectAll()
     const mergeRuler = new CustomizedHostMergeRuler(mergeRuleItems)
 
     origin.forEach(ele => {

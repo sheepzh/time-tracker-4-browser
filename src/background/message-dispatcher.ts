@@ -87,7 +87,7 @@ class MessageDispatcher {
             .register('site.add', addSite)
             .register('site.delete', removeSites)
             .register('site.changeCate', ({ cateId, keys }) => batchChangeCate(cateId, keys))
-            .register('site.modify', param => saveSite(param, true))
+            .register('site.modify', param => saveSite(param))
             .register('site.fillAlias', fillInitialAlias)
             .register('site.initialAlias', getInitialAlias)
             .register('site.detect', detectSites)

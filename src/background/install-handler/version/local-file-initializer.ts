@@ -34,7 +34,7 @@ export default class LocalFileInitializer implements Migrator {
             [TXT_HOST]: t(msg => msg.initial.localFile.txt),
         }
         for (const [host, alias] of Object.entries(hostAlias)) {
-            void saveSite({ host, type: 'normal', alias, iconUrl: undefined }, true)
+            void saveSite({ host, type: 'normal', alias, iconUrl: undefined })
         }
     }
 }

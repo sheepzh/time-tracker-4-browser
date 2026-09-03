@@ -6,7 +6,7 @@
  */
 
 import { getTab } from '@api/chrome/tab'
-import { saveSite } from '@service/site-service'
+import { getSite, saveSite } from '@service/site-service'
 import { IS_ANDROID, IS_CHROME, IS_FIREFOX, IS_SAFARI, isNotTrackable } from "@util/constant/environment"
 import { extractHostname, isHomepage } from "@util/pattern"
 import { extractSiteName } from "@util/site"
@@ -30,7 +30,11 @@ async function processTabInfo(tab: ChromeTab): Promise<void> {
     IS_CHROME && /^localhost(:.+)?/.test(host) && (iconUrl = undefined)
     // Only collect site name for homepage
     const alias = isHomepage(url) ? extractSiteName(title) : undefined
-    await saveSite({ host, type: 'normal', alias, iconUrl }, false)
+    if (!iconUrl && !alias) return
+    const exist = await getSite({ host, type: 'normal' })
+    exist.iconUrl ??= iconUrl
+    exist.alias ??= alias
+    await saveSite(exist)
 }
 
 /**

@@ -247,10 +247,13 @@ declare namespace tt4b {
             others: SiteInfo[]
             white: boolean
         }
-    }
 
-    namespace merge {
-        type Rule = {
+        type ExportData = {
+            categories: Cate[]
+            sites: SiteInfo[]
+        }
+
+        type MergeRule = {
             /**
              * Origin host, can be regular expression with star signs
              */
@@ -621,7 +624,7 @@ declare namespace tt4b {
             __stat__?: core.Row[]
             __limit__?: limit.Rule[]
             __merge__?: merge.Rule[]
-            __cate__?: site.Cate[]
+            __site__?: site.ExportData
         }
     }
 
