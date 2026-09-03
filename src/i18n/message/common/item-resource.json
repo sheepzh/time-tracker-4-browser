@@ -175,6 +175,7 @@
         "group": "Grupa zakładek",
         "focus": "Czas trwania",
         "run": "Czas pracy",
+        "media": "Czas odtwarzania mediów",
         "time": "Liczba wizyt",
         "operation": {
             "analysis": "Analizuj",

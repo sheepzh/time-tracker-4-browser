@@ -570,7 +570,7 @@
         "reminder": "Zaman sınırı dolmasına {min} dakikadan az kaldı!"
     },
     "pl": {
-        "onlyEffective": "Tylko skuteczne",
+        "onlyEffective": "Tylko aktywne",
         "wildcardTip": "Możesz używać symbolu \"*\", aby dopasowywać subdomeny lub podstrony, a także użyć znaku „+” jako prefiksu, aby wykluczyć podstrony!",
         "emptyTips": "Kliknij tutaj, aby utworzyć zasadę!",
         "item": {
@@ -581,7 +581,7 @@
             "detail": "Szczegóły zasady",
             "visitTime": "Limit czasu na wizytę",
             "enabled": "Aktywne",
-            "locked": "Zablokowany",
+            "locked": "Zablokowane",
             "effectiveDay": "Aktywna w",
             "or": "lub",
             "notEffective": "Nieskuteczny",
