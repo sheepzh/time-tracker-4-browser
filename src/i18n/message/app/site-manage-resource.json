@@ -615,7 +615,11 @@
             "type": "Typ witryny",
             "alias": "Nazwa strony",
             "cate": "Kategoria witryny",
-            "icon": "Ikona"
+            "icon": "Ikona",
+            "white": "Whitelista",
+            "whiteInfo": "Witryny na białej liście nie są śledzone ani blokowane.",
+            "runtimeInfo": "Rejestruj czas, przez jaki strona internetowa jest otwarta. Nie wymaga, aby karta ze stroną/okno przeglądarki było aktywnie używane.",
+            "mediaTimeInfo": "Rejestruj czas odtwarzania dźwięku przez stronę internetową."
         },
         "typeInfo": {
             "normal": "statystyki według nazwy domeny",
@@ -640,6 +644,7 @@
             "batchDeleteMsg": "Czy chcesz usunąć wszystkie wybrane witryny?"
         },
         "merge": {
+            "label": "Reguły scalania witryn",
             "removeConfirmMsg": "{origin} zostanie usunięty ze spersonalizowanych reguł scalania.",
             "originPlaceholder": "Oryginalna strona",
             "mergedPlaceholder": "Scalony",
