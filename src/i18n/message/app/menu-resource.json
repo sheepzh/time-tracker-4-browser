@@ -88,11 +88,15 @@
         "about": "À propos"
     },
     "ru": {
+        "tracking": "Статистика",
         "dashboard": "Панель Данных",
         "record": "Рекорд",
+        "analysis": "Анализ",
         "siteAnalysis": "Анализ сайта",
         "habit": "Привычки",
+        "productivity": "Продуктивность",
         "other": "Другие особенности",
+        "migration": "Перенос данных",
         "about": "О нас"
     },
     "ar": {
