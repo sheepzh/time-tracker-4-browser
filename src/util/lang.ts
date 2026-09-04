@@ -13,3 +13,6 @@ export const mergeObject = <T extends Record<string, any>>(target: T, toMerge: P
     })
     return target
 }
+
+export const anyChanged = <T>(newVal: T, oldVal: T, ...keys: (keyof T)[]): boolean =>
+    keys.some(key => newVal[key] !== oldVal[key])

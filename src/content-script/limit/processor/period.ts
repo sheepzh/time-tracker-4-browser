@@ -4,7 +4,7 @@ import { isInPeriod } from '@util/limit'
 import { MILL_PER_MINUTE } from '@util/time'
 import DelayCoordinator from '../manager/delay-coordinator'
 import LimitState from '../manager/state'
-import type { Processor, Reason } from '../types'
+import type { Processor, Reason, SharedOption } from '../types'
 
 type EffectiveResult = {
     effective: boolean
@@ -39,7 +39,7 @@ class PeriodProcessor implements Processor {
         private readonly state: LimitState,
         private readonly delayCoord: DelayCoordinator,
         private readonly location: LocationWatcher,
-        private readonly delayDuration: number,
+        private readonly option: SharedOption,
     ) {
     }
 
@@ -47,7 +47,7 @@ class PeriodProcessor implements Processor {
         await this.reset()
         this.delayCoord.register(() => {
             this.#clean()
-            const resumeTimer = setTimeout(() => void this.reset(), MILL_PER_MINUTE * this.delayDuration)
+            const resumeTimer = setTimeout(() => void this.reset(), MILL_PER_MINUTE * this.option.delayDuration)
             this.#timers.push(resumeTimer)
         }, 'PERIOD')
     }

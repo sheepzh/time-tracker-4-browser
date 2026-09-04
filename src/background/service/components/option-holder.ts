@@ -27,7 +27,7 @@ class OptionHolder {
     }
 
     addChangeListener(listener: ChangeListener) {
-        listener && this.#listeners.push(listener)
+        this.#listeners.push(listener)
     }
 
     async set(option: Partial<tt4b.option.AllOption>): Promise<void> {

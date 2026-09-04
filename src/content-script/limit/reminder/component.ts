@@ -1,5 +1,6 @@
 import { getIconUrl } from "@api/chrome/runtime"
 import { t } from "@cs/locale"
+import { mountStyle } from '../style'
 
 const containerStyle = (dark: boolean): Partial<CSSStyleDeclaration> => ({
     position: 'fixed',
@@ -53,11 +54,6 @@ const closeBtnStyle = (dark: boolean): Partial<CSSStyleDeclaration> => ({
     fill: 'current-color',
     color: dark ? '#A3A6AD' : '',
 })
-
-function mountStyle(el: HTMLElement, style: Partial<CSSStyleDeclaration>) {
-    if (!el || !style) return
-    Object.entries(style).forEach(([key, val]) => typeof val === 'string' && el.style.setProperty(key, val))
-}
 
 function createIcon(): HTMLImageElement {
     const icon = document.createElement('img')

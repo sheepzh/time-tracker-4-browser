@@ -56,6 +56,7 @@ export type LimitMessage = {
         confession: string
     }
     reminder: string
+    thisSession: string
 }
 
 const _default: Messages<LimitMessage> = resource

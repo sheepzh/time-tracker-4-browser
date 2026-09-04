@@ -1,3 +1,4 @@
+import { anyChanged } from '@util/lang'
 import { MILL_PER_MINUTE } from "@util/time"
 import alarmManager from "./alarm-manager"
 import backupProcessor from "./service/backup/processor"
@@ -7,16 +8,10 @@ import notificationProcessor from "./service/notification/processor"
 const BACKUP_ALARM_NAME = 'auto-backup-data'
 const NOTIFICATION_ALARM_NAME = 'notification-data'
 
-const needResetBackup = (newVal: tt4b.option.AllOption, oldVal: tt4b.option.AllOption): boolean =>
-    newVal.autoBackUp !== oldVal.autoBackUp || newVal.autoBackUpInterval !== oldVal.autoBackUpInterval
-
-const needResetNotification = (newVal: tt4b.option.AllOption, oldVal: tt4b.option.AllOption): boolean =>
-    newVal.notificationCycle !== oldVal.notificationCycle || newVal.notificationOffset !== oldVal.notificationOffset
-
 export async function initScheduler(): Promise<void> {
     optionHolder.addChangeListener((newVal, oldVal) => {
-        if (needResetBackup(newVal, oldVal)) resetBackup()
-        if (needResetNotification(newVal, oldVal)) resetNotification()
+        if (anyChanged(newVal, oldVal, 'autoBackUp', 'autoBackUpInterval')) resetBackup()
+        if (anyChanged(newVal, oldVal, 'notificationCycle', 'notificationOffset')) resetNotification()
     })
 
     const existBackup = await alarmManager.getAlarm(BACKUP_ALARM_NAME)
