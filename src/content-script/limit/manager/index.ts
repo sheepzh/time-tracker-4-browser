@@ -2,8 +2,7 @@ import { getUrl } from '@api/chrome/runtime'
 import { trySendMsg2Runtime } from '@api/sw/common'
 import LocationWatcher from '@cs/location-watcher'
 import { ModalBridge } from '../modal/bridge'
-import { VisitProcessor } from '../processor'
-import type { Reason } from '../types'
+import type { Reason, VisitData } from '../types'
 import DelayCoordinator from './delay-coordinator'
 import ScreenLocker from './screen-locker'
 import LimitState from './state'
@@ -48,7 +47,7 @@ class ModalManager {
         location.onCurrChange(() => this.#notify('url', location.url))
     }
 
-    init(state: LimitState, delayCoord: DelayCoordinator, visitProcessor: VisitProcessor) {
+    init(state: LimitState, delayCoord: DelayCoordinator, visit: VisitData) {
         this.#bridge
             .register('delay', reason => delayCoord.process(reason))
             // fixme: refactor this, this action should be handled by the focus processor
@@ -57,7 +56,7 @@ class ModalManager {
         this.#notify('url', this.location.url)
         this.#startObserve()
 
-        visitProcessor.onChange(time => this.#notify('visitTime', time))
+        visit.onChange(time => this.#notify('visitTime', time))
         state.onChange(current => current ? this.#show(current) : this.#hide())
     }
 

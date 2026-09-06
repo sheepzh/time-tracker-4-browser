@@ -959,7 +959,13 @@ declare namespace tt4b {
              * @since 3.1.0
              */
             limitReminderDuration?: number
+            /**
+             * Whether to display the countdown
+             */
+            limitCountdown: boolean
         }
+
+        type LimitOptionChange = Pick<LimitOption, 'limitCountdown' | 'limitDelayDuration'>
 
         type LimitRequired = MakeRequired<LimitOption, 'limitPassword' | 'limitVerifyDifficulty' | 'limitReminderDuration'>
 
@@ -1211,6 +1217,7 @@ declare namespace tt4b {
             & mq._MakeRegistry<'limitReminder', limit.ReminderInfo>
             & mq._MakeRegistry<'askVisitHit', number, boolean>
             & mq._MakeRegistry<'focusChanged', focus.Session | undefined>
+            & mq._MakeRegistry<'limitOptionChanged', tt4b.option.LimitOptionChange>
 
         type ReqCode = keyof _HandlerRegistry
 

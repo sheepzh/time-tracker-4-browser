@@ -2,31 +2,40 @@ import { trySendMsg2Runtime } from '@api/sw/common'
 import type Dispatcher from '@cs/dispatcher'
 import LocationWatcher from '@cs/location-watcher'
 import NormalTracker from "@cs/tracker/normal"
-import { MILL_PER_MINUTE, MILL_PER_SECOND } from "@util/time"
+import { calcRealLimit, meetLimit } from '@util/limit'
+import { MILL_PER_SECOND } from "@util/time"
 import DelayCoordinator from '../manager/delay-coordinator'
 import LimitState from '../manager/state'
-import type { LimitReason, Processor } from '../types'
+import type { LimitReason, Processor, SharedOption, VisitData } from '../types'
 
-class VisitProcessor implements Processor {
+class VisitProcessor implements Processor, VisitData {
     #mills: number = 0
     #rules: tt4b.limit.Rule[] = []
     #tracker: NormalTracker
     #delayCount: number = 0
-    #listener?: ArgCallback<number>
+    #listeners: ArgCallback<number>[] = []
     #lastUrl: string
+
+    get mills() {
+        return this.#mills
+    }
+
+    get delayCount() {
+        return this.#delayCount
+    }
 
     constructor(
         private readonly dispatcher: Dispatcher,
         private readonly state: LimitState,
         private readonly delayCoord: DelayCoordinator,
         private readonly location: LocationWatcher,
-        private readonly delayDuration: number,
+        private readonly option: SharedOption,
     ) {
         this.#lastUrl = location.url
         this.#tracker = new NormalTracker({
             onReport: data => this.handleTracker(data),
         })
-        location.onCurrChange(async () => {
+        location.onCurrChange(() => {
             const newUrl = this.location.url
             if (this.#lastUrl === newUrl) return
             this.#lastUrl = newUrl
@@ -39,18 +48,23 @@ class VisitProcessor implements Processor {
     }
 
     onChange(listener: ArgCallback<number>) {
-        this.#listener = listener
+        this.#listeners.push(listener)
+        listener(this.#mills)
     }
 
     #notify() {
-        this.#listener?.(this.#mills)
+        this.#listeners.forEach(l => l(this.#mills))
     }
 
     private hasLimited(rule: tt4b.limit.Rule): boolean {
-        const { visitTime } = rule
+        const { visitTime, allowDelay } = rule
         if (!visitTime) return false
-        const afterDelayed = visitTime * MILL_PER_SECOND + this.#delayCount * this.delayDuration * MILL_PER_MINUTE
-        return afterDelayed < this.#mills
+        const delay = {
+            count: this.#delayCount,
+            duration: this.option.delayDuration,
+            allow: allowDelay,
+        }
+        return meetLimit(calcRealLimit(visitTime * MILL_PER_SECOND, delay), this.#mills)
     }
 
     private async handleTracker({ start, end }: tt4b.core.Event) {

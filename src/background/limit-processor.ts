@@ -5,8 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { listTabs, sendMsg2Tab } from "@api/chrome/tab"
+import { broadcast2Tabs, listTabs, sendMsg2Tab } from "@api/chrome/tab"
+import optionHolder from '@service/components/option-holder'
 import { getSite } from '@service/site-service'
+import { anyChanged } from '@util/lang'
 import { matches } from "@util/limit"
 import { extractHostname } from '@util/pattern'
 import { getStartOfDay, MILL_PER_DAY } from "@util/time"
@@ -23,6 +25,14 @@ function initDailyBroadcast() {
         () => getStartOfDay(new Date()) + MILL_PER_DAY,
         noticeLimitChanged,
     )
+}
+
+function initOptionBroadcast() {
+    optionHolder.addChangeListener(async (newVal, oldVal) => {
+        if (!anyChanged(newVal, oldVal, 'limitCountdown', 'limitDelayDuration')) return
+        const { limitCountdown, limitDelayDuration } = newVal
+        await broadcast2Tabs('limitOptionChanged', { limitCountdown, limitDelayDuration })
+    })
 }
 
 const processAskHitVisit = async (item: tt4b.limit.Item) => {
@@ -55,6 +65,7 @@ async function querySummary(): Promise<tt4b.limit.Summary | undefined> {
 
 export default function init(dispatcher: MessageDispatcher) {
     initDailyBroadcast()
+    initOptionBroadcast()
 
     dispatcher
         .register('limit.list', selectLimit)

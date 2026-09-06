@@ -60,6 +60,7 @@ function copy(target: tt4b.option.LimitOption, source: Readonly<tt4b.option.Limi
     target.limitReminder = source.limitReminder
     target.limitReminderDuration = source.limitReminderDuration
     target.limitDelayDuration = source.limitDelayDuration
+    target.limitCountdown = source.limitCountdown
 }
 
 function reset(target: tt4b.option.LimitOption) {
@@ -149,8 +150,17 @@ const _default = defineComponent((_, ctx) => {
             />
         </OptionItem>
         <OptionItem
+            label={msg => msg.option.limit.countdown}
+            defaultValue={DEFAULT_LIMIT.limitCountdown}
+        >
+            <ElSwitch
+                modelValue={option.limitCountdown}
+                onChange={val => option.limitCountdown = !!val}
+            />
+        </OptionItem>
+        <OptionItem
             label={msg => msg.option.limit.reminder}
-            defaultValue={false}
+            defaultValue={DEFAULT_LIMIT.limitReminder}
             v-slots={{
                 default: () => (
                     <ElSwitch
