@@ -3,7 +3,7 @@ import LocationWatcher from '@cs/location-watcher'
 import { hasDailyLimited, hasWeeklyLimited, matches } from "@util/limit"
 import DelayCoordinator from '../manager/delay-coordinator'
 import LimitState from '../manager/state'
-import type { Processor, Reason } from '../types'
+import type { Processor, Reason, SharedOption } from '../types'
 
 const cvtItem2AddReason = (item: tt4b.limit.Item, delayDuration: number): Reason[] => {
     const { cond, allowDelay, id, delayCount, weeklyDelayCount } = item
@@ -18,7 +18,7 @@ class DailyWeeklyProcessor implements Processor {
         private readonly state: LimitState,
         private readonly delayCoord: DelayCoordinator,
         private readonly location: LocationWatcher,
-        private readonly delayDuration: number,
+        private readonly option: SharedOption,
     ) { }
 
     async onTimeMeet(items: tt4b.limit.Item[]): Promise<void> {
@@ -26,7 +26,7 @@ class DailyWeeklyProcessor implements Processor {
         if (this.location.isWhite) return
 
         items.filter(({ cond }) => matches(cond, this.location.url))
-            .flatMap(item => cvtItem2AddReason(item, this.delayDuration))
+            .flatMap(item => cvtItem2AddReason(item, this.option.delayDuration))
             .forEach(reason => this.state.add(reason))
     }
 
@@ -45,7 +45,7 @@ class DailyWeeklyProcessor implements Processor {
         })
         if (!limitedRules?.length) return
 
-        const reasons = limitedRules.flatMap(item => cvtItem2AddReason(item, this.delayDuration))
+        const reasons = limitedRules.flatMap(item => cvtItem2AddReason(item, this.option.delayDuration))
         this.state.add(...reasons)
     }
 }

@@ -59,12 +59,16 @@ export const meetLimit = (limit: number | undefined, value: number | undefined):
 type LimitInfo = { wasted: number, maxLimit: number | undefined }
 type DelayInfo = { count: number, duration: number, allow: boolean }
 
+/**
+ * @param original milliseconds
+ */
+export const calcRealLimit = (original: number, { allow, count, duration }: DelayInfo): number =>
+    allow ? original + duration * MILL_PER_MINUTE * count : original
+
 export const meetTimeLimit = (limit: LimitInfo, delay: DelayInfo) => {
     const { wasted, maxLimit } = limit
     if (!maxLimit) return false
-    const { count, duration, allow } = delay
-    const realLimit = allow ? maxLimit + duration * MILL_PER_MINUTE * (count ?? 0) : maxLimit
-    return meetLimit(realLimit, wasted)
+    return meetLimit(calcRealLimit(maxLimit, delay), wasted)
 }
 
 export function hasDailyLimited(item: tt4b.limit.Item, delayDuration: number): boolean {

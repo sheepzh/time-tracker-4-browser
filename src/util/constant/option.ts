@@ -38,6 +38,7 @@ export const DEFAULT_LIMIT: tt4b.option.LimitRequired = {
     limitVerifyDifficulty: 'easy',
     limitReminder: false,
     limitReminderDuration: 5,
+    limitCountdown: false,
 } as const
 
 export const DEFAULT_BACKUP: tt4b.option.BackupOption = {

@@ -143,7 +143,8 @@
             "pi": "{digitCount} digits from {startIndex} to {endIndex} of the decimal part of π",
             "confession": "Time is fleeting"
         },
-        "reminder": "Less than {min} minutes until the time limit!"
+        "reminder": "Less than {min} minutes until the time limit!",
+        "thisSession": "This Session"
     },
     "ja": {
         "wildcardTip": "ワイルドカードを使用してサブドメインまたはサブページに一致させることができ、「+」をプレフィックスとしてサブページを除外することができます！",

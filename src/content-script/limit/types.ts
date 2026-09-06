@@ -16,3 +16,26 @@ export interface Processor {
     // Reset rules and reasons
     reset(): Promise<void>
 }
+
+export type SharedOption = {
+    /**
+     * Whether to display the countdown
+     */
+    countdown: boolean
+    /**
+     * Delay duration, minutes
+     */
+    delayDuration: number
+}
+
+export type VisitData = {
+    /**
+     * Tracked milliseconds of current visit
+     */
+    readonly mills: number
+    /**
+     * Times of delaying current visit
+     */
+    readonly delayCount: number
+    onChange(listener: ArgCallback<number>): void
+}

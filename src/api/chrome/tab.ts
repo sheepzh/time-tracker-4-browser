@@ -97,6 +97,11 @@ export async function trySendMsg2Tab<C extends tt4b.tab.ReqCode>(
     }
 }
 
+export async function broadcast2Tabs<C extends tt4b.tab.ReqCode>(code: C, data?: tt4b.tab.ReqData<C>): Promise<void> {
+    const tabs = await listTabs()
+    await Promise.all(tabs.map(({ id, url }) => id && url && trySendMsg2Tab(id, code, data)))
+}
+
 type TabHandler<Event> = (tabId: number, ev: Event, tab: ChromeTab) => void
 
 export function onTabActivated(handler: (tabId: number, info: ChromeTabActiveInfo) => void): void {

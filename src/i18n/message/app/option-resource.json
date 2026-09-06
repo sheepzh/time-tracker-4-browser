@@ -326,7 +326,8 @@
                 "twoFaCopyLink": "Copy link",
                 "twoFaVerifyLabel": "Enter the 6-digit code to verify"
             },
-            "unblockDuration": "Snooze for {input} minutes each time"
+            "unblockDuration": "Snooze for {input} minutes each time",
+            "countdown": "{input} Show countdown on sites with active limit rules"
         },
         "backup": {
             "title": "Data Backup",

@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { listTabs, sendMsg2Tab } from "@api/chrome/tab"
+import { broadcast2Tabs } from "@api/chrome/tab"
 import db, { type LimitRecord } from "@db/limit-database"
 import { sum } from "@util/array"
 import { hasLimited, isEffective, matches, meetTimeLimit } from "@util/limit"
@@ -59,18 +59,7 @@ function cvtRecord2Item({ records, ...others }: LimitRecord, today: string, week
     }
 }
 
-/**
- * Fired if the item is removed or disabled
- *
- * @param item
- */
-export async function noticeLimitChanged(): Promise<void> {
-    const tabs = await listTabs()
-    tabs.forEach(({ id, url }) => {
-        if (!id || !url) return
-        sendMsg2Tab(id, 'limitChanged').catch(err => console.info(err?.message))
-    })
-}
+export const noticeLimitChanged = () => broadcast2Tabs('limitChanged')
 
 export async function removeLimitRules(ids: number[]): Promise<void> {
     if (!ids.length) return

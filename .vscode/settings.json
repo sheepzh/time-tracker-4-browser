@@ -13,6 +13,7 @@
     "js/ts.format.insertSpaceAfterCommaDelimiter": true,
     "js/ts.preferences.quoteStyle": "single",
     "js/ts.format.semicolons": "remove",
+    "js/ts.preferences.preferTypeOnlyAutoImports": true,
     "js/ts.format.insertSpaceBeforeFunctionParenthesis": false,
     "files.eol": "\n",
     "cSpell.words": [
