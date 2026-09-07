@@ -2,14 +2,14 @@ import type { PauseDetector } from '../types'
 
 abstract class BasePauseDetector implements PauseDetector {
     abstract paused: boolean
-    #pauseListener?: NoArgCallback
+    #pauseListeners: ArgCallback<boolean>[] = []
 
     onPauseChange(listener: NoArgCallback) {
-        this.#pauseListener = listener
+        this.#pauseListeners.push(listener)
     }
 
     protected notify() {
-        this.#pauseListener?.()
+        this.#pauseListeners.forEach(l => l(this.paused))
     }
 }
 
