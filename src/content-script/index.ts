@@ -12,7 +12,7 @@ import processLimit from "./limit"
 import LimitState from './limit/manager/state'
 import LocationWatcher from './location-watcher'
 import printInfo from "./printer"
-import processTimeline from './timeline'
+import TimelineCollector from './timeline'
 import MediaTimeTracker from './tracker/media-time'
 import NormalTracker from "./tracker/normal"
 import RunTimeTracker from "./tracker/run-time"
@@ -65,7 +65,7 @@ async function main() {
     if (location.isWhite) return
 
     void printInfo(location.host)
-    processTimeline()
+    new TimelineCollector().init()
 
     // Increase visit count at the end
     await trySendMsg2Runtime('cs.injected')

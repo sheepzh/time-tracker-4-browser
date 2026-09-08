@@ -1,24 +1,22 @@
 import { trySendMsg2Runtime } from '@api/sw/common'
 
-class TimelineCollector {
+export default class TimelineCollector {
     private startTime: number | null = null
 
     /**
      * Bind page visibility and focus events
      */
-    init(): void {
+    init() {
         const onStateChange = () => {
-            if (!document.hidden && document.hasFocus()) {
-                this.startTracking()
+            if (document.hidden) {
+                this.#collect()
             } else {
-                this.collect()
+                this.startTime ??= Date.now()
             }
         }
 
         document.addEventListener('visibilitychange', onStateChange)
-        window.addEventListener('focus', onStateChange)
-        window.addEventListener('blur', onStateChange)
-        window.addEventListener('beforeunload', () => this.collect())
+        window.addEventListener('beforeunload', () => this.#collect())
 
         if (document.readyState === 'complete') {
             onStateChange()
@@ -28,18 +26,9 @@ class TimelineCollector {
     }
 
     /**
-     * Start tracking current page
-     */
-    public startTracking(): void {
-        if (document.hidden || !document.hasFocus()) return
-        if (this.startTime !== null) return
-        this.startTime = Date.now()
-    }
-
-    /**
      * End current session and generate event
      */
-    private collect(): void {
+    #collect(): void {
         if (!this.startTime) return
         const url = document?.location?.href
         if (!url) return
@@ -48,9 +37,4 @@ class TimelineCollector {
 
         this.startTime = null
     }
-}
-
-export default function processTimeline() {
-    const collector = new TimelineCollector()
-    collector.init()
 }
