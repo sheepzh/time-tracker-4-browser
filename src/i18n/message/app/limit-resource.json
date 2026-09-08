@@ -618,7 +618,8 @@
             "pi": "{digitCount} cyfr od {startIndex} do {endIndex} części dziesiętnej liczby π",
             "confession": "Czas ucieka"
         },
-        "reminder": "Mniej niż {min} minut do osiągnięcia limitu!"
+        "reminder": "Mniej niż {min} minut do osiągnięcia limitu!",
+        "thisSession": "Aktualna sesja"
     },
     "it": {
         "onlyEffective": "Solo Efficace",
