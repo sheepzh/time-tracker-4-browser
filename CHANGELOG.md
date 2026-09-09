@@ -4,6 +4,14 @@ All notable changes to Time Tracker will be documented in this file.
 
 It is worth mentioning that the release time of each change refers to the time when the installation package is submitted to the webstore. It is about one week for Firefox to moderate packages, while only 1-2 days for Chrome and Edge.
 
+## [4.6.0] - 2026-09-09
+
+-  Added limit countdown on sites
+-  Export and import sites and categories
+-  Fixed an issue of the timeline for Edge
+-  Fixed an issue of badge
+-  Fixed an issue of limit password
+
 ## [4.5.2] - 2026-09-01
 
 -  Fixed a bug of focus timer (#889)
