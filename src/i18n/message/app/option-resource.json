@@ -1513,7 +1513,7 @@
             "localFileTime": "pliki lokalne",
             "localFilesInfo": "Obsługuje pliki takich typów jak PDF, obrazy, txt lub JSON.",
             "countTabGroup": "{input} Śledzenie czasu w grupach kart {info}",
-            "tabGroupInfo": "Po usunięciu grupy tagów, dane również zostaną usunięte.",
+            "tabGroupInfo": "Po usunięciu grupy tagów dane również zostaną usunięte.",
             "fileAccessDisabled": "Dostęp do adresów URL plików jest obecnie niedozwolony. Proszę najpierw włączyć go na stronie zarządzania",
             "weekStart": "Pierwszy dzień tygodnia {input}",
             "weekStartAsNormal": "Normalnie",
@@ -1546,7 +1546,8 @@
                 "twoFaCopyLink": "Kopiuj link",
                 "twoFaVerifyLabel": "Wpisz 6-cyfrowy kod do weryfikacji"
             },
-            "unblockDuration": "Opóźnij zablokowanie każdorazowo o {input} minut"
+            "unblockDuration": "Opóźnij zablokowanie każdorazowo o {input} minut",
+            "countdown": "{input} Pokaż odliczanie na stronach z aktywnymi regułami limitu"
         },
         "backup": {
             "title": "Kopia zapasowa danych",
