@@ -1,6 +1,6 @@
 import { getOption } from '@api/sw/option'
+import locationWatcher from '@cs/location-watcher'
 import Dispatcher from '../dispatcher'
-import LocationWatcher from '../location-watcher'
 import Countdown from './countdown'
 import ModalManager from './manager'
 import DelayCoordinator from './manager/delay-coordinator'
@@ -9,24 +9,24 @@ import { DailyWeeklyProcessor, FocusProcessor, PeriodProcessor, VisitProcessor }
 import Reminder from './reminder'
 import type { SharedOption } from './types'
 
-export default async function processLimit(state: LimitState, location: LocationWatcher, dispatcher: Dispatcher) {
+export default async function processLimit(state: LimitState, dispatcher: Dispatcher) {
     const { limitCountdown, limitDelayDuration } = await getOption()
     const option: SharedOption = { countdown: limitCountdown, delayDuration: limitDelayDuration }
     const delayCoord = new DelayCoordinator()
 
-    const dailyWeeklyPsr = new DailyWeeklyProcessor(state, delayCoord, location, option)
-    const visitPsr = new VisitProcessor(dispatcher, state, delayCoord, location, option)
-    const focusPsr = new FocusProcessor(state, location)
-    const periodPsr = new PeriodProcessor(state, delayCoord, location, option)
+    const dailyWeeklyPsr = new DailyWeeklyProcessor(state, delayCoord, option)
+    const visitPsr = new VisitProcessor(state, delayCoord, option)
+    const focusPsr = new FocusProcessor(state)
+    const periodPsr = new PeriodProcessor(state, delayCoord, option)
 
     const processors = [dailyWeeklyPsr, visitPsr, periodPsr, focusPsr]
     const resetAll = () => processors.forEach(p => void p.reset())
     await Promise.all(processors.map(p => p.init()))
-    location.onCurrChange(resetAll)
+    locationWatcher.onCurrChange(resetAll)
 
-    new ModalManager(location).init(state, delayCoord, visitPsr)
+    new ModalManager().init(state, delayCoord, visitPsr)
 
-    const countdown = new Countdown(location, option, visitPsr)
+    const countdown = new Countdown(option, visitPsr)
     countdown.init(state)
     const reminder = new Reminder()
 

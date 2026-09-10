@@ -1,4 +1,4 @@
-import Dispatcher from '@cs/dispatcher'
+import type LimitState from '@cs/limit/manager/state'
 import DocVisibleDetector from './pause/doc-visible-detector'
 import IdleDetector from './pause/idle-detector'
 import type { PauseDetector } from './types'
@@ -27,11 +27,10 @@ export default class NormalTracker {
         return this.#detectors.some(d => d.paused)
     }
 
-    init(dispatcher: Dispatcher, ...pauseDetectors: PauseDetector[]) {
+    init(state: LimitState) {
         const idle = new IdleDetector()
         const docVisible = new DocVisibleDetector()
-        dispatcher.register('syncAudible', val => idle.onAudibleChange(val))
-        this.#detectors.push(...pauseDetectors, idle, docVisible)
+        this.#detectors.push(state, idle, docVisible)
         this.#detectors.forEach(d => d.onPauseChange(() => this.#reconcile()))
 
         // Resume if idle before reloading

@@ -7,15 +7,16 @@
 
 import { trySendMsg2Runtime } from '@api/sw/common'
 import { initLocale } from "@i18n"
+import { appendToBody } from '@util/document'
+import audible from './audible'
 import Dispatcher from './dispatcher'
 import processLimit from "./limit"
 import LimitState from './limit/manager/state'
-import LocationWatcher from './location-watcher'
+import locationWatcher from './location-watcher'
 import printInfo from "./printer"
 import TimelineCollector from './timeline'
-import MediaTimeTracker from './tracker/media-time'
 import NormalTracker from "./tracker/normal"
-import RunTimeTracker from "./tracker/run-time"
+import OptionalTracker from './tracker/optional'
 
 const FLAG_ID = '__TIMER_INJECTION_FLAG__' + chrome.runtime.id
 
@@ -24,47 +25,36 @@ function getOrSetFlag(): boolean {
     if (existed) return true
 
     const flag = document.createElement('span')
-    flag.style && (flag.style.visibility = 'hidden')
-    flag && (flag.id = FLAG_ID)
+    flag.style.visibility = 'hidden'
+    flag.id = FLAG_ID
 
-    if (document.readyState === "complete") {
-        document?.body?.appendChild(flag)
-    } else {
-        const oldListener = document.onreadystatechange
-        document.onreadystatechange = function (ev) {
-            oldListener?.call(this, ev)
-            document.readyState === "complete" && document?.body?.appendChild(flag)
-        }
-    }
+    appendToBody(flag)
     return false
 }
 
 async function main() {
     const dispatcher = new Dispatcher()
+    await audible.init(dispatcher)
     const limitState = new LimitState()
 
-    const location = new LocationWatcher()
-    await location.init(dispatcher)
+    await locationWatcher.init(dispatcher)
 
     // Execute in every injection
-    const normalTracker = new NormalTracker({
-        onReport: async data => void (!location.isWhite && await trySendMsg2Runtime('track.time', data)),
+    new NormalTracker({
+        onReport: async data => void (!locationWatcher.isWhite && await trySendMsg2Runtime('track.time', data)),
         onResume: () => trySendMsg2Runtime('cs.trackingPauseChanged', false),
         onPause: () => trySendMsg2Runtime('cs.trackingPauseChanged', true),
-    })
-    normalTracker.init(dispatcher, limitState)
-
-    new RunTimeTracker(location).init()
-    new MediaTimeTracker(location).init(dispatcher)
+    }).init(limitState)
+    new OptionalTracker().init()
 
     // Execute only one time for each dom
     if (getOrSetFlag()) return
 
-    void initLocale()
-    await processLimit(limitState, location, dispatcher)
-    if (location.isWhite) return
+    await initLocale()
+    await processLimit(limitState, dispatcher)
+    if (locationWatcher.isWhite) return
 
-    void printInfo(location.host)
+    await printInfo()
     new TimelineCollector().init()
 
     // Increase visit count at the end

@@ -1,5 +1,5 @@
 import { trySendMsg2Runtime } from '@api/sw/common'
-import LocationWatcher from '@cs/location-watcher'
+import locationWatcher from '@cs/location-watcher'
 import LimitState from '../manager/state'
 import type { SharedOption, VisitData } from '../types'
 import { CountdownComponent } from './component'
@@ -12,19 +12,15 @@ export default class Countdown {
     readonly #component = new CountdownComponent()
 
     get #isEffective() {
-        return this.option.countdown && !this.#modalVisible && !this.location.isWhite
+        return this.option.countdown && !this.#modalVisible && !locationWatcher.isWhite
     }
 
-    constructor(
-        private readonly location: LocationWatcher,
-        private readonly option: Readonly<SharedOption>,
-        private readonly visit: VisitData,
-    ) {
+    constructor(private readonly option: Readonly<SharedOption>, private readonly visit: VisitData) {
         this.#state = new CountdownState(option, visit)
     }
 
     init(state: LimitState) {
-        this.location.onCurrChange(() => void this.sync())
+        locationWatcher.onCurrChange(() => void this.sync())
 
         state.onChange(reason => {
             this.#modalVisible = !!reason
@@ -44,7 +40,7 @@ export default class Countdown {
     async sync() {
         const seq = ++this.#syncSeq
         const rules = this.#isEffective
-            ? await trySendMsg2Runtime('limit.list', { effective: true, url: this.location.url }) ?? []
+            ? await trySendMsg2Runtime('limit.list', { effective: true, url: locationWatcher.url }) ?? []
             : []
         // Discard the outdated response
         if (seq !== this.#syncSeq) return

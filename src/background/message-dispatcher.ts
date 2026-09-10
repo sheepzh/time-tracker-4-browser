@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { log } from '@/common/logger'
 import { onRuntimeMessage } from "@api/chrome/runtime"
+import { log } from '@bg/logger'
 import focusPresetDatabase from "@db/focus-preset-database"
 import focusHolder from '@service/focus/holder'
 import cateDatabase from './database/cate-database'

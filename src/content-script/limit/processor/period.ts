@@ -1,5 +1,5 @@
 import { trySendMsg2Runtime } from '@api/sw/common'
-import LocationWatcher from '@cs/location-watcher'
+import locationWatcher from '@cs/location-watcher'
 import { isInPeriod } from '@util/limit'
 import { MILL_PER_MINUTE } from '@util/time'
 import DelayCoordinator from '../manager/delay-coordinator'
@@ -38,7 +38,6 @@ class PeriodProcessor implements Processor {
     constructor(
         private readonly state: LimitState,
         private readonly delayCoord: DelayCoordinator,
-        private readonly location: LocationWatcher,
         private readonly option: SharedOption,
     ) {
     }
@@ -54,9 +53,9 @@ class PeriodProcessor implements Processor {
 
     async reset(): Promise<void> {
         this.#clean()
-        if (this.location.isWhite) return
+        if (locationWatcher.isWhite) return
 
-        const rules = await trySendMsg2Runtime('limit.list', { effective: true, url: this.location.url }) ?? []
+        const rules = await trySendMsg2Runtime('limit.list', { effective: true, url: locationWatcher.url }) ?? []
         const now = new Date()
         this.#timers = rules.flatMap(r => this.#processRule(r, now))
     }

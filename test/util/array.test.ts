@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { allMatch, anyMatch, groupBy, rotate, sum, toMap } from "@util/array"
+import { groupBy, rotate, sum, toMap } from "@util/array"
 
 describe("util/array", () => {
 
@@ -47,18 +47,6 @@ describe("util/array", () => {
 
         arr = []
         expect(sum(arr)).toEqual(0)
-    })
-
-    test("allMatch", () => {
-        const arr = [100, 20, 30]
-        expect(allMatch(arr, a => a >= 20)).toBeTruthy()
-        expect(allMatch(arr, a => a > 20)).toBeFalsy()
-    })
-
-    test("anyMatch", () => {
-        const arr = [100, 20, 30]
-        expect(anyMatch(arr, a => a >= 100)).toBeTruthy()
-        expect(anyMatch(arr, a => a > 100)).toBeFalsy()
     })
 })
 

@@ -30,7 +30,15 @@ export const isRtl = (): boolean => {
     return htmlEl?.getAttribute('dir') === 'rtl'
 }
 
-export function stopPropagationAfter<T extends Event>(ev: T, handle: (ev: T) => void) {
+export function appendToBody(el: HTMLElement) {
+    if (document.body) {
+        document.body.append(el)
+        return
+    }
+    document.addEventListener('DOMContentLoaded', () => document.body.append(el), { once: true })
+}
+
+export function stopPropagationAfter<T extends Event>(ev: T, handle: ArgCallback<T> | undefined) {
     handle?.(ev)
-    ev?.stopPropagation?.()
+    ev.stopPropagation()
 }

@@ -6,7 +6,8 @@
  */
 
 import { groupBy } from "@util/array"
-import { formatTimeYMD, getBirthday, parseTime } from "@util/time"
+import MonthIterator from '@util/month-iterator'
+import { getBirthday, parseTime } from "@util/time"
 
 /**
  * Data format in each json file in gist
@@ -68,17 +69,9 @@ export function divide2Buckets(rows: tt4b.core.Row[]): [string, GistData][] {
  * Calculate all the buckets between {@param startDate} and {@param endDate}
  */
 export function calcAllBuckets(startDate: string | undefined, endDate: string | undefined) {
-    endDate = endDate || formatTimeYMD(new Date())
-    const result: string[] = []
     const start = parseTime(startDate) ?? getBirthday()
     const end = parseTime(endDate) ?? new Date()
-    while (start < end) {
-        result.push(formatTimeYMD(start))
-        start.setMonth(start.getMonth() + 1)
-    }
-    const lastMonth = formatTimeYMD(end)
-    !result.includes(lastMonth) && (result.push(lastMonth))
-    return result
+    return [...new MonthIterator(start, end)]
 }
 
 /**

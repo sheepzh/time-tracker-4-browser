@@ -1,6 +1,6 @@
 import { getUrl } from '@api/chrome/runtime'
 import { trySendMsg2Runtime } from '@api/sw/common'
-import LocationWatcher from '@cs/location-watcher'
+import locationWatcher from '@cs/location-watcher'
 import { ModalBridge } from '../modal/bridge'
 import type { Reason, VisitData } from '../types'
 import DelayCoordinator from './delay-coordinator'
@@ -37,23 +37,19 @@ class ModalManager {
     #el?: HTMLElement
     #iframe?: HTMLIFrameElement
     #sl = new ScreenLocker()
-    #bridge: ModalBridge
+    #bridge = new ModalBridge(MSG_ORIGIN, () => this.#iframe?.contentWindow ?? undefined)
     #reqQueue: Parameters<ModalBridge['request']>[] = []
     #content?: ShowArgs
     #observer?: MutationObserver
 
-    constructor(private location: LocationWatcher) {
-        this.#bridge = new ModalBridge(MSG_ORIGIN, () => this.#iframe?.contentWindow ?? undefined)
-        location.onCurrChange(() => this.#notify('url', location.url))
-    }
-
     init(state: LimitState, delayCoord: DelayCoordinator, visit: VisitData) {
+        locationWatcher.onCurrChange(() => this.#notify('url', locationWatcher.url))
         this.#bridge
             .register('delay', reason => delayCoord.process(reason))
             // fixme: refactor this, this action should be handled by the focus processor
             .register('stop', () => trySendMsg2Runtime('focus.action', 'stop'))
 
-        this.#notify('url', this.location.url)
+        this.#notify('url', locationWatcher.url)
         this.#startObserve()
 
         visit.onChange(time => this.#notify('visitTime', time))
@@ -118,7 +114,7 @@ class ModalManager {
             existing.remove()
         }
         const iframe = document.createElement('iframe')
-        iframe.src = `${MODAL_URL}?url=${encodeURIComponent(this.location.url)}`
+        iframe.src = `${MODAL_URL}?url=${encodeURIComponent(locationWatcher.url)}`
         iframe.style.width = '100vw'
         iframe.style.height = '100vh'
         iframe.style.border = 'none'

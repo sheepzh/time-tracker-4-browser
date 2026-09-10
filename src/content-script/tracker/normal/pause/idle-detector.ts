@@ -1,20 +1,16 @@
-import { trySendMsg2Runtime } from '@api/sw/common'
 import { getOption } from '@api/sw/option'
-import type { AudibleChangeHandler } from '@cs/types'
-import type { PauseDetector } from '../types'
+import audible from '@cs/audible'
 import BasePauseDetector from './base'
 
-export default class IdleDetector extends BasePauseDetector implements PauseDetector, AudibleChangeHandler {
+export default class IdleDetector extends BasePauseDetector {
     #fullScreen: boolean = false
-    // default to true, try not to affect tracking
-    #audible: boolean = true
     // By milliseconds
     #autoPauseInterval?: number
     #lastActiveTime: number = Date.now()
     #pauseTimeout?: ReturnType<typeof setTimeout>
 
     get paused() {
-        if (this.#fullScreen || this.#audible) return false
+        if (this.#fullScreen || audible.on) return false
         if (!this.#autoPauseInterval) return false
         return this.#lastActiveTime + this.#autoPauseInterval <= Date.now()
     }
@@ -51,15 +47,7 @@ export default class IdleDetector extends BasePauseDetector implements PauseDete
             this.notify()
         })
 
-        trySendMsg2Runtime('cs.getAudible').then(val => {
-            this.#audible = !!val
-            this.notify()
-        })
-    }
-
-    onAudibleChange(audible: boolean): void {
-        this.#audible = audible
-        this.notify()
+        audible.onChange(() => this.notify())
     }
 
     async #syncOptions() {

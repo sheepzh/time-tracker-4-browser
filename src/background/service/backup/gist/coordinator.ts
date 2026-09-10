@@ -99,9 +99,9 @@ export default class GistCoordinator implements tt4b.backup.Coordinator<Cache> {
     async download(context: tt4b.backup.CoordinatorContext<Cache>, start: string, end: string, targetCid?: string): Promise<tt4b.core.Row[]> {
         const startTime = parseTime(start) ?? getBirthday()
         const endTime = parseTime(end) ?? new Date()
-        const allYearMonth = new MonthIterator(startTime, endTime).toArray()
+        const monthIterator = new MonthIterator(startTime, endTime)
         const result: tt4b.core.Row[] = []
-        await Promise.all(allYearMonth.map(async yearMonth => {
+        await Promise.all([...monthIterator].map(async yearMonth => {
             const filename = bucket2filename(yearMonth, targetCid || context.cid)
             const gist: Gist = await this.getStatGist(context)
             const file = gist.files[filename]

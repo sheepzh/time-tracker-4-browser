@@ -119,14 +119,6 @@ export function sum(arr: number[]): number {
     return arr?.reduce?.((a, b) => (a ?? 0) + (b ?? 0), 0) ?? 0
 }
 
-export function allMatch<T>(arr: T[], predicate: (t: T) => boolean): boolean {
-    return !arr?.filter?.(e => !predicate?.(e))?.length
-}
-
-export function anyMatch<T>(arr: T[], predicate: (t: T) => boolean): boolean {
-    return !!arr?.filter?.(e => predicate?.(e))?.length
-}
-
 export function range(len: number): number[] {
     const arr: number[] = []
     for (let i = 0; i < len; i++) {

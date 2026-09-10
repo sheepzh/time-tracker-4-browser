@@ -1,5 +1,5 @@
 import { trySendMsg2Runtime } from '@api/sw/common'
-import LocationWatcher from '@cs/location-watcher'
+import locationWatcher from '@cs/location-watcher'
 import { hasDailyLimited, hasWeeklyLimited, matches } from "@util/limit"
 import DelayCoordinator from '../manager/delay-coordinator'
 import LimitState from '../manager/state'
@@ -17,32 +17,29 @@ class DailyWeeklyProcessor implements Processor {
     constructor(
         private readonly state: LimitState,
         private readonly delayCoord: DelayCoordinator,
-        private readonly location: LocationWatcher,
         private readonly option: SharedOption,
     ) { }
 
     async onTimeMeet(items: tt4b.limit.Item[]): Promise<void> {
         if (!items.length) return
-        if (this.location.isWhite) return
+        if (locationWatcher.isWhite) return
 
-        items.filter(({ cond }) => matches(cond, this.location.url))
+        items.filter(({ cond }) => matches(cond, locationWatcher.url))
             .flatMap(item => cvtItem2AddReason(item, this.option.delayDuration))
             .forEach(reason => this.state.add(reason))
     }
 
     async init(): Promise<void> {
-        this.delayCoord.register(() => trySendMsg2Runtime('limit.delay', this.location.url), 'DAILY', 'WEEKLY')
+        this.delayCoord.register(() => trySendMsg2Runtime('limit.delay', locationWatcher.url), 'DAILY', 'WEEKLY')
         await this.reset()
     }
 
     async reset(): Promise<void> {
         this.state.removeByType('DAILY', 'WEEKLY')
-        if (this.location.isWhite) return
+        const { isWhite, url } = locationWatcher
+        if (isWhite) return
 
-        const limitedRules = await trySendMsg2Runtime('limit.list', {
-            limited: true, effective: true,
-            url: this.location.url,
-        })
+        const limitedRules = await trySendMsg2Runtime('limit.list', { limited: true, effective: true, url })
         if (!limitedRules?.length) return
 
         const reasons = limitedRules.flatMap(item => cvtItem2AddReason(item, this.option.delayDuration))

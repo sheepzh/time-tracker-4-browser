@@ -1,4 +1,5 @@
 import { mountStyle } from '@cs/limit/style'
+import { appendToBody } from '@util/document'
 import type { CountdownData } from '../types'
 import { getEdge, getViewportSize, HALF_SIZE, type Position } from './common'
 import { Icon } from './icon'
@@ -30,14 +31,6 @@ const applyPosition = (el: HTMLElement, { x, y }: Position) => mountStyle(el, {
 })
 
 const DRAG_THRESHOLD = 5
-
-function appendToBody(el: HTMLElement) {
-    if (document.body) {
-        document.body.append(el)
-        return
-    }
-    document.addEventListener('DOMContentLoaded', () => document.body?.append(el), { once: true })
-}
 
 function initDrag(el: HTMLElement, position: Position, onChange: ArgCallback<Position>) {
     applyPosition(el, position)
