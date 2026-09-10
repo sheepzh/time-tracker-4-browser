@@ -53,7 +53,7 @@ export default class ObsidianCoordinator implements tt4b.backup.Coordinator<neve
         const endTime = parseTime(end) ?? new Date()
         const dateIterator = new DateIterator(startTime, endTime)
         const result: tt4b.core.Row[] = []
-        await Promise.all(dateIterator.toArray().map(async date => {
+        await Promise.all([...dateIterator].map(async date => {
             const filePath = `${dirPath}${targetCid || cid}/${date}.md`
             const fileContent = await getFileContent(ctx, filePath)
             const rows = parseData<tt4b.core.Row[]>(fileContent)

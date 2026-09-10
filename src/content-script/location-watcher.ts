@@ -12,7 +12,6 @@ class LocationWatcher {
     host: string
     current: tt4b.site.Current | undefined
     #currHandlers: NoArgCallback[] = []
-    #timer: ReturnType<typeof setTimeout>
 
     get isWhite(): boolean {
         return !!this.current?.white
@@ -30,7 +29,7 @@ class LocationWatcher {
 
         // Because content scripts run in a sandboxed environment, overriding history methods is unnecessary
         // So check URL changed via setTimeout loop instead
-        this.#timer = setInterval(this.handleChangeBound, 500)
+        setInterval(this.handleChangeBound, 500)
     }
 
     async init(dispatcher: Dispatcher) {
@@ -41,12 +40,6 @@ class LocationWatcher {
     async #syncCurrent() {
         this.current = await trySendMsg2Runtime('site.current', this.url)
         this.#currHandlers.forEach(h => h())
-    }
-
-    dispose(): void {
-        window.removeEventListener('popstate', this.handleChangeBound)
-        window.removeEventListener('hashchange', this.handleChangeBound)
-        clearInterval(this.#timer)
     }
 
     private async handleChange(): Promise<void> {
@@ -62,4 +55,5 @@ class LocationWatcher {
     }
 }
 
-export default LocationWatcher
+const locationWatcher = new LocationWatcher()
+export default locationWatcher

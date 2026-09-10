@@ -18,14 +18,9 @@ type Row = {
 }
 
 const cvtRow = (rows: tt4b.stat.Row[], start: Date, end: Date): Row[] => {
-    const groupByDate = groupBy(rows, r => r.date, l => sum(l.map(e => e.focus ?? 0)))
+    const groupByDate = groupBy(rows, r => r.date, l => sum(l.map(e => e.focus)))
     const iterator = new DateIterator(start, end)
-    const result: Row[] = []
-    iterator.forEach(yearMonthDate => {
-        const total = groupByDate[yearMonthDate] ?? 0
-        result.push({ total, date: yearMonthDate })
-    })
-    return result
+    return [...iterator].map(date => ({ total: groupByDate[date] ?? 0, date }))
 }
 
 const fetchData = async (): Promise<[thisMonth: Row[], lastMonth: Row[]]> => {
@@ -35,8 +30,6 @@ const fetchData = async (): Promise<[thisMonth: Row[], lastMonth: Row[]]> => {
     const thisPeriodStart = new Date(now.getTime() - MILL_PER_DAY * (PERIOD_WIDTH - 1))
     const thisPeriodEnd = now
 
-    // Query with alias
-    // @since 1.1.8
     const lastPeriodItems = await listSiteStats({ date: cvtDateRange2Str([lastPeriodStart, lastPeriodEnd]) })
     const lastRows = cvtRow(lastPeriodItems, lastPeriodStart, lastPeriodEnd)
     const thisPeriodItems = await listSiteStats({ date: cvtDateRange2Str([thisPeriodStart, thisPeriodEnd]) })

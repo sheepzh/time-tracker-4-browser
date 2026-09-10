@@ -29,8 +29,6 @@ export const SUFFIX_HOST_MAP: Record<string, string> = {
 }
 
 const reg = /^__local_(.+)__$/
-export function isRemainHost(host: string) {
-    return reg.test(host)
-}
+export const isRemainHost = (host: string) => reg.test(host)
 
 export const EXCLUDING_PREFIX = '+'

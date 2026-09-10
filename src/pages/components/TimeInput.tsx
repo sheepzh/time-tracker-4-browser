@@ -2,6 +2,7 @@ import { CircleClose, Clock } from "@element-plus/icons-vue"
 import { useDebounceFn, useState, useXsState } from '@hooks'
 import { getStyle } from '@pages/util/style'
 import { range } from "@util/array"
+import { stopPropagationAfter } from '@util/document'
 import {
     Effect, ElIcon, ElInput, ElMessage, ElPopover, ElScrollbar, InputProps, type ScrollbarInstance, type TimePickerDefaultProps,
     useLocale, useNamespace,
@@ -189,10 +190,7 @@ const TimeInput = defineComponent<TimeInputProps>(props => {
         !newVal && reset()
     }
 
-    const handleClear = (ev: MouseEvent) => {
-        props.onChange?.(undefined)
-        ev.stopPropagation()
-    }
+    const handleClear = (ev: MouseEvent) => stopPropagationAfter(ev, () => props.onChange?.(undefined))
 
     const isXs = useXsState()
 

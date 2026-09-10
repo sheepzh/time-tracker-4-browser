@@ -60,7 +60,7 @@ export default class WebDAVCoordinator implements tt4b.backup.Coordinator<never>
         const dateEnd = parseTime(end) ?? new Date()
         const dateIterator = new DateIterator(dateStart, dateEnd)
         const result: tt4b.core.Row[] = []
-        await Promise.all(dateIterator.toArray().map(async date => {
+        await Promise.all([...dateIterator].map(async date => {
             const filePath = `${dirPath}${targetCid}/${date}.md`
             const fileContent = await readFile(davContext, filePath)
             const rows = parseData<tt4b.core.Row[]>(fileContent)

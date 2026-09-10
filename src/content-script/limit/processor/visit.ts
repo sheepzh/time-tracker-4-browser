@@ -1,6 +1,5 @@
 import { trySendMsg2Runtime } from '@api/sw/common'
-import type Dispatcher from '@cs/dispatcher'
-import LocationWatcher from '@cs/location-watcher'
+import locationWatcher from '@cs/location-watcher'
 import NormalTracker from "@cs/tracker/normal"
 import { calcRealLimit, meetLimit } from '@util/limit'
 import { MILL_PER_SECOND } from "@util/time"
@@ -25,18 +24,16 @@ class VisitProcessor implements Processor, VisitData {
     }
 
     constructor(
-        private readonly dispatcher: Dispatcher,
         private readonly state: LimitState,
         private readonly delayCoord: DelayCoordinator,
-        private readonly location: LocationWatcher,
         private readonly option: SharedOption,
     ) {
-        this.#lastUrl = location.url
+        this.#lastUrl = locationWatcher.url
         this.#tracker = new NormalTracker({
             onReport: data => this.handleTracker(data),
         })
-        location.onCurrChange(() => {
-            const newUrl = this.location.url
+        locationWatcher.onCurrChange(() => {
+            const newUrl = locationWatcher.url
             if (this.#lastUrl === newUrl) return
             this.#lastUrl = newUrl
             // reset focus time and delay count when url changed
@@ -44,7 +41,7 @@ class VisitProcessor implements Processor, VisitData {
             this.#delayCount = 0
             this.#notify()
         })
-        location.onCurrChange(() => void this.reset())
+        locationWatcher.onCurrChange(() => void this.reset())
     }
 
     onChange(listener: ArgCallback<number>) {
@@ -70,7 +67,7 @@ class VisitProcessor implements Processor, VisitData {
     private async handleTracker({ start, end }: tt4b.core.Event) {
         const diff = end - start
         this.#mills += diff
-        if (this.location.isWhite) return
+        if (locationWatcher.isWhite) return
         this.#notify()
         const reasons: LimitReason[] = []
         this.#rules.forEach(rule => {
@@ -88,7 +85,7 @@ class VisitProcessor implements Processor, VisitData {
     }
 
     async init(): Promise<void> {
-        this.#tracker.init(this.dispatcher, this.state)
+        this.#tracker.init(this.state)
         this.delayCoord.register(() => {
             this.#delayCount++
             this.state.removeByType('VISIT')
@@ -100,9 +97,9 @@ class VisitProcessor implements Processor, VisitData {
     async reset() {
         this.#rules = []
         this.state.removeByType('VISIT')
-        if (this.location.isWhite) return
+        if (locationWatcher.isWhite) return
 
-        this.#rules = await trySendMsg2Runtime('limit.list', { effective: true, url: this.location.url }) ?? []
+        this.#rules = await trySendMsg2Runtime('limit.list', { effective: true, url: locationWatcher.url }) ?? []
     }
 }
 

@@ -1,4 +1,4 @@
-import { log } from '@/common/logger'
+import { log } from '@bg/logger'
 import { escapeRegExp } from '@util/pattern'
 import { isNotZeroResult } from '@util/stat'
 import { createObjectGuard, isOptionalInt } from 'typescript-guard'

@@ -8,11 +8,13 @@
 import { trySendMsg2Runtime } from '@api/sw/common'
 import { formatPeriodCommon } from "@util/time"
 import { t } from "./locale"
+import locationWatcher from './location-watcher'
 
 /**
  * Print info of today
  */
-export default async function printInfo(host: string) {
+export default async function printInfo() {
+    const { host } = locationWatcher
     const data = await trySendMsg2Runtime('stat.today', host)
     if (!data) return
     const { time, focus } = data

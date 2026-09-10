@@ -1,5 +1,6 @@
 import { getIconUrl } from "@api/chrome/runtime"
 import { t } from "@cs/locale"
+import { stopPropagationAfter } from '@util/document'
 import { mountStyle } from '../style'
 
 const containerStyle = (dark: boolean): Partial<CSSStyleDeclaration> => ({
@@ -80,10 +81,7 @@ function createCloseBtn(dark: boolean, onClose: () => void): HTMLElement {
 
     btn.append(svg)
 
-    btn.addEventListener('click', ev => {
-        onClose?.()
-        ev.stopPropagation()
-    })
+    btn.addEventListener('click', ev => stopPropagationAfter(ev, onClose))
     return btn
 }
 

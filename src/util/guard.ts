@@ -1,6 +1,6 @@
-import { isInt, TypeGuard } from 'typescript-guard'
+import { createRecordGuard, isInt, isUnknown, type TypeGuard, } from 'typescript-guard'
 
-export const isRecord = (unk: unknown): unk is Record<string, unknown> => typeof unk === 'object' && unk !== null && !Array.isArray(unk)
+export const isRecord = createRecordGuard<unknown>(isUnknown)
 
 function createTupleGuard<T, const L extends number>(
     itemGuard: TypeGuard<T>,

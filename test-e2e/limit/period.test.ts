@@ -85,7 +85,11 @@ describe("Period limit", () => {
             const switches = document.querySelectorAll<HTMLElement>('.el-table__body .el-table__row td .el-switch')
             switches[1]?.click()
         })
-        await sleep(.3)
+        await limitPage.waitForFunction(() => {
+            const switches = document.querySelectorAll('.el-table__body .el-table__row td .el-switch')
+            return switches[1]?.classList.contains('is-checked')
+        }, { timeout: 5000 })
+        await sleep(.5)
         // 4. assert the unblocking button visible
         await testPage.bringToFront()
         const limitFrame = await waitForLimitFrame(testPage)
