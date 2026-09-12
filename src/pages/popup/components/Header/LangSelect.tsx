@@ -4,7 +4,7 @@ import { getOption } from "@api/sw/option"
 import { useManualRequest, useRequest } from "@hooks"
 import { ALL_LOCALES, handleLocaleOption, localeSameAsBrowser } from "@i18n"
 import localeMessages from "@i18n/message/common/locale"
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { t } from '@popup/locale'
 import { CROWDIN_HOMEPAGE } from "@util/constant/url"
 import { ElDropdown, ElDropdownItem, ElDropdownMenu, ElIcon, ElText } from "element-plus"

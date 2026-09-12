@@ -13,7 +13,7 @@ const List = defineComponent<{}>((_, ctx) => {
         const { query: fuzzyQuery, cateIds, types, host } = filter
         const pagination = await getSitePage({ fuzzyQuery, cateIds, types, host }, { num, size })
         return pagination.list
-    }, { resetDeps: () => filter })
+    }, { resetDeps: () => ({ ...filter }) })
 
     ctx.expose({
         refresh: reset,

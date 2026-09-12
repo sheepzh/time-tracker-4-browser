@@ -8,7 +8,7 @@
 import { addMergeRule, deleteMergeRule, listAllMergeRules } from "@api/sw/merge"
 import { t } from '@app/locale'
 import { useOperation, useRequest } from '@hooks'
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { ElMessage, ElMessageBox } from "element-plus"
 import { defineComponent, ref } from "vue"
 import AddButton from './AddButton'

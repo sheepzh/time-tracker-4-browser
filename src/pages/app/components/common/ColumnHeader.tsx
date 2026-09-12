@@ -1,5 +1,5 @@
 import { InfoFilled } from "@element-plus/icons-vue"
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { ElIcon, ElTooltip } from "element-plus"
 import { FunctionalComponent } from 'vue'
 

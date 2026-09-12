@@ -10,8 +10,7 @@ import { t } from '@app/locale'
 import { CloseBold, Menu } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
 import { useSwitch } from '@hooks'
-import Flex from '@pages/components/Flex'
-import Img from '@pages/components/Img'
+import { Flex, Img } from '@pages/components'
 import { ElBreadcrumb, ElBreadcrumbItem, ElIcon, ElMenu, ElMenuItem, useNamespace } from "element-plus"
 import { defineComponent, h, onBeforeMount, ref, watch } from "vue"
 import { useRouter } from "vue-router"

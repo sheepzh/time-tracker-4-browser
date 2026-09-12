@@ -12,7 +12,7 @@ import { t } from '@app/locale'
 import { OPTION_ROUTE } from '@app/router/constants'
 import { Delete, Open, Operation, Plus, SetUp, TurnOff, WarningFilled } from "@element-plus/icons-vue"
 import { useXsState } from '@hooks'
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { getAppPageUrl } from "@util/constant/url"
 import { ElIcon, ElText, ElTooltip } from 'element-plus'
 import { computed, defineComponent, ref, type Ref, watch } from "vue"
@@ -106,7 +106,7 @@ const _default = defineComponent(() => {
                     v-slots={{
                         content: () => (<Flex gap={4} align='center'>
                             <ElText type='primary'><ElIcon><WarningFilled /></ElIcon></ElText>
-                            <ElText >{t(msg => msg.limit.emptyTips)}</ElText>
+                            <ElText>{t(msg => msg.limit.emptyTips)}</ElText>
                         </Flex>),
                         default: () => (
                             <ButtonFilter

@@ -6,7 +6,7 @@
  */
 
 import { MediaSize, useMediaSize } from '@hooks'
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { ElScrollbar } from 'element-plus'
 import { computed, defineComponent, type StyleValue } from "vue"
 import ContentContainer from '../common/ContentContainer'

@@ -1,4 +1,4 @@
-import ConfirmButton from '@pages/components/ConfirmButton'
+import { ConfirmButton } from '@pages/components'
 import { t } from '@popup/locale'
 import { isAlive } from '@util/focus'
 import { ElButton } from 'element-plus'

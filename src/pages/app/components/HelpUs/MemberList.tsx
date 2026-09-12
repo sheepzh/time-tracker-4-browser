@@ -8,9 +8,7 @@
 import { getMembers } from "@api/crowdin"
 import { t } from '@app/locale'
 import { useRequest } from '@hooks'
-import Box from "@pages/components/Box"
-import Flex from '@pages/components/Flex'
-import Img from '@pages/components/Img'
+import { Box, Flex, Img } from '@pages/components'
 import { ElDivider } from "element-plus"
 import { defineComponent } from "vue"
 

@@ -17,7 +17,7 @@ const CategoryFilter = defineComponent<Props>(props => {
         { value: CATE_NOT_SET_ID, label: t(msg => msg.shared.cate.notSet) },
     ])
 
-    return () => cate.enabled ? (
+    return () => (
         <ElSelect
             modelValue={props.modelValue}
             onChange={(val: number[]) => props.onChange?.(val)}
@@ -31,7 +31,7 @@ const CategoryFilter = defineComponent<Props>(props => {
             style={{ width: '200px' } satisfies StyleValue}
             options={options.value}
         />
-    ) : null
+    )
 }, { props: ['modelValue', 'onChange', 'disabled', 'useCache'] })
 
 export default CategoryFilter

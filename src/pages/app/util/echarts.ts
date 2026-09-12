@@ -1,5 +1,7 @@
 import { getCssVariable } from "@pages/util/style"
 import { range } from "@util/array"
+import { isRecord } from '@util/guard'
+import { truthy } from '@util/lang'
 import { addVector, multiTuple, subVector } from "@util/tuple"
 import { type LinearGradientObject } from "echarts"
 import type { TopLevelFormatterParams } from "echarts/types/dist/shared"
@@ -40,12 +42,9 @@ const cvtColor2Vector = (color: string): Vector<3> => {
         .map(c => parseInt('0x' + c)) as [number, number, number]
 }
 
-export const getSeriesPalette = (): string[] => {
-    return range(4)
-        .map(idx => `--echarts-series-color-${idx + 1}`)
-        .map(val => getCssVariable(val))
-        .filter(s => !!s) as string[]
-}
+export const getSeriesPalette = (): string[] => truthy(
+    ...range(4).map(idx => getCssVariable(`--echarts-series-color-${idx + 1}`))
+)
 
 const linearGradientColor = (color1: string, color2: string): LinearGradientObject => ({
     type: "linear",
@@ -57,61 +56,45 @@ const linearGradientColor = (color1: string, color2: string): LinearGradientObje
     ],
 })
 
-export const getLineSeriesPalette = (): Tuple<LinearGradientObject, 3> => {
-    return [
-        linearGradientColor('#37A2FF', '#7415DB'),
-        linearGradientColor('#FF0087', '#87009D'),
-        linearGradientColor('#FFD600', '#DEAD00'),
-    ]
-}
+export const getLineSeriesPalette = (): Tuple<LinearGradientObject, 3> => ([
+    linearGradientColor('#37A2FF', '#7415DB'),
+    linearGradientColor('#FF0087', '#87009D'),
+    linearGradientColor('#FFD600', '#DEAD00'),
+])
 
-export const getCompareColor = (): [string?, string?] => {
-    return [
-        getCssVariable('--echarts-compare-color-1'),
-        getCssVariable('--echarts-compare-color-2'),
-    ]
-}
+export const getCompareColor = (): [string?, string?] => ([
+    getCssVariable('--echarts-compare-color-1'),
+    getCssVariable('--echarts-compare-color-2'),
+])
 
-export const getDiffColor = (): [incColor?: string, decColor?: string] => {
-    return [
-        getCssVariable('--echarts-increase-color'),
-        getCssVariable('--echarts-decrease-color'),
-    ]
-}
+export const getDiffColor = (): [incColor?: string, decColor?: string] => ([
+    getCssVariable('--echarts-increase-color'),
+    getCssVariable('--echarts-decrease-color'),
+])
 
 export const tooltipDot = (color: string) => {
     return `<div style="display:inline-block; background-color: ${color}; width: 8px; height: 8px; border-radius: 4px; margin-top: 1px; margin-bottom: 1px;"></div>`
 }
 
-export const tooltipFlexLine = (left: string, right: string, gap?: number): string => {
-    gap = gap ?? 20
-    return `
-        <div style="display: flex; justify-content: space-between; margin: 0px; gap: ${gap}px">
-            <span>
-                ${left}
-            </span>
-            <span style="">
-                ${right}
-            </span>
-        </div>
-    `
-}
+export const tooltipFlexLine = (left: string, right: string, gap: number = 20): string => `
+    <div style="display: flex; justify-content: space-between; margin: 0px; gap: ${gap}px">
+        <span>
+            ${left}
+        </span>
+        <span style="">
+            ${right}
+        </span>
+    </div>
+`
 
-export const tooltipSpaceLine = (height?: number): string => {
-    height = height ?? 4
+export const tooltipSpaceLine = (height: number = 4): string => {
     return `<div style="width: 100%; height: ${height}px; background-color: transparent"></div>`
 }
 
-export const getPieBorderColor = (): string | undefined => {
-    return getCssVariable('--echarts-pie-border-color')
-}
+export const getPieBorderColor = () => getCssVariable('--echarts-pie-border-color')
 
 export function parseValueOfFormatter(params: TopLevelFormatterParams) {
     const param = Array.isArray(params) ? params[0] : params
-    if (!param) return undefined
-    const { data } = param
-    if (typeof data === 'object' && data !== null && 'value' in data) {
-        return data.value
-    }
-    return undefined
+    const { data } = param ?? {}
+    return isRecord(data) ? data.value : undefined
 }

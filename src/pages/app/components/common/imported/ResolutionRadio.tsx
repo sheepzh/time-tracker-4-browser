@@ -7,7 +7,7 @@
 
 import { t } from "@app/locale"
 import { InfoFilled } from "@element-plus/icons-vue"
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { ElForm, ElFormItem, ElIcon, ElRadio, ElRadioGroup, ElTooltip } from "element-plus"
 import { defineComponent } from "vue"
 

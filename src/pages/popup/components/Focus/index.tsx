@@ -1,6 +1,6 @@
 import { APP_FOCUS_ROUTE } from '@/shared/route'
 import { css } from '@emotion/css'
-import Flex from '@pages/components/Flex'
+import { Flex } from '@pages/components'
 import { HEADER_OPTION_SLOT, TOOLBAR_SLOT } from '@popup/slot'
 import { getAppPageUrl } from '@util/constant/url'
 import { defineComponent, type FunctionalComponent, Teleport } from 'vue'
@@ -35,7 +35,7 @@ const FocusMode = defineComponent<{}>(() => {
     const { session, loading, method, elapsed } = initFocusContext()
 
     return () => <>
-        <Teleport defer to={`#${TOOLBAR_SLOT}`} >
+        <Teleport defer to={`#${TOOLBAR_SLOT}`}>
             <Flex v-show={!loading.value} gap={8} class={toolbarCls}>
                 <SessionToolbar />
                 <SetupToolbar />

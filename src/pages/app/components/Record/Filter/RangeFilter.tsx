@@ -1,7 +1,7 @@
 import { t } from '@app/locale'
 import { ArrowDown, Filter } from '@element-plus/icons-vue'
 import { useShadow, useSwitch } from '@hooks'
-import Flex from '@pages/components/Flex'
+import { Flex } from '@pages/components'
 import { MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND } from '@util/time'
 import { ElBadge, ElButton, ElForm, ElFormItem, ElInput, ElPopover, ElSelect } from 'element-plus'
 import { computed, type CSSProperties, defineComponent, type FunctionalComponent, ref, watch } from 'vue'

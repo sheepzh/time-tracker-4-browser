@@ -1,8 +1,7 @@
 import { createTab } from "@api/chrome/tab"
 import { Mouse, Timer } from "@element-plus/icons-vue"
 import { useTabGroups } from "@hooks"
-import Flex from "@pages/components/Flex"
-import TooltipWrapper from '@pages/components/TooltipWrapper'
+import { Flex, TooltipWrapper } from '@pages/components'
 import { cvtGroupColor } from '@pages/util/style'
 import { calJumpUrl } from "@popup/components/stat/common"
 import { useCateNameMap } from "@popup/context"

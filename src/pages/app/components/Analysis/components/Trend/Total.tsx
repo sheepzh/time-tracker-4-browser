@@ -11,7 +11,7 @@ import { KanbanIndicatorCell } from '@app/components/common/kanban'
 import type { RingValue } from '@app/components/common/kanban/types'
 import { t } from "@app/locale"
 import { periodFormatter } from '@app/util/time'
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { defineComponent, type CSSProperties } from "vue"
 import { useAnalysisTrendRangeLength } from './context'
 

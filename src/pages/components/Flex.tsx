@@ -22,7 +22,7 @@ type Props = {
     target?: HTMLAnchorElement['target']
 } & BaseProps
 
-const Flex: FunctionalComponent<Props> = (props, { slots, attrs }) => {
+const _Flex: FunctionalComponent<Props> = (props, { slots, attrs }) => {
     const Comp = props.as ?? 'div'
 
     return (
@@ -48,6 +48,6 @@ const Flex: FunctionalComponent<Props> = (props, { slots, attrs }) => {
         </Comp>
     )
 }
-Flex.displayName = 'Flex'
+_Flex.displayName = 'Flex'
 
-export default Flex
+export default _Flex

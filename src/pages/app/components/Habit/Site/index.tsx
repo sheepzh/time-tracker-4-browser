@@ -11,7 +11,7 @@ import { GRID_CELL_STYLE, GRID_WRAPPER_STYLE } from '@app/components/common/grid
 import { KanbanCard } from "@app/components/common/kanban"
 import { isOptionalIntArray } from '@app/util/types'
 import { localReactive, useRequest, useXsState } from '@hooks'
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { cvtDateRange2Str, getDayLength } from '@util/time'
 import { createObjectGuard } from 'typescript-guard'
 import { computed, defineComponent } from "vue"

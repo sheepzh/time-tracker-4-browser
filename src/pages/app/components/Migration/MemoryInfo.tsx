@@ -9,7 +9,7 @@ import { getOption } from '@api/sw/option'
 import { t } from '@app/locale'
 import { OPTION_ROUTE } from '@app/router/constants'
 import { useRequest } from '@hooks'
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { getColor } from '@pages/util/style'
 import { getAppPageUrl } from '@util/constant/url'
 import { ElCard, ElLink, ElProgress, ElText } from "element-plus"

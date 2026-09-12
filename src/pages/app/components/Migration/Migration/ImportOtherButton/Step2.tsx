@@ -8,7 +8,7 @@
 import { useDialogSop } from '@app/components/common/DialogSop/context'
 import CompareTable from "@app/components/common/imported/CompareTable"
 import ResolutionRadio from "@app/components/common/imported/ResolutionRadio"
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { defineComponent } from "vue"
 import type { ImportForm } from './types'
 

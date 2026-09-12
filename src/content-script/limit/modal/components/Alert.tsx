@@ -1,9 +1,7 @@
 import { getIconUrl } from "@api/chrome/runtime"
 import { t } from "@cs/locale"
 import { useXsState } from "@hooks"
-import Box from '@pages/components/Box'
-import Flex from '@pages/components/Flex'
-import Img from '@pages/components/Img'
+import { Box, Flex, Img } from '@pages/components'
 import { defineComponent } from "vue"
 
 type Props = {

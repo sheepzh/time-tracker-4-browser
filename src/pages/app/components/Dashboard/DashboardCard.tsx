@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { cvtPxScale } from '@pages/components/common'
+import { cvtPxScale } from '@pages/components'
 import { ElCard, ElCol } from "element-plus"
 import type { CSSProperties, FunctionalComponent, StyleValue } from "vue"
 

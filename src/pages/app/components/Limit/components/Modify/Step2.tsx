@@ -8,8 +8,7 @@
 import { useDialogSop } from '@app/components/common/DialogSop/context'
 import type { ModifyForm } from '@app/components/Limit/types'
 import { t } from '@app/locale'
-import CondEditor, { type CondEditorInstance } from '@pages/components/CondEditor'
-import Flex from "@pages/components/Flex"
+import { CondEditor, Flex, type CondEditorInstance } from '@pages/components'
 import { defineComponent, onUpdated, ref } from "vue"
 
 const _default = defineComponent<{}>(() => {

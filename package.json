@@ -32,7 +32,7 @@
         "@commitlint/types": "^21.2.0",
         "@crowdin/crowdin-api-client": "^1.57.0",
         "@emotion/babel-plugin": "^11.13.5",
-        "@rsdoctor/rspack-plugin": "^1.6.3",
+        "@rsdoctor/rspack-plugin": "^1.6.4",
         "@rspack/cli": "^2.2.3",
         "@rspack/core": "^2.2.3",
         "@rstest/core": "^0.11.12",

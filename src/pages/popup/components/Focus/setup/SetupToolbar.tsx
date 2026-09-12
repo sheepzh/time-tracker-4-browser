@@ -1,6 +1,6 @@
 import { APP_FOCUS_ROUTE, type AppFocusQuery } from '@/shared/route'
 import { Back, Plus, Right, VideoPlay } from '@element-plus/icons-vue'
-import Flex from '@pages/components/Flex'
+import { Flex } from '@pages/components'
 import { t } from '@popup/locale'
 import { getAppPageUrl } from '@util/constant/url'
 import { isRtl } from '@util/document'

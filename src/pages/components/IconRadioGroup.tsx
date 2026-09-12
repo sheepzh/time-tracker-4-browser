@@ -32,19 +32,18 @@ const IconRadioGroup: FunctionalComponent<Props> = ({
     <ElRadioGroup
         size={size}
         modelValue={modelValue}
-        onChange={val => onChange?.(val as string)}
+        onChange={val => onChange?.(String(val))}
     >
         {options.map(({ value, icon, tooltip }) => {
             const iconComp = <ElIcon size={iconSize}>{h(icon)}</ElIcon>
             return (
-                <ElRadioButton value={value} class={narrow && NARROW_CLS} >
+                <ElRadioButton value={value} class={narrow && NARROW_CLS}>
                     {tooltip ? <ElTooltip content={tooltip}>{iconComp}</ElTooltip> : iconComp}
                 </ElRadioButton>
             )
         })}
     </ElRadioGroup>
 )
-
 IconRadioGroup.displayName = 'IconRadioGroup'
 
 export default IconRadioGroup

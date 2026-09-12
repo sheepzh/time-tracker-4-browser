@@ -1,5 +1,5 @@
 import { t } from "@cs/locale"
-import Flex from "@pages/components/Flex"
+import { Flex } from "@pages/components"
 import { period2Str } from '@pages/util/limit'
 import { matchCond, meetLimit, meetTimeLimit } from "@util/limit"
 import { formatPeriodCommon, MILL_PER_SECOND } from "@util/time"

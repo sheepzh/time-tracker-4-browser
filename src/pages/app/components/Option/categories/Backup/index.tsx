@@ -11,7 +11,7 @@ import {
 import { OptionItem, OptionLines, OptionTooltip } from '@app/components/Option/components'
 import { t } from '@app/locale'
 import { Remove } from '@element-plus/icons-vue'
-import Flex from '@pages/components/Flex'
+import { Flex } from '@pages/components'
 import { GitHub } from '@pages/icons'
 import { ElIcon, ElInput, ElOption, ElSelect } from "element-plus"
 import { Component, computed, defineComponent, type FunctionalComponent, h } from "vue"

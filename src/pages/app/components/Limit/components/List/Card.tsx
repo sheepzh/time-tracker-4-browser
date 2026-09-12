@@ -7,7 +7,7 @@
 import { useLimitAction } from "@app/components/Limit/context"
 import { t } from '@app/locale'
 import { Delete, EditPen } from "@element-plus/icons-vue"
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { ElButton, ElCard, ElDivider, ElTag, type TagProps } from "element-plus"
 import { defineComponent, type FunctionalComponent, type StyleValue } from "vue"
 import Rule from "./Rule"

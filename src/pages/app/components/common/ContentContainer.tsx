@@ -6,7 +6,7 @@
  */
 
 import { css } from '@emotion/css'
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { ElCard, useNamespace } from "element-plus"
 import type { FunctionalComponent } from "vue"
 import ContentCard from "./ContentCard"

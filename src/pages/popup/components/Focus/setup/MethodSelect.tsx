@@ -1,5 +1,4 @@
-import Box from '@pages/components/Box'
-import Flex from '@pages/components/Flex'
+import { Box, Flex } from '@pages/components'
 import { t } from '@popup/locale'
 import { ElCard, ElText } from 'element-plus'
 import { defineComponent, type StyleValue } from 'vue'

@@ -5,44 +5,40 @@
  * https://opensource.org/licenses/MIT
  */
 import { modifySite } from '@api/sw/site'
-import { listCateStats, listGroupStats, listSiteStats } from "@api/sw/stat"
 import ContentCard from '@app/components/common/ContentCard'
 import Editable from '@app/components/common/Editable'
+import HostAlert from '@app/components/common/HostAlert'
 import Pagination from '@app/components/common/Pagination'
 import { t } from '@app/locale'
-import { cvt2LocaleTime, periodFormatter } from '@app/util/time'
+import { cvt2LocaleTime } from '@app/util/time'
 import { Histogram } from "@element-plus/icons-vue"
 import { useDocumentVisibility, useManualRequest, useRequest, useState } from '@hooks'
-import Flex from "@pages/components/Flex"
-import { sum } from "@util/array"
+import { Flex, TooltipWrapper } from '@pages/components'
 import { isRtl } from "@util/document"
-import { getAlias } from "@util/stat"
-import { cvtDateRange2Str } from '@util/time'
-import { ElLink, ElTable, ElTableColumn, ElText, ElTooltip, type RenderRowData, type TableInstance } from "element-plus"
+import { identifySiteKey } from '@util/site'
+import { getAlias, getComposition, isSite } from "@util/stat"
+import { Effect, ElLink, ElTable, ElTableColumn, ElText, ElTooltip, type TableInstance } from "element-plus"
 import { createObjectGuard, createStringUnionGuard, isAny } from 'typescript-guard'
-import { computed, defineComponent, ref, watch } from "vue"
+import { computed, defineComponent, ref, watch, type FunctionalComponent } from "vue"
 import { queryPage } from "../common"
-import { useRecordFilter, useRecordSort } from "../context"
-import type { DisplayComponent, RecordFilterOption, RecordSort } from "../types"
+import CompositionTable from '../components/CompositionTable'
+import TooltipSiteList from '../components/TooltipSiteList'
+import { useRecordFilter, useRecordSort, useSummary } from "../context"
+import type { DisplayComponent, RecordFilterOption, RecordSort, RowData, SiteMerge } from "../types"
 import CateColumn from "./columns/CateColumn"
 import GroupColumn from "./columns/GroupColumn"
-import HostColumn from "./columns/HostColumn"
 import OperationColumn from "./columns/OperationColumn"
 import TimeColumn from "./columns/TimeColumn"
-import VisitColumn from "./columns/VisitColumn"
 
 type ColumnVisible = Record<'index' | 'date' | 'site' | 'cate' | 'group', boolean>
 
-const computeVisible = (filter: RecordFilterOption): ColumnVisible => {
-    const { siteMerge, mergeDate } = filter
-    return {
-        index: !siteMerge || siteMerge === 'group',
-        date: !mergeDate,
-        site: !siteMerge || siteMerge === 'domain',
-        cate: !siteMerge || siteMerge === 'cate',
-        group: siteMerge === 'group',
-    }
-}
+const computeVisible = ({ siteMerge, mergeDate }: RecordFilterOption): ColumnVisible => ({
+    index: !siteMerge || siteMerge === 'group',
+    date: !mergeDate,
+    site: !siteMerge || siteMerge === 'domain',
+    cate: !siteMerge || siteMerge === 'cate',
+    group: siteMerge === 'group',
+})
 
 const isRecordSort = createObjectGuard<RecordSort>({
     order: createStringUnionGuard<RecordSort['order']>('ascending', 'descending'),
@@ -51,7 +47,22 @@ const isRecordSort = createObjectGuard<RecordSort>({
     silent: isAny,
 })
 
-const _default = defineComponent((_, ctx) => {
+const HostCell: FunctionalComponent<{ row: tt4b.stat.Row, merge?: SiteMerge }> = ({ row, merge }) => isSite(row) ? (
+    <Flex key={identifySiteKey(row.siteKey)} justify="center">
+        <TooltipWrapper
+            usePopover={merge === 'domain'}
+            effect={Effect.LIGHT}
+            offset={10}
+            placement="left"
+            v-slots={{
+                content: () => <TooltipSiteList modelValue={row.mergedRows} />,
+                default: () => <HostAlert value={row.siteKey} iconUrl={row.iconUrl} />,
+            }}
+        />
+    </Flex>
+) : null
+
+const _default = defineComponent<{}>((_, ctx) => {
     const rtl = isRtl()
     const [page, setPage] = useState<tt4b.common.PageQuery>({ size: 20, num: 1 })
     const sort = useRecordSort()
@@ -62,30 +73,7 @@ const _default = defineComponent((_, ctx) => {
         deps: [() => ({ ...filter }), sort, page],
         defaultValue: { list: [], total: 0 },
     })
-    const {
-        data: total,
-        refresh: refreshTotal,
-        loading: totalLoading,
-    } = useManualRequest(async () => {
-        const { siteMerge, dateRange, query, readRemote: inclusiveRemote, cateIds } = filter
-        const date = cvtDateRange2Str(dateRange)
-        let rows: tt4b.stat.Row[] = []
-        if (siteMerge === 'group') {
-            rows = await listGroupStats({ date, query })
-        } else if (siteMerge === 'cate') {
-            rows = await listCateStats({ date, query, cateIds, inclusiveRemote })
-        } else {
-            const param: tt4b.stat.SiteQuery = {
-                date, query, cateIds, inclusiveRemote,
-                mergeHost: siteMerge === 'domain',
-            }
-            rows = await listSiteStats(param)
-        }
-        const visit = sum(rows.map(e => e.time))
-        const focus = sum(rows.map(e => e.focus))
-        return { visit, focus }
-    }, { defaultValue: { visit: 0, focus: 0 } })
-
+    const summary = useSummary()
     const runVisible = computed(() => data.value.list.some(r => r.run))
     const mediaVisible = computed(() => data.value.list.some(r => r.media))
     // Query data if document become visible
@@ -140,11 +128,18 @@ const _default = defineComponent((_, ctx) => {
                                 align="center"
                                 sortable="custom"
                             >
-                                {({ row }: RenderRowData<tt4b.stat.Row>) => cvt2LocaleTime(row.date)}
-                            </ElTableColumn >
+                                {({ row }: RowData) => cvt2LocaleTime(row.date)}
+                            </ElTableColumn>
                         )}
                         {visible.value.site && <>
-                            <HostColumn />
+                            <ElTableColumn
+                                prop={'host' satisfies RecordSort['prop']}
+                                label={t(msg => msg.item.host)}
+                                minWidth={210}
+                                sortable="custom"
+                                align="center"
+                                v-slots={({ row }: RowData) => <HostCell row={row} merge={filter.siteMerge} />}
+                            />
                             <ElTableColumn
                                 label={t(msg => msg.siteManage.column.alias)}
                                 minWidth={140}
@@ -162,22 +157,38 @@ const _default = defineComponent((_, ctx) => {
                         <TimeColumn dimension="focus" />
                         {runVisible.value && <TimeColumn dimension="run" sortable={false} />}
                         {mediaVisible.value && <TimeColumn dimension="media" sortable={false} />}
-                        <VisitColumn />
+                        <ElTableColumn
+                            prop={'time' satisfies RecordSort['prop']}
+                            label={t(msg => msg.item.time)}
+                            minWidth={130}
+                            align="center"
+                            sortable="custom"
+                        >
+                            {({ row }: RowData) => (
+                                <TooltipWrapper
+                                    usePopover={filter.readRemote}
+                                    placement="top"
+                                    effect={Effect.LIGHT}
+                                    offset={10}
+                                    v-slots={{
+                                        default: () => row.time,
+                                        content: () => <CompositionTable data={getComposition(row, 'time')} />,
+                                    }}
+                                />
+                            )}
+                        </ElTableColumn>
                         <OperationColumn onDelete={refresh} />
-                    </ElTable >
-                </Flex >
+                    </ElTable>
+                </Flex>
                 <Flex justify="center" width="100%" gap={8} align="center">
                     <ElTooltip
                         effect="light"
                         placement={rtl ? 'right' : 'left'}
-                        onUpdate:visible={val => val && refreshTotal()}
+                        onUpdate:visible={val => val && summary.refresh()}
                         v-slots={{
                             content: () => (
-                                <ElText v-loading={totalLoading.value}>
-                                    {t(msg => msg.record.total, {
-                                        visit: total.value.visit,
-                                        focus: periodFormatter(total.value.focus, { format: filter.timeFormat }),
-                                    })}
+                                <ElText v-loading={summary.loading.value}>
+                                    {t(msg => msg.record.total, { ...summary.data.value })}
                                 </ElText>
                             ),
                             default: () => <ElLink underline="never" icon={Histogram} />,

@@ -1,7 +1,6 @@
 import { tN } from "@app/locale"
 import { useXsState } from '@hooks'
-import Flex from "@pages/components/Flex"
-import IconRadioGroup from '@pages/components/IconRadioGroup'
+import { Flex, IconRadioGroup } from '@pages/components'
 import { BarChart, HalfPieChart, RoseChart } from '@pages/icons'
 import { type Component, defineComponent } from "vue"
 import { type TopKChartType, useTopKFilter } from "../context"

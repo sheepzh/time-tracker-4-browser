@@ -1,7 +1,6 @@
 import { t } from '@app/locale'
 import { useCopy, useRequest, useState } from '@hooks'
-import Flex from '@pages/components/Flex'
-import Img from '@pages/components/Img'
+import { Flex, Img } from '@pages/components'
 import { generateQrDataUrl } from '@pages/util/qrcode'
 import { ElButton, ElForm, ElFormItem, ElInput, ElText } from 'element-plus'
 import { computed, defineComponent, toRef, watch } from 'vue'
@@ -65,7 +64,7 @@ const _default = defineComponent<{ otpauth: string }>((props, ctx) => {
                     maxlength={6}
                 />
             </ElFormItem>
-        </ElForm >
+        </ElForm>
     )
 }, { props: ['otpauth'] })
 

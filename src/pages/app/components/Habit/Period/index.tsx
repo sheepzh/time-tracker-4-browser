@@ -8,7 +8,7 @@
 import { GRID_CELL_STYLE } from "@app/components/common/grid"
 import { KanbanCard } from "@app/components/common/kanban"
 import { useXsState } from '@hooks'
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { defineComponent } from "vue"
 import Average from "./Average"
 import { initProvider } from "./context"

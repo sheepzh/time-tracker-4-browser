@@ -11,14 +11,9 @@ const UNIT_MAP: { [unit in Exclude<tt4b.ui.TimeFormat, 'default'>]: string } = {
     hour: 'h',
 }
 
-/**
- * @param milliseconds
- * @param timeFormat
- * @param hideUnit
- */
 export function periodFormatter(milliseconds: number | undefined | null, option?: PeriodFormatOption): string {
-    let { format = "default", hideUnit } = option || {}
-    if (milliseconds === undefined || Number.isNaN(milliseconds) || milliseconds === null) {
+    let { format = "default", hideUnit } = option ?? {}
+    if (typeof milliseconds !== 'number' || Number.isNaN(milliseconds) || !Number.isFinite(milliseconds)) {
         return "-"
     }
     if (format === "default") return formatPeriodCommon(milliseconds)
@@ -33,7 +28,7 @@ export function periodFormatter(milliseconds: number | undefined | null, option?
     } else if (format === "minute") {
         val = (milliseconds / MILL_PER_MINUTE).toFixed(1)
     } else if (format === "hour") {
-        val = (milliseconds / (MILL_PER_MINUTE * 60)).toFixed(2)
+        val = (milliseconds / MILL_PER_HOUR).toFixed(2)
     } else {
         return '-'
     }

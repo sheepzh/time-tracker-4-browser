@@ -1,6 +1,6 @@
 import type { FocusReason } from '@cs/limit/types'
 import { t } from '@cs/locale'
-import Flex from '@pages/components/Flex'
+import { Flex } from '@pages/components'
 import { matchUrl } from '@util/limit'
 import { formatPeriodCommon, MILL_PER_SECOND } from '@util/time'
 import { ElDescriptions, ElDescriptionsItem, ElTag } from 'element-plus'

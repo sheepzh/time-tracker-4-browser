@@ -6,7 +6,7 @@
  */
 import ChartTitle from "@app/components/Dashboard/ChartTitle"
 import { useXsState } from '@hooks'
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { computed, defineComponent } from "vue"
 import BarChart from "./BarChart"
 import { initProvider } from "./context"

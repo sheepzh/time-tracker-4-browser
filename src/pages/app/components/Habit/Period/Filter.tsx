@@ -7,7 +7,7 @@
 
 import { SelectFilter } from '@app/components/common/filter'
 import { t } from '@app/locale'
-import Flex from '@pages/components/Flex'
+import { Flex } from '@pages/components'
 import { ElRadioButton, ElRadioGroup } from 'element-plus'
 import { defineComponent } from 'vue'
 import { usePeriodFilter } from './context'

@@ -8,7 +8,7 @@
 import { t } from '@app/locale'
 import { Check, Close } from "@element-plus/icons-vue"
 import { useShadow } from '@hooks'
-import Box from "@pages/components/Box"
+import { Box } from '@pages/components'
 import { LOCAL_HOST_PATTERN } from "@util/constant/remain-host"
 import { tryParseInteger } from "@util/number"
 import { isValidHost } from "@util/pattern"

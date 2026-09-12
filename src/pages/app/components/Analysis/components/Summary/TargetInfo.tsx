@@ -9,8 +9,7 @@ import { useAnalysisTarget } from "@app/components/Analysis/context"
 import { labelOfHostInfo } from "@app/components/Analysis/util"
 import { useCategory } from '@app/context'
 import { t } from '@app/locale'
-import Flex from "@pages/components/Flex"
-import Img from '@pages/components/Img'
+import { Flex, Img } from '@pages/components'
 import { CATE_NOT_SET_ID } from '@util/site'
 import { ElTag } from "element-plus"
 import { computed, defineComponent, FunctionalComponent, type StyleValue } from "vue"

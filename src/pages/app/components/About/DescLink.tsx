@@ -1,5 +1,5 @@
 import { useXsState } from "@hooks"
-import Flex from '@pages/components/Flex'
+import { Flex } from '@pages/components'
 import { ElLink } from "element-plus"
 import { type Component, defineComponent, h, useSlots } from "vue"
 

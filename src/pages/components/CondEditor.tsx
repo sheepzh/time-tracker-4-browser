@@ -1,6 +1,6 @@
 import { listSites } from '@api/sw/site'
 import { useRequest } from '@hooks'
-import Flex from '@pages/components/Flex'
+import { Flex } from '@pages/components'
 import { EXCLUDING_PREFIX } from '@util/constant/remain-host'
 import { judgeVirtualFast } from '@util/pattern'
 import { ElAutocomplete, ElMessage, ElScrollbar, ElTag, ElText, type AutocompleteInstance, type TagProps } from 'element-plus'
@@ -115,7 +115,7 @@ const sortUrl = (a: string, b: string) => {
     return aClean.localeCompare(bClean)
 }
 
-const CondEditor = defineComponent<CondEditorProps>((props, ctx) => {
+export default defineComponent<CondEditorProps>((props, ctx) => {
     const list = computed(() => [...props.modelValue].sort(sortUrl))
     const inputValue = ref('')
     const { fetchSuggestions } = useSuggestion()
@@ -165,5 +165,3 @@ const CondEditor = defineComponent<CondEditorProps>((props, ctx) => {
         </Flex>
     )
 }, { props: ['modelValue', 'onChange', 'tip', 'height', 'placeholder'] })
-
-export default CondEditor

@@ -10,7 +10,7 @@ import { t } from '@app/locale'
 import { Operation, UploadFilled } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
 import { useManualRequest, useRequest } from "@hooks"
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { formatTime } from "@util/time"
 import { ElButton, ElDivider, ElMessage, ElText, useNamespace } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"

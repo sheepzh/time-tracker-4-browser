@@ -1,5 +1,5 @@
 import { More } from '@element-plus/icons-vue'
-import Flex from '@pages/components/Flex'
+import { Flex } from '@pages/components'
 import { ElButton, ElScrollbar, useLocale } from 'element-plus'
 import { CSSProperties, FunctionalComponent } from 'vue'
 

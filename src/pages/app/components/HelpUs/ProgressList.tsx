@@ -9,7 +9,7 @@ import { getTranslationStatus, type TranslationStatusInfo } from "@api/crowdin"
 import { t } from '@app/locale'
 import { useRequest } from '@hooks'
 import localeMessages from "@i18n/message/common/locale"
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { ElProgress, type ProgressProps } from "element-plus"
 import { defineComponent, ref, type StyleValue } from "vue"
 

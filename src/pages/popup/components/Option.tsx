@@ -1,5 +1,5 @@
 import { useSwitch } from '@hooks'
-import Flex from '@pages/components/Flex'
+import { Flex } from '@pages/components'
 import { ElCheckbox, ElIcon, ElLink, ElPopover, ElText } from 'element-plus'
 import { type Component, defineComponent, type FunctionalComponent, h, type StyleValue } from 'vue'
 

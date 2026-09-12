@@ -1,5 +1,5 @@
 import { useSiteMerge } from '@hooks'
-import Flex from '@pages/components/Flex'
+import { Flex } from '@pages/components'
 import { t } from '@popup/locale'
 import { ALL_DIMENSIONS } from '@util/stat'
 import { ElSelect, ElText } from 'element-plus'
@@ -9,7 +9,7 @@ import { useStatQuery } from './context'
 
 const StatToolbar = defineComponent(() => {
     const query = useStatQuery()
-    const { methods } = useSiteMerge()
+    const methods = useSiteMerge()
 
     return () => (
         <Flex gap={8}>

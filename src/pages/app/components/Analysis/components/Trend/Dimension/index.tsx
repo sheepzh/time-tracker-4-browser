@@ -11,8 +11,7 @@ import { KanbanIndicatorCell } from '@app/components/common/kanban'
 import type { RingValue, ValueFormatter } from '@app/components/common/kanban/types'
 import { cvt2LocaleTime } from '@app/util/time'
 import { useXsState } from '@hooks'
-import Box from "@pages/components/Box"
-import Flex from "@pages/components/Flex"
+import { Box, Flex } from '@pages/components'
 import { defineComponent } from "vue"
 import Chart from "./Chart"
 

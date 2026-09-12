@@ -8,7 +8,7 @@
 import { t } from "@app/locale"
 import { MediaSize, useMediaSize, useRequest, useXsState } from "@hooks"
 import { isTranslatingLocale, locale } from "@i18n"
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { rateClicked, recommendRate } from '@pages/util/rate'
 import { REVIEW_PAGE } from "@util/constant/url"
 import { ElRow, ElScrollbar } from "element-plus"

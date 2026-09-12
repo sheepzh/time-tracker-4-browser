@@ -133,8 +133,8 @@ const _default = defineComponent<{}>(() => {
                         <Waste
                             time={{ wasted: row.waste, maxLimit: (row.time ?? 0) * MILL_PER_SECOND }}
                             delay={{ count: row.delayCount, duration: delayDuration.value, allow: !!row.allowDelay }}
-                            count={row.count ?? 0}
-                            visit={row.visit ?? 0}
+                            count={row.count}
+                            visit={row.visit}
                         />
                     ) : (
                         <ElTag type="info" size="small">

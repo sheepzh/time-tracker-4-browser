@@ -10,7 +10,7 @@ import { listSiteStats } from "@api/sw/stat"
 import { tN, type I18nKey } from "@app/locale"
 import { Sunrise } from "@element-plus/icons-vue"
 import { useRequest, useXsState } from "@hooks"
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { groupBy, sum } from '@util/array'
 import { getStartOfDay, MILL_PER_DAY, MILL_PER_HOUR } from "@util/time"
 import { ElIcon, ElScrollbar } from "element-plus"

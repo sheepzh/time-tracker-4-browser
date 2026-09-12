@@ -7,7 +7,7 @@
 
 import { t, type I18nKey } from '@app/locale'
 import { useXsState } from '@hooks'
-import Box from '@pages/components/Box'
+import { Box } from '@pages/components'
 import { ElCard } from "element-plus"
 import { defineComponent, useSlots, type StyleValue } from "vue"
 

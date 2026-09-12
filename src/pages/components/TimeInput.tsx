@@ -145,7 +145,7 @@ type TimeInputProps = Pick<TimePickerDefaultProps, 'size'> & ModelValue<number |
 /**
  * Rewrite
  */
-const TimeInput = defineComponent<TimeInputProps>(props => {
+export default defineComponent<TimeInputProps>(props => {
     const [popoverVisible, setPopoverVisible] = useState(false)
     const {
         hour, minute, second,
@@ -255,5 +255,3 @@ const TimeInput = defineComponent<TimeInputProps>(props => {
         </ElPopover>
     )
 }, { props: ['style', 'size', 'placeholder', 'hourMax', 'modelValue', 'onChange', 'hideSeconds', 'width', 'clearable'] })
-
-export default TimeInput

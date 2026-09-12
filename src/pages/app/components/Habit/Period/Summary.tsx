@@ -3,7 +3,7 @@ import { KanbanIndicatorCell } from '@app/components/common/kanban'
 import { t } from '@app/locale'
 import { periodFormatter } from '@app/util/time'
 import { useXsState } from '@hooks'
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { averageByDay } from "@util/period"
 import { formatTime } from "@util/time"
 import { computed, defineComponent } from "vue"

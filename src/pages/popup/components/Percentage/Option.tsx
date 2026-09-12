@@ -1,5 +1,5 @@
 import { css } from '@emotion/css'
-import Flex from '@pages/components/Flex'
+import { Flex } from '@pages/components'
 import { OptionCheckbox, OptionPopover, type PopoverInstance } from '@popup/components/Option'
 import { t, tN } from '@popup/locale'
 import { ElInputNumber, ElText, useNamespace } from 'element-plus'

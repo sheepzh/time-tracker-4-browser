@@ -1,5 +1,5 @@
 import { ArrowDown } from "@element-plus/icons-vue"
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { ElButton, ElDropdown, ElDropdownItem, ElDropdownMenu, ElLink } from "element-plus"
 import { type Component, computed, defineComponent, type VNode } from "vue"
 

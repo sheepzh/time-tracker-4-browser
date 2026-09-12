@@ -2,13 +2,12 @@ import { listAllCategories } from "@api/sw/cate"
 import { MediaSize, useMediaSize, useProvide, useProvider, useRequest } from "@hooks"
 import { toMap } from '@util/array'
 import { CATE_NOT_SET_ID } from '@util/site'
-import { computed, reactive, watch } from "vue"
+import { computed, reactive } from "vue"
 import { t } from './locale'
 
 type MenuLayout = 'nav' | 'sidebar'
 
 interface CategoryInstance {
-    enabled: boolean
     all: tt4b.site.Cate[]
     nameMap: Record<number, string>
     refresh(): void
@@ -31,9 +30,7 @@ export const initAppContext = () => {
     })
     const mediaSize = useMediaSize()
     const layout = computed<MenuLayout>(() => mediaSize.value > MediaSize.sm ? 'sidebar' : 'nav')
-    watch(layout, v => category.enabled = v === 'sidebar')
-    const category: CategoryInstance = reactive({
-        enabled: layout.value === 'sidebar',
+    const category = reactive<CategoryInstance>({
         all: [],
         nameMap: {},
         refresh: refreshCategories,

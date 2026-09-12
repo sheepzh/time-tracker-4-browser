@@ -1,7 +1,10 @@
+import { listCateStats, listGroupStats, listSiteStats } from '@api/sw/stat'
 import type { RecordQuery } from '@app/router/constants'
 import { isOptionalIntArray, isTimeFormat } from '@app/util/types'
-import { localReactive, useProvide, useProvider } from '@hooks'
-import { getBirthday } from "@util/time"
+import { localReactive, useManualRequest, useProvide, useProvider } from '@hooks'
+import { periodFormatter } from '@pages/util/time'
+import { sum } from '@util/array'
+import { cvtDateRange2Str, getBirthday } from "@util/time"
 import {
     createObjectGuard, createOptionalGuard, createStringUnionGuard, isBoolean, isOptionalString,
 } from 'typescript-guard'
@@ -81,12 +84,7 @@ export const initRecordContext = () => {
         dateRange: [Date.now(), Date.now()],
     })
     const querySort = initQuery(filter)
-
-    const sort = ref<RecordSort>({
-        order: 'descending',
-        prop: querySort ?? 'focus'
-    })
-
+    const sort = ref<RecordSort>({ order: 'descending', prop: querySort ?? 'focus' })
     const comp = ref<DisplayComponent>()
 
     const context: Context = { filter, sort, comp }
@@ -100,3 +98,24 @@ export const useRecordFilter = (): RecordFilterOption => useProvider<Context, 'f
 export const useRecordSort = (): ShallowRef<RecordSort> => useProvider<Context, 'sort'>(NAMESPACE, 'sort').sort
 
 export const useRecordComponent = () => useProvider<Context, 'comp'>(NAMESPACE, 'comp').comp
+
+export const useSummary = (watchFilter?: boolean) => {
+    const filter = useRecordFilter()
+    const { data, refresh, loading } = useManualRequest(async () => {
+        const { siteMerge, dateRange, query, readRemote: inclusiveRemote, cateIds } = filter
+        const date = cvtDateRange2Str(dateRange)
+        let rows: tt4b.stat.Row[] = []
+        if (siteMerge === 'group') {
+            rows = await listGroupStats({ date, query })
+        } else if (siteMerge === 'cate') {
+            rows = await listCateStats({ date, query, cateIds, inclusiveRemote })
+        } else {
+            const mergeHost = siteMerge === 'domain'
+            rows = await listSiteStats({ date, query, cateIds, inclusiveRemote, mergeHost })
+        }
+        const visit = sum(rows.map(e => e.time))
+        const focus = sum(rows.map(e => e.focus))
+        return { visit, focus: periodFormatter(focus, { format: filter.timeFormat }) }
+    }, { defaultValue: { visit: 0, focus: '0s' }, deps: watchFilter ? () => ({ ...filter }) : undefined })
+    return { data, refresh, loading }
+}

@@ -7,7 +7,7 @@
 
 import { CategoryFilter, DateRangeFilter, InputFilter, TimeFormatFilter } from '@app/components/common/filter'
 import { t } from '@app/locale'
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { ElDatePickerShortcut } from '@pages/element-ui/types'
 import { daysAgo } from "@util/time"
 import { defineComponent } from "vue"

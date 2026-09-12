@@ -7,7 +7,7 @@
 
 import { Check, Close, Edit } from "@element-plus/icons-vue"
 import { useShadow, useSwitch } from "@hooks"
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { ElButton, ElIcon, ElInput, InputInstance } from "element-plus"
 import { defineComponent, nextTick, ref, type StyleValue, toRef, useSlots } from "vue"
 

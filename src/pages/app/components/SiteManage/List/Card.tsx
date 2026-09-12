@@ -1,9 +1,9 @@
-import { deleteSites, modifySite } from '@api/sw/site'
+import { changeSitesCate, deleteSites, modifySite } from '@api/sw/site'
+import Category from '@app/components/common/Category'
 import { t } from '@app/locale'
 import { Delete } from '@element-plus/icons-vue'
-import { useOperation } from '@hooks'
-import ConfirmButton from '@pages/components/ConfirmButton'
-import Flex from '@pages/components/Flex'
+import { useManualRequest, useOperation } from '@hooks'
+import { ConfirmButton, Flex } from '@pages/components'
 import { ElCard, ElDivider, ElSwitch, ElTag, ElText, type TagProps } from 'element-plus'
 import { defineComponent, type FunctionalComponent, type StyleValue } from 'vue'
 
@@ -33,6 +33,10 @@ const Card = defineComponent<Props>(props => {
         ...props.value,
         options: { ...props.value.options, white: !props.value.options?.white }
     }), { onSuccess: props.onChanged })
+    const { refresh: changeCate } = useManualRequest(
+        (cateId?: number) => changeSitesCate(cateId, props.value),
+        { onSuccess: props.onChanged },
+    )
 
     return () => (
         <ElCard shadow='never' bodyStyle={{ padding: `${CARD_PADDING}px` }}>
@@ -52,9 +56,17 @@ const Card = defineComponent<Props>(props => {
                     </ConfirmButton>
                 </Flex>
                 <Divider />
-                <Flex align='center' gap={5} onClick={toggleWhite}>
-                    <ElText size='small' type='info'>{t(msg => msg.siteManage.column.white)}</ElText>
-                    <ElSwitch size='small' modelValue={props.value.options?.white} />
+                <Flex justify='space-between'>
+                    <Flex align='center' gap={5} onClick={toggleWhite}>
+                        <ElText size='small' type='info'>{t(msg => msg.siteManage.column.white)}</ElText>
+                        <ElSwitch size='small' modelValue={props.value.options?.white} />
+                    </Flex>
+                    <Flex gap={5}>
+                        <ElText type='info' size='small' style={{ textWrap: 'nowrap' }}>
+                            {t(msg => msg.siteManage.column.cate)}
+                        </ElText>
+                        <Category.Editable siteKey={props.value} modelValue={props.value.cate} onChange={changeCate} />
+                    </Flex>
                 </Flex>
             </Flex>
         </ElCard>

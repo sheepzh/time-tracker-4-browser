@@ -1,6 +1,4 @@
-import CondEditor from '@pages/components/CondEditor'
-import Flex from '@pages/components/Flex'
-import TimeInput from '@pages/components/TimeInput'
+import { CondEditor, Flex, TimeInput } from '@pages/components'
 import { ALL_FOCUS_POLICIES, FOCUS_COND_PLACEHOLDER } from '@pages/util/focus'
 import { t } from '@popup/locale'
 import { isPolicy } from '@util/focus'
@@ -84,7 +82,7 @@ const SetupForm = defineComponent<{}>(() => {
                 </Flex>
             </Card>
             {/* Card 2: Rules — fills remaining vertical space */}
-            <Card style={{ flex: 1 } satisfies StyleValue} >
+            <Card style={{ flex: 1 } satisfies StyleValue}>
                 <Flex width='100%' justify='space-between' gap={5}>
                     <ElRadioGroup modelValue={form.policy} onChange={v => isPolicy(v) && (form.policy = v)}>
                         {ALL_FOCUS_POLICIES.map(m => (

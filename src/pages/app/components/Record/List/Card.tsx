@@ -1,15 +1,13 @@
 
 import HostAlert from '@app/components/common/HostAlert'
+import { useCategory } from '@app/context'
 import { cvt2LocaleTime, periodFormatter } from '@app/util/time'
 import { Calendar, Delete, Mouse, QuartzWatch } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
-import { useTabGroups } from "@hooks"
-import ConfirmButton from '@pages/components/ConfirmButton'
-import Flex from '@pages/components/Flex'
-import TooltipWrapper from '@pages/components/TooltipWrapper'
-import { getComposition, isGroup, isNormalSite, isSite } from "@util/stat"
-import { Effect, ElCard, ElCheckbox, ElDivider, ElIcon, ElTag, useNamespace } from "element-plus"
-import { computed, defineComponent, ref, StyleValue, watch } from "vue"
+import { ConfirmButton, Flex, TooltipWrapper } from '@pages/components'
+import { getComposition, isCate, isSite } from "@util/stat"
+import { Effect, ElCard, ElCheckbox, ElDivider, ElIcon, ElTag, ElText, useNamespace } from "element-plus"
+import { computed, defineComponent, StyleValue, type FunctionalComponent } from "vue"
 import { computeDeleteConfirmMsg, handleDelete } from "../common"
 import CompositionTable from "../components/CompositionTable"
 import TooltipSiteList from "../components/TooltipSiteList"
@@ -35,16 +33,30 @@ const useContentStyle = () => {
     `
 }
 
+const SiteTitle: FunctionalComponent<{ value: tt4b.stat.SiteRow, cateNames: Record<number, string> }> = ({
+    value: { siteKey, mergedRows, iconUrl, cateId }, cateNames,
+}) => <>
+        <TooltipWrapper
+            placement="bottom"
+            effect={Effect.LIGHT}
+            offset={10}
+            trigger="click"
+            usePopover={siteKey.type === 'merged'}
+            v-slots={{
+                content: () => <TooltipSiteList modelValue={mergedRows ?? []} />,
+                default: () => <HostAlert value={siteKey} iconUrl={iconUrl} clickable={false} />,
+            }}
+        />
+        {!!cateId && !!cateNames[cateId] && <ElTag size='small'>{cateNames[cateId]}</ElTag>}
+    </>
+
 const Card = defineComponent<Props>(props => {
+    const { nameMap } = useCategory()
     const filter = useRecordFilter()
-    const { groupMap } = useTabGroups()
     const formatter = (focus: number): string => periodFormatter(focus, { format: filter?.timeFormat })
     const { date, focus, time } = props.value
-    const mergedRows = isGroup(props.value) ? [] : props.value?.mergedRows ?? []
-    const selected = ref(false)
-    watch(selected, val => props.onSelectedChange?.(val))
 
-    const canDelete = computed(() => isNormalSite(props.value) && !filter.readRemote)
+    const canDelete = computed(() => isSite(props.value) && !filter.siteMerge && !filter.readRemote)
     const onDelete = async () => {
         await handleDelete(props.value, filter)
         props.onDelete?.(props.value)
@@ -59,40 +71,22 @@ const Card = defineComponent<Props>(props => {
                     <ElCheckbox
                         v-show={canDelete.value}
                         size="small"
-                        value={selected.value}
-                        onChange={val => selected.value = !!val}
+                        onChange={val => props.onSelectedChange?.(!!val)}
                         style={{ height: '100%' } satisfies StyleValue}
                     />
-                    {isSite(props.value) && (
-                        <TooltipWrapper
-                            placement="bottom"
-                            effect={Effect.LIGHT}
-                            offset={10}
-                            trigger="click"
-                            usePopover={props.value.siteKey.type === 'merged'}
-                            v-slots={{
-                                content: () => <TooltipSiteList modelValue={mergedRows as tt4b.stat.SiteRow[]} />,
-                            }}
-                        >
-                            <HostAlert
-                                value={props.value.siteKey}
-                                iconUrl={props.value.iconUrl}
-                                clickable={false}
-                            />
-                        </TooltipWrapper>
-                    )}
+                    {isCate(props.value) && <ElText size='small'>{nameMap[props.value.cateKey]}</ElText>}
+                    {isSite(props.value) && <SiteTitle value={props.value} cateNames={nameMap} />}
                 </Flex>
-                {canDelete.value && (
-                    <ConfirmButton
-                        buttonProps={{ icon: Delete, type: 'danger', text: true, size: 'small' }}
-                        style={{ padding: 0 }}
-                        confirmText={computeDeleteConfirmMsg(props.value, filter, groupMap.value)}
-                        onConfirm={onDelete}
-                    />
-                )}
+                <ConfirmButton
+                    visible={canDelete.value}
+                    buttonProps={{ icon: Delete, type: 'danger', text: true, size: 'small' }}
+                    style={{ padding: 0 }}
+                    confirmText={computeDeleteConfirmMsg(props.value, filter, {})}
+                    onConfirm={onDelete}
+                />
             </Flex>
             <ElDivider style={{ margin: "5px 0" }} />
-            <Flex wrap gap={5} justify="space-between" class={contentCls}>
+            <Flex wrap gap={5} class={contentCls}>
                 <ElTag v-show={!filter?.mergeDate} type="info" size="small">
                     <ElIcon><Calendar /></ElIcon>
                     <span>{cvt2LocaleTime(date)}</span>
@@ -103,7 +97,7 @@ const Card = defineComponent<Props>(props => {
                     offset={10}
                     trigger="click"
                     v-slots={{
-                        content: () => <CompositionTable valueFormatter={formatter} data={getComposition(props.value, 'focus')} />,
+                        content: () => <CompositionTable formatter={formatter} data={getComposition(props.value, 'focus')} />,
                     }}
                 >
                     <ElTag type="primary" size="small">
@@ -122,7 +116,7 @@ const Card = defineComponent<Props>(props => {
                 >
                     <ElTag type="warning" size="small">
                         <ElIcon><Mouse /></ElIcon>
-                        <span>{time ?? 0}</span>
+                        <span>{time}</span>
                     </ElTag>
                 </TooltipWrapper>
             </Flex>

@@ -1,6 +1,6 @@
 import { t } from '@app/locale'
 import { InfoFilled } from '@element-plus/icons-vue'
-import Flex from '@pages/components/Flex'
+import { Flex } from '@pages/components'
 import { groupBy } from '@util/array'
 import { MILL_PER_HOUR, MILL_PER_MINUTE } from '@util/time'
 import { ElIcon, ElRate, ElText, ElTooltip } from 'element-plus'

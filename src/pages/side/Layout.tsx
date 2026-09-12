@@ -1,6 +1,6 @@
 import { listSiteStats } from "@api/sw/stat"
 import { useRequest } from "@hooks"
-import Flex from '@pages/components/Flex'
+import { Flex } from '@pages/components'
 import { formatTime, formatTimeYMD } from "@util/time"
 import { ElText } from "element-plus"
 import { defineComponent, ref } from "vue"

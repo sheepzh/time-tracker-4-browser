@@ -4,7 +4,7 @@ import { useCategory } from "@app/context"
 import { t } from "@app/locale"
 import { Check, Close, Delete, Edit } from "@element-plus/icons-vue"
 import { useManualRequest, useOperation, useRequest, useState, useSwitch } from "@hooks"
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { stopPropagationAfter } from "@util/document"
 import { ElButton, ElInput, ElMessage, ElMessageBox } from "element-plus"
 import { defineComponent, nextTick, ref } from "vue"

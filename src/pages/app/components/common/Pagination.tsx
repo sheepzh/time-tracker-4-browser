@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { getPaginationIconProps } from "@pages/element-ui/rtl"
 import { ElPagination } from "element-plus"
 import { defineComponent } from "vue"

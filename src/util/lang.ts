@@ -16,3 +16,7 @@ export const mergeObject = <T extends Record<string, any>>(target: T, toMerge: P
 
 export const anyChanged = <T>(newVal: T, oldVal: T, ...keys: (keyof T)[]): boolean =>
     keys.some(key => newVal[key] !== oldVal[key])
+
+type Falsy = false | 0 | 0n | '' | null | undefined
+export const truthy = <T extends Exclude<any, Falsy>>(...arr: (T | Falsy)[]): T[] =>
+    arr.filter((e): e is T => Boolean(e))

@@ -9,7 +9,7 @@ import { listLimits } from "@api/sw/limit"
 import AlertLines, { type AlertLinesProps } from '@app/components/common/AlertLines'
 import { t } from '@app/locale'
 import { useDebounce, useRequest, useState, useSwitch, useXsState } from '@hooks'
-import Flex from '@pages/components/Flex'
+import { Flex } from '@pages/components'
 import { ElDialog, ElInput } from "element-plus"
 import { defineComponent } from "vue"
 import type { TestInstance } from '../types'
