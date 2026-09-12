@@ -3,7 +3,7 @@ import { useCategory } from "@app/context"
 import { t } from "@app/locale"
 import { Check, Close, Plus } from "@element-plus/icons-vue"
 import { useManualRequest, useState, useSwitch } from "@hooks"
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { stopPropagationAfter } from "@util/document"
 import { ElButton, ElForm, ElFormItem, ElInput, ElMessage } from "element-plus"
 import { defineComponent, nextTick, ref } from "vue"

@@ -1,10 +1,11 @@
 import { t } from '@app/locale'
 import { useTabGroups } from "@hooks"
-import Flex from '@pages/components/Flex'
+import { Flex } from '@pages/components'
 import { cvtGroupColor } from '@pages/util/style'
 import { isGroup } from "@util/stat"
-import { ElTableColumn, type RenderRowData } from "element-plus"
+import { ElTableColumn } from "element-plus"
 import { type CSSProperties, defineComponent, type FunctionalComponent } from "vue"
+import type { RowData } from '../../types'
 
 type CellProps = {
     row: tt4b.stat.Row
@@ -34,7 +35,7 @@ const GroupColumn = defineComponent<{}>(() => {
             align="center"
             label={t(msg => msg.item.group)}
             width={140}
-            v-slots={({ row }: RenderRowData<tt4b.stat.Row>) => <GroupCell row={row} map={groupMap.value} />}
+            v-slots={({ row }: RowData) => <GroupCell row={row} map={groupMap.value} />}
         />
     )
 })

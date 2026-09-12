@@ -1,4 +1,4 @@
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { defineComponent } from "vue"
 import { RouterView } from "vue-router"
 import Header from "./components/Header"

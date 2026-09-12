@@ -1,6 +1,6 @@
 import { useDelayDuration } from '@app/components/Limit/context'
 import { t } from '@app/locale'
-import Flex from '@pages/components/Flex'
+import { Flex } from '@pages/components'
 import { period2Str } from '@pages/util/limit'
 import { isEffective, meetLimit, meetTimeLimit } from '@util/limit'
 import { formatPeriodCommon, MILL_PER_SECOND } from '@util/time'

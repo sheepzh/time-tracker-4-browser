@@ -8,7 +8,7 @@
 import { type I18nKey, t } from "@app/locale"
 import { cvt2LocaleTime, periodFormatter } from '@app/util/time'
 import { useState } from "@hooks"
-import Box from "@pages/components/Box"
+import { Box } from "@pages/components"
 import { type Column, ElAutoResizer, ElTableV2, type SortBy, TableV2SortOrder } from "element-plus"
 import { computed, defineComponent, toRef } from "vue"
 import HostAlert from "../HostAlert"

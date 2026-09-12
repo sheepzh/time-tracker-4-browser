@@ -1,6 +1,6 @@
 import { css } from '@emotion/css'
 import { useXsState } from '@hooks'
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { colorUsage, colorVariant } from '@pages/util/style'
 import { computed, defineComponent, type StyleValue, useSlots } from "vue"
 

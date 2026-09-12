@@ -1,5 +1,5 @@
 import { css } from '@emotion/css'
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { sum } from "@util/array"
 import { ElEmpty, ElScrollbar, type ScrollbarInstance, useNamespace } from "element-plus"
 import { computed, type CSSProperties, defineComponent, ref, toRef, watch } from "vue"

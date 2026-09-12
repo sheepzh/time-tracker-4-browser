@@ -10,7 +10,7 @@ import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
 import { css } from '@emotion/css'
 import { useXsState } from '@hooks'
 import { dateFormat } from "@i18n/element"
-import Flex from '@pages/components/Flex'
+import { Flex } from '@pages/components'
 import { getDatePickerIconSlots } from '@pages/element-ui/rtl'
 import { ElDatePickerShortcut } from '@pages/element-ui/types'
 import { isRtl } from '@util/document'

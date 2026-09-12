@@ -3,7 +3,7 @@ import { t } from '@app/locale'
 import { css } from '@emotion/css'
 import { MediaSize, useMediaSize } from '@hooks'
 import { locale } from "@i18n"
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { Coffee, GitHub } from '@pages/icons'
 import { rateClicked } from '@pages/util/rate'
 import {

@@ -1,6 +1,6 @@
 import { createTab, listTabs, updateTab } from '@api/chrome/tab'
 import { View } from "@element-plus/icons-vue"
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { t } from '@popup/locale'
 import { HEADER_OPTION_SLOT } from '@popup/slot'
 import { IS_ANDROID } from "@util/constant/environment"

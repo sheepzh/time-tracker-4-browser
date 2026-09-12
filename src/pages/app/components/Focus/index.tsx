@@ -1,5 +1,5 @@
 import { t } from '@app/locale'
-import Flex from '@pages/components/Flex'
+import { Flex } from '@pages/components'
 import { ElButton } from 'element-plus'
 import { defineComponent } from 'vue'
 import ContentCard from '../common/ContentCard'

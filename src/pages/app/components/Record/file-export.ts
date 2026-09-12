@@ -8,6 +8,7 @@
 import { type I18nKey, t } from '@app/locale'
 import { periodFormatter } from '@app/util/time'
 import { exportCsv as exportCsv_, exportJson as exportJson_ } from "@util/file"
+import { truthy } from '@util/lang'
 import { CATE_NOT_SET_ID } from "@util/site"
 import { getAlias, getGroupName, getHost, getRelatedCateId, isGroup } from "@util/stat"
 import { formatTimeYMD } from '@util/time'
@@ -29,19 +30,18 @@ type ExportInfo = {
 function computeFileName(filterParam: RecordFilterOption): string {
     const { dateRange, siteMerge, mergeDate, timeFormat } = filterParam
     const [ds, de] = dateRange instanceof Date ? [dateRange,] : dateRange ?? []
-    const parts = [
+    return truthy(
         t(msg => msg.record.exportFileName),
         ds && formatTimeYMD(ds),
         de && formatTimeYMD(de),
         mergeDate && t(msg => msg.shared.merge.mergeMethod.date),
         siteMerge && t(msg => msg.shared.merge.mergeMethod[siteMerge]),
         timeFormat && t(msg => msg.timeFormat[timeFormat]),
-    ]
-    return parts.filter(p => !!p).join('_')
+    ).join('_')
 }
 
 const generateJsonData = ({ rows, categories, groupMap }: ExportParam): ExportInfo[] => rows.map(row => ({
-    host: getHost(row) ?? undefined,
+    host: getHost(row),
     group: isGroup(row) ? getGroupName(groupMap, row) : undefined,
     date: row.date,
     alias: getAlias(row),
@@ -52,14 +52,12 @@ const generateJsonData = ({ rows, categories, groupMap }: ExportParam): ExportIn
 
 const getCateName = (row: tt4b.stat.Row, categories: tt4b.site.Cate[]): string | undefined => {
     const cateId = getRelatedCateId(row)
-    let cate: string | undefined = undefined
     if (cateId === CATE_NOT_SET_ID) {
-        cate = t(msg => msg.shared.cate.notSet)
+        return t(msg => msg.shared.cate.notSet)
     } else if (cateId) {
-        const current = categories?.find(c => c.id === cateId)
-        cate = current?.name ?? ''
+        return categories.find(c => c.id === cateId)?.name ?? 'NaN'
     }
-    return cate
+    return undefined
 }
 
 export type ExportParam = {
@@ -93,7 +91,7 @@ const CSV_COLUMN_CONFIGS: Record<CsvColumn, CsvColumnConfig> = {
     date: {
         visible: mergeDate => !mergeDate,
         i18n: msg => msg.item.date,
-        formatter: row => row.date ?? '',
+        formatter: row => row.date,
     },
     host: {
         visible: (_, siteMerge) => !siteMerge || siteMerge === 'domain',
@@ -130,7 +128,7 @@ const CSV_COLUMN_CONFIGS: Record<CsvColumn, CsvColumnConfig> = {
 function generateCsvData({ filter, rows, categories, groupMap }: ExportParam): string[][] {
     const { siteMerge, mergeDate } = filter
 
-    const colConfigs = Object.values(CSV_COLUMN_CONFIGS).filter(({ visible }) => visible?.(mergeDate, siteMerge))
+    const colConfigs = Object.values(CSV_COLUMN_CONFIGS).filter(({ visible }) => visible(mergeDate, siteMerge))
 
     const columnTitles = colConfigs.map(({ i18n }) => t(i18n))
     const lines = rows.map(row => colConfigs.map(({ formatter }) => formatter(row, categories, groupMap)))

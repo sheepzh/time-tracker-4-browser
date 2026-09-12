@@ -5,6 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { truthy } from '@util/lang'
 import { CATE_NOT_SET_ID } from '@util/site'
 import { BaseIDBStorage, iterateCursor, type Key, req2Promise, type Table } from './common/indexed-storage'
 
@@ -77,12 +78,10 @@ class SiteDatabase extends BaseIDBStorage<tt4b.site.SiteInfo> {
     async getBatch(keys: tt4b.site.SiteKey[]): Promise<tt4b.site.SiteInfo[]> {
         return this.withStore(async store => {
             const index = super.assertIndex(store, ['host', 'type'])
-            const result: tt4b.site.SiteInfo[] = []
-            for (const key of keys) {
-                const row = await req2Promise<tt4b.site.SiteInfo>(index.get([key.host, key.type]))
-                row && result.push(row)
-            }
-            return result
+            const rows = await Promise.all(
+                keys.map(({ host, type }) => req2Promise<tt4b.site.SiteInfo>(index.get([host, type])))
+            )
+            return truthy(...rows)
         }, 'readonly')
     }
 

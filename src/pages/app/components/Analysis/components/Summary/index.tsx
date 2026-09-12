@@ -10,7 +10,7 @@ import { KanbanCard, KanbanIndicatorCell } from '@app/components/common/kanban'
 import { t } from '@app/locale'
 import { cvt2LocaleTime, periodFormatter } from '@app/util/time'
 import { css } from '@emotion/css'
-import Grid from '@pages/components/Grid'
+import { Grid } from '@pages/components'
 import { computed, defineComponent } from "vue"
 import Calendar from "./Calendar"
 import TargetInfo from "./TargetInfo"

@@ -24,7 +24,7 @@ class FocusRecordDatabase extends BaseIDBStorage<tt4b.focus.Session> {
         return this.withStore(async store => void store.put(record))
     }
 
-    async list(condition?: Condition): Promise<tt4b.focus.Session[]> {
+    async list(condition?: Condition): Promise<readonly tt4b.focus.Session[]> {
         return this.withStore(async store => {
             const { state, start, end } = condition ?? {}
             const states = state ? (Array.isArray(state) ? state : [state]) : undefined
@@ -34,11 +34,11 @@ class FocusRecordDatabase extends BaseIDBStorage<tt4b.focus.Session> {
                 const index = this.assertIndex(store, 'state')
                 if (states.length === 1) {
                     const req = index.openCursor(IDBKeyRange.only(states[0]))
-                    return await iterateCursor<tt4b.focus.Session>(req) as tt4b.focus.Session[]
+                    return await iterateCursor<tt4b.focus.Session>(req)
                 }
                 // Multiple states: iterate all and filter
                 const req = index.openCursor()
-                const rows = await iterateCursor<tt4b.focus.Session>(req) as tt4b.focus.Session[]
+                const rows = await iterateCursor<tt4b.focus.Session>(req)
                 return rows.filter(row => states.includes(row.state))
             }
 
@@ -46,13 +46,13 @@ class FocusRecordDatabase extends BaseIDBStorage<tt4b.focus.Session> {
             if (start || end) {
                 const range = closedRangeKey(start, end)
                 const req = store.openCursor(range)
-                const rows = await iterateCursor<tt4b.focus.Session>(req) as tt4b.focus.Session[]
+                const rows = await iterateCursor<tt4b.focus.Session>(req)
                 return states ? rows.filter(row => states.includes(row.state)) : rows
             }
 
             // No condition, return all
             const req = store.openCursor()
-            return await iterateCursor<tt4b.focus.Session>(req) as tt4b.focus.Session[]
+            return await iterateCursor<tt4b.focus.Session>(req)
         }, 'readonly')
     }
 }

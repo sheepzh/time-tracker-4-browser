@@ -12,7 +12,7 @@ import { useDataMemory } from '@app/components/Migration/context'
 import { t } from "@app/locale"
 import { css } from '@emotion/css'
 import { useRequest, useState } from '@hooks'
-import Flex from '@pages/components/Flex'
+import { Flex } from '@pages/components'
 import { ElDropdown, ElDropdownItem, ElDropdownMenu, ElIcon, ElText } from "element-plus"
 import { type Component, computed, defineComponent, h, toRaw } from "vue"
 import { detectWatt } from './detector'

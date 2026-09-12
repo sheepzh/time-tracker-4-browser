@@ -10,7 +10,7 @@ import Editable from "@app/components/common/Editable"
 import { t } from '@app/locale'
 import { MagicStick } from "@element-plus/icons-vue"
 import { useManualRequest } from '@hooks'
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { identifySiteKey } from "@util/site"
 import { ElIcon, ElPopconfirm, ElTableColumn, ElText } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"

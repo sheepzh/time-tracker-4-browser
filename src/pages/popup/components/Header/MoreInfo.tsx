@@ -1,6 +1,6 @@
 import { createTab } from "@api/chrome/tab"
 import { Collection, MagicStick, MoreFilled } from '@element-plus/icons-vue'
-import Flex from '@pages/components/Flex'
+import { Flex } from '@pages/components'
 import { Bug, Discord, GitHub, Heart } from '@pages/icons'
 import { rateClicked } from '@pages/util/rate'
 import { getColor, type ColorVariant } from '@pages/util/style'

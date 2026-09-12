@@ -1,5 +1,4 @@
-import Flex from '@pages/components/Flex'
-import Img from '@pages/components/Img'
+import { Flex, Img } from '@pages/components'
 import { ElIcon, ElText } from 'element-plus'
 import { computed, type CSSProperties, defineComponent, h, } from 'vue'
 import { SITE_SUMMARY_DROPDOWN_SLOT, SITE_TYPE_ICON } from './common'
@@ -35,7 +34,7 @@ const Summary = defineComponent<{}>(() => {
                         {site.value?.type ? h(SITE_TYPE_ICON[site.value.type]) : null}
                     </ElIcon>
                 </Img>
-                <ElText style={{ fontSize: `${TITLE_SIZE}px` } satisfies CSSProperties} >
+                <ElText style={{ fontSize: `${TITLE_SIZE}px` } satisfies CSSProperties}>
                     {siteLabel.value}
                 </ElText>
                 <Flex id={SITE_SUMMARY_DROPDOWN_SLOT} />

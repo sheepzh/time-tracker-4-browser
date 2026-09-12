@@ -13,9 +13,7 @@ import Pagination from '@app/components/common/Pagination'
 import { t } from '@app/locale'
 import { Delete } from '@element-plus/icons-vue'
 import { useOperation, useRequest } from '@hooks'
-import ConfirmButton from '@pages/components/ConfirmButton'
-import EditableImg from '@pages/components/EditableImg'
-import Flex from '@pages/components/Flex'
+import { ConfirmButton, EditableImg, Flex } from '@pages/components'
 import { ElTable, ElTableColumn, ElTag, TagProps, type RenderRowData } from "element-plus"
 import { defineComponent, reactive, ref } from "vue"
 import { ALL_TYPES } from '../common'

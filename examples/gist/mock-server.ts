@@ -1,3 +1,4 @@
+import { truthy } from '@util/lang'
 import { randomUUID } from "crypto"
 import { createServer, type IncomingMessage, type ServerResponse } from "http"
 
@@ -208,7 +209,7 @@ class Handler {
         const perPage = Math.min(100, Math.max(1, Number.isNaN(perPageRaw) ? 30 : perPageRaw))
         const page = Math.max(1, Number.isNaN(pageRaw) ? 1 : pageRaw)
         const since = this.url.searchParams.get("since")
-        const all = gistOrder.map(id => gists.get(id)).filter(Boolean) as Gist[]
+        const all = truthy(...gistOrder.map(id => gists.get(id)))
         const filtered = since
             ? all.filter(gist => gist.updated_at > since)
             : all

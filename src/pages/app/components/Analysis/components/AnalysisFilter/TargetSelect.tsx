@@ -5,7 +5,7 @@ import { labelOfHostInfo } from '@app/components/Analysis/util'
 import { useCategory } from '@app/context'
 import { t } from '@app/locale'
 import { useDebounceState, useRequest } from '@hooks'
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { CATE_NOT_SET_ID, identifySiteKey, parseSiteIdentity } from "@util/site"
 import { ElSelectV2, ElTag, useNamespace } from "element-plus"
 import type { OptionType } from "element-plus/es/components/select-v2/src/select.types"
@@ -105,7 +105,7 @@ const TargetSelect = defineComponent(() => {
         }
 
         let res: OptionType[] = []
-        cate.enabled && cateItems.length && res.push({
+        cateItems.length && res.push({
             value: 'cate',
             label: t(msg => msg.analysis.target.cate),
             options: cateItems.map(item => ({ value: cvtTarget2Key(item), label: item.label, data: item })),

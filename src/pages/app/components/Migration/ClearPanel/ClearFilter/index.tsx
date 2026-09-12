@@ -7,7 +7,7 @@
 import { t } from "@app/locale"
 import { Delete } from "@element-plus/icons-vue"
 import { useState } from "@hooks"
-import Box from '@pages/components/Box'
+import { Box } from '@pages/components'
 import { ElButton } from "element-plus"
 import { defineComponent } from "vue"
 import DateFilter from "./DateFilter"

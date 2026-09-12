@@ -5,8 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import Flex from "@pages/components/Flex"
-import Img from '@pages/components/Img'
+import { Flex, Img } from '@pages/components'
 import { IS_SAFARI } from "@util/constant/environment"
 import { isRemainHost } from "@util/constant/remain-host"
 import { ElLink } from "element-plus"
@@ -37,7 +36,7 @@ const HostAlert = defineComponent<Props>(props => {
                 {props.value?.host}
             </ElLink>
         ) : (
-            <Flex justify="center" align="center" gap={3} >
+            <Flex justify="center" align="center" gap={3}>
                 <ElLink
                     href={href.value}
                     target={target.value}

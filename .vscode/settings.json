@@ -6,7 +6,7 @@
         "source.organizeImports": "always",
         "source.removeUnusedImports": "always",
     },
-    "editor.foldingImportsByDefault": true,
+    "editor.foldingImportsByDefault": false,
     "editor.trimAutoWhitespace": true,
     "eslint.enable": false,
     "prettier.enable": false,

@@ -7,6 +7,7 @@
 import { detectSites } from '@api/sw/site'
 import { t } from '@app/locale'
 import { useDebounceState, useRequest } from '@hooks'
+import { truthy } from '@util/lang'
 import { extractHostname, isValidVirtualHost, judgeVirtualFast } from '@util/pattern'
 import { identifySiteKey, parseSiteIdentity, SiteMap } from '@util/site'
 import { ElSelectV2 } from "element-plus"
@@ -27,10 +28,10 @@ type Props = ModelValue<tt4b.site.SiteKey | undefined>
  */
 function labelOf(site: tt4b.site.SiteInfo): string {
     let { host: label, type, alias } = site
-    const suffix = [
+    const suffix = truthy(
         type !== 'normal' && t(msg => msg.shared.site.type[type]).toLocaleUpperCase(),
         alias && t(msg => msg.siteManage.msg.existedTag),
-    ].filter(Boolean).join('-')
+    ).join('-')
     suffix && (label += `[${suffix}]`)
     return label
 }

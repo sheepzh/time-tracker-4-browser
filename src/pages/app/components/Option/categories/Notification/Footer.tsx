@@ -1,7 +1,7 @@
 import { sendMsg2Runtime } from '@api/sw/common'
 import { t } from '@app/locale'
 import { Operation } from '@element-plus/icons-vue'
-import Flex from '@pages/components/Flex'
+import { Flex } from '@pages/components'
 import { ElButton, ElDivider, ElMessage } from 'element-plus'
 import type { FunctionalComponent } from 'vue'
 

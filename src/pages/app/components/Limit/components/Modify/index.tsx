@@ -11,7 +11,7 @@ import { initDialogSopContext } from '@app/components/common/DialogSop/context'
 import { useLimitData } from "@app/components/Limit/context"
 import type { ModifyForm, ModifyInstance } from '@app/components/Limit/types'
 import { t } from '@app/locale'
-import { cleanCond } from '@pages/components/CondEditor'
+import { cleanCond } from '@pages/components'
 import { range } from '@util/array'
 import { computed, defineComponent, ref, toRaw } from "vue"
 import Step1 from './Step1'

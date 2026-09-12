@@ -1,4 +1,4 @@
-import Flex from '@pages/components/Flex'
+import { Flex } from '@pages/components'
 import { t } from '@popup/locale'
 import { formatPeriodCommon, MILL_PER_SECOND } from '@util/time'
 import { ElProgress, ElTag, ElText, type TagProps } from 'element-plus'

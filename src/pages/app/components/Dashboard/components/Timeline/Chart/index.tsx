@@ -9,8 +9,7 @@ import ChartTitle from '@app/components/Dashboard/ChartTitle'
 import { t } from '@app/locale'
 import { Collection, Files, Link } from '@element-plus/icons-vue'
 import { useEcharts } from '@hooks'
-import Flex from "@pages/components/Flex"
-import IconRadioGroup from '@pages/components/IconRadioGroup'
+import { Flex, IconRadioGroup } from '@pages/components'
 import { type ECElementEvent, type ECharts } from "echarts/core"
 import { type Component, computed, defineComponent } from "vue"
 import { TIMELINE_DAY_COUNT, useTimelineContext } from '../context'

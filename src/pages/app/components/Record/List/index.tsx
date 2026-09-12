@@ -1,9 +1,12 @@
 import ScrollList from '@app/components/common/ScrollList'
+import { t } from '@app/locale'
 import { useScrollRequest } from '@hooks'
+import { Flex } from '@pages/components'
 import { getHost } from "@util/stat"
+import { ElText } from 'element-plus'
 import { defineComponent, ref } from "vue"
 import { queryPage } from "../common"
-import { useRecordFilter } from "../context"
+import { useRecordFilter, useSummary } from "../context"
 import type { DisplayComponent } from "../types"
 import Card from './Card'
 
@@ -18,6 +21,7 @@ const _default = defineComponent<{}>((_, ctx) => {
         return pagination.list
     }, { resetDeps: () => ({ ...filterOption }) })
 
+    const summary = useSummary(true)
     const selected = ref<number[]>([])
 
     ctx.expose({
@@ -32,21 +36,26 @@ const _default = defineComponent<{}>((_, ctx) => {
     }
 
     return () => (
-        <ScrollList
-            minWidth={190}
-            end={end.value}
-            loadMore={loadMore}
-            loading={loading.value}
-        >
-            {data.value.map((row, idx) => (
-                <Card
-                    key={`row-${getHost(row)}-${idx}`}
-                    value={row}
-                    onSelectedChange={val => handleSelectedChange(val, idx)}
-                    onDelete={() => reset()}
-                />
-            ))}
-        </ScrollList>
+        <Flex column gap={10}>
+            <ElText size='small' type='info'>
+                {t(msg => msg.record.total, { ...summary.data.value })}
+            </ElText>
+            <ScrollList
+                minWidth={250}
+                end={end.value}
+                loadMore={loadMore}
+                loading={loading.value}
+            >
+                {data.value.map((row, idx) => (
+                    <Card
+                        key={`row-${getHost(row)}-${idx}`}
+                        value={row}
+                        onSelectedChange={val => handleSelectedChange(val, idx)}
+                        onDelete={() => reset()}
+                    />
+                ))}
+            </ScrollList>
+        </Flex>
     )
 })
 

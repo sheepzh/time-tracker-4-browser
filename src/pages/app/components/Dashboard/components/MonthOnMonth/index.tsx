@@ -2,7 +2,7 @@ import { listSiteStats } from "@api/sw/stat"
 import ChartTitle from "@app/components/Dashboard/ChartTitle"
 import { t } from "@app/locale"
 import { useEcharts } from "@hooks"
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { groupBy, sum } from "@util/array"
 import DateIterator from "@util/date-iterator"
 import { cvtDateRange2Str, MILL_PER_DAY } from "@util/time"

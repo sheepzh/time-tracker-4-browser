@@ -8,8 +8,7 @@
 import { tN, type I18nKey } from "@app/locale"
 import { BottomRight, InfoFilled, TopRight } from "@element-plus/icons-vue"
 import { useXsState } from '@hooks'
-import Box from "@pages/components/Box"
-import Flex from "@pages/components/Flex"
+import { Box, Flex } from '@pages/components'
 import { colorVariant, getCssVariable } from '@pages/util/style'
 import { ElIcon, ElTooltip } from "element-plus"
 import { defineComponent, type CSSProperties, type FunctionalComponent } from "vue"

@@ -1,7 +1,7 @@
 import { t, tN, type I18nKey } from '@app/locale'
 import { css } from '@emotion/css'
 import { MediaSize, useMediaSize } from '@hooks'
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { colorVariant } from '@pages/util/style'
 import { ElTag, useNamespace } from "element-plus"
 import { computed, defineComponent, h, type StyleValue, type VNode } from "vue"

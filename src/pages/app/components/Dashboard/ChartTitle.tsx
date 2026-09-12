@@ -1,4 +1,4 @@
-import Box from '@pages/components/Box'
+import { Box } from '@pages/components'
 import type { FunctionalComponent } from "vue"
 
 const _default: FunctionalComponent<{ text?: string }> = ({ text }, { slots }) => (

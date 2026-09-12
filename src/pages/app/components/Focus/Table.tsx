@@ -1,7 +1,6 @@
 import { t } from '@app/locale'
 import { Delete } from '@element-plus/icons-vue'
-import ConfirmButton from '@pages/components/ConfirmButton'
-import Flex from '@pages/components/Flex'
+import { ConfirmButton, Flex } from '@pages/components'
 import { getColor } from '@pages/util/style'
 import { formatPeriodCommon } from '@util/time'
 import { ElButton, ElTable, ElTableColumn, ElTag, ElText, type RenderRowData } from 'element-plus'
@@ -56,7 +55,7 @@ const Table = defineComponent<{}>(() => {
 
     return () => (
         <ElTable data={presets.value} border fit highlightCurrentRow>
-            <ElTableColumn label={t(msg => msg.focus.presetName)} >
+            <ElTableColumn label={t(msg => msg.focus.presetName)}>
                 {({ row: { id, name } }: Scope) => (
                     <Flex inline align='center' gap={5}>
                         <StateDot session={session.value} presetId={id} />

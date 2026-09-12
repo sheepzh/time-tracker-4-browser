@@ -9,7 +9,7 @@ import { t } from '@app/locale'
 import { Check, Close, Plus } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
 import { useState, useSwitch, useXsState } from '@hooks'
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { Forbidden } from '@pages/icons'
 import { FULL_PERIOD, period2Str } from '@pages/util/limit'
 import { dateMinute2Idx, isInPeriod } from "@util/limit"

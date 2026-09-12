@@ -7,7 +7,7 @@
 
 import { useAnalysisTimeFormat } from "@app/components/Analysis/context"
 import { TimeFormatFilter } from '@app/components/common/filter'
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { defineComponent } from "vue"
 import TargetSelect from "./TargetSelect"
 

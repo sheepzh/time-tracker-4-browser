@@ -8,15 +8,13 @@
 import { t } from '@app/locale'
 import { sum } from "@util/array"
 import { ElTable, ElTableColumn } from "element-plus"
-import { computed, defineComponent, type PropType } from "vue"
+import { type FunctionalComponent } from "vue"
 
 type Row = {
     name: string
     value: number
     percent?: string
 }
-
-type ValueFormatter = (val: number) => string
 
 const CLIENT_NAME = t(msg => msg.record.remoteReading.table.client)
 const VALUE = t(msg => msg.record.remoteReading.table.value)
@@ -34,48 +32,34 @@ function computeRows(data: tt4b.stat.RemoteCompositionVal[]): Row[] {
     return rows
 }
 
-const formatValue = (value: number, valueFormatter?: ValueFormatter) => {
-    if (valueFormatter) {
-        return valueFormatter(value)
-    }
-    return value?.toString?.()
+type Props = {
+    data: tt4b.stat.RemoteCompositionVal[]
+    formatter?: (val: number) => string
 }
 
-const _default = defineComponent({
-    props: {
-        data: {
-            type: Array as PropType<tt4b.stat.RemoteCompositionVal[]>,
-            required: true,
-        },
-        valueFormatter: Function as PropType<ValueFormatter>,
-    },
-    setup(props) {
-        const rows = computed(() => computeRows(props.data))
-        return () => (
-            <div style={{ width: "400px" }}>
-                <ElTable data={rows.value} size="small" border>
-                    <ElTableColumn
-                        label={CLIENT_NAME}
-                        formatter={(r: Row) => r.name}
-                        align="center"
-                        width={150}
-                    />
-                    <ElTableColumn
-                        label={VALUE}
-                        formatter={(r: Row) => formatValue(r.value, props.valueFormatter)}
-                        align="center"
-                        width={150}
-                    />
-                    <ElTableColumn
-                        label={PERCENTAGE}
-                        align="center"
-                        formatter={(r: Row) => r.percent ?? ''}
-                        width={100}
-                    />
-                </ElTable>
-            </div>
-        )
-    }
-})
+const CompositionTable: FunctionalComponent<Props> = ({ data, formatter }) => (
+    <div style={{ width: "400px" }}>
+        <ElTable data={computeRows(data)} size="small" border>
+            <ElTableColumn
+                label={CLIENT_NAME}
+                formatter={({ name }: Row) => name}
+                align="center"
+                width={150}
+            />
+            <ElTableColumn
+                label={VALUE}
+                formatter={({ value }: Row) => formatter?.(value) ?? String(value)}
+                align="center"
+                width={150}
+            />
+            <ElTableColumn
+                label={PERCENTAGE}
+                align="center"
+                formatter={({ percent }: Row) => percent ?? ''}
+                width={100}
+            />
+        </ElTable>
+    </div>
+)
 
-export default _default
+export default CompositionTable

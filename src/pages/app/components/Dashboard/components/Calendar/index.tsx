@@ -12,7 +12,7 @@ import ChartTitle from '@app/components/Dashboard/ChartTitle'
 import { t } from "@app/locale"
 import { RECORD_ROUTE, type RecordQuery } from '@app/router/constants'
 import { useEcharts, useRequest } from "@hooks"
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { groupBy, sum } from "@util/array"
 import { getAppPageUrl } from "@util/constant/url"
 import { cvtDateRange2Str, formatTimeYMD, MILL_PER_DAY, MILL_PER_HOUR } from "@util/time"

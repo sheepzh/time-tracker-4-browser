@@ -6,7 +6,7 @@
  */
 
 import AlertLines from '@app/components/common/AlertLines'
-import Flex from '@pages/components/Flex'
+import { Flex } from '@pages/components'
 import { PSL_HOMEPAGE } from '@util/constant/url'
 import type { FunctionalComponent, StyleValue } from "vue"
 import List from "./List"
@@ -28,7 +28,7 @@ const Merge: FunctionalComponent = () => (
                 msg => msg.siteManage.merge.infoAlert3,
                 msg => msg.siteManage.merge.infoAlert4,
                 [msg => msg.siteManage.merge.infoAlert5, {
-                    psl: <a href={PSL_HOMEPAGE} style={pslStyle} target="_blank" >Public Suffix List</a>
+                    psl: <a href={PSL_HOMEPAGE} style={pslStyle} target="_blank">Public Suffix List</a>
                 }],
             ]}
         />

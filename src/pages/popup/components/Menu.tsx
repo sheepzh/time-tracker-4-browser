@@ -1,6 +1,6 @@
 import { Aim, Histogram, PieChart } from '@element-plus/icons-vue'
 import { localRef } from '@hooks'
-import IconRadioGroup, { IconRadioOption } from '@pages/components/IconRadioGroup'
+import { IconRadioGroup, type IconRadioOption } from '@pages/components'
 import { Website } from '@pages/icons'
 import { t } from '@popup/locale'
 import { createStringUnionGuard } from 'typescript-guard'

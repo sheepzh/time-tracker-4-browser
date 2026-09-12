@@ -7,7 +7,7 @@
 import { t } from '@app/locale'
 import { Edit } from '@element-plus/icons-vue'
 import { useShadow, useSwitch } from '@hooks'
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { LOCAL_HOST_PATTERN } from "@util/constant/remain-host"
 import { ElTag, type TagProps } from "element-plus"
 import { computed, defineComponent, type StyleValue } from "vue"
@@ -85,7 +85,7 @@ const _default = defineComponent<Props>((props, ctx) => {
                     <span>{'>>>'}</span>
                     <span>{mergeText.value}</span>
                 </Flex>
-                <Flex onClick={openEditing} >
+                <Flex onClick={openEditing}>
                     <Edit style={EDIT_ICON_STYLE} />
                 </Flex>
             </Flex>

@@ -103,7 +103,7 @@ const ImgSetup = defineComponent<ImgSetupProps>(props => {
     )
 }, { props: ['initial', 'onSave', 'onClose'] })
 
-const EditableImg = defineComponent<EditableImgProps>(props => {
+export default defineComponent<EditableImgProps>(props => {
     const visible = ref(false)
     const hide = () => visible.value = false
     const handleSave = (url: string | undefined) => {
@@ -130,5 +130,3 @@ const EditableImg = defineComponent<EditableImgProps>(props => {
         </Flex>
     )
 }, { props: [...ALL_IMG_PROPS, 'onSave'] })
-
-export default EditableImg

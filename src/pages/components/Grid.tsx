@@ -67,7 +67,7 @@ const calcGridGap = (val: Gap | [Gap, Gap] | undefined): string | undefined => {
         : cvtPxScale(val)
 }
 
-const Grid = defineComponent<Props>((props, { slots }) => {
+export default defineComponent<Props>((props, { slots }) => {
     const minColumnWidth = toRef(props, 'minColumnWidth', 200)
     const maxColumnWidth = toRef(props, 'maxColumnWidth', '1fr')
     const columnGap = computed(() => calcGridGap(props.columnGap))
@@ -99,5 +99,3 @@ const Grid = defineComponent<Props>((props, { slots }) => {
 }, {
     props: [...ALL_BASE_PROPS, 'columnGap', 'rowGap', 'minColumnWidth', 'maxColumnWidth']
 })
-
-export default Grid

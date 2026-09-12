@@ -1,6 +1,6 @@
 import { APP_OPTION_ROUTE } from '@/shared/route'
 import { Warning } from '@element-plus/icons-vue'
-import Flex from '@pages/components/Flex'
+import { Flex } from '@pages/components'
 import { OptionLink } from '@popup/components/Option'
 import { t } from '@popup/locale'
 import { HEADER_OPTION_SLOT, TOOLBAR_SLOT } from '@popup/slot'

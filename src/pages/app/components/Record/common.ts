@@ -13,11 +13,11 @@ import type { RecordFilterOption, RecordSort } from "./types"
  * @param url  item url
  * @param date item date
  */
-function computeSingleConfirmText(url: string, date: string): string {
+function singleConfirmText(url: string, date: string): string {
     return t(msg => msg.item.operation.deleteConfirmMsg, { url, date })
 }
 
-function computeRangeConfirmText(url: string, dateRange: [number?, number?]): string {
+function rangeConfirmText(url: string, dateRange: [number?, number?]): string {
     let [startDate, endDate] = dateRange
     if (startDate === undefined && endDate === undefined) {
         // Delete all
@@ -28,23 +28,22 @@ function computeRangeConfirmText(url: string, dateRange: [number?, number?]): st
     const end = formatTime(endDate ?? new Date(), dateFormat)
     return start === end
         // Only one day
-        ? computeSingleConfirmText(url, start)
+        ? singleConfirmText(url, start)
         : t(msg => msg.item.operation.deleteConfirmMsgRange, { url, start, end })
 }
 
 export function computeDeleteConfirmMsg(row: tt4b.stat.Row, filterOption: RecordFilterOption, groupMap: Record<number, chrome.tabGroups.TabGroup>): string {
-    let name: string | undefined
+    let name: string
     if (isGroup(row)) {
         name = getGroupName(groupMap, row)
     } else if (isSite(row)) {
         name = row.siteKey.host
+    } else {
+        name = 'NaN'
     }
     const { date } = row
-    const { mergeDate, dateRange } = filterOption || {}
-    name = name ?? 'NaN'
-    return mergeDate
-        ? computeRangeConfirmText(name, dateRange)
-        : computeSingleConfirmText(name, date ?? '')
+    const { mergeDate, dateRange } = filterOption
+    return mergeDate ? rangeConfirmText(name, dateRange) : singleConfirmText(name, date)
 }
 
 export async function handleDelete(row: tt4b.stat.Row, filterOption: RecordFilterOption) {

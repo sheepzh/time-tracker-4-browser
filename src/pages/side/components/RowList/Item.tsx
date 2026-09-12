@@ -1,5 +1,5 @@
 import { createTab } from "@api/chrome/tab"
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { isRemainHost } from "@util/constant/remain-host"
 import { getAlias, getHost, isSite } from "@util/stat"
 import { formatPeriodCommon } from "@util/time"

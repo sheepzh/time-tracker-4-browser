@@ -9,7 +9,7 @@ import { sendMsg2Runtime } from '@api/sw/common'
 import { t } from '@app/locale'
 import { Download, Upload } from "@element-plus/icons-vue"
 import { useManualRequest } from '@hooks'
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { deserialize, exportJson } from "@util/file"
 import { formatTime } from "@util/time"
 import { ElButton, ElCard, ElMessage } from "element-plus"

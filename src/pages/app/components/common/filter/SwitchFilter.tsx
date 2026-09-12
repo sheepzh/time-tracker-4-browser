@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { ElSwitch, ElText } from "element-plus"
 import type { FunctionalComponent } from "vue"
 

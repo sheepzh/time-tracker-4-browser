@@ -11,7 +11,7 @@ import { SITE_ANALYSIS_ROUTE, type SiteAnalysisQuery } from '@app/router/constan
 import { Delete, Stopwatch } from "@element-plus/icons-vue"
 import { useTabGroups } from '@hooks'
 import { locale } from "@i18n"
-import ConfirmButton from '@pages/components/ConfirmButton'
+import { ConfirmButton } from '@pages/components'
 import { CATE_NOT_SET_ID } from "@util/site"
 import { isCate, isGroup, isSite } from "@util/stat"
 import { ElButton, ElTableColumn, type RenderRowData } from "element-plus"
@@ -35,10 +35,6 @@ const LOCALE_WIDTH: { [locale in tt4b.Locale]: number } = {
     it: 180,
 }
 
-type Props = {
-    onDelete?: ArgCallback<tt4b.stat.Row>
-}
-
 const analysisVisible = (row: tt4b.stat.Row) => {
     if (isGroup(row)) return false
     if (isCate(row)) return row.cateKey !== CATE_NOT_SET_ID
@@ -51,7 +47,7 @@ const deleteVisible = (row: tt4b.stat.Row) => {
     return true
 }
 
-const _default = defineComponent<Props>(({ onDelete }) => {
+const _default = defineComponent<{ onDelete?: ArgCallback<tt4b.stat.Row> }>(({ onDelete }) => {
     const filter = useRecordFilter()
     const { groupMap } = useTabGroups()
     const width = computed(() => {
@@ -80,29 +76,25 @@ const _default = defineComponent<Props>(({ onDelete }) => {
             fixed='right'
         >
             {({ row }: RenderRowData<tt4b.stat.Row>) => <>
-                {/* Analysis */}
-                {analysisVisible(row) && (
-                    <ElButton
-                        icon={Stopwatch}
-                        size="small"
-                        link type="primary"
-                        onClick={() => jump2Analysis(row)}
-                    >
-                        {t(msg => msg.item.operation.analysis)}
-                    </ElButton>
-                )}
-                {/* Delete button */}
-                {deleteVisible(row) && (
-                    <ConfirmButton
-                        buttonProps={{ icon: Delete, type: 'danger', size: 'small', link: true }}
-                        buttonText={t(msg => msg.button.delete)}
-                        confirmText={computeDeleteConfirmMsg(row, filter, groupMap.value)}
-                        onConfirm={async () => {
-                            await handleDelete(row, filter)
-                            onDelete?.(row)
-                        }}
-                    />
-                )}
+                <ElButton
+                    v-show={analysisVisible(row)}
+                    icon={Stopwatch}
+                    size="small"
+                    link type="primary"
+                    onClick={() => jump2Analysis(row)}
+                >
+                    {t(msg => msg.item.operation.analysis)}
+                </ElButton>
+                <ConfirmButton
+                    visible={deleteVisible(row)}
+                    buttonProps={{ icon: Delete, type: 'danger', size: 'small', link: true }}
+                    buttonText={t(msg => msg.button.delete)}
+                    confirmText={computeDeleteConfirmMsg(row, filter, groupMap.value)}
+                    onConfirm={async () => {
+                        await handleDelete(row, filter)
+                        onDelete?.(row)
+                    }}
+                />
             </>}
         </ElTableColumn>
     )

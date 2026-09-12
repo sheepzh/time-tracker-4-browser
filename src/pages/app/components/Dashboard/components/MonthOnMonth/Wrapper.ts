@@ -30,7 +30,7 @@ function optionOf(lastPeriodItems: Row[], thisPeriodItems: Row[], domWidth: numb
             borderWidth: 0,
             formatter(params: TopLevelFormatterParams) {
                 if (!Array.isArray(params)) return ''
-                const [thisItem, lastItem] = params.map(v => v.data as _Value).map(v => v.row) || []
+                const [thisItem, lastItem] = params.map(v => v.data as _Value).map(v => v.row)
                 const [thisColor, lastColor] = params.map(v => v.color)
                 const { date: thisDate, total: thisVal } = thisItem || {}
                 const { date: lastDate, total: lastVal } = lastItem || {}

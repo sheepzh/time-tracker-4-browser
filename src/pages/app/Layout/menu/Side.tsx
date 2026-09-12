@@ -10,7 +10,7 @@ import { t } from '@app/locale'
 import { Expand, Fold } from '@element-plus/icons-vue'
 import { css } from '@emotion/css'
 import { localRef, useState } from '@hooks'
-import Flex from '@pages/components/Flex'
+import { Flex } from '@pages/components'
 import { colorVariant } from '@pages/util/style'
 import { ElCollapseTransition, ElIcon, ElMenu, ElMenuItem, ElMenuItemGroup, ElScrollbar, ElText, ElTooltip, useNamespace } from "element-plus"
 import { isBoolean } from 'typescript-guard'

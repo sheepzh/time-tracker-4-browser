@@ -10,7 +10,7 @@ import { useCategory } from "@app/context"
 import { t } from '@app/locale'
 import { Check, Close, Connection, Delete, Grid, Plus } from "@element-plus/icons-vue"
 import { useSwitch, useXsState } from '@hooks'
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { Rule } from '@pages/icons'
 import { ElButton, ElDialog, ElForm, ElFormItem } from 'element-plus'
 import { computed, defineComponent, watch } from "vue"

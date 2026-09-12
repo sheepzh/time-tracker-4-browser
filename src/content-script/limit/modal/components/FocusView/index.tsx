@@ -1,7 +1,6 @@
 import type { FocusReason } from '@cs/limit/types'
 import { t } from '@cs/locale'
-import ConfirmButton from '@pages/components/ConfirmButton'
-import Flex from '@pages/components/Flex'
+import { ConfirmButton, Flex } from '@pages/components'
 import { ElTag } from 'element-plus'
 import { defineComponent } from 'vue'
 import { useApp } from '../../context'

@@ -1,7 +1,7 @@
+import { createTabAfterCurrent } from "@api/chrome/tab"
 import { t } from '@app/locale'
 import { Pointer } from "@element-plus/icons-vue"
-import Box from "@pages/components/Box"
-import { createTabAfterCurrent } from "@api/chrome/tab"
+import { Box } from '@pages/components'
 import { CROWDIN_HOMEPAGE } from "@util/constant/url"
 import { ElButton, ElCard, ElScrollbar } from "element-plus"
 import type { FunctionalComponent, StyleValue } from "vue"

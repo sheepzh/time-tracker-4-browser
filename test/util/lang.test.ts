@@ -1,4 +1,4 @@
-import { mergeObject } from '@util/lang'
+import { mergeObject, truthy } from '@util/lang'
 
 describe('mergeObject', () => {
     test('should merge two objects correctly', () => {
@@ -12,5 +12,12 @@ describe('mergeObject', () => {
         const d: any = { y: { z: {} }, v: 4 }
         const r2 = mergeObject(c, d)
         expect(r2).toEqual({ x: 1, y: { z: {} }, v: 4 })
+    })
+})
+
+describe('truthy', () => {
+    test('should filter out all the falsy elements', () => {
+        const result = truthy<any>(0, -0, 0n, '', null, undefined, false, NaN, 1, 'a', true, {}, [], () => { })
+        expect(result).toEqual([1, 'a', true, {}, [], expect.any(Function)])
     })
 })

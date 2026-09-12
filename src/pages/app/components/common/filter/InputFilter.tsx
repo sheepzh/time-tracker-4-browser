@@ -7,13 +7,12 @@
 
 import { Search } from "@element-plus/icons-vue"
 import { useHotKey, useKeyPressed, useState } from "@hooks"
-import { cvtPxScale } from '@pages/components/common'
-import Flex from '@pages/components/Flex'
+import { Flex, cvtPxScale } from '@pages/components'
 import { Enter } from '@pages/icons'
 import { colorUsage, colorVariant, textColor } from '@pages/util/style'
 import { IS_ANDROID, IS_MAC } from '@util/constant/environment'
 import { ElIcon, ElInput, type InputInstance } from "element-plus"
-import { defineComponent, type FunctionalComponent, nextTick, ref, type StyleValue } from "vue"
+import { defineComponent, nextTick, ref, type FunctionalComponent, type StyleValue } from "vue"
 
 const SHORTCUT = "K"
 

@@ -5,7 +5,7 @@ type Props = PartialPick<UseTooltipProps, 'placement' | 'effect' | 'trigger' | '
     usePopover?: boolean
 }
 
-const TooltipWrapper = defineComponent<Props>(props => {
+export default defineComponent<Props>(props => {
     const visible = ref(false)
 
     return () => (
@@ -20,5 +20,3 @@ const TooltipWrapper = defineComponent<Props>(props => {
         />
     )
 }, { props: ['effect', 'offset', 'placement', 'trigger', 'usePopover'] })
-
-export default TooltipWrapper

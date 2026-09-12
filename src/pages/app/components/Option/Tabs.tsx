@@ -3,7 +3,7 @@ import { t } from '@app/locale'
 import { Refresh } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
 import { useOperation } from '@hooks'
-import Flex from "@pages/components/Flex"
+import { Flex } from '@pages/components'
 import { CloudSync, Json } from '@pages/icons'
 import { IS_EDGE, IS_FIREFOX } from '@util/constant/environment'
 import { type ButtonProps, ElButton, ElDropdown, ElDropdownItem, ElDropdownMenu, ElTabPane, ElTabs, useNamespace } from "element-plus"
@@ -108,7 +108,7 @@ const _default = defineComponent<{}>(() => {
                     </ElTabPane>
                 ))}
             </ElTabs>
-        </ContentContainer >
+        </ContentContainer>
     )
 })
 

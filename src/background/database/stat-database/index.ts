@@ -7,7 +7,7 @@
 
 import { isNotZeroResult } from '@util/stat'
 import { createArrayGuard, createObjectGuard, isOptionalInt, isString } from 'typescript-guard'
-import { extractNamespace, isExportData, isLegacyVersion } from '../common/migratable'
+import { extractNamespace, isLegacyVersion } from '../common/migratable'
 import { StorageHolder } from '../common/storage-holder'
 import type { BrowserMigratable, StorageMigratable } from '../types'
 import { ClassicStatDatabase, parseImportData } from './classic'
@@ -113,7 +113,7 @@ class StatDatabaseWrapper implements StateDatabaseComposite {
     }
 
     async importData(data: unknown): Promise<void> {
-        const rows = this.parseImportRows(data)
+        const rows = this.#parseImportRows(data)
         await this.#current.forceUpdate(...rows)
     }
 
@@ -121,28 +121,13 @@ class StatDatabaseWrapper implements StateDatabaseComposite {
         return this.#current.select({ virtual: true })
     }
 
-    private parseImportRows(data: unknown): tt4b.core.Row[] {
-        if (!isExportData(data)) return []
-        if (isLegacyVersion(data)) {
-            return parseImportData(data) ?? []
-        }
+    #parseImportRows(data: unknown): tt4b.core.Row[] {
+        if (isLegacyVersion(data)) return parseImportData(data) ?? []
 
-        if (!(this.namespace in data)) return []
-
-        const nsData = extractNamespace(data, this.namespace, isValidImportRows) ?? []
-        const rows: tt4b.core.Row[] = []
-        for (const item of nsData) {
-            const row: tt4b.core.Row = {
-                host: item.host,
-                date: item.date,
-                time: item.time ?? 0,
-                focus: item.focus ?? 0,
-                run: item.run || undefined,
-                media: item.media || undefined,
-            }
-            isNotZeroResult(row) && rows.push(row)
-        }
-        return rows
+        return extractNamespace(data, this.namespace, isValidImportRows)
+            ?.map(({ host, date, time = 0, focus = 0, run, media }) =>
+                ({ host, date, time, focus, run, media } satisfies tt4b.core.Row))
+            ?.filter(isNotZeroResult) ?? []
     }
 }
 

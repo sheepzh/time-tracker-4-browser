@@ -8,7 +8,7 @@ export type ImgProps = Partial<Pick<HTMLImageElement, 'src' | 'alt' | 'title'>> 
 }
 export const ALL_IMG_PROPS: (keyof ImgProps)[] = ['src', 'alt', 'title', 'style', 'onError', 'size']
 
-const Img = defineComponent<ImgProps>((props, ctx) => {
+export default defineComponent<ImgProps>((props, ctx) => {
     const [imgErr, setImgErr] = useState(false)
     watch(() => props.src, () => setImgErr(false))
     const handleError = (event: Event) => {
@@ -29,5 +29,3 @@ const Img = defineComponent<ImgProps>((props, ctx) => {
         />
     )
 }, { props: ALL_IMG_PROPS })
-
-export default Img

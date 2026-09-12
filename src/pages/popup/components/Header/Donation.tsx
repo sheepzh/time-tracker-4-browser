@@ -1,6 +1,6 @@
 import { createTab } from '@api/chrome/tab'
 import { locale } from '@i18n'
-import Flex from '@pages/components/Flex'
+import { Flex } from '@pages/components'
 import { Coffee } from '@pages/icons'
 import { BUY_ME_A_COFFEE_PAGE, DONATION_PAGE } from '@util/constant/url'
 import { ElIcon, ElTooltip } from 'element-plus'
