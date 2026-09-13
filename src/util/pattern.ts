@@ -8,7 +8,7 @@
 import { SUFFIX_HOST_MAP } from "./constant/remain-host"
 
 const isNotValidPort = (portStr: string) => {
-    const port = parseInt(portStr)
+    const port = Number.parseInt(portStr)
     return port < 0 || port > 65535 || port.toString() !== portStr
 }
 
@@ -167,7 +167,7 @@ export function isHomepage(url: string) {
 
 export function escapeRegExp(s: string): string {
     if (!s) return ''
-    return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
+    return s.replace(/[-/\\^s$*+?.()|[\]{}]/g, String.raw`\$&`)
 }
 
 export function compileAntPattern(antPattern: string): RegExp {
@@ -176,7 +176,7 @@ export function compileAntPattern(antPattern: string): RegExp {
         if (seg === "**") {
             return ".*"
         } else {
-            return seg.replace?.(/\*/g, "[^/]*").replace(/\./g, "\\.")
+            return seg.replace?.(/\*/g, "[^/]*").replaceAll('.', String.raw`\.`)
         }
     }).join("/")
     // "google.com/**" => google\.com.*
@@ -184,5 +184,5 @@ export function compileAntPattern(antPattern: string): RegExp {
         patternStr = patternStr.substring(0, patternStr.length - 3) + ".*"
     }
 
-    return new RegExp("^(.+://)?" + patternStr + "/?([\\?#].*)?$")
+    return new RegExp("^(.+://)?" + patternStr + String.raw`/?([\?#].*)?$`)
 }

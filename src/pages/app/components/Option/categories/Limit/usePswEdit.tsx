@@ -65,7 +65,7 @@ export const usePswEdit = ({ reset }: Options) => {
         })
         if (action !== 'confirm') {
             ElMessage.warning("Unknown action: " + action)
-            throw "Ignore this message"
+            throw new Error("Ignore this message")
         }
         return psw.value
     }

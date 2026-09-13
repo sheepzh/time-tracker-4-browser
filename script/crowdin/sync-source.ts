@@ -64,9 +64,7 @@ async function processByDir(client: CrowdinClient, dir: Dir, branch: SourceFiles
     // 1. init directory
     const dirKey: NameKey = { name: dir, branchId: branch.id }
     let directory = await client.getDirByName(dirKey)
-    if (!directory) {
-        directory = await client.createDirectory(dirKey)
-    }
+    directory ??= await client.createDirectory(dirKey)
     console.log('Directory: ' + JSON.stringify(directory))
     // 2. iterate all messages
     const messages = await readAllMessages(dir)
@@ -113,4 +111,4 @@ async function main() {
     }
 }
 
-main()
+await main()

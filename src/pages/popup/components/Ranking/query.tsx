@@ -15,7 +15,7 @@ export const doQuery = async (query: StatQuery, option: StatOption): Promise<Ran
     const [rows, date] = await queryRows(query)
     const { dimension } = query
     const values = rows.map(r => r[dimension])
-    const max = values.reduce((m, v) => v > m ? v : m, 0)
+    const max = Math.max(...values)
     const total = sum(values)
     const { showName } = option
     return { max, total, rows, date, displaySiteName: showName }

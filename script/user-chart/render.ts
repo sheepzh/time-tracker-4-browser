@@ -4,8 +4,8 @@ import {
 import {
     init, type ComposeOption, type GridComponentOption, type LineSeriesOption, type TitleComponentOption
 } from "echarts"
-import { writeFileSync } from "fs"
-import { exit } from 'process'
+import { writeFileSync } from "node:fs"
+import { exit } from 'node:process'
 import { validateTokenFromEnv } from '../util/gist'
 import { filenameOf, getExistGist, type Browser, type UserCount } from "./common"
 
@@ -41,8 +41,8 @@ const computeGrowth = (totals: number[], dayCount: number): string => {
 
 const computeSummary = ({ xAxis, yAxises }: ChartData) => {
     const totals = xAxis.map((_, idx) => ALL_BROWSERS.reduce((sum, browser) => sum + (yAxises[browser][idx] ?? 0), 0))
-    const total = totals[totals.length - 1] ?? 0
-    const latest = xAxis[xAxis.length - 1]
+    const total = totals.at(-1) ?? 0
+    const latest = xAxis.at(-1)
     if (!latest) return { total, yoy: '0', month: '0' }
 
     const yoy = computeGrowth(totals, 365)
@@ -54,7 +54,7 @@ function preProcess(originData: OriginData): ChartData {
     // 1. sort dates
     const dateSet = new Set<string>()
     Object.values(originData).forEach(ud => Object.keys(ud).forEach(date => dateSet.add(date)))
-    let allDates = Array.from(dateSet).filter(d => VALID_DATE_RE.test(d)).sort()
+    let allDates = Array.from(dateSet).filter(d => VALID_DATE_RE.test(d)).sort((a, b) => a.localeCompare(b))
 
     // 2. smooth the count
     const ctx: Record<Browser, SmoothContext> = {
@@ -77,15 +77,9 @@ function preProcess(originData: OriginData): ChartData {
 }
 
 class SmoothContext {
-    lastVal: number
-    step: number
-    data: number[]
-
-    constructor() {
-        this.lastVal = 0
-        this.step = 0
-        this.data = []
-    }
+    lastVal: number = 0
+    step: number = 0
+    data: number[] = []
 
     /**
      * Process value
@@ -105,8 +99,7 @@ class SmoothContext {
         const unitVal = (currentValue - this.lastVal) / (this.step + 1)
 
         const smoothedValues = Array.from({ length: this.step }, (_, i) => Math.floor(unitVal * (i + 1) + this.lastVal))
-        this.data.push(...smoothedValues)
-        this.data.push(currentValue)
+        this.data.push(...smoothedValues, currentValue)
         // Reset
         this.lastVal = currentValue
         this.step = 0
@@ -128,7 +121,7 @@ function render2Svg(chartData: ChartData): string {
     })
     const { total, yoy, month } = computeSummary(chartData)
     const ds = xAxis[0]
-    const de = xAxis[xAxis.length - 1]
+    const de = xAxis.at(-1)
     const option: EcOption = {
         title: {
             text: 'Weekly Active Users',
@@ -231,4 +224,4 @@ async function main(): Promise<void> {
     exit()
 }
 
-main()
+await main()

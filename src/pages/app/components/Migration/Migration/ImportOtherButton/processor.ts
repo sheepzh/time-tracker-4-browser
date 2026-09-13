@@ -46,7 +46,7 @@ async function parseWebActivityTimeTracker(file: File): Promise<[tt4b.imported.R
             const [year, month, day] = date?.split('/') ?? []
             if (!year || !month || !day) return throwError()
             const realDate = `${year}${month.length == 2 ? month : '0' + month}${day.length == 2 ? day : '0' + day}`
-            return { host, date: realDate, focus: parseInt(seconds) * MILL_PER_SECOND, time: 0 }
+            return { host, date: realDate, focus: Number.parseInt(seconds) * MILL_PER_SECOND, time: 0 }
         })
         return [rows, false]
     } else if (isJsonFile(file)) {
@@ -83,7 +83,7 @@ const parseWattJsonFile = (fileContent: string) => {
             if (!summary && !time) throw new Error("Invalid day without summary and counter")
             const [month, day, year] = date.split('/')
             if (!year || !month || !day) throw new Error("Invalid date format: " + date)
-            const dateObj = new Date(parseInt(year), parseInt(month) - 1, parseInt(day))
+            const dateObj = new Date(Number.parseInt(year), Number.parseInt(month) - 1, Number.parseInt(day))
             const realDate = formatTimeYMD(dateObj)
             rows.push({
                 host,
@@ -111,7 +111,7 @@ type WebtimeTrackerBackup = {
 }
 
 const WEBTIME_TRACKER_DATE_REG = /(\d{2})-(\d{2})-\d{2}/
-const cvtWebtimeTrackerDate = (date: string): string | undefined => WEBTIME_TRACKER_DATE_REG.test(date) ? date.split('-').join('') : undefined
+const cvtWebtimeTrackerDate = (date: string): string | undefined => WEBTIME_TRACKER_DATE_REG.test(date) ? date.replaceAll('-', '') : undefined
 
 async function parseWebtimeTracker(file: File): Promise<tt4b.imported.Row[]> {
     const text = await file.text()
@@ -159,7 +159,7 @@ function parseHistoryTrendsUnlimitedLine(line: string, data: { [dateAndHost: str
         // Backup data
         let date: string
         try {
-            date = formatTimeYMD(parseFloat(tsMaybe.substring(1)))
+            date = formatTimeYMD(Number.parseFloat(tsMaybe.substring(1)))
         } catch {
             console.error("Invalid line: " + line)
             return

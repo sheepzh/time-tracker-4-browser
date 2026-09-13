@@ -185,7 +185,7 @@ const PeriodInput = defineComponent<ModelValue<tt4b.limit.Period[]>>(props => {
             <Flex v-show={props.modelValue.length} gap={5} wrap>
                 {props.modelValue.map((p, idx) => p && (
                     <ElTag
-                        key={idx}
+                        key={`${p[0]}-${p[1]}`}
                         size={isXs.value ? 'small' : 'large'}
                         closable
                         onClose={() => handleDelete(idx)}

@@ -35,7 +35,7 @@ const _default = defineComponent(() => {
                 modelValue={`${filter.periodSize}`}
                 options={PERIODS}
                 onChange={val => {
-                    const intVal = parseInt(val ?? '')
+                    const intVal = Number.parseInt(val ?? '')
                     isPeriodSize(intVal) && (filter.periodSize = intVal)
                 }}
             />

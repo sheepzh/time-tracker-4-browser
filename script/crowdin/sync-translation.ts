@@ -137,6 +137,7 @@ async function main() {
     for (const dir of ALL_DIRS) {
         await processDir(client, dir, branch, tmpDir)
     }
+    await clearTempFile()
 }
 
-main().finally(clearTempFile)
+await main()

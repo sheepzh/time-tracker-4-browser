@@ -25,7 +25,6 @@ function flattenChildren(original: VNode[]): VNode[] {
         if (typeof type === 'symbol' && Array.isArray(children)) {
             // is Fragment, flatten it by pushing its children to stack
             stack.unshift(...children)
-            continue
         } else {
             flat.push(child)
         }

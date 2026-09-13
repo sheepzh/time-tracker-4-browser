@@ -13,7 +13,7 @@
  * @since 0.0.7
  */
 export function exportCsv(titleAndData: any[][], fileName: string) {
-    const csv = titleAndData.map(row => row.reduce((a, b) => `${a},${b}`)).reduce((a, b) => `${a}\r\n${b}`)
+    const csv = titleAndData.map(row => row.map(String).join(',')).join('\r\n')
     const blob = new Blob(['\ufeff' + csv], { type: "text/csv" })
 
     exportBlob(blob, fileName + '.csv')
@@ -27,8 +27,7 @@ export function exportCsv(titleAndData: any[][], fileName: string) {
  */
 export function exportJson(data: any, fileName: string) {
     const jsonStr = JSON.stringify(data, null, 4)
-    var blob = new Blob([jsonStr], { type: 'text/json' })
-
+    const blob = new Blob([jsonStr], { type: 'text/json' })
     exportBlob(blob, fileName + '.json')
 }
 
@@ -43,7 +42,7 @@ function exportBlob(blob: Blob, fileName: string) {
     link.download = fileName
     document.body.appendChild(link)
     link.click()
-    document.body.removeChild(link)
+    link.remove()
 }
 
 /**
@@ -52,7 +51,7 @@ function exportBlob(blob: Blob, fileName: string) {
  * @param jsonStr json
  * @since 0.0.5
  */
-export function deserialize(jsonStr: string): any | undefined {
+export function deserialize<T = unknown>(jsonStr: string): T | undefined {
     try {
         return JSON.parse(jsonStr)
     } catch {

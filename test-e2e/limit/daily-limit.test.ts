@@ -30,7 +30,7 @@ describe('Daily limit', () => {
         let wastedTime = await limitPage.evaluate(() => {
             const timeTag = document.querySelector('.el-table .el-table__body-wrapper table tbody tr td:nth-child(6) .el-tag:first-child')
             const timeStr = timeTag?.textContent
-            return parseInt(timeStr?.replace('s', '')?.trim() ?? '0')
+            returnNumber.parseInt(timeStr?.replace('s', '')?.trim() ?? '0')
         })
         expect(wastedTime).toBeGreaterThanOrEqual(1)
 
@@ -49,7 +49,7 @@ describe('Daily limit', () => {
             const trs = descEl?.querySelectorAll('tr')
             const name = trs?.[0]?.querySelector('td:nth-child(2)')?.textContent
             const timeStr = trs?.[3]?.querySelector('td:nth-child(2) .el-tag--danger')?.textContent
-            return { name, time: parseInt(timeStr?.replace('s', '').trim() ?? '0') }
+            return { name, time: Number.parseInt(timeStr?.replace('s', '').trim() ?? '0') }
         })
         expect(name).toEqual(demoRule.name)
         expect(time).toBeGreaterThanOrEqual(limitTime)
@@ -60,7 +60,7 @@ describe('Daily limit', () => {
         wastedTime = await limitPage.evaluate(() => {
             const timeTag = document.querySelector('.el-table .el-table__body-wrapper table tbody tr td:nth-child(6) .el-tag--danger')
             const timeStr = timeTag?.textContent
-            return parseInt(timeStr?.replace('s', '').trim() ?? '')
+            returnNumber.parseInt(timeStr?.replace('s', '').trim() ?? '')
         })
         expect(wastedTime).toBeGreaterThanOrEqual(limitTime)
 

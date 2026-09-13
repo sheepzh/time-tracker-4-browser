@@ -12,7 +12,7 @@ const _default = defineComponent<{}>(() => {
         <ContentContainer v-slots={{
             filter: () => (
                 <ElSelect modelValue={category.value} onChange={setCategory}>
-                    {Object.entries(CATE_CONFIG).map(([v, c]) => <ElOption value={v} label={t(c[0])} />)}
+                    {Object.entries(CATE_CONFIG).map(([v, c]) => <ElOption key={v} value={v} label={t(c[0])} />)}
                 </ElSelect>
             ),
             default: () => <ElCard>{h(CATE_CONFIG[category.value][1])}</ElCard>,

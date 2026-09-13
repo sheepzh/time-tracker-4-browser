@@ -141,7 +141,7 @@ export const MILL_PER_WEEK = MILL_PER_DAY * 7
  * Date range between {start} days ago and {end} days ago
  */
 export const daysAgo = (start: number, end: number): [Date, Date] => {
-    const current = new Date().getTime()
+    const current = Date.now()
     return [new Date(current - start * MILL_PER_DAY), new Date(current - end * MILL_PER_DAY)]
 }
 
@@ -260,9 +260,9 @@ export function getAllDatesBetween(start: Date | number, end: Date | number, for
  */
 export function parseTime(dateStr: string | undefined): Date | undefined {
     if (!dateStr) return undefined
-    const year = parseInt(dateStr.substring(0, 4))
-    const month = parseInt(dateStr.substring(4, 6))
-    const date = parseInt(dateStr.substring(6, 8))
+    const year = Number.parseInt(dateStr.substring(0, 4))
+    const month = Number.parseInt(dateStr.substring(4, 6))
+    const date = Number.parseInt(dateStr.substring(6, 8))
     const result = new Date()
     result.setFullYear(year)
     result.setMonth(month - 1)

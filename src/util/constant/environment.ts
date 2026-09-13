@@ -14,24 +14,24 @@ const { userAgent, platform } = navigator
 let browser: BrowserEnv = 'unknown'
 let browserMajorVersionStr: string | undefined
 
-if (/Firefox[\/\s](\d+\.\d+)/.test(userAgent)) {
+if (/Firefox[/\s](\d+\.\d+)/.test(userAgent)) {
     browser = 'firefox'
-    browserMajorVersionStr = /Firefox\/([0-9]+)/.exec(userAgent)?.[1]
+    browserMajorVersionStr = /Firefox\/(\d+)/.exec(userAgent)?.[1]
 } else if (userAgent.includes('Edg')) {
     // The Edge implements the chrome
     browser = 'edge'
-    browserMajorVersionStr = /Edg\/([0-9]+)/.exec(userAgent)?.[1]
+    browserMajorVersionStr = /Edg\/(\d+)/.exec(userAgent)?.[1]
 } else if (userAgent.includes("Opera") || userAgent.includes("OPR")) {
     // The Opera implements the chrome
     browser = 'opera'
-    browserMajorVersionStr = /OPR\/([0-9]+)/.exec(userAgent)?.[1] || /Opera\/([0-9]+)/.exec(userAgent)?.[1]
+    browserMajorVersionStr = /OPR\/(\d+)/.exec(userAgent)?.[1] || /Opera\/(\d+)/.exec(userAgent)?.[1]
 } else if (userAgent.includes('Safari') && !userAgent.includes('Chrome')) {
     // Chrome on macOs includes 'Safari'
     browser = 'safari'
-    browserMajorVersionStr = /Safari\/([0-9]+)/.exec(userAgent)?.[1]
+    browserMajorVersionStr = /Safari\/(\d+)/.exec(userAgent)?.[1]
 } else if (userAgent.includes('Chrome')) {
     browser = 'chrome'
-    browserMajorVersionStr = /Chrome\/([0-9]+)/.exec(userAgent)?.[1]
+    browserMajorVersionStr = /Chrome\/(\d+)/.exec(userAgent)?.[1]
 }
 
 /**
@@ -58,7 +58,7 @@ export const IS_MAC = platform?.startsWith('Mac') ?? false
 let browserMajorVersion: number | undefined = undefined
 try {
     browserMajorVersion = browserMajorVersionStr ? Number.parseInt(browserMajorVersionStr) : undefined
-} catch (ignored) { }
+} catch { }
 
 /**
  * @since 1.3.2
@@ -90,10 +90,10 @@ export const isNotTrackable = (url: string) => {
     if (/^chrome.*?:\/\/.*$/.test(url)
         || /^about(-.+)?:/.test(url)
         // Firefox addons' pages
-        || /^moz-extension:/.test(url)
+        || url.startsWith("moz-extension:")
         || /^edge.*?:\/\/.*$/.test(url)
         // Edge extensions' pages
-        || /^extension:/.test(url)
+        || url.startsWith("extension:")
         || /^safari.*?:\/\/.*/.test(url)
     ) return true
 

@@ -22,7 +22,7 @@ async function waitForNoVisibleOverlay(page: Page): Promise<void> {
 
 async function queryTopVisibleDialog(page: Page): Promise<ElementHandle<Element> | null> {
     const overlays = await page.$$('.el-overlay')
-    for (const overlay of overlays.reverse()) {
+    for (const overlay of overlays.toReversed()) {
         const visible = await overlay.evaluate(el => window.getComputedStyle(el).display !== 'none')
         if (!visible) continue
         const dialog = await overlay.$('.el-dialog')
@@ -91,7 +91,7 @@ async function selectCurrentClient(page: Page): Promise<void> {
 export class BackupOptionWrapper {
     private _page: Page | undefined
 
-    constructor(private context: LaunchContext) { }
+    constructor(private readonly context: LaunchContext) { }
 
     private async page() {
         if (this._page) {

@@ -1,7 +1,7 @@
 import type { LimitReason } from '../types'
 
 class DelayCoordinator {
-    #handlers: Map<tt4b.limit.ReasonType, Set<NoArgCallback>> = new Map()
+    readonly #handlers = new Map<tt4b.limit.ReasonType, Set<NoArgCallback>>()
 
     process(reason: LimitReason) {
         const handlers = this.#handlers.get(reason.type)

@@ -32,7 +32,7 @@ const recommendSubpages = (url: string | undefined, existed: string[]): Data[] =
         while (segments.pop()) {
             segments.length && urls.push(`${host}/${segments.join('/')}/**`)
         }
-        const results = urls.map(url => ({ url, existed: existed.some(e => e === url) }))
+        const results = urls.map(url => ({ url, existed: existed.includes(url) }))
         return results.sort((a, b) => a.existed === b.existed ? 0 : a.existed ? 1 : -1)
     } catch {
         return []
@@ -101,6 +101,7 @@ const Dropdown = defineComponent<{}>(() => {
                     <ElDropdownMenu>
                         {sites.value.map(s => (
                             <ElDropdownItem
+                                key={`${s.type}-${s.host}`}
                                 onClick={() => site.value = s}
                                 disabled={isSameSite(s, site.value)}
                                 icon={DROP_ITEM_ICONS[s.type]}
@@ -145,7 +146,14 @@ const Dropdown = defineComponent<{}>(() => {
                 placement='bottom'
                 onChange={v => subpage.value = v}
             >
-                {subpages.value.map(({ url, existed }) => <ElOption label={url} value={url} disabled={existed} />)}
+                {subpages.value.map(({ url, existed }) => (
+                    <ElOption
+                        key={`${url}-${existed}`}
+                        label={url}
+                        value={url}
+                        disabled={existed}
+                    />
+                ))}
             </ElSelect>
         </ElDialog>
     </>

@@ -8,7 +8,7 @@
 type Handler<Code extends tt4b.tab.ReqCode> = (data: tt4b.tab.ReqData<Code>) => tt4b.tab.ResData<Code>
 
 class Dispatcher {
-    #handlers = new Map<tt4b.tab.ReqCode, Handler<tt4b.tab.ReqCode>[]>()
+    readonly #handlers = new Map<tt4b.tab.ReqCode, Handler<tt4b.tab.ReqCode>[]>()
 
     constructor() {
         // Be careful!!!
@@ -27,7 +27,7 @@ class Dispatcher {
         })
     }
 
-    register<Code extends tt4b.tab.ReqCode>(code: Code, handler: Handler<Code>): Dispatcher {
+    register<Code extends tt4b.tab.ReqCode>(code: Code, handler: Handler<Code>): this {
         const handlers = this.#handlers.get(code) ?? []
         this.#handlers.set(code, handlers)
         !handlers.includes(handler) && handlers.push(handler)

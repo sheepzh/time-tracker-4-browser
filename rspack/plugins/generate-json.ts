@@ -3,7 +3,7 @@ import { Compilation, type Compiler, type RspackPluginInstance, sources } from '
 export class GenerateJsonPlugin implements RspackPluginInstance {
     private static readonly NAME = 'GenerateJsonPlugin'
 
-    constructor(private outputPath: string, private data: unknown) {
+    constructor(private readonly outputPath: string, private readonly data: unknown) {
         if (!data || typeof data !== 'object') {
             throw new Error('Invalid data option')
         }

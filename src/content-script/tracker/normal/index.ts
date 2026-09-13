@@ -16,7 +16,7 @@ type NormalTrackerOption = {
  */
 export default class NormalTracker {
     #start: number = Date.now()
-    #detectors: PauseDetector[] = []
+    readonly #detectors: PauseDetector[] = []
     #wasPaused: boolean
 
     constructor(private readonly option: NormalTrackerOption) {

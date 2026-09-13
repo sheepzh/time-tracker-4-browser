@@ -176,7 +176,7 @@ function cvtRule2Item(rule: tt4b.limit.Rule): ItemValue {
  * @since 0.2.2
  */
 class LimitDatabase extends BaseDatabase implements BrowserMigratable<'__limit__'> {
-    namespace: '__limit__' = '__limit__'
+    namespace = '__limit__' as const
 
     private async getItems(): Promise<Items> {
         let items = await this.storage.getOne<Items>(KEY) || {}
@@ -236,7 +236,7 @@ class LimitDatabase extends BaseDatabase implements BrowserMigratable<'__limit__
     async updateWaste(date: string, toUpdate: { [id: number]: number }): Promise<void> {
         const items = await this.getItems()
         Object.entries(toUpdate).forEach(([k, waste]) => {
-            const id = parseInt(k)
+            const id = Number.parseInt(k)
             const entry = items[id]
             if (!entry) return
             const records = entry.r = entry.r || {}

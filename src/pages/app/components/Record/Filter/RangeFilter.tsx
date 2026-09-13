@@ -42,15 +42,15 @@ const cleanInput = (val: string, precision: number = 0): string => {
     const intPart = cleaned.slice(0, firstDotIdx)
     if (precision <= 0) return intPart
 
-    const decPart = cleaned.slice(firstDotIdx + 1).replace(/\./g, '').slice(0, precision)
+    const decPart = cleaned.slice(firstDotIdx + 1).replaceAll('.', '').slice(0, precision)
 
     return intPart + '.' + decPart
 }
 
 const str2Int = (str: string): number | undefined => {
     if (!str) return undefined
-    const num = parseInt(str)
-    return isNaN(num) || !isFinite(num) ? undefined : num
+    const num = Number.parseInt(str)
+    return Number.isNaN(num) || !Number.isFinite(num) ? undefined : num
 }
 
 type Initial = {
@@ -88,8 +88,8 @@ const FocusRangeInput = defineComponent<ModelValue<Value | undefined>>((props, {
     watch([start, end, unit], () => {
         let s = start.value ? Number(start.value) : undefined
         let e = end.value ? Number(end.value) : undefined
-        if (s !== undefined && (!isFinite(s) || isNaN(s))) return
-        if (e !== undefined && (!isFinite(e) || isNaN(e))) return
+        if (s !== undefined && (!Number.isFinite(s) || Number.isNaN(s))) return
+        if (e !== undefined && (!Number.isFinite(e) || Number.isNaN(e))) return
 
         const multiplier = MULTIPLIERS[unit.value]
         // Round to integers

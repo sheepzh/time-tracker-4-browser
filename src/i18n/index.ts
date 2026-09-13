@@ -127,7 +127,7 @@ function tryGetOriginalI18nVal<MessageType>(
 ) {
     try {
         return keyPath(messages[specLocale || locale] as MessageType)
-    } catch (ignore) {
+    } catch {
         return undefined
     }
 }

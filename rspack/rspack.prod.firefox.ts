@@ -1,4 +1,4 @@
-import path from "path"
+import path from "node:path"
 import { name, version } from '../package.json'
 import manifestFirefox from "../src/manifest-firefox"
 import { FileManagerPlugin } from "./plugins/file-manager"

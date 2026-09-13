@@ -41,7 +41,7 @@ const DownloadFile = defineComponent(() => {
             v-slots={{
                 dropdown: () => <ElDropdownMenu>
                     {ALL_FILE_FORMATS.map(f =>
-                        <ElDropdownItem onClick={() => handleDownload(f)}>
+                        <ElDropdownItem key={f} onClick={() => handleDownload(f)}>
                             {f}
                         </ElDropdownItem>
                     )}

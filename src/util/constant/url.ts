@@ -67,14 +67,14 @@ export function getAppPageUrl(route?: string, query?: any): string {
 }
 
 export const HOMEPAGE = "https://time-tracker-4-browser.app"
-const HOMEPAGE_LOCALES: tt4b.Locale[] = [
+const HOMEPAGE_LOCALES: Set<tt4b.Locale> = new Set([
     "zh_CN", "zh_TW", "en",
     "ja", "de", "ru",
     "fr", "es", "pt_PT",
-]
+])
 
 export function getHomepageWithLocale(): string {
-    const homepageLocale: tt4b.Locale = HOMEPAGE_LOCALES.includes(locale) ? locale : "en"
+    const homepageLocale: tt4b.Locale = HOMEPAGE_LOCALES.has(locale) ? locale : "en"
     return `${HOMEPAGE}/${homepageLocale}/`
 }
 

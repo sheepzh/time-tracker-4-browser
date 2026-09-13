@@ -53,7 +53,7 @@ class TimelineDatabase extends BaseIDBStorage<tt4b.timeline.Tick> {
     ]
     key: Key<tt4b.timeline.Tick> | Key<tt4b.timeline.Tick>[] = ['host', 'start']
     table: Table = 'timeline'
-    private cleanThrottle = new CleanThrottle()
+    private readonly cleanThrottle = new CleanThrottle()
 
     batchSave(ticks: tt4b.timeline.Tick[]): Promise<void> {
         return this.withStore(async store => {

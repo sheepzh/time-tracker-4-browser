@@ -32,4 +32,4 @@ async function main() {
     setTimeout(() => injectFrame())
 }
 
-main()
+await main()

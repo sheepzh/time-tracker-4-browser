@@ -19,7 +19,7 @@ class FIFOCache<T> {
         if (!threshold) {
             threshold = DEFAULT_THRESHOLD
         } else if (!Number.isInteger(threshold)) {
-            throw new Error('Threshold MUST BE integer')
+            throw new TypeError('Threshold MUST BE integer')
         } else if (threshold <= 0) {
             threshold = DEFAULT_THRESHOLD
         }

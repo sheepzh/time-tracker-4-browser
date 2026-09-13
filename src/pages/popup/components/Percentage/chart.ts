@@ -66,7 +66,9 @@ type FormatterRegistry = Record<'total' | 'avg', Converter<number, string>>
 const FORMATTERS: Record<StatQuery['dimension'], FormatterRegistry> = {
     focus: {
         total: total => t(msg => msg.content.percentage.totalTime, { totalTime: formatPeriodCommon(total) }),
-        avg: avg => t(msg => msg.content.percentage.averageTime, { value: formatPeriodCommon(parseInt(avg.toFixed(0))) }),
+        avg: avg => t(msg => msg.content.percentage.averageTime, {
+            value: formatPeriodCommon(Number.parseInt(avg.toFixed(0))),
+        }),
     },
     time: {
         total: total => t(msg => msg.content.percentage.totalCount, { totalCount: total }),
@@ -83,7 +85,7 @@ function calculateSubTitleText(result: PercentageResult): string {
     const firstLineParts = [totalStr, dateStr].filter(s => !!s)
     const isSingleDay = duration === 'today' || duration === 'yesterday'
     return [
-        (isRtl() ? firstLineParts.reverse() : firstLineParts).join(' '),
+        (isRtl() ? firstLineParts.toReversed() : firstLineParts).join(' '),
         dateLength && !isSingleDay && formatter.avg(total / dateLength),
     ].filter(Boolean).join('\n')
 }
@@ -118,7 +120,7 @@ async function getIconDataUrl(): Promise<string> {
     const type = blob.type || 'image/png'
     const bytes = new Uint8Array(await blob.arrayBuffer())
     let binary = ''
-    for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]!)
+    for (const element of bytes) binary += String.fromCodePoint(element)
     return `data:${type};base64,${btoa(binary)}`
 }
 
@@ -192,7 +194,7 @@ async function saveWithWatermark(instance: ECharts) {
     link.href = canvas.toDataURL('image/png')
     document.body.appendChild(link)
     link.click()
-    document.body.removeChild(link)
+    link.remove()
 }
 
 const MY_SAVE_ICON = `
@@ -293,7 +295,8 @@ const legend2LabelStyle = (legend: string): string => {
     if (!legend) return ''
     const code: string[] = []
     for (let i = 0; i < legend.length; i++) {
-        code.push(legend.charCodeAt(i).toString(36).padStart(3, '0'))
+        const ch = legend.codePointAt(i)
+        ch && code.push(ch.toString(36).padStart(3, '0'))
     }
     return code.join('')
 }
@@ -412,7 +415,7 @@ function calcRealRadius(
     if (Array.isArray(radius)) return radius
     if (typeof radius === 'number') return [radius * donutRadiusRatio, radius]
     try {
-        const percent = parseFloat(radius.replace('%', ''))
+        const percent = Number.parseFloat(radius.replace('%', ''))
         const inner = percent * donutRadiusRatio
         return [`${inner}%`, radius]
     } catch {

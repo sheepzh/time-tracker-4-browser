@@ -103,6 +103,7 @@ const _default = defineComponent(() => {
         <div ref={container} style={CONTAINER_STYLE}>
             {list.value?.map?.(({ locale, progress }) => (
                 <ElProgress
+                    key={locale}
                     percentage={progress}
                     strokeWidth={22}
                     status={computeType(progress)}

@@ -165,8 +165,8 @@ class Markline {
     #rafId: number | null = null
 
     constructor(
-        private chart: EChartsType,
-        private getPeriodSize: () => number | undefined,
+        private readonly chart: EChartsType,
+        private readonly getPeriodSize: () => number | undefined,
     ) {
     }
 
@@ -196,7 +196,7 @@ class Markline {
             return
         }
 
-        if (this.#currentYValue !== null && !isNaN(this.#currentYValue)) {
+        if (this.#currentYValue !== null && !Number.isNaN(this.#currentYValue)) {
             this.#locked = true
             this.#lockedValue = this.#currentYValue
             this.#render()
@@ -212,7 +212,7 @@ class Markline {
             if (this.chart.containPixel('grid', pointInPixel)) {
                 // Move in the grid area: update current Y value
                 const [, yVal] = this.chart.convertFromPixel({ seriesIndex: 0 }, pointInPixel)
-                if (yVal !== undefined && !isNaN(yVal)) {
+                if (yVal !== undefined && !Number.isNaN(yVal)) {
                     const segWidth = this.#segWidth
                     this.#currentYValue = Math.round(yVal / segWidth) * segWidth
                     !this.#locked && this.#render()
@@ -227,7 +227,7 @@ class Markline {
     #render() {
         const val = this.#locked ? this.#lockedValue : this.#currentYValue
 
-        const markLine: MarkLineComponentOption = val === null || isNaN(val)
+        const markLine: MarkLineComponentOption = val === null || Number.isNaN(val)
             ? { data: [] }
             : {
                 animation: false,

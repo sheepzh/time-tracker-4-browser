@@ -34,7 +34,7 @@ const DropdownButton = defineComponent<{ items: DropdownButtonItem<unknown>[] }>
                         dropdown: () => (
                             <ElDropdownMenu>
                                 {list.value?.map(({ icon, label, key }) => (
-                                    <ElDropdownItem icon={icon} onClick={() => handleClick(key)}>
+                                    <ElDropdownItem key={label} icon={icon} onClick={() => handleClick(key)}>
                                         {label}
                                     </ElDropdownItem>
                                 ))}

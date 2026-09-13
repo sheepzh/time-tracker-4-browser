@@ -52,7 +52,7 @@ export const useCountUp = (options: CountUpOptions) => {
         }
         lastUpdate = ts
 
-        if (startTime === null) startTime = ts
+        startTime ??= ts
 
         const elapsed = ts - startTime
         const progress = Math.min(elapsed / (duration * 1000), 1)

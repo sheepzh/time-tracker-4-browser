@@ -120,5 +120,5 @@ export function useManualRequest<P extends any[], T>(
     getter: (...p: P) => Promise<T> | T,
     option?: Omit<RequestOption<T, P>, 'manual'>,
 ): RequestResult<T | undefined, P> {
-    return useRequest(getter, { ...option || {}, manual: true })
+    return useRequest(getter, { ...option, manual: true })
 }
