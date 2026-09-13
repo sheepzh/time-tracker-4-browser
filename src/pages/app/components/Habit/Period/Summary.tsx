@@ -23,7 +23,7 @@ type Result = {
 
 const computeSummary = (rows: tt4b.period.Row[], periodSize: number): Result => {
     const averaged = averageByDay(rows, periodSize)
-    const favoriteRow = averaged.sort((b, a) => a.milliseconds - b.milliseconds)[0]
+    const favoriteRow = averaged.toSorted((b, a) => a.milliseconds - b.milliseconds)[0]
     let favoritePeriod = '-'
     if (favoriteRow) {
         const start = favoriteRow.startTime
@@ -31,7 +31,7 @@ const computeSummary = (rows: tt4b.period.Row[], periodSize: number): Result => 
         favoritePeriod = `${formatTime(start, "{h}:{i}")}-${formatTime(end, "{h}:{i}")}`
     }
 
-    let maxIdle: [tt4b.period.Row | undefined, tt4b.period.Row | undefined, number] = [, , 0]
+    let maxIdle: [tt4b.period.Row | undefined, tt4b.period.Row | undefined, number] = [undefined, undefined, 0]
 
     let idleStart: tt4b.period.Row | undefined
     let idleEnd: tt4b.period.Row | undefined

@@ -44,7 +44,7 @@ export const listenMediaSizeChange = () => {
         const mediaSize = computeMediaSize(width)
         const htmlEl = document.getElementsByTagName("html")?.[0]
         if (!htmlEl) return
-        htmlEl.setAttribute('data-media-size', MediaSize[mediaSize])
+        htmlEl.dataset.mediaSize = MediaSize[mediaSize]
     }
     processMediaSize()
     window.addEventListener('resize', processMediaSize)

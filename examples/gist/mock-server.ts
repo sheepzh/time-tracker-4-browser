@@ -1,6 +1,6 @@
 import { truthy } from '@util/lang'
-import { randomUUID } from "crypto"
-import { createServer, type IncomingMessage, type ServerResponse } from "http"
+import { randomUUID } from "node:crypto"
+import { createServer, type IncomingMessage, type ServerResponse } from "node:http"
 
 type GistFormFile = {
     filename: string
@@ -147,7 +147,8 @@ class Handler {
     constructor(req: IncomingMessage, res: ServerResponse) {
         this.req = req
         this.res = res
-        this.origin = `http://${req.headers.host ?? `localhost:${PORT}`}`
+        const host = req.headers.host ?? `localhost:${PORT}`
+        this.origin = `http://${host}`
         this.url = new URL(req.url ?? "/", this.origin)
     }
 
@@ -163,7 +164,7 @@ class Handler {
             if (method === "GET" && pathname === "/gists") return this.listGists()
             if (method === "POST" && pathname === "/gists") return this.createGist()
 
-            const gistMatch = pathname.match(/^\/gists\/([^/]+)$/)
+            const gistMatch = new RegExp(/^\/gists\/([^/]+)$/).exec(pathname)
             if (gistMatch?.[1]) {
                 const gistId = gistMatch[1]
                 if (method === "GET") return this.getGist(gistId)
@@ -172,7 +173,7 @@ class Handler {
                 if (method === "DELETE") return this.deleteGist(gistId)
             }
 
-            const rawMatch = pathname.match(/^\/raw\/([^/]+)\/(.+)$/)
+            const rawMatch = new RegExp(/^\/raw\/([^/]+)\/(.+)$/).exec(pathname)
             if (method === "GET" && rawMatch?.[1] && rawMatch?.[2]) {
                 const gistId = rawMatch[1]
                 const filename = decodeURIComponent(rawMatch[2])

@@ -12,7 +12,7 @@ function compile(obj: any, parentKey = ''): any {
         for (const key in obj) {
             const val = obj[key]
             // key of Chrome message
-            const messageKey = !!parentKey ? `${parentKey}_${key}` : key
+            const messageKey = parentKey ? `${parentKey}_${key}` : key
             const children = compile(val, messageKey)
             // copy from child
             for (const childKey in children) {

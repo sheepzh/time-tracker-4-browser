@@ -186,9 +186,11 @@ const processPieSeriesOption = (option: PieSeriesOption) => {
     if (typeof left !== 'string' || !left.endsWith('%')) return
     try {
         const originPercentStr = left.substring(0, left.length - 1)
-        const originPercent = left.includes('.') ? parseFloat(originPercentStr) : parseInt(originPercentStr)
+        const originPercent = left.includes('.')
+            ? Number.parseFloat(originPercentStr)
+            : Number.parseInt(originPercentStr)
         center[0] = `${100 - originPercent}%`
-    } catch (ignored) { }
+    } catch { }
 }
 
 const processLineSeriesOption = (global: GlobalEcOption) => {
@@ -203,8 +205,8 @@ const processBarSeriesOption = (option: BarSeriesOption, global: GlobalEcOption)
     }
     // Swap border radius
     processArrayLike(option.data, data => processArrayLike(data, item => {
-        if (!(typeof item === 'object')) return
-        const { itemStyle: { borderRadius } = {} } = item as { itemStyle?: { borderRadius: number[] | any } }
+        if (typeof item !== 'object') return
+        const { itemStyle: { borderRadius } = {} } = item as { itemStyle?: { borderRadius: any } }
         Array.isArray(borderRadius) && swapBorderRadius(borderRadius)
     }))
     // Inverse xAxis
@@ -212,7 +214,7 @@ const processBarSeriesOption = (option: BarSeriesOption, global: GlobalEcOption)
 }
 
 type AlignVal = 'right' | 'left'
-const swapAlign = <K extends string>(option: { [k in K]?: AlignVal | string }, key: K, defaultVal?: AlignVal) => {
+const swapAlign = <K extends string>(option: { [k in K]?: string }, key: K, defaultVal?: AlignVal) => {
     const { [key]: align = defaultVal } = option || {}
     if (align === 'left') {
         option[key] = 'right'

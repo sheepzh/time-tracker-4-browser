@@ -170,7 +170,7 @@ export async function selectGroup(param?: tt4b.stat.GroupQuery): Promise<tt4b.st
     const groups = await listAllGroups()
     const groupMap = toMap(groups, g => g.id)
     let rows: tt4b.stat.GroupRow[] = list.map(({ date, time, focus, run, host }) => {
-        const groupKey = parseInt(host)
+        const groupKey = Number.parseInt(host)
         const { title, color } = groupMap[groupKey] ?? {}
         return ({ date, groupKey, title, color, run, focus, time })
     })

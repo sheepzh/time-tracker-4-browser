@@ -67,7 +67,7 @@ function getXAxisLabelMap(data: _Value[]): { [x: string]: string } {
         const currentMonth = Array.from(monthSet)[0]
         if (!currentMonth || currentMonth === lastMonth) return
         lastMonth = currentMonth
-        const monthNum = parseInt(currentMonth)
+        const monthNum = Number.parseInt(currentMonth)
         const label = allMonthLabel[monthNum - 1]
         label && (result[x] = label)
     })
@@ -96,7 +96,6 @@ function optionOf(
             borderWidth: 0,
             formatter: (params: TopLevelFormatterParams) => {
                 const value = parseValueOfFormatter(params)
-                // todo: not safety
                 const [_1, _2, mills, date] = value as _Value
                 if (!mills) return ''
                 const time = parseTime(date)
@@ -156,7 +155,7 @@ class Wrapper extends EchartsWrapper<BizOption, EcOption> {
         const data: _Value[] = []
         allDates.forEach((date, index) => {
             const dailyMills = value[date] || 0
-            const colIndex = parseInt((index / 7).toString())
+            const colIndex = Number.parseInt((index / 7).toString())
             const weekDay = index % 7
             const x = colIndex, y = 7 - (1 + weekDay)
             data.push([x, y, dailyMills, date])

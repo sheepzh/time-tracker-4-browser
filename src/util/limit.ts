@@ -6,9 +6,8 @@ const GLOBSTAR_TOKEN = `__GLOBSTAR${Math.random().toString(36).slice(2, 6)}__`
 export const matchUrl = (cond: string, url: string): boolean => {
     const normalizedCond = cond.length > 1 ? cond.replace(/\/$/, '') : cond
     const pattern = normalizedCond
-        .replace(/\*\*/g, GLOBSTAR_TOKEN)
-        .split('*')
-        .join('.*')
+        .replaceAll('**', GLOBSTAR_TOKEN)
+        .replaceAll('*', '.*')
         .replaceAll(GLOBSTAR_TOKEN, '.+')
     return new RegExp(`^.*//${pattern}`).test(url)
 }
@@ -45,9 +44,7 @@ export function matchCond(cond: string[], url: string): string[] {
         if (rule.startsWith(EXCLUDING_PREFIX)) {
             // Immediately return an empty array if an exclusion rule is hit
             if (matchUrl(rule.slice(1), url)) return []
-        } else {
-            if (matchUrl(rule, url)) matchedNormalRules.push(rule)
-        }
+        } else if (matchUrl(rule, url)) matchedNormalRules.push(rule)
     }
     return matchedNormalRules
 }

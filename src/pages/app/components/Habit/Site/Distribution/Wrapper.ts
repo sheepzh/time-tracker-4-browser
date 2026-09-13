@@ -32,7 +32,7 @@ type FocusBound = [val: number, unit: FocusUnit]
 const focusBoundMill = ([val, unit]: FocusBound) => (val ?? 0) * (UNIT_CHANGE[unit] ?? 0)
 
 const FOCUS_COUNT_CATEGORIES: Tuple<FocusBound | undefined, 2>[] = [
-    [, [5, 's']],
+    [undefined, [5, 's']],
     [[5, 's'], [20, 's']],
     [[20, 's'], [60, 's']],
     [[1, 'm'], [10, 'm']],
@@ -43,7 +43,7 @@ const FOCUS_COUNT_CATEGORIES: Tuple<FocusBound | undefined, 2>[] = [
 ]
 
 const VISIT_COUNT_CATEGORIES: Tuple<number | undefined, 2>[] = [
-    [, 1],
+    [undefined, 1],
     [1, 3],
     [3, 10],
     [10, 20],

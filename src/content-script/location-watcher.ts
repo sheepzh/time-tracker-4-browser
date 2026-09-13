@@ -11,7 +11,7 @@ class LocationWatcher {
     url: string
     host: string
     current: tt4b.site.Current | undefined
-    #currHandlers: NoArgCallback[] = []
+    readonly #currHandlers: NoArgCallback[] = []
 
     get isWhite(): boolean {
         return !!this.current?.white

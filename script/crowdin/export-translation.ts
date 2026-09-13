@@ -1,5 +1,5 @@
-import { readdirSync, readFileSync } from "fs"
-import { join } from "path"
+import { readdirSync, readFileSync } from "node:fs"
+import { join } from "node:path"
 import { getClientFromEnv } from "./client"
 import {
     ALL_DIRS, ALL_TRANS_LOCALES, checkMainBranch, crowdinLangOf, type Dir, type ItemSet, mergeMessage, RSC_FILE_SUFFIX,
@@ -37,6 +37,8 @@ async function main() {
         await processDir(tmpDir, dir)
         console.log("Processed dir: " + dir)
     }
+
+    await clearTempFile()
 }
 
-main().finally(clearTempFile)
+await main()

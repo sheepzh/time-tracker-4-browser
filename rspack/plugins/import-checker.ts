@@ -76,7 +76,7 @@ function moduleFilesystemPath(mod: Module): string | undefined {
 }
 
 function normalizePath(p: string): string {
-    return p.replace(/\\/g, '/')
+    return p.replaceAll('\\', '/')
 }
 
 export function isBgPath(path: string): boolean {

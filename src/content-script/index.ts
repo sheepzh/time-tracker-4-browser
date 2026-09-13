@@ -41,7 +41,7 @@ async function main() {
 
     // Execute in every injection
     new NormalTracker({
-        onReport: async data => void (!locationWatcher.isWhite && await trySendMsg2Runtime('track.time', data)),
+        onReport: async data => { !locationWatcher.isWhite && await trySendMsg2Runtime('track.time', data) },
         onResume: () => trySendMsg2Runtime('cs.trackingPauseChanged', false),
         onPause: () => trySendMsg2Runtime('cs.trackingPauseChanged', true),
     }).init(limitState)
@@ -61,4 +61,4 @@ async function main() {
     await trySendMsg2Runtime('cs.injected')
 }
 
-void main()
+await main()

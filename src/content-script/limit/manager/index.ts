@@ -36,8 +36,8 @@ function isValidFrame(iframe: HTMLIFrameElement): boolean {
 class ModalManager {
     #el?: HTMLElement
     #iframe?: HTMLIFrameElement
-    #sl = new ScreenLocker()
-    #bridge = new ModalBridge(MSG_ORIGIN, () => this.#iframe?.contentWindow ?? undefined)
+    readonly #sl = new ScreenLocker()
+    readonly #bridge = new ModalBridge(MSG_ORIGIN, () => this.#iframe?.contentWindow ?? undefined)
     #reqQueue: Parameters<ModalBridge['request']>[] = []
     #content?: ShowArgs
     #observer?: MutationObserver

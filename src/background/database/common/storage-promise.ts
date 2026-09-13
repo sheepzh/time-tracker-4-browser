@@ -11,7 +11,7 @@ type StorageArea = chrome.storage.StorageArea
  * Wrap the storage with promise
  */
 export default class StoragePromise {
-    private storage: StorageArea | undefined
+    private readonly storage: StorageArea | undefined
 
     constructor(storage?: StorageArea) {
         this.storage = storage

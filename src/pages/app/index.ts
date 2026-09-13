@@ -29,4 +29,4 @@ async function main() {
     app.mount(el)
 }
 
-main()
+await main()

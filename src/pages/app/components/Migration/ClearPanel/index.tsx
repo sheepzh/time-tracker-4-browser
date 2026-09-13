@@ -24,15 +24,15 @@ function buildClearStatQuery(option: FilterOption): tt4b.stat.BaseQuery {
     ] = date ?? []
     return {
         date: cvtDateRange2Str([start, end]),
-        focusRange: [, focusMax],
-        timeRange: [, visitMax],
+        focusRange: [undefined, focusMax],
+        timeRange: [undefined, visitMax],
     }
 }
 
 const str2Num = (str: string | undefined, multiplier?: number): number | undefined => {
     if (!str) return undefined
     let num = Number(str)
-    if (isNaN(num)) return undefined
+    if (Number.isNaN(num)) return undefined
     return multiplier !== undefined ? num * multiplier : num
 }
 

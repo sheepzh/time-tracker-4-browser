@@ -55,7 +55,7 @@ const formatTimeTooltip = (params: TopLevelFormatterParams, format: tt4b.ui.Time
         cvt2LocaleTime(date),
         TITLE,
     )
-    const valueLines = params?.reverse?.()?.map(param => {
+    const valueLines = params?.toReversed?.()?.map(param => {
         const { value, seriesName = '' } = param
         const color = LEGEND_COLOR_MAP[seriesName]
         if (!color) return ''

@@ -22,8 +22,8 @@ function pauseAllAudio(): void {
 }
 
 class ScreenLocker {
-    static #styleId = `time-tracker-style-${getRuntimeId()}`
-    static #lockedCls = `time-tracker-locked-${getRuntimeId()}`
+    static readonly #styleId = `time-tracker-style-${getRuntimeId()}`
+    static readonly #lockedCls = `time-tracker-locked-${getRuntimeId()}`
 
     async lock() {
         await exitFullscreen()

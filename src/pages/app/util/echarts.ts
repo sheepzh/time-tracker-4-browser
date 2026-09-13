@@ -39,7 +39,7 @@ export const getStepColors = (count: number, gradientFactor?: number): string[] 
  */
 const cvtColor2Vector = (color: string): Vector<3> => {
     return [color.substring(1, 3), color.substring(3, 5), color.substring(5, 7)]
-        .map(c => parseInt('0x' + c)) as [number, number, number]
+        .map(c => Number.parseInt('0x' + c)) as [number, number, number]
 }
 
 export const getSeriesPalette = (): string[] => truthy(

@@ -35,7 +35,7 @@ export async function exportSettings(): Promise<void> {
 export async function importSettings(jsonString: string): Promise<void> {
     const importData = deserialize(jsonString) as ExportedSettings
 
-    if (!importData || !importData.settings) {
+    if (!importData?.settings) {
         throw new Error('Invalid settings file format')
     }
 
@@ -76,19 +76,13 @@ export function createFileInput(): Promise<string | null> {
                 return
             }
 
-            const reader = new FileReader()
-            reader.onload = (e) => {
-                const content = e.target?.result as string
-                resolve(content)
-            }
-            reader.onerror = () => reject(new Error('Failed to read file'))
-            reader.readAsText(file)
+            file.text().then(resolve).catch(reject)
         }
 
         input.oncancel = () => resolve(null)
 
         document.body.appendChild(input)
         input.click()
-        document.body.removeChild(input)
+        input.remove()
     })
 }

@@ -11,7 +11,7 @@ import { ElDropdown, ElDropdownItem, ElDropdownMenu, ElIcon, ElText } from "elem
 import { defineComponent, type StyleValue } from "vue"
 
 // Keep the locale same as this browser first position
-const SORTED_LOCALES: tt4b.Locale[] = ALL_LOCALES.sort((a, _b) => a === localeSameAsBrowser ? -1 : 0)
+const SORTED_LOCALES: tt4b.Locale[] = ALL_LOCALES.toSorted((a, _b) => a === localeSameAsBrowser ? -1 : 0)
 
 const SELECTED_STYLES: StyleValue = {
     color: 'var(--el-color-primary)',
@@ -58,6 +58,7 @@ const LangSelect = defineComponent(() => {
                     <ElDropdownMenu>
                         {SORTED_LOCALES.map(locale => (
                             <ElDropdownItem
+                                key={locale}
                                 onClick={() => saveLocale(locale)}
                                 style={locale === current.value ? SELECTED_STYLES : null}
                             >

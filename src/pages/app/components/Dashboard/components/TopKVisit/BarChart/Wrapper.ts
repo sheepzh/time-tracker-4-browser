@@ -27,9 +27,9 @@ const tooltipOption = (): EcOption['tooltip'] => (
 )
 
 const generateOption = (data: BizOption[], domWidth: number): EcOption => {
-    data = data?.sort((a, b) => (b?.value ?? 0) - (a?.value ?? 0))
+    data = data?.toSorted((a, b) => (b?.value ?? 0) - (a?.value ?? 0))
     const max = Math.max(...(data?.map(v => v.value) || []))
-    const hosts = data?.sort((a, b) => (a.value ?? 0) - (b?.value ?? 0))?.map(v => v.host) || []
+    const hosts = data?.toSorted((a, b) => (a.value ?? 0) - (b?.value ?? 0))?.map(v => v.host) || []
     const margin = 8
     const chartW = domWidth * (100 - margin * 2) / 100
     return {

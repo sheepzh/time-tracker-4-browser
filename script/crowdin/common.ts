@@ -1,7 +1,7 @@
 import { type SourceFilesModel } from '@crowdin/crowdin-api-client'
-import fs from 'fs'
-import path from 'path'
-import { fileURLToPath } from 'url'
+import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { exitWith } from '../util/process'
 import { type CrowdinClient } from './client'
 
@@ -100,13 +100,11 @@ export async function readAllMessages(dir: Dir): Promise<Record<string, Messages
     const files = fs.readdirSync(dirPath)
     const result: Record<string, any> = {}
     await Promise.all(files.map(async file => {
-        if (!file.endsWith(RSC_FILE_SUFFIX)) {
-            return
-        }
+        if (!file.endsWith(RSC_FILE_SUFFIX)) return
+
         const message = (await import(`@i18n/message/${dir}/${file}`))?.default as Messages<Record<string, unknown>>
         const name = file.replace(RSC_FILE_SUFFIX, '')
         message && (result[name] = message)
-        return
     }))
     return result
 }
@@ -138,7 +136,7 @@ export async function mergeMessage(
     Object.entries(messages).forEach(([locale, itemSet]) => {
         const newMessage: any = {}
         Object.entries(itemSet)
-            .sort((a, b) => (sourceKeyIdx.findIndex(v => v === a[0]) - sourceKeyIdx.findIndex(v => v === b[0])))
+            .sort((a, b) => (sourceKeyIdx.indexOf(a[0]) - sourceKeyIdx.indexOf(b[0])))
             .forEach(([path, text]) => {
                 // Not translated
                 if (!text) return
@@ -167,11 +165,11 @@ function checkPlaceholder(translated: string, source: string) {
     const allSourcePlaceholders =
         Array.from(source.matchAll(/\{(.*?)}/g))
             .map(matched => matched[1])
-            .sort()
+            .sort((a = '', b = '') => a.localeCompare(b))
     const allTranslatedPlaceholders =
         Array.from(translated.matchAll(/\{(.*?)}/g))
             .map(matched => matched[1])
-            .sort()
+            .sort((a = '', b = '') => a.localeCompare(b))
     if (allSourcePlaceholders.length != allTranslatedPlaceholders.length) {
         return false
     }
