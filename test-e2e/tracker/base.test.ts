@@ -26,7 +26,7 @@ describe('Tracking', () => {
         records = await readRecordsOfFirstPage(context)
         expect(records.length).toEqual(2)
         const urls = records.map(r => r.url)
-        expect(urls).include(MOCK_HOST)
+        expect(urls).toContain(MOCK_HOST)
     }, 60000)
 
     test('white list', async () => {

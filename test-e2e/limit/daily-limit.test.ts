@@ -30,7 +30,7 @@ describe('Daily limit', () => {
         let wastedTime = await limitPage.evaluate(() => {
             const timeTag = document.querySelector('.el-table .el-table__body-wrapper table tbody tr td:nth-child(6) .el-tag:first-child')
             const timeStr = timeTag?.textContent
-            returnNumber.parseInt(timeStr?.replace('s', '')?.trim() ?? '0')
+            return Number.parseInt(timeStr?.replace('s', '')?.trim() ?? '0')
         })
         expect(wastedTime).toBeGreaterThanOrEqual(1)
 
@@ -60,7 +60,7 @@ describe('Daily limit', () => {
         wastedTime = await limitPage.evaluate(() => {
             const timeTag = document.querySelector('.el-table .el-table__body-wrapper table tbody tr td:nth-child(6) .el-tag--danger')
             const timeStr = timeTag?.textContent
-            returnNumber.parseInt(timeStr?.replace('s', '').trim() ?? '')
+            return Number.parseInt(timeStr?.replace('s', '').trim() ?? '')
         })
         expect(wastedTime).toBeGreaterThanOrEqual(limitTime)
 

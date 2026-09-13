@@ -167,7 +167,7 @@ export function isHomepage(url: string) {
 
 export function escapeRegExp(s: string): string {
     if (!s) return ''
-    return s.replace(/[-/\\^s$*+?.()|[\]{}]/g, String.raw`\$&`)
+    return s.replace(/[-/\\^$*+?.()|[\]{}]/g, String.raw`\$&`)
 }
 
 export function compileAntPattern(antPattern: string): RegExp {

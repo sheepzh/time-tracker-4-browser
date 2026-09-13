@@ -295,8 +295,7 @@ const legend2LabelStyle = (legend: string): string => {
     if (!legend) return ''
     const code: string[] = []
     for (let i = 0; i < legend.length; i++) {
-        const ch = legend.codePointAt(i)
-        ch && code.push(ch.toString(36).padStart(3, '0'))
+        code.push(legend.codePointAt(i)?.toString(36).padStart(3, '0') ?? '')
     }
     return code.join('')
 }
