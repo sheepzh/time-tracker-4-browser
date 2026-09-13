@@ -69,6 +69,6 @@ const AliasColumn = defineComponent<Props>(props => {
             }}
         />
     )
-})
+}, { props: ['onChanged', 'onFillAlias'] })
 
 export default AliasColumn
