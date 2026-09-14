@@ -186,3 +186,21 @@ export function compileAntPattern(antPattern: string): RegExp {
 
     return new RegExp("^(.+://)?" + patternStr + "/?([\\?#].*)?$")
 }
+
+export const extractSubpages = (url: string | undefined): string[] => {
+    if (!url) return []
+
+    try {
+        let { host, pathname } = new URL(url)
+        if (pathname.endsWith('/')) pathname = pathname.slice(0, -1)
+        if (!pathname) return []
+        const result = [`${host}${pathname}`]
+        const segments = pathname.split('/').filter(Boolean)
+        while (segments.pop()) {
+            segments.length && result.push(`${host}/${segments.join('/')}/**`)
+        }
+        return result
+    } catch {
+        return []
+    }
+}

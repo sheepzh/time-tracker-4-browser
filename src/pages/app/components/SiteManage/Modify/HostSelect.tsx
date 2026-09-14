@@ -8,7 +8,7 @@ import { detectSites } from '@api/sw/site'
 import { t } from '@app/locale'
 import { useDebounceState, useRequest } from '@hooks'
 import { truthy } from '@util/lang'
-import { extractHostname, isValidVirtualHost, judgeVirtualFast } from '@util/pattern'
+import { extractHostname, extractSubpages } from '@util/pattern'
 import { identifySiteKey, parseSiteIdentity, SiteMap } from '@util/site'
 import { ElSelectV2 } from "element-plus"
 import { computed, defineComponent } from "vue"
@@ -41,10 +41,8 @@ function guessHost(query: string): tt4b.site.SiteKey[] {
     const result: tt4b.site.SiteKey[] = []
     const { host } = extractHostname(query)
     if (host) result.push({ host, type: 'merged' }, { host, type: 'normal' })
-
-    if (judgeVirtualFast(query) && isValidVirtualHost(query)) {
-        result.push({ host: query, type: 'virtual' })
-    }
+    const subpages = extractSubpages(query).map(host => ({ host, type: 'virtual' } satisfies tt4b.site.SiteKey))
+    result.push(...subpages)
     return result
 }
 

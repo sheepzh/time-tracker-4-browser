@@ -79,7 +79,7 @@ const _default = defineComponent<{ onSave: NoArgCallback }>((props, ctx) => {
 
     return () => (
         <ElDialog
-            width={450}
+            width={600}
             title={t(msg => msg.button.create)}
             modelValue={visible.value}
             closeOnClickModal={false}

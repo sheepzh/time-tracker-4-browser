@@ -6,7 +6,7 @@ import { useOperation, useRequest, useSwitch } from '@hooks'
 import { Asterisk, Merge, Website } from '@pages/icons'
 import { t } from '@popup/locale'
 import { getAppPageUrl } from '@util/constant/url'
-import { extractHostname } from '@util/pattern'
+import { extractHostname, extractSubpages } from '@util/pattern'
 import { isSameSite } from '@util/site'
 import {
     ElButton, ElDialog, ElDropdown, ElDropdownItem, ElDropdownMenu, ElIcon, ElOption, ElSelect, type SelectInstance,
@@ -21,22 +21,9 @@ type Data = {
 }
 
 const recommendSubpages = (url: string | undefined, existed: string[]): Data[] => {
-    if (!url) return []
-
-    try {
-        let { host, pathname } = new URL(url)
-        if (pathname.endsWith('/')) pathname = pathname.slice(0, -1)
-        if (!pathname) return []
-        const urls = [`${host}${pathname}`]
-        const segments = pathname.split('/').filter(Boolean)
-        while (segments.pop()) {
-            segments.length && urls.push(`${host}/${segments.join('/')}/**`)
-        }
-        const results = urls.map(url => ({ url, existed: existed.some(e => e === url) }))
-        return results.sort((a, b) => a.existed === b.existed ? 0 : a.existed ? 1 : -1)
-    } catch {
-        return []
-    }
+    return extractSubpages(url)
+        .map(url => ({ url, existed: existed.some(e => e === url) }))
+        .toSorted((a, b) => a.existed === b.existed ? 0 : a.existed ? 1 : -1)
 }
 
 const useDropdown = (options: { url: Ref<string | undefined>, onSave: NoArgCallback }) => {
