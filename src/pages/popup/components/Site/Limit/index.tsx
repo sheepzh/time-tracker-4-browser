@@ -23,7 +23,8 @@ const Limit = defineComponent<{}>(() => {
     const selected = ref<number>()
     const { data: summary, loading } = useRequest(getLimitSummary, {
         onSuccess: ({ items }) => {
-            if (!items.some(i => i.id !== selected.value)) {
+            const curr = selected.value
+            if (curr === undefined || !items.map(e => e.id).includes(curr)) {
                 selected.value = items[0]?.id
             }
         }
