@@ -102,7 +102,7 @@ class ProgressRing extends StatefulNode<RingState, SVGSVGElement> {
         return svg
     }
 
-    protected shouldRender({ progress, stage }: RingState, last: RingState | null): boolean {
+    protected override shouldRender({ progress, stage }: RingState, last: RingState | null): boolean {
         return progress !== last?.progress || stage !== last.stage
     }
 
@@ -182,13 +182,13 @@ class Tooltip extends StatefulNode<RemainingData[], HTMLDivElement> {
         return el
     }
 
-    render(state: RemainingData[]) {
+    override render(state: RemainingData[]) {
         // Cached
         this.#data = state
         super.render(state)
     }
 
-    protected shouldRender(): boolean {
+    protected override shouldRender(): boolean {
         return this.#visible
     }
 

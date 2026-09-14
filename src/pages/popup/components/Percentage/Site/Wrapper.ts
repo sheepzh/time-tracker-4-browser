@@ -44,7 +44,7 @@ function calcPositionOfTooltip(container: HTMLElement, point: (number | string)[
 export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOption> {
     private resultCache: PercentageResult | undefined
 
-    init(container: HTMLDivElement): void {
+    override init(container: HTMLDivElement): void {
         super.init(container)
         this.instance?.on('click', (params: ECElementEvent) => {
             const { type: evType, componentType, data } = params || {}

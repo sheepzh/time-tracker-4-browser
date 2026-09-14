@@ -167,7 +167,7 @@ function optionOf(data: ChartValue[], weekDays: string[], dom: HTMLElement): EcO
 }
 
 class Wrapper extends EchartsWrapper<BizOption, EcOption> {
-    protected isSizeSensitize: boolean = true
+    protected override isSizeSensitize: boolean = true
 
     protected async generateOption(option: BizOption): Promise<EcOption> {
         if (!option) return {}

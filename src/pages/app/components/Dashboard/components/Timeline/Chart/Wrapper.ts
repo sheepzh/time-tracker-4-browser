@@ -170,8 +170,8 @@ const calcDataZoomDefaultRange = (activities: tt4b.timeline.Activity[]): [start:
 }
 
 class Wrapper extends EchartsWrapper<BizData, EcOption> {
-    protected replaceSeries: boolean = true
-    protected isSizeSensitize: boolean = true
+    protected override replaceSeries: boolean = true
+    protected override isSizeSensitize: boolean = true
 
     protected async generateOption(bizData: BizData): Promise<EcOption> {
         const { dates, activities, merge } = bizData

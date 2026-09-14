@@ -144,7 +144,7 @@ export type BizOption = {
 }
 
 class Wrapper extends EchartsWrapper<BizOption, EcOption> {
-    isSizeSensitize = true
+    override isSizeSensitize = true
 
     protected async generateOption({ rows = [], timeFormat }: BizOption): Promise<EcOption> {
         const width = this.getDomWidth()

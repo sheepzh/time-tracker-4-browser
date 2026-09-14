@@ -110,9 +110,9 @@ const createGauge = (options: GaugeOptions): GaugeSeriesOption => {
 
 class Wrapper extends EchartsWrapper<tt4b.limit.Item, EcOption> {
     private dimension: LimitDimension = 'time'
-    protected replaceSeries = true
+    protected override replaceSeries = true
 
-    init(container: HTMLDivElement): void {
+    override init(container: HTMLDivElement): void {
         super.init(container)
         this.instance?.on('legendselectchanged', params => {
             const name = typeof params === 'object' && params && 'name' in params
@@ -123,7 +123,7 @@ class Wrapper extends EchartsWrapper<tt4b.limit.Item, EcOption> {
         })
     }
 
-    async render(biz: tt4b.limit.Item) {
+    override async render(biz: tt4b.limit.Item) {
         const firstRender = !this.lastBizOption
         if (firstRender) {
             const hasTimeLimit = !!biz.time || !!biz.weekly

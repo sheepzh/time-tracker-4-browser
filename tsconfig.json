@@ -26,6 +26,8 @@
         "noImplicitAny": true,
         "noUncheckedIndexedAccess": true,
         "skipLibCheck": true,
+        "noImplicitOverride": true,
+        "noFallthroughCasesInSwitch": true,
         "paths": {
             "@api/*": [
                 "./src/api/*"

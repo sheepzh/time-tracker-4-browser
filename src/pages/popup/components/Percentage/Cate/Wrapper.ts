@@ -34,7 +34,7 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
     private resultCache: PercentageResult | undefined
     private selectedCache: number | undefined
 
-    init(container: HTMLDivElement): void {
+    override init(container: HTMLDivElement): void {
         super.init(container)
 
         this.instance?.on('selectchanged', ev => {

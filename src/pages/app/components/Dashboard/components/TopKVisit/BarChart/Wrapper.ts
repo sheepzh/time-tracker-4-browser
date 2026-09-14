@@ -86,7 +86,7 @@ const generateOption = (data: BizOption[], domWidth: number): EcOption => {
 }
 
 class Wrapper extends EchartsWrapper<BizOption[], EcOption> {
-    protected isSizeSensitize: boolean = true
+    protected override isSizeSensitize: boolean = true
     generateOption = (option: BizOption[]) => {
         if (!option?.length) return {}
         const domWidth = this.getDomWidth()
