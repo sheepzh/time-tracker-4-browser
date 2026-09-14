@@ -27,20 +27,18 @@ type FilterOption = { cateIds?: number[] }
 const isFilter = createObjectGuard<FilterOption>({ cateIds: isOptionalIntArray })
 
 const _default = defineComponent<{}>(() => {
-    const { dateRange } = useHabitFilter()
+    const globalFilter = useHabitFilter()
     const filter = localReactive<{ cateIds?: number[] }>('habit_site_filter', isFilter, {})
-    const query = computed<tt4b.stat.SiteQuery>(() => ({
-        date: cvtDateRange2Str(dateRange),
-        cateIds: filter.cateIds,
-    }))
-    const dateLength = computed(() => getDayLength(dateRange[0], dateRange[1]))
+    const date = computed(() => cvtDateRange2Str(globalFilter.dateRange))
+    const dateLength = computed(() => getDayLength(globalFilter.dateRange[0], globalFilter.dateRange[1]))
+    const watchSource = [() => date.value, () => filter.cateIds]
     const { data: rows } = useRequest(
-        () => listSiteStats(query.value),
-        { deps: query, defaultValue: [] },
+        () => listSiteStats({ date: date.value, cateIds: filter.cateIds }),
+        { deps: watchSource, defaultValue: [] },
     )
     const { data: merged } = useRequest(
-        () => listSiteStats({ ...query.value, mergeDate: true }),
-        { deps: query, defaultValue: [] },
+        () => listSiteStats({ date: date.value, cateIds: filter.cateIds, mergeDate: true }),
+        { deps: watchSource, defaultValue: [] },
     )
 
     const isXs = useXsState()
