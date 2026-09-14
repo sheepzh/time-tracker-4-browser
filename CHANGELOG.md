@@ -4,6 +4,11 @@ All notable changes to Time Tracker will be documented in this file.
 
 It is worth mentioning that the release time of each change refers to the time when the installation package is submitted to the webstore. It is about one week for Firefox to moderate packages, while only 1-2 days for Chrome and Edge.
 
+## [4.6.1] - 2026-09-14
+
+-  Fixed some bugs
+-  Supported categorization on small screens
+
 ## [4.6.0] - 2026-09-09
 
 -  Added limit countdown on sites
