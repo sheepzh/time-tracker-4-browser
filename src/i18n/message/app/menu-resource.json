@@ -60,11 +60,15 @@
         "about": "Про нас"
     },
     "es": {
+        "tracking": "Seguimiento",
         "dashboard": "Tablero",
         "record": "Registro",
+        "analysis": "Análisis",
         "siteAnalysis": "Análisis de sitios",
         "habit": "Hábitos",
+        "productivity": "Productividad",
         "other": "Otras Funciones",
+        "migration": "Migración de datos",
         "about": "Acerca de"
     },
     "de": {

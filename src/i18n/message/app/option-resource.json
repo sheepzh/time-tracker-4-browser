@@ -756,6 +756,7 @@
         "off": "Siempre apagado",
         "appearance": {
             "title": "Apariencia",
+            "displayBadge": "{input} Mostrar la insignia en el ícono",
             "badgeBgColor": "El color de fondo del texto en el icono {input}",
             "locale": "Idioma {input}",
             "printInConsole": {
@@ -767,11 +768,13 @@
                 "label": "Modo oscuro {input}",
                 "timed": "Cronometrado"
             },
-            "animationDuration": "Duración de la animación inicial del gráfico {input}"
+            "animationDuration": "Duración de la animación inicial del gráfico {input}",
+            "sidePanel": "{input} Activar el panel lateral"
         },
         "tracking": {
             "title": "Estadísticas",
             "autoPauseTrack": "{input} Pausar el seguimiento si no se detecta actividad {info} durante {maxTime}",
+            "noActivityInfo": "El ratón y teclado están inactivos, no se está en modo de pantalla completa, y no hay reproducción de sonido",
             "countLocalFiles": "{input}  Contar el tiempo para {localFileTime} {info} en el navegador",
             "localFileTime": "leer un archivo local",
             "localFilesInfo": "Soporta archivos de tipos como PDF, imagen, TXT y JSON",
@@ -779,7 +782,9 @@
             "tabGroupInfo": "Al eliminar un grupo de pestañas, sus datos también se borrarán.",
             "fileAccessDisabled": "Actualmente no se permite el acceso a las URL de archivos. Habilítelo primero en la página de administración",
             "weekStart": "El primer día de cada semana {input}",
-            "weekStartAsNormal": "Como normalmente"
+            "weekStartAsNormal": "Como normalmente",
+            "storage": "Almacenar datos de seguimiento en {input}",
+            "storageConfirm": "¿Desea cambiar el tipo de almacenamiento a {type}?"
         },
         "limit": {
             "prompt": "Punto mostrado cuando está restringido {input}",
@@ -800,8 +805,13 @@
                 "strictTitle": "Confirmación de operación",
                 "strictContent": "Al seleccionar esta opción, si un sitio activa el límite diario, no se te permitirá desbloquearlo manualmente, más que esperar hasta el día siguiente. ¡Si las reglas no se establecen correctamente, pueden entorpecer tus rutinas!",
                 "pswFormLabel": "Contraseña",
-                "pswFormAgain": "Reingresar"
-            }
+                "pswFormAgain": "Reingresar",
+                "2fa": "Debe usar código de autenticación en dos pasos para desbloquear",
+                "twoFaTitle": "Activar autenticación en dos pasos",
+                "twoFaCopyLink": "Copiar enlace",
+                "twoFaVerifyLabel": "Introduzca el código de 6 dígitos para verificar"
+            },
+            "countdown": "{input} Mostrar contador en sitios con reglas de límite activas"
         },
         "backup": {
             "title": "Respaldo de datos",
@@ -847,6 +857,16 @@
         "accessibility": {
             "title": "Accesibilidad",
             "chartDecal": "{input} Si se debe mostrar la calcomanía del gráfico"
+        },
+        "notification": {
+            "title": "Notificación",
+            "cycle": {
+                "daily": "Diario",
+                "weekly": "Semanal"
+            },
+            "method": {
+                "browser": "Navegador"
+            }
         },
         "button": {
             "reset": "Restablecer",

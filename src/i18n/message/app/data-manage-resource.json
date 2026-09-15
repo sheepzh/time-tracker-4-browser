@@ -184,6 +184,8 @@
         "usedMemoryAlert": "{size}MB actualmente en uso",
         "operationAlert": "Puedes eliminar esos datos no importantes para reducir el uso de memoria",
         "filterItems": "Filtrar datos",
+        "focusLtOrEq": "El tiempo de navegación del día es menor o igual a {value} segundos",
+        "visitLtOrEq": "El número de visitas del día es menor o igual a {value}",
         "filterDate": "Registrado entre {picker}",
         "importOther": {
             "step1": "Seleccionar datos",
@@ -202,7 +204,10 @@
         },
         "deleteConfirm": "Se han filtrado un total de {count} registros. ¿Deseas eliminarlos todos?",
         "migrationAlert": "Migrar los datos entre navegadores usando importar y exportar",
-        "importError": "Extensión de archivo incorrecta"
+        "importError": "Extensión de archivo incorrecta",
+        "exportData": "Exportar datos",
+        "restoreData": "Restaurar datos",
+        "restoreFromOther": "Restaurar desde {ext}"
     },
     "de": {
         "totalMemoryAlert": "Der Browser stellt {size}MB zur Verfügung, um lokale Daten für jede Erweiterung zu speichern",
