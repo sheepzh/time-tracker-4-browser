@@ -7,7 +7,7 @@
 
 import { getTab } from '@api/chrome/tab'
 import { getSite, saveSite } from '@service/site-service'
-import { IS_ANDROID, IS_CHROME, IS_FIREFOX, IS_SAFARI, isNotTrackable } from "@util/constant/environment"
+import { IS_CHROME, IS_FIREFOX, IS_MOBILE, IS_SAFARI, isNotTrackable } from "@util/constant/environment"
 import { extractHostname, isHomepage } from "@util/pattern"
 import { extractSiteName } from "@util/site"
 import badgeManager from "./badge-manager"
@@ -18,8 +18,8 @@ import { incVisitCount } from './track-server/normal'
  * Process the tab
  */
 async function processTabInfo(tab: ChromeTab): Promise<void> {
-    // Not support to modify site info on Android, so skip it
-    if (IS_ANDROID) return
+    // Not support to modify site info on mobile, so skip it
+    if (IS_MOBILE) return
     let { favIconUrl: iconUrl, url, title } = tab
     if (!url || !title) return
     if (isNotTrackable(url)) return
@@ -41,7 +41,7 @@ async function processTabInfo(tab: ChromeTab): Promise<void> {
  * Collect the favicon of host
  */
 const collectIconAndAlias = async (tab: ChromeTab) => {
-    if (IS_SAFARI || IS_ANDROID) return
+    if (IS_SAFARI) return
     // Tab from sender does not contain favIconUrl for FF
     if (IS_FIREFOX) tab = (tab.id ? await getTab(tab.id) : undefined) ?? tab
     processTabInfo(tab)

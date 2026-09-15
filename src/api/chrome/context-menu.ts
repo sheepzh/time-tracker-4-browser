@@ -1,8 +1,8 @@
-import { IS_ANDROID } from "@util/constant/environment"
+import { IS_MOBILE } from "@util/constant/environment"
 import { handleError } from "./common"
 
 function onClick(id: string, handler: Function) {
-    if (IS_ANDROID) {
+    if (IS_MOBILE) {
         return
     }
     chrome.contextMenus?.onClicked?.addListener(({ menuItemId }) => menuItemId === id && handler?.())
@@ -10,7 +10,7 @@ function onClick(id: string, handler: Function) {
 
 export async function createContextMenu(props: ChromeContextMenuCreateProps): Promise<void> {
     const { id, onclick: clickHandler } = props
-    if (IS_ANDROID || !id) {
+    if (IS_MOBILE || !id) {
         return
     }
     // Add listener by param

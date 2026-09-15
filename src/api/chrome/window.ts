@@ -1,8 +1,8 @@
-import { IS_ANDROID, IS_MV3 } from "@util/constant/environment"
+import { IS_MOBILE, IS_MV3 } from "@util/constant/environment"
 import { handleError } from "./common"
 
 export async function getLastFocusedId(): Promise<number | undefined> {
-    if (IS_ANDROID) return Promise.resolve(undefined)
+    if (IS_MOBILE) return Promise.resolve(undefined)
     if (IS_MV3) {
         const window = await chrome.windows.getLastFocused({ windowTypes: ['normal'] })
         return window.id
@@ -17,7 +17,7 @@ export async function getLastFocusedId(): Promise<number | undefined> {
 }
 
 export function getWindow(id: number): Promise<ChromeWindow | undefined> {
-    if (IS_ANDROID) return Promise.resolve(undefined)
+    if (IS_MOBILE) return Promise.resolve(undefined)
     return new Promise(resolve => chrome.windows.get(id, window => {
         handleError('getWindow')
         resolve(window)
@@ -29,7 +29,7 @@ export function isNoneWindowId(windowId: number | undefined) {
 }
 
 export function onWindowFocusChanged(handler: ArgCallback<number>) {
-    if (IS_ANDROID) return
+    if (IS_MOBILE) return
     chrome.windows.onFocusChanged.addListener(windowId => {
         handleError('onWindowFocusChanged')
         handler(windowId)

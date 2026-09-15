@@ -6,7 +6,7 @@
  */
 
 import db from "@db/meta-database"
-import { IS_ANDROID, IS_FIREFOX } from '@util/constant/environment'
+import { IS_ANDROID, IS_FIREFOX, IS_IOS } from '@util/constant/environment'
 import { createArrayGuard, createObjectGuard, isString } from 'typescript-guard'
 
 export async function getInstallTime(): Promise<number> {
@@ -58,6 +58,7 @@ function getBrand() {
         if (brand) return `${platform.toLowerCase()}-${brand.toLowerCase()}`
     }
     if (IS_FIREFOX) return IS_ANDROID ? 'firefox-android' : 'firefox'
+    if (IS_IOS) return 'ios'
     return 'unknown'
 }
 

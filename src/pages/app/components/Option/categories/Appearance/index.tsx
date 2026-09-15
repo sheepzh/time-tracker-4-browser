@@ -13,7 +13,7 @@ import { useRequest } from '@hooks'
 import { ALL_LOCALES, localeSameAsBrowser } from "@i18n"
 import localeMessages from "@i18n/message/common/locale"
 import { processDarkMode } from '@pages/util/dark-mode'
-import { IS_ANDROID } from "@util/constant/environment"
+import { IS_MOBILE } from "@util/constant/environment"
 import { DEFAULT_APPEARANCE } from "@util/constant/option"
 import { ElColorPicker, ElSelect, ElSlider, ElSwitch, ElTag, type TagProps } from "element-plus"
 import { computed, defineComponent, type StyleValue } from "vue"
@@ -105,7 +105,7 @@ const _default = defineComponent((_props, ctx) => {
                     options={allLocaleOptions}
                 />
             </OptionItem>
-            {!IS_ANDROID && <>
+            {!IS_MOBILE && <>
                 <OptionItem
                     label={msg => msg.option.appearance.displayBadge}
                     defaultValue={DEFAULT_APPEARANCE.displayBadgeText}

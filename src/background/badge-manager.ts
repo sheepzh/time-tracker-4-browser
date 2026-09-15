@@ -10,7 +10,7 @@ import { listTabs, onTabUpdated } from "@api/chrome/tab"
 import { getLastFocusedId, isNoneWindowId, onWindowFocusChanged } from "@api/chrome/window"
 import focusHolder from '@service/focus/holder'
 import siteHolder from '@service/site-service/holder'
-import { IS_ANDROID, isNotTrackable } from "@util/constant/environment"
+import { IS_MOBILE, isNotTrackable } from "@util/constant/environment"
 import { extractHostname } from "@util/pattern"
 import { MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND } from "@util/time"
 import statDatabase from "./database/stat-database"
@@ -66,7 +66,7 @@ class BadgeManager {
     #countLocalFiles = false
 
     async init(messageDispatcher: MessageDispatcher) {
-        if (IS_ANDROID) return // do nothing on Android, since badge text is not supported
+        if (IS_MOBILE) return // do nothing on Android/iOS, since badge text is not supported
 
         const option = await optionHolder.get()
         await this.processOption(option)

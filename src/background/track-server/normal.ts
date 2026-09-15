@@ -7,7 +7,7 @@ import {
 import { addLimitFocusTime, incLimitVisit } from '@service/limit-service'
 import siteHolder from '@service/site-service/holder'
 import periodThrottler from '@service/throttler/period-throttler'
-import { IS_ANDROID } from "@util/constant/environment"
+import { IS_MOBILE } from "@util/constant/environment"
 import { extractHostname } from "@util/pattern"
 import badgeManager from "../badge-manager"
 
@@ -60,7 +60,7 @@ export async function handleTrackTimeEvent(event: tt4b.core.Event, tab: ChromeTa
 }
 
 async function windowNotFocused(winId: number | undefined): Promise<boolean> {
-    if (IS_ANDROID) return false
+    if (IS_MOBILE) return false
     if (!winId) return true
     const window = await getWindow(winId)
     return !window?.focused

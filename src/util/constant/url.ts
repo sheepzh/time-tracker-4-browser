@@ -7,7 +7,7 @@
 
 import { getUrl, getVersion } from "@api/chrome/runtime"
 import { locale } from "@i18n"
-import { BROWSER_MAJOR_VERSION, BROWSER_NAME, IS_ANDROID, IS_LINUX, IS_MAC, IS_WINDOWS } from "./environment"
+import { BROWSER_MAJOR_VERSION, BROWSER_NAME, IS_ANDROID, IS_IOS, IS_LINUX, IS_MAC, IS_WINDOWS } from "./environment"
 
 export const FIREFOX_HOMEPAGE = 'https://addons.mozilla.org/firefox/addon/besttimetracker'
 export const CHROME_HOMEPAGE = 'https://chromewebstore.google.com/detail/time-tracker/dkdhhcbjijekmneelocdllcldcpmekmm'
@@ -33,6 +33,7 @@ const issueTemplatePage = (type: 'bug' | 'feature') => {
         IS_MAC && 'Mac',
         IS_LINUX && 'Linux',
         IS_ANDROID && 'Android',
+        IS_IOS && 'iOS',
     ].filter(Boolean).join(',')
     return `https://github.com/sheepzh/time-tracker-4-browser/issues/new?template=${template}&version=${version}&browser_version=${browserVersion}&os=${os}`
 }

@@ -1,4 +1,4 @@
-import { IS_ANDROID, IS_MV3 } from '@util/constant/environment'
+import { IS_MOBILE, IS_MV3 } from '@util/constant/environment'
 import { handleError } from './common'
 
 // NOT SUPPORTED in Firefox
@@ -6,7 +6,7 @@ import { handleError } from './common'
 export const SIDE_PANEL_STATE_SUPPORTED_CONTROL = !!chrome.sidePanel?.setOptions
 
 export async function isSidePanelEnabled(): Promise<boolean> {
-    if (IS_ANDROID || !SIDE_PANEL_STATE_SUPPORTED_CONTROL) return false
+    if (IS_MOBILE || !SIDE_PANEL_STATE_SUPPORTED_CONTROL) return false
 
     if (IS_MV3) {
         const result = await chrome.sidePanel.getOptions({})
@@ -20,7 +20,7 @@ export async function isSidePanelEnabled(): Promise<boolean> {
 }
 
 export async function setSidePanelEnabled(enabled: boolean): Promise<void> {
-    if (IS_ANDROID || !SIDE_PANEL_STATE_SUPPORTED_CONTROL) return
+    if (IS_MOBILE || !SIDE_PANEL_STATE_SUPPORTED_CONTROL) return
 
     if (IS_MV3) {
         await chrome.sidePanel.setOptions({ enabled })
