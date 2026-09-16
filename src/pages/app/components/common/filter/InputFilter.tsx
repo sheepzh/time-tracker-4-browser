@@ -10,7 +10,7 @@ import { useHotKey, useKeyPressed, useState } from "@hooks"
 import { Flex, cvtPxScale } from '@pages/components'
 import { Enter } from '@pages/icons'
 import { colorUsage, colorVariant, textColor } from '@pages/util/style'
-import { IS_ANDROID, IS_MAC } from '@util/constant/environment'
+import { IS_MAC, IS_MOBILE } from '@util/constant/environment'
 import { ElIcon, ElInput, type InputInstance } from "element-plus"
 import { defineComponent, nextTick, ref, type FunctionalComponent, type StyleValue } from "vue"
 
@@ -95,7 +95,7 @@ const InputFilter = defineComponent<Props>(props => {
             prefixIcon={Search}
             v-slots={{
                 suffix: () => {
-                    if (IS_ANDROID) return null
+                    if (IS_MOBILE) return null
                     if (focused.value) return <ElIcon><Enter /></ElIcon>
                     return (
                         <Flex gap={4} marginInline='0 2px'>

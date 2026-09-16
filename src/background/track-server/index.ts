@@ -1,4 +1,4 @@
-import { IS_ANDROID, IS_FIREFOX } from '@util/constant/environment'
+import { IS_FIREFOX } from '@util/constant/environment'
 import { isFileUrl } from '@util/pattern'
 import type MessageDispatcher from "../message-dispatcher"
 import FileTracker from './file-tracker'
@@ -21,5 +21,5 @@ export default function initTrackServer(messageDispatcher: MessageDispatcher) {
 
     // Track file time in background script for FF
     // Not accurate, since can't detect if the tabs are active or not
-    IS_FIREFOX && !IS_ANDROID && new FileTracker().init()
+    IS_FIREFOX && new FileTracker().init()
 }

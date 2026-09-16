@@ -10,7 +10,7 @@ import { t } from '@app/locale'
 import { useManualRequest, usePermissionCheck, useRequest } from '@hooks'
 import { locale } from "@i18n"
 import { rotate } from "@util/array"
-import { IS_ANDROID, IS_FIREFOX } from "@util/constant/environment"
+import { IS_FIREFOX, IS_MOBILE } from "@util/constant/environment"
 import { DEFAULT_TRACKING } from "@util/constant/option"
 import { MILL_PER_SECOND } from "@util/time"
 import { ElMessage, ElMessageBox, ElSelect, ElSwitch, ElTimePicker, ElTooltip } from "element-plus"
@@ -102,7 +102,7 @@ const _default = defineComponent((_props, ctx) => {
     }
 
     return () => <OptionLines>
-        {!IS_ANDROID && <>
+        {!IS_MOBILE && <>
             <OptionItem
                 label={msg => msg.option.tracking.autoPauseTrack}
                 defaultValue={DEFAULT_TRACKING.autoPauseTracking}

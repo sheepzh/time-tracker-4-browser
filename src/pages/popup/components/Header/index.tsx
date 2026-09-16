@@ -3,7 +3,7 @@ import { View } from "@element-plus/icons-vue"
 import { Flex } from '@pages/components'
 import { t } from '@popup/locale'
 import { HEADER_OPTION_SLOT } from '@popup/slot'
-import { IS_ANDROID } from "@util/constant/environment"
+import { IS_MOBILE } from "@util/constant/environment"
 import { getAppPageUrl } from "@util/constant/url"
 import { ElLink } from "element-plus"
 import type { FunctionalComponent } from "vue"
@@ -15,7 +15,7 @@ import MoreInfo from './MoreInfo'
 
 const openAppPage = async () => {
     const appPageUrl = getAppPageUrl()
-    if (IS_ANDROID) return location.replace(appPageUrl)
+    if (IS_MOBILE) return location.replace(appPageUrl)
     try {
         const tabs = await listTabs({ currentWindow: true })
         // If there are non-highlighted app page tab, jump to it

@@ -9,7 +9,7 @@ import { onIconClick } from "@api/chrome/action"
 import { createContextMenu } from "@api/chrome/context-menu"
 import { getRuntimeId } from "@api/chrome/runtime"
 import { createTab } from "@api/chrome/tab"
-import { IS_ANDROID, IS_MV3, IS_SAFARI } from "@util/constant/environment"
+import { IS_MOBILE, IS_MV3, IS_SAFARI } from "@util/constant/environment"
 import { CHANGE_LOG_PAGE, SOURCE_CODE_PAGE, getAppPageUrl, getGuidePageUrl } from "@util/constant/url"
 import { t } from './i18n'
 
@@ -74,7 +74,7 @@ export function initBrowserAction() {
     createContextMenu(guidePageProps)
     createContextMenu(changeLogProps)
 
-    if (IS_ANDROID) {
+    if (IS_MOBILE) {
         // Forbidden popup page
         onIconClick(() => createTab({ url: getAppPageUrl(APP_RECORD_ROUTE) }))
     }
