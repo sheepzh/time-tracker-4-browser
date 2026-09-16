@@ -86,7 +86,7 @@ const _default = defineComponent<{ onDelete?: ArgCallback<tt4b.stat.Row> }>(({ o
                     {t(msg => msg.item.operation.analysis)}
                 </ElButton>
                 <ConfirmButton
-                    visible={deleteVisible(row)}
+                    visible={!filter.readRemote && deleteVisible(row)}
                     buttonProps={{ icon: Delete, type: 'danger', size: 'small', link: true }}
                     buttonText={t(msg => msg.button.delete)}
                     confirmText={computeDeleteConfirmMsg(row, filter, groupMap.value)}
