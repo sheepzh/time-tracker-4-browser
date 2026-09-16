@@ -145,13 +145,12 @@ describe('Daily limit', () => {
         await testPage.bringToFront()
         await testPage.reload({ waitUntil: 'domcontentloaded' })
 
-        // Waiting for limit message handling
-        await sleep(2)
+        await waitForLimitModal(testPage)
         const limitFrame = await waitForLimitFrame(testPage)
         await limitFrame.waitForFunction(() => {
             const td = document.querySelector('#app .el-descriptions:not([style*="display: none"]) tr td:nth-child(2)')
             return td?.textContent && td.textContent !== '-'
-        }, { timeout: 5000 })
+        }, { timeout: 10000 })
         const { name, count } = await limitFrame.evaluate(() => {
             const descEl = document.querySelector('#app .el-descriptions:not([style*="display: none"])')
             const trs = descEl?.querySelectorAll('tr')
@@ -165,8 +164,18 @@ describe('Daily limit', () => {
 
         // 4. Change visit limit
         await limitPage.bringToFront()
-        await limitPage.click('.el-card__body .el-table tr td .el-button--primary')
+        await limitPage.waitForFunction(() => {
+            const td = document.querySelector('.el-table .el-table__body-wrapper table tbody tr td:nth-child(6)')
+            return td?.textContent?.includes('2')
+        }, { timeout: 10000 })
+        // Use a native click inside the page context: after the visibility-triggered
+        // refresh the row may have just re-rendered, and page.click can hit the old DOM.
+        await limitPage.evaluate(() => {
+            document.querySelector<HTMLElement>('.el-card__body .el-table tr td .el-button--primary')?.click()
+        })
+        await limitPage.waitForSelector('.el-dialog .el-button.el-button--primary')
         await limitPage.click('.el-dialog .el-button.el-button--primary')
+        await limitPage.waitForSelector('.el-dialog .el-button.el-button--primary')
         await limitPage.click('.el-dialog .el-button.el-button--primary')
 
         const visitInput = await limitPage.waitForSelector('.el-dialog .el-input-number input')

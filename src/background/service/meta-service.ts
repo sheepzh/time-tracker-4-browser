@@ -6,7 +6,8 @@
  */
 
 import db from "@db/meta-database"
-import { IS_ANDROID, IS_FIREFOX } from '@util/constant/environment'
+import { IS_ANDROID, IS_CHROME, IS_EDGE, IS_FIREFOX, IS_IOS } from "@util/constant/environment"
+import { truthy } from "@util/lang"
 import { createArrayGuard, createObjectGuard, isString } from 'typescript-guard'
 
 export async function getInstallTime(): Promise<number> {
@@ -31,7 +32,8 @@ export async function getCid(): Promise<string> {
     const meta = await db.getMeta()
     const exist = meta.cid
     if (exist) return exist
-    const initial = `${getBrand()}-${Date.now()}`
+    const prefix = truthy(getBrand() ?? 'unknown', getPlatform()).join('-')
+    const initial = `${prefix}-${Date.now()}`
     meta.cid = initial
     await db.update(meta)
     return initial
@@ -50,15 +52,24 @@ const hasUaData = createObjectGuard<{ userAgentData: NavigatorUAData }>({
     }),
 })
 
-function getBrand() {
+const getPlatform = (): string => {
+    if (IS_ANDROID) return 'android'
+    if (IS_IOS) return 'ios'
+    const platform = navigator.platform.toLowerCase()
+    if (platform.includes('mac')) return 'macos'
+    return platform
+}
+
+const getBrand = (): string | undefined => {
+    if (IS_FIREFOX) return 'firefox'
+    if (IS_CHROME) return 'chrome'
+    if (IS_EDGE) return 'edge'
     if (hasUaData(navigator)) {
-        const { userAgentData: { brands }, platform } = navigator
-        const brand = brands.map(e => e.brand)
+        const { userAgentData: { brands } } = navigator
+        return brands.map(e => e.brand)
             .filter(brand => brand && brand !== "Chromium" && !brand.includes("Not"))[0]?.replace(' ', '-')
-        if (brand) return `${platform.toLowerCase()}-${brand.toLowerCase()}`
     }
-    if (IS_FIREFOX) return IS_ANDROID ? 'firefox-android' : 'firefox'
-    return 'unknown'
+    return undefined
 }
 
 /**

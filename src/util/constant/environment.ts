@@ -51,6 +51,8 @@ export const IS_SAFARI = BROWSER_NAME === 'safari'
  * @since 3.3.0
  */
 export const IS_ANDROID = userAgent?.toLowerCase()?.includes("android") ?? false
+export const IS_IOS = /iPad|iPhone|iPod/.test(userAgent)
+export const IS_MOBILE = IS_ANDROID || IS_IOS
 export const IS_WINDOWS = platform?.startsWith('Win') ?? false
 export const IS_LINUX = (platform?.startsWith('Linux') ?? false) && !IS_ANDROID
 export const IS_MAC = platform?.startsWith('Mac') ?? false
