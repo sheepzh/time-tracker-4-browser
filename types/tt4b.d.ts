@@ -693,10 +693,10 @@ declare namespace tt4b {
             & BaseQuery
             & common.SortBy<'date' | 'host' | core.Dimension>
             & {
+                remote: boolean
                 virtual?: boolean
                 host?: string | string[]
                 mergeHost?: boolean
-                inclusiveRemote?: boolean
                 cateIds?: number[]
             }
 
@@ -745,7 +745,7 @@ declare namespace tt4b {
         type CateQuery = BaseQuery
             & common.SortBy<'date' | 'focus' | 'time'>
             & {
-                inclusiveRemote?: boolean
+                remote: boolean
                 cateIds?: number[]
             }
 

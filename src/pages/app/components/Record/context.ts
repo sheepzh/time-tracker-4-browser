@@ -1,14 +1,15 @@
 import { listCateStats, listGroupStats, listSiteStats } from '@api/sw/stat'
 import type { RecordQuery } from '@app/router/constants'
 import { isOptionalIntArray, isTimeFormat } from '@app/util/types'
-import { localReactive, useManualRequest, useProvide, useProvider } from '@hooks'
+import { localReactive, useManualRequest, useProvide, useProvider, useRemote } from '@hooks'
 import { periodFormatter } from '@pages/util/time'
 import { sum } from '@util/array'
+import { truthy } from '@util/lang'
 import { cvtDateRange2Str, getBirthday } from "@util/time"
 import {
     createObjectGuard, createOptionalGuard, createStringUnionGuard, isBoolean, isOptionalString,
 } from 'typescript-guard'
-import { reactive, ref, type ShallowRef } from "vue"
+import { reactive, ref, WatchSource, type ShallowRef } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import type { DisplayComponent, RecordFilterOption, RecordSort } from "./types"
 
@@ -101,21 +102,25 @@ export const useRecordComponent = () => useProvider<Context, 'comp'>(NAMESPACE, 
 
 export const useSummary = (watchFilter?: boolean) => {
     const filter = useRecordFilter()
+    const remote = useRemote()
     const { data, refresh, loading } = useManualRequest(async () => {
-        const { siteMerge, dateRange, query, readRemote: inclusiveRemote, cateIds } = filter
+        const { siteMerge, dateRange, query, cateIds } = filter
         const date = cvtDateRange2Str(dateRange)
         let rows: tt4b.stat.Row[] = []
         if (siteMerge === 'group') {
             rows = await listGroupStats({ date, query })
         } else if (siteMerge === 'cate') {
-            rows = await listCateStats({ date, query, cateIds, inclusiveRemote })
+            rows = await listCateStats({ date, query, cateIds, remote: remote.value })
         } else {
             const mergeHost = siteMerge === 'domain'
-            rows = await listSiteStats({ date, query, cateIds, inclusiveRemote, mergeHost })
+            rows = await listSiteStats({ date, query, cateIds, remote: remote.value, mergeHost })
         }
         const visit = sum(rows.map(e => e.time))
         const focus = sum(rows.map(e => e.focus))
         return { visit, focus: periodFormatter(focus, { format: filter.timeFormat }) }
-    }, { defaultValue: { visit: 0, focus: '0s' }, deps: watchFilter ? () => ({ ...filter }) : undefined })
+    }, {
+        defaultValue: { visit: 0, focus: '0s' },
+        deps: truthy<WatchSource>(remote, watchFilter && (() => ({ ...filter }))),
+    })
     return { data, refresh, loading }
 }

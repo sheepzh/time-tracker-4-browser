@@ -9,6 +9,7 @@ import CompositionTable from '@app/components/Record/components/CompositionTable
 import { useRecordFilter } from "@app/components/Record/context"
 import { t } from '@app/locale'
 import { periodFormatter } from '@app/util/time'
+import { useRemote } from '@hooks'
 import { TooltipWrapper } from '@pages/components'
 import { getComposition, isDimension } from "@util/stat"
 import { Effect, ElTableColumn } from "element-plus"
@@ -22,6 +23,7 @@ type Props = {
 
 const TimeColumn = defineComponent<Props>(props => {
     const filter = useRecordFilter()
+    const remote = useRemote()
     const formatter = (focus: number | undefined): string => periodFormatter(focus, { format: filter.timeFormat })
     return () => (
         <ElTableColumn
@@ -33,7 +35,7 @@ const TimeColumn = defineComponent<Props>(props => {
         >
             {({ row }: RowData) => (
                 <TooltipWrapper
-                    usePopover={filter.readRemote && isDimension(props.dimension)}
+                    usePopover={remote.value && isDimension(props.dimension)}
                     placement="top"
                     effect={Effect.LIGHT}
                     offset={10}

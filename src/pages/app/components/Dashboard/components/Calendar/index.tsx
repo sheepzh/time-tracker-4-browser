@@ -11,7 +11,7 @@ import { listSiteStats } from '@api/sw/stat'
 import ChartTitle from '@app/components/Dashboard/ChartTitle'
 import { t } from "@app/locale"
 import { RECORD_ROUTE, type RecordQuery } from '@app/router/constants'
-import { useEcharts, useRequest } from "@hooks"
+import { useEcharts, useRemote, useRequest } from "@hooks"
 import { Flex } from '@pages/components'
 import { groupBy, sum } from "@util/array"
 import { getAppPageUrl } from "@util/constant/url"
@@ -34,11 +34,11 @@ const titleText = (option: Result | undefined) => {
 
 type Result = BizOption & { yearAgo: Date }
 
-const fetchData = async (): Promise<Result> => {
+const fetchData = async (remote: boolean): Promise<Result> => {
     const endTime = new Date()
     const yearAgo = endTime.getTime() - MILL_PER_DAY * 365
     const startTime = await getWeekStartTime(yearAgo)
-    const items = await listSiteStats({ date: cvtDateRange2Str([startTime, endTime]), sortKey: 'date' })
+    const items = await listSiteStats({ date: cvtDateRange2Str([startTime, endTime]), sortKey: 'date', remote })
     const value = groupBy(items, i => i.date, list => sum(list.map(i => i.focus)))
     return { value, startTime, endTime, yearAgo: new Date(yearAgo) }
 }
@@ -63,8 +63,9 @@ function handleClick(value: ChartValue): void {
     createTabAfterCurrent(url)
 }
 
-const _default = defineComponent(() => {
-    const { data } = useRequest(fetchData)
+const _default = defineComponent<{}>(() => {
+    const remote = useRemote()
+    const { data } = useRequest(() => fetchData(remote.value), { deps: remote })
     const biz = computed(() => (data.value as BizOption))
     const { elRef } = useEcharts(Wrapper, biz, {
         afterInit(ew) {

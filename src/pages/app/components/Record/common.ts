@@ -86,12 +86,12 @@ const cvt2GroupQuery = (
 })
 
 const cvt2SiteQuery = (
-    { dateRange: date, mergeDate, siteMerge, query, cateIds, readRemote: inclusiveRemote, focusRange, timeRange }: RecordFilterOption,
+    { dateRange: date, mergeDate, siteMerge, query, cateIds, focusRange, timeRange }: RecordFilterOption,
     { prop, order }: RecordSort,
-): tt4b.stat.SiteQuery => ({
+): Omit<tt4b.stat.SiteQuery, 'remote'> => ({
     date: cvtDateRange2Str(date), mergeDate,
     mergeHost: siteMerge === 'domain',
-    query, cateIds, inclusiveRemote,
+    query, cateIds,
     virtual: true,
     sortKey: prop,
     sortDirection: cvtOrderDir(order),
@@ -99,33 +99,40 @@ const cvt2SiteQuery = (
 })
 
 const cvt2CateQuery = (
-    { dateRange: date, mergeDate, query, cateIds, readRemote: inclusiveRemote, focusRange, timeRange }: RecordFilterOption,
+    { dateRange: date, mergeDate, query, cateIds, focusRange, timeRange }: RecordFilterOption,
     { prop, order }: RecordSort,
-): tt4b.stat.CateQuery => ({
-    date: cvtDateRange2Str(date), mergeDate, query, cateIds, inclusiveRemote,
+): Omit<tt4b.stat.CateQuery, 'remote'> => ({
+    date: cvtDateRange2Str(date), mergeDate, query, cateIds,
     sortKey: prop !== 'host' ? prop : undefined,
     sortDirection: cvtOrderDir(order),
     focusRange, timeRange,
 })
 
-export const queryPage = async (filter: RecordFilterOption, sort: RecordSort, page: tt4b.common.PageQuery): Promise<tt4b.common.PageResult<tt4b.stat.Row>> => {
+export const queryPage = async (
+    filter: RecordFilterOption,
+    sort: RecordSort,
+    page: tt4b.common.PageQuery,
+    remote: boolean,
+): Promise<tt4b.common.PageResult<tt4b.stat.Row>> => {
     const { siteMerge } = filter
     if (siteMerge === 'group') {
         return await getGroupStatPage({ ...cvt2GroupQuery(filter, sort), ...page })
     } else if (siteMerge === 'cate') {
-        return await getCateStatPage({ ...cvt2CateQuery(filter, sort), ...page })
+        return await getCateStatPage({ ...cvt2CateQuery(filter, sort), ...page, remote })
     } else {
-        return await getSiteStatPage({ ...cvt2SiteQuery(filter, sort), ...page })
+        return await getSiteStatPage({ ...cvt2SiteQuery(filter, sort), ...page, remote })
     }
 }
 
-export const queryAll = async (filter: RecordFilterOption, sort: RecordSort): Promise<tt4b.stat.Row[]> => {
+export const queryAll = async (
+    filter: RecordFilterOption, sort: RecordSort, remote: boolean,
+): Promise<tt4b.stat.Row[]> => {
     const { siteMerge } = filter
     if (siteMerge === 'group') {
         return await listGroupStats(cvt2GroupQuery(filter, sort))
     } else if (siteMerge === 'cate') {
-        return await listCateStats(cvt2CateQuery(filter, sort))
+        return await listCateStats({ ...cvt2CateQuery(filter, sort), remote })
     } else {
-        return await listSiteStats(cvt2SiteQuery(filter, sort))
+        return await listSiteStats({ ...cvt2SiteQuery(filter, sort), remote })
     }
 }

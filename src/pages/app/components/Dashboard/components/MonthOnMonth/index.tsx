@@ -1,7 +1,7 @@
 import { listSiteStats } from "@api/sw/stat"
 import ChartTitle from "@app/components/Dashboard/ChartTitle"
 import { t } from "@app/locale"
-import { useEcharts } from "@hooks"
+import { useEcharts, useRemote } from "@hooks"
 import { Flex } from '@pages/components'
 import { groupBy, sum } from "@util/array"
 import DateIterator from "@util/date-iterator"
@@ -23,24 +23,26 @@ const cvtRow = (rows: tt4b.stat.Row[], start: Date, end: Date): Row[] => {
     return [...iterator].map(date => ({ total: groupByDate[date] ?? 0, date }))
 }
 
-const fetchData = async (): Promise<[thisMonth: Row[], lastMonth: Row[]]> => {
+const fetchData = async (remote: boolean): Promise<[thisMonth: Row[], lastMonth: Row[]]> => {
     const now = new Date()
     const lastPeriodStart = new Date(now.getTime() - MILL_PER_DAY * (PERIOD_WIDTH * 2 - 1))
     const lastPeriodEnd = new Date(now.getTime() - MILL_PER_DAY * PERIOD_WIDTH)
     const thisPeriodStart = new Date(now.getTime() - MILL_PER_DAY * (PERIOD_WIDTH - 1))
     const thisPeriodEnd = now
 
-    const lastPeriodItems = await listSiteStats({ date: cvtDateRange2Str([lastPeriodStart, lastPeriodEnd]) })
+    const lastPeriodItems = await listSiteStats({ date: cvtDateRange2Str([lastPeriodStart, lastPeriodEnd]), remote })
     const lastRows = cvtRow(lastPeriodItems, lastPeriodStart, lastPeriodEnd)
-    const thisPeriodItems = await listSiteStats({ date: cvtDateRange2Str([thisPeriodStart, thisPeriodEnd]) })
+    const thisPeriodItems = await listSiteStats({ date: cvtDateRange2Str([thisPeriodStart, thisPeriodEnd]), remote })
     const thisRows = cvtRow(thisPeriodItems, thisPeriodStart, thisPeriodEnd)
     return [lastRows, thisRows]
 }
 
-const _default = defineComponent(() => {
-    const { elRef } = useEcharts(Wrapper, fetchData, {
+const _default = defineComponent<{}>(() => {
+    const remote = useRemote()
+    const { elRef } = useEcharts(Wrapper, () => fetchData(remote.value), {
         // force to fix the size is different from the parent
         afterInit: ew => ew.resize(),
+        deps: remote,
     })
     return () => (
         <Flex height="100%" column gap={4}>

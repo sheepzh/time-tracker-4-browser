@@ -1,5 +1,5 @@
 import { getSiteStatPage } from "@api/sw/stat"
-import { localReactive, useProvide, useProvider, useRequest } from "@hooks"
+import { localReactive, useProvide, useProvider, useRemote, useRequest } from "@hooks"
 import { cvtDateRange2Str, MILL_PER_DAY } from "@util/time"
 import { createObjectGuard, createStringUnionGuard, isInt } from 'typescript-guard'
 import { type ShallowRef } from "vue"
@@ -37,6 +37,7 @@ export const initProvider = () => {
     const filter = localReactive<TopKFilterOption>(
         `${NAMESPACE}_filter`, isTopKFilterOption, { topK: 6, dayNum: 30, topKChartType: 'pie' }
     )
+    const remote = useRemote()
     const { data: value } = useRequest(async () => {
         const now = new Date()
         const startTime: Date = new Date(now.getTime() - MILL_PER_DAY * filter.dayNum)
@@ -45,6 +46,7 @@ export const initProvider = () => {
             sortKey: "time",
             sortDirection: 'DESC',
             mergeDate: true,
+            remote: remote.value,
         }
         const SIZE = filter.topK
         const { list: top } = await getSiteStatPage({ num: 1, size: SIZE, ...query })

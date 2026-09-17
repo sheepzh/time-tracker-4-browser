@@ -6,12 +6,14 @@
  */
 
 import { css, injectGlobal } from '@emotion/css'
+import { initRemote } from '@pages/hooks/useRemote'
 import { ElAside, ElContainer, ElHeader, useNamespace } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
 import { RouterView } from "vue-router"
 import { initAppContext } from "../context"
 import HeadNav from "./menu/Nav"
 import SideMenu from "./menu/Side"
+import RemoteFloat from './Remote'
 
 const HEADER_STYLE: StyleValue = {
     padding: 0,
@@ -40,6 +42,7 @@ const injectCss = () => {
 
 const _default = defineComponent(() => {
     const { layout } = initAppContext()
+    const { remote, remoteVisible } = initRemote()
 
     injectCss()
 
@@ -56,6 +59,10 @@ const _default = defineComponent(() => {
                     <RouterView />
                 </ElContainer>
             </ElContainer>
+            {!!remoteVisible.value && <RemoteFloat
+                value={remote.value}
+                onToggle={() => remoteVisible.value && (remote.value = !remote.value)}
+            />}
         </ElContainer>
     )
 })

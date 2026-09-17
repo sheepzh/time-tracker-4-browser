@@ -17,6 +17,7 @@ const _default = defineComponent<{}>(() => {
         query: query.value,
         sortKey: 'focus',
         sortDirection: 'DESC',
+        remote: false,
     }), { defaultValue: [] })
 
     return () => <Flex column height='100%'>

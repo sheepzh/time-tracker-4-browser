@@ -2,6 +2,8 @@ import { sendMsg2Runtime } from "./common"
 
 export const listSiteStats = (param?: tt4b.stat.SiteQuery) => sendMsg2Runtime('stat.sites', param)
 
+export const countSiteStats = (param?: tt4b.stat.SiteQuery) => sendMsg2Runtime('stat.countSite', param)
+
 export const getSiteStatPage = (param?: tt4b.stat.SitePageQuery) => sendMsg2Runtime('stat.sitePage', param)
 
 export function deleteSiteStatByHost(host: string, date?: [string?, string?] | string) {
@@ -24,8 +26,4 @@ export const batchDeleteStats = (targets: tt4b.stat.Row[]) => sendMsg2Runtime('s
 
 export function countGroupStatsByIds(groupIds: number[], date: string | [string?, string?]) {
     return sendMsg2Runtime('stat.countGroup', { groupIds, date })
-}
-
-export function countSiteStatsByHosts(hosts: string[], date: string | [string?, string?]) {
-    return sendMsg2Runtime('stat.countSite', { host: hosts, date })
 }
