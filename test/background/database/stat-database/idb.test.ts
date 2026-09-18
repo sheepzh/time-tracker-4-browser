@@ -8,14 +8,9 @@ const GROUP_1 = 1
 const GROUP_2 = 2
 const MAYBE_GROUP_1 = '1'
 
-let db: IDBStatDatabase
+const db = new IDBStatDatabase()
 
 describe('stat-database/idb', () => {
-    beforeAll(async () => {
-        db = new IDBStatDatabase()
-        await db.upgrade()
-    })
-
     beforeEach(() => db.clear())
 
     test('accumulate', async () => {

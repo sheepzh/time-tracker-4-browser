@@ -166,12 +166,12 @@ export async function getCurrentSite(url?: string): Promise<tt4b.site.Current | 
     const { host } = extractHostname(url)
     const normal = await getSite({ host, type: 'normal' })
 
-    const others = siteHolder.matchVirtual(url)
+    const others = await siteHolder.matchVirtual(url)
     const mergedRules = await mergeRuleDatabase.selectAll()
     const mergeRuler = new CustomizedHostMergeRuler(mergedRules)
     const merged = mergeRuler.merge(host)
     const mergedSite = await getSite({ host: merged, type: 'merged' })
     others.push(mergedSite)
-    const white = siteHolder.isWhitelist(host, url)
+    const white = await siteHolder.isWhitelist(host, url)
     return { url, normal, others, white }
 }

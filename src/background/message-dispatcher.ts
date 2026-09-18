@@ -6,7 +6,6 @@
  */
 
 import { onRuntimeMessage } from "@api/chrome/runtime"
-import { log } from '@bg/logger'
 import focusPresetDatabase from "@db/focus-preset-database"
 import focusHolder from '@service/focus/holder'
 import cateDatabase from './database/cate-database'
@@ -40,12 +39,9 @@ function processParam(param: unknown): unknown {
     if (param === null || param === undefined) {
         return undefined
     }
-    const startTs = Date.now()
     // Convert null to undefined, because null can't be serialized in chrome.runtime.sendMessage
     const json = JSON.stringify(param)
-    const result = JSON.parse(json, (_key, val) => val ?? undefined)
-    log(`Processed param in ${Date.now() - startTs}ms`)
-    return result
+    return JSON.parse(json, (_key, val) => val ?? undefined)
 }
 
 class MessageDispatcher {
@@ -146,7 +142,6 @@ class MessageDispatcher {
         if (!code) {
             return { code: 'ignore' }
         }
-        log(`Received message: ${code} with data: `, message?.data)
         const handler = this.handlers[code]
         if (!handler) {
             console.warn(`Handler not registered for code: ${code}`)

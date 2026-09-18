@@ -63,25 +63,6 @@ export async function iterateCursor<T = unknown>(
     })
 }
 
-type TransactionError = 'Connection' | 'StoreNotFound' | 'DataError' | 'Unknown'
-
-const detectTransactionError = (err: unknown): TransactionError => {
-    if (!(err instanceof DOMException)) {
-        console.warn("Non-DOMException error during transaction", err)
-        return 'Unknown'
-    }
-    const { name } = err
-    switch (name) {
-        case 'InvalidStateError':
-        case 'AbortError': return 'Connection'
-        case 'NotFoundError': return 'StoreNotFound'
-        case 'DataError': return 'DataError'
-        default:
-            console.warn(`Unknown dom exception: name=${name}`)
-            return 'Unknown'
-    }
-}
-
 export function closedRangeKey(lower: IDBValidKey | undefined, upper: IDBValidKey | undefined): IDBKeyRange | undefined {
     if (lower !== undefined && upper !== undefined) {
         if (lower > upper) {
@@ -147,6 +128,12 @@ export abstract class BaseIDBStorage<T = Record<string, unknown>> {
         return new Promise<IDBDatabase>((resolve, reject) => {
             const checkRequest = factory.open(this.#DB_NAME)
             checkRequest.onsuccess = () => resolve(checkRequest.result)
+            checkRequest.onupgradeneeded = () => {
+                const db = checkRequest.result
+                if (db.objectStoreNames.contains(this.table)) return
+                const store = db.createObjectStore(this.table, { keyPath: this.key })
+                this.#createIndexes(store)
+            }
             checkRequest.onerror = () => reject(checkRequest.error || new Error("Failed to open database"))
         })
     }
@@ -156,7 +143,7 @@ export abstract class BaseIDBStorage<T = Record<string, unknown>> {
         await this.withStore(store => store.clear(), 'readwrite')
     }
 
-    async upgrade(): Promise<void> {
+    async #upgrade(): Promise<void> {
         const factory = typeof window !== 'undefined' ? window.indexedDB : globalThis.indexedDB
 
         const checkDb = await new Promise<IDBDatabase>((resolve, reject) => {
@@ -199,9 +186,9 @@ export abstract class BaseIDBStorage<T = Record<string, unknown>> {
                         reject(new Error("Upgrade transaction was aborted"))
                     }
 
-                    let store = upgradeDb.objectStoreNames.contains(this.table)
+                    const store = upgradeDb.objectStoreNames.contains(this.table)
                         ? transaction.objectStore(this.table)
-                        : upgradeDb.createObjectStore(this.table, { keyPath: this.key as string | string[] })
+                        : upgradeDb.createObjectStore(this.table, { keyPath: this.key })
                     this.#createIndexes(store)
                 } catch (error) {
                     console.error("Failed to upgrade database in onupgradeneeded", error)
@@ -266,12 +253,10 @@ export abstract class BaseIDBStorage<T = Record<string, unknown>> {
     }
 
     protected async withStore<T = unknown>(operation: (store: IDBObjectStore) => Awaitable<T>, mode?: IDBTransactionMode): Promise<T> {
-        let db = await this.initDb()
-
         for (let retryCount = 0; retryCount < 2; retryCount++) {
-            let trans: IDBTransaction | undefined
             try {
-                trans = db.transaction(this.table, mode ?? 'readwrite')
+                const db = await this.initDb()
+                const trans = db.transaction(this.table, mode ?? 'readwrite')
                 const store = trans.objectStore(this.table)
                 const result = await operation(store)
                 const transaction = trans
@@ -282,26 +267,17 @@ export abstract class BaseIDBStorage<T = Record<string, unknown>> {
                 })
                 return result
             } catch (e) {
-                const errorType = detectTransactionError(e)
+                const retryable = e instanceof DOMException
+                    && ['InvalidStateError', 'AbortError', 'NotFoundError'].includes(e.name)
+                if (!retryable) throw e
 
-                if (errorType === 'Unknown') {
-                    console.error("Failed to process with transaction", e)
-                    if (trans && !trans.error && trans.mode !== 'readonly') {
-                        try {
-                            trans.abort()
-                        } catch (ignored) { }
-                    }
-                    throw e
-                }
-
-                if (errorType === 'StoreNotFound') {
+                if (e.name === 'NotFoundError') {
                     this.#db?.close()
-                    await this.upgrade()
+                    await this.#upgrade()
                 }
 
                 this.#db = undefined
                 BaseIDBStorage.#initPromises.delete(this.table)
-                db = await this.initDb()
             }
         }
         throw new Error("Max retries exceeded")

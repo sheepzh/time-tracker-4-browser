@@ -136,7 +136,7 @@ class BadgeManager {
         if (isNotTrackable(url)) return '∅'
         const { host, protocol } = extractHostname(url)
         if (protocol === 'file' && !this.#countLocalFiles) return '∅'
-        if (siteHolder.isWhitelist(host, url)) return 'W'
+        if (await siteHolder.isWhitelist(host, url)) return 'W'
         if (this.#pausedTabId === tabId) return 'P'
         const { focus } = await statDatabase.get(host, new Date())
         return mill2Str(focus)

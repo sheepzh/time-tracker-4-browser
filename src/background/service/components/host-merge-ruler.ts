@@ -48,7 +48,7 @@ function convert(dbItem: tt4b.site.MergeRule): RegRuleItem | [string, string | n
     if (origin.includes('*')) {
         const regStr = processRegStr(origin)
         const reg = new RegExp('^' + regStr + '$')
-        return { reg, result: merged } as RegRuleItem
+        return { reg, result: merged }
     } else {
         return [origin, merged]
     }
@@ -56,9 +56,7 @@ function convert(dbItem: tt4b.site.MergeRule): RegRuleItem | [string, string | n
 
 export default class CustomizedHostMergeRuler {
     private noRegMergeRules: { [origin: string]: string | number } = {}
-
     private regulars: RegRuleItem[] = []
-
     private cache: FIFOCache<string> = new FIFOCache(500)
 
     constructor(rules: tt4b.site.MergeRule[]) {

@@ -43,7 +43,7 @@ export async function handleTrackTimeEvent(event: tt4b.core.Event, tab: ChromeTa
     const { countLocalFiles } = await optionHolder.get()
     if (protocol === "file" && !countLocalFiles) return
 
-    if (siteHolder.isWhitelist(host, url)) return
+    if (await siteHolder.isWhitelist(host, url)) return
 
     await handleTime({ host, url, groupId }, [start, end], tabId)
     if (tabId) {
