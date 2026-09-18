@@ -1,4 +1,3 @@
-import { log } from '@bg/logger'
 import { escapeRegExp } from '@util/pattern'
 import { isNotZeroResult } from '@util/stat'
 import { createObjectGuard, isOptionalInt } from 'typescript-guard'
@@ -129,7 +128,6 @@ export class ClassicStatDatabase extends BaseDatabase implements StatDatabase {
      * @param condition     condition
      */
     async select(condition?: StatCondition): Promise<tt4b.core.Row[]> {
-        log("select:{condition}", condition)
         return this.filter(condition)
     }
 

@@ -28,6 +28,5 @@ export function mergeDate<T extends tt4b.stat.Row>(origin: T[]): T[] {
             exist.mergedRows.push(toMerge)
         }
     })
-    const newRows = Object.values(map)
-    return newRows as T[]
+    return Object.values(map) as T[]
 }

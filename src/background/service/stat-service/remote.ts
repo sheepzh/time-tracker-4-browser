@@ -45,14 +45,13 @@ export async function processRemote(origin: tt4b.stat.SiteRow[], param?: StatCon
 function processRemoteRow(rowMap: Record<string, MakeRequired<tt4b.stat.SiteRow, 'composition'>>, remoteBase: tt4b.core.Row) {
     const row = cvt2SiteRow(remoteBase)
     const key = identifyStatKey(row)
-    let exist = rowMap[key]
-    !exist && (exist = rowMap[key] = {
+    const exist: MakeRequired<tt4b.stat.SiteRow, 'composition'> = rowMap[key] ?? (rowMap[key] = {
         date: row.date,
         siteKey: row.siteKey,
         time: 0,
         focus: 0,
         composition: { focus: [], time: [] },
-    } satisfies MakeRequired<tt4b.stat.SiteRow, 'composition'>)
+    })
 
     const { focus = 0, time = 0, run = 0, cid = '', cname } = row
 

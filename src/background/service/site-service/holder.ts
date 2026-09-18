@@ -14,9 +14,12 @@ type DataNode = {
 class SiteHolder {
     #virtualMap = new Map<string, DataNode>()
     #whitelist = new Map<string, tt4b.site.SiteInfo>()
+    #ready: Promise<void>
 
     constructor() {
-        db.select().then(sites => sites.forEach(site => this.buildWith(site)))
+        this.#ready = db.select()
+            .then(sites => sites.forEach(site => this.buildWith(site)))
+            .catch(e => console.log('Failed to init site-holder', e))
     }
 
     buildWith(site: tt4b.site.SiteInfo) {
@@ -47,7 +50,8 @@ class SiteHolder {
      * @param url
      * @returns virtual sites
      */
-    matchVirtual(url: string): tt4b.site.SiteInfo[] {
+    async matchVirtual(url: string): Promise<tt4b.site.SiteInfo[]> {
+        await this.#ready
         return Array.from(this.#virtualMap.values())
             .filter(({ reg }) => reg.test(url))
             .map(({ site }) => site)
@@ -59,8 +63,8 @@ class SiteHolder {
      * 3. if any matched virtual sites is white, return true
      * 4. or return false
      */
-    isWhitelist(host: string, url: string): boolean {
-        const virtualSites = this.matchVirtual(url)
+    async isWhitelist(host: string, url: string): Promise<boolean> {
+        const virtualSites = await this.matchVirtual(url)
         for (const virtual of virtualSites) {
             if (!virtual.options?.white) return false
         }

@@ -80,7 +80,7 @@ type IncreaseResult = {
  * @returns the rules is limit cause of this operation
  */
 export async function addLimitFocusTime(host: string, url: string, focusTime: number): Promise<IncreaseResult> {
-    if (siteHolder.isWhitelist(host, url)) return { limited: [] }
+    if (await siteHolder.isWhitelist(host, url)) return { limited: [] }
 
     const allEffective = await selectLimit({ url, effective: true })
 
@@ -148,7 +148,7 @@ function addFocusForEach(item: tt4b.limit.Item, focusTime: number, durationMill:
  * @returns the rules is limited
  */
 export async function incLimitVisit(host: string, url: string): Promise<tt4b.limit.Item[]> {
-    if (siteHolder.isWhitelist(host, url)) return []
+    if (await siteHolder.isWhitelist(host, url)) return []
 
     const allEnabled = await selectLimit({ enabled: true, url })
     const { limitDelayDuration: delayDuration } = await optionHolder.get()

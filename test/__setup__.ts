@@ -27,14 +27,12 @@ async function drainPendingTasks(times = 5): Promise<void> {
     }
 }
 
-beforeAll(() => {
-    global.chrome = {
-        runtime: {
-            id: 'mock_runtime_id',
-            getManifest: () => ({ manifest_version: 3, name: 'mock_manifest', version: 'foo.bar' }),
-        } satisfies Pick<typeof chrome.runtime, 'id' | 'getManifest'>
-    } as unknown as typeof global.chrome
-})
+global.chrome = {
+    runtime: {
+        id: 'mock_runtime_id',
+        getManifest: () => ({ manifest_version: 3, name: 'mock_manifest', version: 'foo.bar' }),
+    } satisfies Pick<typeof chrome.runtime, 'id' | 'getManifest'>
+} as unknown as typeof global.chrome
 
 afterAll(async () => {
     await drainPendingTasks()
