@@ -4,11 +4,9 @@ import { cvtDateRange2Str, MILL_PER_DAY } from "@util/time"
 import { createObjectGuard, createStringUnionGuard, isInt } from 'typescript-guard'
 
 export type BizOption = {
-    name: string
     value: number
     // Extensive info
     host: string
-    alias?: string
 }
 
 export type TopKChartType = 'bar' | 'pie' | 'halfPie'
@@ -42,23 +40,23 @@ export const useTopKChart = <EC>(Wrapper: new () => EchartsWrapper<BizOption[], 
     const remote = useRemote()
     return useEcharts(Wrapper, async () => {
         const now = new Date()
-        const startTime: Date = new Date(now.getTime() - MILL_PER_DAY * filter.dayNum)
-        const query: tt4b.stat.SiteQuery = {
+        const { dayNum, topK: size } = filter
+        const startTime: Date = new Date(now.getTime() - MILL_PER_DAY * dayNum)
+        const { list: top } = await getSiteStatPage({
+            num: 1, size,
             date: cvtDateRange2Str([startTime, now]),
             sortKey: "time",
             sortDirection: 'DESC',
             mergeDate: true,
             remote: remote.value,
-        }
-        const SIZE = filter.topK
-        const { list: top } = await getSiteStatPage({ num: 1, size: SIZE, ...query })
+        })
         const data: BizOption[] = top.map(({ time, siteKey: { host }, alias }) => ({
             name: alias ?? host,
             host, alias,
             value: time,
         }))
-        for (let realSize = top.length; realSize < SIZE; realSize++) {
-            data.push({ name: '', host: '', value: 0 })
+        for (let realSize = top.length; realSize < size; realSize++) {
+            data.push({ host: '', value: 0 })
         }
         return data
     }, { deps: [() => ({ ...filter }), remote] })

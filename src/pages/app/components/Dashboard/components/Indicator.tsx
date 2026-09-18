@@ -46,7 +46,7 @@ async function query(): Promise<_Value> {
         browsingTime += focus
     })
     const periods = await listPeriods({ size: 8 })
-    const firstDate = allData.map(a => a.date).filter(d => d.length === 8).sort()[0]
+    const firstDate = allData.map(a => a.date).toSorted((a, b) => a.localeCompare(b))[0]
 
     return {
         sites: hostSet.size,

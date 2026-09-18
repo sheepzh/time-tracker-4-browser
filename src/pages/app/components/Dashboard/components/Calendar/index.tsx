@@ -75,7 +75,7 @@ const _default = defineComponent<{}>(() => {
 
     return () => (
         <Flex height="100%" gap={4} column>
-            <ChartTitle text={titleText(data.value)} />
+            <ChartTitle text={titleText(data.value)} remote={remote.value} />
             <div ref={elRef} style={{ flex: 1 }} />
         </Flex>
     )
