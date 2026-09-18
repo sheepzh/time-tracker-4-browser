@@ -65,7 +65,7 @@ function filterByValue<T extends Pick<tt4b.stat.Row, 'focus' | 'time'>>(
     })
 }
 
-export async function countSite(param?: tt4b.stat.SiteQuery): Promise<number> {
+export async function countSite(param?: Omit<tt4b.stat.SiteQuery, 'remote'>): Promise<number> {
     const rows = await statDatabase.select(param)
     return rows.length
 }

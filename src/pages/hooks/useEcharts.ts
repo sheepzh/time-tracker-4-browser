@@ -9,9 +9,9 @@ import { getOption } from "@api/sw/option"
 import { processAnimation, processAria, processFont, processRtl } from "@util/echarts"
 import type { AriaComponentOption, ComposeOption, SeriesOption, TitleComponentOption } from "echarts"
 import { type ECharts, init } from "echarts/core"
-import { ElLoading } from "element-plus"
-import { type Ref, type WatchSource, isRef, onMounted, ref, watch } from "vue"
+import { type Ref, isRef, onMounted, ref, watch } from "vue"
 import { useElementSize } from './useElementSize'
+import { type RequestOption, useRequest } from './useRequest'
 import { useWindowSize } from "./useWindowSize"
 
 type BaseEchartsOption = ComposeOption<
@@ -84,54 +84,36 @@ export abstract class EchartsWrapper<BizOption, EchartsOption> {
     }
 }
 
-type WrapperResult<BizOption, EchartsOption, EW extends EchartsWrapper<BizOption, EchartsOption>> = {
-    elRef: Ref<HTMLDivElement | undefined>
-    wrapper: EW
+type Options<EW> = Pick<RequestOption<never, never>, 'manual' | 'deps'> & {
+    afterInit?: ArgCallback<EW>
 }
 
-export const useEcharts = <BizOption, EchartsOption, EW extends EchartsWrapper<BizOption, EchartsOption>>(
+export const useEcharts = <
+    BizOption,
+    EchartsOption,
+    EW extends EchartsWrapper<BizOption, EchartsOption> = EchartsWrapper<BizOption, EchartsOption>,
+    Data extends BizOption = BizOption,
+>(
     Wrapper: new () => EW,
-    fetch: (() => Promise<BizOption> | BizOption) | Ref<BizOption>,
-    option?: {
-        hideLoading?: boolean
-        manual?: boolean
-        afterInit?: ArgCallback<EW>,
-        deps?: WatchSource | WatchSource[],
-    }): WrapperResult<BizOption, EchartsOption, EW> => {
+    fetch: (() => Awaitable<Data>) | Ref<Data>,
+    { afterInit, manual, deps }: Options<EW> = {},
+) => {
     const elRef = ref<HTMLDivElement>()
-    const wrapperInstance = new Wrapper()
-    const {
-        hideLoading = false,
-        manual = false,
-        afterInit,
-        deps,
-    } = option ?? {}
+    const wrapper = new Wrapper()
 
-    let refresh = async () => {
-        const loading = hideLoading ? null : ElLoading.service({ target: elRef.value })
-        try {
-            const option = isRef(fetch) ? fetch.value : await fetch()
-            await wrapperInstance.render(option)
-        } finally {
-            loading?.close?.()
-        }
-    }
+    const data = isRef(fetch) ? fetch : useRequest(fetch, { manual, deps, loadingTarget: elRef }).data
+    watch(data, () => data.value && wrapper.render(data.value))
+
     onMounted(() => {
         const target = elRef.value
-        target && wrapperInstance.init(target)
-        afterInit?.(wrapperInstance)
-        !manual && refresh()
-        isRef(fetch) && watch(fetch, refresh)
-
-        // The element reference perhaps change
-        watch(elRef, () => elRef.value && wrapperInstance.init(elRef.value))
+        target && wrapper.init(target)
+        afterInit?.(wrapper)
     })
-
-    deps && watch(deps, refresh)
+    watch(elRef, () => elRef.value && wrapper.init(elRef.value))
 
     const { width: winW, height: winH } = useWindowSize()
     const { width: elW, height: elH } = useElementSize(elRef, { debounce: 50 })
-    watch([winW, winH, elW, elH], () => wrapperInstance?.resize?.())
+    watch([winW, winH, elW, elH], () => wrapper.resize())
 
-    return { elRef, wrapper: wrapperInstance }
+    return { elRef, wrapper, data }
 }

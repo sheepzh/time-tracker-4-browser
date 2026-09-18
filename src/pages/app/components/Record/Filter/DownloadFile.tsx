@@ -13,7 +13,6 @@ import { defineComponent } from "vue"
 import { queryAll } from "../common"
 import { useRecordFilter, useRecordSort } from "../context"
 import { exportCsv, exportJson, ExportParam } from "../file-export"
-import { ICON_BTN_STYLE } from "./common"
 
 const ALL_FILE_FORMATS = ["json", "csv"] as const
 type FileFormat = typeof ALL_FILE_FORMATS[number]
@@ -49,7 +48,7 @@ const DownloadFile = defineComponent(() => {
                 </ElDropdownMenu>
             }}
         >
-            <ElButton size="small" style={ICON_BTN_STYLE}>
+            <ElButton size="small" style={{ width: '30px', height: '30px', padding: '7px' }}>
                 <ElIcon size={17} style={{ padding: "0 1px" }}>
                     <Download />
                 </ElIcon>

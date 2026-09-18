@@ -39,14 +39,13 @@ const fetchData = async (remote: boolean): Promise<[thisMonth: Row[], lastMonth:
 
 const _default = defineComponent<{}>(() => {
     const remote = useRemote()
-    const { elRef } = useEcharts(Wrapper, () => fetchData(remote.value), {
-        // force to fix the size is different from the parent
-        afterInit: ew => ew.resize(),
-        deps: remote,
-    })
+    const { elRef } = useEcharts(Wrapper, () => fetchData(remote.value), { deps: remote })
     return () => (
         <Flex height="100%" column gap={4}>
-            <ChartTitle text={t(msg => msg.dashboard.monthOnMonth.title, { k: TOP_NUM })} />
+            <ChartTitle
+                remote={remote.value}
+                text={t(msg => msg.dashboard.monthOnMonth.title, { k: TOP_NUM })}
+            />
             <div ref={elRef} style={{ flex: 1 }} />
         </Flex>
     )

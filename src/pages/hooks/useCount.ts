@@ -1,4 +1,4 @@
-import { onScopeDispose, ref, Ref, watch } from 'vue'
+import { onScopeDispose, ref, toValue, watch, type WatchSource } from 'vue'
 
 type CountDownOptions = {
     countdown: number
@@ -25,7 +25,7 @@ export const useCountDown = (option: CountDownOptions): NoArgCallback => {
 }
 
 type CountUpOptions = {
-    value: Ref<number>
+    value: WatchSource<number>
     duration?: number
     onFinish?: NoArgCallback
 }
@@ -58,7 +58,7 @@ export const useCountUp = (options: CountUpOptions) => {
         const progress = Math.min(elapsed / (duration * 1000), 1)
         const ease = 1 - (1 - progress) ** 3
 
-        const target = Math.round(value.value)
+        const target = Math.round(toValue(value))
         const start = Math.round(current.value)
         current.value = Math.round(start + (target - start) * ease)
 

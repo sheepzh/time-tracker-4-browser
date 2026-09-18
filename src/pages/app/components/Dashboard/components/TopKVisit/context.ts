@@ -1,8 +1,7 @@
 import { getSiteStatPage } from "@api/sw/stat"
-import { localReactive, useProvide, useProvider, useRemote, useRequest } from "@hooks"
+import { EchartsWrapper, localReactive, useEcharts, useProvide, useProvider, useRemote } from "@hooks"
 import { cvtDateRange2Str, MILL_PER_DAY } from "@util/time"
 import { createObjectGuard, createStringUnionGuard, isInt } from 'typescript-guard'
-import { type ShallowRef } from "vue"
 
 export type BizOption = {
     name: string
@@ -20,25 +19,28 @@ export type TopKFilterOption = {
     dayNum: number
     topKChartType: TopKChartType
 }
-const isTopKFilterOption = createObjectGuard<TopKFilterOption>({
+const isFilter = createObjectGuard<TopKFilterOption>({
     topK: isInt,
     dayNum: isInt,
     topKChartType: isTopKChartType,
 })
 
-type Context = {
-    value: ShallowRef<BizOption[]>
-    filter: TopKFilterOption
-}
+type Context = { filter: TopKFilterOption }
 
 const NAMESPACE = 'dashboardTopKVisit'
 
 export const initProvider = () => {
     const filter = localReactive<TopKFilterOption>(
-        `${NAMESPACE}_filter`, isTopKFilterOption, { topK: 6, dayNum: 30, topKChartType: 'pie' }
+        `${NAMESPACE}_filter`, isFilter, { topK: 6, dayNum: 30, topKChartType: 'pie' }
     )
+    useProvide<Context>(NAMESPACE, { filter })
+    return filter
+}
+
+export const useTopKChart = <EC>(Wrapper: new () => EchartsWrapper<BizOption[], EC>) => {
+    const filter = useTopKFilter()
     const remote = useRemote()
-    const { data: value } = useRequest(async () => {
+    return useEcharts(Wrapper, async () => {
         const now = new Date()
         const startTime: Date = new Date(now.getTime() - MILL_PER_DAY * filter.dayNum)
         const query: tt4b.stat.SiteQuery = {
@@ -59,16 +61,7 @@ export const initProvider = () => {
             data.push({ name: '', host: '', value: 0 })
         }
         return data
-    }, {
-        deps: [() => filter.topK, () => filter.topKChartType, () => filter.dayNum],
-        defaultValue: []
-    })
-
-    useProvide<Context>(NAMESPACE, { value, filter })
-
-    return filter
+    }, { deps: [() => ({ ...filter }), remote] })
 }
-
-export const useTopKValue = () => useProvider<Context, 'value'>(NAMESPACE, "value").value
 
 export const useTopKFilter = () => useProvider<Context, 'filter'>(NAMESPACE, "filter").filter

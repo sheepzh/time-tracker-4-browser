@@ -34,7 +34,7 @@ async function computeBatchDeleteMsg(selected: tt4b.stat.Row[], mergeDate: boole
     if (mergeDate) {
         // All the items
         const date = cvtDateRange2Str(dateRange) ?? []
-        const siteCount = host.length ? await countSiteStats({ host, date, remote: false }) : 0
+        const siteCount = host.length ? await countSiteStats({ host, date }) : 0
         const groupCount = groupIds.length ? await countGroupStatsByIds(groupIds, date) : 0
         count2Delete = siteCount + groupCount
     }

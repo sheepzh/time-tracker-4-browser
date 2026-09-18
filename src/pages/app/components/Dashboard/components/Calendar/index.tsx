@@ -11,12 +11,12 @@ import { listSiteStats } from '@api/sw/stat'
 import ChartTitle from '@app/components/Dashboard/ChartTitle'
 import { t } from "@app/locale"
 import { RECORD_ROUTE, type RecordQuery } from '@app/router/constants'
-import { useEcharts, useRemote, useRequest } from "@hooks"
+import { useEcharts, useRemote } from "@hooks"
 import { Flex } from '@pages/components'
 import { groupBy, sum } from "@util/array"
 import { getAppPageUrl } from "@util/constant/url"
 import { cvtDateRange2Str, formatTimeYMD, MILL_PER_DAY, MILL_PER_HOUR } from "@util/time"
-import { computed, defineComponent } from "vue"
+import { defineComponent } from "vue"
 import Wrapper, { type BizOption, type ChartValue } from "./Wrapper"
 
 const titleText = (option: Result | undefined) => {
@@ -65,13 +65,12 @@ function handleClick(value: ChartValue): void {
 
 const _default = defineComponent<{}>(() => {
     const remote = useRemote()
-    const { data } = useRequest(() => fetchData(remote.value), { deps: remote })
-    const biz = computed(() => (data.value as BizOption))
-    const { elRef } = useEcharts(Wrapper, biz, {
+    const { elRef, data } = useEcharts(Wrapper, () => fetchData(remote.value), {
         afterInit(ew) {
             const supportClick = !window.matchMedia("(any-pointer:coarse)").matches
             supportClick && ew.instance?.on("click", (params: any) => handleClick(params.value as ChartValue))
-        }
+        },
+        deps: remote,
     })
 
     return () => (

@@ -12,7 +12,7 @@ type Value = {
 
 export const initRemote = () => {
     const remote = ref(false)
-    const { data: remoteVisible, refresh } = useRequest(() => checkAuth().then(errMsg => !!errMsg), {
+    const { data: remoteVisible, refresh } = useRequest(() => checkAuth().then(errMsg => !errMsg), {
         defaultValue: false,
         onSuccess: v => !v && (remote.value = v)
     })

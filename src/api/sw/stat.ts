@@ -2,7 +2,7 @@ import { sendMsg2Runtime } from "./common"
 
 export const listSiteStats = (param?: tt4b.stat.SiteQuery) => sendMsg2Runtime('stat.sites', param)
 
-export const countSiteStats = (param?: tt4b.stat.SiteQuery) => sendMsg2Runtime('stat.countSite', param)
+export const countSiteStats = (param?: Omit<tt4b.stat.SiteQuery, 'remote'>) => sendMsg2Runtime('stat.countSite', param)
 
 export const getSiteStatPage = (param?: tt4b.stat.SitePageQuery) => sendMsg2Runtime('stat.sitePage', param)
 

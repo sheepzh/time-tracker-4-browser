@@ -6,7 +6,7 @@
  */
 
 import { css, injectGlobal } from '@emotion/css'
-import { initRemote } from '@pages/hooks/useRemote'
+import { initRemote } from '@hooks'
 import { ElAside, ElContainer, ElHeader, useNamespace } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
 import { RouterView } from "vue-router"
