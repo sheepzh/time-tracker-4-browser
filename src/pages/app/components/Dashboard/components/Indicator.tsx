@@ -59,7 +59,7 @@ async function query(): Promise<_Value> {
 
 const computeI18nParam = (valueParam: Record<string, number>, duration?: number): Record<string, VNode> => {
     return Object.fromEntries(
-        Object.entries(valueParam || {}).map(([key, val]) => [key, <NumberGrow value={val} duration={duration} />])
+        Object.entries(valueParam).map(([key, val]) => [key, <NumberGrow value={val} duration={duration} />])
     )
 }
 type Props = {
