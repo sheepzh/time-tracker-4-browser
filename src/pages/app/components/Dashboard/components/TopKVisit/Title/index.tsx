@@ -25,7 +25,7 @@ const Title = defineComponent<{}>(() => {
                     k: <TitleSelect field="topK" values={[6, 8, 10, 12]} />,
                     day: <TitleSelect field="dayNum" values={[7, 30, 90, 180]} />,
                 })}
-                <RemoteIcon visible={remote.value} />
+                <RemoteIcon visible={remote.value} style={{ marginInlineStart: '3px' }} />
             </Flex>
             <IconRadioGroup
                 v-show={!isXs.value}
