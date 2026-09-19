@@ -1,15 +1,12 @@
 import { getSiteStatPage } from "@api/sw/stat"
-import { localReactive, useProvide, useProvider, useRequest } from "@hooks"
+import { EchartsWrapper, localReactive, useEcharts, useProvide, useProvider, useRemote } from "@hooks"
 import { cvtDateRange2Str, MILL_PER_DAY } from "@util/time"
 import { createObjectGuard, createStringUnionGuard, isInt } from 'typescript-guard'
-import { type ShallowRef } from "vue"
 
 export type BizOption = {
-    name: string
     value: number
     // Extensive info
     host: string
-    alias?: string
 }
 
 export type TopKChartType = 'bar' | 'pie' | 'halfPie'
@@ -20,53 +17,49 @@ export type TopKFilterOption = {
     dayNum: number
     topKChartType: TopKChartType
 }
-const isTopKFilterOption = createObjectGuard<TopKFilterOption>({
+const isFilter = createObjectGuard<TopKFilterOption>({
     topK: isInt,
     dayNum: isInt,
     topKChartType: isTopKChartType,
 })
 
-type Context = {
-    value: ShallowRef<BizOption[]>
-    filter: TopKFilterOption
-}
+type Context = { filter: TopKFilterOption }
 
 const NAMESPACE = 'dashboardTopKVisit'
 
 export const initProvider = () => {
     const filter = localReactive<TopKFilterOption>(
-        `${NAMESPACE}_filter`, isTopKFilterOption, { topK: 6, dayNum: 30, topKChartType: 'pie' }
+        `${NAMESPACE}_filter`, isFilter, { topK: 6, dayNum: 30, topKChartType: 'pie' }
     )
-    const { data: value } = useRequest(async () => {
+    useProvide<Context>(NAMESPACE, { filter })
+    return filter
+}
+
+export const useTopKChart = <EC>(Wrapper: new () => EchartsWrapper<BizOption[], EC>) => {
+    const filter = useTopKFilter()
+    const remote = useRemote()
+    return useEcharts(Wrapper, async () => {
         const now = new Date()
-        const startTime: Date = new Date(now.getTime() - MILL_PER_DAY * filter.dayNum)
-        const query: tt4b.stat.SiteQuery = {
+        const { dayNum, topK: size } = filter
+        const startTime: Date = new Date(now.getTime() - MILL_PER_DAY * dayNum)
+        const { list: top } = await getSiteStatPage({
+            num: 1, size,
             date: cvtDateRange2Str([startTime, now]),
             sortKey: "time",
             sortDirection: 'DESC',
             mergeDate: true,
-        }
-        const SIZE = filter.topK
-        const { list: top } = await getSiteStatPage({ num: 1, size: SIZE, ...query })
+            remote: remote.value,
+        })
         const data: BizOption[] = top.map(({ time, siteKey: { host }, alias }) => ({
             name: alias ?? host,
             host, alias,
             value: time,
         }))
-        for (let realSize = top.length; realSize < SIZE; realSize++) {
-            data.push({ name: '', host: '', value: 0 })
+        for (let realSize = top.length; realSize < size; realSize++) {
+            data.push({ host: '', value: 0 })
         }
         return data
-    }, {
-        deps: [() => filter.topK, () => filter.topKChartType, () => filter.dayNum],
-        defaultValue: []
-    })
-
-    useProvide<Context>(NAMESPACE, { value, filter })
-
-    return filter
+    }, { deps: [() => ({ ...filter }), remote] })
 }
-
-export const useTopKValue = () => useProvider<Context, 'value'>(NAMESPACE, "value").value
 
 export const useTopKFilter = () => useProvider<Context, 'filter'>(NAMESPACE, "filter").filter

@@ -8,7 +8,7 @@
 import { type AppSiteAnalysisQuery } from '@/shared/route'
 import { listCateStats, listSiteStats } from "@api/sw/stat"
 import { isTimeFormat } from '@app/util/types'
-import { localRef, useProvide, useProvider, useRequest } from "@hooks"
+import { localRef, useProvide, useProvider, useRemote, useRequest } from "@hooks"
 import { extractHostname } from '@util/pattern'
 import { ref, type Ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
@@ -31,15 +31,15 @@ function parseQuery(): AnalysisTarget | undefined {
     return undefined
 }
 
-async function queryRows(target: AnalysisTarget | undefined): Promise<(tt4b.stat.CateRow | tt4b.stat.SiteRow)[]> {
+async function queryRows(target: AnalysisTarget | undefined, remote: boolean): Promise<(tt4b.stat.CateRow | tt4b.stat.SiteRow)[]> {
     const { key, type } = target ?? {}
     if (!key) return []
 
     if (type === 'cate') {
-        return await listCateStats({ cateIds: [key], sortKey: 'date' })
+        return await listCateStats({ cateIds: [key], sortKey: 'date', remote })
     } else if (type === 'site') {
         const { host, type: siteType } = key
-        return await listSiteStats({ host, mergeHost: siteType === 'merged', sortKey: 'date' })
+        return await listSiteStats({ host, mergeHost: siteType === 'merged', sortKey: 'date', remote })
     } else {
         // Not supported yet
         return []
@@ -50,9 +50,13 @@ const NAMESPACE = 'siteAnalysis'
 
 export const initAnalysis = () => {
     const target = ref(parseQuery())
+    const remote = useRemote()
     const timeFormat = localRef('analysis_timeFormat', isTimeFormat, 'default')
 
-    const { data: rows, loading } = useRequest(() => queryRows(target.value), { deps: target, defaultValue: [] })
+    const { data: rows, loading } = useRequest(
+        () => queryRows(target.value, remote.value),
+        { deps: [target, remote], defaultValue: [] },
+    )
     useProvide<Context>(NAMESPACE, { target, timeFormat, rows })
 
     return { loading }

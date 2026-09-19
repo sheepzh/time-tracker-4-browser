@@ -14,7 +14,7 @@ export const useDatePicker = (options: { onChange: ArgCallback<Date> }) => {
         const start = formatTimeYMD(new Date(ms.getTime() - ms.getDay() * MILL_PER_WEEK))
         const end = formatTimeYMD(new Date(me.getTime() + (6 - me.getDay()) * MILL_PER_WEEK))
 
-        const stats = await listSiteStats({ date: [start, end] })
+        const stats = await listSiteStats({ date: [start, end], remote: false })
         const dateSet = new Set<string>()
         stats.forEach(({ date }) => date && dateSet.add(date))
         return Array.from(dateSet)

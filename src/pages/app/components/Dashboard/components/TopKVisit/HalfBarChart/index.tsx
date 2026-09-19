@@ -1,11 +1,9 @@
-import { useEcharts } from "@hooks"
 import { defineComponent } from "vue"
-import { useTopKValue } from "../context"
+import { useTopKChart } from '../context'
 import Wrapper from "./Wrapper"
 
 const _default = defineComponent(() => {
-    const value = useTopKValue()
-    const { elRef } = useEcharts(Wrapper, value, { manual: true })
+    const { elRef } = useTopKChart(Wrapper)
     return () => <div style={{ width: '100%' }} ref={elRef} />
 })
 

@@ -12,7 +12,7 @@ import Pagination from '@app/components/common/Pagination'
 import { t } from '@app/locale'
 import { cvt2LocaleTime } from '@app/util/time'
 import { Histogram } from "@element-plus/icons-vue"
-import { useDocumentVisibility, useManualRequest, useRequest, useState } from '@hooks'
+import { useDocumentVisibility, useManualRequest, useRemote, useRequest, useState } from '@hooks'
 import { Flex, TooltipWrapper } from '@pages/components'
 import { isRtl } from "@util/document"
 import { identifySiteKey } from '@util/site'
@@ -67,10 +67,11 @@ const _default = defineComponent<{}>((_, ctx) => {
     const [page, setPage] = useState<tt4b.common.PageQuery>({ size: 20, num: 1 })
     const sort = useRecordSort()
     const filter = useRecordFilter()
+    const remote = useRemote()
     const visible = computed(() => computeVisible(filter))
-    const { data, refresh, loading } = useRequest(() => queryPage(filter, sort.value, page.value), {
+    const { data, refresh, loading } = useRequest(() => queryPage(filter, sort.value, page.value, remote.value), {
         loadingTarget: () => table.value?.$el,
-        deps: [() => ({ ...filter }), sort, page],
+        deps: [() => ({ ...filter }), sort, page, remote],
         defaultValue: { list: [], total: 0 },
     })
     const summary = useSummary()
@@ -155,8 +156,6 @@ const _default = defineComponent<{}>((_, ctx) => {
                         {visible.value.group && <GroupColumn />}
                         {visible.value.cate && <CateColumn onChange={refresh} />}
                         <TimeColumn dimension="focus" />
-                        {runVisible.value && <TimeColumn dimension="run" sortable={false} />}
-                        {mediaVisible.value && <TimeColumn dimension="media" sortable={false} />}
                         <ElTableColumn
                             prop={'time' satisfies RecordSort['prop']}
                             label={t(msg => msg.item.time)}
@@ -166,7 +165,7 @@ const _default = defineComponent<{}>((_, ctx) => {
                         >
                             {({ row }: RowData) => (
                                 <TooltipWrapper
-                                    usePopover={filter.readRemote}
+                                    usePopover={remote.value}
                                     placement="top"
                                     effect={Effect.LIGHT}
                                     offset={10}
@@ -177,6 +176,8 @@ const _default = defineComponent<{}>((_, ctx) => {
                                 />
                             )}
                         </ElTableColumn>
+                        {runVisible.value && <TimeColumn dimension="run" sortable={false} />}
+                        {mediaVisible.value && <TimeColumn dimension="media" sortable={false} />}
                         <OperationColumn onDelete={refresh} />
                     </ElTable>
                 </Flex>

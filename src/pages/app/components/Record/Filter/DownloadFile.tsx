@@ -7,25 +7,25 @@
 
 import { useCategory } from "@app/context"
 import { Download } from "@element-plus/icons-vue"
-import { useTabGroups } from "@hooks"
+import { useRemote, useTabGroups } from "@hooks"
 import { ElButton, ElDropdown, ElDropdownItem, ElDropdownMenu, ElIcon } from "element-plus"
 import { defineComponent } from "vue"
 import { queryAll } from "../common"
 import { useRecordFilter, useRecordSort } from "../context"
 import { exportCsv, exportJson, ExportParam } from "../file-export"
-import { ICON_BTN_STYLE } from "./common"
 
 const ALL_FILE_FORMATS = ["json", "csv"] as const
 type FileFormat = typeof ALL_FILE_FORMATS[number]
 
 const DownloadFile = defineComponent(() => {
     const filter = useRecordFilter()
+    const remote = useRemote()
     const sort = useRecordSort()
     const cate = useCategory()
     const { groupMap } = useTabGroups()
 
     const handleDownload = async (format: FileFormat) => {
-        const rows = await queryAll(filter, sort.value)
+        const rows = await queryAll(filter, sort.value, remote.value)
         const param: ExportParam = {
             rows, filter,
             categories: cate.all,
@@ -48,7 +48,7 @@ const DownloadFile = defineComponent(() => {
                 </ElDropdownMenu>
             }}
         >
-            <ElButton size="small" style={ICON_BTN_STYLE}>
+            <ElButton size="small" style={{ width: '30px', height: '30px', padding: '7px' }}>
                 <ElIcon size={17} style={{ padding: "0 1px" }}>
                     <Download />
                 </ElIcon>

@@ -65,7 +65,7 @@ function filterByValue<T extends Pick<tt4b.stat.Row, 'focus' | 'time'>>(
     })
 }
 
-export async function countSite(param?: tt4b.stat.SiteQuery): Promise<number> {
+export async function countSite(param?: Omit<tt4b.stat.SiteQuery, 'remote'>): Promise<number> {
     const rows = await statDatabase.select(param)
     return rows.length
 }
@@ -74,14 +74,14 @@ export async function selectSite(param?: tt4b.stat.SiteQuery): Promise<tt4b.stat
     const {
         mergeHost: needMerge, mergeDate: needMergeDate,
         date, query, host, cateIds,
-        virtual, inclusiveRemote,
+        virtual, remote,
         sortKey, sortDirection,
     } = param ?? {}
 
     const condition: StatCondition = { date, virtual, keys: needMerge ? undefined : host }
     let origin = await statDatabase.select(condition)
     let siteRows = origin.map(cvt2SiteRow)
-    inclusiveRemote && (siteRows = await processRemote(siteRows, param))
+    remote && (siteRows = await processRemote(siteRows, param))
 
     // Merge with rules
     needMerge && (siteRows = await mergeHost(siteRows))
@@ -114,14 +114,14 @@ export async function selectCate(param?: tt4b.stat.CateQuery): Promise<tt4b.stat
     const {
         mergeDate: needMergeDate,
         date, query, cateIds,
-        inclusiveRemote,
+        remote,
         sortKey, sortDirection,
     } = param ?? {}
 
     let origin = await statDatabase.select({ date })
 
     let siteRows = origin.map(cvt2SiteRow)
-    inclusiveRemote && (siteRows = await processRemote(siteRows, param))
+    remote && (siteRows = await processRemote(siteRows, param))
 
     // Fill site info
     await fillSite(siteRows)

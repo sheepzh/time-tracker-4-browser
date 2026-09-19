@@ -6,11 +6,16 @@ type RecordRow = {
     name: string
     category: string
     time: string
-    runTime?: string
     visit: string
+    runTime?: string
+    mediaTime?: string
 }
 
 function readRecords(): RecordRow[] {
+    const headers = document.querySelectorAll('.el-table .el-table__header-wrapper table thead tr th')
+    const columns = Array.from(headers).map(e => e.textContent)
+    const hasRunTime = columns.includes('Run Time')
+    const hasMediaTime = columns.includes('Media Time')
     const rows = document.querySelectorAll('.el-table .el-table__body-wrapper table tbody tr')
     return Array.from(rows).map(row => {
         const cells = row.querySelectorAll('td')
@@ -19,15 +24,10 @@ function readRecords(): RecordRow[] {
         const name = cells[3]?.textContent ?? ''
         const category = cells[4]?.textContent ?? ''
         const time = cells[5]?.textContent ?? ''
-        let runTime: string | undefined = undefined, visit = ''
-        if (cells?.length === 9) {
-            // Including run time
-            runTime = cells[6]?.textContent ?? undefined
-            visit = cells[7]?.textContent ?? ''
-        } else {
-            visit = cells[6]?.textContent ?? ''
-        }
-        return { date, url, name, category, time, runTime, visit }
+        const visit = cells[6]?.textContent ?? ''
+        const runTime = hasRunTime ? cells[7]?.textContent : undefined
+        const mediaTime = hasMediaTime ? cells[hasRunTime ? 8 : 7]?.textContent : undefined
+        return { date, url, name, category, time, runTime, visit, mediaTime }
     })
 }
 

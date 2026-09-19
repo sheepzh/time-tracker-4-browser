@@ -1,5 +1,6 @@
+import { RemoteIcon } from '@app/components/common/RemoteIcon'
 import { tN } from "@app/locale"
-import { useXsState } from '@hooks'
+import { useRemote, useXsState } from '@hooks'
 import { Flex, IconRadioGroup } from '@pages/components'
 import { BarChart, HalfPieChart, RoseChart } from '@pages/icons'
 import { type Component, defineComponent } from "vue"
@@ -12,8 +13,9 @@ const CHART_CONFIG: { [type in TopKChartType]: Component } = {
     halfPie: HalfPieChart,
 }
 
-const Title = defineComponent(() => {
+const Title = defineComponent<{}>(() => {
     const filter = useTopKFilter()
+    const remote = useRemote()
     const isXs = useXsState()
 
     return () => (
@@ -23,6 +25,7 @@ const Title = defineComponent(() => {
                     k: <TitleSelect field="topK" values={[6, 8, 10, 12]} />,
                     day: <TitleSelect field="dayNum" values={[7, 30, 90, 180]} />,
                 })}
+                <RemoteIcon visible={remote.value} style={{ marginInlineStart: '3px' }} />
             </Flex>
             <IconRadioGroup
                 v-show={!isXs.value}

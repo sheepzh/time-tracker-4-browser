@@ -258,6 +258,8 @@ export function getAllDatesBetween(start: Date | number, end: Date | number, for
 /**
  * yyyyMMdd => Date
  */
+export function parseTime(dateStr: string): Date
+export function parseTime(dateStr: string | undefined): Date | undefined
 export function parseTime(dateStr: string | undefined): Date | undefined {
     if (!dateStr) return undefined
     const year = parseInt(dateStr.substring(0, 4))

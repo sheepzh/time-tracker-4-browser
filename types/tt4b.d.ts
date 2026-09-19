@@ -693,10 +693,10 @@ declare namespace tt4b {
             & BaseQuery
             & common.SortBy<'date' | 'host' | core.Dimension>
             & {
+                remote: boolean
                 virtual?: boolean
                 host?: string | string[]
                 mergeHost?: boolean
-                inclusiveRemote?: boolean
                 cateIds?: number[]
             }
 
@@ -745,7 +745,7 @@ declare namespace tt4b {
         type CateQuery = BaseQuery
             & common.SortBy<'date' | 'focus' | 'time'>
             & {
-                inclusiveRemote?: boolean
+                remote: boolean
                 cateIds?: number[]
             }
 
@@ -1102,7 +1102,7 @@ declare namespace tt4b {
             & _MakeRegistry<'stat.sites', stat.SiteQuery | undefined, stat.SiteRow[]>
             & _MakeRegistry<'stat.sitePage', stat.SitePageQuery | undefined, common.PageResult<stat.SiteRow>>
             & _MakeRegistry<'stat.deleteSite', stat.SiteDeleteQuery>
-            & _MakeRegistry<'stat.countSite', stat.SiteQuery | undefined, number>
+            & _MakeRegistry<'stat.countSite', Omit<stat.SiteQuery, 'remote'> | undefined, number>
             & _MakeRegistry<'stat.cates', stat.CateQuery | undefined, stat.CateRow[]>
             & _MakeRegistry<'stat.catePage', stat.CatePageQuery | undefined, common.PageResult<stat.CateRow>>
             & _MakeRegistry<'stat.groups', stat.GroupQuery | undefined, stat.GroupRow[]>

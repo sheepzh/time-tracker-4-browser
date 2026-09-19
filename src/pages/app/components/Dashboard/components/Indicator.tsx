@@ -12,25 +12,17 @@ import { Sunrise } from "@element-plus/icons-vue"
 import { useRequest, useXsState } from "@hooks"
 import { Flex } from '@pages/components'
 import { groupBy, sum } from '@util/array'
-import { getStartOfDay, MILL_PER_DAY, MILL_PER_HOUR } from "@util/time"
+import { getDayLength, getStartOfDay, MILL_PER_HOUR, parseTime } from "@util/time"
 import { ElIcon, ElScrollbar } from "element-plus"
-import { computed, defineComponent, toRef, type VNode } from "vue"
+import { computed, defineComponent, type FunctionalComponent, type VNode } from "vue"
 import NumberGrow from "./NumberGrow"
 
 type _Value = {
-    installedDays?: number
+    installedDays: number
     sites: number
     visits: number
     browsingTime: number
     busiestClock: number | undefined
-}
-
-/**
- * @return days used
- */
-function calculateInstallDays(installTime: Date, now: Date): number {
-    const deltaMills = getStartOfDay(now) - getStartOfDay(installTime)
-    return Math.round(deltaMills / MILL_PER_DAY)
 }
 
 function calcBusiestClock(rows: tt4b.period.Row[]): number | undefined {
@@ -38,7 +30,7 @@ function calcBusiestClock(rows: tt4b.period.Row[]): number | undefined {
         ({ startTime }) => startTime - getStartOfDay(startTime),
         list => sum(list.map(e => e.milliseconds))
     )
-    const maxOffsetStr = Object.entries(map).sort((a, b) => b[1] - a[1])[0]?.[0]
+    const maxOffsetStr = Object.entries(map).toSorted((a, b) => b[1] - a[1])[0]?.[0]
     if (maxOffsetStr === undefined) return undefined
     return Math.floor(Number.parseInt(maxOffsetStr) / MILL_PER_HOUR)
 }
@@ -54,30 +46,20 @@ async function query(): Promise<_Value> {
         browsingTime += focus
     })
     const periods = await listPeriods({ size: 8 })
-    const busiestClock = calcBusiestClock(periods)
+    const firstDate = allData.map(a => a.date).toSorted((a, b) => a.localeCompare(b))[0]
 
-    const result: _Value = {
+    return {
         sites: hostSet.size,
         visits,
         browsingTime,
-        busiestClock,
+        busiestClock: calcBusiestClock(periods),
+        installedDays: firstDate ? getDayLength(parseTime(firstDate), new Date()) : 0
     }
-
-    // 2. if not exist, calculate from all data items
-    const firstDate = allData.map(a => a.date).filter(d => d.length === 8).sort()[0]
-    if (firstDate) {
-        const year = parseInt(firstDate.substring(0, 4))
-        const month = parseInt(firstDate.substring(4, 6)) - 1
-        const date = parseInt(firstDate.substring(6, 8))
-        const installTime = new Date(year, month, date)
-        result.installedDays = calculateInstallDays(installTime, new Date())
-    }
-    return result
 }
 
 const computeI18nParam = (valueParam: Record<string, number>, duration?: number): Record<string, VNode> => {
     return Object.fromEntries(
-        Object.entries(valueParam || {}).map(([key, val]) => [key, <NumberGrow value={val} duration={duration} />])
+        Object.entries(valueParam).map(([key, val]) => [key, <NumberGrow value={val} duration={duration} />])
     )
 }
 type Props = {
@@ -86,16 +68,11 @@ type Props = {
     duration?: number
 }
 
-const IndicatorLabel = defineComponent<Props>(props => {
-    const param = toRef(props, 'param')
-    const i18nParam = computed(() => computeI18nParam(param.value, props.duration))
-
-    return () => (
-        <div style={{ paddingInlineStart: '10px', paddingBottom: '10px', fontSize: '15px' }}>
-            {param.value && tN(props.path, i18nParam.value)}
-        </div>
-    )
-}, { props: ['path', 'param', 'duration'] })
+const IndicatorLabel: FunctionalComponent<Props> = ({ path, duration, param }) => (
+    <div style={{ paddingInlineStart: '10px', paddingBottom: '10px', fontSize: '15px' }}>
+        {tN(path, computeI18nParam(param, duration))}
+    </div>
+)
 
 const computeMost2HourParam = (value: _Value | undefined): { start: number, end: number } => {
     const { busiestClock } = value ?? {}

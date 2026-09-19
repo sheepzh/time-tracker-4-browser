@@ -10,7 +10,7 @@ import { CategoryFilter } from '@app/components/common/filter'
 import { GRID_CELL_STYLE, GRID_WRAPPER_STYLE } from '@app/components/common/grid'
 import { KanbanCard } from "@app/components/common/kanban"
 import { isOptionalIntArray } from '@app/util/types'
-import { localReactive, useRequest, useXsState } from '@hooks'
+import { localReactive, useRemote, useRequest, useXsState } from '@hooks'
 import { Flex } from '@pages/components'
 import { cvtDateRange2Str, getDayLength } from '@util/time'
 import { createObjectGuard } from 'typescript-guard'
@@ -29,15 +29,16 @@ const isFilter = createObjectGuard<FilterOption>({ cateIds: isOptionalIntArray }
 const _default = defineComponent<{}>(() => {
     const globalFilter = useHabitFilter()
     const filter = localReactive<{ cateIds?: number[] }>('habit_site_filter', isFilter, {})
+    const remote = useRemote()
     const date = computed(() => cvtDateRange2Str(globalFilter.dateRange))
     const dateLength = computed(() => getDayLength(globalFilter.dateRange[0], globalFilter.dateRange[1]))
     const watchSource = [() => date.value, () => filter.cateIds]
     const { data: rows } = useRequest(
-        () => listSiteStats({ date: date.value, cateIds: filter.cateIds }),
+        () => listSiteStats({ date: date.value, cateIds: filter.cateIds, remote: remote.value }),
         { deps: watchSource, defaultValue: [] },
     )
     const { data: merged } = useRequest(
-        () => listSiteStats({ date: date.value, cateIds: filter.cateIds, mergeDate: true }),
+        () => listSiteStats({ date: date.value, cateIds: filter.cateIds, mergeDate: true, remote: remote.value }),
         { deps: watchSource, defaultValue: [] },
     )
 
