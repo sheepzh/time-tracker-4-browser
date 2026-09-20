@@ -32,15 +32,13 @@ const TYPE_TAG: Record<tt4b.site.Type, TagProps['type']> = {
 const _default = defineComponent<{}>((_, ctx) => {
     const selected = ref<tt4b.site.SiteInfo[]>([])
     const { filter } = useSiteManage()
-    const loadingTarget = ref<HTMLElement>()
     const page = reactive<tt4b.common.PageQuery>({ num: 1, size: 20 })
     const { data: pagination, refresh, loading } = useRequest(() => {
         const { query: fuzzyQuery, cateIds, types, host } = filter
         return getSitePage({ fuzzyQuery, cateIds, types, host }, page)
     }, {
         defaultValue: { list: [], total: 0 },
-        loadingTarget,
-        deps: [() => filter, () => page],
+        deps: [() => ({ ...filter }), () => page],
     })
 
     const changeIcon = useOperation(({ type, host, alias }: tt4b.site.SiteInfo, iconUrl: string | undefined) => {

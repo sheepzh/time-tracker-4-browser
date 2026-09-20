@@ -1,20 +1,20 @@
 import { initDarkTheme } from "@pages/util/dark-mode"
-import type { FrameRequest, FrameResponse } from "@popup/types"
+import { isRequest, type FrameResponse } from "@popup/types"
 import { injectSkeletonCss } from './style/skeleton'
 
 function injectFrame() {
-    const iframe: HTMLIFrameElement = document.createElement('iframe')
+    const iframe = document.createElement('iframe')
     iframe.src = 'popup.html'
     iframe.style.display = 'none'
     document.body.append(iframe)
 
-    window.onmessage = (ev: MessageEvent) => {
-        const { stamp, data } = ev.data as FrameRequest || {}
+    window.onmessage = ({ data: evData, source }: MessageEvent) => {
+        if (!isRequest(evData)) return
+        const { stamp, data } = evData
         if (data !== 'themeInitialized') return
 
         iframe.style.display = 'block'
-        const res: FrameResponse = { stamp }
-        ev.source?.postMessage?.(res)
+        source?.postMessage?.({ stamp } satisfies FrameResponse)
     }
 }
 

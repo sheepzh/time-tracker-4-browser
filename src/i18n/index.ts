@@ -115,8 +115,8 @@ export function handleLocaleOption(option: tt4b.option.LocaleOption) {
  * Please invoke this function before doing anything
  * @since 0.8.0
  */
-export async function initLocale() {
-    const option = await getOption()
+export async function initLocale(option?: tt4b.option.AppearanceOption) {
+    option ??= await getOption()
     handleLocaleOption(option.locale)
 }
 
