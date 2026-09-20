@@ -1,9 +1,10 @@
 import { getGroup } from "@api/chrome/tabGroups"
 import {
-    batchDeleteStats, countGroupStatsByIds, countSiteStatsByHosts, deleteSiteStatByGroup, deleteSiteStatByHost,
+    batchDeleteStats, countGroupStatsByIds, countSiteStats, deleteSiteStatByGroup, deleteSiteStatByHost,
 } from "@api/sw/stat"
 import { type I18nKey, t } from '@app/locale'
 import { DeleteFilled } from "@element-plus/icons-vue"
+import { useRemoteValue } from '@hooks'
 import { isGroup, isNormalSite, isSite } from "@util/stat"
 import { cvtDateRange2Str, formatTime, getBirthday } from "@util/time"
 import { ElButton, ElMessage, ElMessageBox } from "element-plus"
@@ -22,18 +23,18 @@ async function extractExample(hostExample: string | undefined, groupIdExample: n
 }
 
 async function computeBatchDeleteMsg(selected: tt4b.stat.Row[], mergeDate: boolean, dateRange: [number?, number?]): Promise<string> {
-    const hosts: string[] = []
+    const host: string[] = []
     const groupIds: number[] = []
     selected.forEach(row => {
-        isSite(row) && hosts.push(row.siteKey.host)
+        isSite(row) && host.push(row.siteKey.host)
         isGroup(row) && groupIds.push(row.groupKey)
     })
-    const example = await extractExample(hosts[0], groupIds[0])
+    const example = await extractExample(host[0], groupIds[0])
     let count2Delete = selected.length
     if (mergeDate) {
         // All the items
         const date = cvtDateRange2Str(dateRange) ?? []
-        const siteCount = hosts.length ? await countSiteStatsByHosts(hosts, date) : 0
+        const siteCount = host.length ? await countSiteStats({ host, date }) : 0
         const groupCount = groupIds.length ? await countGroupStatsByIds(groupIds, date) : 0
         count2Delete = siteCount + groupCount
     }
@@ -115,6 +116,7 @@ async function deleteBatch(selected: tt4b.stat.Row[], mergeDate: boolean, dateRa
 
 const BatchDelete = defineComponent<{}>(() => {
     const filter = useRecordFilter()
+    const remote = useRemoteValue()
     const disabled = computed(() => {
         const { siteMerge } = filter
         return !!siteMerge && siteMerge !== 'group'
@@ -123,7 +125,7 @@ const BatchDelete = defineComponent<{}>(() => {
 
     return () => (
         <ElButton
-            v-show={!filter.readRemote}
+            v-show={!remote.value}
             disabled={disabled.value}
             type="primary"
             link

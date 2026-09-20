@@ -9,12 +9,14 @@ import { listSiteStats } from '@api/sw/stat'
 import { CategoryFilter } from '@app/components/common/filter'
 import { GRID_CELL_STYLE, GRID_WRAPPER_STYLE } from '@app/components/common/grid'
 import { KanbanCard } from "@app/components/common/kanban"
+import { RemoteIcon } from '@app/components/common/RemoteIcon'
+import { t } from '@app/locale'
 import { isOptionalIntArray } from '@app/util/types'
-import { localReactive, useRequest, useXsState } from '@hooks'
+import { localReactive, useRemoteValue, useRequest, useXsState } from '@hooks'
 import { Flex } from '@pages/components'
 import { cvtDateRange2Str, getDayLength } from '@util/time'
 import { createObjectGuard } from 'typescript-guard'
-import { computed, defineComponent } from "vue"
+import { computed, defineComponent, ref } from "vue"
 import { useHabitFilter } from '../context'
 import DailyTrend from "./DailyTrend"
 import Distribution from "./Distribution"
@@ -29,25 +31,31 @@ const isFilter = createObjectGuard<FilterOption>({ cateIds: isOptionalIntArray }
 const _default = defineComponent<{}>(() => {
     const globalFilter = useHabitFilter()
     const filter = localReactive<{ cateIds?: number[] }>('habit_site_filter', isFilter, {})
+    const remote = useRemoteValue()
     const date = computed(() => cvtDateRange2Str(globalFilter.dateRange))
     const dateLength = computed(() => getDayLength(globalFilter.dateRange[0], globalFilter.dateRange[1]))
-    const watchSource = [() => date.value, () => filter.cateIds]
+    const watchSource = [() => date.value, () => filter.cateIds, remote]
+    const el = ref<HTMLElement>()
     const { data: rows } = useRequest(
-        () => listSiteStats({ date: date.value, cateIds: filter.cateIds }),
-        { deps: watchSource, defaultValue: [] },
+        () => listSiteStats({ date: date.value, cateIds: filter.cateIds, remote: remote.value }),
+        { deps: watchSource, defaultValue: [], loadingTarget: el },
     )
     const { data: merged } = useRequest(
-        () => listSiteStats({ date: date.value, cateIds: filter.cateIds, mergeDate: true }),
-        { deps: watchSource, defaultValue: [] },
+        () => listSiteStats({ date: date.value, cateIds: filter.cateIds, mergeDate: true, remote: remote.value }),
+        { deps: watchSource, defaultValue: [], loadingTarget: el },
     )
 
     const isXs = useXsState()
 
     return () => (
-        <KanbanCard title={msg => msg.habit.site.title} v-slots={{
+        <KanbanCard v-slots={{
+            title: () => <Flex gap={3}>
+                <span>{t(msg => msg.habit.site.title)}</span>
+                <RemoteIcon visible={remote.value} />
+            </Flex>,
             filter: () => <CategoryFilter modelValue={filter.cateIds} onChange={v => filter.cateIds = v} />,
             default: () => (
-                <Flex gap={1} column={isXs.value} style={GRID_WRAPPER_STYLE}>
+                <Flex ref={el} gap={1} column={isXs.value} style={GRID_WRAPPER_STYLE}>
                     <Summary rows={rows.value} />
                     <Flex
                         flex={isXs.value ? undefined : 4}

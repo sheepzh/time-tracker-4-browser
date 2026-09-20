@@ -7,24 +7,11 @@
 
 import { useCountUp } from '@hooks'
 import { tNum } from '@i18n'
-import { computed, defineComponent, toRef } from "vue"
+import { defineComponent } from "vue"
 
-type Props = {
-    value: number
-    duration?: number
-    fontSize?: number
-}
-
-const NumberGrow = defineComponent<Props>(props => {
-    const value = toRef(props, 'value')
-    const { current } = useCountUp({ value, duration: props.duration })
-    const text = computed(() => tNum(current.value))
-    return () => <a
-        style={{
-            textDecoration: 'underline',
-            fontSize: props.fontSize ? `${props.fontSize}px` : undefined,
-        }}
-    >{text.value}</a>
-}, { props: ['value', 'duration', 'fontSize'] })
+const NumberGrow = defineComponent<{ value: number, duration?: number }>(props => {
+    const { current } = useCountUp({ value: () => props.value, duration: props.duration })
+    return () => <a style={{ textDecoration: 'underline' }}>{tNum(current.value)}</a>
+}, { props: ['value', 'duration'] })
 
 export default NumberGrow

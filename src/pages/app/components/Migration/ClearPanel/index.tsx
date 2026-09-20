@@ -41,7 +41,7 @@ const _default = defineComponent<{}>(() => {
     const onDelete = async (option: FilterOption) => {
         const q = buildClearStatQuery(option)
         if (!q) return ElMessage.warning("Param error")
-        const siteRows = await listSiteStats({ ...q, virtual: true })
+        const siteRows = await listSiteStats({ ...q, virtual: true, remote: false })
         const groupRows = await listGroupStats(q)
 
         const count = siteRows.length + groupRows.length

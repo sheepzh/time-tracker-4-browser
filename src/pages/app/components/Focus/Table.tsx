@@ -57,7 +57,7 @@ const Table = defineComponent<{}>(() => {
         <ElTable data={presets.value} border fit highlightCurrentRow>
             <ElTableColumn label={t(msg => msg.focus.presetName)}>
                 {({ row: { id, name } }: Scope) => (
-                    <Flex inline align='center' gap={5}>
+                    <Flex inline justify='center' align='center' gap={5} width='100%'>
                         <StateDot session={session.value} presetId={id} />
                         <span>{name}</span>
                     </Flex>

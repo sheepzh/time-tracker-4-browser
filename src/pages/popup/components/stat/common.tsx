@@ -28,7 +28,7 @@ export const queryRows = async (param: StatQuery): Promise<[rows: tt4b.stat.Row[
     const sortDirection: tt4b.common.SortDirection = 'DESC'
     let rows: tt4b.stat.Row[]
     if (mergeMethod === 'cate') {
-        rows = await listCateStats({ date, mergeDate: true, sortKey, sortDirection })
+        rows = await listCateStats({ date, mergeDate: true, sortKey, sortDirection, remote: false })
     } else if (mergeMethod === 'group') {
         rows = await listGroupStats({ date, mergeDate: true, sortKey, sortDirection })
     } else {
@@ -36,6 +36,7 @@ export const queryRows = async (param: StatQuery): Promise<[rows: tt4b.stat.Row[
             date, mergeDate: true,
             mergeHost: mergeMethod === 'domain',
             sortKey, sortDirection,
+            remote: false,
         })
     }
     return [rows, dateRange]

@@ -1,6 +1,6 @@
-import { ElLoadingService, type LoadingOptions } from "element-plus"
+import { ElLoadingService, type LoadingInstance, type LoadingOptions } from "element-plus"
 import {
-    onBeforeMount, onMounted, ref, shallowRef, watch,
+    onBeforeMount, onMounted, ref, shallowRef, toValue, watch,
     type Ref, type ShallowRef, type WatchSource,
 } from "vue"
 
@@ -18,24 +18,15 @@ export type RequestOption<T, P extends any[]> = {
 
 export type RequestResult<T, P extends any[]> = {
     data: ShallowRef<T>
-    ts: ShallowRef<number>
     refresh: (...p: P) => void
     refreshAsync: (...p: P) => Promise<void>
-    refreshAgain: () => void
     loading: ShallowRef<boolean>
-    param: ShallowRef<P | undefined>
 }
 
 const findLoadingEl = async (target: RequestOption<unknown, unknown[]>['loadingTarget']): Promise<string | HTMLElement | undefined> => {
     if (!target) return undefined
-    if (typeof target === 'string') {
-        return target
-    } else if (typeof target === 'function') {
-        const res = await target()
-        return res instanceof HTMLElement ? res : undefined
-    } else {
-        return target.value
-    }
+    if (typeof target === 'string') return target
+    return toValue(target)
 }
 
 export function useRequest<P extends any[], T>(
@@ -53,24 +44,19 @@ export function useRequest<P extends any[], T>(
     const {
         manual = false,
         defaultValue, defaultParam = ([] as any[] as P),
-        deps,
+        deps, loadingTarget,
         onSuccess, onError,
     } = option ?? {}
     const data = shallowRef(defaultValue) as ShallowRef<T>
     const loading = ref(false)
-    const param = ref<P>()
-    const ts = ref<number>(Date.now())
-
     const createLoading = useLoading(option)
 
     const refreshAsync = async (...p: P) => {
         loading.value = true
         const loadingInstance = await createLoading?.()
         try {
-            param.value = p
             const value = await getter?.(...p)
             data.value = value
-            ts.value = Date.now()
             onSuccess?.(value, ...p)
         } catch (e) {
             console.log("Errored when requesting", e)
@@ -83,17 +69,16 @@ export function useRequest<P extends any[], T>(
     const refresh = (...p: P) => { refreshAsync(...p) }
     if (!manual) {
         // If loading target specified, do first query after mounted
-        const hook = option?.loadingTarget ? onMounted : onBeforeMount
+        const hook = loadingTarget ? onMounted : onBeforeMount
         hook(() => refresh(...defaultParam))
     }
-    if (deps && (!Array.isArray(deps) || deps?.length)) {
+    if (deps && (!Array.isArray(deps) || deps.length)) {
         watch(deps, () => refresh(...defaultParam), { deep: true })
     }
-    const refreshAgain = () => param.value && refresh(...param.value)
-    return { data, ts, refresh, refreshAsync, refreshAgain, loading, param }
+    return { data, refresh, refreshAsync, loading }
 }
 
-const useLoading = <T, P extends any[]>(option?: RequestOption<T, P>) => {
+const useLoading = (option?: RequestOption<any, any>): Getter<LoadingInstance | null> | null => {
     const { loadingTarget, loadingText, loadingOptions } = option ?? {}
 
     if (loadingOptions) return () => ElLoadingService(loadingOptions)
@@ -101,7 +86,7 @@ const useLoading = <T, P extends any[]>(option?: RequestOption<T, P>) => {
         return async () => {
             let loadingEl = await findLoadingEl(loadingTarget)
             // fallback use document
-            !loadingEl && loadingText && (loadingEl = document.body)
+            if (loadingText) loadingEl ??= document.body
             return loadingEl ? ElLoadingService({ target: loadingEl, text: loadingText }) : null
         }
     }

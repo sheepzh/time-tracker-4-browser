@@ -5,7 +5,9 @@
  * https://opensource.org/licenses/MIT
  */
 
+import RemoteFloat from '@app/Layout/RemoteFloat'
 import { t } from "@app/locale"
+import { HELP_ROUTE } from '@app/router/constants'
 import { MediaSize, useMediaSize, useRequest, useXsState } from "@hooks"
 import { isTranslatingLocale, locale } from "@i18n"
 import { Flex } from '@pages/components'
@@ -37,9 +39,9 @@ const Link: FunctionalComponent<{ onClick?: NoArgCallback }> = ({ onClick }, ctx
     />
 )
 
-const _default = defineComponent(() => {
+const _default = defineComponent<{}>(() => {
     const router = useRouter()
-    const jump2Help = () => router.push({ path: "/other/help" })
+    const jump2Help = () => router.push({ path: HELP_ROUTE })
     const isNotEnOrZhCn = locale !== "en" && locale !== "zh_CN"
     const showHelp = isTranslatingLocale() || isNotEnOrZhCn
     const { data: showRate, refresh } = useRequest(recommendRate)
@@ -111,6 +113,7 @@ const _default = defineComponent(() => {
                     )}
                 </Flex>
             </ContentContainer>
+            <RemoteFloat />
         </ElScrollbar>
     )
 })

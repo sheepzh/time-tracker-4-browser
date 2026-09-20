@@ -5,6 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
+import RemoteFloat from '@app/Layout/RemoteFloat'
 import { useXsState } from '@hooks'
 import { defineComponent } from "vue"
 import ContentContainer from '../common/ContentContainer'
@@ -13,14 +14,19 @@ import Filter from "./Filter"
 import List from "./List"
 import Table from "./Table"
 
-const _default = defineComponent(() => {
+const _default = defineComponent<{}>(() => {
     const { comp } = initRecordContext()
     const isXs = useXsState()
 
-    return () => <ContentContainer v-slots={{
-        filter: () => <Filter />,
-        default: () => isXs.value ? <List ref={comp} /> : <Table ref={comp} />
-    }} />
+    return () => <>
+        <ContentContainer
+            v-slots={{
+                filter: () => <Filter />,
+                default: () => isXs.value ? <List ref={comp} /> : <Table ref={comp} />
+            }}
+        />
+        <RemoteFloat />
+    </>
 })
 
 export default _default

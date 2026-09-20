@@ -11,12 +11,12 @@ import { listSiteStats } from '@api/sw/stat'
 import ChartTitle from '@app/components/Dashboard/ChartTitle'
 import { t } from "@app/locale"
 import { RECORD_ROUTE, type RecordQuery } from '@app/router/constants'
-import { useEcharts, useRequest } from "@hooks"
+import { useEcharts, useRemoteValue } from "@hooks"
 import { Flex } from '@pages/components'
 import { groupBy, sum } from "@util/array"
 import { getAppPageUrl } from "@util/constant/url"
 import { cvtDateRange2Str, formatTimeYMD, MILL_PER_DAY, MILL_PER_HOUR } from "@util/time"
-import { computed, defineComponent } from "vue"
+import { defineComponent } from "vue"
 import Wrapper, { type BizOption, type ChartValue } from "./Wrapper"
 
 const titleText = (option: Result | undefined) => {
@@ -34,11 +34,11 @@ const titleText = (option: Result | undefined) => {
 
 type Result = BizOption & { yearAgo: Date }
 
-const fetchData = async (): Promise<Result> => {
+const fetchData = async (remote: boolean): Promise<Result> => {
     const endTime = new Date()
     const yearAgo = endTime.getTime() - MILL_PER_DAY * 365
     const startTime = await getWeekStartTime(yearAgo)
-    const items = await listSiteStats({ date: cvtDateRange2Str([startTime, endTime]), sortKey: 'date' })
+    const items = await listSiteStats({ date: cvtDateRange2Str([startTime, endTime]), sortKey: 'date', remote })
     const value = groupBy(items, i => i.date, list => sum(list.map(i => i.focus)))
     return { value, startTime, endTime, yearAgo: new Date(yearAgo) }
 }
@@ -63,19 +63,19 @@ function handleClick(value: ChartValue): void {
     createTabAfterCurrent(url)
 }
 
-const _default = defineComponent(() => {
-    const { data } = useRequest(fetchData)
-    const biz = computed(() => (data.value as BizOption))
-    const { elRef } = useEcharts(Wrapper, biz, {
+const _default = defineComponent<{}>(() => {
+    const remote = useRemoteValue()
+    const { elRef, data } = useEcharts(Wrapper, () => fetchData(remote.value), {
         afterInit(ew) {
             const supportClick = !window.matchMedia("(any-pointer:coarse)").matches
             supportClick && ew.instance?.on("click", (params: any) => handleClick(params.value as ChartValue))
-        }
+        },
+        deps: remote,
     })
 
     return () => (
         <Flex height="100%" gap={4} column>
-            <ChartTitle text={titleText(data.value)} />
+            <ChartTitle text={titleText(data.value)} remote={remote.value} />
             <div ref={elRef} style={{ flex: 1 }} />
         </Flex>
     )
