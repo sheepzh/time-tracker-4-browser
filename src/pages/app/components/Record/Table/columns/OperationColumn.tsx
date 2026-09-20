@@ -9,7 +9,7 @@ import { useRecordFilter } from '@app/components/Record/context'
 import { t } from '@app/locale'
 import { SITE_ANALYSIS_ROUTE, type SiteAnalysisQuery } from '@app/router/constants'
 import { Delete, Stopwatch } from "@element-plus/icons-vue"
-import { useTabGroups } from '@hooks'
+import { useRemoteValue, useTabGroups } from '@hooks'
 import { locale } from "@i18n"
 import { ConfirmButton } from '@pages/components'
 import { CATE_NOT_SET_ID } from "@util/site"
@@ -49,6 +49,7 @@ const deleteVisible = (row: tt4b.stat.Row) => {
 
 const _default = defineComponent<{ onDelete?: ArgCallback<tt4b.stat.Row> }>(({ onDelete }) => {
     const filter = useRecordFilter()
+    const remote = useRemoteValue()
     const { groupMap } = useTabGroups()
     const width = computed(() => {
         const siteMerge = filter.siteMerge
@@ -86,7 +87,7 @@ const _default = defineComponent<{ onDelete?: ArgCallback<tt4b.stat.Row> }>(({ o
                     {t(msg => msg.item.operation.analysis)}
                 </ElButton>
                 <ConfirmButton
-                    visible={!filter.readRemote && deleteVisible(row)}
+                    visible={!remote.value && deleteVisible(row)}
                     buttonProps={{ icon: Delete, type: 'danger', size: 'small', link: true }}
                     buttonText={t(msg => msg.button.delete)}
                     confirmText={computeDeleteConfirmMsg(row, filter, groupMap.value)}

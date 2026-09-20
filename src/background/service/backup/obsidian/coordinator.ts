@@ -1,41 +1,34 @@
-import {
-    DEFAULT_VAULT,
-    deleteFile,
-    getFileContent,
-    INVALID_AUTH_CODE,
-    listAllFiles,
-    NOT_FOUND_CODE,
-    type ObsidianRequestContext,
-    updateFile
-} from "@api/obsidian"
+import { deleteFile, getFileContent, listAllFiles, OBSIDIAN_DEFAULTS, type ObsidianRequestContext, updateFile } from "@api/obsidian"
 import DateIterator from "@util/date-iterator"
 import { getBirthday, parseTime } from '@util/time'
 import { processDir } from "../common"
 import { CLIENT_FILE_NAME, convertClients2Markdown, divideByDate, parseData } from "../markdown"
 
-function prepareContext(context: tt4b.backup.CoordinatorContext<never>) {
-    const { auth, ext, cid } = context
-    const { token } = auth || {}
-    if (!token) {
-        throw new Error("Token must not be empty. This can't happen, please contact the developer")
-    }
-    let { endpoint, dirPath, bucket } = ext || {}
+const INVALID_AUTH_CODE = 40101
+const NOT_FOUND_CODE = 40400
+
+function prepareContext(auth: tt4b.backup.Auth | undefined, ext: tt4b.backup.TypeExt | undefined) {
+    const { token } = auth ?? {}
+    if (!token) throw new Error("Token must not be empty")
+    let { endpoint, dirPath, bucket: vault } = ext ?? {}
+    endpoint ||= OBSIDIAN_DEFAULTS.endpoint
+    vault ||= OBSIDIAN_DEFAULTS.vault
     dirPath = processDir(dirPath)
-    const ctx: ObsidianRequestContext = { auth: token, endpoint, vault: bucket }
-    return { ctx, dirPath, cid }
+    const ctx: ObsidianRequestContext = { auth: token, endpoint, vault }
+    return { ctx, dirPath }
 }
 
 export default class ObsidianCoordinator implements tt4b.backup.Coordinator<never> {
 
-    async updateClients(context: tt4b.backup.CoordinatorContext<never>, clients: tt4b.backup.Client[]): Promise<void> {
-        const { ctx, dirPath } = prepareContext(context)
+    async updateClients({ auth, ext }: tt4b.backup.CoordinatorContext<never>, clients: tt4b.backup.Client[]): Promise<void> {
+        const { ctx, dirPath } = prepareContext(auth, ext)
         const clientFilePath = `${dirPath}${CLIENT_FILE_NAME}`
         const content = convertClients2Markdown(clients)
         await updateFile(ctx, clientFilePath, content)
     }
 
-    async listAllClients(context: tt4b.backup.CoordinatorContext<never>): Promise<tt4b.backup.Client[]> {
-        const { ctx, dirPath } = prepareContext(context)
+    async listAllClients({ auth, ext }: tt4b.backup.CoordinatorContext<never>): Promise<tt4b.backup.Client[]> {
+        const { ctx, dirPath } = prepareContext(auth, ext)
         const clientFilePath = `${dirPath}${CLIENT_FILE_NAME}`
         try {
             const content = await getFileContent(ctx, clientFilePath)
@@ -46,8 +39,8 @@ export default class ObsidianCoordinator implements tt4b.backup.Coordinator<neve
         }
     }
 
-    async download(context: tt4b.backup.CoordinatorContext<never>, start: string, end: string, targetCid?: string): Promise<tt4b.core.Row[]> {
-        const { ctx, dirPath, cid } = prepareContext(context)
+    async download({ auth, ext, cid }: tt4b.backup.CoordinatorContext<never>, start: string, end: string, targetCid?: string): Promise<tt4b.core.Row[]> {
+        const { ctx, dirPath } = prepareContext(auth, ext)
 
         const startTime = parseTime(start) ?? getBirthday()
         const endTime = parseTime(end) ?? new Date()
@@ -62,8 +55,8 @@ export default class ObsidianCoordinator implements tt4b.backup.Coordinator<neve
         return result
     }
 
-    async upload(context: tt4b.backup.CoordinatorContext<never>, rows: tt4b.core.Row[]): Promise<void> {
-        const { ctx, dirPath, cid } = prepareContext(context)
+    async upload({ auth, ext, cid }: tt4b.backup.CoordinatorContext<never>, rows: tt4b.core.Row[]): Promise<void> {
+        const { ctx, dirPath } = prepareContext(auth, ext)
 
         const dateAndContents = divideByDate(rows)
         await Promise.all(
@@ -74,27 +67,20 @@ export default class ObsidianCoordinator implements tt4b.backup.Coordinator<neve
         )
     }
 
-    async testAuth(authInfo: tt4b.backup.Auth, ext: tt4b.backup.TypeExt): Promise<string | undefined> {
-        let { endpoint, dirPath, bucket } = ext || {}
-        let { token: auth } = authInfo || {}
-        dirPath = processDir(dirPath)
-        if (!dirPath) {
-            return "Path of directory is blank"
-        }
-        if (!auth) {
-            return "Authorization is blank"
-        }
+    async testAuth(auth: tt4b.backup.Auth, ext: tt4b.backup.TypeExt): Promise<string | undefined> {
         try {
-            const result = await listAllFiles({ endpoint, auth, vault: bucket }, dirPath)
+            const { ctx, dirPath } = prepareContext(auth, ext)
+            const result = await listAllFiles(ctx, dirPath)
             const { errorCode, message } = result || {}
             if (errorCode === NOT_FOUND_CODE) {
-                return `Directory[vault=${bucket || DEFAULT_VAULT}, path=${dirPath}] not found`
+                // Empty directory will return this errCode
+                return undefined
             } else if (errorCode === INVALID_AUTH_CODE) {
                 return 'Your authorization token is invalid'
             }
             return message
         } catch (e) {
-            const { message: errMsg } = e as Error
+            const errMsg = e instanceof Error ? e.message : e?.toString()
             const lowerErrMsg = errMsg?.toLocaleLowerCase?.()
             if (lowerErrMsg?.includes("failed to fetch")) {
                 return "Unable to fetch this endpoint, please make sure it is accessible"
@@ -105,9 +91,9 @@ export default class ObsidianCoordinator implements tt4b.backup.Coordinator<neve
         }
     }
 
-    async clear(context: tt4b.backup.CoordinatorContext<never>, client: tt4b.backup.Client): Promise<void> {
+    async clear({ auth, ext }: tt4b.backup.CoordinatorContext<never>, client: tt4b.backup.Client): Promise<void> {
         const cid = client.id
-        const { ctx, dirPath } = prepareContext(context)
+        const { ctx, dirPath } = prepareContext(auth, ext)
         const clientDirPath = `${dirPath}${cid}/`
         let files: string[] = []
         try {

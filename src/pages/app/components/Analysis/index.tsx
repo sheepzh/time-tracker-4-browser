@@ -4,6 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import RemoteFloat from '@app/Layout/RemoteFloat'
 import { ElScrollbar } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
 import ContentContainer, { FilterContainer } from '../common/ContentContainer'
@@ -24,6 +25,7 @@ const _default = defineComponent(() => {
                 <Summary v-loading={loading.value} />
                 <Trend v-loading={loading.value} />
             </ContentContainer>
+            <RemoteFloat />
         </ElScrollbar>
     )
 })

@@ -4,6 +4,7 @@ import { useCategory } from '@app/context'
 import { cvt2LocaleTime, periodFormatter } from '@app/util/time'
 import { Calendar, Delete, Mouse, QuartzWatch } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
+import { useRemoteValue } from '@hooks'
 import { ConfirmButton, Flex, TooltipWrapper } from '@pages/components'
 import { getComposition, isCate, isSite } from "@util/stat"
 import { Effect, ElCard, ElCheckbox, ElDivider, ElIcon, ElTag, ElText, useNamespace } from "element-plus"
@@ -53,10 +54,11 @@ const SiteTitle: FunctionalComponent<{ value: tt4b.stat.SiteRow, cateNames: Reco
 const Card = defineComponent<Props>(props => {
     const { nameMap } = useCategory()
     const filter = useRecordFilter()
+    const remote = useRemoteValue()
     const formatter = (focus: number): string => periodFormatter(focus, { format: filter?.timeFormat })
     const { date, focus, time } = props.value
 
-    const canDelete = computed(() => isSite(props.value) && !filter.siteMerge && !filter.readRemote)
+    const canDelete = computed(() => isSite(props.value) && !filter.siteMerge && !remote.value)
     const onDelete = async () => {
         await handleDelete(props.value, filter)
         props.onDelete?.(props.value)

@@ -16,7 +16,6 @@ import BatchDelete from "./BatchDelete"
 import DownloadFile from "./DownloadFile"
 import MergeFilterItem from "./MergeFilterItem"
 import RangeFilter from './RangeFilter'
-import RemoteClient from "./RemoteClient"
 
 const shortcut = (text: string, agoOfStart?: number, agoOfEnd?: number): ElDatePickerShortcut => (
     { text, value: daysAgo(agoOfStart ?? 0, agoOfEnd ?? 0) }
@@ -66,7 +65,6 @@ const _default = defineComponent<{}>(() => {
             </Flex>
             <Flex gap={4}>
                 <BatchDelete />
-                <RemoteClient />
                 <DownloadFile />
             </Flex>
         </Flex>

@@ -1,6 +1,6 @@
 import ScrollList from '@app/components/common/ScrollList'
 import { t } from '@app/locale'
-import { useScrollRequest } from '@hooks'
+import { useRemoteValue, useScrollRequest } from '@hooks'
 import { Flex } from '@pages/components'
 import { getHost } from "@util/stat"
 import { ElText } from 'element-plus'
@@ -12,14 +12,16 @@ import Card from './Card'
 
 const _default = defineComponent<{}>((_, ctx) => {
     const filterOption = useRecordFilter()
+    const remote = useRemoteValue()
     const { data, loading, loadMore, end, reset } = useScrollRequest(async (num, size) => {
         const pagination = await queryPage(
             filterOption,
             { order: "descending", prop: "focus" },
             { num, size },
+            remote.value,
         )
         return pagination.list
-    }, { resetDeps: () => ({ ...filterOption }) })
+    }, { resetDeps: [() => ({ ...filterOption }), remote] })
 
     const summary = useSummary(true)
     const selected = ref<number[]>([])

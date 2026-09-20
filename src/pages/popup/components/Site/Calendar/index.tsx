@@ -35,7 +35,7 @@ const Cell: FunctionalComponent<{ date: Date, rows: Record<string, tt4b.stat.Row
     )
 }
 
-const cvtStatQuery = (site: tt4b.site.SiteKey): tt4b.stat.SiteQuery => {
+const cvtStatQuery = (site: tt4b.site.SiteKey): Omit<tt4b.stat.SiteQuery, 'remote'> => {
     const { host, type } = site
     if (type === 'merged') return { host, mergeHost: true }
     else if (type === 'virtual') return { host, virtual: true }
@@ -68,7 +68,7 @@ const Calendar = defineComponent<{}>(() => {
     const { data: rows } = useRequest(async () => {
         const s = site.value
         if (!s) return {}
-        const list = await listSiteStats({ ...cvtStatQuery(s), date: dateRange.value })
+        const list = await listSiteStats({ ...cvtStatQuery(s), date: dateRange.value, remote: false })
         return toMap(list, l => l.date)
     }, { deps: [dateRange, site], defaultValue: {} })
 

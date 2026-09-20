@@ -4,28 +4,21 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import {
-    DEFAULT_VAULT as DEFAULT_OBSIDIAN_BUCKET,
-    DEFAULT_ENDPOINT as DEFAULT_OBSIDIAN_ENDPOINT,
-} from "@api/obsidian"
+import { OBSIDIAN_DEFAULTS } from '@api/obsidian'
 import { OptionItem, OptionLines, OptionTooltip } from '@app/components/Option/components'
 import { t } from '@app/locale'
 import { Remove } from '@element-plus/icons-vue'
+import { useDebounceFn, useRemote } from '@hooks'
 import { Flex } from '@pages/components'
 import { GitHub } from '@pages/icons'
 import { ElIcon, ElInput, ElOption, ElSelect } from "element-plus"
-import { Component, computed, defineComponent, type FunctionalComponent, h } from "vue"
+import { Component, computed, defineComponent, type FunctionalComponent, h, watch } from "vue"
 import type { CategoryInstance } from '../../types'
 import AutoInput from "./AutoInput"
 import Footer from "./Footer"
 import { useBackup } from "./useBackup"
 
-type Config = {
-    name: string
-    icon: Component
-}
-
-const CONFIGS: Record<tt4b.backup.Type, Config> = {
+const CONFIGS: Record<tt4b.backup.Type, { name: string, icon: Component }> = {
     none: {
         name: t(msg => msg.option.off),
         icon: Remove,
@@ -73,11 +66,14 @@ const ALL_TYPES: tt4b.backup.Type[] = [
 
 const LONG_INPUT_WIDTH = 'min(400px, calc(100vw - 80px))'
 
-const _default = defineComponent((_, ctx) => {
+const _default = defineComponent<{}>((_, ctx) => {
     const {
         option, auth, account, password, reset,
         ext, setExtField,
     } = useBackup()
+    const { refresh } = useRemote()
+    const refreshDebounce = useDebounceFn(refresh, 200)
+    watch([() => option.backupType, auth, account, password], refreshDebounce)
 
     const isNotNone = computed(() => option.backupType !== 'none')
 
@@ -132,7 +128,7 @@ const _default = defineComponent((_, ctx) => {
                 }}
             >
                 <ElInput
-                    placeholder={DEFAULT_OBSIDIAN_ENDPOINT}
+                    placeholder={OBSIDIAN_DEFAULTS.endpoint}
                     modelValue={ext.value?.endpoint}
                     size="small"
                     style={{ width: LONG_INPUT_WIDTH }}
@@ -141,7 +137,7 @@ const _default = defineComponent((_, ctx) => {
             </OptionItem>
             <OptionItem label="Vault Name {input}">
                 <ElInput
-                    placeholder={DEFAULT_OBSIDIAN_BUCKET}
+                    placeholder={OBSIDIAN_DEFAULTS.vault}
                     modelValue={ext.value?.bucket}
                     size="small"
                     style={{ width: "200px" }}
