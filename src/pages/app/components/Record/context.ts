@@ -54,7 +54,7 @@ function initQuery(filter: RecordFilterOption): RecordSort['prop'] | undefined {
     return isSortProp(sc) ? sc : undefined
 }
 
-type CacheValue = Omit<RecordFilterOption, 'dateRange' | 'readRemote' | 'timeRange' | 'focusRange'>
+type CacheValue = Omit<RecordFilterOption, 'dateRange' | 'timeRange' | 'focusRange'>
 
 const isCacheValue = createObjectGuard<CacheValue>({
     query: isOptionalString,
@@ -70,7 +70,7 @@ export const initRecordContext = () => {
         mergeDate: false,
         timeFormat: 'default',
     })
-    const filter: RecordFilterOption = reactive({
+    const filter = reactive({
         get query() { return cached.query },
         set query(val) { cached.query = val },
         get mergeDate() { return cached.mergeDate },
@@ -81,9 +81,8 @@ export const initRecordContext = () => {
         set cateIds(val) { cached.cateIds = val },
         get timeFormat() { return cached.timeFormat },
         set timeFormat(val) { cached.timeFormat = val },
-        readRemote: false,
         dateRange: [Date.now(), Date.now()],
-    })
+    } satisfies RecordFilterOption)
     const querySort = initQuery(filter)
     const sort = ref<RecordSort>({ order: 'descending', prop: querySort ?? 'focus' })
     const comp = ref<DisplayComponent>()

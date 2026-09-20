@@ -49,15 +49,12 @@ export function useRequest<P extends any[], T>(
     } = option ?? {}
     const data = shallowRef(defaultValue) as ShallowRef<T>
     const loading = ref(false)
-    const param = ref<P>()
-
     const createLoading = useLoading(option)
 
     const refreshAsync = async (...p: P) => {
         loading.value = true
         const loadingInstance = await createLoading?.()
         try {
-            param.value = p
             const value = await getter?.(...p)
             data.value = value
             onSuccess?.(value, ...p)

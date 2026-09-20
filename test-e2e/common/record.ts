@@ -25,8 +25,8 @@ function readRecords(): RecordRow[] {
         const category = cells[4]?.textContent ?? ''
         const time = cells[5]?.textContent ?? ''
         const visit = cells[6]?.textContent ?? ''
-        const runTime = hasRunTime ? cells[7]?.textContent : undefined
-        const mediaTime = hasMediaTime ? cells[hasRunTime ? 8 : 7]?.textContent : undefined
+        const runTime = hasRunTime ? cells[7]?.textContent ?? '' : undefined
+        const mediaTime = hasMediaTime ? cells[hasRunTime ? 8 : 7]?.textContent ?? '' : undefined
         return { date, url, name, category, time, runTime, visit, mediaTime }
     })
 }

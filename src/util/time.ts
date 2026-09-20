@@ -261,7 +261,7 @@ export function getAllDatesBetween(start: Date | number, end: Date | number, for
 export function parseTime(dateStr: string): Date
 export function parseTime(dateStr: string | undefined): Date | undefined
 export function parseTime(dateStr: string | undefined): Date | undefined {
-    if (!dateStr) return undefined
+    if (dateStr === undefined) return undefined
     const year = parseInt(dateStr.substring(0, 4))
     const month = parseInt(dateStr.substring(4, 6))
     const date = parseInt(dateStr.substring(6, 8))

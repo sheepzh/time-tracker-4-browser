@@ -50,11 +50,7 @@ export const useTopKChart = <EC>(Wrapper: new () => EchartsWrapper<BizOption[], 
             mergeDate: true,
             remote: remote.value,
         })
-        const data: BizOption[] = top.map(({ time, siteKey: { host }, alias }) => ({
-            name: alias ?? host,
-            host, alias,
-            value: time,
-        }))
+        const data = top.map(({ time: value, siteKey: { host } }) => ({ host, value } satisfies BizOption))
         for (let realSize = top.length; realSize < size; realSize++) {
             data.push({ host: '', value: 0 })
         }
