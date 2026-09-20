@@ -12,7 +12,7 @@ import Pagination from '@app/components/common/Pagination'
 import { t } from '@app/locale'
 import { cvt2LocaleTime } from '@app/util/time'
 import { Histogram } from "@element-plus/icons-vue"
-import { useDocumentVisibility, useManualRequest, useRemote, useRequest, useState } from '@hooks'
+import { useDocumentVisibility, useManualRequest, useRemoteValue, useRequest, useState } from '@hooks'
 import { Flex, TooltipWrapper } from '@pages/components'
 import { isRtl } from "@util/document"
 import { identifySiteKey } from '@util/site'
@@ -67,7 +67,7 @@ const _default = defineComponent<{}>((_, ctx) => {
     const [page, setPage] = useState<tt4b.common.PageQuery>({ size: 20, num: 1 })
     const sort = useRecordSort()
     const filter = useRecordFilter()
-    const remote = useRemote()
+    const remote = useRemoteValue()
     const visible = computed(() => computeVisible(filter))
     const { data, refresh, loading } = useRequest(() => queryPage(filter, sort.value, page.value, remote.value), {
         loadingTarget: () => table.value?.$el,

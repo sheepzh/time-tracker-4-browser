@@ -7,19 +7,21 @@ const NAMESPACE = '__remote_enabled__'
 
 type Value = {
     remote: Ref<boolean>
+    available: Readonly<Ref<boolean>>
     refresh: NoArgCallback
 }
 
 export const initRemote = () => {
     const remote = ref(false)
-    const { data: remoteVisible, refresh } = useRequest(() => checkAuth().then(errMsg => !errMsg), {
+    const { data: available, refresh } = useRequest(() => checkAuth().then(errMsg => !errMsg), {
         defaultValue: false,
         onSuccess: v => !v && (remote.value = v)
     })
-    useProvide<Value>(NAMESPACE, { remote, refresh })
-    return { remoteVisible, remote }
+    useProvide<Value>(NAMESPACE, { remote, available, refresh })
 }
 
-export const useRemote = () => useProvider<Value, 'remote'>(NAMESPACE, 'remote').remote
+export const useRemote = () => useProvider<Value, 'remote' | 'available' | 'refresh'>(
+    NAMESPACE, 'remote', 'available', 'refresh',
+)
 
-export const useRemoteRefresh = () => useProvider<Value, 'refresh'>(NAMESPACE, 'refresh').refresh
+export const useRemoteValue = () => useProvider<Value, 'remote'>(NAMESPACE, 'remote').remote

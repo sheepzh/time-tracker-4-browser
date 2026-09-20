@@ -7,8 +7,8 @@
             "DOM"
         ],
         "types": [
-            "chrome",
             "firefox-webext-browser",
+            "chrome",
             "@rstest/core/globals"
         ],
         "jsx": "preserve",

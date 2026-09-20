@@ -13,7 +13,6 @@ import { RouterView } from "vue-router"
 import { initAppContext } from "../context"
 import HeadNav from "./menu/Nav"
 import SideMenu from "./menu/Side"
-import RemoteFloat from './Remote'
 
 const HEADER_STYLE: StyleValue = {
     padding: 0,
@@ -42,7 +41,7 @@ const injectCss = () => {
 
 const _default = defineComponent(() => {
     const { layout } = initAppContext()
-    const { remote, remoteVisible } = initRemote()
+    initRemote()
 
     injectCss()
 
@@ -59,10 +58,6 @@ const _default = defineComponent(() => {
                     <RouterView />
                 </ElContainer>
             </ElContainer>
-            {!!remoteVisible.value && <RemoteFloat
-                value={remote.value}
-                onToggle={() => remoteVisible.value && (remote.value = !remote.value)}
-            />}
         </ElContainer>
     )
 })

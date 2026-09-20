@@ -11,7 +11,7 @@ import { listSiteStats } from '@api/sw/stat'
 import ChartTitle from '@app/components/Dashboard/ChartTitle'
 import { t } from "@app/locale"
 import { RECORD_ROUTE, type RecordQuery } from '@app/router/constants'
-import { useEcharts, useRemote } from "@hooks"
+import { useEcharts, useRemoteValue } from "@hooks"
 import { Flex } from '@pages/components'
 import { groupBy, sum } from "@util/array"
 import { getAppPageUrl } from "@util/constant/url"
@@ -64,7 +64,7 @@ function handleClick(value: ChartValue): void {
 }
 
 const _default = defineComponent<{}>(() => {
-    const remote = useRemote()
+    const remote = useRemoteValue()
     const { elRef, data } = useEcharts(Wrapper, () => fetchData(remote.value), {
         afterInit(ew) {
             const supportClick = !window.matchMedia("(any-pointer:coarse)").matches

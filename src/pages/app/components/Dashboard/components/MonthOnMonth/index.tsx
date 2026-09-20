@@ -1,7 +1,7 @@
 import { listSiteStats } from "@api/sw/stat"
 import ChartTitle from "@app/components/Dashboard/ChartTitle"
 import { t } from "@app/locale"
-import { useEcharts, useRemote } from "@hooks"
+import { useEcharts, useRemoteValue } from "@hooks"
 import { Flex } from '@pages/components'
 import { groupBy, sum } from "@util/array"
 import DateIterator from "@util/date-iterator"
@@ -38,7 +38,7 @@ const fetchData = async (remote: boolean): Promise<[thisMonth: Row[], lastMonth:
 }
 
 const _default = defineComponent<{}>(() => {
-    const remote = useRemote()
+    const remote = useRemoteValue()
     const { elRef } = useEcharts(Wrapper, () => fetchData(remote.value), { deps: remote })
     return () => (
         <Flex height="100%" column gap={4}>

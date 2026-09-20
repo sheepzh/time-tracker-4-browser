@@ -1,5 +1,5 @@
 import { getSiteStatPage } from "@api/sw/stat"
-import { EchartsWrapper, localReactive, useEcharts, useProvide, useProvider, useRemote } from "@hooks"
+import { EchartsWrapper, localReactive, useEcharts, useProvide, useProvider, useRemoteValue } from "@hooks"
 import { cvtDateRange2Str, MILL_PER_DAY } from "@util/time"
 import { createObjectGuard, createStringUnionGuard, isInt } from 'typescript-guard'
 
@@ -37,7 +37,7 @@ export const initProvider = () => {
 
 export const useTopKChart = <EC>(Wrapper: new () => EchartsWrapper<BizOption[], EC>) => {
     const filter = useTopKFilter()
-    const remote = useRemote()
+    const remote = useRemoteValue()
     return useEcharts(Wrapper, async () => {
         const now = new Date()
         const { dayNum, topK: size } = filter

@@ -9,7 +9,7 @@ import { useRecordFilter } from '@app/components/Record/context'
 import { t } from '@app/locale'
 import { SITE_ANALYSIS_ROUTE, type SiteAnalysisQuery } from '@app/router/constants'
 import { Delete, Stopwatch } from "@element-plus/icons-vue"
-import { useRemote, useTabGroups } from '@hooks'
+import { useRemoteValue, useTabGroups } from '@hooks'
 import { locale } from "@i18n"
 import { ConfirmButton } from '@pages/components'
 import { CATE_NOT_SET_ID } from "@util/site"
@@ -49,7 +49,7 @@ const deleteVisible = (row: tt4b.stat.Row) => {
 
 const _default = defineComponent<{ onDelete?: ArgCallback<tt4b.stat.Row> }>(({ onDelete }) => {
     const filter = useRecordFilter()
-    const remote = useRemote()
+    const remote = useRemoteValue()
     const { groupMap } = useTabGroups()
     const width = computed(() => {
         const siteMerge = filter.siteMerge

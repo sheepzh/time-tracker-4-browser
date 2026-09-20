@@ -8,7 +8,7 @@
 import { type AppSiteAnalysisQuery } from '@/shared/route'
 import { listCateStats, listSiteStats } from "@api/sw/stat"
 import { isTimeFormat } from '@app/util/types'
-import { localRef, useProvide, useProvider, useRemote, useRequest } from "@hooks"
+import { localRef, useProvide, useProvider, useRemoteValue, useRequest } from "@hooks"
 import { extractHostname } from '@util/pattern'
 import { ref, type Ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
@@ -50,7 +50,7 @@ const NAMESPACE = 'siteAnalysis'
 
 export const initAnalysis = () => {
     const target = ref(parseQuery())
-    const remote = useRemote()
+    const remote = useRemoteValue()
     const timeFormat = localRef('analysis_timeFormat', isTimeFormat, 'default')
 
     const { data: rows, loading } = useRequest(

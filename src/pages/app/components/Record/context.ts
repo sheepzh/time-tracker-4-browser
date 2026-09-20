@@ -1,7 +1,7 @@
 import { listCateStats, listGroupStats, listSiteStats } from '@api/sw/stat'
 import type { RecordQuery } from '@app/router/constants'
 import { isOptionalIntArray, isTimeFormat } from '@app/util/types'
-import { localReactive, useManualRequest, useProvide, useProvider, useRemote } from '@hooks'
+import { localReactive, useManualRequest, useProvide, useProvider, useRemoteValue } from '@hooks'
 import { periodFormatter } from '@pages/util/time'
 import { sum } from '@util/array'
 import { truthy } from '@util/lang'
@@ -102,7 +102,7 @@ export const useRecordComponent = () => useProvider<Context, 'comp'>(NAMESPACE, 
 
 export const useSummary = (watchFilter?: boolean) => {
     const filter = useRecordFilter()
-    const remote = useRemote()
+    const remote = useRemoteValue()
     const { data, refresh, loading } = useManualRequest(async () => {
         const { siteMerge, dateRange, query, cateIds } = filter
         const date = cvtDateRange2Str(dateRange)

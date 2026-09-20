@@ -4,7 +4,7 @@ import {
 } from "@api/sw/stat"
 import { type I18nKey, t } from '@app/locale'
 import { DeleteFilled } from "@element-plus/icons-vue"
-import { useRemote } from '@hooks'
+import { useRemoteValue } from '@hooks'
 import { isGroup, isNormalSite, isSite } from "@util/stat"
 import { cvtDateRange2Str, formatTime, getBirthday } from "@util/time"
 import { ElButton, ElMessage, ElMessageBox } from "element-plus"
@@ -116,7 +116,7 @@ async function deleteBatch(selected: tt4b.stat.Row[], mergeDate: boolean, dateRa
 
 const BatchDelete = defineComponent<{}>(() => {
     const filter = useRecordFilter()
-    const remote = useRemote()
+    const remote = useRemoteValue()
     const disabled = computed(() => {
         const { siteMerge } = filter
         return !!siteMerge && siteMerge !== 'group'

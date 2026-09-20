@@ -7,7 +7,7 @@
 
 import { useCategory } from "@app/context"
 import { Download } from "@element-plus/icons-vue"
-import { useRemote, useTabGroups } from "@hooks"
+import { useRemoteValue, useTabGroups } from "@hooks"
 import { ElButton, ElDropdown, ElDropdownItem, ElDropdownMenu, ElIcon } from "element-plus"
 import { defineComponent } from "vue"
 import { queryAll } from "../common"
@@ -19,7 +19,7 @@ type FileFormat = typeof ALL_FILE_FORMATS[number]
 
 const DownloadFile = defineComponent(() => {
     const filter = useRecordFilter()
-    const remote = useRemote()
+    const remote = useRemoteValue()
     const sort = useRecordSort()
     const cate = useCategory()
     const { groupMap } = useTabGroups()

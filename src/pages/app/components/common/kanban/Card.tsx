@@ -24,13 +24,13 @@ const FILTER_CONTAINER_STYLE: StyleValue = {
     borderBottom: '1px var(--el-border-color) var(--el-border-style)',
 }
 
-const _default = defineComponent<{ title: I18nKey }>(props => {
-    const { default: default_, filter } = useSlots()
+const _default = defineComponent<{ title?: I18nKey }>(props => {
+    const { default: default_, filter, title } = useSlots()
     const isXs = useXsState()
 
     return () => (
         <ElCard bodyStyle={{ position: 'relative' }}>
-            <div style={TITLE_STYLE}>{t(props.title)}</div>
+            <div style={TITLE_STYLE}>{title?.() ?? (props.title && t(props.title)) ?? ''}</div>
             {!!filter && !isXs.value && (
                 <Box paddingBlock="10px 14px" style={FILTER_CONTAINER_STYLE}>
                     {filter()}

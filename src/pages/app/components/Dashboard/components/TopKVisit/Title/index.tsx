@@ -1,6 +1,6 @@
 import { RemoteIcon } from '@app/components/common/RemoteIcon'
 import { tN } from "@app/locale"
-import { useRemote, useXsState } from '@hooks'
+import { useRemoteValue, useXsState } from '@hooks'
 import { Flex, IconRadioGroup } from '@pages/components'
 import { BarChart, HalfPieChart, RoseChart } from '@pages/icons'
 import { type Component, defineComponent } from "vue"
@@ -15,7 +15,7 @@ const CHART_CONFIG: { [type in TopKChartType]: Component } = {
 
 const Title = defineComponent<{}>(() => {
     const filter = useTopKFilter()
-    const remote = useRemote()
+    const remote = useRemoteValue()
     const isXs = useXsState()
 
     return () => (
