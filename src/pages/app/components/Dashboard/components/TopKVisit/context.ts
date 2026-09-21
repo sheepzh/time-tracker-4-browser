@@ -1,13 +1,22 @@
 import { getSiteStatPage } from "@api/sw/stat"
 import { EchartsWrapper, localReactive, useEcharts, useProvide, useProvider, useRemoteValue } from "@hooks"
 import { cvtDateRange2Str, MILL_PER_DAY } from "@util/time"
-import { createObjectGuard, createStringUnionGuard, isInt } from 'typescript-guard'
+import { createObjectGuard, createOptionalGuard, createStringUnionGuard, isInt, isNumber, isString } from 'typescript-guard'
 
 export type BizOption = {
+    name: string
     value: number
     // Extensive info
     host: string
+    alias?: string
 }
+
+export const isBizOption = createObjectGuard<BizOption>({
+    name: isString,
+    value: isNumber,
+    host: isString,
+    alias: createOptionalGuard(isString),
+})
 
 export type TopKChartType = 'bar' | 'pie' | 'halfPie'
 const isTopKChartType = createStringUnionGuard<TopKChartType>('bar', 'pie', 'halfPie')
@@ -50,9 +59,11 @@ export const useTopKChart = <EC>(Wrapper: new () => EchartsWrapper<BizOption[], 
             mergeDate: true,
             remote: remote.value,
         })
-        const data = top.map(({ time: value, siteKey: { host } }) => ({ host, value } satisfies BizOption))
+        const data: BizOption[] = top.map(
+            ({ time: value, siteKey: { host }, alias }) => ({ name: alias ?? host, host, value, alias })
+        )
         for (let realSize = top.length; realSize < size; realSize++) {
-            data.push({ host: '', value: 0 })
+            data.push({ name: '', host: '', value: 0 })
         }
         return data
     }, { deps: [() => ({ ...filter }), remote] })
