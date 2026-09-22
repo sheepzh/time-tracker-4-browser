@@ -108,7 +108,7 @@ export const useEcharts = <
         target && wrapper.init(target)
         afterInit?.(wrapper)
 
-        watch(data, () => data.value && wrapper.render(data.value))
+        watch(data, () => data.value && wrapper.render(data.value), { immediate: true })
         // The element reference perhaps change, reinitialize again
         watch(elRef, () => elRef.value && wrapper.init(elRef.value))
     })
