@@ -38,6 +38,8 @@
         "idbAlert": "將追蹤資料移到IndexedDB以釋放儲存空間",
         "operationAlert": "您可以刪除不重要的資料來釋放儲存空間",
         "filterItems": "資料篩選",
+        "focusLtOrEq": "當天的瀏覽時間小於或等於 {value} 秒",
+        "visitLtOrEq": "當天的造訪次數小於或等於 {value}次",
         "filterDate": "{picker} 產生的資料",
         "importOther": {
             "step1": "選擇資料",
@@ -56,7 +58,10 @@
         },
         "deleteConfirm": "共篩選出 {count} 筆資料，是否全部刪除？",
         "migrationAlert": "使用匯入/匯出功能在不同瀏覽器間轉移資料",
-        "importError": "檔案格式錯誤"
+        "importError": "檔案格式錯誤",
+        "exportData": "匯出數據",
+        "restoreData": "還原數據",
+        "restoreFromOther": "從 {ext} 還原"
     },
     "en": {
         "totalMemoryAlert": "The browser provides {size}MB to store local data for each extension",
