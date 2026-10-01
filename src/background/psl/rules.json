@@ -310,6 +310,7 @@
             "framer": 1,
             "gadget": 1,
             "github": 1,
+            "glideos": 1,
             "hackclub": 1,
             "hasura": 1,
             "hosted": {
@@ -352,6 +353,7 @@
                 },
                 "l": 1
             },
+            "rocketpreview": 1,
             "run": {
                 "c": {
                     "*": 1,
@@ -1365,7 +1367,12 @@
                     "*": 1
                 }
             },
-            "webhosting": 1
+            "webhosting": {
+                "c": {
+                    "site": 1
+                },
+                "l": 1
+            }
         },
         "l": 1
     },
@@ -1549,6 +1556,7 @@
             "edu": 1,
             "empresa": 1,
             "gob": 1,
+            "ia": 1,
             "indigena": 1,
             "industria": 1,
             "info": 1,
@@ -2395,6 +2403,7 @@
             "ah": 1,
             "bj": 1,
             "canva-apps": 1,
+            "canva-code": 1,
             "canvasite": {
                 "c": {
                     "my": 1
@@ -2694,7 +2703,6 @@
             },
             "aliases121": 1,
             "alibabacloudcs": 1,
-            "alpha-myqnapcloud": 1,
             "amazonaws": {
                 "c": {
                     "af-south-1": {
@@ -4290,6 +4298,17 @@
                 }
             },
             "damnserver": 1,
+            "databricksapps": {
+                "c": {
+                    "aws": 1,
+                    "azure": {
+                        "c": {
+                            "*": 1
+                        }
+                    },
+                    "gcp": 1
+                }
+            },
             "datadetect": {
                 "c": {
                     "demo": 1,
@@ -4306,7 +4325,6 @@
             "de": 1,
             "deployagent": 1,
             "deus-canvas": 1,
-            "dev-myqnapcloud": 1,
             "devinapps": {
                 "c": {
                     "*": 1
@@ -4493,13 +4511,23 @@
             "health-carereform": 1,
             "hercules-app": 1,
             "hercules-dev": 1,
-            "herokuapp": 1,
+            "herokuapp": {
+                "c": {
+                    "compute": {
+                        "c": {
+                            "*": 1
+                        }
+                    }
+                },
+                "l": 1
+            },
             "hk": 1,
             "hobby-site": 1,
             "homelinux": 1,
             "homesecuritymac": 1,
             "homesecuritypc": 1,
             "homeunix": 1,
+            "hosted-by-files": 1,
             "hosted-by-previder": {
                 "c": {
                     "paas": 1
@@ -4916,13 +4944,6 @@
             "wpmucdn": 1,
             "writesthisblog": 1,
             "x0": 1,
-            "xnbay": {
-                "c": {
-                    "u2": 1,
-                    "u2-local": 1
-                },
-                "l": 1
-            },
             "xtooldevice": 1,
             "yolasite": 1,
             "za": 1
@@ -5879,12 +5900,6 @@
             "cloudplatform": {
                 "c": {
                     "fi": 1
-                }
-            },
-            "datacenter": {
-                "c": {
-                    "demo": 1,
-                    "paas": 1
                 }
             },
             "dy": 1,
@@ -9828,13 +9843,27 @@
     "like": 1,
     "lilly": 1,
     "limited": 1,
-    "limo": 1,
+    "limo": {
+        "c": {
+            "eth": {
+                "c": {
+                    "*": 1
+                }
+            }
+        },
+        "l": 1
+    },
     "lincoln": 1,
     "link": {
         "c": {
             "canva": 1,
             "cyon": 1,
             "dweb": {
+                "c": {
+                    "*": 1
+                }
+            },
+            "eth": {
                 "c": {
                     "*": 1
                 }
@@ -10060,6 +10089,7 @@
             "net": 1,
             "nohost": 1,
             "noip": 1,
+            "opencloud": 1,
             "org": 1,
             "priv": 1,
             "soundcast": 1,
@@ -10407,7 +10437,87 @@
                 },
                 "l": 1
             },
-            "azurewebsites": 1,
+            "azurewebsites": {
+                "c": {
+                    "australiacentral-01": 1,
+                    "australiacentral2-01": 1,
+                    "australiaeast-01": 1,
+                    "australiasoutheast-01": 1,
+                    "austriaeast-01": 1,
+                    "belgiumcentral-01": 1,
+                    "brazilsouth-01": 1,
+                    "brazilsoutheast-01": 1,
+                    "canadacentral-01": 1,
+                    "canadaeast-01": 1,
+                    "centralindia-01": 1,
+                    "centralus-01": 1,
+                    "centraluseuap-01": 1,
+                    "chilecentral-01": 1,
+                    "denmarkeast-01": 1,
+                    "eastasia-01": 1,
+                    "eastasiastage-01": 1,
+                    "eastus-01": 1,
+                    "eastus2-01": 1,
+                    "eastus2euap-01": 1,
+                    "eastus3-01": 1,
+                    "francecentral-01": 1,
+                    "francesouth-01": 1,
+                    "germanynorth-01": 1,
+                    "germanywestcentral-01": 1,
+                    "indiasouthcentral-01": 1,
+                    "indonesiacentral-01": 1,
+                    "israelcentral-01": 1,
+                    "israelnorthwest-01": 1,
+                    "italynorth-01": 1,
+                    "japaneast-01": 1,
+                    "japanwest-01": 1,
+                    "jioindiacentral-01": 1,
+                    "jioindiawest-01": 1,
+                    "koreacentral-01": 1,
+                    "koreasouth-01": 1,
+                    "malaysiawest-01": 1,
+                    "mexicocentral-01": 1,
+                    "newzealandnorth-01": 1,
+                    "northcentralus-01": 1,
+                    "northcentralusstage-01": 1,
+                    "northeastus5-01": 1,
+                    "northeurope-01": 1,
+                    "norwayeast-01": 1,
+                    "norwaywest-01": 1,
+                    "p": {
+                        "c": {
+                            "*": 1
+                        }
+                    },
+                    "polandcentral-01": 1,
+                    "qatarcentral-01": 1,
+                    "southafricanorth-01": 1,
+                    "southafricawest-01": 1,
+                    "southcentralus-01": 1,
+                    "southcentralus2-01": 1,
+                    "southeastasia-01": 1,
+                    "southeastus5-01": 1,
+                    "southindia-01": 1,
+                    "spaincentral-01": 1,
+                    "swedencentral-01": 1,
+                    "swedensouth-01": 1,
+                    "switzerlandnorth-01": 1,
+                    "switzerlandwest-01": 1,
+                    "taiwannorth-01": 1,
+                    "taiwannorthwest-01": 1,
+                    "uaecentral-01": 1,
+                    "uaenorth-01": 1,
+                    "uksouth-01": 1,
+                    "ukwest-01": 1,
+                    "westcentralus-01": 1,
+                    "westeurope-01": 1,
+                    "westindia-01": 1,
+                    "westus-01": 1,
+                    "westus2-01": 1,
+                    "westus3-01": 1
+                },
+                "l": 1
+            },
             "barsy": 1,
             "blackbaudcdn": 1,
             "blogdns": 1,
@@ -10778,7 +10888,16 @@
         "l": 1
     },
     "neustar": 1,
-    "new": 1,
+    "new": {
+        "c": {
+            "builtwithrocket": {
+                "c": {
+                    "*": 1
+                }
+            }
+        },
+        "l": 1
+    },
     "news": {
         "c": {
             "noticeable": 1
@@ -10869,7 +10988,12 @@
             "co": 1,
             "demon": 1,
             "gov": 1,
-            "hosting-cluster": 1,
+            "hosting-cluster": {
+                "c": {
+                    "site": 1
+                },
+                "l": 1
+            },
             "khplay": 1,
             "myspreadshop": 1,
             "transurl": {
@@ -11778,7 +11902,8 @@
     "now": {
         "c": {
             "dyn": 1,
-            "here": 1
+            "here": 1,
+            "tmp": 1
         },
         "l": 1
     },
@@ -12369,6 +12494,7 @@
             "homesklep": 1,
             "ilawa": 1,
             "info": 1,
+            "iqhs": 1,
             "jaworzno": 1,
             "jelenia-gora": 1,
             "jgora": 1,
@@ -12883,6 +13009,7 @@
                 }
             },
             "canva": 1,
+            "cloud": 1,
             "code": {
                 "c": {
                     "*": 1
@@ -13119,6 +13246,7 @@
                     "us": 1
                 }
             },
+            "surge": 1,
             "teleport": 1
         },
         "l": 1
@@ -13366,7 +13494,12 @@
         "l": 1
     },
     "stream": 1,
-    "studio": 1,
+    "studio": {
+        "c": {
+            "ai": 1
+        },
+        "l": 1
+    },
     "study": 1,
     "style": 1,
     "su": {
@@ -14039,6 +14172,11 @@
                     "lib": 1
                 },
                 "l": 1
+            },
+            "databricksapps": {
+                "c": {
+                    "aws-gov": 1
+                }
             },
             "dc": {
                 "c": {
