@@ -182,5 +182,31 @@
             "stop": "Zatrzymaj",
             "dismiss": "Odrzuć"
         }
+    },
+    "zh_TW": {
+        "menu": "專注/番茄鐘",
+        "policy": {
+            "allow": {
+                "label": "允許特定網頁"
+            },
+            "block": {
+                "label": "限制特定網頁"
+            }
+        },
+        "duration": "選擇專注時長",
+        "state": {
+            "running": "專注中"
+        },
+        "method": {
+            "pomodoro": {
+                "label": "番茄鐘"
+            }
+        },
+        "button": {
+            "pause": "暫停",
+            "resume": "繼續",
+            "stop": "停止",
+            "dismiss": "放棄"
+        }
     }
 }
