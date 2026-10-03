@@ -71,7 +71,8 @@
         "batchEnable": "批次啟用",
         "batchDisable": "批量停用",
         "collapse": "收合",
-        "expand": "展開"
+        "expand": "展開",
+        "copy": "複製"
     },
     "ja": {
         "create": "新規",

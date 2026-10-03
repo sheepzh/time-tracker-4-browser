@@ -22,6 +22,7 @@
     "zh_TW": {
         "route": {
             "percentage": "比例分布",
+            "site": "目前頁面",
             "ranking": "數據排行"
         }
     },

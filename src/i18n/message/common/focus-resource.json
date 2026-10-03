@@ -186,27 +186,47 @@
     "zh_TW": {
         "menu": "專注/番茄鐘",
         "policy": {
+            "label": "網站篩選方式",
             "allow": {
-                "label": "允許特定網頁"
+                "label": "允許特定網站",
+                "desc": "除特定網站外，其他皆不可存取"
             },
             "block": {
-                "label": "限制特定網頁"
+                "label": "限制特定網站",
+                "desc": "除特定網站外，其他皆可存取"
             }
         },
         "duration": "選擇專注時長",
+        "break": "休息時長",
         "state": {
-            "running": "專注中"
+            "running": "專注中",
+            "paused": "暫停",
+            "stopped": "停止",
+            "done": "完成"
         },
         "method": {
+            "label": "模式",
+            "choose": "選擇模式",
+            "focus": {
+                "label": "深度專注",
+                "desc": "專注一段時間"
+            },
             "pomodoro": {
-                "label": "番茄鐘"
+                "label": "番茄鐘",
+                "desc": "工作/休息循環，保持生產力"
             }
         },
+        "noAllowUrl": "未偵測到允許網站。請至少加入一個網站。",
+        "noBlockUrl": "未偵測到限制網站。要在沒有限制的情況下開始嗎？",
+        "noTime": "番茄鐘模式中，請設定專注時長及休息時長。",
+        "preset": "預設方案",
+        "presetName": "預設方案名稱",
         "button": {
             "pause": "暫停",
             "resume": "繼續",
+            "delay": "延後",
             "stop": "停止",
-            "dismiss": "放棄"
+            "dismiss": "關閉"
         }
     }
 }
