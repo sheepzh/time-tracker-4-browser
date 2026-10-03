@@ -43,6 +43,8 @@
                 "lastDays": "近{n}天紀錄",
                 "allTime": "全部紀錄"
             },
+            "shareTitle": "分享",
+            "installTip": "掃描以下載",
             "averageCount": "平均每日 {value} 次",
             "averageTime": "平均每日 {value}",
             "totalTime": "總計 {totalTime}",

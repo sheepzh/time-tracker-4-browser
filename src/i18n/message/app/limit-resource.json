@@ -54,7 +54,7 @@
         "emptyTips": "點擊此處新增規則！",
         "item": {
             "name": "規則名稱",
-            "condition": "限制網址",
+            "condition": "被限制網址",
             "weekStartInfo": "每週起始日為「{weekStart}」，您可於統計設定中調整",
             "delayCount": "延遲次數",
             "detail": "規則詳細內容",
@@ -85,11 +85,12 @@
         },
         "verification": {
             "inputTip": "規則已觸發或鎖定，請於 {second} 秒內回答：{prompt}",
-            "inputTip2": "規則已觸發或鎖定。請在 {second} 秒內輸入：{answer}",
+            "inputTip2": "規則已被觸發或鎖定。請在 {second} 秒內輸入：{answer}",
             "pswInputTip": "時間限制已觸發或鎖定，請輸入解鎖密碼繼續",
             "strictTip": "時間限制已觸發，禁止手動解鎖！",
             "incorrectPsw": "密碼錯誤",
             "incorrectAnswer": "回答錯誤",
+            "twoFaInputTip": "規則已被觸發或鎖定。請在身份驗證程式中輸入6位數字密碼以繼續。",
             "pi": "圓周率 π 小數點後第 {startIndex} 至 {endIndex} 位共 {digitCount} 位數字",
             "confession": "一寸光陰一寸金，寸金難買寸光陰"
         },
