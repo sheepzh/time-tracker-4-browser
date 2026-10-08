@@ -29,8 +29,8 @@ const weekStartOptionPairs: [[tt4b.option.WeekStartOption, string]] = [
 ]
 const allWeekDays = t(msg => msg.calendar.weekDays)
     .split('|')
-    .map((weekDay, idx) => [idx + 1, weekDay] as [tt4b.option.WeekStartOption, string])
-rotate(allWeekDays, locale === 'zh_CN' ? 0 : 1, true)
+    .map((weekDay, idx) => [idx + 1, weekDay] satisfies [tt4b.option.WeekStartOption, string])
+locale !== 'zh_CN' && rotate(allWeekDays, 1)
 allWeekDays.forEach(weekDayInfo => weekStartOptionPairs.push(weekDayInfo))
 
 function copy(target: tt4b.option.TrackingOption, source: Readonly<tt4b.option.TrackingOption>) {
@@ -76,9 +76,7 @@ const _default = defineComponent((_props, ctx) => {
         get: _oldValue => {
             const intervalNum = option.autoPauseInterval
             const now = new Date()
-            now.setHours(0)
-            now.setMinutes(0)
-            now.setSeconds(0)
+            now.setHours(0, 0, 0, 0)
             return now.getTime() + intervalNum * MILL_PER_SECOND
         },
         set: val => {
@@ -119,7 +117,7 @@ const _default = defineComponent((_props, ctx) => {
                     />,
                     default: () => <ElSwitch
                         modelValue={option.autoPauseTracking}
-                        onChange={val => option.autoPauseTracking = val as boolean}
+                        onChange={val => option.autoPauseTracking = Boolean(val)}
                     />
                 }}
             />

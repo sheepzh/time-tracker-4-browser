@@ -5,6 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { getWeekStartDay } from '@api/sw/option'
+import { rotate } from '@util/array'
 import { t } from "../locale"
 
 /**
@@ -21,6 +23,13 @@ export function cvt2LocaleTime(date: string | undefined): string {
         return '-'
     }
     return t(msg => msg.calendar.dateFormat, { y, m, d })
+}
+
+export async function getWeekDays() {
+    const weekStart = await getWeekStartDay()
+    const weekDays = t(msg => msg.calendar.weekDays).split('|').reverse()
+    rotate(weekDays, weekStart)
+    return weekDays
 }
 
 export { periodFormatter } from "@pages/util/time"

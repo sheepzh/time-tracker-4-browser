@@ -4,13 +4,13 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { getWeekStartDay, getWeekStartTime } from '@api/sw/option'
+import { getWeekStartTime } from '@api/sw/option'
 import { t } from '@app/locale'
-import { parseValueOfFormatter } from "@app/util/echarts"
-import { periodFormatter } from '@app/util/time'
+import { isCalendarValue, parseValueOfFormatter, type CalendarValue } from "@app/util/echarts"
+import { getWeekDays, periodFormatter } from '@app/util/time'
 import { EchartsWrapper } from '@hooks'
-import { getRegularTextColor, getSecondaryTextColor } from '@pages/util/style'
-import { groupBy, rotate, toMap } from "@util/array"
+import { getCssVariable, getRegularTextColor, getSecondaryTextColor } from '@pages/util/style'
+import { groupBy, toMap } from "@util/array"
 import { formatTime, getAllDatesBetween, MILL_PER_WEEK, parseTime } from "@util/time"
 import type {
     ComposeOption, EffectScatterSeriesOption, GridComponentOption, TitleComponentOption, TooltipComponentOption,
@@ -26,17 +26,6 @@ type EcOption = ComposeOption<
     | VisualMapComponentOption
 >
 
-type _Value = [
-    // X
-    number,
-    // Y
-    number,
-    // milliseconds
-    number,
-    // date yyyyMMdd
-    string,
-]
-
 const MAX_WEEK_NUM = 26
 const MIN_GRID_LEFT_PX = 50
 
@@ -46,7 +35,7 @@ const getWeekNum = (domWidth: number): number => {
 }
 
 type EffectScatterItem = MakeRequired<EffectScatterSeriesOption, 'data'>["data"][number]
-const cvtHeatmapItem = (d: _Value): EffectScatterItem => {
+const cvtHeatmapItem = (d: CalendarValue): EffectScatterItem => {
     let item: EffectScatterItem = { value: d, itemStyle: undefined, label: undefined, emphasis: undefined }
     const minutes = d[2]
     if (!minutes) {
@@ -56,7 +45,7 @@ const cvtHeatmapItem = (d: _Value): EffectScatterItem => {
     return item
 }
 
-function getXAxisLabelMap(data: _Value[]): { [x: string]: string } {
+function getXAxisLabelMap(data: CalendarValue[]): { [x: string]: string } {
     const allMonthLabel = t(msg => msg.calendar.months).split('|')
     const result: Record<string, string> = {}
     // {[ x:string ]: Set<string> }
@@ -75,12 +64,13 @@ function getXAxisLabelMap(data: _Value[]): { [x: string]: string } {
 }
 
 function optionOf(
-    data: _Value[], weekDays: string[],
+    data: CalendarValue[], weekDays: string[],
     format: tt4b.ui.TimeFormat, domWidth: number,
 ): EcOption {
     const xAxisLabelMap = getXAxisLabelMap(data)
     const axisTextColor = getSecondaryTextColor()
     const gridLeft = domWidth * 0.1 < MIN_GRID_LEFT_PX ? MIN_GRID_LEFT_PX : '10%'
+    const rangeColors = [getCssVariable('--echarts-step-color-1'), getCssVariable('--echarts-step-color-2')]
     return {
         title: {
             text: t(msg => msg.analysis.summary.calendarTitle),
@@ -96,12 +86,10 @@ function optionOf(
             borderWidth: 0,
             formatter: (params: TopLevelFormatterParams) => {
                 const value = parseValueOfFormatter(params)
-                // todo: not safety
-                const [_1, _2, mills, date] = value as _Value
-                if (!mills) return ''
-                const time = parseTime(date)
-                if (!time) return ''
-                return time ? `${formatTime(time, t(msg => msg.calendar.dateFormat))}<br /><b>${periodFormatter(mills, { format })}</b>` : ''
+                if (!isCalendarValue(value) || !value[2]) return ''
+                const date = formatTime(parseTime(value[3]), t(msg => msg.calendar.dateFormat))
+                const time = periodFormatter(value[2], { format })
+                return `${date}<br /><b>${time}</b>`
             },
         },
         grid: { height: '68%', left: gridLeft, right: 0, top: '18%' },
@@ -110,7 +98,7 @@ function optionOf(
             axisLine: { show: false },
             axisTick: { show: false },
             axisLabel: {
-                formatter: (x: string) => xAxisLabelMap[x] || '',
+                formatter: x => xAxisLabelMap[x] || '',
                 interval: 0,
                 color: axisTextColor,
             },
@@ -126,7 +114,7 @@ function optionOf(
             min: 0,
             max: Math.max(...data.map(a => a[2])),
             show: false,
-            inRange: { color: ['rgb(55, 162, 255)', 'rgb(116, 21, 219)'] },
+            inRange: { color: rangeColors },
             dimension: 2,
         },
         series: {
@@ -153,7 +141,7 @@ class Wrapper extends EchartsWrapper<BizOption, EcOption> {
         const startTime = await getWeekStartTime(endTime.getTime() - MILL_PER_WEEK * (colNum - 1))
         const allDates = getAllDatesBetween(startTime, endTime)
         const value = toMap(rows, r => r.date, r => r.focus)
-        const data: _Value[] = []
+        const data: CalendarValue[] = []
         allDates.forEach((date, index) => {
             const dailyMills = value[date] || 0
             const colIndex = parseInt((index / 7).toString())
@@ -161,9 +149,7 @@ class Wrapper extends EchartsWrapper<BizOption, EcOption> {
             const x = colIndex, y = 7 - (1 + weekDay)
             data.push([x, y, dailyMills, date])
         })
-        const weekStart = await getWeekStartDay()
-        const weekDays = (t(msg => msg.calendar.weekDays)?.split?.('|') || []).reverse()
-        rotate(weekDays, weekStart, true)
+        const weekDays = await getWeekDays()
         return optionOf(data, weekDays, timeFormat, width)
     }
 }

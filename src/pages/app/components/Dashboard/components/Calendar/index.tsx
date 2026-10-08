@@ -11,13 +11,14 @@ import { listSiteStats } from '@api/sw/stat'
 import ChartTitle from '@app/components/Dashboard/ChartTitle'
 import { t } from "@app/locale"
 import { RECORD_ROUTE, type RecordQuery } from '@app/router/constants'
+import { isCalendarValue } from '@app/util/echarts'
 import { useEcharts, useRemoteValue } from "@hooks"
 import { Flex } from '@pages/components'
 import { groupBy, sum } from "@util/array"
 import { getAppPageUrl } from "@util/constant/url"
-import { cvtDateRange2Str, formatTimeYMD, MILL_PER_DAY, MILL_PER_HOUR } from "@util/time"
+import { cvtDateRange2Str, formatTimeYMD, MILL_PER_DAY, MILL_PER_HOUR, parseTime } from "@util/time"
 import { defineComponent } from "vue"
-import Wrapper, { type BizOption, type ChartValue } from "./Wrapper"
+import Wrapper, { type BizOption } from "./Wrapper"
 
 const titleText = (option: Result | undefined) => {
     const { value, yearAgo } = option || {}
@@ -48,17 +49,9 @@ const fetchData = async (remote: boolean): Promise<Result> => {
  *
  * @since 1.1.1
  */
-function handleClick(value: ChartValue): void {
-    const [_1, _2, minutes, currentDate] = value
-    if (!minutes) {
-        return
-    }
-
-    const currentYear = parseInt(currentDate.substring(0, 4))
-    const currentMonth = parseInt(currentDate.substring(4, 6)) - 1
-    const currentDay = parseInt(currentDate.substring(6, 8))
-    const currentTs = (new Date(currentYear, currentMonth, currentDay).getTime() + 1000).toString()
-
+function handleClick(value: unknown): void {
+    if (!isCalendarValue(value) || !value[2]) return
+    const currentTs = parseTime(value[3]).getTime().toString()
     const url = getAppPageUrl(RECORD_ROUTE, { ds: currentTs, de: currentTs } satisfies RecordQuery)
     createTabAfterCurrent(url)
 }
@@ -68,7 +61,7 @@ const _default = defineComponent<{}>(() => {
     const { elRef, data } = useEcharts(Wrapper, () => fetchData(remote.value), {
         afterInit(ew) {
             const supportClick = !window.matchMedia("(any-pointer:coarse)").matches
-            supportClick && ew.instance?.on("click", (params: any) => handleClick(params.value as ChartValue))
+            supportClick && ew.instance?.on("click", params => handleClick(params.value))
         },
         deps: remote,
     })

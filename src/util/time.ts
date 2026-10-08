@@ -265,11 +265,7 @@ export function parseTime(dateStr: string | undefined): Date | undefined {
     const year = parseInt(dateStr.substring(0, 4))
     const month = parseInt(dateStr.substring(4, 6))
     const date = parseInt(dateStr.substring(6, 8))
-    const result = new Date()
-    result.setFullYear(year)
-    result.setMonth(month - 1)
-    result.setDate(date)
-    return result
+    return new Date(year, month - 1, date)
 }
 
 export type DateRange = Date | [Date?, Date?] | undefined
