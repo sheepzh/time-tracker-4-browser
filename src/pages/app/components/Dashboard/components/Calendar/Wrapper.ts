@@ -4,26 +4,17 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { getWeekStartDay } from "@api/sw/option"
 import { t } from "@app/locale"
-import { getStepColors } from '@app/util/echarts'
-import { cvt2LocaleTime } from '@app/util/time'
+import { getStepColors, isCalendarValue, parseValueOfFormatter, type CalendarValue } from '@app/util/echarts'
+import { cvt2LocaleTime, getWeekDays } from '@app/util/time'
 import { EchartsWrapper } from "@hooks"
 import { getPrimaryTextColor } from '@pages/util/style'
-import { groupBy, rotate } from "@util/array"
+import { groupBy } from "@util/array"
 import { formatPeriodCommon, getAllDatesBetween, MILL_PER_HOUR, MILL_PER_MINUTE } from "@util/time"
 import type {
     ComposeOption, GridComponentOption, HeatmapSeriesOption, ScatterSeriesOption, TooltipComponentOption,
     VisualMapComponentOption,
 } from "echarts"
-import type { TopLevelFormatterParams } from "echarts/types/dist/shared"
-
-export type ChartValue = [
-    x: number,
-    y: number,
-    dailyMill: number,
-    date: string, // yyyymmdd
-]
 
 type EcOption = ComposeOption<
     | ScatterSeriesOption
@@ -38,13 +29,7 @@ export type BizOption = {
     value: { [date: string]: number }
 }
 
-function formatTooltip(mills: number, date: string): string {
-    const dateStr = cvt2LocaleTime(date)
-    const timeStr = formatPeriodCommon(mills)
-    return `${dateStr}</br><b>${timeStr}</b>`
-}
-
-function getXAxisLabelMap(data: ChartValue[]): { [x: string]: string } {
+function getXAxisLabelMap(data: CalendarValue[]): { [x: string]: string } {
     const allMonthLabel = t(msg => msg.calendar.months).split('|')
     const result: Record<string, string> = {}
     // {[ x:string ]: Set<string> }
@@ -64,7 +49,7 @@ function getXAxisLabelMap(data: ChartValue[]): { [x: string]: string } {
 
 type HeatmapItem = Exclude<HeatmapSeriesOption["data"], undefined>[number]
 
-const cvtHeatmapItem = (d: ChartValue): HeatmapItem => {
+const cvtHeatmapItem = (d: CalendarValue): HeatmapItem => {
     let item: HeatmapItem = { value: d, itemStyle: undefined, label: undefined, emphasis: undefined }
     const minutes = d[2]
     if (!minutes) {
@@ -104,7 +89,7 @@ const computePieces = (min: number, max: number): Piece[] => {
     return pieces.map((p, idx) => ({ ...p, color: colors[idx] }))
 }
 
-function optionOf(data: ChartValue[], weekDays: string[], dom: HTMLElement): EcOption {
+function optionOf(data: CalendarValue[], weekDays: string[], dom: HTMLElement): EcOption {
     const xAxisLabelMap = getXAxisLabelMap(data)
     const textColor = getPrimaryTextColor()
     const w = dom?.getBoundingClientRect?.()?.width
@@ -117,12 +102,10 @@ function optionOf(data: ChartValue[], weekDays: string[], dom: HTMLElement): EcO
     return {
         tooltip: {
             borderWidth: 0,
-            formatter: (params: TopLevelFormatterParams) => {
-                const param = Array.isArray(params) ? params[0] : params
-                const { data } = param ?? {}
-                const { value } = data as any ?? {}
-                const [_1, _2, mills, date] = value
-                return mills ? formatTooltip(mills as number, date) : ''
+            formatter: params => {
+                const value = parseValueOfFormatter(params)
+                if (!isCalendarValue(value) || !value[2]) return ''
+                return `${cvt2LocaleTime(value[3])}<br /><b>${formatPeriodCommon(value[2])}</b>`
             },
         },
         grid: { height: '70%', left: '7%', width: `${gridWidth * 100}%`, top: '18%', },
@@ -131,7 +114,7 @@ function optionOf(data: ChartValue[], weekDays: string[], dom: HTMLElement): EcO
             axisLine: { show: false },
             axisTick: { show: false, alignWithLabel: true },
             axisLabel: {
-                formatter: (x: string) => xAxisLabelMap[x] || '',
+                formatter: x => xAxisLabelMap[x] ?? '',
                 interval: 0,
                 margin: 14,
                 color: textColor,
@@ -174,7 +157,7 @@ class Wrapper extends EchartsWrapper<BizOption, EcOption> {
 
         const { startTime, endTime, value } = option
         const allDates = getAllDatesBetween(startTime, endTime)
-        const data: ChartValue[] = []
+        const data: CalendarValue[] = []
         allDates.forEach((date, index) => {
             const dailyMills = value[date] || 0
             const colIndex = parseInt((index / 7).toString())
@@ -182,9 +165,7 @@ class Wrapper extends EchartsWrapper<BizOption, EcOption> {
             const x = colIndex, y = 7 - (1 + weekDay)
             data.push([x, y, dailyMills, date])
         })
-        const weekDays = (t(msg => msg.calendar.weekDays)?.split?.('|') || []).reverse()
-        const weekStart = await getWeekStartDay()
-        weekStart && rotate(weekDays, weekStart, true)
+        const weekDays = await getWeekDays()
         return optionOf(data, weekDays, this.getDom())
     }
 }

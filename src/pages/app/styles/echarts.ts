@@ -8,7 +8,7 @@ export const injectEchartsCss = () => {
             --echarts-series-color-3: #FFD600;
             --echarts-series-color-4: #3A0CA3;
 
-            --echarts-step-color-1: #4361EE;
+            --echarts-step-color-1: var(--el-fill-color-blank);
             --echarts-step-color-2: var(--echarts-series-color-2);
 
             --echarts-compare-color-1: var(--echarts-series-color-2);

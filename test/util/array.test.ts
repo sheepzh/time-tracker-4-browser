@@ -30,15 +30,21 @@ describe("util/array", () => {
 
     test("rotate", () => {
         const arr = [1, 2, 3, 4, 5, 6]
-        // Left rotate for 1 time
-        rotate(arr)
+        rotate(arr, 1)
+        expect(arr).toEqual([6, 1, 2, 3, 4, 5])
+        rotate(arr, -2)
         expect(arr).toEqual([2, 3, 4, 5, 6, 1])
-        // Left rotate again for 2 times
-        rotate(arr, 2, false)
-        expect(arr).toEqual([4, 5, 6, 1, 2, 3])
-        // Right rotate for 3 times
-        rotate(arr, 3, true)
-        expect(arr).toEqual([1, 2, 3, 4, 5, 6])
+        // count equal to length is a no-op after modulo normalization
+        rotate(arr, arr.length)
+        expect(arr).toEqual([2, 3, 4, 5, 6, 1])
+        // Zero and non-integer counts are no-ops
+        rotate(arr, 0)
+        rotate(arr, 1.5)
+        expect(arr).toEqual([2, 3, 4, 5, 6, 1])
+        // Empty array is a no-op
+        const empty: number[] = []
+        rotate(empty, 2)
+        expect(empty).toEqual([])
     })
 
     test("sum", () => {

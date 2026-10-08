@@ -5,6 +5,7 @@ import { truthy } from '@util/lang'
 import { addVector, multiTuple, subVector } from "@util/tuple"
 import { type LinearGradientObject } from "echarts"
 import type { TopLevelFormatterParams } from "echarts/types/dist/shared"
+import { createGuard } from 'typescript-guard'
 
 const splitColorVectors = (vectorRange: Tuple<Vector<3>, 2>, count: number, gradientFactor?: number): Vector<3>[] => {
     gradientFactor ??= 1.3
@@ -98,3 +99,18 @@ export function parseValueOfFormatter(params: TopLevelFormatterParams) {
     const { data } = param ?? {}
     return isRecord(data) ? data.value : undefined
 }
+
+export type CalendarValue = [
+    x: number,
+    y: number,
+    dailyMill: number,
+    date: string, // yyyymmdd
+]
+
+export const isCalendarValue = createGuard<CalendarValue>(v =>
+    Array.isArray(v)
+    && typeof v[0] === 'number'
+    && typeof v[1] === 'number'
+    && typeof v[2] === 'number'
+    && typeof v[3] === 'string'
+)

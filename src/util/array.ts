@@ -86,28 +86,15 @@ export function toMap<E, K extends string | number, V>(
  * Rotate the array without new one returned
  *
  * @param arr the targe array
- * @param count count to rotate, must be positive, or 1 is default
- * @param rightOrLeft rotate right or left, true means left, false means right, default is false
+ * @param count count to rotate
  */
-export function rotate<T>(arr: T[], count?: number, rightOrLeft?: boolean): void {
-    let realTime = 1
-    if (count && count > 1) {
-        realTime = count
-    }
-    const operation = !!rightOrLeft
-        // Right
-        ? (a: T[]) => {
-            const first = a.pop()
-            first && a.unshift(first)
-        }
-        // Left
-        : (a: T[]) => {
-            const last = a.shift()
-            last && a.push(last)
-        }
-    for (; realTime > 0; realTime--) {
-        operation(arr)
-    }
+export function rotate<T extends Exclude<any, undefined>>(arr: T[], count: number): void {
+    const arrLen = arr.length
+    if (!arrLen || !Number.isInteger(count) || count === 0) return
+    count %= arrLen
+    if (count < 0) count += arrLen
+    const tail = arr.splice(arrLen - count, count)
+    arr.unshift(...tail)
 }
 
 /**
