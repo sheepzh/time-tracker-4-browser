@@ -1,10 +1,8 @@
-import {
-    createGist, findTarget, getJsonFileContent, updateGist, type FileForm, type GistForm,
-} from "@api/gist"
+import { createGist, findTarget, getJsonFileContent, updateGist, type FileForm, type GistForm } from "@api/gist"
 import {
     init, type ComposeOption, type GridComponentOption, type LineSeriesOption, type TitleComponentOption
 } from "echarts"
-import { writeFileSync } from "fs"
+import { writeFile } from 'fs/promises'
 import { exit } from 'process'
 import { validateTokenFromEnv } from '../util/gist'
 import { filenameOf, getExistGist, type Browser, type UserCount } from "./common"
@@ -27,8 +25,7 @@ const VALID_DATE_RE = /^\d{4}-\d{2}-\d{2}$/
 
 const calcAvg = (arr: number[]): number => {
     const l = arr.length
-    if (l === 0) return 0
-    return arr.reduce((acc, val) => acc + val, 0) / l
+    return l ? arr.reduce((acc, val) => acc + val, 0) / l : 0
 }
 
 const computeGrowth = (totals: number[], dayCount: number): string => {
@@ -41,13 +38,13 @@ const computeGrowth = (totals: number[], dayCount: number): string => {
 
 const computeSummary = ({ xAxis, yAxises }: ChartData) => {
     const totals = xAxis.map((_, idx) => ALL_BROWSERS.reduce((sum, browser) => sum + (yAxises[browser][idx] ?? 0), 0))
-    const total = totals[totals.length - 1] ?? 0
+    const recentMost = Math.max(0, ...totals.slice(-7))
     const latest = xAxis[xAxis.length - 1]
-    if (!latest) return { total, yoy: '0', month: '0' }
+    if (!latest) return { recentMost, yoy: '0', month: '0' }
 
     const yoy = computeGrowth(totals, 365)
     const month = computeGrowth(totals, 30)
-    return { total, yoy, month }
+    return { recentMost, yoy, month }
 }
 
 function preProcess(originData: OriginData): ChartData {
@@ -126,13 +123,13 @@ function render2Svg(chartData: ChartData): string {
         width: 960,
         height: 640
     })
-    const { total, yoy, month } = computeSummary(chartData)
+    const { recentMost, yoy, month } = computeSummary(chartData)
     const ds = xAxis[0]
     const de = xAxis[xAxis.length - 1]
     const option: EcOption = {
         title: {
             text: 'Weekly Active Users',
-            subtext: `${ds} to ${de}  |  currently ${total}  |  YoY ${yoy}%  |  MoM ${month}%`
+            subtext: `${ds} to ${de}  |  currently ${recentMost}  |  YoY ${yoy}%  |  MoM ${month}%`
         },
         legend: { data: ALL_BROWSERS },
         grid: {
@@ -219,12 +216,12 @@ async function upload2Gist(token: string, svg: string) {
 async function main(): Promise<void> {
     const token = validateTokenFromEnv()
     // 1. get all data
-    const originData: OriginData = await getOriginData(token)
+    const originData = await getOriginData(token)
     // 2. pre-process data
     const chartData = preProcess(originData)
     // 3. render csv
     const svg = render2Svg(chartData)
-    writeFileSync('user-chart.svg', svg, 'utf-8')
+    await writeFile('user-chart.svg', svg, 'utf-8')
     // 4. upload
     await upload2Gist(token, svg)
     // 5. finish
