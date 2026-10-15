@@ -40,5 +40,14 @@
             "breakStartMsg": "Faça uma pequena pausa. Parabéns!"
         },
         "dailySummary": "Tempo de foco: {focus}, Visitas: {visit}, Sites: {siteCount}"
+    },
+    "uk": {
+        "focus": {
+            "completedTitle": "Зосередження завершено",
+            "completedMsg": "Ваш сеанс зосередження завершено. Відмінна робота!",
+            "breakStartMsg": "Зробіть коротку перерву. Ви її заслужили!",
+            "focusResumeMsg": "Перерва закінчилася. Час зосередитися знову!"
+        },
+        "dailySummary": "Час зосередження: {focus}. Відвідування: {visit}. Сайти: {siteCount}"
     }
 }

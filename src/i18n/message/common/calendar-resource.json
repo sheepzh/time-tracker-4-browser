@@ -135,6 +135,7 @@
             "everyday": "Щодня",
             "thisWeek": "Цього тижня",
             "thisMonth": "Цього місяця",
+            "lastWeek": "Минулий тиждень",
             "lastDays": "Минулі {n} днів",
             "tillYesterday": "До вчора",
             "tillDaysAgo": "До {n} днів тому",
