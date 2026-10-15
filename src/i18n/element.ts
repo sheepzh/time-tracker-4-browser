@@ -1,6 +1,5 @@
 import { type Language } from "element-plus/es/locale"
-import { locale, t } from "."
-import calendarMessages from "./message/common/calendar"
+import { locale } from "."
 
 const LOCALES: Record<tt4b.Locale, () => Promise<{ default: Language }>> = {
     zh_CN: () => import('element-plus/es/locale/lang/zh-cn'),
@@ -22,5 +21,3 @@ const LOCALES: Record<tt4b.Locale, () => Promise<{ default: Language }>> = {
 export async function initElementLocale(): Promise<Language> {
     return (await LOCALES[locale]()).default
 }
-
-export const dateFormat = () => t(calendarMessages, { key: msg => msg.dateFormat, param: { y: 'YYYY', m: 'MM', d: 'DD' } })

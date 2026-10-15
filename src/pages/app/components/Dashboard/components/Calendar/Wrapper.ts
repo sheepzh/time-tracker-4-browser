@@ -4,11 +4,11 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { t } from "@app/locale"
+import { tMonths } from "@app/locale"
 import { getStepColors, isCalendarValue, parseValueOfFormatter, type CalendarValue } from '@app/util/echarts'
-import { cvt2LocaleTime, getWeekDays } from '@app/util/time'
+import { cvt2LocaleDate, getWeekDays } from '@app/util/time'
 import { EchartsWrapper } from "@hooks"
-import { getPrimaryTextColor } from '@pages/util/style'
+import { getCssVariable, getPrimaryTextColor } from '@pages/util/style'
 import { groupBy } from "@util/array"
 import { formatPeriodCommon, getAllDatesBetween, MILL_PER_HOUR, MILL_PER_MINUTE } from "@util/time"
 import type {
@@ -29,8 +29,8 @@ export type BizOption = {
     value: { [date: string]: number }
 }
 
+const MONTH_LABELS = tMonths()
 function getXAxisLabelMap(data: CalendarValue[]): { [x: string]: string } {
-    const allMonthLabel = t(msg => msg.calendar.months).split('|')
     const result: Record<string, string> = {}
     // {[ x:string ]: Set<string> }
     const xAndMonthMap = groupBy(data, e => e[0], grouped => new Set(grouped.map(a => a[3].substring(4, 6))))
@@ -41,7 +41,7 @@ function getXAxisLabelMap(data: CalendarValue[]): { [x: string]: string } {
         if (!currentMonth || currentMonth === lastMonth) return
         lastMonth = currentMonth
         const monthNum = parseInt(currentMonth)
-        const label = allMonthLabel[monthNum - 1]
+        const label = MONTH_LABELS[monthNum - 1]
         label && (result[x] = label)
     })
     return result
@@ -85,7 +85,7 @@ const computePieces = (min: number, max: number): Piece[] => {
     let pieces = ALL_PIECES.filter((p, i) => i === 0 || p.min <= max)
     pieces = pieces.filter((p, i) => p.max > min || i === pieces.length - 1)
 
-    const colors = getStepColors(pieces.length)
+    const colors = getStepColors(pieces.length, { startColor: getCssVariable('--el-fill-color-blank') })
     return pieces.map((p, idx) => ({ ...p, color: colors[idx] }))
 }
 
@@ -105,7 +105,7 @@ function optionOf(data: CalendarValue[], weekDays: string[], dom: HTMLElement): 
             formatter: params => {
                 const value = parseValueOfFormatter(params)
                 if (!isCalendarValue(value) || !value[2]) return ''
-                return `${cvt2LocaleTime(value[3])}<br /><b>${formatPeriodCommon(value[2])}</b>`
+                return `${cvt2LocaleDate(value[3])}<br /><b>${formatPeriodCommon(value[2])}</b>`
             },
         },
         grid: { height: '70%', left: '7%', width: `${gridWidth * 100}%`, top: '18%', },

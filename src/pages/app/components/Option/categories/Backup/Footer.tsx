@@ -6,12 +6,11 @@
  */
 
 import { checkAuth, getLastBackUp, syncData } from "@api/sw/backup"
-import { t } from '@app/locale'
+import { dateTimeFmt, t } from '@app/locale'
 import { Operation, UploadFilled } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
 import { useManualRequest, useRequest } from "@hooks"
 import { Flex } from '@pages/components'
-import { formatTime } from "@util/time"
 import { ElButton, ElDivider, ElMessage, ElText, useNamespace } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
 import Clear from "./Clear"
@@ -26,7 +25,7 @@ const useStyle = () => {
     `
 }
 
-const TIME_FORMAT = t(msg => msg.calendar.timeFormat)
+const TIME_FMT = dateTimeFmt()
 
 const _default = defineComponent<{ type: tt4b.backup.Type }>(props => {
 
@@ -64,7 +63,7 @@ const _default = defineComponent<{ type: tt4b.backup.Type }>(props => {
             <ElText v-show={!!lastTime.value} style={{ marginInlineStart: "8px" } satisfies StyleValue}>
                 {t(
                     msg => msg.option.backup.lastTimeTip,
-                    { lastTime: (lastTime.value && formatTime(lastTime.value, TIME_FORMAT)) ?? '' }
+                    { lastTime: (lastTime.value && TIME_FMT.format(lastTime.value)) ?? '' }
                 )}
             </ElText>
         </Flex>

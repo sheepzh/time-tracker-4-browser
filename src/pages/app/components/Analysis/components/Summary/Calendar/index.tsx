@@ -12,7 +12,7 @@ import Wrapper, { type BizOption } from "./Wrapper"
 const _default = defineComponent(() => {
     const rows = useAnalysisRows()
     const timeFormat = useAnalysisTimeFormat()
-    const bizOption = computed<BizOption>(() => ({ rows: rows.value, timeFormat: timeFormat.value }))
+    const bizOption = computed<BizOption>(() => ({ rows: rows.value ?? [], timeFormat: timeFormat.value }))
     const { elRef } = useEcharts(Wrapper, bizOption, { manual: false })
     return () => <div ref={elRef} style={{ height: '100%', minHeight: '280px' }} />
 })

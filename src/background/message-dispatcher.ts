@@ -18,7 +18,7 @@ import backupProcessor from "./service/backup/processor"
 import { exportData, importData, migrateStorage } from "./service/components/immigration"
 import { importOther, previewBackup } from "./service/components/import-processor"
 import optionHolder from "./service/components/option-holder"
-import { getWeekStartDay, getWeekStartTime } from "./service/components/week-helper"
+import { getWeekStartDay } from "./service/components/week-helper"
 import { handleAction, saveLastPopup } from "./service/focus"
 import { getTodayResult } from './service/item-service'
 import { getInstallTime, getLastBackUp } from "./service/meta-service"
@@ -95,7 +95,6 @@ class MessageDispatcher {
             .register('option.changeStorage', migrateStorage)
             .register('option.testNotification', () => notificationProcessor.doSend())
             .register('option.weekStartDay', getWeekStartDay)
-            .register('option.weekStartTime', getWeekStartTime)
             // Category
             .register('cate.all', () => cateDatabase.listAll())
             .register('cate.add', name => cateDatabase.add(name))

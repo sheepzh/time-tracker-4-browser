@@ -5,60 +5,60 @@
  * https://opensource.org/licenses/MIT
  */
 
-import type { DimensionEntry } from '@app/components/Analysis/types'
+import { isDimensionEntry, type Circle, type DimensionData, type DimensionEntry } from '@app/components/Analysis/types'
+import { formatValue } from '@app/components/Analysis/util'
 import type { ValueFormatter } from '@app/components/common/kanban/types'
 import { getLineSeriesPalette, tooltipDot, tooltipFlexLine } from '@app/util/echarts'
 import { EchartsWrapper } from '@hooks'
 import { getRegularTextColor } from '@pages/util/style'
-import type {
-    ComposeOption, GridComponentOption, LineSeriesOption, TitleComponentOption, TooltipComponentOption,
-} from "echarts"
-import type { TopLevelFormatterParams } from "echarts/types/dist/shared"
+import { cvt2LocaleDate } from '@pages/util/time'
+import type { BarSeriesOption, ComposeOption, GridComponentOption, LineSeriesOption, TitleComponentOption, TooltipComponentOption } from 'echarts'
+import type { CallbackDataParams } from "echarts/types/dist/shared"
+import type { LineDataItemOption } from 'echarts/types/src/chart/line/LineSeries.js'
+import type { OptionDataValue } from 'echarts/types/src/util/types.js'
+import { createObjectGuard, isNumber } from 'typescript-guard'
 
 type EcOption = ComposeOption<
+    | BarSeriesOption
     | LineSeriesOption
     | TitleComponentOption
     | TooltipComponentOption
     | GridComponentOption
 >
 
-type BizOption = {
-    entries: DimensionEntry[]
-    preEntries: DimensionEntry[]
+export type BizOption = {
+    dimension?: DimensionData
     title: string
     valueFormatter: ValueFormatter
+    circle: Circle
 }
 
-type ValueItem = Exclude<LineSeriesOption["data"], undefined>[0] & {
+type ItemExt = {
+    value: number
     _data: DimensionEntry
 }
+const isExt = createObjectGuard<ItemExt>({ value: isNumber, _data: isDimensionEntry })
+
+type ValueItem = (OptionDataValue | OptionDataValue[] | LineDataItemOption) & ItemExt
 
 const [THIS_COLOR, PREV_COLOR] = getLineSeriesPalette()
 
-const createTooltipLine = (param: any, valueFormatter: ValueFormatter): string => {
-    const data = param.data as ValueItem
-    const { _data: { value, date } } = data
-
-    const valStr = valueFormatter?.(value) || value?.toString() || "NaN"
-
+const createTooltipLine = ({ data, color }: CallbackDataParams, valueFormatter: ValueFormatter): string => {
+    if (!isExt(data)) return ''
+    const { _data: { date, endDate }, value } = data
     return tooltipFlexLine(
-        `${tooltipDot(param.color)}&ensp;${date}`,
-        `<b>${valStr}</b>`
+        `${tooltipDot(color)}&ensp;${cvt2LocaleDate(date, endDate)}`,
+        `<b>${formatValue(value, valueFormatter)}</b>`
     )
 }
 
-const formatTooltip = (params: TopLevelFormatterParams, valueFormatter: ValueFormatter) => {
-    if (!Array.isArray(params)) return ''
-
-    const lines = params.map(param => createTooltipLine(param, valueFormatter))
-    return lines.join('')
-}
-
-const generateOption = ({ entries, preEntries, title, valueFormatter }: BizOption) => {
-    const thisExistData = entries?.some(e => !!e.value)
-    const prevExistData = preEntries?.some(e => !!e.value)
-    const thisPeriod: ValueItem[] = entries?.map(r => ({ name: r.date, value: r.value, _data: r }))
-    const prevPeriod: ValueItem[] = preEntries?.map(r => ({ name: r.date, value: r.value, _data: r }))
+const generateOption = ({ dimension, title, valueFormatter, circle }: BizOption) => {
+    const isWeekly = circle === 'weekly'
+    const { curr = [], prev = [] } = dimension ?? {}
+    const thisExistData = curr.some(e => !!e.value)
+    const prevExistData = prev.some(e => !!e.value)
+    const thisPeriod: ValueItem[] = curr.map(r => ({ name: r.date, value: r.value, _data: r }))
+    const prevPeriod: ValueItem[] = prev.map(r => ({ name: r.date, value: r.value, _data: r }))
 
     const option: EcOption = {
         backgroundColor: 'rgba(0,0,0,0)',
@@ -80,12 +80,15 @@ const generateOption = ({ entries, preEntries, title, valueFormatter }: BizOptio
         },
         tooltip: {
             trigger: 'axis',
-            axisPointer: { type: "line" },
-            formatter: (params: TopLevelFormatterParams) => formatTooltip(params, valueFormatter),
+            axisPointer: { type: isWeekly ? "shadow" : "line" },
+            formatter(params) {
+                if (!Array.isArray(params)) return ''
+                return params.map(param => createTooltipLine(param, valueFormatter)).join('')
+            },
         },
         xAxis: {
             type: 'category',
-            data: entries?.map((_, idx) => ({ value: idx, textStyle: { width: 0, opacity: 0 } })),
+            data: curr.map((_, idx) => ({ value: idx, textStyle: { width: 0, opacity: 0 } })),
             show: false,
         },
         yAxis: {
@@ -94,7 +97,13 @@ const generateOption = ({ entries, preEntries, title, valueFormatter }: BizOptio
             axisTick: { show: false },
             splitLine: { show: false },
         },
-        series: [{
+        series: isWeekly ? {
+            data: thisPeriod,
+            type: 'bar',
+            color: THIS_COLOR,
+            barMaxWidth: 40,
+            emphasis: { focus: 'series' },
+        } : [{
             data: prevPeriod,
             type: 'line',
             showSymbol: false,
@@ -118,5 +127,7 @@ const generateOption = ({ entries, preEntries, title, valueFormatter }: BizOptio
 }
 
 export default class Wrapper extends EchartsWrapper<BizOption, EcOption> {
+    protected override replaceSeries = true
+
     generateOption = generateOption
 }

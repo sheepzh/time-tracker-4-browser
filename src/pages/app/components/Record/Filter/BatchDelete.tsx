@@ -2,11 +2,12 @@ import { getGroup } from "@api/chrome/tabGroups"
 import {
     batchDeleteStats, countGroupStatsByIds, countSiteStats, deleteSiteStatByGroup, deleteSiteStatByHost,
 } from "@api/sw/stat"
-import { type I18nKey, t } from '@app/locale'
+import { t } from '@app/locale'
+import { cvt2LocaleDate } from '@app/util/time'
 import { DeleteFilled } from "@element-plus/icons-vue"
 import { useRemoteValue } from '@hooks'
 import { isGroup, isNormalSite, isSite } from "@util/stat"
-import { cvtDateRange2Str, formatTime, getBirthday } from "@util/time"
+import { cvtDateRange2Str, getBirthday } from "@util/time"
 import { ElButton, ElMessage, ElMessageBox } from "element-plus"
 import { computed, defineComponent } from "vue"
 import { useRecordComponent, useRecordFilter } from "../context"
@@ -30,48 +31,21 @@ async function computeBatchDeleteMsg(selected: tt4b.stat.Row[], mergeDate: boole
         isGroup(row) && groupIds.push(row.groupKey)
     })
     const example = await extractExample(host[0], groupIds[0])
-    let count2Delete = selected.length
+    let count = selected.length
     if (mergeDate) {
         // All the items
         const date = cvtDateRange2Str(dateRange) ?? []
         const siteCount = host.length ? await countSiteStats({ host, date }) : 0
         const groupCount = groupIds.length ? await countGroupStatsByIds(groupIds, date) : 0
-        count2Delete = siteCount + groupCount
-    }
-    const i18nParam: Record<string, string | number | undefined> = {
-        // count
-        count: count2Delete,
-        // example for hosts
-        example,
-        // Start date, if range
-        start: undefined,
-        // End date, if range
-        end: undefined,
-        // Date, if single date
-        date: undefined,
+        count = siteCount + groupCount
     }
 
-    let key: I18nKey | undefined = undefined
     let [startDate, endDate] = dateRange
     if (startDate === undefined && endDate === undefined) {
-        // Delete all
-        key = msg => msg.record.batchDelete.confirmMsgAll
-    } else {
-        const dateFormat = t(msg => msg.calendar.dateFormat)
-        const start = formatTime(startDate ?? getBirthday(), dateFormat)
-        const end = formatTime(endDate ?? Date.now(), dateFormat)
-        if (start === end) {
-            // Single date
-            key = msg => msg.record.batchDelete.confirmMsg
-            i18nParam.date = start
-        } else {
-            // Date range
-            key = msg => msg.record.batchDelete.confirmMsgRange
-            i18nParam.start = start
-            i18nParam.end = end
-        }
+        return t(msg => msg.record.batchDelete.confirmMsgAll, { count, example })
     }
-    return t(key, i18nParam)
+    const date = cvt2LocaleDate(startDate ?? getBirthday(), endDate ?? new Date())
+    return t(msg => msg.record.batchDelete.confirmMsg, { count, example, date })
 }
 
 async function handleBatchDelete(displayComp: DisplayComponent | undefined, filter: RecordFilterOption) {

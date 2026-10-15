@@ -4,7 +4,7 @@ import { isRecord } from '@util/guard'
 import { truthy } from '@util/lang'
 import { addVector, multiTuple, subVector } from "@util/tuple"
 import { type LinearGradientObject } from "echarts"
-import type { TopLevelFormatterParams } from "echarts/types/dist/shared"
+import type { TopLevelFormatterParams, ZRColor } from "echarts/types/dist/shared"
 import { createGuard } from 'typescript-guard'
 
 const splitColorVectors = (vectorRange: Tuple<Vector<3>, 2>, count: number, gradientFactor?: number): Vector<3>[] => {
@@ -21,8 +21,14 @@ const splitColorVectors = (vectorRange: Tuple<Vector<3>, 2>, count: number, grad
     })
 }
 
-export const getStepColors = (count: number, gradientFactor?: number): string[] => {
-    const p1 = getCssVariable('--echarts-step-color-1') ?? ''
+type StepColorOption = {
+    startColor?: string
+    gradientFactor?: number
+}
+
+export const getStepColors = (count: number, option?: StepColorOption): string[] => {
+    const { startColor, gradientFactor } = option ?? {}
+    const p1 = startColor ?? getCssVariable('--echarts-step-color-1') ?? ''
     const p2 = getCssVariable('--echarts-step-color-2') ?? ''
 
     if (!p1 || !p2) return [p1, p2].filter(Boolean)
@@ -73,8 +79,17 @@ export const getDiffColor = (): [incColor?: string, decColor?: string] => ([
     getCssVariable('--echarts-decrease-color'),
 ])
 
-export const tooltipDot = (color: string) => {
-    return `<div style="display:inline-block; background-color: ${color}; width: 8px; height: 8px; border-radius: 4px; margin-top: 1px; margin-bottom: 1px;"></div>`
+const getDotColor = (color?: ZRColor): string => {
+    if (typeof color === 'string') return color
+    if (color?.type === 'linear') {
+        const value = color.colorStops[0]?.color
+        if (value) return value
+    }
+    return '#f0f0f0'
+}
+
+export const tooltipDot = (color?: ZRColor) => {
+    return `<div style="display:inline-block; background-color: ${getDotColor(color)}; width: 8px; height: 8px; border-radius: 4px; margin-top: 1px; margin-bottom: 1px;"></div>`
 }
 
 export const tooltipFlexLine = (left: string, right: string, gap: number = 20): string => `

@@ -3,47 +3,25 @@ import {
     listGroupStats, listSiteStats,
 } from "@api/sw/stat"
 import { t } from '@app/locale'
+import { cvt2LocaleDate } from '@app/util/time'
 import { getGroupName, isGroup, isSite } from "@util/stat"
-import { cvtDateRange2Str, formatTime, getBirthday } from "@util/time"
+import { cvtDateRange2Str, getBirthday } from "@util/time"
 import type { RecordFilterOption, RecordSort } from "./types"
 
-/**
- * Compute the confirm text for one item to delete
- *
- * @param url  item url
- * @param date item date
- */
-function singleConfirmText(url: string, date: string): string {
-    return t(msg => msg.item.operation.deleteConfirmMsg, { url, date })
-}
-
-function rangeConfirmText(url: string, dateRange: [number?, number?]): string {
-    let [startDate, endDate] = dateRange
-    if (startDate === undefined && endDate === undefined) {
-        // Delete all
-        return t(msg => msg.item.operation.deleteConfirmMsgAll, { url })
-    }
-    const dateFormat = t(msg => msg.calendar.dateFormat)
-    const start = formatTime(startDate ?? getBirthday(), dateFormat)
-    const end = formatTime(endDate ?? new Date(), dateFormat)
-    return start === end
-        // Only one day
-        ? singleConfirmText(url, start)
-        : t(msg => msg.item.operation.deleteConfirmMsgRange, { url, start, end })
-}
-
 export function computeDeleteConfirmMsg(row: tt4b.stat.Row, filterOption: RecordFilterOption, groupMap: Record<number, chrome.tabGroups.TabGroup>): string {
-    let name: string
+    let url: string
     if (isGroup(row)) {
-        name = getGroupName(groupMap, row)
+        url = getGroupName(groupMap, row)
     } else if (isSite(row)) {
-        name = row.siteKey.host
+        url = row.siteKey.host
     } else {
-        name = 'NaN'
+        url = 'NaN'
     }
-    const { date } = row
     const { mergeDate, dateRange } = filterOption
-    return mergeDate ? rangeConfirmText(name, dateRange) : singleConfirmText(name, date)
+    const [start, end] = mergeDate ? dateRange : [row.date]
+    if (start === undefined && end === undefined) return t(msg => msg.item.operation.deleteConfirmMsgAll, { url })
+    const date = cvt2LocaleDate(start ?? getBirthday(), end ?? new Date())
+    return t(msg => msg.item.operation.deleteConfirmMsg, { url, date })
 }
 
 export async function handleDelete(row: tt4b.stat.Row, filterOption: RecordFilterOption) {

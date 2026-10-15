@@ -1,7 +1,7 @@
 
 import HostAlert from '@app/components/common/HostAlert'
 import { useCategory } from '@app/context'
-import { cvt2LocaleTime, periodFormatter } from '@app/util/time'
+import { cvt2LocaleDate, periodFormatter } from '@app/util/time'
 import { Calendar, Delete, Mouse, QuartzWatch } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
 import { useRemoteValue } from '@hooks'
@@ -91,7 +91,7 @@ const Card = defineComponent<Props>(props => {
             <Flex wrap gap={5} class={contentCls}>
                 <ElTag v-show={!filter?.mergeDate} type="info" size="small">
                     <ElIcon><Calendar /></ElIcon>
-                    <span>{cvt2LocaleTime(date)}</span>
+                    <span>{cvt2LocaleDate(date)}</span>
                 </ElTag>
                 <TooltipWrapper
                     placement="top"

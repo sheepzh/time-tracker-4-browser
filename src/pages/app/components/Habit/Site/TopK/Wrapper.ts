@@ -153,7 +153,7 @@ async function generateOption(rows: tt4b.stat.Row[] = [], timeFormat: tt4b.ui.Ti
                 },
             },
             colorBy: 'data',
-            color: getStepColors(topList.length, 1.5),
+            color: getStepColors(topList.length, { gradientFactor: 1.5 }),
         },
     }
 }

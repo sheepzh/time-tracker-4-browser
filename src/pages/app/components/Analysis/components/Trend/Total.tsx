@@ -12,15 +12,16 @@ import type { RingValue } from '@app/components/common/kanban/types'
 import { t } from "@app/locale"
 import { periodFormatter } from '@app/util/time'
 import { Flex } from '@pages/components'
-import { defineComponent, type CSSProperties } from "vue"
-import { useAnalysisTrendRangeLength } from './context'
+import { getDayLength } from '@util/time'
+import { computed, defineComponent, type CSSProperties } from "vue"
+import { useAnalysisTrendDateRange } from './context'
 
 const computeDayValue = (activeDay: RingValue | undefined, rangeLength: number) => {
     const thisActiveDay = activeDay?.[0]
     return `${thisActiveDay?.toString() || '-'}/${rangeLength?.toString() || '-'}`
 }
 
-type Props = Record<'activeDay' | 'visit' | 'focus', RingValue>
+type Props = Record<'activeDay' | 'visit' | 'focus', RingValue | undefined>
 
 const INDICATOR_CONTAINER_STYLE: CSSProperties = {
     ...GRID_CELL_STYLE,
@@ -28,7 +29,8 @@ const INDICATOR_CONTAINER_STYLE: CSSProperties = {
 }
 
 const _default = defineComponent<Props>(props => {
-    const rangeLength = useAnalysisTrendRangeLength()
+    const dateRange = useAnalysisTrendDateRange()
+    const rangeLength = computed(() => getDayLength(dateRange.value[0], dateRange.value[1]))
     const timeFormat = useAnalysisTimeFormat()
     return () => (
         <Flex flex={1} column gap={1}>

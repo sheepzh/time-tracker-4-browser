@@ -1,5 +1,3 @@
-import { t } from '@app/locale'
-import { formatTime } from '@util/time'
+import { dateFmt } from '@app/locale'
 
-const MONTH_DATE_FORMAT = t(msg => msg.calendar.monthDateFormat)
-export const formatYAxis = (date: Date | number) => formatTime(date, MONTH_DATE_FORMAT)
+export const formatYAxis = (date: Date | number) => dateFmt({ month: "2-digit", day: "2-digit" }).format(date)

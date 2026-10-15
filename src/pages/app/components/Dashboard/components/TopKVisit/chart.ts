@@ -1,7 +1,6 @@
 import { tooltipDot } from '@app/util/echarts'
 import { generateSiteLabel } from '@util/site'
 import type { BarSeriesOption, ComposeOption, PieSeriesOption, TooltipComponentOption } from 'echarts'
-import { isString } from 'typescript-guard'
 import { isBizOption } from './context'
 
 type EcOption = ComposeOption<
@@ -14,14 +13,13 @@ export const tooltipOption = (): EcOption['tooltip'] => (
     {
         show: true,
         borderWidth: 0,
-        formatter(params: any) {
+        formatter(params) {
             const param = Array.isArray(params) ? params[0] : params
             if (!param) return ''
-            const { color = '#000', data } = param
-            const point = isString(color) ? tooltipDot(color) : ''
-            const { value = 0, host = '', alias = '' } = isBizOption(data) ? data : {}
-            const hostLabel = generateSiteLabel(host, alias)
-            return `${point} ${hostLabel}<br/><b>${value}</b>`
+            const { color, data } = param
+            if (!isBizOption(data)) return ''
+            const { value, host, alias } = data
+            return `${tooltipDot(color)} ${generateSiteLabel(host, alias)}<br/><b>${value}</b>`
         }
     }
 )

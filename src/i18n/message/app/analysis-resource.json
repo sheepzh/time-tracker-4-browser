@@ -19,10 +19,10 @@
         "trend": {
             "title": "区间趋势",
             "activeDay": "活跃天数",
-            "maxFocus": "单日最大浏览时长",
-            "averageFocus": "单日平均浏览时长",
-            "maxVisit": "单日最大访问次数",
-            "averageVisit": "单日平均访问次数",
+            "focusMax": "最大浏览时长",
+            "focusAverage": "平均浏览时长",
+            "visitMax": "最大访问次数",
+            "visitAverage": "平均访问次数",
             "focusTitle": "浏览时长趋势",
             "visitTitle": "访问次数趋势"
         }
@@ -47,10 +47,10 @@
         "trend": {
             "title": "時段趨勢",
             "activeDay": "活躍天數",
-            "maxFocus": "單日最高瀏覽時數",
-            "averageFocus": "單日均瀏覽時數",
-            "maxVisit": "單日最高造訪次數",
-            "averageVisit": "單日均造訪次數",
+            "focusMax": "最高瀏覽時數",
+            "focusAverage": "平均瀏覽時數",
+            "visitMax": "最高造訪次數",
+            "visitAverage": "平均造訪次數",
             "focusTitle": "瀏覽時數趨勢",
             "visitTitle": "造訪次數趨勢"
         }
@@ -75,12 +75,14 @@
         "trend": {
             "title": "Trends",
             "activeDay": "Active days",
-            "maxFocus": "Daily maximum browsing time",
-            "averageFocus": "Daily average browsing time",
-            "maxVisit": "Daily maximum visits",
-            "averageVisit": "Daily average visits",
+            "focusMax": "Maximum browsing time",
+            "focusAverage": "Average browsing time",
+            "visitMax": "Maximum visits",
+            "visitAverage": "Average visits",
             "focusTitle": "Browsing Time Trends",
-            "visitTitle": "Visit Trends"
+            "visitTitle": "Visit Trends",
+            "daily": "Daily",
+            "weekly": "Weekly"
         }
     },
     "ja": {
@@ -103,10 +105,10 @@
         "trend": {
             "title": "レンジトレンド",
             "activeDay": "アクティブな日",
-            "maxFocus": "1 日の最大閲覧時間",
-            "averageFocus": "1 日あたりの平均閲覧時間",
-            "maxVisit": "1 日あたりの最大訪問数",
-            "averageVisit": "1 日あたりの平均訪問数",
+            "focusMax": "最大閲覧時間",
+            "focusAverage": "平均閲覧時間",
+            "visitMax": "最大訪問数",
+            "visitAverage": "平均訪問数",
             "focusTitle": "タイム トレンドの閲覧",
             "visitTitle": "訪問数の傾向"
         }
@@ -131,10 +133,10 @@
         "trend": {
             "title": "Tendências",
             "activeDay": "Dias ativos",
-            "maxFocus": "Máx. tempo navegação",
-            "averageFocus": "Méd. tempo navegação",
-            "maxVisit": "Máx. visitas",
-            "averageVisit": "Méd. visitas",
+            "focusMax": "Máx. tempo navegação",
+            "focusAverage": "Méd. tempo navegação",
+            "visitMax": "Máx. visitas",
+            "visitAverage": "Méd. visitas",
             "focusTitle": "Tempo navegação",
             "visitTitle": "Visitas"
         }
@@ -159,10 +161,10 @@
         "trend": {
             "title": "Тенденції",
             "activeDay": "Активні дні",
-            "maxFocus": "Максимальний час перегляду на день",
-            "averageFocus": "Середній час перегляду на день",
-            "maxVisit": "Максимальна кількість відвідувань на день",
-            "averageVisit": "Середня кількість відвідувань на день",
+            "focusMax": "Максимальний час перегляду",
+            "focusAverage": "Середній час перегляду",
+            "visitMax": "Максимальна кількість відвідувань",
+            "visitAverage": "Середня кількість відвідувань",
             "focusTitle": "Тенденції перегляду",
             "visitTitle": "Тенденції відвідувань"
         }
@@ -187,10 +189,10 @@
         "trend": {
             "title": "Tendencias",
             "activeDay": "Días activos",
-            "maxFocus": "Tiempo máximo de navegación diario",
-            "averageFocus": "Tiempo promedio de navegación diario",
-            "maxVisit": "Visitas máximas diarias",
-            "averageVisit": "Visitas promedio diarias",
+            "focusMax": "Tiempo máximo de navegación",
+            "focusAverage": "Tiempo promedio de navegación",
+            "visitMax": "Visitas máximas",
+            "visitAverage": "Visitas promedio",
             "focusTitle": "Tendencias del tiempo de navegación",
             "visitTitle": "Tendencias de visitas"
         }
@@ -215,10 +217,10 @@
         "trend": {
             "title": "Trends",
             "activeDay": "Aktive Tage",
-            "maxFocus": "Tägliche maximale Surfzeit",
-            "averageFocus": "Tägliche durchschnittliche Surfzeit",
-            "maxVisit": "Tägliche maximale Besuche",
-            "averageVisit": "Tägliche durchschnittliche Besuche",
+            "focusMax": "Maximale Surfzeit",
+            "focusAverage": "Durchschnittliche Surfzeit",
+            "visitMax": "Maximale Besuche",
+            "visitAverage": "Durchschnittliche Besuche",
             "focusTitle": "Durchsuchen von Zeittrends",
             "visitTitle": "Besuchen Sie Trends"
         }
@@ -243,10 +245,10 @@
         "trend": {
             "title": "Tendances",
             "activeDay": "Jours actifs",
-            "maxFocus": "Temps de navigation maximum quotidien",
-            "averageFocus": "Durée moyenne de navigation quotidienne",
-            "maxVisit": "Visites maximales quotidiennes",
-            "averageVisit": "Visites moyennes quotidiennes",
+            "focusMax": "Temps de navigation maximum",
+            "focusAverage": "Durée moyenne de navigation",
+            "visitMax": "Visites maximales",
+            "visitAverage": "Visites moyennes",
             "focusTitle": "Tendances sur le temps de navigation",
             "visitTitle": "Tendances de visite"
         }
@@ -271,10 +273,10 @@
         "trend": {
             "title": "Тренды",
             "activeDay": "Активные дни",
-            "maxFocus": "Ежедневное максимальное время просмотра",
-            "averageFocus": "Ежедневное среднее время просмотра",
-            "maxVisit": "Ежедневные максимальные посещения",
-            "averageVisit": "Ежедневные средние посещения",
+            "focusMax": "Максимальное время просмотра",
+            "focusAverage": "Среднее время просмотра",
+            "visitMax": "Максимальные посещения",
+            "visitAverage": "Средние посещения",
             "focusTitle": "Время просмотра трендов",
             "visitTitle": "Посетить тренды"
         }
@@ -299,10 +301,6 @@
         "trend": {
             "title": "الاتجاهات",
             "activeDay": "أيام نشطة",
-            "maxFocus": "الحد الأقصى لوقت التصفح اليومي",
-            "averageFocus": "متوسط ​​وقت التصفح اليومي",
-            "maxVisit": "الحد الأقصى للزيارات اليومية",
-            "averageVisit": "متوسط ​​الزيارات اليومية",
             "focusTitle": "اتجاهات وقت التصفح",
             "visitTitle": "زيارة الاتجاهات"
         }
@@ -327,10 +325,10 @@
         "trend": {
             "title": "Eğilimler",
             "activeDay": "Aktif Günler",
-            "maxFocus": "Günlük maksimum gezinme süresi",
-            "averageFocus": "Günlük ortalama gezinme süresi",
-            "maxVisit": "Günlük maksimum ziyaret sayısı",
-            "averageVisit": "Günlük ortalama ziyaret sayısı",
+            "focusMax": "Maksimum gezinme süresi",
+            "focusAverage": "Ortalama gezinme süresi",
+            "visitMax": "Maksimum ziyaret sayısı",
+            "visitAverage": "Ortalama ziyaret sayısı",
             "focusTitle": "Gezinme Zamanı Eğilimleri",
             "visitTitle": "Ziyaret Eğilimleri"
         }
@@ -355,10 +353,10 @@
         "trend": {
             "title": "Trendy",
             "activeDay": "Aktywnych dni",
-            "maxFocus": "Maksymalny dzienny czas przeglądania",
-            "averageFocus": "Średni dzienny czas przeglądania",
-            "maxVisit": "Maksymalna dzienna ilość wizyt",
-            "averageVisit": "Średnia dzienna ilość wizyt",
+            "focusMax": "Maksymalny czas przeglądania",
+            "focusAverage": "Średni czas przeglądania",
+            "visitMax": "Maksymalna ilość wizyt",
+            "visitAverage": "Średnia ilość wizyt",
             "focusTitle": "Trendy czasu przeglądania",
             "visitTitle": "Trendy wizyt"
         }
@@ -383,10 +381,10 @@
         "trend": {
             "title": "Tendenze",
             "activeDay": "Giorni attivi",
-            "maxFocus": "Tempo di navigazione massimo giornaliero",
-            "averageFocus": "Tempo medio di navigazione giornaliero",
-            "maxVisit": "Visite massime giornaliere",
-            "averageVisit": "Visite medie giornaliere",
+            "focusMax": "Tempo di navigazione massimo",
+            "focusAverage": "Tempo medio di navigazione",
+            "visitMax": "Visite massime",
+            "visitAverage": "Visite medie",
             "focusTitle": "Tendenze di Navigazione nel periodo",
             "visitTitle": "Tendenze Di Visite"
         }

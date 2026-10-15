@@ -17,7 +17,7 @@ import type { AnalysisTarget } from "./types"
 type Context = {
     target: Ref<AnalysisTarget | undefined>
     timeFormat: Ref<tt4b.ui.TimeFormat>
-    rows: Ref<tt4b.stat.Row[]>
+    rows: Ref<tt4b.stat.Row[] | undefined>
 }
 
 function parseQuery(): AnalysisTarget | undefined {
@@ -31,10 +31,7 @@ function parseQuery(): AnalysisTarget | undefined {
     return undefined
 }
 
-async function queryRows(target: AnalysisTarget | undefined, remote: boolean): Promise<(tt4b.stat.CateRow | tt4b.stat.SiteRow)[]> {
-    const { key, type } = target ?? {}
-    if (!key) return []
-
+async function queryRows({ key, type }: AnalysisTarget, remote: boolean): Promise<(tt4b.stat.CateRow | tt4b.stat.SiteRow)[]> {
     if (type === 'cate') {
         return await listCateStats({ cateIds: [key], sortKey: 'date', remote })
     } else if (type === 'site') {
@@ -54,12 +51,12 @@ export const initAnalysis = () => {
     const timeFormat = localRef('analysis_timeFormat', isTimeFormat, 'default')
 
     const { data: rows, loading } = useRequest(
-        () => queryRows(target.value, remote.value),
-        { deps: [target, remote], defaultValue: [] },
+        () => target.value ? queryRows(target.value, remote.value) : undefined,
+        { deps: [target, remote] },
     )
     useProvide<Context>(NAMESPACE, { target, timeFormat, rows })
 
-    return { loading }
+    return { loading, timeFormat }
 }
 
 export const useAnalysisTarget = () => useProvider<Context, 'target'>(NAMESPACE, "target").target

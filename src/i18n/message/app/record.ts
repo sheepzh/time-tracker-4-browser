@@ -13,7 +13,6 @@ export type RecordMessage = {
     batchDelete: {
         confirmMsg: string
         confirmMsgAll: string
-        confirmMsgRange: string
     }
     remoteReading: {
         on: string

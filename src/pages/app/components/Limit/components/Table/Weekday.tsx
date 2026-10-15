@@ -1,9 +1,9 @@
-import { t } from "@app/locale"
+import { t, tWeekDays } from "@app/locale"
 import { Flex } from '@pages/components'
 import { ElTag } from "element-plus"
 import { type FunctionalComponent } from "vue"
 
-const ALL_WEEKDAYS = t(msg => msg.calendar.weekDays)?.split('|')
+const ALL_WEEKDAYS = tWeekDays()
 
 const Weekday: FunctionalComponent<{ value?: number[] }> = ({ value = [] }) => !value.length || value.length === 7 ? (
     <ElTag size="small" type="success">

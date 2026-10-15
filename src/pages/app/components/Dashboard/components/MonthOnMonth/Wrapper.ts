@@ -1,11 +1,11 @@
 import { getCompareColor, getDiffColor, tooltipDot } from "@app/util/echarts"
-import { cvt2LocaleTime } from '@app/util/time'
+import { cvt2LocaleDate } from '@app/util/time'
 import { EchartsWrapper } from "@hooks"
 import { formatPeriodCommon } from "@util/time"
 import type {
     BarSeriesOption, ComposeOption, GridComponentOption, LegendComponentOption, TooltipComponentOption,
 } from "echarts"
-import type { TopLevelFormatterParams } from "echarts/types/dist/shared"
+import { createObjectGuard, isNumber, isString } from 'typescript-guard'
 
 type EcOption = ComposeOption<
     | BarSeriesOption
@@ -14,10 +14,11 @@ type EcOption = ComposeOption<
     | LegendComponentOption
 >
 
-type _Value = {
-    value: number
-    row: Row
-}
+type Row = { date: string, total: number }
+type DataExtend = { row: Row }
+const isDataExtend = createObjectGuard<DataExtend>({
+    row: createObjectGuard<Row>({ date: isString, total: isNumber })
+})
 
 function optionOf(lastPeriodItems: Row[], thisPeriodItems: Row[], domWidth: number): EcOption {
     const [color1, color2] = getCompareColor()
@@ -28,14 +29,14 @@ function optionOf(lastPeriodItems: Row[], thisPeriodItems: Row[], domWidth: numb
             trigger: 'axis',
             axisPointer: { type: 'shadow' },
             borderWidth: 0,
-            formatter(params: TopLevelFormatterParams) {
+            formatter(params) {
                 if (!Array.isArray(params)) return ''
-                const [thisItem, lastItem] = params.map(v => v.data as _Value).map(v => v.row)
+                const [thisItem, lastItem] = params.map(v => isDataExtend(v.data) ? v.data.row : undefined)
                 const [thisColor, lastColor] = params.map(v => v.color)
                 const { date: thisDate, total: thisVal } = thisItem || {}
                 const { date: lastDate, total: lastVal } = lastItem || {}
-                const lastStr = `${tooltipDot(lastColor as string)}&emsp;${cvt2LocaleTime(lastDate)}&emsp;<b>${formatPeriodCommon(lastVal ?? 0)}</b>`
-                let thisStr = `${tooltipDot(thisColor as string)}&emsp;${cvt2LocaleTime(thisDate)}&emsp;<b>${formatPeriodCommon(thisVal ?? 0)}</b>`
+                const lastStr = `${tooltipDot(lastColor)}&emsp;${cvt2LocaleDate(lastDate)}&emsp;<b>${formatPeriodCommon(lastVal ?? 0)}</b>`
+                let thisStr = `${tooltipDot(thisColor)}&emsp;${cvt2LocaleDate(thisDate)}&emsp;<b>${formatPeriodCommon(thisVal ?? 0)}</b>`
                 if (lastVal && thisVal) {
                     const delta = (thisVal - lastVal) / lastVal * 100
                     let deltaStr = delta.toFixed(1) + '%'
@@ -95,11 +96,6 @@ function optionOf(lastPeriodItems: Row[], thisPeriodItems: Row[], domWidth: numb
             },
         ],
     }
-}
-
-type Row = {
-    date: string
-    total: number
 }
 
 class Wrapper extends EchartsWrapper<[Row[], Row[]], EcOption> {

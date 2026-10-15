@@ -7,7 +7,7 @@
 
 import { allBackupClients } from "@api/sw/backup"
 import { t } from '@app/locale'
-import { cvt2LocaleTime } from '@app/util/time'
+import { cvt2LocaleDate } from '@app/util/time'
 import { Loading, RefreshRight } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
 import { useRequest } from '@hooks'
@@ -26,12 +26,7 @@ const useStyle = () => {
     return { radioCls }
 }
 
-const formatTime = (value: tt4b.backup.Client): string => {
-    const { minDate, maxDate } = value || {}
-    const min = minDate ? cvt2LocaleTime(minDate) : ''
-    const max = maxDate ? cvt2LocaleTime(maxDate) : ''
-    return `${min} - ${max}`
-}
+const formatTime = ({ minDate, maxDate }: tt4b.backup.Client) => cvt2LocaleDate(minDate, maxDate)
 
 const _default = defineComponent<{ onSelect: ArgCallback<tt4b.backup.Client> }>(props => {
     const { data: list, loading, refresh } = useRequest(allBackupClients, {

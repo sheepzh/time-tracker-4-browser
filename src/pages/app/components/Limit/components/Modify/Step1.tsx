@@ -1,6 +1,6 @@
 import { useDialogSop } from '@app/components/common/DialogSop/context'
 import type { ModifyForm } from '@app/components/Limit/types'
-import { t } from '@app/locale'
+import { t, tWeekDays } from '@app/locale'
 import { useXsState } from '@hooks'
 import { ElCol, ElForm, ElFormItem, ElInput, ElRow, ElSelect, ElSwitch } from "element-plus"
 import { defineComponent } from "vue"
@@ -34,7 +34,7 @@ const _default = defineComponent(() => {
                             modelValue={data.weekdays}
                             onChange={v => data.weekdays = v}
                             placeholder=""
-                            options={t(msg => msg.calendar.weekDays).split('|').map((label, idx) => ({ value: idx, label }))}
+                            options={tWeekDays().map((label, idx) => ({ value: idx, label }))}
                         />
                     </ElFormItem>
                 </ElCol>

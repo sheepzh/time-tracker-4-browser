@@ -202,7 +202,55 @@ export const tN = <MessageType, Node>(messages: Messages<MessageType>, props: No
     return resultArr
 }
 
-export const tNum = (val: number) => {
-    const jsLocale = locale?.substring(0, 2)
-    return val.toLocaleString(jsLocale)
+const jsLocale = () => locale.replace('_', '-')
+
+export const tNum = (val: number) => val.toLocaleString(jsLocale())
+
+export const dateFmt = (opt?: Intl.DateTimeFormatOptions) => Intl.DateTimeFormat(jsLocale(), opt)
+
+export const dateTimeFmt = () => dateFmt({
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    hour12: false,
+    minute: "numeric",
+    second: "numeric",
+})
+
+export const tDateRangeSeparator = (): string => {
+    const fmt = dateFmt({ month: 'numeric', day: 'numeric' })
+    const parts = fmt.formatRangeToParts(new Date(1970, 0, 1), new Date(1970, 0, 2))
+
+    let startFinished = false
+    for (let i = 0; i < parts.length; i++) {
+        const part = parts[i]
+        if (!part) continue
+        const { source, type, value } = part
+        if (source === 'startRange') startFinished = true
+        if (startFinished && source === 'shared' && type === 'literal') return value
+    }
+    return '-'
+}
+
+const MONDAY = new Date(2023, 0, 2)
+export const tWeekDays = (): string[] => {
+    const fmt = dateFmt({ weekday: 'short' })
+    return Array.from({ length: 7 }, (_, i) => {
+        const date = new Date(MONDAY)
+        date.setDate(date.getDate() + i)
+        return fmt.format(date)
+    })
+}
+
+export const tMonths = (): string[] => {
+    const fmt = dateFmt({ month: "short" })
+    return Array.from({ length: 12 }, (_, i) => fmt.format(new Date(2023, i, 1)))
+}
+
+export const tYMD = (): string => {
+    const parts = dateFmt({ year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date())
+    return parts
+        .map(({ type: t, value: v }) => t === 'year' ? 'YYYY' : t === 'month' ? 'MM' : t === 'day' ? 'DD' : v)
+        .join('')
 }

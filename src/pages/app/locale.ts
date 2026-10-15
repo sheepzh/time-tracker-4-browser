@@ -27,3 +27,6 @@ export function tWith(key: I18nKey, specLocale: tt4b.Locale, param?: any) {
 export function tN(key: I18nKey, param?: any): I18nResultItem<VNode>[] {
     return _tN<AppMessage, VNode>(messages, { key, param })
 }
+
+export { dateFmt, dateTimeFmt, tDateRangeSeparator, tMonths, tWeekDays, tYMD } from "@i18n"
+

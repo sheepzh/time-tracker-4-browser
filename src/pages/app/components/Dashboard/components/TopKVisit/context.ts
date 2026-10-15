@@ -1,7 +1,7 @@
 import { getSiteStatPage } from "@api/sw/stat"
 import { EchartsWrapper, localReactive, useEcharts, useProvide, useProvider, useRemoteValue } from "@hooks"
 import { cvtDateRange2Str, MILL_PER_DAY } from "@util/time"
-import { createObjectGuard, createOptionalGuard, createStringUnionGuard, isInt, isNumber, isString } from 'typescript-guard'
+import { createObjectGuard, createStringUnionGuard, isInt, isNumber, isOptionalString, isString } from 'typescript-guard'
 
 export type BizOption = {
     name: string
@@ -15,7 +15,7 @@ export const isBizOption = createObjectGuard<BizOption>({
     name: isString,
     value: isNumber,
     host: isString,
-    alias: createOptionalGuard(isString),
+    alias: isOptionalString,
 })
 
 export type TopKChartType = 'bar' | 'pie' | 'halfPie'

@@ -9,16 +9,17 @@ import { broadcast2Tabs } from "@api/chrome/tab"
 import db, { type LimitRecord } from "@db/limit-database"
 import { sum } from "@util/array"
 import { hasLimited, isEffective, matches, meetTimeLimit } from "@util/limit"
-import { formatTimeYMD, getWeekDay, MILL_PER_MINUTE, MILL_PER_SECOND } from "@util/time"
+import { formatTimeYMD, getWeekDay, getWeekStartTime, MILL_PER_MINUTE, MILL_PER_SECOND } from "@util/time"
 import optionHolder from "./components/option-holder"
-import { getWeekStartTime } from './components/week-helper'
+import { getWeekStartDay } from './components/week-helper'
 import siteHolder from './site-service/holder'
 
 export async function selectLimit(param?: tt4b.limit.Query): Promise<tt4b.limit.Item[]> {
     const { enabled, url, id, limited, effective } = param ?? {}
     const now = new Date()
     const today = formatTimeYMD(now)
-    const startTime = await getWeekStartTime(now.getTime())
+    const weekStart = await getWeekStartDay()
+    const startTime = getWeekStartTime(now, weekStart)
     const startDate = formatTimeYMD(startTime)
     const weekday = getWeekDay(now)
 

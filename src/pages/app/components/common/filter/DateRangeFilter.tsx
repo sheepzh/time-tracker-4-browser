@@ -5,11 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { t } from "@app/locale"
+import { t, tDateRangeSeparator, tYMD } from "@app/locale"
 import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
 import { css } from '@emotion/css'
 import { useXsState } from '@hooks'
-import { dateFormat } from "@i18n/element"
 import { Flex } from '@pages/components'
 import { getDatePickerIconSlots } from '@pages/element-ui/rtl'
 import { ElDatePickerShortcut } from '@pages/element-ui/types'
@@ -23,15 +22,16 @@ const clearShortcut = (): ElDatePickerShortcut => ({
     value: [new Date(0), new Date(0)],
 })
 
-type Props = ModelValue<[number?, number?]> & {
-    disabledDate?: (date: Date) => boolean
-    startPlaceholder?: string
-    endPlaceholder?: string
-    shortcuts?: ElDatePickerShortcut[]
-    clearable?: boolean
-}
+type Props = ModelValue<[number?, number?]>
+    & PartialPick<DatePickerProps, 'startPlaceholder' | 'endPlaceholder' | 'shortcuts' | 'clearable'>
+    & {
+        disabledDate?: (d: Date) => boolean,
+        shiftStep?: number
+    }
 
-const ALL_PROPS: (keyof Props)[] = ["clearable", "disabledDate", "endPlaceholder", "modelValue", "onChange", "shortcuts", "startPlaceholder"]
+const ALL_PROPS: (keyof Props)[] = [
+    "clearable", "disabledDate", "endPlaceholder", "modelValue", "onChange", "shortcuts", "shiftStep", "startPlaceholder",
+]
 
 const ARROW_BTN_STYLE: StyleValue = {
     padding: '8px 5px',
@@ -71,14 +71,12 @@ const useRange = (props: Props) => {
         return disabledDate(nextDate)
     })
 
-    const shift = (dayNum: number) => {
-        const { modelValue, onChange } = props
+    const shift = (multiple: number) => {
+        const { modelValue, onChange, shiftStep } = props
         const [start, end] = modelValue ?? []
         if (!start || !end) return
-        const millDiff = MILL_PER_DAY * dayNum
-        const newStart = start + millDiff
-        const newEnd = end + millDiff
-        onChange?.([newStart, newEnd])
+        const millDiff = MILL_PER_DAY * (shiftStep ?? 1) * multiple
+        onChange?.([start + millDiff, end + millDiff])
     }
 
     const clearable = toRef(props, "clearable", true)
@@ -144,9 +142,9 @@ const DefaultRange = defineComponent<Props>(props => {
             />
             <ElDatePicker
                 modelValue={innerVal.value}
-                format={dateFormat()}
+                format={tYMD()}
                 type="daterange"
-                rangeSeparator="-"
+                rangeSeparator={tDateRangeSeparator()}
                 disabledDate={props.disabledDate}
                 shortcuts={shortcuts.value}
                 onUpdate:modelValue={newVal => handleUpdate(toRaw(newVal))}
@@ -200,7 +198,7 @@ const XsDatePicker: FunctionalComponent<XsDatePickerProps> = props => {
             placeholder={props.placeholder}
             disabledDate={props.disabledDate}
             clearable={props.clearable}
-            format={dateFormat()}
+            format={tYMD()}
         />
     )
 }

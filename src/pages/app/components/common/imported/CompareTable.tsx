@@ -6,7 +6,7 @@
  */
 
 import { type I18nKey, t } from "@app/locale"
-import { cvt2LocaleTime, periodFormatter } from '@app/util/time'
+import { cvt2LocaleDate, periodFormatter } from '@app/util/time'
 import { useState } from "@hooks"
 import { Box } from "@pages/components"
 import { type Column, ElAutoResizer, ElTableV2, type SortBy, TableV2SortOrder } from "element-plus"
@@ -78,7 +78,7 @@ const BASE_COLUMNS: Column[] = [
         sortable: true,
         align: 'center',
         title: t(msg => msg.item.date),
-        cellRenderer: ({ rowData }) => <span>{cvt2LocaleTime((rowData as tt4b.imported.Row).date)}</span>,
+        cellRenderer: ({ rowData }) => <span>{cvt2LocaleDate((rowData as tt4b.imported.Row).date)}</span>,
     }, {
         width: 300,
         dataKey: 'host' satisfies SortInfo['key'],

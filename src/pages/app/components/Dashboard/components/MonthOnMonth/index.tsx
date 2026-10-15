@@ -5,7 +5,7 @@ import { useEcharts, useRemoteValue } from "@hooks"
 import { Flex } from '@pages/components'
 import { groupBy, sum } from "@util/array"
 import DateIterator from "@util/date-iterator"
-import { cvtDateRange2Str, MILL_PER_DAY } from "@util/time"
+import { cvtDateRange2Str, formatTimeYMD, MILL_PER_DAY } from "@util/time"
 import { defineComponent } from "vue"
 import Wrapper from "./Wrapper"
 
@@ -19,7 +19,7 @@ type Row = {
 
 const cvtRow = (rows: tt4b.stat.Row[], start: Date, end: Date): Row[] => {
     const groupByDate = groupBy(rows, r => r.date, l => sum(l.map(e => e.focus)))
-    const iterator = new DateIterator(start, end)
+    const iterator = DateIterator.of(start, end, formatTimeYMD)
     return [...iterator].map(date => ({ total: groupByDate[date] ?? 0, date }))
 }
 

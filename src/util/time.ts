@@ -7,44 +7,12 @@
 
 import { isRtl } from "./document"
 
-/**
- * Copyright (c) 2017-present PanJiaChen
- *
- * This function is released under the MIT License.
- * https://opensource.org/licenses/MIT
- *
- * Created by PanJiaChen on 16/11/18.
- * @see https://github.com/PanJiaChen/vue-element-admin/blob/HEAD/src/utils/index.js
- *
- * Parse the time to string
- */
-export function formatTime(time: Date | number, format?: string) {
-    format ??= '{y}-{m}-{d} {h}:{i}:{s}'
-    let date: Date
-    if (time instanceof Date) {
-        date = time
-    } else {
-        date = new Date(time.toString().length === 10 ? time * 1000 : time)
-    }
-    const formatObj: Record<string, number> = {
-        y: date.getFullYear(),
-        m: date.getMonth() + 1,
-        d: date.getDate(),
-        h: date.getHours(),
-        i: date.getMinutes(),
-        s: date.getSeconds(),
-    }
-    return format.replace(/{([ymdhis])+}/g, (_result, key) => {
-        const value = formatObj[key]
-        if (value === undefined) return key
-        // Note: getDay() returns 0 on Sunday
-        if (key === 'a') return ['日', '一', '二', '三', '四', '五', '六'][value]
-        return value.toString().padStart(2, '0')
-    })
-}
-
 export function formatTimeYMD(time: Date | number): string {
-    return formatTime(time, '{y}{m}{d}')
+    time = new Date(time)
+    const y = time.getFullYear()
+    const m = time.getMonth() + 1
+    const d = time.getDate()
+    return `${String(y).padStart(4, '0')}${String(m).padStart(2, '0')}${String(d).padStart(2, '0')}`
 }
 
 type PeriodMsgFormat = Record<'dayMsg' | 'hourMsg' | 'minuteMsg' | 'secondMsg', string>
@@ -158,6 +126,14 @@ export function isSameDay(a: Date | number, b: Date | number): boolean {
  */
 export function getWeekDay(date: Date): number {
     return (date.getDay() + 6) % 7
+}
+
+export function getWeekStartTime(now: number | Date, weekStart: number): number {
+    const date = new Date(now)
+    const delta = (getWeekDay(date) - weekStart + 7) % 7
+    date.setDate(date.getDate() - delta)
+    date.setHours(0, 0, 0, 0)
+    return date.getTime()
 }
 
 /**

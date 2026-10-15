@@ -106,6 +106,12 @@ export function sum(arr: number[]): number {
     return arr?.reduce?.((a, b) => (a ?? 0) + (b ?? 0), 0) ?? 0
 }
 
+export function max<T>(list: [T, ...T[]], metrics: (t: T) => number): T
+export function max<T>(list: T[], metrics: (t: T) => number): T | undefined
+export function max<T>([first, ...rest]: T[], metrics: (t: T) => number): T | undefined {
+    return first === undefined ? undefined : rest.reduce((a, b) => metrics(b) > metrics(a) ? b : a, first)
+}
+
 export function range(len: number): number[] {
     const arr: number[] = []
     for (let i = 0; i < len; i++) {

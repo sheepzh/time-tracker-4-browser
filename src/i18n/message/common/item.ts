@@ -13,7 +13,6 @@ export type ItemMessage = {
     group: string
     operation: {
         deleteConfirmMsgAll: string
-        deleteConfirmMsgRange: string
         deleteConfirmMsg: string
         analysis: string
     }

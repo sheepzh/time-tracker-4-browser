@@ -1,6 +1,6 @@
 import { deleteFile, getFileContent, listAllFiles, OBSIDIAN_DEFAULTS, type ObsidianRequestContext, updateFile } from "@api/obsidian"
 import DateIterator from "@util/date-iterator"
-import { getBirthday, parseTime } from '@util/time'
+import { formatTimeYMD, parseTime } from '@util/time'
 import { processDir } from "../common"
 import { CLIENT_FILE_NAME, convertClients2Markdown, divideByDate, parseData } from "../markdown"
 
@@ -42,9 +42,7 @@ export default class ObsidianCoordinator implements tt4b.backup.Coordinator<neve
     async download({ auth, ext, cid }: tt4b.backup.CoordinatorContext<never>, start: string, end: string, targetCid?: string): Promise<tt4b.core.Row[]> {
         const { ctx, dirPath } = prepareContext(auth, ext)
 
-        const startTime = parseTime(start) ?? getBirthday()
-        const endTime = parseTime(end) ?? new Date()
-        const dateIterator = new DateIterator(startTime, endTime)
+        const dateIterator = DateIterator.of(parseTime(start), parseTime(end), formatTimeYMD)
         const result: tt4b.core.Row[] = []
         await Promise.all([...dateIterator].map(async date => {
             const filePath = `${dirPath}${targetCid || cid}/${date}.md`

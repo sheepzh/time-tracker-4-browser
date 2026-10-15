@@ -14,3 +14,5 @@ export type I18nKey = _I18nKey<PopupMessage>
 export const t = (key: I18nKey, param?: any) => _t<PopupMessage>(messages, { key, param })
 
 export const tN = (key: I18nKey, param?: any) => _tN<PopupMessage, VNode>(messages, { key, param })
+
+export { dateFmt, tDateRangeSeparator } from "@i18n"

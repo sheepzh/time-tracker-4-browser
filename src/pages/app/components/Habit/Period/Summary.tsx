@@ -1,11 +1,10 @@
 import { GRID_CELL_STYLE } from '@app/components/common/grid'
 import { KanbanIndicatorCell } from '@app/components/common/kanban'
-import { t } from '@app/locale'
+import { dateFmt, t } from '@app/locale'
 import { periodFormatter } from '@app/util/time'
 import { useXsState } from '@hooks'
 import { Flex } from '@pages/components'
 import { averageByDay } from "@util/period"
-import { formatTime } from "@util/time"
 import { computed, defineComponent } from "vue"
 import { useHabitFilter } from "../context"
 import { usePeriodFilter, usePeriodValue } from "./context"
@@ -23,13 +22,9 @@ type Result = {
 
 const computeSummary = (rows: tt4b.period.Row[], periodSize: number): Result => {
     const averaged = averageByDay(rows, periodSize)
-    const favoriteRow = averaged.sort((b, a) => a.milliseconds - b.milliseconds)[0]
-    let favoritePeriod = '-'
-    if (favoriteRow) {
-        const start = favoriteRow.startTime
-        const end = favoriteRow.endTime
-        favoritePeriod = `${formatTime(start, "{h}:{i}")}-${formatTime(end, "{h}:{i}")}`
-    }
+    const fav = averaged.sort((b, a) => a.milliseconds - b.milliseconds)[0]
+    const favFmt = dateFmt({ hour: '2-digit', minute: '2-digit' })
+    const favPeriod = fav ? favFmt.formatRange(fav.startTime, fav.endTime) : '-'
 
     let maxIdle: [tt4b.period.Row | undefined, tt4b.period.Row | undefined, number] = [, , 0]
 
@@ -55,16 +50,16 @@ const computeSummary = (rows: tt4b.period.Row[], periodSize: number): Result => 
     let idlePeriod = ''
     if (start && end) {
         idleLength = periodFormatter(end.endTime - start.startTime, { format: 'hour' })
-        const format = t(msg => msg.calendar.simpleTimeFormat)
-        const startTime = formatTime(start.startTime, format)
-        const endTime = formatTime(end.endTime, format)
-        idlePeriod = startTime + '-' + endTime
+        idlePeriod = dateFmt({
+            month: "2-digit", day: "2-digit",
+            hour: "2-digit", hour12: false, minute: "2-digit", second: "2-digit",
+        }).formatRange(start.startTime, end.endTime)
     }
 
     return {
         favorite: {
-            period: favoritePeriod,
-            average: favoriteRow?.milliseconds ?? 0,
+            period: favPeriod,
+            average: fav?.milliseconds ?? 0,
         },
         longestIdle: {
             length: idleLength,

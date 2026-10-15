@@ -72,7 +72,7 @@ const formatValueLine = (mill: number, range: tt4b.period.KeyRange, color: strin
 const formatTooltip = (params: TopLevelFormatterParams, biz: BizOption): string => {
     const { periodSize, prevRange, currRange } = biz
     if (!Array.isArray(params)) return ''
-    const [curr, prev] = params ?? []
+    const [curr, prev] = params
 
     const idx = curr?.dataIndex ?? 0
     const start = formatXAxis(idx, periodSize)
@@ -81,10 +81,7 @@ const formatTooltip = (params: TopLevelFormatterParams, biz: BizOption): string 
     const periodStr = `${start}-${end}`
     const timeLine = isSameDay(currRange)
         ? periodStr
-        : tooltipFlexLine(
-            t(msg => msg.habit.period.chartType.average),
-            periodStr,
-        )
+        : tooltipFlexLine(t(msg => msg.habit.period.chartType.average), periodStr)
 
     const currLine = formatValueLine(curr?.value as number ?? 0, currRange, CURR_COLOR)
     const prevLine = formatValueLine(-(prev?.value ?? 0 as number), prevRange, PREV_COLOR)
