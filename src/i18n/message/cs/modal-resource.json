@@ -37,7 +37,9 @@
         "defaultPrompt": "Цю сторінку заблоковано!",
         "delay": "Ще {n} хвилин",
         "browsingTime": "Час перегляду",
-        "ruleDetail": "Подробиці правила"
+        "ruleDetail": "Подробиці правила",
+        "pomodoroActive": "Pomodoro активний",
+        "focusActive": "Фокус активний"
     },
     "fr": {
         "defaultPrompt": "Cette page a été bloquée !",

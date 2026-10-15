@@ -134,14 +134,17 @@
         "cancel": "Скасувати",
         "previous": "Назад",
         "next": "Далі",
-        "okay": "Гаразд",
+        "okay": "OK",
         "dont": "НІ",
         "operation": "Дії",
         "configuration": "Налаштування",
         "clear": "Очистити",
         "enable": "Увімкнути",
         "batchEnable": "Масове ввімкнення",
-        "batchDisable": "Масове вимкнення"
+        "batchDisable": "Масове вимкнення",
+        "collapse": "Згорнути",
+        "expand": "Розгорнути",
+        "copy": "Копіювати"
     },
     "es": {
         "create": "Nuevo",

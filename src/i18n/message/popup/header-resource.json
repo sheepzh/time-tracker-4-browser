@@ -36,7 +36,15 @@
         "showSiteName": "Mostrar nome do site",
         "donutChart": "Mostrado como gráfico estilo donut"
     },
-    "uk": {},
+    "uk": {
+        "rating": "Оцінити",
+        "discord": "Приєднатися на Discord",
+        "showSiteName": "Показувати назву сайту",
+        "showTopN": "Показувати найпопулярніші {n}",
+        "donutChart": "Показано як кругова діаграма",
+        "bug": "Повідомити про помилку",
+        "feature": "Запитати функцію"
+    },
     "es": {
         "rating": "Enviar Puntuación",
         "showSiteName": "Mostrar nombre del sitio",
