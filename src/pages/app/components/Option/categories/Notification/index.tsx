@@ -1,5 +1,5 @@
 import { OptionItem, OptionLines } from '@app/components/Option/components'
-import { t } from '@app/locale'
+import { t, tWeekDays } from '@app/locale'
 import { QuestionFilled } from '@element-plus/icons-vue'
 import { ElIcon, ElInput, ElLink, ElMessage, ElSelect, ElTimePicker, ElTooltip } from 'element-plus'
 import { computed, defineComponent, type StyleValue } from 'vue'
@@ -19,7 +19,7 @@ const METHOD_LABELS: Record<tt4b.notification.Method, string> = {
     callback: t(msg => msg.option.notification.method.callback.label),
 }
 
-const ALL_WEEKDAYS = t(msg => msg.calendar.weekDays)?.split('|') || []
+const ALL_WEEKDAYS = tWeekDays()
 
 const PADDING: StyleValue = { paddingInlineStart: '2px' }
 

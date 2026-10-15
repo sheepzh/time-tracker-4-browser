@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 import { useLimitAction } from "@app/components/Limit/context"
-import { t } from '@app/locale'
+import { t, tWeekDays } from '@app/locale'
 import { Delete, EditPen } from "@element-plus/icons-vue"
 import { Flex } from '@pages/components'
 import { ElButton, ElCard, ElDivider, ElTag, type TagProps } from "element-plus"
@@ -18,7 +18,7 @@ type Props = {
 
 const CARD_PADDING = 10
 
-const ALL_WEEKDAYS = t(msg => msg.calendar.weekDays).split('|')
+const ALL_WEEKDAYS = tWeekDays()
 
 const Divider: FunctionalComponent<{}> = () => {
     const marginInline = `${-CARD_PADDING}px`

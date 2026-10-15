@@ -5,87 +5,79 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { useAnalysisRows } from '@app/components/Analysis/context'
-import type { DimensionData, DimensionEntry } from '@app/components/Analysis/types'
-import { cvt2LocaleTime } from '@app/util/time'
-import { useProvide, useProvider } from '@hooks'
-import { toMap } from "@util/array"
-import { daysAgo, getAllDatesBetween, getDayLength, MILL_PER_DAY } from "@util/time"
-import { computed, onMounted, ref, watch, type Ref } from "vue"
+import { getWeekStartDay } from '@api/sw/option'
+import { isCircle, type Circle, type DimensionEntry } from '@app/components/Analysis/types'
+import { localRef, useProvide, useProvider, useRequest } from '@hooks'
+import { locale } from '@i18n'
+import { max, sum, toMap } from "@util/array"
+import DateIterator from '@util/date-iterator'
+import { daysAgo, formatTimeYMD, getDayLength, getWeekDay, getWeekStartTime, MILL_PER_DAY } from "@util/time"
+import { computed, ref, type Ref } from "vue"
+import { useAnalysisRows } from '../../context'
 
 type Context = {
     dateRange: Ref<[number, number]>
-    rangeLength: Ref<number>
+    circle: Ref<Circle>
 }
-
-type DailyIndicator = {
-    value: number | undefined
-    date: string | undefined
-}
-
-type GlobalIndicator = number
 
 type DimensionType = 'focus' | 'visit'
 
 type IndicatorSet = Record<DimensionType, {
-    max: DailyIndicator
-    total: GlobalIndicator
-    average: GlobalIndicator | undefined
+    total: number
+    average?: number
+    max?: DimensionEntry
 }> & {
     activeDay: number
 }
 
-type SourceParam = {
-    dateRange: [number, number]
-    rows: tt4b.stat.Row[]
+type Dataset = {
+    indicators: IndicatorSet
+    focus: DimensionEntry[]
+    visit: DimensionEntry[]
 }
 
-type EffectParam = {
-    indicators: Ref<IndicatorSet | undefined>
-    previousIndicators: Ref<IndicatorSet | undefined>
-    focusData: Ref<DimensionData | undefined>
-    visitData: Ref<DimensionData | undefined>
+const indicatorOf = (entries: DimensionEntry[]) => {
+    const total = sum(entries.map(e => e.value))
+    const average = entries.length && total / entries.length
+    return { max: max(entries, e => e.value), total, average }
 }
 
-function computeIndicatorSet(
-    rows: tt4b.stat.Row[],
-    dateRange: [number, number],
-): [IndicatorSet | undefined, Record<string, tt4b.stat.Row | undefined>] {
-    const [start, end] = dateRange
-    const allDates = getAllDatesBetween(start, end)
-    if (!rows.length) {
-        // No data
-        return [undefined, toMap(allDates, date => date, _l => undefined)]
+function computeDataset(
+    dateMap: Record<string, tt4b.stat.Row>,
+    [start, end]: [number, number],
+    circle: Circle, weekStart: number,
+): Dataset {
+    const entries: Record<DimensionType, DimensionEntry[]> = { focus: [], visit: [] }
+    let activeDay = 0
+    let bucket: [string, ...string[]] | undefined
+    let sum: Record<DimensionType, number> = { focus: 0, visit: 0 }
+    const closeBucket = () => {
+        if (!bucket) return
+        const [date] = bucket
+        const endDate = bucket.at(-1)
+        entries.focus.push({ date, endDate, value: sum.focus })
+        entries.visit.push({ date, endDate, value: sum.visit })
     }
-
-    const days = allDates.length
-    const periodRows = rows.filter(({ date }) => allDates.includes(date ?? ''))
-    const periodRowMap = toMap(periodRows, r => r.date)
-    let focusMax: DailyIndicator
-    let visitMax: DailyIndicator
-    let focusTotal: number, visitTotal: number, activeDay: number
-    focusMax = visitMax = { date: undefined, value: undefined }
-    activeDay = focusTotal = visitTotal = 0
-
-    const fullPeriodRow: Record<string, tt4b.stat.Row> = {}
-    allDates.forEach(date => {
-        const row = periodRowMap[date]
-        if (!row) return
-        fullPeriodRow[date] = row
-        const { focus, time: visit } = row
-        focus > (focusMax.value ?? Number.MIN_SAFE_INTEGER) && (focusMax = { value: focus, date })
-        visit > (visitMax.value ?? Number.MIN_SAFE_INTEGER) && (visitMax = { value: visit, date })
-        focusTotal += focus
-        visitTotal += visit
-        focus && (activeDay += 1)
-    })
-
-    const indicators: IndicatorSet = {
-        activeDay,
-        focus: { max: focusMax, total: focusTotal, average: days == 0 ? undefined : focusTotal / days },
-        visit: { max: visitMax, total: visitTotal, average: days == 0 ? undefined : visitTotal / days },
+    for (const cursor of DateIterator.of(new Date(start), new Date(end))) {
+        const date = formatTimeYMD(cursor)
+        if (!bucket || circle === "daily" || getWeekDay(cursor) === weekStart) {
+            closeBucket()
+            bucket = [date]
+            sum = { focus: 0, visit: 0 }
+        } else {
+            bucket.push(date)
+        }
+        const { focus = 0, time = 0 } = dateMap[date] ?? {}
+        sum.focus += focus
+        sum.visit += time
+        focus && activeDay++
     }
-    return [indicators, fullPeriodRow]
+    closeBucket()
+
+    return {
+        indicators: { activeDay, focus: indicatorOf(entries.focus), visit: indicatorOf(entries.visit) },
+        ...entries,
+    }
 }
 
 function lastRange(dateRange: [number, number]): [number, number] {
@@ -96,63 +88,30 @@ function lastRange(dateRange: [number, number]): [number, number] {
     return [newStart, newEnd]
 }
 
-function handleDataChange(source: SourceParam, effect: EffectParam) {
-    const { dateRange, rows } = source
-    const { indicators, previousIndicators, focusData, visitData } = effect
-    // 1. this period
-    const [newIndicators, periodRows] = computeIndicatorSet(rows, dateRange)
-    indicators.value = newIndicators
-    const newFocusData: DimensionEntry[] = []
-    const newVisitData: DimensionEntry[] = []
-    Object.entries(periodRows)
-        .forEach(([rowDate, row]) => {
-            const { time, focus } = row || {}
-            const date = cvt2LocaleTime(rowDate)
-            newFocusData.push({ date, value: focus || 0 })
-            newVisitData.push({ date, value: time || 0 })
-        })
-    // 2. last period
-    const prevDateRange = lastRange(dateRange)
-    const [preIndicator, prePeriodRows] = computeIndicatorSet(rows, prevDateRange)
-    previousIndicators.value = preIndicator
-    const preFocusData: DimensionEntry[] = []
-    const preVisitData: DimensionEntry[] = []
-    Object.entries(prePeriodRows)
-        .forEach(([rowDate, row]) => {
-            const { time, focus } = row || {}
-            const date = cvt2LocaleTime(rowDate)
-            preFocusData.push({ date, value: focus || 0 })
-            preVisitData.push({ date, value: time || 0 })
-        })
-    focusData.value = { thisPeriod: newFocusData, previousPeriod: preFocusData }
-    visitData.value = { thisPeriod: newVisitData, previousPeriod: preVisitData }
-}
-
 const NAMESPACE = 'siteAnalysis_trend'
 
 export const initAnalysisTrend = () => {
+    const circle = localRef<Circle>('analysis-circle', isCircle, 'daily')
+    const { data: weekStart } = useRequest(getWeekStartDay, { defaultValue: locale === "zh_CN" ? 0 : 6 })
+    const align2Week = ([start, end]: [number, number]): [number, number] =>
+        [getWeekStartTime(start, weekStart.value), getWeekStartTime(end, weekStart.value) + MILL_PER_DAY * 6]
+
     const [defaultStart, defaultEnd] = daysAgo(14, 0)
-    const dateRange = ref<[number, number]>([defaultStart.getTime(), defaultEnd.getTime()])
-    const rangeLength = computed(() => getDayLength(dateRange.value[0], dateRange.value[1]))
-
-    const visitData = ref<DimensionData>()
-    const focusData = ref<DimensionData>()
-    const indicators = ref<IndicatorSet>()
-    const previousIndicators = ref<IndicatorSet>()
+    const dateRangeInner = ref<[number, number]>([defaultStart.getTime(), defaultEnd.getTime()])
+    const dateRange = computed<[number, number], [number?, number?]>({
+        get: () => circle.value === "daily" ? dateRangeInner.value : align2Week(dateRangeInner.value),
+        set: ([s, e]) => s && e && (dateRangeInner.value = circle.value === "weekly" ? align2Week([s, e]) : [s, e]),
+    })
     const rows = useAnalysisRows()
+    const rowMap = computed(() => rows.value && toMap(rows.value, r => r.date))
+    const curr = computed(() => rowMap.value && computeDataset(rowMap.value, dateRange.value, circle.value, weekStart.value))
+    const prev = computed(() => rowMap.value && computeDataset(rowMap.value, lastRange(dateRange.value), circle.value, weekStart.value))
 
-    const computeEffect = () => handleDataChange(
-        { dateRange: dateRange.value, rows: rows.value },
-        { indicators, previousIndicators, visitData, focusData }
-    )
-    watch([dateRange, rows], computeEffect)
-    onMounted(computeEffect)
+    useProvide<Context>(NAMESPACE, { circle, dateRange })
 
-    useProvide<Context>(NAMESPACE, { dateRange, rangeLength })
-
-    return { visitData, focusData, indicators, previousIndicators }
+    return { curr, prev }
 }
 
 export const useAnalysisTrendDateRange = () => useProvider<Context, 'dateRange'>(NAMESPACE, "dateRange").dateRange
 
-export const useAnalysisTrendRangeLength = () => useProvider<Context, 'rangeLength'>(NAMESPACE, "rangeLength").rangeLength
+export const useAnalysisTrendCircle = () => useProvider<Context, 'circle'>(NAMESPACE, "circle").circle

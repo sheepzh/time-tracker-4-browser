@@ -1,4 +1,5 @@
-import { formatPeriodCommon, MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND } from '@util/time'
+import { dateFmt } from '@i18n'
+import { formatPeriodCommon, MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND, parseTime } from '@util/time'
 
 type PeriodFormatOption = {
     format?: tt4b.ui.TimeFormat | 'auto'
@@ -35,4 +36,16 @@ export function periodFormatter(milliseconds: number | undefined | null, option?
     if (hideUnit) return val
     let unit = UNIT_MAP[format]
     return val + unit
+}
+
+type DateLike = string | Date | number
+
+const parseDateLike = (like?: DateLike) => typeof like === 'string' ? parseTime(like) : like
+
+export const cvt2LocaleDate = (startLike?: DateLike, endLike?: DateLike): string => {
+    const start = parseDateLike(startLike)
+    const end = parseDateLike(endLike)
+    if (start === undefined) return '-'
+    const fmt = dateFmt()
+    return end === undefined ? fmt.format(start) : fmt.formatRange(start, end)
 }

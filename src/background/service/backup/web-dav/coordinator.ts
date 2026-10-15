@@ -3,7 +3,7 @@ import {
     type WebDAVAuth, type WebDAVContext,
 } from "@api/web-dav"
 import DateIterator from "@util/date-iterator"
-import { getBirthday, parseTime } from '@util/time'
+import { formatTimeYMD, parseTime } from '@util/time'
 import { processDir } from "../common"
 import { CLIENT_FILE_NAME, convertClients2Markdown, divideByDate, parseData } from "../markdown"
 
@@ -56,9 +56,7 @@ export default class WebDAVCoordinator implements tt4b.backup.Coordinator<never>
         const davContext = prepareContext(context)
         targetCid = targetCid || context?.cid
 
-        const dateStart = parseTime(start) ?? getBirthday()
-        const dateEnd = parseTime(end) ?? new Date()
-        const dateIterator = new DateIterator(dateStart, dateEnd)
+        const dateIterator = DateIterator.of(parseTime(start), parseTime(end), formatTimeYMD)
         const result: tt4b.core.Row[] = []
         await Promise.all([...dateIterator].map(async date => {
             const filePath = `${dirPath}${targetCid}/${date}.md`

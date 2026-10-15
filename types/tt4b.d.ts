@@ -1123,7 +1123,6 @@ declare namespace tt4b {
             & _MakeRegistry<'option.changeStorage', option.StorageType>
             & _MakeRegistry<'option.testNotification', void, string | undefined>
             & _MakeRegistry<'option.weekStartDay', void, number>
-            & _MakeRegistry<'option.weekStartTime', number, number>
             // Meta
             & _MakeRegistry<'meta.installTs', void, number>
             & _MakeRegistry<'meta.usedStorage', void, common.StorageUsage>

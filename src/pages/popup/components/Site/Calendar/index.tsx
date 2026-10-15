@@ -1,11 +1,10 @@
 import { listSiteStats } from '@api/sw/stat'
-import { periodFormatter } from '@app/util/time'
+import { cvt2LocaleDate, periodFormatter } from '@app/util/time'
 import { css } from '@emotion/css'
 import { useRequest } from '@hooks'
 import { Flex } from '@pages/components'
-import { t } from '@popup/locale'
 import { toMap } from '@util/array'
-import { formatPeriodCommon, formatTime, formatTimeYMD, MILL_PER_WEEK } from '@util/time'
+import { formatPeriodCommon, formatTimeYMD, MILL_PER_WEEK } from '@util/time'
 import { CalendarDateType, ElCalendar, ElText, useNamespace } from 'element-plus'
 import { computed, defineComponent, FunctionalComponent, ref, Teleport } from 'vue'
 import { SITE_SUMMARY_DROPDOWN_SLOT } from '../common'
@@ -79,7 +78,7 @@ const Calendar = defineComponent<{}>(() => {
     return () => (
         <Flex flex={1} gap={15} column>
             <ElText type='primary' style={{ fontSize: '24px' }}>
-                {formatTime(current.value, t(msg => msg.calendar.dateFormat))} - {formatPeriodCommon(row.value?.focus ?? 0, true)}
+                {cvt2LocaleDate(current.value)} - {formatPeriodCommon(row.value?.focus ?? 0, true)}
             </ElText>
             <Flex flex={1}>
                 <ElCalendar

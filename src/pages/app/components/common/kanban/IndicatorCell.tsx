@@ -21,7 +21,7 @@ const SubVal: FunctionalComponent<{ value: string }> = ({ value }) => (
 )
 
 const computeComparison = (value: RingValue) => {
-    const [current = 0, last = 0] = value
+    const [current, last] = value
     if (current === last) return false
     const colorVar = current > last ? colorVariant('danger') : colorVariant('success', 'light', 3)
     const color = getCssVariable(colorVar)
@@ -53,10 +53,8 @@ const RingLine: FunctionalComponent<{ value: RingValue, formatter?: ValueFormatt
     const { value, formatter } = props
     const [current, last] = value
 
-    if (current === undefined && last === undefined) return <SubVal value='-' />
-
-    const delta = (current ?? 0) - (last ?? 0)
-    const deltaText = formatter?.(delta) ?? delta?.toString()
+    const delta = current - last
+    const deltaText = formatter?.(delta) ?? String(delta)
     const text = delta >= 0 ? `+${deltaText}` : deltaText
     return <>
         <SubVal value={text} />

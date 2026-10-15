@@ -5,18 +5,17 @@
  * https://opensource.org/licenses/MIT
  */
 import { getWeekStartTime } from '@api/sw/option'
-import { t } from '@app/locale'
+import { t, tMonths } from '@app/locale'
 import { isCalendarValue, parseValueOfFormatter, type CalendarValue } from "@app/util/echarts"
-import { getWeekDays, periodFormatter } from '@app/util/time'
+import { cvt2LocaleDate, getWeekDays, periodFormatter } from '@app/util/time'
 import { EchartsWrapper } from '@hooks'
 import { getCssVariable, getRegularTextColor, getSecondaryTextColor } from '@pages/util/style'
 import { groupBy, toMap } from "@util/array"
-import { formatTime, getAllDatesBetween, MILL_PER_WEEK, parseTime } from "@util/time"
+import { getAllDatesBetween, MILL_PER_WEEK, parseTime } from "@util/time"
 import type {
     ComposeOption, EffectScatterSeriesOption, GridComponentOption, TitleComponentOption, TooltipComponentOption,
     VisualMapComponentOption,
 } from "echarts"
-import type { TopLevelFormatterParams } from "echarts/types/dist/shared"
 
 type EcOption = ComposeOption<
     | EffectScatterSeriesOption
@@ -45,8 +44,8 @@ const cvtHeatmapItem = (d: CalendarValue): EffectScatterItem => {
     return item
 }
 
+const MONTH_LABELS = tMonths()
 function getXAxisLabelMap(data: CalendarValue[]): { [x: string]: string } {
-    const allMonthLabel = t(msg => msg.calendar.months).split('|')
     const result: Record<string, string> = {}
     // {[ x:string ]: Set<string> }
     const xAndMonthMap = groupBy(data, e => e[0], grouped => new Set(grouped.map(a => a[3].substring(4, 6))))
@@ -57,7 +56,7 @@ function getXAxisLabelMap(data: CalendarValue[]): { [x: string]: string } {
         if (!currentMonth || currentMonth === lastMonth) return
         lastMonth = currentMonth
         const monthNum = parseInt(currentMonth)
-        const label = allMonthLabel[monthNum - 1]
+        const label = MONTH_LABELS[monthNum - 1]
         label && (result[x] = label)
     })
     return result
@@ -84,10 +83,10 @@ function optionOf(
         },
         tooltip: {
             borderWidth: 0,
-            formatter: (params: TopLevelFormatterParams) => {
+            formatter: params => {
                 const value = parseValueOfFormatter(params)
                 if (!isCalendarValue(value) || !value[2]) return ''
-                const date = formatTime(parseTime(value[3]), t(msg => msg.calendar.dateFormat))
+                const date = cvt2LocaleDate(parseTime(value[3]))
                 const time = periodFormatter(value[2], { format })
                 return `${date}<br /><b>${time}</b>`
             },

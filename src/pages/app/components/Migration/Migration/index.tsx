@@ -6,12 +6,11 @@
  */
 
 import { sendMsg2Runtime } from '@api/sw/common'
-import { t } from '@app/locale'
+import { dateTimeFmt, t } from '@app/locale'
 import { Download, Upload } from "@element-plus/icons-vue"
 import { useManualRequest } from '@hooks'
 import { Flex } from '@pages/components'
 import { deserialize, exportJson } from "@util/file"
-import { formatTime } from "@util/time"
 import { ElButton, ElCard, ElMessage } from "element-plus"
 import { defineComponent, ref, type StyleValue } from "vue"
 import { useDataMemory } from '../context'
@@ -29,7 +28,7 @@ const Migration = defineComponent(() => {
 
     const { refresh: handleExport } = useManualRequest(async () => {
         const data = await sendMsg2Runtime('immigration.export')
-        const timestamp = formatTime(new Date(), '{y}{m}{d}_{h}{i}{s}')
+        const timestamp = dateTimeFmt().format(new Date()).replaceAll(/[\s/:.]+/g, '_')
         exportJson(data, `timer_backup_${timestamp}`)
     }, {
         loadingOptions: { fullscreen: true },

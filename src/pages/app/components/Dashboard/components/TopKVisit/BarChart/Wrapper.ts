@@ -63,7 +63,7 @@ class Wrapper extends EchartsWrapper<BizOption[], EcOption> {
                     padding: [0, 4, 0, 0],
                 },
                 colorBy: 'data',
-                color: getStepColors(data.length, 1.5),
+                color: getStepColors(data.length, { gradientFactor: 1.5 }),
             },
         }
     }

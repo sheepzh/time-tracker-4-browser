@@ -74,8 +74,8 @@ const TargetInfo = defineComponent(() => {
             padding="0 25px"
         >
             {!target.value && <h1 style={TITLE_STYLE}>{t(msg => msg.analysis.common.emptyDesc)}</h1>}
-            {target.value?.type === 'site' && <SiteInfo site={target.value?.key} />}
-            {target.value?.type === 'cate' && <CateInfo value={target.value?.key} />}
+            {target.value?.type === 'site' && <SiteInfo site={target.value.key} />}
+            {target.value?.type === 'cate' && <CateInfo value={target.value.key} />}
         </Flex>
     )
 })

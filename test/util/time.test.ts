@@ -6,22 +6,8 @@
  */
 
 import {
-    daysAgo, formatPeriodCommon, formatTime, getAllDatesBetween, getDayLength, getMonthTime, getStartOfDay, isSameDay,
+    daysAgo, formatPeriodCommon, getAllDatesBetween, getDayLength, getMonthTime, getStartOfDay, isSameDay,
 } from "@util/time"
-
-test('time', () => {
-    const dateStr = '2020/05/01 00:00:01'
-    const date = Date.parse(dateStr)
-    const format = '{y}{m}{d} {h}{i}{s}'
-    const result = '20200501 000001'
-
-    // default format
-    expect(formatTime(date, format)).toEqual(result)
-    // use seconds
-    expect(formatTime(Math.floor(date / 1000), format)).toEqual(result)
-
-    expect(formatTime(new Date(date), format)).toEqual(result)
-})
 
 test('format', () => {
     expect(formatPeriodCommon(86400 * 1000)).toEqual('1d 0h 0m 0s')

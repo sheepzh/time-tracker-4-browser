@@ -231,9 +231,8 @@ class Wrapper extends EchartsWrapper<BizData, EcOption> {
                 position: 'top',
                 borderWidth: 0,
                 formatter: params => {
-                    const color = (params as any)?.color ?? "#000"
                     const param = Array.isArray(params) ? params[0] : params
-                    const { value, seriesName } = param ?? {}
+                    const { value, seriesName, color } = param ?? {}
                     const [_1, start, _2, duration] = value as MyValue
                     const startStr = formatStart(start)
                     const durStr = formatDuration(duration)

@@ -1,7 +1,7 @@
 
 import { t } from '@app/locale'
 import { getLineSeriesPalette, tooltipDot, tooltipFlexLine, tooltipSpaceLine } from "@app/util/echarts"
-import { cvt2LocaleTime, periodFormatter } from "@app/util/time"
+import { cvt2LocaleDate, periodFormatter } from "@app/util/time"
 import { EchartsWrapper } from '@hooks'
 import { groupBy, sum } from "@util/array"
 import { getHost } from "@util/stat"
@@ -11,6 +11,7 @@ import type {
     TitleComponentOption, TooltipComponentOption,
 } from "echarts"
 import type { TopLevelFormatterParams, YAXisOption } from "echarts/types/dist/shared"
+import { isNumber } from 'typescript-guard'
 import { generateTitleOption } from "../common"
 
 type EcOption = ComposeOption<
@@ -49,21 +50,16 @@ const valueYAxis = (): YAXisOption => ({
 
 const formatTimeTooltip = (params: TopLevelFormatterParams, format: tt4b.ui.TimeFormat) => {
     if (!Array.isArray(params)) return ''
-    const date = params?.[0]?.name
+    const date = params[0]?.name
     if (!date) return ''
-    const dateLine = tooltipFlexLine(
-        cvt2LocaleTime(date),
-        TITLE,
-    )
-    const valueLines = params?.reverse?.()?.map(param => {
+    const dateLine = tooltipFlexLine(cvt2LocaleDate(date), TITLE)
+    const valueLines = params.reverse().map(param => {
         const { value, seriesName = '' } = param
         const color = LEGEND_COLOR_MAP[seriesName]
-        if (!color) return ''
-        let valueStr: string | number = seriesName === FOCUS_LEGEND
-            ? periodFormatter(value as number, { format })
-            : (value as number)
+        if (!color || !isNumber(value)) return ''
+        let valueStr = seriesName === FOCUS_LEGEND ? periodFormatter(value, { format }) : value
         return tooltipFlexLine(
-            `<b>${tooltipDot(color?.colorStops?.[0]?.color ?? '#000')}&ensp;${valueStr}</b>`,
+            `<b>${tooltipDot(color)}&ensp;${valueStr}</b>`,
             seriesName,
         )
     }).join('')
@@ -128,7 +124,7 @@ function generateOption(bizOption: BizOption): EcOption {
         tooltip: {
             trigger: 'axis',
             axisPointer: { type: "line" },
-            formatter: (params: TopLevelFormatterParams) => formatTimeTooltip(params, timeFormat),
+            formatter: params => formatTimeTooltip(params, timeFormat),
         },
         xAxis: {
             type: 'category',

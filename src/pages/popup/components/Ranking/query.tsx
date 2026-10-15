@@ -11,12 +11,10 @@ type RankingResult = {
     date: DateRange
 }
 
-export const doQuery = async (query: StatQuery, option: StatOption): Promise<RankingResult> => {
+export const doQuery = async (query: StatQuery, { showName }: StatOption): Promise<RankingResult> => {
     const [rows, date] = await queryRows(query)
-    const { dimension } = query
-    const values = rows.map(r => r[dimension])
-    const max = values.reduce((m, v) => v > m ? v : m, 0)
+    const values = rows.map(r => r[query.dimension])
+    const max = Math.max(0, ...values)
     const total = sum(values)
-    const { showName } = option
     return { max, total, rows, date, displaySiteName: showName }
 }

@@ -27,12 +27,14 @@ export type AnalysisMessage = {
     trend: {
         title: string
         activeDay: string
-        maxFocus: string
-        averageFocus: string
-        maxVisit: string
-        averageVisit: string
+        focusMax: string
+        focusAverage: string
+        visitMax: string
+        visitAverage: string
         focusTitle: string
         visitTitle: string
+        daily: string
+        weekly: string
     }
 }
 

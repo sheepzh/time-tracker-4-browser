@@ -8,7 +8,7 @@ import { isAllowedFileSchemeAccess } from "@api/chrome/runtime"
 import { sendMsg2Runtime } from '@api/sw/common'
 import { t } from '@app/locale'
 import { useManualRequest, usePermissionCheck, useRequest } from '@hooks'
-import { locale } from "@i18n"
+import { locale, tWeekDays } from "@i18n"
 import { rotate } from "@util/array"
 import { IS_FIREFOX, IS_MOBILE } from "@util/constant/environment"
 import { DEFAULT_TRACKING } from "@util/constant/option"
@@ -27,8 +27,7 @@ const ALL_STORAGES: Record<tt4b.option.StorageType, string> = {
 const weekStartOptionPairs: [[tt4b.option.WeekStartOption, string]] = [
     ['default', t(msg => msg.option.tracking.weekStartAsNormal)]
 ]
-const allWeekDays = t(msg => msg.calendar.weekDays)
-    .split('|')
+const allWeekDays = tWeekDays()
     .map((weekDay, idx) => [idx + 1, weekDay] satisfies [tt4b.option.WeekStartOption, string])
 locale !== 'zh_CN' && rotate(allWeekDays, 1)
 allWeekDays.forEach(weekDayInfo => weekStartOptionPairs.push(weekDayInfo))

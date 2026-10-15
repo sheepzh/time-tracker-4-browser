@@ -2,15 +2,16 @@ import { getIconUrl, getRuntimeName } from "@api/chrome/runtime"
 import { createTab } from "@api/chrome/tab"
 import { generateQrCanvas } from "@pages/util/qrcode"
 import { getCssVariable, getInfoColor, getPrimaryTextColor, getSecondaryTextColor } from "@pages/util/style"
+import { cvt2LocaleDate } from '@pages/util/time'
 import { calJumpUrl } from "@popup/components/stat/common"
-import { t } from '@popup/locale'
+import { dateFmt, t, tDateRangeSeparator } from '@popup/locale'
 import { sum, toMap } from "@util/array"
 import { IS_SAFARI } from "@util/constant/environment"
 import { INSTALL_PAGE } from "@util/constant/url"
 import { isRtl } from "@util/document"
 import { generateSiteLabel } from "@util/site"
 import { getGroupName, isGroup, isSite } from "@util/stat"
-import { formatPeriodCommon, formatTime, parseTime } from "@util/time"
+import { formatPeriodCommon, isSameDay, parseTime } from "@util/time"
 import type { PieSeriesOption, TitleComponentOption, ToolboxComponentOption } from "echarts"
 import type { ECharts } from "echarts/core"
 import type { CallbackDataParams, TopLevelFormatterParams } from "echarts/types/dist/shared"
@@ -18,47 +19,21 @@ import { ElMessage } from "element-plus"
 import type { StatQuery } from '../stat/context'
 import type { PercentageResult } from "./query"
 
-function combineDate(start: Date, end: Date, format: string): string {
-    const startStr = formatTime(start, format)
-    const endStr = formatTime(end, format)
-    if (startStr === endStr) {
-        return startStr
-    }
-    const normalStr = `${startStr}-${endStr}`
+function combineDate(start: Date, end: Date): string {
+    if (isSameDay(start, end)) return cvt2LocaleDate(start)
+    // Not same year
+    if (start.getFullYear() !== end.getFullYear()) return cvt2LocaleDate(start, end)
 
-    const sy = start.getFullYear()
-    const ey = end.getFullYear()
-    if (sy !== ey) return normalStr
-
-    // The same years
-    const execRes = /({d}|{m})[^{}]*({d}|{m})/.exec(format)
-    let monthDatePart = execRes?.[0]
-
-    if (!monthDatePart) return normalStr
-
-    const newPart = `${monthDatePart}-${monthDatePart.replace('{m}', '{em}').replace('{d}', '{ed}')}`
-    const newFormat = format.replace(monthDatePart, newPart)
-    const em = end.getMonth() + 1
-    const ed = end.getDate()
-    return formatTime(start, newFormat)
-        .replace('{em}', em.toString().padStart(2, '0'))
-        .replace('{ed}', ed.toString().padStart(2, '0'))
+    const startFmt = dateFmt({ year: 'numeric', month: 'numeric', day: 'numeric' })
+    const endFmt = dateFmt({ month: 'numeric', day: 'numeric' })
+    return [startFmt.format(start), endFmt.format(end)].join(tDateRangeSeparator())
 }
 
 function formatDateStr(date: Date | [Date, Date?] | undefined, dataDate: [string, string]): string {
-    const format = t(msg => msg.calendar.dateFormat)
-
-    if (!date) {
-        const start = parseTime(dataDate[0])
-        const end = parseTime(dataDate[1])
-        date = start ? [start, end] : undefined
-    }
-    if (!date) return ''
-    // Single day
-    if (!Array.isArray(date)) return formatTime(date, format)
-
     const [start, end] = date
-    return end ? combineDate(start, end, format) : formatTime(start, format)
+        ? (Array.isArray(date) ? date : [date])
+        : [parseTime(dataDate[0]), parseTime(dataDate[1])]
+    return end ? combineDate(start, end) : cvt2LocaleDate(start)
 }
 
 type FormatterRegistry = Record<'total' | 'avg', Converter<number, string>>

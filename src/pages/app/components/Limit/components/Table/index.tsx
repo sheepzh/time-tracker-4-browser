@@ -11,7 +11,7 @@ import { useDelayDuration, useLimitAction, useLimitData } from "@app/components/
 import { t } from '@app/locale'
 import { Delete, Edit } from '@element-plus/icons-vue'
 import { localRef, useRequest } from '@hooks'
-import { locale } from '@i18n'
+import { locale, tWeekDays } from '@i18n'
 import { isEffective } from "@util/limit"
 import { MILL_PER_SECOND } from "@util/time"
 import {
@@ -59,7 +59,7 @@ function sortByEffectiveDays(a: tt4b.limit.Item, b: tt4b.limit.Item) {
 const _default = defineComponent<{}>(() => {
     const { data: weeklyInfo } = useRequest(async () => {
         const offset = await getWeekStartDay()
-        const weekStart = t(msg => msg.calendar.weekDays)?.split('|')?.[offset] ?? 'NaN'
+        const weekStart = tWeekDays()[offset] ?? 'NaN'
         return t(msg => msg.limit.item.weekStartInfo, { weekStart })
     })
 

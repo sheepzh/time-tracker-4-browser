@@ -1,7 +1,8 @@
 import { listSiteStats } from "@api/sw/stat"
 import { useRequest } from "@hooks"
 import { Flex } from '@pages/components'
-import { formatTime, formatTimeYMD } from "@util/time"
+import { cvt2LocaleDate } from '@pages/util/time'
+import { formatTimeYMD } from "@util/time"
 import { ElText } from "element-plus"
 import { defineComponent, ref } from "vue"
 import RowList from "./components/RowList"
@@ -37,7 +38,7 @@ const _default = defineComponent<{}>(() => {
             </ElText>
             &emsp;
             <ElText size="small">
-                @{formatTime(date.value, t(msg => msg.calendar.dateFormat))}
+                @{cvt2LocaleDate(date.value)}
             </ElText>
         </Flex>
         <RowList loading={loading.value} data={data.value} />
