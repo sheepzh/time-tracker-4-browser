@@ -109,6 +109,8 @@ export const useEcharts = <
         afterInit?.(wrapper)
 
         watch(data, () => data.value && wrapper.render(data.value), { immediate: true })
+        // Rerender when dependencies change
+        isRef(fetch) && deps && watch(deps, () => data.value && wrapper.render(data.value))
         // The element reference perhaps change, reinitialize again
         watch(elRef, () => elRef.value && wrapper.init(elRef.value))
     })
