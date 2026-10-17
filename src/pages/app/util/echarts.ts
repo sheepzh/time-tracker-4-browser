@@ -45,8 +45,13 @@ export const getStepColors = (count: number, option?: StepColorOption): string[]
  * #ffffff => [255,255,255]
  */
 const cvtColor2Vector = (color: string): Vector<3> => {
+    if (color.length === 4) {
+        // #fff
+        return [color.charAt(1), color.charAt(2), color.charAt(3)]
+            .map(c => Number.parseInt(`0x${c}${c}`)) as [number, number, number]
+    }
     return [color.substring(1, 3), color.substring(3, 5), color.substring(5, 7)]
-        .map(c => parseInt('0x' + c)) as [number, number, number]
+        .map(c => Number.parseInt('0x' + c)) as [number, number, number]
 }
 
 export const getSeriesPalette = (): string[] => truthy(

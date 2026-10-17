@@ -85,8 +85,9 @@ const computePieces = (min: number, max: number): Piece[] => {
     let pieces = ALL_PIECES.filter((p, i) => i === 0 || p.min <= max)
     pieces = pieces.filter((p, i) => p.max > min || i === pieces.length - 1)
 
-    const colors = getStepColors(pieces.length, { startColor: getCssVariable('--el-fill-color-blank') })
-    return pieces.map((p, idx) => ({ ...p, color: colors[idx] }))
+    const stepOffset = 2
+    const colors = getStepColors(pieces.length + stepOffset, { startColor: getCssVariable('--el-fill-color-blank') })
+    return pieces.map((p, idx) => ({ ...p, color: colors[idx + stepOffset] }))
 }
 
 function optionOf(data: CalendarValue[], weekDays: string[], dom: HTMLElement): EcOption {
