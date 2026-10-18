@@ -47,7 +47,8 @@
             "pi": "圆周率 π 的小数部分第 {startIndex} 位到第 {endIndex} 位的共 {digitCount} 位数字",
             "confession": "一寸光阴一寸金，寸金难买寸光阴"
         },
-        "reminder": "距离时间限制不到 {min} 分钟！"
+        "reminder": "距离时间限制不到 {min} 分钟！",
+        "thisSession": "当前实例"
     },
     "zh_TW": {
         "wildcardTip": "你可以使用萬用字元來匹配子網域或子頁面，使用\"+\"作為前置詞來排除子頁面！",
