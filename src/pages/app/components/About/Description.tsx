@@ -135,7 +135,7 @@ const _default = defineComponent<{}>(() => {
                     </div>
                 </ElDescriptionsItem>
                 {locale !== 'zh_CN' && (
-                    <ElDescriptionsItem label='Buy me a coffee' labelAlign="right">
+                    <ElDescriptionsItem label='Support the developer' labelAlign="right">
                         <DescLink icon={Coffee} href={BUY_ME_A_COFFEE_PAGE}>{BUY_ME_A_COFFEE_PAGE}</DescLink>
                     </ElDescriptionsItem>
                 )}
