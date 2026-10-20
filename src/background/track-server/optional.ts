@@ -1,12 +1,15 @@
 import FIFOCache from '@util/fifo-cache'
-import { formatTimeYMD, getStartOfDay, MILL_PER_DAY } from "@util/time"
+import { formatTimeYMD } from "@util/time"
 import { addMediaTime, addRunTime } from '../service/item-service'
 
 function splitTime2Dates(start: number, end: number): Record<string, number> {
     const res: Record<string, number> = {}
     while (start < end) {
-        const startOfNextDay = getStartOfDay(start) + MILL_PER_DAY
-        const newStart = Math.min(end, startOfNextDay)
+        const nextDay = new Date(start)
+        nextDay.setDate(nextDay.getDate() + 1)
+        nextDay.setHours(0, 0, 0, 0)
+        const newStart = Math.min(end, nextDay.getTime())
+        if (newStart <= start) break
         const time = newStart - start
         time && (res[formatTimeYMD(start)] = time)
         start = newStart

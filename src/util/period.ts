@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { MILL_PER_DAY, MILL_PER_MINUTE } from "./time"
+import { getDayLength, MILL_PER_MINUTE } from "./time"
 
 export const MINUTE_PER_PERIOD = 15
 const PERIOD_PER_DATE = 24 * 60 / MINUTE_PER_PERIOD
@@ -91,7 +91,7 @@ export function averageByDay(data: tt4b.period.Row[], periodSize: number): tt4b.
     const rangeStart = data[0]?.startTime
     const rangeEnd = data[data.length - 1]?.endTime
     if (!rangeStart || !rangeEnd) return []
-    const dateNum = (rangeEnd - rangeStart) / MILL_PER_DAY
+    const dateNum = getDayLength(rangeStart, rangeEnd) || 1
     const map = generateOrderMap(data, periodSize)
     return cvt2AverageResult(map, periodSize, dateNum)
 }

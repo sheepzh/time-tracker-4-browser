@@ -1,4 +1,5 @@
 import { EXCLUDING_PREFIX } from './constant/remain-host'
+import { escapeRegExp } from './pattern'
 import { getWeekDay, MILL_PER_MINUTE, MILL_PER_SECOND } from "./time"
 
 const GLOBSTAR_TOKEN = `__GLOBSTAR${Math.random().toString(36).slice(2, 6)}__`
@@ -6,8 +7,9 @@ const GLOBSTAR_TOKEN = `__GLOBSTAR${Math.random().toString(36).slice(2, 6)}__`
 export const matchUrl = (cond: string, url: string): boolean => {
     const normalizedCond = cond.length > 1 ? cond.replace(/\/$/, '') : cond
     const pattern = normalizedCond
-        .replace(/\*\*/g, GLOBSTAR_TOKEN)
+        .replaceAll('**', GLOBSTAR_TOKEN)
         .split('*')
+        .map(escapeRegExp)
         .join('.*')
         .replaceAll(GLOBSTAR_TOKEN, '.+')
     return new RegExp(`^.*//${pattern}`).test(url)
