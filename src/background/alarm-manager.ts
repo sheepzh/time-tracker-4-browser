@@ -43,7 +43,10 @@ class AlarmManager {
             }
             const innerName = getOuterName(name)
             const config = this.alarms[innerName]
-            if (!config) return
+            if (!config) {
+                await clearAlarm(name)
+                return
+            }
             // Handle alarm event
             try {
                 await config.handler(alarm)
