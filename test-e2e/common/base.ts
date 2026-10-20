@@ -1,7 +1,7 @@
 import { type Browser, type CDPSession, launch, type Page, type Target } from "puppeteer"
 import { E2E_OUTPUT_PATH } from "../../rspack/constant"
 
-const USE_HEADLESS_PUPPETEER = !!process.env['USE_HEADLESS_PUPPETEER']
+const USE_HEADLESS_PUPPETEER = process.env.HEADLESS !== 'false'
 
 type HostProxy = {
     host: string

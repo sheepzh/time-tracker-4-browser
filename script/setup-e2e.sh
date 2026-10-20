@@ -412,7 +412,7 @@ main() {
     log_success "All operations completed successfully!"
     log_info "Run e2e tests:"
     log_info "  1. npm run test-e2e"
-    log_info "  2. USE_HEADLESS_PUPPETEER=true npm run test-e2e"
+    log_info "  2. HEADLESS=false npm run test-e2e (headed mode for debugging)"
 }
 
 # Run main function

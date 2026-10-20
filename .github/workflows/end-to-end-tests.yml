@@ -17,7 +17,6 @@ jobs:
             - name: Run tests
               env:
                   DEBUG: "rstest"
-                  USE_HEADLESS_PUPPETEER: true
               run: npm run test-e2e
             - name: Tests ✅
               if: ${{ success() }}
