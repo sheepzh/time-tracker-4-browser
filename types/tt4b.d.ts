@@ -1269,6 +1269,13 @@ declare namespace tt4b {
 
         type Phase = 'focus' | 'break'
 
+        type PhaseClock = {
+            // The start moment of the current phase
+            start: number
+            // Accumulated paused ms of the current phase
+            pausedMs: number
+        }
+
         type Session = Config & {
             // Start time with ts
             start: number
@@ -1276,7 +1283,12 @@ declare namespace tt4b {
             presetId?: number
             state: State
             phase: Phase
-            logs: { action: Action, ts: number, phase: Phase }[]
+            phaseClock?: PhaseClock
+            /**
+             * Will be removed in the future
+             * @deprecated Legacy field of records written before the phase-clock model
+             */
+            logs?: { action: Action, ts: number, phase: Phase }[]
         }
 
         type ActionRequest = {
