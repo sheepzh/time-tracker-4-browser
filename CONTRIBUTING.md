@@ -151,11 +151,10 @@ npm run test-e2e
 
 #### Headless Mode
 
-For headless Puppeteer testing:
+E2E tests run in headless mode by default. To debug with a visible browser:
 
 ```bash
-export USE_HEADLESS_PUPPETEER=true
-npm run test-e2e
+HEADLESS=false npm run test-e2e
 ```
 
 #### Stop Test Servers
