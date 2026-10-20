@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { MILL_PER_DAY, isSameDay } from "./time"
+import { isSameDay } from "./time"
 
 /**
  * Iterate from the {@param start} to the {@param end}
@@ -24,7 +24,9 @@ export default class DateIterator<T> implements IterableIterator<T> {
             return { done: true, value: undefined }
         }
         const value = this.converter(this.start)
-        this.start = new Date(this.start.getTime() + MILL_PER_DAY)
+        const nextDate = new Date(this.start)
+        nextDate.setDate(nextDate.getDate() + 1)
+        this.start = nextDate
         return { done: false, value }
     }
 
