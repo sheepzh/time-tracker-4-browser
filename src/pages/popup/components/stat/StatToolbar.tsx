@@ -27,13 +27,7 @@ const StatToolbar = defineComponent(() => {
                     ]}
                 />
             </Flex>
-            <DurationSelect
-                modelValue={[query.duration, query.durationNum]}
-                onChange={([duration, durationNum]) => {
-                    query.duration = duration
-                    query.durationNum = durationNum
-                }}
-            />
+            <DurationSelect defaultValue={query.duration} onChange={val => query.duration = val} />
             <ElSelect
                 modelValue={query.dimension}
                 onChange={v => query.dimension = v}

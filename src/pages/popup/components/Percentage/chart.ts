@@ -65,7 +65,7 @@ function calculateSubTitleText(result: PercentageResult): string {
 
 export function generateTitleOption(result: PercentageResult, suffix?: string): TitleComponentOption {
     return {
-        text: [result?.chartTitle, suffix].filter(v => !!v).join(' - '),
+        text: [result.chartTitle, suffix].filter(v => !!v).join(' - '),
         subtext: calculateSubTitleText(result),
         textStyle: { color: getPrimaryTextColor() },
         subtextStyle: { color: getSecondaryTextColor(), lineHeight: 15, fontSize: 12 },

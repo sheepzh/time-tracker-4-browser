@@ -4,12 +4,12 @@ import { RECORD_ROUTE, type RecordQuery } from "@app/router/constants"
 import { isRemainHost } from "@util/constant/remain-host"
 import { getAppPageUrl } from "@util/constant/url"
 import { isSite } from "@util/stat"
-import { cvtDateRange2Str, getMonthTime, MILL_PER_DAY, type DateRange } from "@util/time"
+import { addDays, cvtDateRange2Str, getMonthTime, MILL_PER_DAY, type DateRange } from "@util/time"
 import type { StatDuration, StatQuery } from './context'
 
 type DateRangeCalculator = (now: Date, num?: number) => Awaitable<[Date, Date] | Date | undefined>
 
-const DATE_RANGE_CALCULATORS: { [duration in StatDuration]: DateRangeCalculator } = {
+const DATE_RANGE_CALCULATORS: Record<StatDuration, DateRangeCalculator> = {
     today: now => now,
     yesterday: now => new Date(now.getTime() - MILL_PER_DAY),
     thisWeek: async now => {
@@ -17,13 +17,15 @@ const DATE_RANGE_CALCULATORS: { [duration in StatDuration]: DateRangeCalculator 
         return [start, now]
     },
     thisMonth: now => [getMonthTime(now)[0], now],
-    lastDays: (now, num) => [new Date(now.getTime() - MILL_PER_DAY * (num ?? 1 - 1)), now],
+    lastDays: (now, num) => [addDays(now, -(num ?? 1 - 1)), now],
     allTime: () => undefined,
 }
 
 export const queryRows = async (param: StatQuery): Promise<[rows: tt4b.stat.Row[], date: [Date, Date] | Date | undefined]> => {
-    const { duration, durationNum, mergeMethod, dimension: sortKey } = param
-    const dateRange = await DATE_RANGE_CALCULATORS[duration]?.(new Date(), durationNum)
+    const { duration, mergeMethod, dimension: sortKey } = param
+    const dateRange = typeof duration === 'string'
+        ? await DATE_RANGE_CALCULATORS[duration](new Date(), undefined)
+        : await DATE_RANGE_CALCULATORS[duration.type](new Date(), duration.value)
     const date = cvtDateRange2Str(dateRange)
     const sortDirection: tt4b.common.SortDirection = 'DESC'
     let rows: tt4b.stat.Row[]

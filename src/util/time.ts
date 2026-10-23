@@ -231,6 +231,12 @@ export function getAllDatesBetween(start: Date | number, end: Date | number, for
     return dates
 }
 
+export function addDays(date: Date, days: number): Date {
+    const result = new Date(date)
+    result.setDate(result.getDate() + days)
+    return result
+}
+
 /**
  * yyyyMMdd => Date
  */

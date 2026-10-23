@@ -51,12 +51,17 @@ export const doQuery = async (query: StatQuery, option: StatOption, cateNameMap:
 
     const dataDate = findDateRange(allDates)
 
+    const { duration } = query
+    const chartTitle = typeof duration === 'string'
+        ? t(msg => msg.content.percentage.title[duration])
+        : t(msg => msg.content.percentage.title[duration.type], { n: duration.value })
+
     return {
         query, rows,
         date, dataDate,
         dateLength,
         displaySiteName,
-        chartTitle: t(msg => msg.content.percentage.title[query?.duration], { n: query?.durationNum }),
+        chartTitle,
         itemCount,
         groups,
         donutChart,

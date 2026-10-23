@@ -1,6 +1,7 @@
 import { localReactive, useProvide, useProvider } from '@hooks'
 import {
-    createObjectGuard, createOptionalGuard, createStringUnionGuard, isBoolean, isInt, isOptionalInt,
+    createLiteralGuard, createObjectGuard, createOptionalGuard, createStringUnionGuard, createUnionGuard,
+    isBoolean, isInt,
 } from 'typescript-guard'
 
 export type StatDuration =
@@ -8,10 +9,31 @@ export type StatDuration =
     | "lastDays"
     | "allTime"
 
+export const isDuration = createStringUnionGuard<StatDuration>(
+    "allTime", "today", "yesterday", "thisWeek", "thisMonth", "lastDays",
+)
+
+export type DurationValue = {
+    type: StatDuration & 'lastDays'
+    value: number
+} | Exclude<StatDuration, 'lastDays'>
+
+const isDurationValue = createUnionGuard(
+    createStringUnionGuard<Exclude<StatDuration, 'lastDays'>>(
+        "allTime", "today", "yesterday", "thisWeek", "thisMonth",
+    ),
+    createObjectGuard<{
+        type: StatDuration & 'lastDays'
+        value: number
+    }>({
+        type: createLiteralGuard("lastDays"),
+        value: isInt,
+    })
+)
+
 export type StatQuery = {
     mergeMethod: Exclude<tt4b.stat.MergeMethod, 'date'> | undefined
-    duration: StatDuration
-    durationNum?: number
+    duration: DurationValue
     dimension: Exclude<tt4b.core.Dimension, 'run'>
 }
 
@@ -32,8 +54,7 @@ const isMergeMethod = createStringUnionGuard<Exclude<StatQuery['mergeMethod'], u
 
 const isStatQuery = createObjectGuard<StatQuery>({
     dimension: createStringUnionGuard<StatQuery['dimension']>('focus', 'time'),
-    duration: createStringUnionGuard<StatQuery['duration']>('allTime', 'lastDays', 'thisMonth', 'thisWeek', 'today', 'yesterday'),
-    durationNum: isOptionalInt,
+    duration: isDurationValue,
     mergeMethod: createOptionalGuard(isMergeMethod),
 })
 
