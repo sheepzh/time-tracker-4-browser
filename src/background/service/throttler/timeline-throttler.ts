@@ -1,6 +1,6 @@
 import timelineDatabase from '@db/timeline-database'
 import { extractHostname } from '@util/pattern'
-import { getStartOfDay, MILL_PER_DAY } from '@util/time'
+import { getStartOfNextDay } from '@util/time'
 import { FirefoxThrottler } from './firefox-throttler'
 
 class TimelineThrottler extends FirefoxThrottler<tt4b.timeline.Tick> {
@@ -23,7 +23,7 @@ const split2Durations = (start: number, end: number): [start: number, duration: 
     const result: [start: number, duration: number][] = []
     let current = start
     while (current < end) {
-        const nextDayStart = getStartOfDay(current) + MILL_PER_DAY
+        const nextDayStart = getStartOfNextDay(current)
         const segmentEnd = Math.min(nextDayStart, end)
         result.push([current, segmentEnd - current])
         current = segmentEnd

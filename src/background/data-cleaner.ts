@@ -1,5 +1,5 @@
 import { keyOf } from "@util/period"
-import { getBirthday, getStartOfDay, MILL_PER_DAY } from "@util/time"
+import { getBirthday, getStartOfNextDay, MILL_PER_DAY } from "@util/time"
 import alarmManager from "./alarm-manager"
 import { batchDeletePeriods } from "./service/period-service"
 
@@ -15,7 +15,7 @@ const cleanPeriodData = async () => {
 export default function initDataCleaner() {
     alarmManager.setWhen(
         PERIOD_ALARM_NAME,
-        () => getStartOfDay(new Date()) + MILL_PER_DAY,
+        () => getStartOfNextDay(new Date()),
         cleanPeriodData,
     )
 }
