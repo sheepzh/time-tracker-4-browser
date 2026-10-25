@@ -365,7 +365,11 @@
             "type": "Website-Typ",
             "alias": "Site-Name",
             "cate": "Seitenkategorie",
-            "icon": "Symbol"
+            "icon": "Symbol",
+            "white": "Whitelist",
+            "whiteInfo": "Websites auf der Whitelist werden weder zeitlich erfasst noch blockiert.",
+            "runtimeInfo": "Erfasse die Zeit, die eine Website geöffnet ist, unabhängig davon, ob die Registerkarte aktiv ist oder das Fenster fokussiert ist.",
+            "mediaTimeInfo": "Erfasse die Zeit, in welche eine Website Audio abspielt."
         },
         "typeInfo": {
             "normal": "statistische Daten nach Domainname",
