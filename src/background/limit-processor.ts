@@ -11,7 +11,7 @@ import { getSite } from '@service/site-service'
 import { anyChanged } from '@util/lang'
 import { matches } from "@util/limit"
 import { extractHostname } from '@util/pattern'
-import { getStartOfDay, MILL_PER_DAY } from "@util/time"
+import { getStartOfNextDay } from "@util/time"
 import alarmManager from "./alarm-manager"
 import MessageDispatcher from "./message-dispatcher"
 import {
@@ -22,7 +22,7 @@ function initDailyBroadcast() {
     // Broadcast rules at the start of each day
     alarmManager.setWhen(
         'limit-daily-broadcast',
-        () => getStartOfDay(new Date()) + MILL_PER_DAY,
+        () => getStartOfNextDay(new Date()),
         noticeLimitChanged,
     )
 }
