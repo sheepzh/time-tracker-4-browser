@@ -73,11 +73,15 @@
         "about": "Acerca de"
     },
     "de": {
+        "tracking": "Statistik",
         "dashboard": "Übersicht",
-        "record": "Aufzeichnen",
-        "siteAnalysis": "Analysebericht",
-        "habit": "Gewohnheit",
-        "other": "Andere Eigenschaften",
+        "record": "Aufzeichnung",
+        "analysis": "Analyse",
+        "siteAnalysis": "Seitenanalyse",
+        "habit": "Gewohnheiten",
+        "productivity": "Produktivität",
+        "other": "Weitere Funktionen",
+        "migration": "Datenmigration",
         "about": "Über uns"
     },
     "fr": {

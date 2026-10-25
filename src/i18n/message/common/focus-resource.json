@@ -228,5 +228,42 @@
             "stop": "停止",
             "dismiss": "關閉"
         }
+    },
+    "de": {
+        "menu": "Fokus & Pomodoro",
+        "policy": {
+            "label": "Filtereinstellung",
+            "allow": {
+                "label": "Erlaube nur",
+                "desc": "Nur erlaubte Websites sind zugänglich, alle anderen sind blockiert"
+            },
+            "block": {
+                "label": "Blockiere",
+                "desc": "Alle Websites sind zugänglich, außer blockierte"
+            }
+        },
+        "duration": "Fokuszeit",
+        "break": "Pausenzeit",
+        "state": {
+            "running": "Laufend",
+            "paused": "Angehalten",
+            "stopped": "Gestoppt",
+            "done": "Abgeschlossen"
+        },
+        "method": {
+            "label": "Methode",
+            "choose": "Methode wählen",
+            "pomodoro": {
+                "label": "Pomodoro"
+            }
+        },
+        "preset": "Voreinstellung",
+        "presetName": "Voreinstellungen",
+        "button": {
+            "pause": "Anhalten",
+            "resume": "Fortsetzen",
+            "stop": "Stoppen",
+            "dismiss": "Verwerfen"
+        }
     }
 }
