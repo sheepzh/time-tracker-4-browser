@@ -1,5 +1,6 @@
 import { clearAlarm, createAlarm, getAlarm, onAlarm } from "@api/chrome/alarm"
 import { getRuntimeId } from "@api/chrome/runtime"
+import { MILL_PER_SECOND } from "@util/time"
 
 type _AlarmConfig = {
     handler: _Handler,
@@ -15,11 +16,23 @@ const ALARM_PREFIX_LENGTH = ALARM_PREFIX.length
 const getInnerName = (outerName: string) => ALARM_PREFIX + outerName
 const getOuterName = (innerName: string) => innerName.substring(ALARM_PREFIX_LENGTH)
 
+/**
+ * Minimum delay before an alarm is re-scheduled after it fired.
+ *
+ * Guards against hot loops: if `when()` returns a timestamp that is not in the future
+ * (e.g. because of a DST transition or a clock change), `chrome.alarms.create()` would
+ * fire the alarm immediately, which re-schedules it again, and so on.
+ */
+const MIN_RESCHEDULE_DELAY = MILL_PER_SECOND
+
 const calcNextTs = (config: _AlarmConfig): number | null => {
     const { interval, when } = config
     if (interval) return Date.now() + interval
-    if (when) return when()
-    return Date.now()
+    if (when) {
+        const next = when()
+        return next === null ? null : Math.max(next, Date.now() + MIN_RESCHEDULE_DELAY)
+    }
+    return Date.now() + MIN_RESCHEDULE_DELAY
 }
 
 /**

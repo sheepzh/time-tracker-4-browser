@@ -167,6 +167,22 @@ export function getStartOfDay(target: Date | number): number {
 }
 
 /**
+ * Get the start time of the next day (local midnight)
+ *
+ * Uses calendar arithmetic instead of `getStartOfDay() + MILL_PER_DAY`,
+ * which is wrong on DST transition days (the local day has 23 or 25 hours).
+ *
+ * @param target the specific time
+ * @returns the start of the next day, in milliseconds
+ */
+export function getStartOfNextDay(target: Date | number): number {
+    const date = new Date(target)
+    date.setHours(0, 0, 0, 0)
+    date.setDate(date.getDate() + 1)
+    return date.getTime()
+}
+
+/**
  * The birthday of this extension
  *
  * @since 1.2.0
