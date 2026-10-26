@@ -1,6 +1,6 @@
 import { getSiteStatPage } from "@api/sw/stat"
 import { EchartsWrapper, localReactive, useEcharts, useProvide, useProvider, useRemoteValue } from "@hooks"
-import { cvtDateRange2Str, MILL_PER_DAY } from "@util/time"
+import { addDays, cvtDateRange2Str } from "@util/time"
 import { createObjectGuard, createStringUnionGuard, isInt, isNumber, isOptionalString, isString } from 'typescript-guard'
 
 export type BizOption = {
@@ -50,7 +50,7 @@ export const useTopKChart = <EC>(Wrapper: new () => EchartsWrapper<BizOption[], 
     return useEcharts(Wrapper, async () => {
         const now = new Date()
         const { dayNum, topK: size } = filter
-        const startTime: Date = new Date(now.getTime() - MILL_PER_DAY * dayNum)
+        const startTime = addDays(now, -dayNum)
         const { list: top } = await getSiteStatPage({
             num: 1, size,
             date: cvtDateRange2Str([startTime, now]),

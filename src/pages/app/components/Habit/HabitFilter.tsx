@@ -9,7 +9,7 @@ import { DateRangeFilter, TimeFormatFilter } from '@app/components/common/filter
 import { t } from '@app/locale'
 import { Flex } from '@pages/components'
 import { ElDatePickerShortcut } from '@pages/element-ui/types'
-import { daysAgo, MILL_PER_DAY } from "@util/time"
+import { addDays, daysAgo } from "@util/time"
 import { defineComponent } from "vue"
 import { useHabitFilter } from "./context"
 
@@ -27,6 +27,7 @@ const SHORTCUTS: ElDatePickerShortcut[] = shortcutProps.map(([text, agoOfStart])
 
 const HabitFilter = defineComponent<{}>(() => {
     const filter = useHabitFilter()
+    const earliestDate = addDays(new Date(), - 366)
 
     return () => (
         <Flex gap={10}>
@@ -35,7 +36,7 @@ const HabitFilter = defineComponent<{}>(() => {
                 modelValue={filter.dateRange}
                 shortcuts={SHORTCUTS}
                 onChange={([s, e]) => s && e && (filter.dateRange = [s, e])}
-                disabledDate={d => d.getTime() < Date.now() - MILL_PER_DAY * 366}
+                disabledDate={d => d < earliestDate}
             />
             <TimeFormatFilter modelValue={filter.timeFormat} onChange={v => filter.timeFormat = v} />
         </Flex>

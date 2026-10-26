@@ -19,7 +19,7 @@ test('format', () => {
 test('days ago', () => {
     const start = Math.floor(Math.random() * 100)
     const range = daysAgo(start + 2, start)
-    expect(range[1].getTime() - range[0].getTime()).toEqual(1000/*ms/s*/ * 60/*s/min*/ * 60/*min/h*/ * 24/*h/day*/ * 2/*day*/)
+    expect(getDayLength(range[0], range[1])).toEqual(3)
 })
 
 test("is same day", () => {
@@ -67,21 +67,15 @@ describe("getStartOfNextDay", () => {
         expect(getStartOfNextDay(new Date(2022, 11, 31, 23, 59))).toEqual(new Date(2023, 0, 1).getTime())
     })
 
-    test("always lands on local midnight of the following calendar day", () => {
-        // Walk through a whole year day by day. On DST transition days the local day has
-        // 23 or 25 hours, so `getStartOfDay() + MILL_PER_DAY` is NOT midnight — that caused
-        // an infinite alarm loop in alarm-manager. These assertions hold in any timezone.
+    test("returns the start of the next local date, including dates without midnight", () => {
         let current = new Date(2026, 0, 1, 12).getTime()
         const end = new Date(2027, 0, 1).getTime()
         while (current < end) {
             const next = getStartOfNextDay(current)
-            const nextDate = new Date(next)
-            const expected = new Date(current)
-            expected.setDate(expected.getDate() + 1)
+            const date = new Date(current)
+            const expected = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1)
             expect(next).toBeGreaterThan(current)
-            expect([nextDate.getHours(), nextDate.getMinutes(), nextDate.getSeconds()]).toEqual([0, 0, 0])
-            expect([nextDate.getFullYear(), nextDate.getMonth(), nextDate.getDate()])
-                .toEqual([expected.getFullYear(), expected.getMonth(), expected.getDate()])
+            expect(next).toEqual(expected.getTime())
             current = next + 12 * 60 * 60 * 1000
         }
     })

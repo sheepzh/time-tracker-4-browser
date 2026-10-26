@@ -6,7 +6,7 @@
  */
 
 import { isRecord, isVector2 } from '@util/guard'
-import { formatTimeYMD, MILL_PER_DAY } from "@util/time"
+import { addDays, formatTimeYMD } from "@util/time"
 import { createArrayGuard, createGuard, createObjectGuard, createOptionalGuard, isInt, isOptionalBoolean, isOptionalInt, isString } from 'typescript-guard'
 import BaseDatabase from "./common/base-database"
 import { REMAIN_WORD_PREFIX } from "./common/constant"
@@ -184,7 +184,7 @@ class LimitDatabase extends BaseDatabase implements BrowserMigratable<'__limit__
     }
 
     private update(items: Items): Promise<void> {
-        const days10Ago = new Date(Date.now() - MILL_PER_DAY * 10)
+        const days10Ago = addDays(new Date(), -10)
         const days10AgoStr = formatTimeYMD(days10Ago)
         // Clear early date
         Object.values(items).forEach(item => {

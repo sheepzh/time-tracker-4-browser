@@ -1,15 +1,15 @@
 import { getVersion } from "@api/chrome/runtime"
 import db from "@db/stat-database"
 import { cvtOption2Locale } from "@i18n"
-import { cvtDateRange2Str, formatTimeYMD, MILL_PER_DAY, MILL_PER_WEEK } from "@util/time"
+import { addDays, cvtDateRange2Str, formatTimeYMD } from "@util/time"
 import optionHolder from "../components/option-holder"
 import BrowserNotifier from "./browser/notifier"
 import CallbackNotifier from "./callback/notifier"
 import type { NotificationData, NotificationRequest, Notifier } from "./types"
 
 const DATE_RANGE_CALCULATORS: Record<NotificationRequest['cycle'], (now: number) => Date | [Date, Date]> = {
-    daily: now => new Date(now - MILL_PER_DAY),
-    weekly: now => [new Date(now - MILL_PER_WEEK), new Date(now - MILL_PER_DAY)],
+    daily: now => addDays(now, -1),
+    weekly: now => [addDays(now, -7), addDays(now, -1)],
 }
 
 class Processor {

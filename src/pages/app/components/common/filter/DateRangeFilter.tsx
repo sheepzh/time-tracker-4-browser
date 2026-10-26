@@ -13,7 +13,7 @@ import { Flex } from '@pages/components'
 import { getDatePickerIconSlots } from '@pages/element-ui/rtl'
 import { ElDatePickerShortcut } from '@pages/element-ui/types'
 import { isRtl } from '@util/document'
-import { cvt2Time, MILL_PER_DAY } from '@util/time'
+import { addDays, cvt2Time, getStartOfDay } from '@util/time'
 import { type DatePickerProps, ElButton, ElDatePicker, ElText, useNamespace } from "element-plus"
 import { computed, defineComponent, type FunctionalComponent, type StyleValue, toRaw, toRef } from "vue"
 
@@ -52,14 +52,19 @@ const usePopperStyle = () => {
     `
 }
 
+const shiftDate = (value: number, days: number): number => {
+    const date = addDays(getStartOfDay(value), days)
+    return getStartOfDay(date)
+}
+
 const useRange = (props: Props) => {
     const backwardDisabled = computed(() => {
         const start = props.modelValue?.[0]
         if (!start) return true
         const { disabledDate } = props
         if (!disabledDate) return false
-        const lastDay = new Date(start - MILL_PER_DAY)
-        return disabledDate(lastDay)
+        const lastDay = shiftDate(start, -1)
+        return disabledDate(new Date(lastDay))
     })
 
     const forwardDisabled = computed(() => {
@@ -67,16 +72,16 @@ const useRange = (props: Props) => {
         if (!end) return true
         const { disabledDate } = props
         if (!disabledDate) return false
-        const nextDate = new Date(end + MILL_PER_DAY)
-        return disabledDate(nextDate)
+        const nextDate = shiftDate(end, 1)
+        return disabledDate(new Date(nextDate))
     })
 
     const shift = (multiple: number) => {
         const { modelValue, onChange, shiftStep } = props
         const [start, end] = modelValue ?? []
         if (!start || !end) return
-        const millDiff = MILL_PER_DAY * (shiftStep ?? 1) * multiple
-        onChange?.([start + millDiff, end + millDiff])
+        const daysDiff = (shiftStep ?? 1) * multiple
+        onChange?.([shiftDate(start, daysDiff), shiftDate(end, daysDiff)])
     }
 
     const clearable = toRef(props, "clearable", true)

@@ -8,7 +8,7 @@
 import { listPeriods } from '@api/sw/period'
 import { localReactive, useProvide, useProvider, useRequest } from '@hooks'
 import { keyOf, MAX_PERIOD_ORDER } from "@util/period"
-import { getDayLength, MILL_PER_DAY } from "@util/time"
+import { addDays, getDayLength } from "@util/time"
 import { createObjectGuard } from 'typescript-guard'
 import { computed, type Ref } from "vue"
 import { useHabitFilter } from "../context"
@@ -37,8 +37,8 @@ type Context = {
 const computeRange = (dateRange: [number, number]): PeriodRange => {
     const [startDate, endDate] = dateRange
     const dateLength = getDayLength(startDate, endDate)
-    const prevStartDate = new Date(startDate - MILL_PER_DAY * dateLength)
-    const prevEndDate = new Date(startDate - MILL_PER_DAY)
+    const prevStartDate = addDays(startDate, -dateLength)
+    const prevEndDate = addDays(startDate, -1)
     return {
         curr: [keyOf(startDate, 0), keyOf(endDate, MAX_PERIOD_ORDER)],
         prev: [keyOf(prevStartDate, 0), keyOf(prevEndDate, MAX_PERIOD_ORDER)],

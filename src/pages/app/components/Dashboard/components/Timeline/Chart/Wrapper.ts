@@ -3,9 +3,10 @@ import { getSeriesPalette, tooltipDot } from '@app/util/echarts'
 import { EchartsWrapper } from '@hooks'
 import { getPrimaryTextColor } from '@pages/util/style'
 import { groupBy, toMap } from '@util/array'
+import DateIterator from '@util/date-iterator'
 import { CATE_NOT_SET_ID } from '@util/site'
 import {
-    formatPeriodCommon, getStartOfDay, MILL_PER_DAY, MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND
+    formatPeriodCommon, getStartOfDay, getStartOfNextDay, MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND
 } from '@util/time'
 import type {
     ComposeOption, CustomSeriesOption, CustomSeriesRenderItem, DataZoomComponentOption, GridComponentOption,
@@ -20,6 +21,8 @@ export type BizData = {
     dates: string[]
 }
 
+const CLOCK_END = 24 * MILL_PER_HOUR
+
 export type EcOption = ComposeOption<
     | CustomSeriesOption
     | GridComponentOption
@@ -28,12 +31,6 @@ export type EcOption = ComposeOption<
     | DataZoomComponentOption
 >
 
-type LegendInfo = {
-    name: string
-    displayName?: string
-    color: string
-}
-
 type MyValue = [
     yIndex: number,
     start: number, // milliseconds, offset of this day
@@ -41,20 +38,13 @@ type MyValue = [
     duration: number,
 ]
 
-const formatTimeLabel = (val: number) => {
-    let minute = Math.floor(val / MILL_PER_MINUTE)
-    const hour = Math.floor(minute / 60)
-    minute -= hour * 60
-    return `${hour.toFixed(0).padStart(2, '0')}:${minute.toFixed(0).padStart(2, '0')}`
-}
+const formatTimeLabel = (val: number) => [val / MILL_PER_HOUR, val / MILL_PER_MINUTE % 60]
+    .map(value => Math.floor(value).toString().padStart(2, '0'))
+    .join(':')
 
 const formatStart = (startMs: number): string => {
-    let second = Math.floor(startMs / MILL_PER_SECOND)
-    let minute = Math.floor(second / 60)
-    second -= minute * 60
-    const hour = Math.floor(minute / 60)
-    minute -= hour * 60
-    return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}`
+    const second = Math.floor(startMs / MILL_PER_SECOND) % 60
+    return `${formatTimeLabel(startMs)}:${second.toString().padStart(2, '0')}`
 }
 
 const formatDuration = (duration: number): string => {
@@ -69,31 +59,6 @@ const formatDuration = (duration: number): string => {
 
 const LEGEND_WIDTH = 180
 
-const collectLegends = (activities: tt4b.timeline.Activity[], merge: tt4b.timeline.MergeMethod): LegendInfo[] => {
-    const colors = getSeriesPalette()
-    const colorLen = colors.length || 1
-
-    const keyNameMap = toMap(activities, a => a.seriesKey, a => a.seriesName)
-    let totalDuration = groupBy(activities, a => a.seriesKey, l => l.map(t => t.duration).reduce((a, b) => a + b, 0))
-    return Object.entries(totalDuration)
-        // sort by duration desc
-        .sort((a, b) => b[1] - a[1])
-        .map(([key], idx) => ({
-            name: key,
-            displayName: merge === 'cate' && key === String(CATE_NOT_SET_ID)
-                ? t(msg => msg.shared.cate.notSet)
-                : keyNameMap[key],
-            color: colors[idx % colorLen] ?? '#000',
-        } satisfies LegendInfo))
-}
-
-type Cartesian2DCoordSys = {
-    x: number
-    y: number
-    width: number
-    height: number
-}
-
 const renderItem: CustomSeriesRenderItem = (params, api) => {
     const categoryIndex = api.value(0)
     const [sX = 0, sY = 0] = api.coord([api.value(1), categoryIndex])
@@ -102,19 +67,14 @@ const renderItem: CustomSeriesRenderItem = (params, api) => {
     const size = api.size?.([0, 1])
     const height = ((Array.isArray(size) ? size[1] : size) ?? 0) * 0.6
 
-    const coordSys = params.coordSys as unknown as Cartesian2DCoordSys
+    const coordSys = params.coordSys as unknown as Parameters<typeof graphic.clipRectByRect>[1]
 
     var rectShape = graphic.clipRectByRect({
         x: sX,
         y: sY - height / 2,
         width: eX - sX,
         height
-    }, {
-        x: coordSys.x,
-        y: coordSys.y,
-        width: coordSys.width,
-        height: coordSys.height,
-    })
+    }, coordSys)
 
     return rectShape && {
         type: 'rect',
@@ -127,46 +87,96 @@ const renderItem: CustomSeriesRenderItem = (params, api) => {
     }
 }
 
-const generateSeries = (biz: BizData, legendColors: Record<string, string>): EcOption['series'] => {
-    const { activities, dates, merge } = biz
-    const groupBySeries = groupBy(activities, a => a.seriesKey, l => l)
-
-    return Object.entries(groupBySeries).map(([series, list]) => {
-        const color = legendColors[series]
-        return {
-            name: series,
-            type: 'custom',
-            id: `${merge}-${series}`,
-            itemStyle: { color },
-            encode: {
-                x: [1, 2],
-                y: 0,
-            },
-            renderItem,
-            selectedMode: true,
-            data: list.map(({ start, duration }) => {
-                const date = formatYAxis(start)
-                const dateIdx = dates.indexOf(date)
-                const dayStart = getStartOfDay(start)
-                const startOffset = start - dayStart
-                const endOffset = start + duration - dayStart
-                const value: MyValue = [dateIdx, startOffset, endOffset, duration]
-                return { value }
-            })
-        }
-    })
+const clockTimeOf = (time: number): number => {
+    const date = new Date(time)
+    return date.getHours() * MILL_PER_HOUR + date.getMinutes() * MILL_PER_MINUTE
+        + date.getSeconds() * MILL_PER_SECOND + date.getMilliseconds()
 }
 
-const calcDataZoomDefaultRange = (activities: tt4b.timeline.Activity[]): [start: number | undefined, end: number | undefined] => {
-    if (!activities.length) return [undefined, undefined]
-    let min = activities.map(a => a.start).reduce((a, b) => b < a ? b : a)
-    let max = activities.map(({ start, duration }) => start + duration).reduce((a, b) => b > a ? b : a)
+const collectDayPeriods = (start: number) => {
+    const end = getStartOfNextDay(start)
+    const periods: [start: number, end: number][] = []
+    let periodStart = start
+    let cursor = start
+    let offset = new Date(start).getTimezoneOffset()
+    let repeated = false
+    while (cursor < end) {
+        const next = Math.min(cursor + MILL_PER_HOUR, end)
+        if (new Date(next - 1).getTimezoneOffset() === offset) {
+            cursor = next
+            continue
+        }
+        let low = cursor
+        let high = next - 1
+        while (low < high) {
+            const middle = Math.floor((low + high) / 2)
+            if (new Date(middle).getTimezoneOffset() === offset) low = middle + 1
+            else high = middle
+        }
+        const nextOffset = new Date(low).getTimezoneOffset()
+        repeated ||= nextOffset > offset
+        periods.push([periodStart, low])
+        periodStart = cursor = low
+        offset = nextOffset
+    }
+    periods.push([periodStart, end])
+    return repeated ? periods.map(period => [period]) : [periods]
+}
 
+const calcDataZoomDefaultRange = (series: { data: MyValue[] }[]): [start: number, end: number] => {
+    if (!series.length) return [0, CLOCK_END]
+    const [min, max] = series.reduce<[number, number]>((range, { data }) =>
+        data.reduce<[number, number]>(([min, max], value) =>
+            [Math.min(min, value[1]), Math.max(max, value[2])], range), [CLOCK_END, 0])
     const interval = 30 * MILL_PER_MINUTE
-    min = Math.floor(min / interval) * interval
-    max = Math.ceil(max / interval) * interval
+    return [Math.max(0, Math.floor(min / interval) * interval), Math.min(CLOCK_END, Math.ceil(max / interval) * interval)]
+}
 
-    return [min, max]
+const collectChartData = ({ activities, dates, merge }: BizData) => {
+    const dayStarts = activities.flatMap(({ start, duration }) => {
+        const end = start + duration
+        if (!(start < end)) return []
+        const from = new Date(getStartOfDay(start))
+        return [...DateIterator.of(from, new Date(end - 1), getStartOfDay)]
+    })
+    const periodsByDate = toMap([...new Set(dayStarts)], formatYAxis, collectDayPeriods)
+    const rows = dates.flatMap(date =>
+        (periodsByDate[date] ?? [[]]).map(periods => ({ date, periods })))
+    const groups = groupBy(activities, activity => activity.seriesKey, list => ({
+        list,
+        total: list.reduce((total, activity) => total + activity.duration, 0),
+    }))
+    const colors = getSeriesPalette()
+    const legendData = Object.entries(groups)
+        .sort(([, a], [, b]) => b.total - a.total)
+        .map(([key, { list }], index) => ({
+            name: key,
+            displayName: merge === 'cate' && key === String(CATE_NOT_SET_ID)
+                ? t(msg => msg.shared.cate.notSet)
+                : list.at(-1)?.seriesName,
+            color: colors[index % (colors.length || 1)] ?? '#000',
+        }))
+    const legendMap = toMap(legendData, legend => legend.name)
+    const series = Object.entries(groups).map(([key, { list }]) => ({
+        name: key,
+        type: 'custom',
+        id: `${merge}-${key}`,
+        itemStyle: { color: legendMap[key]?.color },
+        encode: {
+            x: [1, 2],
+            y: 0,
+        },
+        renderItem,
+        selectedMode: true,
+        data: rows.flatMap(({ periods }, yIndex) => periods.flatMap(([from, to]) => list.flatMap<MyValue>(activity => {
+            const start = Math.max(activity.start, from)
+            const duration = Math.min(activity.start + activity.duration, to) - start
+            if (!(duration > 0)) return []
+            const clockStart = clockTimeOf(start)
+            return [[yIndex, clockStart, clockStart + duration, duration]]
+        }))),
+    } satisfies CustomSeriesOption)).filter(series => series.data.length)
+    return { dates: rows.map(row => row.date), series, legendData, legendMap }
 }
 
 class Wrapper extends EchartsWrapper<BizData, EcOption> {
@@ -174,22 +184,21 @@ class Wrapper extends EchartsWrapper<BizData, EcOption> {
     protected override isSizeSensitize: boolean = true
 
     protected async generateOption(bizData: BizData): Promise<EcOption> {
-        const { dates, activities, merge } = bizData
+        const { merge } = bizData
         const domWidth = this.getDomWidth()
         const gridLeft = Math.min(Math.max(30, domWidth * .05), 60)
         const primaryTextColor = getPrimaryTextColor()
 
-        const legendData = collectLegends(activities, merge)
-        const legendNames = toMap(legendData, e => e.name, e => e.displayName)
-        const legendColor = toMap(legendData, e => e.name, e => e.color)
+        const { dates, series, legendData, legendMap } = collectChartData(bizData)
 
-        const tooltipSeriesName = (key: string) => {
-            const name = legendNames[key]
+        const tooltipSeriesName = (key: string | undefined) => {
+            if (!key) return ''
+            const name = legendMap[key]?.displayName
             if (merge === 'cate') return name ?? key
             return name ? `${name} (${key})` : key
         }
 
-        const [zoomStart, zoomEnd] = calcDataZoomDefaultRange(bizData.activities)
+        const [zoomStart, zoomEnd] = calcDataZoomDefaultRange(series)
 
         return {
             grid: {
@@ -198,6 +207,7 @@ class Wrapper extends EchartsWrapper<BizData, EcOption> {
             },
             dataZoom: {
                 type: 'slider',
+                filterMode: 'weakFilter',
                 borderColor: 'transparent',
                 bottom: 5,
                 height: 20,
@@ -218,7 +228,8 @@ class Wrapper extends EchartsWrapper<BizData, EcOption> {
             xAxis: {
                 type: 'value',
                 offset: 0,
-                max: MILL_PER_DAY,
+                min: 0,
+                max: CLOCK_END,
                 minInterval: 10 * MILL_PER_MINUTE,
                 interval: 4 * MILL_PER_HOUR,
                 axisLabel: {
@@ -232,15 +243,14 @@ class Wrapper extends EchartsWrapper<BizData, EcOption> {
                 borderWidth: 0,
                 formatter: params => {
                     const param = Array.isArray(params) ? params[0] : params
-                    const { value, seriesName, color } = param ?? {}
-                    const [_1, start, _2, duration] = value as MyValue
-                    const startStr = formatStart(start)
-                    const durStr = formatDuration(duration)
-                    return `${tooltipDot(color)} ${seriesName ? tooltipSeriesName(seriesName) : ''}`
-                        + `<br/>${startStr} ~ ${durStr}`
+                    if (!param) return ''
+                    const { value, seriesName, color } = param
+                    const [, start, , duration] = value as MyValue
+                    const rangeStr = `${formatStart(start)} ~ ${formatDuration(duration)}`
+                    return `${tooltipDot(color)} ${tooltipSeriesName(seriesName)}<br/>${rangeStr}`
                 },
             },
-            series: generateSeries(bizData, legendColor),
+            series,
             legend: {
                 type: 'scroll',
                 orient: 'vertical',
@@ -257,7 +267,7 @@ class Wrapper extends EchartsWrapper<BizData, EcOption> {
                     name,
                     itemStyle: { color },
                 })),
-                formatter: name => legendNames[name] ?? name,
+                formatter: name => legendMap[name]?.displayName ?? name,
             }
         }
     }

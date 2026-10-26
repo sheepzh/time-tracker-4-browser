@@ -1,6 +1,6 @@
 import { calculate, merge } from "@service/components/period-calculator"
 import { keyOf, MINUTE_PER_PERIOD } from '@util/period'
-import { MILL_PER_DAY } from "@util/time"
+import { addDays } from '@util/time'
 
 const PERIOD_PER_DATE = 24 * 60 / MINUTE_PER_PERIOD
 
@@ -48,7 +48,7 @@ test('', () => {
 
     // 00:00:02 876
     const ts1 = timestampOf(base, 0, 0, 2, 876)
-    const yesterday = ts1 - MILL_PER_DAY
+    const yesterday = addDays(ts1, -1)
 
     let result = calculate(ts1, 3000)
 

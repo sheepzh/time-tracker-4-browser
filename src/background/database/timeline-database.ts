@@ -1,8 +1,5 @@
-import { MILL_PER_DAY, MILL_PER_SECOND } from '@util/time'
-import {
-    BaseIDBStorage, iterateCursor, req2Promise,
-    type Index, type IndexResult, type Key, type Table,
-} from './common/indexed-storage'
+import { addDays, formatTimeYMD, MILL_PER_SECOND } from '@util/time'
+import { BaseIDBStorage, iterateCursor, req2Promise, type Index, type IndexResult, type Key } from './common/indexed-storage'
 
 type TimelineCondition = {
     host?: string
@@ -12,7 +9,7 @@ type TimelineCondition = {
     start?: number
 }
 
-const TIME_LIFE_CYCLE = MILL_PER_DAY * 366
+const KEEP_RANGE_DAYS = 366
 
 // If two tick with the same host is near 1 sec, then merge them to one
 const MERGE_THRESHOLD = MILL_PER_SECOND
@@ -35,15 +32,13 @@ type IndexCoverage = {
 }
 
 class CleanThrottle {
-    private lastTime = 0
-    private readonly interval: number = MILL_PER_DAY
+    private lastDate?: string
 
     tryClean(doClean: () => void): void {
-        const now = Date.now()
-        if (now - this.lastTime >= this.interval) {
-            this.lastTime = now
-            doClean()
-        }
+        const date = formatTimeYMD(Date.now())
+        if (date === this.lastDate) return
+        this.lastDate = date
+        doClean()
     }
 }
 
@@ -52,7 +47,7 @@ class TimelineDatabase extends BaseIDBStorage<tt4b.timeline.Tick> {
         'host', 'start',
     ]
     key: Key<tt4b.timeline.Tick> | Key<tt4b.timeline.Tick>[] = ['host', 'start']
-    table: Table = 'timeline'
+    table = 'timeline' as const
     private cleanThrottle = new CleanThrottle()
 
     batchSave(ticks: tt4b.timeline.Tick[]): Promise<void> {
@@ -112,7 +107,8 @@ class TimelineDatabase extends BaseIDBStorage<tt4b.timeline.Tick> {
         // Cleanup outdated ticks periodically
         this.cleanThrottle.tryClean(() => this.withStore(store => {
             const index = this.assertIndex(store, 'start')
-            const req = index.openCursor(IDBKeyRange.upperBound(Date.now() - TIME_LIFE_CYCLE, true))
+            const cutoff = addDays(Date.now(), -KEEP_RANGE_DAYS).getTime()
+            const req = index.openCursor(IDBKeyRange.upperBound(cutoff, true))
             iterateCursor(req, cursor => { cursor.delete() })
         }, 'readwrite').catch(e => console.error('Failed to cleanup outdated ticks', e)))
         return rows

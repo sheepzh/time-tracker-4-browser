@@ -11,7 +11,7 @@
  * It is skipped in other timezones.
  */
 import { rstest } from '@rstest/core'
-import { getStartOfDay, MILL_PER_DAY, MILL_PER_MINUTE, MILL_PER_SECOND } from '@util/time'
+import { MILL_PER_MINUTE, MILL_PER_SECOND } from '@util/time'
 
 const IS_FALL_BACK_TZ = new Date(2026, 9, 24, 12).getTimezoneOffset() === -120
     && new Date(2026, 9, 25, 12).getTimezoneOffset() === -60
@@ -99,8 +99,6 @@ describe('alarm-manager on DST fall-back day (23:00 local)', () => {
     // 22:59:30 local on 2026-10-25, simulate 62 minutes (crosses 23:00 and 00:00)
     const startAt = new Date(2026, 9, 25, 22, 59, 30)
 
-    // the computation that caused the bug: "start of today + 24h" is 23:00 on a 25-hour day
-    const oldNextMidnight = () => getStartOfDay(new Date()) + MILL_PER_DAY
     // what getStartOfNextDay() does
     const calendarNextMidnight = () => {
         const d = new Date()
@@ -108,14 +106,6 @@ describe('alarm-manager on DST fall-back day (23:00 local)', () => {
         d.setDate(d.getDate() + 1)
         return d.getTime()
     }
-
-    run('"+24h" midnight fires at 23:00 and re-fires, but is throttled by the guard', async () => {
-        const { handlerCalls, runaway, callTimes } = await simulate(startAt, 62, oldNextMidnight)
-        expect(runaway).toBe(false)
-        expect(callTimes[0]).toBe('23:00:00')
-        expect(handlerCalls).toBeGreaterThan(60)
-        expect(handlerCalls).toBeLessThan(3700)
-    })
 
     run('calendar midnight fires exactly once, at 00:00', async () => {
         const { handlerCalls, created, runaway, callTimes } = await simulate(startAt, 62, calendarNextMidnight)

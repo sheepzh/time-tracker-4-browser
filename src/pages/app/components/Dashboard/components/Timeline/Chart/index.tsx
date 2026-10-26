@@ -11,9 +11,9 @@ import { Collection, Files, Link } from '@element-plus/icons-vue'
 import { useEcharts } from '@hooks'
 import { Flex, IconRadioGroup } from '@pages/components'
 import { type ECElementEvent, type ECharts } from "echarts/core"
-import { type Component, computed, defineComponent } from "vue"
+import { computed, defineComponent, type Component } from "vue"
 import { TIMELINE_DAY_COUNT, useTimelineContext } from '../context'
-import Wrapper, { BizData, EcOption } from './Wrapper'
+import Wrapper, { type BizData, type EcOption } from './Wrapper'
 
 const CHART_CONFIG: Record<tt4b.timeline.MergeMethod, Component> = {
     none: Files,

@@ -5,7 +5,7 @@ import { useEcharts, useRemoteValue } from "@hooks"
 import { Flex } from '@pages/components'
 import { groupBy, sum } from "@util/array"
 import DateIterator from "@util/date-iterator"
-import { cvtDateRange2Str, formatTimeYMD, MILL_PER_DAY } from "@util/time"
+import { addDays, cvtDateRange2Str, formatTimeYMD } from "@util/time"
 import { defineComponent } from "vue"
 import Wrapper from "./Wrapper"
 
@@ -25,9 +25,9 @@ const cvtRow = (rows: tt4b.stat.Row[], start: Date, end: Date): Row[] => {
 
 const fetchData = async (remote: boolean): Promise<[thisMonth: Row[], lastMonth: Row[]]> => {
     const now = new Date()
-    const lastPeriodStart = new Date(now.getTime() - MILL_PER_DAY * (PERIOD_WIDTH * 2 - 1))
-    const lastPeriodEnd = new Date(now.getTime() - MILL_PER_DAY * PERIOD_WIDTH)
-    const thisPeriodStart = new Date(now.getTime() - MILL_PER_DAY * (PERIOD_WIDTH - 1))
+    const lastPeriodStart = addDays(now, -(PERIOD_WIDTH * 2 - 1))
+    const lastPeriodEnd = addDays(now, -PERIOD_WIDTH)
+    const thisPeriodStart = addDays(now, -(PERIOD_WIDTH - 1))
     const thisPeriodEnd = now
 
     const lastPeriodItems = await listSiteStats({ date: cvtDateRange2Str([lastPeriodStart, lastPeriodEnd]), remote })
