@@ -49,5 +49,14 @@
             "focusResumeMsg": "Перерва закінчилася. Час зосередитися знову!"
         },
         "dailySummary": "Час зосередження: {focus}. Відвідування: {visit}. Сайти: {siteCount}"
+    },
+    "de": {
+        "focus": {
+            "completedTitle": "Fokus abgeschlossen",
+            "completedMsg": "Ihre Fokussitzung ist abgeschlossen. Gute Arbeit!",
+            "breakStartMsg": "Machen Sie eine kurze Pause. Sie haben es verdient!",
+            "focusResumeMsg": "Die Pause ist vorbei. Es ist Zeit, sich erneut zu konzentrieren!"
+        },
+        "dailySummary": "Fokuszeit: {focus}, Besuche: {visit}, Websites: {siteCount}"
     }
 }
