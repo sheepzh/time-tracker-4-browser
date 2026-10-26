@@ -4,14 +4,14 @@ import { RECORD_ROUTE, type RecordQuery } from "@app/router/constants"
 import { isRemainHost } from "@util/constant/remain-host"
 import { getAppPageUrl } from "@util/constant/url"
 import { isSite } from "@util/stat"
-import { addDays, cvtDateRange2Str, getMonthTime, MILL_PER_DAY, type DateRange } from "@util/time"
+import { addDays, cvtDateRange2Str, getMonthTime, type DateRange } from "@util/time"
 import type { StatDuration, StatQuery } from './context'
 
 type DateRangeCalculator = (now: Date, num?: number) => Awaitable<[Date, Date] | Date | undefined>
 
 const DATE_RANGE_CALCULATORS: Record<StatDuration, DateRangeCalculator> = {
     today: now => now,
-    yesterday: now => new Date(now.getTime() - MILL_PER_DAY),
+    yesterday: now => addDays(now, -1),
     thisWeek: async now => {
         const start = await getWeekStartTime(now)
         return [start, now]

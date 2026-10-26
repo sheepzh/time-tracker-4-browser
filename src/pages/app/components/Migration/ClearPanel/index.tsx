@@ -7,7 +7,7 @@
 
 import { batchDeleteStats, listGroupStats, listSiteStats } from "@api/sw/stat"
 import { t } from "@app/locale"
-import { cvtDateRange2Str, getBirthday, MILL_PER_DAY, MILL_PER_SECOND } from "@util/time"
+import { cvtDateRange2Str, getBirthday, getYesterday, MILL_PER_SECOND } from "@util/time"
 import { ElCard, ElMessage, ElMessageBox } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
 import { useDataMemory } from "../context"
@@ -18,12 +18,8 @@ function buildClearStatQuery(option: FilterOption): tt4b.stat.BaseQuery {
     const { date, focus, visit } = option
     const focusMax = str2Num(focus, MILL_PER_SECOND)
     const visitMax = str2Num(visit)
-    const [
-        start = getBirthday(),
-        end = new Date(Date.now() - MILL_PER_DAY),
-    ] = date ?? []
     return {
-        date: cvtDateRange2Str([start, end]),
+        date: cvtDateRange2Str([date?.[0] ?? getBirthday(), date?.[1] ?? getYesterday()]),
         focusRange: [, focusMax],
         timeRange: [, visitMax],
     }

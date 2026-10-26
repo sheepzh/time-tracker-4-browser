@@ -4,7 +4,7 @@ import { css } from '@emotion/css'
 import { useRequest } from '@hooks'
 import { Flex } from '@pages/components'
 import { toMap } from '@util/array'
-import { formatPeriodCommon, formatTimeYMD, MILL_PER_WEEK } from '@util/time'
+import { formatPeriodCommon, formatTimeYMD } from '@util/time'
 import { CalendarDateType, ElCalendar, ElText, useNamespace } from 'element-plus'
 import { computed, defineComponent, FunctionalComponent, ref, Teleport } from 'vue'
 import { SITE_SUMMARY_DROPDOWN_SLOT } from '../common'
@@ -59,9 +59,9 @@ const Calendar = defineComponent<{}>(() => {
     const dateRange = computed<[string, string]>(() => {
         const v = current.value
         const start = new Date(v.getFullYear(), v.getMonth(), 1, 0, 0, 0, 0)
-        start.setTime(start.getTime() - MILL_PER_WEEK)
+        start.setDate(start.getDate() - 7)
         const end = new Date(v.getFullYear(), v.getMonth() + 1, 0, 0, 0, 0, 0)
-        end.setTime(end.getTime() + MILL_PER_WEEK)
+        end.setDate(end.getDate() + 7)
         return [formatTimeYMD(start), formatTimeYMD(end)]
     })
     const { data: rows } = useRequest(async () => {

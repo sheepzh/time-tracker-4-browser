@@ -16,7 +16,7 @@ import { useEcharts, useRemoteValue } from "@hooks"
 import { Flex } from '@pages/components'
 import { groupBy, sum } from "@util/array"
 import { getAppPageUrl } from "@util/constant/url"
-import { cvtDateRange2Str, formatTimeYMD, MILL_PER_DAY, MILL_PER_HOUR, parseTime } from "@util/time"
+import { addDays, cvtDateRange2Str, formatTimeYMD, MILL_PER_HOUR, parseTime } from "@util/time"
 import { defineComponent } from "vue"
 import Wrapper, { type BizOption } from "./Wrapper"
 
@@ -37,7 +37,7 @@ type Result = BizOption & { yearAgo: Date }
 
 const fetchData = async (remote: boolean): Promise<Result> => {
     const endTime = new Date()
-    const yearAgo = endTime.getTime() - MILL_PER_DAY * 365
+    const yearAgo = addDays(endTime, -365)
     const startTime = await getWeekStartTime(yearAgo)
     const items = await listSiteStats({ date: cvtDateRange2Str([startTime, endTime]), sortKey: 'date', remote })
     const value = groupBy(items, i => i.date, list => sum(list.map(i => i.focus)))

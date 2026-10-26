@@ -1,14 +1,14 @@
 import { ClassicStatDatabase, parseImportData } from "@db/stat-database/classic"
 import type { StatCondition } from '@db/stat-database/types'
 import { resultOf } from "@util/stat"
-import { formatTimeYMD, MILL_PER_DAY } from "@util/time"
+import { addDays, formatTimeYMD } from "@util/time"
 import { mockStorage } from '../../../__mock__/storage'
 
 let db: ClassicStatDatabase
 const nowTs = Date.now()
 const now = formatTimeYMD(nowTs)
-const yesterday = formatTimeYMD(new Date(nowTs - MILL_PER_DAY))
-const beforeYesterday = formatTimeYMD(new Date(nowTs - MILL_PER_DAY * 2))
+const yesterday = formatTimeYMD(addDays(nowTs, -1))
+const beforeYesterday = formatTimeYMD(addDays(nowTs, -2))
 const baidu = 'www.baidu.com'
 const google = 'www.google.com.hk'
 

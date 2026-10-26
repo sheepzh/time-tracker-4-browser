@@ -1,6 +1,6 @@
 import { sendMsg2Runtime } from '@api/sw/common'
 import { useProvide, useProvider, useRequest, useState } from '@hooks'
-import { getAllDatesBetween, getStartOfDay, MILL_PER_DAY } from '@util/time'
+import { addDays, getAllDatesBetween, getStartOfDay } from '@util/time'
 import { type ShallowRef } from 'vue'
 import { formatYAxis } from './common'
 
@@ -20,7 +20,7 @@ type ContextValue = {
 
 export const initTimelineContext = () => {
     const end = Date.now()
-    const start = getStartOfDay(end - MILL_PER_DAY * (TIMELINE_DAY_COUNT - 1))
+    const start = getStartOfDay(addDays(end, 1 - TIMELINE_DAY_COUNT))
     const dates = getAllDatesBetween(start, end, formatYAxis)
     const [merge, setMerge] = useState<tt4b.timeline.MergeMethod>('none')
     const { data: activities } = useRequest(

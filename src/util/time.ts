@@ -97,20 +97,11 @@ export const MILL_PER_MINUTE = MILL_PER_SECOND * 60
 export const MILL_PER_HOUR = MILL_PER_MINUTE * 60
 
 /**
- * Milliseconds per day
- *
- * @since 0.0.8
- */
-export const MILL_PER_DAY = MILL_PER_HOUR * 24
-
-export const MILL_PER_WEEK = MILL_PER_DAY * 7
-
-/**
  * Date range between {start} days ago and {end} days ago
  */
 export const daysAgo = (start: number, end: number): [Date, Date] => {
     const current = new Date().getTime()
-    return [new Date(current - start * MILL_PER_DAY), new Date(current - end * MILL_PER_DAY)]
+    return [addDays(current, -start), addDays(current, -end)]
 }
 
 export function isSameDay(a: Date | number, b: Date | number): boolean {
@@ -169,16 +160,13 @@ export function getStartOfDay(target: Date | number): number {
 /**
  * Get the start time of the next day (local midnight)
  *
- * Uses calendar arithmetic instead of `getStartOfDay() + MILL_PER_DAY`,
- * which is wrong on DST transition days (the local day has 23 or 25 hours).
- *
  * @param target the specific time
  * @returns the start of the next day, in milliseconds
  */
 export function getStartOfNextDay(target: Date | number): number {
     const date = new Date(target)
-    date.setHours(0, 0, 0, 0)
     date.setDate(date.getDate() + 1)
+    date.setHours(0, 0, 0, 0)
     return date.getTime()
 }
 
@@ -197,6 +185,8 @@ export function getBirthday(): Date {
     return date
 }
 
+export const getYesterday = () => addDays(Date.now(), -1)
+
 export const BIRTHDAY = '20210303'
 
 /**
@@ -212,11 +202,12 @@ export function getDayLength(start: Date | number, end: Date | number): number {
 
     if (d1 > d2) return 0
 
-    d1.setHours(0, 0, 0, 0)
-    d2.setHours(0, 0, 0, 0)
+    d1.setUTCFullYear(d1.getFullYear(), d1.getMonth(), d1.getDate())
+    d2.setUTCFullYear(d2.getFullYear(), d2.getMonth(), d2.getDate())
+    d1.setUTCHours(0, 0, 0, 0)
+    d2.setUTCHours(0, 0, 0, 0)
 
-    // Use round to correct the error caused by daylight saving time
-    return Math.round((d2.getTime() - d1.getTime()) / MILL_PER_DAY) + 1
+    return (d2.getTime() - d1.getTime()) / (MILL_PER_HOUR * 24) + 1
 }
 
 /**
@@ -247,7 +238,7 @@ export function getAllDatesBetween(start: Date | number, end: Date | number, for
     return dates
 }
 
-export function addDays(date: Date, days: number): Date {
+export function addDays(date: Date | number, days: number): Date {
     const result = new Date(date)
     result.setDate(result.getDate() + days)
     return result

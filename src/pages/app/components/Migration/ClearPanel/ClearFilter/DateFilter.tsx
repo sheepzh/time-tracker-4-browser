@@ -8,24 +8,23 @@ import { t, tDateRangeSeparator, tN, tYMD } from "@app/locale"
 import { cvt2LocaleDate } from '@app/util/time'
 import { getDatePickerIconSlots } from '@pages/element-ui/rtl'
 import type { ElDatePickerShortcut } from '@pages/element-ui/types'
-import { getBirthday, MILL_PER_DAY } from "@util/time"
+import { addDays, getBirthday, getYesterday } from "@util/time"
 import { ElDatePicker } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
 
 type Props = ModelValue<[Date, Date] | undefined>
 const _default = defineComponent<Props>(props => {
     const birthday = getBirthday()
-    const yesterday = Date.now() - MILL_PER_DAY
-    const daysBefore = (days: number) => new Date(Date.now() - days * MILL_PER_DAY)
+    const yesterday = getYesterday()
     const shortcuts: ElDatePickerShortcut[] = [{
         text: t(msg => msg.calendar.range.tillYesterday),
-        value: [birthday, daysBefore(1)],
+        value: [birthday, yesterday],
     }, {
         text: t(msg => msg.calendar.range.tillDaysAgo, { n: 7 }),
-        value: [birthday, daysBefore(7)],
+        value: [birthday, addDays(new Date(), -7)],
     }, {
         text: t(msg => msg.calendar.range.tillDaysAgo, { n: 30 }),
-        value: [birthday, daysBefore(30)],
+        value: [birthday, addDays(new Date(), -30)],
     }]
 
     return () => (
@@ -41,7 +40,7 @@ const _default = defineComponent<Props>(props => {
                     endPlaceholder={cvt2LocaleDate(yesterday)}
                     format={tYMD()}
                     type="daterange"
-                    disabledDate={(date: Date) => date.getTime() > yesterday}
+                    disabledDate={(date: Date) => date > yesterday}
                     shortcuts={shortcuts}
                     rangeSeparator={tDateRangeSeparator()}
                     v-slots={getDatePickerIconSlots()}

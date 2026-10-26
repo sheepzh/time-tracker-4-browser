@@ -11,7 +11,7 @@ import { localRef, useProvide, useProvider, useRequest } from '@hooks'
 import { locale } from '@i18n'
 import { max, sum, toMap } from "@util/array"
 import DateIterator from '@util/date-iterator'
-import { daysAgo, formatTimeYMD, getDayLength, getWeekDay, getWeekStartTime, MILL_PER_DAY } from "@util/time"
+import { addDays, daysAgo, formatTimeYMD, getDayLength, getWeekDay, getWeekStartTime } from "@util/time"
 import { computed, ref, type Ref } from "vue"
 import { useAnalysisRows } from '../../context'
 
@@ -83,9 +83,7 @@ function computeDataset(
 function lastRange(dateRange: [number, number]): [number, number] {
     const [start, end] = dateRange
     const dayLength = getDayLength(start, end)
-    const newEnd = start - MILL_PER_DAY
-    const newStart = start - MILL_PER_DAY * dayLength
-    return [newStart, newEnd]
+    return [addDays(start, -dayLength).getTime(), addDays(start, -1).getTime()]
 }
 
 const NAMESPACE = 'siteAnalysis_trend'
@@ -94,7 +92,7 @@ export const initAnalysisTrend = () => {
     const circle = localRef<Circle>('analysis-circle', isCircle, 'daily')
     const { data: weekStart } = useRequest(getWeekStartDay, { defaultValue: locale === "zh_CN" ? 0 : 6 })
     const align2Week = ([start, end]: [number, number]): [number, number] =>
-        [getWeekStartTime(start, weekStart.value), getWeekStartTime(end, weekStart.value) + MILL_PER_DAY * 6]
+        [getWeekStartTime(start, weekStart.value), addDays(getWeekStartTime(end, weekStart.value), 6).getTime()]
 
     const [defaultStart, defaultEnd] = daysAgo(14, 0)
     const dateRangeInner = ref<[number, number]>([defaultStart.getTime(), defaultEnd.getTime()])
