@@ -37,7 +37,7 @@
         "@rspack/core": "^2.2.9",
         "@rstest/core": "^0.12.3",
         "@rstest/coverage-istanbul": "^0.12.3",
-        "@types/chrome": "0.3.5",
+        "@types/chrome": "0.3.6",
         "@types/decompress": "^4.2.7",
         "@types/firefox-webext-browser": "^143.0.1",
         "@types/node": "^26.6.5",
