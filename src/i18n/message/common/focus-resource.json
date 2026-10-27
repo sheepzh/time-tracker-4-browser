@@ -253,15 +253,24 @@
         "method": {
             "label": "Methode",
             "choose": "Methode wählen",
+            "focus": {
+                "label": "Tiefer Fokus",
+                "desc": "Fokus für einen Zeitraum"
+            },
             "pomodoro": {
-                "label": "Pomodoro"
+                "label": "Pomodoro",
+                "desc": "Zeitgesteuerte Arbeits-/Pausenzyklen, um produktiv zu bleiben"
             }
         },
+        "noAllowUrl": "Keine zugelassenen Seiten angegeben. Bitte fügen Sie mindestens eine Seite zur erlauben Liste hinzu.",
+        "noBlockUrl": "Keine blockierten Seiten angegeben. Ohne Seitenbeschränkungen starten?",
+        "noTime": "Bitte setzen Sie sowohl die Fokuszeit als auch die Pausenzeit für Pomodoro",
         "preset": "Voreinstellung",
         "presetName": "Voreinstellungen",
         "button": {
             "pause": "Anhalten",
             "resume": "Fortsetzen",
+            "delay": "Verzögerung",
             "stop": "Stoppen",
             "dismiss": "Verwerfen"
         }

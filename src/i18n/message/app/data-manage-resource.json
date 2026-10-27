@@ -221,6 +221,8 @@
         "idbAlert": "Bewege Tracking Daten nach IndexedDB um Speichernutzung zu Reduzieren",
         "operationAlert": "Sie können diese unwichtigen Daten löschen, um den Speicherverbrauch zu reduzieren",
         "filterItems": "Daten filtern",
+        "focusLtOrEq": "Die Browsingzeit des Tages ist kleiner oder gleich {value} Sekunden",
+        "visitLtOrEq": "Die Besuchsanzahl für den Tag ist kleiner oder gleich {value}",
         "filterDate": "Aufgenommen zwischen {picker}",
         "importOther": {
             "step1": "Daten auswählen",

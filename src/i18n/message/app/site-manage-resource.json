@@ -394,6 +394,7 @@
             "batchDeleteMsg": "Möchten Sie alle ausgewählten Sites löschen?"
         },
         "merge": {
+            "label": "Merge-Seiten Regeln",
             "removeConfirmMsg": "{origin} wird aus den benutzerdefinierten Zusammenführen Regeln entfernt.",
             "originPlaceholder": "Ursprüngliche Website",
             "mergedPlaceholder": "Zusammengeführt",

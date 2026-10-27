@@ -348,7 +348,8 @@
             "locked": "Gesperrt",
             "effectiveDay": "Wirksam auf",
             "or": "oder",
-            "notEffective": "Nicht wirksam"
+            "notEffective": "Nicht wirksam",
+            "unlimited": "Unbegrenzt"
         },
         "step": {
             "base": "Basisdaten",
@@ -380,7 +381,8 @@
             "pi": "{digitCount} Ziffern von {startIndex} bis {endIndex} des Dezimalteils von π",
             "confession": "Zeit vergeht"
         },
-        "reminder": "Weniger als {min} Minuten bis zum Zeitlimit!"
+        "reminder": "Weniger als {min} Minuten bis zum Zeitlimit!",
+        "thisSession": "Diese Sitzung"
     },
     "fr": {
         "onlyEffective": "Seulement en vigueur",

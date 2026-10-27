@@ -883,6 +883,7 @@
         "off": "Immer aus",
         "appearance": {
             "title": "Aussehen",
+            "displayBadge": "{input} Ob Abzeichen auf dem Symbol angezeigt werden sollen",
             "badgeBgColor": "Die Hintergrundfarbe des Textes auf dem Symbol {input}",
             "locale": "Sprache {input}",
             "printInConsole": {
@@ -937,7 +938,9 @@
                 "twoFaScanHint": "Scanne den QR‑Code mit einer Authentifikation‑App oder importiere den Einrichtungslink in einen TOTP‑fähigen Passwortmanager.",
                 "twoFaCopyLink": "Link kopieren",
                 "twoFaVerifyLabel": "Zur Bestätigung den 6‑stelligen Code eingeben"
-            }
+            },
+            "unblockDuration": "Stumm schalten für {input} Minuten jedes mal",
+            "countdown": "{input} Countdown auf Seiten mit aktiven Limit-Regeln anzeigen"
         },
         "backup": {
             "title": "Datensicherung",
@@ -1004,9 +1007,12 @@
             "reset": "Zurücksetzen",
             "export": "Einstellungen exportieren",
             "import": "Einstellungen importieren",
-            "reload": "Neu laden"
+            "reload": "Neu laden",
+            "download": "Herunterladen von {account}",
+            "sync": "Synchronisiere zu {account}"
         },
-        "defaultValue": "Standard: {default}"
+        "defaultValue": "Standard: {default}",
+        "applyConfirm": "Die optionen haben sich geändert. Bitte laden Sie die seite neu, um ihre änderungen anzuwenden!"
     },
     "fr": {
         "yes": "Oui",
