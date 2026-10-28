@@ -90,6 +90,7 @@
         }
     },
     "uk": {
+        "exportFileName": "My_Browsing_Time",
         "total": "Всього відвідувань: {visit} разів, загальна тривалість: {focus}",
         "batchDelete": {
             "confirmMsg": "{count} записів для сайтів, як-от {example}, за {date} будуть видалені!",

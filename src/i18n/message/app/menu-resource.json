@@ -53,11 +53,15 @@
         "about": "Sobre"
     },
     "uk": {
+        "tracking": "Статистика",
         "dashboard": "Огляд",
         "record": "Записи",
+        "analysis": "Аналіз",
         "siteAnalysis": "Аналіз сайту",
         "habit": "Звички",
+        "productivity": "Продуктивність",
         "other": "Інші функції",
+        "migration": "Міграція даних",
         "about": "Про нас"
     },
     "es": {

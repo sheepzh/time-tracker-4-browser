@@ -39,7 +39,7 @@
         "browsingTime": "Час перегляду",
         "ruleDetail": "Подробиці правила",
         "pomodoroActive": "Pomodoro активний",
-        "focusActive": "Фокус активний"
+        "focusActive": "Зосередження активне"
     },
     "fr": {
         "defaultPrompt": "Cette page a été bloquée !",

@@ -649,6 +649,7 @@
         "off": "Завжди вимкнено",
         "appearance": {
             "title": "Зовнішній вигляд",
+            "displayBadge": "{input} Показувати лічильник на піктограмі",
             "badgeBgColor": "Колір заднього плану тексту піктограми {input}",
             "locale": "Мова: {input}",
             "printInConsole": {
@@ -660,11 +661,13 @@
                 "label": "Темний режим: {input}",
                 "timed": "За розкладом"
             },
-            "animationDuration": "Тривалість початкової анімації діаграми {input}"
+            "animationDuration": "Тривалість початкової анімації діаграми {input}",
+            "sidePanel": "{input} Увімкнути бічну панель"
         },
         "tracking": {
             "title": "Статистика",
             "autoPauseTrack": "{input} Призупинити відстеження, якщо не виявлено активності протягом {maxTime} {info}",
+            "noActivityInfo": "Миша й клавіатура неактивні, не в повноекранному режимі, звук не відтворюється",
             "countLocalFiles": "{input}  Враховувати час {localFileTime} в браузері {info}",
             "localFileTime": "перегляду локального файлу",
             "localFilesInfo": "Підтримуються файли PDF, зображення, текстові та формат json",
@@ -672,7 +675,9 @@
             "tabGroupInfo": "Якщо видалити групу вкладок, дані також видаляться.",
             "fileAccessDisabled": "Доступ до URL-адрес файлу наразі не дозволено. Спершу ввімкніть на сторінці керування",
             "weekStart": "Перший день тижня: {input}",
-            "weekStartAsNormal": "Типово"
+            "weekStartAsNormal": "Типово",
+            "storage": "Зберігати дані відстеження в {input}",
+            "storageConfirm": "Хочете змінити тип сховища на {type}?"
         },
         "limit": {
             "prompt": "Запит, який відображається під час обмеження {input}",
@@ -693,8 +698,15 @@
                 "strictTitle": "Підтвердження операції",
                 "strictContent": "Коли ви вибираєте цю опцію, якщо сайт активує щоденний ліміт, ви не зможете розблокувати його вручну до наступного дня. Якщо не налаштувати правила належним чином, вони можуть дуже заважати вашій роботі!",
                 "pswFormLabel": "Пароль",
-                "pswFormAgain": "Повторне введення"
-            }
+                "pswFormAgain": "Повторне введення",
+                "2fa": "Необхідно використати код 2FA, щоб розблокувати",
+                "twoFaTitle": "Увімкнути 2FA",
+                "twoFaScanHint": "Скануйте QR-код за допомогою програми автентифікації або імпортуйте посилання для налаштування до менеджера паролів з підтримкою TOTP.",
+                "twoFaCopyLink": "Копіювати посилання",
+                "twoFaVerifyLabel": "Введіть код із 6 цифр для підтвердження"
+            },
+            "unblockDuration": "Відкладати на {input} хвилин щоразу",
+            "countdown": "{input} Показувати зворотний відлік на сайтах з активними правилами обмежень"
         },
         "backup": {
             "title": "Резервне копіювання",
@@ -741,13 +753,32 @@
             "title": "Доступність",
             "chartDecal": "{input} Показувати наклейку діаграми"
         },
+        "notification": {
+            "title": "Сповіщення",
+            "cycle": {
+                "label": "Цикл сповіщень {input}",
+                "daily": "Щодня",
+                "weekly": "Щотижня"
+            },
+            "method": {
+                "label": "Метод сповіщень {input}",
+                "browser": "Браузер",
+                "callback": {
+                    "label": "Зворотний виклик HTTP",
+                    "url": "URL зворотного виклику {input}"
+                }
+            }
+        },
         "button": {
             "reset": "Скинути",
             "export": "Експортувати налаштування",
             "import": "Імпортувати налаштування",
-            "reload": "Перезавантажити"
+            "reload": "Перезавантажити",
+            "download": "Завантажити з {account}",
+            "sync": "Синхронізувати з {account}"
         },
-        "defaultValue": "Типово: {default}"
+        "defaultValue": "Типово: {default}",
+        "applyConfirm": "Налаштування змінились. Перезавантажте, щоб застосувати зміни!"
     },
     "es": {
         "yes": "Sí",
@@ -883,6 +914,7 @@
         "off": "Immer aus",
         "appearance": {
             "title": "Aussehen",
+            "displayBadge": "{input} Ob Abzeichen auf dem Symbol angezeigt werden sollen",
             "badgeBgColor": "Die Hintergrundfarbe des Textes auf dem Symbol {input}",
             "locale": "Sprache {input}",
             "printInConsole": {
@@ -937,7 +969,9 @@
                 "twoFaScanHint": "Scanne den QR‑Code mit einer Authentifikation‑App oder importiere den Einrichtungslink in einen TOTP‑fähigen Passwortmanager.",
                 "twoFaCopyLink": "Link kopieren",
                 "twoFaVerifyLabel": "Zur Bestätigung den 6‑stelligen Code eingeben"
-            }
+            },
+            "unblockDuration": "Stumm schalten für {input} Minuten jedes mal",
+            "countdown": "{input} Countdown auf Seiten mit aktiven Limit-Regeln anzeigen"
         },
         "backup": {
             "title": "Datensicherung",
@@ -1004,9 +1038,12 @@
             "reset": "Zurücksetzen",
             "export": "Einstellungen exportieren",
             "import": "Einstellungen importieren",
-            "reload": "Neu laden"
+            "reload": "Neu laden",
+            "download": "Herunterladen von {account}",
+            "sync": "Synchronisiere zu {account}"
         },
-        "defaultValue": "Standard: {default}"
+        "defaultValue": "Standard: {default}",
+        "applyConfirm": "Die optionen haben sich geändert. Bitte laden Sie die seite neu, um ihre änderungen anzuwenden!"
     },
     "fr": {
         "yes": "Oui",
