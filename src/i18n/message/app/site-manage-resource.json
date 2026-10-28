@@ -265,7 +265,11 @@
             "type": "Тип сайту",
             "alias": "Назва сайту",
             "cate": "Категорія сайту",
-            "icon": "Піктограма"
+            "icon": "Піктограма",
+            "white": "Білий список",
+            "whiteInfo": "Сайти з білого списку не відстежуються і не блокуються.",
+            "runtimeInfo": "Запис часу відкритого вебсайту. Не вимагає активності вкладки з вебсайтом, або фокусування вікна.",
+            "mediaTimeInfo": "Запис часу відтворення аудіо вебсайтом."
         },
         "typeInfo": {
             "normal": "статистика за доменним ім'ям",
@@ -290,6 +294,7 @@
             "batchDeleteMsg": "Хочете видалити всі вибрані сайти?"
         },
         "merge": {
+            "label": "Правила об'єднання сайтів",
             "removeConfirmMsg": "{origin} буде вилучено з налаштованих правил об'єднання.",
             "originPlaceholder": "Оригінальний сайт",
             "mergedPlaceholder": "Об'єднуваний",
@@ -394,6 +399,7 @@
             "batchDeleteMsg": "Möchten Sie alle ausgewählten Sites löschen?"
         },
         "merge": {
+            "label": "Merge-Seiten Regeln",
             "removeConfirmMsg": "{origin} wird aus den benutzerdefinierten Zusammenführen Regeln entfernt.",
             "originPlaceholder": "Ursprüngliche Website",
             "mergedPlaceholder": "Zusammengeführt",

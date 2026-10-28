@@ -253,17 +253,72 @@
         "method": {
             "label": "Methode",
             "choose": "Methode wählen",
+            "focus": {
+                "label": "Tiefer Fokus",
+                "desc": "Fokus für einen Zeitraum"
+            },
             "pomodoro": {
-                "label": "Pomodoro"
+                "label": "Pomodoro",
+                "desc": "Zeitgesteuerte Arbeits-/Pausenzyklen, um produktiv zu bleiben"
             }
         },
+        "noAllowUrl": "Keine zugelassenen Seiten angegeben. Bitte fügen Sie mindestens eine Seite zur erlauben Liste hinzu.",
+        "noBlockUrl": "Keine blockierten Seiten angegeben. Ohne Seitenbeschränkungen starten?",
+        "noTime": "Bitte setzen Sie sowohl die Fokuszeit als auch die Pausenzeit für Pomodoro",
         "preset": "Voreinstellung",
         "presetName": "Voreinstellungen",
         "button": {
             "pause": "Anhalten",
             "resume": "Fortsetzen",
+            "delay": "Verzögerung",
             "stop": "Stoppen",
             "dismiss": "Verwerfen"
+        }
+    },
+    "uk": {
+        "menu": "Зосередження і Pomodoro",
+        "policy": {
+            "label": "Політика фільтрування",
+            "allow": {
+                "label": "Лише дозволені",
+                "desc": "Доступні лише дозволені сайти, а всі інші блокуються"
+            },
+            "block": {
+                "label": "Блокувати",
+                "desc": "Доступні всі сайти, крім заблокованих"
+            }
+        },
+        "duration": "Час зосередження",
+        "break": "Час перерви",
+        "state": {
+            "running": "Виконується",
+            "paused": "Призупинено",
+            "stopped": "Зупинено",
+            "done": "Завершено"
+        },
+        "method": {
+            "label": "Метод",
+            "choose": "Вибрати метод",
+            "focus": {
+                "label": "Глибоке зосередження",
+                "desc": "Зосередження на період часу"
+            },
+            "pomodoro": {
+                "label": "Pomodoro",
+                "desc": "Цикли роботи/перерви для найкращої продуктивності"
+            }
+        },
+        "noAllowUrl": "Не вказано дозволених сайтів. Додайте хоча б один сайт до списку дозволених.",
+        "noBlockUrl": "Не вказано заблокованих сайтів. Почати роботу без обмежень сайтів?",
+        "noTime": "Налаштуйте час зосередження і перерви для Pomodoro",
+        "preset": "Конфігурація",
+        "presetName": "Назва конфігурації",
+        "button": {
+            "pause": "Пауза",
+            "resume": "Відновити",
+            "delay": "Затримка",
+            "stop": "Стоп",
+            "dismiss": "Відхилити"
         }
     }
 }

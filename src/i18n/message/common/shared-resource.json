@@ -294,6 +294,7 @@
             }
         },
         "followBrowser": "Suivre le navigateur",
+        "allowUnblocking": "Permettre le déblocage",
         "unlimited": "Illimité"
     },
     "ru": {
