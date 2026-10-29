@@ -217,6 +217,11 @@
             "remain": "{remaining} verbleibend",
             "noLimit": "Kein Limit",
             "notHit": "Nicht aktiv"
+        },
+        "site": {
+            "subpageBtn": "Verfolger unterseite",
+            "notTrackable": "Aktuelle Seite wird nicht verfolgt",
+            "daily": "Tagesstatistik"
         }
     },
     "fr": {

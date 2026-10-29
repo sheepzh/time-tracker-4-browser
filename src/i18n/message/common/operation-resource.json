@@ -25,7 +25,8 @@
         "successMsg": "¡Exitosamente!"
     },
     "de": {
-        "successMsg": "Erfolgreich!"
+        "confirmMsg": "Bist du dir sicher?",
+        "successMsg": "Erfolg!"
     },
     "fr": {
         "confirmMsg": "Êtes-vous certain ?",
