@@ -59,7 +59,9 @@
         "defaultPrompt": "Diese Seite wurde gesperrt!",
         "delay": "Noch {n} Minuten",
         "browsingTime": "Browsing-Zeit",
-        "ruleDetail": "Regeldetails"
+        "ruleDetail": "Regeldetails",
+        "pomodoroActive": "Pomodoro aktiv",
+        "focusActive": "Focus aktiv"
     },
     "ru": {
         "defaultPrompt": "Эта страница заблокирована!",

@@ -99,6 +99,7 @@
         "group": "Tab-Gruppe",
         "focus": "Dauer",
         "run": "Laufzeit",
+        "media": "Medienzeit",
         "time": "Besuche",
         "operation": {
             "analysis": "Analyse",

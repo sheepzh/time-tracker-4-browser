@@ -53,9 +53,12 @@
     },
     "de": {
         "rating": "Bewertung absenden",
+        "discord": "Trete dem Discord bei",
         "showSiteName": "Seitenname anzeigen",
         "showTopN": "Top {n} anzeigen",
-        "donutChart": "Als Donut-Diagramme angezeigt"
+        "donutChart": "Als Donut-Diagramme angezeigt",
+        "bug": "Melde einen Fehler",
+        "feature": "Frage ein Feature an"
     },
     "fr": {
         "rating": "Donner une note",

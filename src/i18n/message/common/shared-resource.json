@@ -260,10 +260,14 @@
         "permGrantConfirm": "Dieses Feature benötigt entsprechende Berechtigungen",
         "site": {
             "type": {
-                "merged": "zusammengeführt"
+                "normal": "normal",
+                "merged": "zusammengeführt",
+                "virtual": "unterseite"
             }
         },
-        "followBrowser": "Browser verfolgen"
+        "followBrowser": "Browser verfolgen",
+        "allowUnblocking": "Freigabe erlauben",
+        "unlimited": "Unbegrenzt"
     },
     "fr": {
         "merge": {
