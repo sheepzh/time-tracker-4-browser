@@ -255,6 +255,7 @@
             "visitAverage": "Visites moyennes",
             "focusTitle": "Tendances sur le temps de navigation",
             "visitTitle": "Tendances de visite",
+            "daily": "Quotidien",
             "weekly": "Hebdomadaire"
         }
     },

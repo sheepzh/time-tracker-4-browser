@@ -1107,7 +1107,9 @@
                 "twoFaScanHint": "Scannez le code QR avec une application d'authentification ou importez le lien d'installation dans un gestionnaire de mots de passe qui prend en charge TOTP.",
                 "twoFaCopyLink": "Copier le lien",
                 "twoFaVerifyLabel": "Entrez le code à 6 chiffres pour verifier"
-            }
+            },
+            "unblockDuration": "Délai additionnel de {input} minutes à chaque fois",
+            "countdown": "{input} Afficher le compte à rebours sur les sites avec des règles de limite active"
         },
         "backup": {
             "title": "Sauvegarde des données",

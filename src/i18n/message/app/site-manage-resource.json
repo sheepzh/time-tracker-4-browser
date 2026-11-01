@@ -425,7 +425,11 @@
             "type": "Type de Site",
             "alias": "Nom du site",
             "cate": "Catégorie du site",
-            "icon": "Icône"
+            "icon": "Icône",
+            "white": "Liste blanche",
+            "whiteInfo": "Les sites en liste blanche ne sont pas suivis ou bloqués.",
+            "runtimeInfo": "Enregistre le temps où un site Web est ouvert. Ne nécessite pas que l'onglet du site soit actif ou que la fenêtre soit active.",
+            "mediaTimeInfo": "Enregistrez le temps de lecture audio d'un site Web."
         },
         "typeInfo": {
             "normal": "statistiques par nom de domaine",
@@ -450,6 +454,7 @@
             "batchDeleteMsg": "Voulez-vous supprimer tous les sites sélectionnés ?"
         },
         "merge": {
+            "label": "Fusionner les règles du site",
             "removeConfirmMsg": "{origin} sera supprimé des règles de fusion personnalisées.",
             "originPlaceholder": "Site original",
             "mergedPlaceholder": "Fusionné",
