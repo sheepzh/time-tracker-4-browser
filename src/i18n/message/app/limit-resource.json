@@ -434,7 +434,8 @@
             "pi": "{digitCount} chiffres de {startIndex} à {endIndex} de la partie décimale de π",
             "confession": "Le temps, c'est de l'argent"
         },
-        "reminder": "Moins de {min} minutes jusqu'à la limite de temps !"
+        "reminder": "Moins de {min} minutes jusqu'à la limite de temps !",
+        "thisSession": "Cette session"
     },
     "ru": {
         "onlyEffective": "Только эффективный режим",

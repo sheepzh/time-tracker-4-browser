@@ -113,6 +113,7 @@
         "group": "Groupe d'onglets",
         "focus": "Durée",
         "run": "Durée d'exécution",
+        "media": "Temps de médias",
         "time": "Visites",
         "operation": {
             "analysis": "Analyser",
