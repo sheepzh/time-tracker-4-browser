@@ -1,6 +1,6 @@
 import { Aim, Histogram, PieChart } from '@element-plus/icons-vue'
 import { localRef } from '@hooks'
-import { IconRadioGroup, type IconRadioOption } from '@pages/components'
+import { IconRadioGroup } from '@pages/components'
 import { Website } from '@pages/icons'
 import { t } from '@popup/locale'
 import { createStringUnionGuard } from 'typescript-guard'
@@ -31,30 +31,34 @@ const useMenu = () => {
     return { menu, setMenu }
 }
 
-const OPTIONS: IconRadioOption<tt4b.ui.PopupMenu>[] = [
-    {
-        value: 'percentage',
-        tooltip: t(msg => msg.footer.route.percentage),
-        icon: PieChart,
-    }, {
-        value: 'ranking',
-        tooltip: t(msg => msg.footer.route.ranking),
-        icon: Histogram,
-    }, {
-        value: 'site',
-        tooltip: t(msg => msg.footer.route.site),
-        icon: Website,
-    }, {
-        value: 'focus',
-        tooltip: t(msg => msg.focus.menu),
-        icon: Aim,
-    },
-]
-
 const Menu = defineComponent(() => {
     const { menu, setMenu } = useMenu()
 
-    return () => <IconRadioGroup modelValue={menu.value} onChange={setMenu} options={OPTIONS} />
+    return () => (
+        <IconRadioGroup
+            modelValue={menu.value}
+            onChange={setMenu}
+            options={[
+                {
+                    value: 'percentage',
+                    tooltip: t(msg => msg.footer.route.percentage),
+                    icon: PieChart,
+                }, {
+                    value: 'ranking',
+                    tooltip: t(msg => msg.footer.route.ranking),
+                    icon: Histogram,
+                }, {
+                    value: 'site',
+                    tooltip: t(msg => msg.footer.route.site),
+                    icon: Website,
+                }, {
+                    value: 'focus',
+                    tooltip: t(msg => msg.focus.menu),
+                    icon: Aim,
+                },
+            ]}
+        />
+    )
 })
 
 export default Menu

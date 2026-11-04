@@ -12,8 +12,8 @@ const useNarrowStyle = () => {
 }
 const NARROW_CLS = useNarrowStyle()
 
-export type IconRadioOption<T extends string> = {
-    value: T
+type IconRadioOption = {
+    value: string
     icon: Component
     tooltip?: string
 }
@@ -21,7 +21,7 @@ export type IconRadioOption<T extends string> = {
 type Props = ModelValue<string> & Pick<RadioGroupProps, 'size'> & {
     narrow?: boolean
     iconSize?: number
-    options: IconRadioOption<string>[]
+    options: IconRadioOption[]
 }
 
 const IconRadioGroup: FunctionalComponent<Props> = ({
