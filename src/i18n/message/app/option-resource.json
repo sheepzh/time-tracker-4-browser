@@ -1687,12 +1687,13 @@
         "off": "Sempre spento",
         "appearance": {
             "title": "Apparenza",
+            "displayBadge": "{input} Mostrare o meno il badge sull'icona",
             "badgeBgColor": "Il colore di sfondo del testo sull'icona {input}",
             "locale": "Linguaggio {input}",
             "printInConsole": {
                 "label": "{input}  Se stampare {info} in {console}",
                 "console": "console",
-                "info": "il conteggio delle visite del sito attuale oggi"
+                "info": "il numero giornaliero delle visite sul sito"
             },
             "darkMode": {
                 "label": "Modalità oscura {input}",
@@ -1741,7 +1742,9 @@
                 "twoFaScanHint": "Scansiona il codice QR con un'app di autenticazione o importa il link di configurazione in un gestore di password che supporta TOTP.",
                 "twoFaCopyLink": "Copia link",
                 "twoFaVerifyLabel": "Inserisci il codice a 6 cifre da verificare"
-            }
+            },
+            "unblockDuration": "Posticipare di {input} minuti ogni volta",
+            "countdown": "{input} Mostrare il conto alla rovescia sui siti con regole limite attive"
         },
         "backup": {
             "title": "Backup Dati",
@@ -1749,7 +1752,7 @@
             "client": "Nome dell' Cliente {input}",
             "meta": {
                 "gist": {
-                    "authInfo": "È richiesto un token con almeno il permesso di gist"
+                    "authInfo": "È richiesto un token con almeno l'autorizzazione per i gist"
                 },
                 "obsidian_local_rest_api": {
                     "endpointInfo": "Solo HTTP è disponibile, poiché CORS non può essere configurato per le pagine di estensione"
@@ -1781,7 +1784,7 @@
             "lastTimeTip": "L' Ultimo tempo di backup: {lastTime}",
             "auto": {
                 "label": "Indica se abilitare il backup automatico",
-                "interval": "e esegui ogni {input} minuti"
+                "interval": "ed esegui ogni {input} minuti"
             }
         },
         "accessibility": {
@@ -1805,10 +1808,14 @@
             }
         },
         "button": {
+            "reset": "Ripristina",
             "export": "Impostazioni di esportazione",
             "import": "Impostazioni di importazione",
-            "reload": "Aggiorna"
+            "reload": "Aggiorna",
+            "download": "Scaricare da {account}",
+            "sync": "Sincronizzazione con {account}"
         },
-        "defaultValue": "Default: {default}"
+        "defaultValue": "Default: {default}",
+        "applyConfirm": "Le opzioni sono cambiate. Si prega di ricaricare per applicare le modifiche!"
     }
 }

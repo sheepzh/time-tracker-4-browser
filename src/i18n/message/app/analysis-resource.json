@@ -366,7 +366,9 @@
             "visitMax": "Maksymalna ilość wizyt",
             "visitAverage": "Średnia ilość wizyt",
             "focusTitle": "Trendy czasu przeglądania",
-            "visitTitle": "Trendy wizyt"
+            "visitTitle": "Trendy wizyt",
+            "daily": "Dzienne",
+            "weekly": "Tygodniowe"
         }
     },
     "it": {
@@ -394,7 +396,9 @@
             "visitMax": "Visite massime",
             "visitAverage": "Visite medie",
             "focusTitle": "Tendenze di Navigazione nel periodo",
-            "visitTitle": "Tendenze Di Visite"
+            "visitTitle": "Tendenze Di Visite",
+            "daily": "Giornaliero",
+            "weekly": "Settimanale"
         }
     }
 }
