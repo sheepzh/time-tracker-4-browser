@@ -141,10 +141,15 @@
         "about": "O rozszerzeniu"
     },
     "it": {
+        "tracking": "Monitoraggio",
         "dashboard": "Dashboard",
+        "record": "Registro",
+        "analysis": "Statistiche",
         "siteAnalysis": "Analisi Sito",
         "habit": "Abitudini",
+        "productivity": "Produttività",
         "other": "Altre funzioni",
+        "migration": "Migrazione dati",
         "about": "Info su"
     }
 }

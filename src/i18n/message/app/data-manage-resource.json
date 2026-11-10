@@ -401,9 +401,11 @@
         "totalMemoryAlert": "Il browser fornisce {size}MB per memorizzare i dati locali per ogni estensione",
         "totalMemoryAlert1": "Impossibile determinare la memoria massima disponibile consentita dal browser",
         "usedMemoryAlert": "{size}MB è attualmente in uso",
-        "idbAlert": "Sposta i dati di tracciamento su IndexedDB per ridurre l'utilizzo dello storage",
+        "idbAlert": "Sposta i dati di tracciamento su IndexedDB per ridurre l'utilizzo dell'archiviazione",
         "operationAlert": "È possibile eliminare i dati non importanti per ridurre l'utilizzo della memoria",
         "filterItems": "Filtro dati",
+        "focusLtOrEq": "L'ora di navigazione del giorno è inferiore o uguale a {value} secondi",
+        "visitLtOrEq": "Il numero delle visite per il giorno è inferiore o uguale a {value}",
         "filterDate": "Registrato tra {picker}",
         "importOther": {
             "step1": "Seleziona dati",
