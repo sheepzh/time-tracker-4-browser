@@ -64,7 +64,7 @@
         "@element-plus/icons-vue": "^2.3.2",
         "@emotion/css": "^11.13.5",
         "echarts": "^6.1.0",
-        "element-plus": "2.14.7",
+        "element-plus": "2.14.8",
         "qrcode-generator": "^2.0.4",
         "typescript-guard": "0.2.6",
         "vue": "^3.5.44",
