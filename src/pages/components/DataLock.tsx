@@ -32,7 +32,7 @@ const readExpire = (): number | undefined => {
 
 const passed = ref<boolean>()
 
-let timer: NodeJS.Timeout | undefined
+let timer: ReturnType<typeof setTimeout> | undefined
 let checkStamp = 0
 
 const stopTimer = () => {

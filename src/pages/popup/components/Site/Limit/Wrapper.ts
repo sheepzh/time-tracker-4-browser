@@ -223,7 +223,7 @@ class Wrapper extends EchartsWrapper<tt4b.limit.Item, EcOption> {
             const { start, end } = item
             pieData.push({ value: end - start, name: formatRange(item), itemStyle: { color: 'rgba(0,0,0,0)' } })
             const nextStart = blocked[i + 1]?.start
-            if (nextStart && nextStart > end) {
+            if (nextStart !== undefined && nextStart > end) {
                 pieData.push({ value: nextStart - end, name: '', itemStyle: { color: 'rgba(0,0,0,0)' } })
             }
         }

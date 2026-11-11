@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getStartOfNextDay, isSameDay } from "@util/time"
+import { getAllDatesBetween, getDayLength, getMonthTime, getStartOfDay, getStartOfNextDay, isSameDay } from "@util/time"
 
 test("is same day", () => {
     const date1 = new Date(2022, 4, 11)
@@ -15,6 +15,34 @@ test("is same day", () => {
     expect(isSameDay(date1, date2)).toBeTruthy()
     date1.setHours(25)
     expect(isSameDay(date1, date2)).toBeFalsy()
+})
+
+describe("date-range helpers", () => {
+    test("getStartOfDay floors to midnight in local time", () => {
+        const d = new Date(2022, 4, 11, 17, 42, 50, 123)
+        expect(getStartOfDay(d)).toBe(new Date(2022, 4, 11).getTime())
+    })
+
+    test("getDayLength counts the inclusive start and end dates", () => {
+        expect(getDayLength(new Date(2022, 5, 8), new Date(2022, 5, 9))).toBe(2)
+        expect(getDayLength(new Date(2022, 5, 9), new Date(2022, 5, 8))).toBe(0)
+        expect(getDayLength(new Date(2022, 5, 9, 0, 0, 1), new Date(2022, 5, 9, 0, 0, 1))).toBe(1)
+    })
+
+    test("getAllDatesBetween is inclusive and respects month boundaries", () => {
+        expect(getAllDatesBetween(new Date(2022, 11, 30, 23), new Date(2023, 0, 2, 1))).toEqual([
+            "20221230",
+            "20221231",
+            "20230101",
+            "20230102",
+        ])
+    })
+
+    test("getMonthTime handles year rollover", () => {
+        const [start, end] = getMonthTime(new Date(2022, 11, 31, 12, 30))
+        expect(start).toEqual(new Date(2022, 11, 1).getTime())
+        expect(end).toEqual(new Date(2023, 0, 1).getTime() - 1)
+    })
 })
 
 describe("getStartOfNextDay", () => {
