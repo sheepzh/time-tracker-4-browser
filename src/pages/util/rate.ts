@@ -1,6 +1,6 @@
 import { trySendMsg2Runtime } from '@api/sw/common'
 import { REVIEW_PAGE } from '@util/constant/url'
-import { getDayLength } from '@util/time'
+import { getDayLength } from './time'
 
 const INSTALL_DAY_MIN_LIMIT = 14
 

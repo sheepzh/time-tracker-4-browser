@@ -8,10 +8,9 @@ import { getOption, getWeekStartDay } from "@api/sw/option"
 import ColumnHeader from "@app/components/common/ColumnHeader"
 import ContentCard from '@app/components/common/ContentCard'
 import { useDelayDuration, useLimitAction, useLimitData } from "@app/components/Limit/context"
-import { t } from '@app/locale'
+import { locale, t, tWeekDays } from '@app/locale'
 import { Delete, Edit } from '@element-plus/icons-vue'
 import { localRef, useRequest } from '@hooks'
-import { locale, tWeekDays } from '@i18n'
 import { isEffective } from "@util/limit"
 import { MILL_PER_SECOND } from "@util/time"
 import {

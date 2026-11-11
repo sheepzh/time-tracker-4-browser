@@ -1,13 +1,13 @@
 import { GRID_CELL_STYLE } from '@app/components/common/grid'
 import { KanbanIndicatorCell } from '@app/components/common/kanban'
 import { dateFmt, t } from '@app/locale'
-import { periodFormatter } from '@app/util/time'
 import { useXsState } from '@hooks'
 import { Flex } from '@pages/components'
-import { averageByDay } from "@util/period"
-import { computed, defineComponent } from "vue"
+import { fmtDur } from '@pages/util/time'
+import { computed, defineComponent } from 'vue'
 import { useHabitFilter } from "../context"
 import { usePeriodFilter, usePeriodValue } from "./context"
+import { averageByDay } from "./util"
 
 type Result = {
     favorite: {
@@ -49,7 +49,7 @@ const computeSummary = (rows: tt4b.period.Row[], periodSize: number): Result => 
     let idleLength = '-'
     let idlePeriod = ''
     if (start && end) {
-        idleLength = periodFormatter(end.endTime - start.startTime, { format: 'hour' })
+        idleLength = fmtDur(end.endTime - start.startTime, { format: 'hour' })
         idlePeriod = dateFmt({
             month: "2-digit", day: "2-digit",
             hour: "2-digit", hour12: false, minute: "2-digit", second: "2-digit",
@@ -81,7 +81,7 @@ const _default = defineComponent(() => {
                 mainName={t(msg => msg.habit.period.busiest)}
                 mainValue={summary.value.favorite.period}
                 subTips={msg => msg.habit.common.focusAverage}
-                subValue={periodFormatter(summary.value.favorite.average, { format: globalFilter.timeFormat })}
+                subValue={fmtDur(summary.value.favorite.average, { format: globalFilter.timeFormat })}
                 containerStyle={GRID_CELL_STYLE}
             />
             <KanbanIndicatorCell

@@ -2,7 +2,7 @@ import {
     APP_LIMIT_ROUTE, APP_SITE_ANALYSIS_ROUTE, type AppLimitQuery, type AppSiteAnalysisQuery,
 } from '@/shared/route'
 import { trySendMsg2Runtime } from '@api/sw/common'
-import { processVerification } from '@app/util/limit'
+import { processVerification } from '@pages/util/limit'
 import { t } from "@cs/locale"
 import { Plus, Timer } from "@element-plus/icons-vue"
 import { Flex } from '@pages/components'

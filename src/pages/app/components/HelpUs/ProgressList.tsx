@@ -6,7 +6,7 @@
  */
 
 import { getTranslationStatus, type TranslationStatusInfo } from "@api/crowdin"
-import { t } from '@app/locale'
+import { ptFmt, t } from '@app/locale'
 import { useRequest } from '@hooks'
 import localeMessages from "@i18n/message/common/locale"
 import { Flex } from '@pages/components'
@@ -99,6 +99,7 @@ const _default = defineComponent(() => {
         queryData,
         { loadingTarget: container, loadingText: t(msg => msg.helpUs.loading) },
     )
+    const fmt = ptFmt(0, { roundingMode: "floor" })
     return () => (
         <div ref={container} style={CONTAINER_STYLE}>
             {list.value?.map?.(({ locale, progress }) => (
@@ -109,7 +110,7 @@ const _default = defineComponent(() => {
                     style={{ fontSize: '16px' } satisfies StyleValue}
                 >
                     <Flex width={70} gap={10} fontSize={12} column align="end" style={{ textAlign: 'end' }} color="var(--el-text-color-regular)">
-                        <span>{`${progress}%`}</span>
+                        <span>{fmt.format(progress / 100)}</span>
                         <span>{localeMessages[locale as tt4b.Locale]?.name ?? locale}</span>
                     </Flex>
                 </ElProgress>

@@ -4,9 +4,9 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { initLocale } from "@i18n"
 import { createElApp } from "@pages/element-ui/app"
 import { initDarkTheme } from "@pages/util/dark-mode"
+import { initLocale } from "@side/locale"
 import Main from "./Layout"
 import { injectGlobalCss } from './style'
 

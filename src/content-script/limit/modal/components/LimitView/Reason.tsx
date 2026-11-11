@@ -1,8 +1,8 @@
-import { t } from "@cs/locale"
+import { fmtDuration, t } from "@cs/locale"
 import { Flex } from "@pages/components"
 import { period2Str } from '@pages/util/limit'
 import { matchCond, meetLimit, meetTimeLimit } from "@util/limit"
-import { formatPeriodCommon, MILL_PER_SECOND } from "@util/time"
+import { MILL_PER_SECOND } from "@util/time"
 import { ElDescriptions, ElDescriptionsItem, ElTag } from 'element-plus'
 import { computed, defineComponent } from "vue"
 import { useApp, useRule } from '../../context'
@@ -48,7 +48,7 @@ const TimeDescriptions = defineComponent<DescriptionProps>(props => {
             {renderBaseItems(rule.value, url.value)}
             <ElDescriptionsItem label={props.ruleLabel} labelAlign="right">
                 <Flex gap={5} width={200}>
-                    <ElTag v-show={!!props.time}>{formatPeriodCommon((props.time ?? 0) * MILL_PER_SECOND)}</ElTag>
+                    <ElTag v-show={!!props.time}>{fmtDuration((props.time ?? 0) * MILL_PER_SECOND)}</ElTag>
                     <ElTag v-show={!!props.count}>{t(msg => msg.shared.limit.visits, { n: props.count })}</ElTag>
                 </Flex>
             </ElDescriptionsItem>
@@ -58,7 +58,7 @@ const TimeDescriptions = defineComponent<DescriptionProps>(props => {
                         v-show={!!props.waste || !!props.time}
                         type={timeLimited.value ? 'danger' : 'info'}
                     >
-                        {formatPeriodCommon(props.waste ?? 0)}
+                        {fmtDuration(props.waste ?? 0)}
                     </ElTag>
                     <ElTag
                         v-show={!!props.count || !!props.visit}
@@ -110,10 +110,10 @@ const _default = defineComponent(() => {
             <ElDescriptions v-show={type.value === 'VISIT'} border column={1} {...descProps.value}>
                 {renderBaseItems(rule.value, url.value)}
                 <ElDescriptionsItem label={t(msg => msg.limit.item.visitTime)} labelAlign="right">
-                    {formatPeriodCommon((rule.value?.visitTime ?? 0) * MILL_PER_SECOND) || '-'}
+                    {fmtDuration((rule.value?.visitTime ?? 0) * MILL_PER_SECOND)}
                 </ElDescriptionsItem>
                 <ElDescriptionsItem label={t(msg => msg.modal.browsingTime)} labelAlign="right">
-                    {visitTime.value ? formatPeriodCommon(visitTime.value) : '-'}
+                    {visitTime.value ? fmtDuration(visitTime.value) : '-'}
                 </ElDescriptionsItem>
                 <ElDescriptionsItem
                     v-show={!!reason.value.allowDelay || !!reason.value.delayCount}

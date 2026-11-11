@@ -1,7 +1,7 @@
 
 import HostAlert from '@app/components/common/HostAlert'
 import { useCategory } from '@app/context'
-import { cvt2LocaleDate, periodFormatter } from '@app/util/time'
+import { cvt2LocaleDate, fmtDur } from '@pages/util/time'
 import { Calendar, Delete, Mouse, QuartzWatch } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
 import { useRemoteValue } from '@hooks'
@@ -55,7 +55,7 @@ const Card = defineComponent<Props>(props => {
     const { nameMap } = useCategory()
     const filter = useRecordFilter()
     const remote = useRemoteValue()
-    const formatter = (focus: number): string => periodFormatter(focus, { format: filter?.timeFormat })
+    const formatter = (focus: number): string => fmtDur(focus, { format: filter?.timeFormat })
     const { date, focus, time } = props.value
 
     const canDelete = computed(() => isSite(props.value) && !filter.siteMerge && !remote.value)
@@ -104,7 +104,7 @@ const Card = defineComponent<Props>(props => {
                 >
                     <ElTag type="primary" size="small">
                         <ElIcon><QuartzWatch /></ElIcon>
-                        <span>{periodFormatter(focus, { format: filter?.timeFormat })}</span>
+                        <span>{fmtDur(focus, { format: filter?.timeFormat })}</span>
                     </ElTag>
                 </TooltipWrapper>
                 <TooltipWrapper

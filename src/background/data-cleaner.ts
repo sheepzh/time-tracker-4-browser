@@ -1,10 +1,10 @@
 import { keyOf } from "@util/period"
-import { addDays, getBirthday, getStartOfNextDay } from "@util/time"
+import { addDays, BIRTHDAY, getStartOfNextDay } from "@util/time"
 import alarmManager from "./alarm-manager"
 import { batchDeletePeriods } from "./service/period-service"
 
 const PERIOD_ALARM_NAME = 'period-cleaner-alarm'
-const START_DAY = keyOf(getBirthday())
+const START_DAY = keyOf(BIRTHDAY)
 const KEEP_RANGE_DAYS = 366
 
 const cleanPeriodData = async () => {

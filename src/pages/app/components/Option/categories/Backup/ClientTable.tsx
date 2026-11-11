@@ -7,7 +7,7 @@
 
 import { allBackupClients } from "@api/sw/backup"
 import { t } from '@app/locale'
-import { cvt2LocaleDate } from '@app/util/time'
+import { cvt2LocaleDate } from '@pages/util/time'
 import { Loading, RefreshRight } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
 import { useRequest } from '@hooks'

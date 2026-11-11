@@ -5,13 +5,12 @@
  * https://opensource.org/licenses/MIT
  */
 import { getWeekStartTime } from '@api/sw/option'
-import { t, tMonths } from '@app/locale'
+import { dateFmt, t } from '@app/locale'
 import { isCalendarValue, parseValueOfFormatter, type CalendarValue } from "@app/util/echarts"
-import { cvt2LocaleDate, getWeekDays, periodFormatter } from '@app/util/time'
 import { EchartsWrapper } from '@hooks'
 import { getCssVariable, getRegularTextColor, getSecondaryTextColor } from '@pages/util/style'
+import { addDays, cvt2LocaleDate, fmtDur, getAllDatesBetween, getWeekDays, parseTime } from '@pages/util/time'
 import { groupBy, toMap } from "@util/array"
-import { addDays, getAllDatesBetween, parseTime } from "@util/time"
 import type {
     ComposeOption, EffectScatterSeriesOption, GridComponentOption, TitleComponentOption, TooltipComponentOption,
     VisualMapComponentOption,
@@ -44,20 +43,18 @@ const cvtHeatmapItem = (d: CalendarValue): EffectScatterItem => {
     return item
 }
 
-const MONTH_LABELS = tMonths()
 function getXAxisLabelMap(data: CalendarValue[]): { [x: string]: string } {
     const result: Record<string, string> = {}
-    // {[ x:string ]: Set<string> }
     const xAndMonthMap = groupBy(data, e => e[0], grouped => new Set(grouped.map(a => a[3].substring(4, 6))))
     let lastMonth: string | undefined = undefined
+    const fmt = dateFmt({ month: "short" })
     Object.entries(xAndMonthMap).forEach(([x, monthSet]) => {
         if (monthSet.size != 1) return
         const currentMonth = Array.from(monthSet)[0]
         if (!currentMonth || currentMonth === lastMonth) return
         lastMonth = currentMonth
         const monthNum = parseInt(currentMonth)
-        const label = MONTH_LABELS[monthNum - 1]
-        label && (result[x] = label)
+        result[x] = fmt.format(new Date(0, monthNum - 1))
     })
     return result
 }
@@ -87,7 +84,7 @@ function optionOf(
                 const value = parseValueOfFormatter(params)
                 if (!isCalendarValue(value) || !value[2]) return ''
                 const date = cvt2LocaleDate(parseTime(value[3]))
-                const time = periodFormatter(value[2], { format })
+                const time = fmtDur(value[2], { format })
                 return `${date}<br /><b>${time}</b>`
             },
         },

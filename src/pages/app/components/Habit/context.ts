@@ -7,7 +7,7 @@
 
 import { isTimeFormat } from '@app/util/types'
 import { localReactive, useProvide, useProvider } from '@hooks'
-import { daysAgo } from "@util/time"
+import { daysAgo } from '@pages/util/time'
 import { createObjectGuard } from 'typescript-guard'
 import { reactive } from "vue"
 

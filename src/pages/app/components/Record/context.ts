@@ -2,10 +2,9 @@ import { listCateStats, listGroupStats, listSiteStats } from '@api/sw/stat'
 import type { RecordQuery } from '@app/router/constants'
 import { isOptionalIntArray, isTimeFormat } from '@app/util/types'
 import { localReactive, useManualRequest, useProvide, useProvider, useRemoteValue } from '@hooks'
-import { periodFormatter } from '@pages/util/time'
+import { BIRTHDAY, cvtDateRange2Str, fmtDur } from '@pages/util/time'
 import { sum } from '@util/array'
 import { truthy } from '@util/lang'
-import { cvtDateRange2Str, getBirthday } from "@util/time"
 import {
     createObjectGuard, createOptionalGuard, createStringUnionGuard, isBoolean, isOptionalString,
 } from 'typescript-guard'
@@ -45,7 +44,7 @@ function initQuery(filter: RecordFilterOption): RecordSort['prop'] | undefined {
     let dateEnd = de ? Number.parseInt(de) : undefined
     if (Number.isNaN(dateEnd)) dateEnd = undefined
     if (dateStart || dateEnd) {
-        filter.dateRange = [dateStart ?? getBirthday().getTime(), dateEnd ?? Date.now()]
+        filter.dateRange = [dateStart ?? BIRTHDAY.getTime(), dateEnd ?? Date.now()]
     }
     // Merge method
     if (md === 'true' || md === '1') filter.mergeDate = true
@@ -116,7 +115,7 @@ export const useSummary = (watchFilter?: boolean) => {
         }
         const visit = sum(rows.map(e => e.time))
         const focus = sum(rows.map(e => e.focus))
-        return { visit, focus: periodFormatter(focus, { format: filter.timeFormat }) }
+        return { visit, focus: fmtDur(focus, { format: filter.timeFormat }) }
     }, {
         defaultValue: { visit: 0, focus: '0s' },
         deps: truthy<WatchSource>(remote, watchFilter && (() => ({ ...filter }))),

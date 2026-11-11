@@ -7,8 +7,8 @@
 
 import { listPeriods } from '@api/sw/period'
 import { localReactive, useProvide, useProvider, useRequest } from '@hooks'
+import { addDays, getDayLength } from "@pages/util/time"
 import { keyOf, MAX_PERIOD_ORDER } from "@util/period"
-import { addDays, getDayLength } from "@util/time"
 import { createObjectGuard } from 'typescript-guard'
 import { computed, type Ref } from "vue"
 import { useHabitFilter } from "../context"

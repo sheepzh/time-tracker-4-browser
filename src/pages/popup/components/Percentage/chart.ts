@@ -2,16 +2,15 @@ import { getIconUrl, getRuntimeName } from "@api/chrome/runtime"
 import { createTab } from "@api/chrome/tab"
 import { generateQrCanvas } from "@pages/util/qrcode"
 import { getCssVariable, getInfoColor, getPrimaryTextColor, getSecondaryTextColor } from "@pages/util/style"
-import { cvt2LocaleDate } from '@pages/util/time'
+import { cvt2LocaleDate, fmtDur, isSameDay, parseTime } from '@pages/util/time'
 import { calJumpUrl } from "@popup/components/stat/common"
-import { dateFmt, t, tDateRangeSeparator } from '@popup/locale'
+import { dateFmt, ptFmt, t, tDateRangeSeparator } from '@popup/locale'
 import { sum, toMap } from "@util/array"
 import { IS_SAFARI } from "@util/constant/environment"
 import { INSTALL_PAGE } from "@util/constant/url"
 import { isRtl } from "@util/document"
 import { generateSiteLabel } from "@util/site"
 import { getGroupName, isGroup, isSite } from "@util/stat"
-import { formatPeriodCommon, isSameDay, parseTime } from "@util/time"
 import type { PieSeriesOption, TitleComponentOption, ToolboxComponentOption } from "echarts"
 import type { ECharts } from "echarts/core"
 import type { CallbackDataParams, TopLevelFormatterParams } from "echarts/types/dist/shared"
@@ -40,8 +39,8 @@ type FormatterRegistry = Record<'total' | 'avg', Converter<number, string>>
 
 const FORMATTERS: Record<StatQuery['dimension'], FormatterRegistry> = {
     focus: {
-        total: total => t(msg => msg.content.percentage.totalTime, { totalTime: formatPeriodCommon(total) }),
-        avg: avg => t(msg => msg.content.percentage.averageTime, { value: formatPeriodCommon(parseInt(avg.toFixed(0))) }),
+        total: total => t(msg => msg.content.percentage.totalTime, { totalTime: fmtDur(total) }),
+        avg: avg => t(msg => msg.content.percentage.averageTime, { value: fmtDur(parseInt(avg.toFixed(0))) }),
     },
     time: {
         total: total => t(msg => msg.content.percentage.totalCount, { totalCount: total }),
@@ -404,9 +403,9 @@ export function formatTooltip({ query, dateLength }: PercentageResult, params: T
     const { row } = data as PieSeriesItemOption
     const { dimension, duration } = query
     const itemValue = typeof value === 'number' ? value : 0
-    let valueLine = dimension === 'time' ? itemValue : formatPeriodCommon(itemValue)
+    let valueLine = dimension === 'time' ? itemValue : fmtDur(itemValue)
     // Display percent only when query focus time
-    dimension === 'focus' && (valueLine += ` (${percent}%)`)
+    dimension === 'focus' && percent !== undefined && (valueLine += ` (${ptFmt(2).format(percent / 100)})`)
     let nameLine = name
     let averageLine: string | undefined = undefined
     if (!isOther(row)) {

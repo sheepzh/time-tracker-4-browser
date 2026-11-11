@@ -1,7 +1,7 @@
 import { listAllGroups } from "@api/chrome/tabGroups"
 import { queryRows, } from "@popup/components/stat/common"
 import { t } from '@popup/locale'
-import { getBirthday, getDayLength } from "@util/time"
+import { BIRTHDAY, getDayLength } from "@pages/util/time"
 import type { StatOption, StatQuery } from '../stat/context'
 
 export type PercentageResult = {
@@ -47,7 +47,7 @@ export const doQuery = async (query: StatQuery, option: StatOption, cateNameMap:
     const allDates = new Set<string>()
     rows.flatMap(findAllDates).forEach(d => allDates.add(d))
     const dateLength = allDates.size > 0 ? allDates.size
-        : (Array.isArray(date) ? getDayLength(date[0] ?? getBirthday(), date[1] ?? new Date()) : 1)
+        : (Array.isArray(date) ? getDayLength(date[0] ?? BIRTHDAY, date[1] ?? new Date()) : 1)
 
     const dataDate = findDateRange(allDates)
 

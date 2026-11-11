@@ -7,6 +7,7 @@
 
 import { css, injectGlobal } from '@emotion/css'
 import { initRemote } from '@hooks'
+import { DataLock } from '@pages/components'
 import { ElAside, ElContainer, ElHeader, useNamespace } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
 import { RouterView } from "vue-router"
@@ -42,7 +43,6 @@ const injectCss = () => {
 const _default = defineComponent(() => {
     const { layout } = initAppContext()
     initRemote()
-
     injectCss()
 
     return () => (
@@ -55,7 +55,9 @@ const _default = defineComponent(() => {
                     <SideMenu />
                 </ElAside>
                 <ElContainer class={CONTENT_CLS}>
-                    <RouterView />
+                    <DataLock>
+                        <RouterView />
+                    </DataLock>
                 </ElContainer>
             </ElContainer>
         </ElContainer>

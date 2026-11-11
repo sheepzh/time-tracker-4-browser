@@ -8,9 +8,8 @@
 import { isSidePanelEnabled, setSidePanelEnabled, SIDE_PANEL_STATE_SUPPORTED_CONTROL } from '@api/chrome/sidePanel'
 import { OptionItem, OptionLines, OptionTag } from '@app/components/Option/components'
 import { useOption } from '@app/components/Option/useOption'
-import { type I18nKey, t } from '@app/locale'
+import { ALL_LOCALES, type I18nKey, localeSameAsBrowser, t } from '@app/locale'
 import { useRequest } from '@hooks'
-import { ALL_LOCALES, localeSameAsBrowser } from "@i18n"
 import localeMessages from "@i18n/message/common/locale"
 import { processDarkMode } from '@pages/util/dark-mode'
 import { IS_MOBILE } from "@util/constant/environment"

@@ -1,8 +1,7 @@
 import { listSiteStats } from "@api/sw/stat"
 import { useRequest } from "@hooks"
-import { Flex } from '@pages/components'
-import { cvt2LocaleDate } from '@pages/util/time'
-import { formatTimeYMD } from "@util/time"
+import { DataLock, Flex } from '@pages/components'
+import { cvt2LocaleDate, formatTimeYMD } from '@pages/util/time'
 import { ElText } from "element-plus"
 import { defineComponent, ref } from "vue"
 import RowList from "./components/RowList"
@@ -21,28 +20,30 @@ const _default = defineComponent<{}>(() => {
         remote: false,
     }), { defaultValue: [] })
 
-    return () => <Flex column height='100%'>
-        <Search
-            defaultQuery={query.value}
-            defaultDate={date.value}
-            onSearch={(newQuery, newDate) => {
-                query.value = newQuery
-                date.value = newDate
-                // Force refresh
-                refresh()
-            }}
-        />
-        <Flex height={60} style={{ paddingInlineStart: '5px' }}>
-            <ElText>
-                {t(msg => msg.list.title)}
-            </ElText>
-            &emsp;
-            <ElText size="small">
-                @{cvt2LocaleDate(date.value)}
-            </ElText>
+    return () => <DataLock>
+        <Flex column height='100%'>
+            <Search
+                defaultQuery={query.value}
+                defaultDate={date.value}
+                onSearch={(newQuery, newDate) => {
+                    query.value = newQuery
+                    date.value = newDate
+                    // Force refresh
+                    refresh()
+                }}
+            />
+            <Flex height={60} style={{ paddingInlineStart: '5px' }}>
+                <ElText>
+                    {t(msg => msg.list.title)}
+                </ElText>
+                &emsp;
+                <ElText size="small">
+                    @{cvt2LocaleDate(date.value)}
+                </ElText>
+            </Flex>
+            <RowList loading={loading.value} data={data.value} />
         </Flex>
-        <RowList loading={loading.value} data={data.value} />
-    </Flex>
+    </DataLock>
 })
 
 export default _default

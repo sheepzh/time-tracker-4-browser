@@ -4,13 +4,14 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { tMonths } from "@app/locale"
+import { dateFmt } from '@app/locale'
 import { getStepColors, isCalendarValue, parseValueOfFormatter, type CalendarValue } from '@app/util/echarts'
-import { cvt2LocaleDate, getWeekDays } from '@app/util/time'
 import { EchartsWrapper } from "@hooks"
 import { getCssVariable, getPrimaryTextColor } from '@pages/util/style'
+import {
+    cvt2LocaleDate, fmtDur, getAllDatesBetween, getWeekDays, MILL_PER_HOUR, MILL_PER_MINUTE,
+} from '@pages/util/time'
 import { groupBy } from "@util/array"
-import { formatPeriodCommon, getAllDatesBetween, MILL_PER_HOUR, MILL_PER_MINUTE } from "@util/time"
 import type {
     ComposeOption, GridComponentOption, HeatmapSeriesOption, ScatterSeriesOption, TooltipComponentOption,
     VisualMapComponentOption,
@@ -29,20 +30,17 @@ export type BizOption = {
     value: { [date: string]: number }
 }
 
-const MONTH_LABELS = tMonths()
 function getXAxisLabelMap(data: CalendarValue[]): { [x: string]: string } {
     const result: Record<string, string> = {}
-    // {[ x:string ]: Set<string> }
     const xAndMonthMap = groupBy(data, e => e[0], grouped => new Set(grouped.map(a => a[3].substring(4, 6))))
     let lastMonth: string | undefined
+    const fmt = dateFmt({ month: "short" })
     Object.entries(xAndMonthMap).forEach(([x, monthSet]) => {
         if (monthSet.size != 1) return
         const currentMonth = Array.from(monthSet)[0]
         if (!currentMonth || currentMonth === lastMonth) return
         lastMonth = currentMonth
-        const monthNum = parseInt(currentMonth)
-        const label = MONTH_LABELS[monthNum - 1]
-        label && (result[x] = label)
+        result[x] = fmt.format(new Date(0, parseInt(currentMonth) - 1))
     })
     return result
 }
@@ -106,7 +104,7 @@ function optionOf(data: CalendarValue[], weekDays: string[], dom: HTMLElement): 
             formatter: params => {
                 const value = parseValueOfFormatter(params)
                 if (!isCalendarValue(value) || !value[2]) return ''
-                return `${cvt2LocaleDate(value[3])}<br /><b>${formatPeriodCommon(value[2])}</b>`
+                return `${cvt2LocaleDate(value[3])}<br /><b>${fmtDur(value[2])}</b>`
             },
         },
         grid: { height: '70%', left: '7%', width: `${gridWidth * 100}%`, top: '18%', },

@@ -4,18 +4,19 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { t } from "@app/locale"
+import { dateFmt, t } from "@app/locale"
 import { getCompareColor, tooltipDot, tooltipFlexLine, tooltipSpaceLine } from "@app/util/echarts"
 import { EchartsWrapper } from "@hooks"
 import { getPrimaryTextColor, getSecondaryTextColor } from '@pages/util/style'
-import { averageByDay, MINUTE_PER_PERIOD } from "@util/period"
-import { formatPeriodCommon, MILL_PER_MINUTE } from "@util/time"
+import { fmtDur, MILL_PER_MINUTE } from '@pages/util/time'
+import { MINUTE_PER_PERIOD } from "@util/period"
 import type {
     BarSeriesOption, ComposeOption, EChartsType, ElementEvent, GridComponentOption, MarkLineComponentOption,
     TooltipComponentOption,
 } from "echarts"
 import type { TopLevelFormatterParams } from "echarts/types/dist/shared"
 import { generateGridOption } from "../common"
+import { averageByDay } from "../util"
 
 type EcOption = ComposeOption<
     | BarSeriesOption
@@ -33,52 +34,32 @@ export type BizOption = {
 
 const [CURR_COLOR = '', PREV_COLOR = ''] = getCompareColor()
 
-const cvt2Item = (row: tt4b.period.Row): number => {
-    const milliseconds = row.milliseconds
-    return milliseconds
-}
+const isSameDay = ([start, end]: tt4b.period.KeyRange): boolean => true
+    && start.year === end.year
+    && start.month === end.month
+    && start.date === end.date
 
-const formatXAxis = (idx: number, periodSize: number) => {
-    let min = idx * periodSize * MINUTE_PER_PERIOD
-    const hour = Math.floor(min / 60)
-    min = min - hour * 60
-    return hour.toString().padStart(2, '0') + ':' + min.toString().padStart(2, '0')
-}
-
-const key2Str = (key: tt4b.period.Key) => {
-    const { month, date } = key
-    return `${month?.toString?.()?.padStart(2, '0')}/${date?.toString?.()?.padStart(2, '0')}`
-}
-
-const isSameDay = (keyRange: tt4b.period.KeyRange): boolean => {
-    const [start, end] = keyRange || []
-    return start?.year === end?.year
-        && start?.month === end?.month
-        && start?.date === end?.date
-}
-
-const range2Str = (keyRange: tt4b.period.KeyRange) => {
-    const [start, end] = keyRange
-    return isSameDay(keyRange) ? key2Str(start) : `${key2Str(start)}-${key2Str(end)}`
-}
-
-const formatValueLine = (mill: number, range: tt4b.period.KeyRange, color: string): string => {
-    return tooltipFlexLine(
-        `${tooltipDot(color)}&ensp;<b>${formatPeriodCommon(mill ?? 0)}</b>`,
-        range2Str(range),
+const formatValueLine = (mill: number, [start, end]: tt4b.period.KeyRange, color: string): string => {
+    const title = `${tooltipDot(color)}&ensp;<b>${fmtDur(mill ?? 0)}</b>`
+    const range = dateFmt().formatRange(
+        new Temporal.PlainDate(start.year, start.month, start.date),
+        new Temporal.PlainDate(end.year, end.month, end.date),
     )
+    return tooltipFlexLine(title, range)
 }
 
-const formatTooltip = (params: TopLevelFormatterParams, biz: BizOption): string => {
+const idx2Time = (idx: number, periodSize: number): Temporal.PlainTime => {
+    const totalMin = idx * periodSize * MINUTE_PER_PERIOD
+    return new Temporal.PlainTime(Math.floor(totalMin / 60) % 24, totalMin % 60)
+}
+
+const formatTooltip = (fmt: Intl.DateTimeFormat, params: TopLevelFormatterParams, biz: BizOption): string => {
     const { periodSize, prevRange, currRange } = biz
     if (!Array.isArray(params)) return ''
     const [curr, prev] = params
 
     const idx = curr?.dataIndex ?? 0
-    const start = formatXAxis(idx, periodSize)
-    const end = formatXAxis(idx + 1, periodSize)
-
-    const periodStr = `${start}-${end}`
+    const periodStr = fmt.formatRange(idx2Time(idx, periodSize), idx2Time(idx + 1, periodSize))
     const timeLine = isSameDay(currRange)
         ? periodStr
         : tooltipFlexLine(t(msg => msg.habit.period.chartType.average), periodStr)
@@ -93,19 +74,20 @@ const MARK_LINE_COLOR = getSecondaryTextColor()
 const LABEL_COLOR = getPrimaryTextColor()
 
 const generateOption = (biz: BizOption): EcOption => {
+    const fmt = dateFmt({ timeStyle: "short", hourCycle: "h23" })
     let { curr, prev, periodSize } = biz
 
     curr = averageByDay(curr, periodSize)
     prev = averageByDay(prev, periodSize)
 
-    const currData = curr.map(r => cvt2Item(r))
-    const prevData = prev.map(r => cvt2Item(({ ...r, milliseconds: -r.milliseconds })))
+    const currData = curr.map(r => r.milliseconds)
+    const prevData = prev.map(r => -r.milliseconds)
     const borderRadius = 5 * periodSize
 
     return {
         tooltip: {
             trigger: 'axis',
-            formatter: (params: TopLevelFormatterParams) => formatTooltip(params, biz),
+            formatter: params => formatTooltip(fmt, params, biz),
             axisPointer: {
                 lineStyle: { color: MARK_LINE_COLOR },
             }
@@ -116,7 +98,7 @@ const generateOption = (biz: BizOption): EcOption => {
             axisLabel: {
                 color: LABEL_COLOR,
                 interval: (16 / periodSize - 1),
-                formatter: (_, index) => formatXAxis(index, periodSize),
+                formatter: (_, index) => fmt.format(idx2Time(index, periodSize)),
             },
             axisLine: { show: false },
             axisTick: { show: false },
@@ -257,7 +239,7 @@ class Markline {
 
         this.chart.setOption(
             { series: [{ markLine }] },
-            // Use layzUpdate to avoid triggering animation which may conflict with series data animations
+            // Use lazyUpdate to avoid triggering animation which may conflict with series data animations
             { notMerge: false, lazyUpdate: true },
         )
     }

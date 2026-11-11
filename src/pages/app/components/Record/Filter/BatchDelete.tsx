@@ -3,11 +3,10 @@ import {
     batchDeleteStats, countGroupStatsByIds, countSiteStats, deleteSiteStatByGroup, deleteSiteStatByHost,
 } from "@api/sw/stat"
 import { t } from '@app/locale'
-import { cvt2LocaleDate } from '@app/util/time'
+import { BIRTHDAY, cvt2LocaleDate, cvtDateRange2Str } from '@pages/util/time'
 import { DeleteFilled } from "@element-plus/icons-vue"
 import { useRemoteValue } from '@hooks'
 import { isGroup, isNormalSite, isSite } from "@util/stat"
-import { cvtDateRange2Str, getBirthday } from "@util/time"
 import { ElButton, ElMessage, ElMessageBox } from "element-plus"
 import { computed, defineComponent } from "vue"
 import { useRecordComponent, useRecordFilter } from "../context"
@@ -44,7 +43,7 @@ async function computeBatchDeleteMsg(selected: tt4b.stat.Row[], mergeDate: boole
     if (startDate === undefined && endDate === undefined) {
         return t(msg => msg.record.batchDelete.confirmMsgAll, { count, example })
     }
-    const date = cvt2LocaleDate(startDate ?? getBirthday(), endDate ?? new Date())
+    const date = cvt2LocaleDate(startDate ?? BIRTHDAY, endDate ?? new Date())
     return t(msg => msg.record.batchDelete.confirmMsg, { count, example, date })
 }
 

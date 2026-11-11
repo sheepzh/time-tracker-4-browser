@@ -1,8 +1,8 @@
 import { t } from '@app/locale'
 import { Flex } from '@pages/components'
 import { period2Str } from '@pages/util/limit'
+import { fmtDur, MILL_PER_SECOND } from '@pages/util/time'
 import { truthy } from '@util/lang'
-import { formatPeriodCommon, MILL_PER_SECOND } from '@util/time'
 import { ElTag, TagProps } from 'element-plus'
 import { type FunctionalComponent } from "vue"
 import { DAILY_WEEKLY_TAG_TYPE, VISIT_TAG_TYPE } from '../style'
@@ -16,7 +16,7 @@ type TimeCountPairProps = {
 
 const TimeCountPair: FunctionalComponent<TimeCountPairProps> = ({ time, count, label, type = DAILY_WEEKLY_TAG_TYPE }) => {
     const content = truthy(
-        time && formatPeriodCommon(time * MILL_PER_SECOND, true),
+        time && fmtDur(time * MILL_PER_SECOND),
         count && t(msg => msg.shared.limit.visits, { n: count }),
     ).join(` ${t(msg => msg.limit.item.or)} `)
 

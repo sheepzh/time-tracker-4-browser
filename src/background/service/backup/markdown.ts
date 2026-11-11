@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { fmtDuration } from '@bg/i18n'
 import { groupBy } from "@util/array"
-import { formatPeriodCommon } from "@util/time"
 
 export const CLIENT_FILE_NAME = "clients_no_modify.md"
 
@@ -91,10 +91,10 @@ const ROW_FIELDS: MarkdownTableField<tt4b.core.Row>[] = [
         formatter: r => r.host,
     }, {
         name: "Focus Time",
-        formatter: r => formatPeriodCommon(r.focus || 0)
+        formatter: r => fmtDuration(r.focus)
     }, {
         name: "Visit Count",
-        formatter: r => r.time || 0,
+        formatter: r => r.time,
     },
 ]
 

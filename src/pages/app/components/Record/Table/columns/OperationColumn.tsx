@@ -6,11 +6,10 @@
  */
 import { computeDeleteConfirmMsg, handleDelete } from '@app/components/Record/common'
 import { useRecordFilter } from '@app/components/Record/context'
-import { t } from '@app/locale'
+import { locale, t } from '@app/locale'
 import { SITE_ANALYSIS_ROUTE, type SiteAnalysisQuery } from '@app/router/constants'
 import { Delete, Stopwatch } from "@element-plus/icons-vue"
 import { useRemoteValue, useTabGroups } from '@hooks'
-import { locale } from "@i18n"
 import { ConfirmButton } from '@pages/components'
 import { CATE_NOT_SET_ID } from "@util/site"
 import { isCate, isGroup, isSite } from "@util/stat"

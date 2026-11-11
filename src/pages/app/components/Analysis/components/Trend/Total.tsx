@@ -10,9 +10,8 @@ import { GRID_CELL_STYLE } from '@app/components/common/grid'
 import { KanbanIndicatorCell } from '@app/components/common/kanban'
 import type { RingValue } from '@app/components/common/kanban/types'
 import { t } from "@app/locale"
-import { periodFormatter } from '@app/util/time'
+import { fmtDur, getDayLength } from '@pages/util/time'
 import { Flex } from '@pages/components'
-import { getDayLength } from '@util/time'
 import { computed, defineComponent, type CSSProperties } from "vue"
 import { useAnalysisTrendDateRange } from './context'
 
@@ -42,9 +41,9 @@ const _default = defineComponent<Props>(props => {
             />
             <KanbanIndicatorCell
                 mainName={t(msg => msg.analysis.common.focusTotal)}
-                mainValue={periodFormatter(props.focus?.[0], { format: timeFormat.value })}
+                mainValue={fmtDur(props.focus?.[0], { format: timeFormat.value })}
                 subRing={props.focus}
-                valueFormatter={delta => periodFormatter(delta, { format: timeFormat.value })}
+                valueFormatter={delta => fmtDur(delta, { format: timeFormat.value })}
                 containerStyle={INDICATOR_CONTAINER_STYLE}
             />
             <KanbanIndicatorCell

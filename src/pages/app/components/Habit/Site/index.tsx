@@ -14,7 +14,7 @@ import { t } from '@app/locale'
 import { isOptionalIntArray } from '@app/util/types'
 import { localReactive, useRemoteValue, useRequest, useXsState } from '@hooks'
 import { Flex } from '@pages/components'
-import { cvtDateRange2Str, getDayLength } from '@util/time'
+import { cvtDateRange2Str, getDayLength } from '@pages/util/time'
 import { createObjectGuard } from 'typescript-guard'
 import { computed, defineComponent, ref } from "vue"
 import { useHabitFilter } from '../context'

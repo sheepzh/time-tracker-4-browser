@@ -1,6 +1,6 @@
 import { sendMsg2Runtime } from '@api/sw/common'
 import { useProvide, useProvider, useRequest, useState } from '@hooks'
-import { addDays, getAllDatesBetween, getStartOfDay } from '@util/time'
+import { addDays, getAllDatesBetween, getStartOfDay } from '@pages/util/time'
 import { type ShallowRef } from 'vue'
 import { formatYAxis } from './common'
 

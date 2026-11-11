@@ -1,8 +1,8 @@
 import type { FocusReason } from '@cs/limit/types'
-import { t } from '@cs/locale'
+import { fmtDuration, t } from '@cs/locale'
 import { Flex } from '@pages/components'
 import { matchUrl } from '@util/limit'
-import { formatPeriodCommon, MILL_PER_SECOND } from '@util/time'
+import { MILL_PER_SECOND } from '@util/time'
 import { ElDescriptions, ElDescriptionsItem, ElTag } from 'element-plus'
 import { defineComponent } from 'vue'
 import { useApp } from '../../context'
@@ -41,7 +41,7 @@ const Reason = defineComponent<{ value: FocusReason }>(props => {
                     labelAlign='right'
                 >
                     {props.value.duration
-                        ? formatPeriodCommon(props.value.duration * MILL_PER_SECOND)
+                        ? fmtDuration(props.value.duration * MILL_PER_SECOND)
                         : t(msg => msg.shared.unlimited)}
                 </ElDescriptionsItem>
                 <ElDescriptionsItem
@@ -49,7 +49,7 @@ const Reason = defineComponent<{ value: FocusReason }>(props => {
                     label={t(msg => msg.focus.break)}
                     labelAlign='right'
                 >
-                    {formatPeriodCommon((props.value.break ?? 0) * MILL_PER_SECOND)}
+                    {fmtDuration((props.value.break ?? 0) * MILL_PER_SECOND)}
                 </ElDescriptionsItem>
             </ElDescriptions>
         </Flex>

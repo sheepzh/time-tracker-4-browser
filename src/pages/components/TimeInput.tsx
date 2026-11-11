@@ -1,26 +1,15 @@
 import { CircleClose, Clock } from "@element-plus/icons-vue"
 import { useDebounceFn, useState, useXsState } from '@hooks'
+import { durFmt } from '@i18n'
 import { getStyle } from '@pages/util/style'
 import { range } from "@util/array"
 import { stopPropagationAfter } from '@util/document'
 import {
-    Effect, ElIcon, ElInput, ElMessage, ElPopover, ElScrollbar, InputProps, type ScrollbarInstance, type TimePickerDefaultProps,
+    Effect, ElIcon, ElInput, ElMessage, ElPopover, ElScrollbar, InputProps,
     useLocale, useNamespace,
+    type ScrollbarInstance, type TimePickerDefaultProps,
 } from "element-plus"
-import { computed, CSSProperties, defineComponent, nextTick, onMounted, ref, Transition, watch } from "vue"
-
-function computeSecond2LimitInfo(time: number): [number, number, number] {
-    time = time || 0
-    const second = time % 60
-    const totalMinutes = (time - second) / 60
-    const minute = totalMinutes % 60
-    const hour = (totalMinutes - minute) / 60
-    return [hour, minute, second]
-}
-
-const formatTimeVal = (val: number): string => {
-    return val?.toString?.()?.padStart?.(2, '0') ?? 'NaN'
-}
+import { computed, CSSProperties, defineComponent, nextTick, onMounted, ref, toRef, Transition, watch, type Ref } from "vue"
 
 type TimeSpinnerProps = ModelValue<number> & {
     max: number
@@ -103,33 +92,23 @@ const TimeSpinner = defineComponent<TimeSpinnerProps>(props => {
     )
 }, { props: ['max', 'modelValue', 'visible', 'onChange'] })
 
-const useTimeInput = (source: () => number | undefined) => {
-    const [initialHour, initialMin, initialSec] = computeSecond2LimitInfo(source?.() ?? 0)
-    const [hour, setHour] = useState(initialHour)
-    const [minute, setMinute] = useState(initialMin)
-    const [second, setSecond] = useState(initialSec)
+const useTimeInput = (source: Ref<number | undefined>) => {
+    const [hour, setHour] = useState(0)
+    const [minute, setMinute] = useState(0)
+    const [second, setSecond] = useState(0)
 
     const reset = () => {
-        const [hour, min, sec] = computeSecond2LimitInfo(source() ?? 0)
-        setHour(hour)
-        setMinute(min)
-        setSecond(sec)
+        const secs = source.value ?? 0
+        setHour(Math.floor(secs / 3600) % 24)
+        setMinute(Math.floor(secs / 60) % 60)
+        setSecond(secs % 60)
     }
 
-    watch(source, reset)
-
-    const getTotalSecond = () => {
-        let time = 0
-        time += (hour.value ?? 0) * 3600
-        time += (minute.value ?? 0) * 60
-        time += (second.value ?? 0)
-        return time
-    }
+    watch(source, reset, { immediate: true })
 
     return {
         hour, minute, second,
-        setHour, setMinute, setSecond,
-        reset, getTotalSecond,
+        setHour, setMinute, setSecond, reset,
     }
 }
 
@@ -148,10 +127,8 @@ type TimeInputProps = Pick<TimePickerDefaultProps, 'size'> & ModelValue<number |
 export default defineComponent<TimeInputProps>(props => {
     const [popoverVisible, setPopoverVisible] = useState(false)
     const {
-        hour, minute, second,
-        setHour, setMinute, setSecond,
-        reset, getTotalSecond,
-    } = useTimeInput(() => props.modelValue)
+        hour, minute, second, setHour, setMinute, setSecond, reset,
+    } = useTimeInput(toRef(props, 'modelValue'))
 
     const clearable = computed(() => {
         const { clearable, placeholder } = props
@@ -162,9 +139,11 @@ export default defineComponent<TimeInputProps>(props => {
         const { modelValue, hideSeconds } = props
         // Not support 0 as valid time, treat it as unlimited
         if (!modelValue) return { modelValue: undefined, clearable: false }
-        const text = hideSeconds
-            ? `${formatTimeVal(hour.value)} h ${formatTimeVal(minute.value)} m`
-            : `${formatTimeVal(hour.value)} h ${formatTimeVal(minute.value)} m ${formatTimeVal(second.value)} s`
+        const text = durFmt().format({
+            hours: hour.value,
+            minutes: minute.value,
+            seconds: hideSeconds ? undefined : second.value,
+        })
         return { modelValue: text, clearable: clearable.value }
     })
 
@@ -177,7 +156,7 @@ export default defineComponent<TimeInputProps>(props => {
     const transitionName = computed(() => popoverVisible.value ? '' : `${ns.namespace.value}-zoom-in-top`)
 
     const handleConfirm = () => {
-        const value = getTotalSecond()
+        const value = hour.value * 3600 + minute.value * 60 + second.value
         if (!value && !clearable.value) {
             return ElMessage.warning(tEle('el.datepicker.selectTime'))
         }

@@ -2,7 +2,7 @@ import { t } from '@app/locale'
 import { Delete } from '@element-plus/icons-vue'
 import { ConfirmButton, Flex } from '@pages/components'
 import { getColor } from '@pages/util/style'
-import { formatPeriodCommon } from '@util/time'
+import { fmtDur } from '@pages/util/time'
 import { ElButton, ElTable, ElTableColumn, ElTag, ElText, type RenderRowData } from 'element-plus'
 import { type CSSProperties, defineComponent, type FunctionalComponent } from 'vue'
 import { useFocusList } from './context'
@@ -11,7 +11,7 @@ type Scope = RenderRowData<tt4b.focus.Preset>
 
 const formatDuration = (durSec: number): string => {
     if (!durSec) return t(msg => msg.shared.unlimited)
-    return formatPeriodCommon(durSec * 1000)
+    return fmtDur(durSec * 1000)
 }
 
 const StateDot: FunctionalComponent<{ session: tt4b.focus.Session | undefined, presetId: number }> = ({ session, presetId }) => {

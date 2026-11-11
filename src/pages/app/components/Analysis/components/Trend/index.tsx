@@ -9,7 +9,7 @@ import { GRID_WRAPPER_STYLE } from '@app/components/common/grid'
 import { KanbanCard } from '@app/components/common/kanban'
 import type { RingValue } from '@app/components/common/kanban/types'
 import { t } from "@app/locale"
-import { periodFormatter } from '@app/util/time'
+import { fmtDur } from '@pages/util/time'
 import { useXsState } from "@hooks"
 import { Flex } from '@pages/components'
 import { defineComponent } from "vue"
@@ -41,7 +41,7 @@ const _default = defineComponent(() => {
                     max={curr.value?.indicators.focus.max}
                     averageLabel={t(msg => msg.analysis.trend.focusAverage)}
                     average={ringOf(curr.value?.indicators.focus.average, prev.value?.indicators.focus.average)}
-                    valueFormatter={val => periodFormatter(val, { format: timeFormat.value })}
+                    valueFormatter={val => fmtDur(val, { format: timeFormat.value })}
                     data={{ curr: curr.value?.focus ?? [], prev: prev.value?.focus ?? [] }}
                     chartTitle={t(msg => msg.analysis.trend.focusTitle)}
                 />

@@ -1,6 +1,6 @@
 import { mountStyle } from '@cs/limit/style'
-import { t, type I18nKey } from '@cs/locale'
-import { formatPeriodCommon, MILL_PER_MINUTE, MILL_PER_SECOND } from '@util/time'
+import { fmtDuration, t, type I18nKey } from '@cs/locale'
+import { MILL_PER_MINUTE, MILL_PER_SECOND } from '@util/time'
 import type { CountdownData, Dimension, RemainingData } from '../types'
 import { getEdge, getViewportSize, HALF_SIZE, ICON_SIZE, StatefulNode, type Edge, type Position } from './common'
 
@@ -233,7 +233,7 @@ class Tooltip extends StatefulNode<RemainingData[], HTMLDivElement> {
                 })
 
                 const valueCell = document.createElement('td')
-                valueCell.innerText = formatPeriodCommon(item.remaining, true)
+                valueCell.innerText = fmtDuration(item.remaining)
                 mountStyle(valueCell, {
                     fontWeight: 'bold',
                     whiteSpace: 'nowrap',

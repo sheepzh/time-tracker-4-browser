@@ -28,6 +28,12 @@
             }
         },
         "followBrowser": "Follow browser",
+        "incorrectPassword": "Incorrect password",
+        "dataLock": {
+            "unlock": "Unlock",
+            "tip": "Enter the data password to view the data",
+            "durationLabel": "Unlock for {slot}"
+        },
         "allowUnblocking": "Allow unblocking",
         "unlimited": "Unlimited"
     },
@@ -60,6 +66,7 @@
             }
         },
         "followBrowser": "跟随浏览器",
+        "incorrectPassword": "密码错误",
         "allowUnblocking": "可解锁",
         "unlimited": "无限制"
     },
@@ -89,7 +96,8 @@
                 "merged": "合并"
             }
         },
-        "followBrowser": "ブラウザと同じ"
+        "followBrowser": "ブラウザと同じ",
+        "incorrectPassword": "間違ったパスワード"
     },
     "zh_TW": {
         "merge": {
@@ -118,7 +126,8 @@
                 "merged": "合併網站"
             }
         },
-        "followBrowser": "跟隨瀏覽器"
+        "followBrowser": "跟隨瀏覽器",
+        "incorrectPassword": "密碼錯誤"
     },
     "pt_PT": {
         "merge": {
@@ -146,7 +155,8 @@
                 "merged": "agrupado"
             }
         },
-        "followBrowser": "Usar do navegador"
+        "followBrowser": "Usar do navegador",
+        "incorrectPassword": "Palavra-passe incorreta"
     },
     "uk": {
         "merge": {
@@ -177,6 +187,7 @@
             }
         },
         "followBrowser": "Як у браузері",
+        "incorrectPassword": "Неправильний пароль",
         "allowUnblocking": "Дозволити розблокування",
         "unlimited": "Без обмежень"
     },
@@ -207,7 +218,8 @@
                 "merged": "uniti"
             }
         },
-        "followBrowser": "Segui browser"
+        "followBrowser": "Segui browser",
+        "incorrectPassword": "Password non e corretta"
     },
     "es": {
         "merge": {
@@ -235,7 +247,8 @@
                 "merged": "fusionado"
             }
         },
-        "followBrowser": "Igual que el navegador"
+        "followBrowser": "Igual que el navegador",
+        "incorrectPassword": "Contraseña incorrecta"
     },
     "de": {
         "merge": {
@@ -266,6 +279,7 @@
             }
         },
         "followBrowser": "Browser verfolgen",
+        "incorrectPassword": "Falsches Passwort",
         "allowUnblocking": "Freigabe erlauben",
         "unlimited": "Unbegrenzt"
     },
@@ -298,6 +312,7 @@
             }
         },
         "followBrowser": "Suivre le navigateur",
+        "incorrectPassword": "Mot de passe incorrect",
         "allowUnblocking": "Permettre le déblocage",
         "unlimited": "Illimité"
     },
@@ -327,7 +342,8 @@
                 "merged": "соединено"
             }
         },
-        "followBrowser": "Как в браузере"
+        "followBrowser": "Как в браузере",
+        "incorrectPassword": "Неправильный пароль"
     },
     "ar": {
         "merge": {
@@ -355,7 +371,8 @@
                 "merged": "اندمجت"
             }
         },
-        "followBrowser": "نفس وضع المتصفح"
+        "followBrowser": "نفس وضع المتصفح",
+        "incorrectPassword": "كلمة المرور غير صحيحة"
     },
     "tr": {
         "merge": {
@@ -383,7 +400,8 @@
                 "merged": "birleştirildi"
             }
         },
-        "followBrowser": "Tarayıcıyı takip et"
+        "followBrowser": "Tarayıcıyı takip et",
+        "incorrectPassword": "Hatalı şifre"
     },
     "pl": {
         "merge": {
@@ -414,6 +432,7 @@
             }
         },
         "followBrowser": "Śledź przeglądarkę",
+        "incorrectPassword": "Nieprawidłowe hasło",
         "allowUnblocking": "Zezwól na odblokowanie",
         "unlimited": "Bez ograniczeń"
     }

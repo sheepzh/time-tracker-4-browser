@@ -10,7 +10,7 @@ import DialogSop from "@app/components/common/DialogSop"
 import { initDialogSopContext } from '@app/components/common/DialogSop/context'
 import { t } from '@app/locale'
 import { Delete } from "@element-plus/icons-vue"
-import { BIRTHDAY, formatTimeYMD } from '@util/time'
+import { BIRTHDAY_STR, formatTimeYMD } from '@pages/util/time'
 import { ElButton } from "element-plus"
 import { defineComponent, ref } from "vue"
 import ClientTable from '../ClientTable'
@@ -23,10 +23,8 @@ const STEP_TITLES = [
 ]
 
 async function fetchStatResult(client: tt4b.backup.Client): Promise<StatResult> {
-    const { id: specCid, maxDate, minDate = BIRTHDAY } = client
-    const start = minDate ?? BIRTHDAY
-    const end = maxDate ?? formatTimeYMD(Date.now())
-    const remoteRows = await queryBackup({ specCid, start, end })
+    const { id: specCid, minDate = BIRTHDAY_STR, maxDate = formatTimeYMD(Date.now()) } = client
+    const remoteRows = await queryBackup({ specCid, start: minDate, end: maxDate })
     const siteSet: Set<string> = new Set()
     remoteRows?.forEach(row => {
         const { host } = row || {}

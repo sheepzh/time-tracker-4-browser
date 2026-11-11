@@ -6,7 +6,7 @@
  */
 
 import { useCountUp } from '@hooks'
-import { tNum } from '@i18n'
+import { tNum } from '@app/locale'
 import { defineComponent } from "vue"
 
 const NumberGrow = defineComponent<{ value: number, duration?: number }>(props => {

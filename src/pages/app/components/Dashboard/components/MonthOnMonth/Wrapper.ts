@@ -1,7 +1,7 @@
+import { ptFmt } from '@app/locale'
 import { getCompareColor, getDiffColor, tooltipDot } from "@app/util/echarts"
-import { cvt2LocaleDate } from '@app/util/time'
 import { EchartsWrapper } from "@hooks"
-import { formatPeriodCommon } from "@util/time"
+import { cvt2LocaleDate, fmtDur } from '@pages/util/time'
 import type {
     BarSeriesOption, ComposeOption, GridComponentOption, LegendComponentOption, TooltipComponentOption,
 } from "echarts"
@@ -23,6 +23,7 @@ const isDataExtend = createObjectGuard<DataExtend>({
 function optionOf(lastPeriodItems: Row[], thisPeriodItems: Row[], domWidth: number): EcOption {
     const [color1, color2] = getCompareColor()
     const [incColor, decColor] = getDiffColor()
+    const deltaFmt = ptFmt(1, { displaySign: true })
 
     return {
         tooltip: {
@@ -35,14 +36,12 @@ function optionOf(lastPeriodItems: Row[], thisPeriodItems: Row[], domWidth: numb
                 const [thisColor, lastColor] = params.map(v => v.color)
                 const { date: thisDate, total: thisVal } = thisItem || {}
                 const { date: lastDate, total: lastVal } = lastItem || {}
-                const lastStr = `${tooltipDot(lastColor)}&emsp;${cvt2LocaleDate(lastDate)}&emsp;<b>${formatPeriodCommon(lastVal ?? 0)}</b>`
-                let thisStr = `${tooltipDot(thisColor)}&emsp;${cvt2LocaleDate(thisDate)}&emsp;<b>${formatPeriodCommon(thisVal ?? 0)}</b>`
+                const lastStr = `${tooltipDot(lastColor)}&emsp;${cvt2LocaleDate(lastDate)}&emsp;<b>${fmtDur(lastVal ?? 0)}</b>`
+                let thisStr = `${tooltipDot(thisColor)}&emsp;${cvt2LocaleDate(thisDate)}&emsp;<b>${fmtDur(thisVal ?? 0)}</b>`
                 if (lastVal && thisVal) {
-                    const delta = (thisVal - lastVal) / lastVal * 100
-                    let deltaStr = delta.toFixed(1) + '%'
-                    if (delta >= 0) deltaStr = '+' + deltaStr
-                    const fontColor = delta >= 0 ? incColor : decColor
-                    thisStr += `&emsp;<font style="color: ${fontColor};">${deltaStr}</font>`
+                    const deltaPt = (thisVal - lastVal) / lastVal
+                    const fontColor = deltaPt >= 0 ? incColor : decColor
+                    thisStr += `&emsp;<font style="color: ${fontColor};">${deltaFmt.format(deltaPt)}</font>`
                 }
                 return `${thisStr}<br/>${lastStr}`
             },

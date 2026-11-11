@@ -1,8 +1,7 @@
 import packageInfo, { AUTHOR_EMAIL } from "@/package"
-import { t } from '@app/locale'
+import { locale, t } from '@app/locale'
 import { css } from '@emotion/css'
 import { MediaSize, useMediaSize } from '@hooks'
-import { locale } from "@i18n"
 import { Flex } from '@pages/components'
 import { Coffee, GitHub } from '@pages/icons'
 import { rateClicked } from '@pages/util/rate'

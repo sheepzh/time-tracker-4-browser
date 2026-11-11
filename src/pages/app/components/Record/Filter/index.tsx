@@ -9,7 +9,7 @@ import { CategoryFilter, DateRangeFilter, InputFilter, TimeFormatFilter } from '
 import { t } from '@app/locale'
 import { Flex } from '@pages/components'
 import { ElDatePickerShortcut } from '@pages/element-ui/types'
-import { daysAgo } from "@util/time"
+import { daysAgo } from '@pages/util/time'
 import { defineComponent } from "vue"
 import { useRecordFilter } from "../context"
 import BatchDelete from "./BatchDelete"

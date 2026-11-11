@@ -1,6 +1,6 @@
-import { dateTimeFmt } from '@app/locale'
 import { getLineSeriesPalette } from "@app/util/echarts"
-import { periodFormatter } from '@app/util/time'
+import { dateTimeFmt } from '@app/locale'
+import { fmtDur } from '@pages/util/time'
 import { EchartsWrapper } from "@hooks"
 import type { ComposeOption, GridComponentOption, LineSeriesOption, TooltipComponentOption } from "echarts"
 import { formatXAxisTime, generateGridOption } from "../common"
@@ -40,7 +40,7 @@ const generateOption = (biz: BizOption): EcOption => {
                 const [, total, , end] = param?.data as number[]
                 return `
                     <div>${end ? dateTimeFmt().format(end) : ''}</div>
-                    <div><b>${periodFormatter(total, { format: timeFormat })}</b></div>
+                    <div><b>${fmtDur(total, { format: timeFormat })}</b></div>
                 `
             },
         },

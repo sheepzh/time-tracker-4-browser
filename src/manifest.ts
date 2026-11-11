@@ -23,6 +23,7 @@ const _default: chrome.runtime.ManifestV3 = {
     default_locale: 'en',
     homepage_url: homepage,
     manifest_version: 3,
+    minimum_chrome_version: "144",
     icons: {
         16: "static/images/icon-16.png",
         48: "static/images/icon-48.png",

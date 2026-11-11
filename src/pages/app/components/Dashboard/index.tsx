@@ -6,10 +6,9 @@
  */
 
 import RemoteFloat from '@app/Layout/RemoteFloat'
-import { t } from "@app/locale"
+import { isTranslatingLocale, locale, t } from "@app/locale"
 import { HELP_ROUTE } from '@app/router/constants'
 import { MediaSize, useMediaSize, useRequest, useXsState } from "@hooks"
-import { isTranslatingLocale, locale } from "@i18n"
 import { Flex } from '@pages/components'
 import { rateClicked, recommendRate } from '@pages/util/rate'
 import { REVIEW_PAGE } from "@util/constant/url"

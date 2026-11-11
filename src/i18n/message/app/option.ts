@@ -42,6 +42,8 @@ export type OptionMessage = {
         weekStartAsNormal: string
         storage: string
         storageConfirm: string
+        dataPsw: string
+        dataPswReset: string
     }
     limit: {
         prompt: string
@@ -57,8 +59,6 @@ export type OptionMessage = {
             }
             strictTitle: string
             strictContent: string
-            pswFormLabel: string
-            pswFormAgain: string
             twoFaTitle: string
             twoFaScanHint: string
             twoFaCopyLink: string
@@ -112,6 +112,10 @@ export type OptionMessage = {
     accessibility: {
         title: string
         chartDecal: string
+    }
+    psw: {
+        label: string
+        labelAgain: string
     }
     notification: {
         title: string

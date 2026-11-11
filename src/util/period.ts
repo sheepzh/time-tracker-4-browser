@@ -5,10 +5,10 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getDayLength, MILL_PER_MINUTE } from "./time"
+import { MILL_PER_MINUTE } from "./time"
 
 export const MINUTE_PER_PERIOD = 15
-const PERIOD_PER_DATE = 24 * 60 / MINUTE_PER_PERIOD
+export const PERIOD_PER_DATE = 24 * 60 / MINUTE_PER_PERIOD
 export const MAX_PERIOD_ORDER = PERIOD_PER_DATE - 1
 const MILL_PER_PERIOD = MINUTE_PER_PERIOD * MILL_PER_MINUTE
 
@@ -56,42 +56,4 @@ export function rowOf(endKey: tt4b.period.Key, duration?: number, milliseconds?:
     const endTime = endStart.getTime() + MILL_PER_PERIOD
     const startTime = duration === 1 ? endStart.getTime() : endStart.getTime() - (duration - 1) * MILL_PER_PERIOD
     return { startTime, endTime, milliseconds, date }
-}
-
-function generateOrderMap(data: tt4b.period.Row[], periodSize: number): Map<number, number> {
-    const map: Map<number, number> = new Map()
-    data.forEach(item => {
-        const key = Math.floor(startOrderOfRow(item) / periodSize)
-        const val = map.get(key) || 0
-        map.set(key, val + item.milliseconds)
-    })
-    return map
-}
-
-function startOrderOfRow(row: tt4b.period.Row): number {
-    const d = new Date(row.startTime)
-    return (d.getHours() * 60 + d.getMinutes()) / MINUTE_PER_PERIOD
-}
-
-function cvt2AverageResult(map: Map<number, number>, periodSize: number, dateNum: number): tt4b.period.Row[] {
-    const result: tt4b.period.Row[] = []
-    let period = keyOf(new Date(), 0)
-    for (let i = 0; i < PERIOD_PER_DATE / periodSize; i++) {
-        const key = period.order / periodSize
-        const val = map.get(key) ?? 0
-        const averageMill = Math.round(val / dateNum)
-        result.push(rowOf(after(period, periodSize - 1), periodSize, averageMill))
-        period = after(period, periodSize)
-    }
-    return result
-}
-
-export function averageByDay(data: tt4b.period.Row[], periodSize: number): tt4b.period.Row[] {
-    if (!data?.length) return []
-    const rangeStart = data[0]?.startTime
-    const rangeEnd = data[data.length - 1]?.endTime
-    if (!rangeStart || !rangeEnd) return []
-    const dateNum = getDayLength(rangeStart, rangeEnd) || 1
-    const map = generateOrderMap(data, periodSize)
-    return cvt2AverageResult(map, periodSize, dateNum)
 }

@@ -7,7 +7,7 @@
 
 import type { StatCondition } from "@db/stat-database"
 import { identifyStatKey } from "@util/stat"
-import { BIRTHDAY, formatTimeYMD } from "@util/time"
+import { BIRTHDAY_STR, formatTimeYMD } from "@util/time"
 import processor from "../backup/processor"
 import { cvt2SiteRow } from "./common"
 
@@ -35,7 +35,7 @@ export async function processRemote(origin: tt4b.stat.SiteRow[], param?: StatCon
     } else {
         start = date
     }
-    start = start ?? BIRTHDAY
+    start = start ?? BIRTHDAY_STR
     end = end ?? formatTimeYMD(Date.now())
     const remote = await processor.query({ excludeLocal: true, start, end })
     remote.filter(predicate).forEach(row => processRemoteRow(originMap, row))

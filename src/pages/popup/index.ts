@@ -6,10 +6,10 @@
  */
 
 import { getOption } from "@api/sw/option"
-import { initLocale } from "@i18n"
 import { createElApp } from '@pages/element-ui/app'
 import { processDarkMode } from '@pages/util/dark-mode'
 import { initEcharts } from "@pages/util/echarts"
+import { initLocale } from "@popup/locale"
 import { isResponse, type FrameRequest } from "@popup/types"
 import Main from "./Main"
 import initRouter from "./router"

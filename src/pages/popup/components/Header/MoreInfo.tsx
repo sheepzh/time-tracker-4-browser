@@ -20,13 +20,13 @@ const isCommand = createStringUnionGuard<Command>(...ALL_CMDS)
 
 type ItemLinkProps = {
     icon: Component
-    text: string
+    text: I18nKey
     iconColor?: ColorVariant
 }
 const ItemLink: FunctionalComponent<ItemLinkProps> = ({ icon, text, iconColor }) => (
     <Flex gap={2} align='center'>
         <ElIcon color={iconColor ? getColor(iconColor) : undefined}>{h(icon)}</ElIcon>
-        {text}
+        {t(text)}
     </Flex>
 )
 
@@ -35,7 +35,7 @@ type Config = ItemLinkProps & {
 }
 
 const createConfig = (text: I18nKey, icon: Component, url: string): Config => ({
-    text: t(text),
+    text,
     icon,
     handler: () => createTab(url)
 })
@@ -44,7 +44,7 @@ const REGISTRY: Record<Command, Config> = {
     github: createConfig(msg => msg.base.sourceCode, GitHub, SOURCE_CODE_PAGE),
     changelog: createConfig(msg => msg.base.changeLog, Collection, CHANGE_LOG_PAGE),
     rate: {
-        text: t(msg => msg.header.rating),
+        text: msg => msg.header.rating,
         icon: Heart,
         iconColor: "danger",
         handler: () => {

@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { t } from '@app/locale'
+import { ptFmt, t } from '@app/locale'
 import { sum } from "@util/array"
 import { ElTable, ElTableColumn } from "element-plus"
 import { type FunctionalComponent } from "vue"
@@ -16,18 +16,14 @@ type Row = {
     percent?: string
 }
 
-const CLIENT_NAME = t(msg => msg.record.remoteReading.table.client)
-const VALUE = t(msg => msg.record.remoteReading.table.value)
-const LOCAL_DATA = t(msg => msg.record.remoteReading.table.localData)
-const PERCENTAGE = t(msg => msg.record.remoteReading.table.percentage)
-
 function computeRows(data: tt4b.stat.RemoteCompositionVal[]): Row[] {
     const rows: Row[] = data.map(e => typeof e === 'number'
-        ? { name: LOCAL_DATA, value: e || 0 }
-        : { name: e.cname || e.cid, value: e.value }
+        ? { name: t(msg => msg.record.remoteReading.table.localData), value: e }
+        : { name: e.cname ?? e.cid, value: e.value }
     )
     const total = sum(rows.map(row => row.value))
-    total && rows.forEach(row => row.percent = (row.value / total * 100).toFixed(2) + ' %')
+    const fmt = ptFmt(2)
+    total && rows.forEach(row => row.percent = fmt.format(row.value / total))
     rows.sort((a, b) => b.value - a.value)
     return rows
 }
@@ -41,19 +37,19 @@ const CompositionTable: FunctionalComponent<Props> = ({ data, formatter }) => (
     <div style={{ width: "400px" }}>
         <ElTable data={computeRows(data)} size="small" border>
             <ElTableColumn
-                label={CLIENT_NAME}
+                label={t(msg => msg.record.remoteReading.table.client)}
                 formatter={({ name }: Row) => name}
                 align="center"
                 width={150}
             />
             <ElTableColumn
-                label={VALUE}
+                label={t(msg => msg.record.remoteReading.table.value)}
                 formatter={({ value }: Row) => formatter?.(value) ?? String(value)}
                 align="center"
                 width={150}
             />
             <ElTableColumn
-                label={PERCENTAGE}
+                label={t(msg => msg.record.remoteReading.table.percentage)}
                 align="center"
                 formatter={({ percent }: Row) => percent ?? ''}
                 width={100}

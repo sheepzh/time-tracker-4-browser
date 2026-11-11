@@ -1,7 +1,6 @@
 import { createNotification } from "@api/chrome/notifications"
 import { hasPerm, requestPerm } from "@api/chrome/permission"
-import { t } from '@bg/i18n'
-import { formatPeriodCommon } from '@util/time'
+import { fmtDuration, t } from '@bg/i18n'
 import type { NotificationData, NotificationRequest, Notifier } from '../types'
 
 /**
@@ -40,7 +39,7 @@ export default class BrowserNotifier implements Notifier {
         const appName = t(msg => msg.meta.name)
         const calendar = t(msg => msg.calendar.range[cycle === 'daily' ? 'yesterday' : 'lastWeek'])
         const title = `${appName} - ${calendar}`
-        const focusStr = formatPeriodCommon(focus, true)
+        const focusStr = fmtDuration(focus)
         const message = t(msg => msg.notification.dailySummary, { focus: focusStr, visit, siteCount })
 
         await createNotification('time', { type: 'basic', title, message })

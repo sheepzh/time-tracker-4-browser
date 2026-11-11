@@ -6,18 +6,18 @@
  */
 import { isAllowedFileSchemeAccess } from "@api/chrome/runtime"
 import { sendMsg2Runtime } from '@api/sw/common'
-import { t } from '@app/locale'
+import { locale, t, tWeekDays } from '@app/locale'
 import { useManualRequest, usePermissionCheck, useRequest } from '@hooks'
-import { locale, tWeekDays } from "@i18n"
 import { rotate } from "@util/array"
 import { IS_FIREFOX, IS_MOBILE } from "@util/constant/environment"
 import { DEFAULT_TRACKING } from "@util/constant/option"
 import { MILL_PER_SECOND } from "@util/time"
 import { ElMessage, ElMessageBox, ElSelect, ElSwitch, ElTimePicker, ElTooltip } from "element-plus"
 import { computed, defineComponent } from "vue"
-import { OptionItem, OptionLines, OptionTag, OptionTooltip } from '../components'
-import type { CategoryInstance } from '../types'
-import { useOption } from "../useOption"
+import { OptionItem, OptionLines, OptionTag, OptionTooltip } from '../../components'
+import type { CategoryInstance } from '../../types'
+import { useOption } from "../../useOption"
+import DataPassword from "./DataPassword"
 
 const ALL_STORAGES: Record<tt4b.option.StorageType, string> = {
     classic: 'chrome.storage.local',
@@ -39,6 +39,7 @@ function copy(target: tt4b.option.TrackingOption, source: Readonly<tt4b.option.T
     target.autoPauseTracking = source.autoPauseTracking
     target.autoPauseInterval = source.autoPauseInterval
     target.storage = source.storage
+    target.dataPassword = source.dataPassword
 }
 
 const _default = defineComponent((_props, ctx) => {
@@ -49,10 +50,12 @@ const _default = defineComponent((_props, ctx) => {
         const {
             autoPauseInterval: oldInterval,
             storage: oldStorage,
+            dataPassword: oldPsw,
         } = option
         copy(option, DEFAULT_TRACKING)
         option.autoPauseInterval = oldInterval
         option.storage = oldStorage
+        option.dataPassword = oldPsw
     }
     ctx.expose({ reset } satisfies CategoryInstance)
 
@@ -60,7 +63,7 @@ const _default = defineComponent((_props, ctx) => {
         type => sendMsg2Runtime('option.changeStorage', type),
         {
             loadingText: 'Data migrating...',
-            onSuccess: (_, type) => option.storage = type,
+            onSuccess: (_1, _2, type) => option.storage = type,
         }
     )
 
@@ -99,6 +102,9 @@ const _default = defineComponent((_props, ctx) => {
     }
 
     return () => <OptionLines>
+        <OptionItem label="{input}">
+            <DataPassword modelValue={option.dataPassword} onChange={val => option.dataPassword = val} />
+        </OptionItem>
         {!IS_MOBILE && <>
             <OptionItem
                 label={msg => msg.option.tracking.autoPauseTrack}

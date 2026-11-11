@@ -7,7 +7,6 @@ type MyRoute =
     | (Omit<RouteRecordSingleView, 'path'> & { path: '/' })
     | (Omit<RouteRecordRedirect, 'redirect'> & { redirect: Path })
 
-// Not to set redirect path for '/', which is managed by menu context
 const createRoutes = (): MyRoute[] => [
     {
         path: '/percentage',
@@ -21,10 +20,12 @@ const createRoutes = (): MyRoute[] => [
     }, {
         path: '/focus',
         component: () => import('./components/Focus'),
+        meta: { noData: true },
     }, {
         // Use to remove warnings of "No match found for location with path '/'"
         path: '/',
         component: { render: () => null },
+        meta: { noData: true },
     }
 ]
 

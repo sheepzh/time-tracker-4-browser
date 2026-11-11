@@ -1,6 +1,6 @@
 import { Flex } from '@pages/components'
+import { fmtDur, MILL_PER_SECOND } from '@pages/util/time'
 import { t } from '@popup/locale'
-import { formatPeriodCommon, MILL_PER_SECOND } from '@util/time'
 import { ElProgress, ElTag, ElText, type TagProps } from 'element-plus'
 import { computed, defineComponent, type StyleValue } from 'vue'
 
@@ -49,7 +49,7 @@ const SessionView = defineComponent<Props>(props => {
                 >
                     <Flex column align='center' gap='.8rem'>
                         <ElText style={{ fontSize: '28px', } satisfies StyleValue}>
-                            {formatPeriodCommon(progress.value[0])}
+                            {fmtDur(progress.value[0])}
                         </ElText>
                         <ElText size='small' type='info'>
                             {progress.value[1].toFixed(1)}%
@@ -61,7 +61,7 @@ const SessionView = defineComponent<Props>(props => {
                 </ElProgress>
             ) : (
                 <ElText style={{ fontSize: '32px', marginTop: '30px' } satisfies StyleValue}>
-                    {formatPeriodCommon(props.elapsed)}
+                    {fmtDur(props.elapsed)}
                 </ElText>
             )}
         </Flex>

@@ -18,16 +18,16 @@ const trackingRoutes: RouteRecordRaw[] = [
         redirect: DASHBOARD_ROUTE,
     }, {
         path: DASHBOARD_ROUTE,
-        component: () => import('../components/Dashboard')
+        component: () => import('../components/Dashboard'),
     }, {
         path: RECORD_ROUTE,
-        component: () => import('../components/Record')
+        component: () => import('../components/Record'),
     }, {
         path: SITE_ROUTE,
-        component: () => import('../components/SiteManage')
+        component: () => import('../components/SiteManage'),
     }, {
         path: SITE_ANALYSIS_ROUTE,
-        component: () => import('../components/Analysis')
+        component: () => import('../components/Analysis'),
     }
 ]
 
@@ -50,9 +50,11 @@ const productivityRoutes: RouteRecordRaw[] = [
     }, {
         path: LIMIT_ROUTE,
         component: () => import('../components/Limit'),
+        meta: { noData: true },
     }, {
         path: FOCUS_ROUTE,
         component: () => import('../components/Focus'),
+        meta: { noData: true },
     }
 ]
 
@@ -62,16 +64,20 @@ const otherRoutes: RouteRecordRaw[] = [
         redirect: '/other/option'
     }, {
         path: OPTION_ROUTE,
-        component: () => import('../components/Option')
+        component: () => import('../components/Option'),
+        meta: { noData: true },
     }, {
         path: MIGRATION_ROUTE,
-        component: () => import('../components/Migration')
+        component: () => import('../components/Migration'),
+        meta: { noData: true },
     }, {
         path: HELP_ROUTE,
         component: () => import('../components/HelpUs'),
+        meta: { noData: true },
     }, {
         path: ABOUT_ROUTE,
         component: () => import('../components/About'),
+        meta: { noData: true },
     },
 ]
 

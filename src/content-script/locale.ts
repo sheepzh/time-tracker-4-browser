@@ -6,6 +6,7 @@
  */
 import { t as t_, type I18nKey as I18nKey_ } from "@i18n"
 import messages, { type CsMessage } from "@i18n/message/cs"
+export { fmtDuration } from "@i18n"
 
 export type I18nKey = I18nKey_<CsMessage>
 

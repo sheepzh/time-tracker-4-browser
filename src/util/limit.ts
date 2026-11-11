@@ -103,6 +103,8 @@ export const dateMinute2Idx = (date: Date): number => {
     return hour * 60 + min
 }
 
+export const FULL_PERIOD: Readonly<tt4b.limit.Period> = [0, 60 * 24]
+
 export const isInPeriod = (point: number, [s, e]: tt4b.limit.Period): boolean => {
     if (s <= e) return point >= s && point <= e
     return point >= s || point <= e
