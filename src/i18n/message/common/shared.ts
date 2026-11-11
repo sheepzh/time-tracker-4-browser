@@ -21,6 +21,12 @@ export type SharedMessage = {
     followBrowser: string
     unlimited: string
     allowUnblocking: string
+    incorrectPassword: string
+    dataLock: {
+        unlock: string
+        tip: string
+        durationLabel: string
+    }
 }
 
 const sharedMessages = resource satisfies Messages<SharedMessage>

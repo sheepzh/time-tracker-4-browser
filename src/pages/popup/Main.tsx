@@ -1,4 +1,4 @@
-import { Flex } from '@pages/components'
+import { DataLock, Flex } from '@pages/components'
 import { defineComponent } from "vue"
 import { RouterView } from "vue-router"
 import Header from "./components/Header"
@@ -13,7 +13,9 @@ const Main = defineComponent(() => {
         <Flex column width='100%' height='100%' gap={10}>
             <Header />
             <Flex flex={1} height={0}>
-                <RouterView />
+                <DataLock>
+                    <RouterView />
+                </DataLock>
             </Flex>
             <Flex justify="space-between" marginBottom={2} marginInline={1}>
                 <Menu />

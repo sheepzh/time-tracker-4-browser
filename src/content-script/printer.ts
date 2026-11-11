@@ -6,8 +6,7 @@
  */
 
 import { trySendMsg2Runtime } from '@api/sw/common'
-import { formatPeriodCommon } from "@util/time"
-import { t } from "./locale"
+import { fmtDuration, t } from "./locale"
 import locationWatcher from './location-watcher'
 
 /**
@@ -21,7 +20,7 @@ export default async function printInfo() {
 
     const param = {
         time: `${time ?? '-'}`,
-        focus: formatPeriodCommon(focus ?? 0),
+        focus: fmtDuration(focus ?? 0),
         host,
     }
     const info0 = t(msg => msg.console.consoleLog, param)

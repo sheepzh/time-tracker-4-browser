@@ -21,6 +21,7 @@ export const DEFAULT_APPEARANCE: tt4b.option.AppearanceRequired = {
 } as const
 
 export const DEFAULT_TRACKING: tt4b.option.TrackingRequired = {
+    dataPassword: '',
     autoPauseTracking: false,
     // 10 minutes
     autoPauseInterval: 600,
@@ -52,7 +53,7 @@ export const DEFAULT_BACKUP: tt4b.option.BackupOption = {
 } as const
 
 export const DEFAULT_ACCESSIBILITY: tt4b.option.AccessibilityOption = {
-    chartDecal: false
+    chartDecal: false,
 } as const
 
 export const DEFAULT_NOTIFICATION: tt4b.option.NotificationOption = {

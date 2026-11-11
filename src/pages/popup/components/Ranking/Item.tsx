@@ -3,12 +3,12 @@ import { Mouse, Timer } from "@element-plus/icons-vue"
 import { useTabGroups } from "@hooks"
 import { Flex, TooltipWrapper } from '@pages/components'
 import { cvtGroupColor } from '@pages/util/style'
+import { DateRange, fmtDur } from '@pages/util/time'
 import { calJumpUrl } from "@popup/components/stat/common"
 import { useCateNameMap } from "@popup/context"
-import { t } from '@popup/locale'
+import { ptFmt, t } from '@popup/locale'
 import { isRemainHost } from "@util/constant/remain-host"
 import { getGroupName, getIconUrl, isCate, isGroup, isNormalSite, isSite } from "@util/stat"
-import { DateRange, formatPeriodCommon } from "@util/time"
 import { ElAvatar, ElCard, ElIcon, ElLink, ElProgress, ElTag, ElText } from "element-plus"
 import { computed, defineComponent, type StyleValue } from "vue"
 import { useStatQuery } from '../stat/context'
@@ -93,7 +93,6 @@ const Item = defineComponent<ItemProps>(props => {
     const { groupMap } = useTabGroups()
 
     const rate = computed(() => props.max ? (props.value?.[query.dimension] ?? 0) / props.max * 100 : 0)
-    const percentage = computed(() => props.total ? (props.value?.[query.dimension] ?? 0) / props.total * 100 : 0)
     const clickable = computed(() => isNormalSite(props.value) && !isRemainHost(props.value.siteKey.host))
     const iconUrl = computed(() => getIconUrl(props.value))
     const iconBgColor = computed(() => {
@@ -106,6 +105,7 @@ const Item = defineComponent<ItemProps>(props => {
     })
 
     const emitJump = () => clickable.value && props.onJump?.()
+    const percentageFmt = ptFmt(2)
 
     return () => (
         <ElCard
@@ -149,7 +149,7 @@ const Item = defineComponent<ItemProps>(props => {
                             size="small"
                             style={{ fontSize: '10px', padding: '1px 3px', height: '16px' }}
                         >
-                            {percentage.value.toFixed(2)}%
+                            {percentageFmt.format(props.total ? (props.value?.[query.dimension] ?? 0) / props.total : 0)}
                         </ElTag>
                     </Flex>
                     <Flex column justify="space-around" flex={1}>
@@ -164,7 +164,7 @@ const Item = defineComponent<ItemProps>(props => {
                                 <ElIcon>
                                     <Timer />
                                 </ElIcon>
-                                {formatPeriodCommon(props.value?.focus ?? 0)}
+                                {fmtDur(props.value?.focus ?? 0, { format: "auto" })}
                             </ElText>
                         </Flex>
                         <ElProgress percentage={rate.value} showText={false} />

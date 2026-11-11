@@ -6,17 +6,16 @@
  */
 import { OptionItem, OptionLines } from '@app/components/Option/components'
 import { useOption } from "@app/components/Option/useOption"
-import { t } from '@app/locale'
-import { processVerification } from "@app/util/limit"
+import { locale, t } from '@app/locale'
 import { Edit } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
-import { locale } from '@i18n'
+import { processVerification } from '@pages/util/limit'
 import { DEFAULT_LIMIT } from "@util/constant/option"
 import { ElButton, ElInput, ElInputNumber, ElMessage, ElMessageBox, ElSelect, ElSwitch, useNamespace } from "element-plus"
 import { defineComponent, FunctionalComponent, type StyleValue } from "vue"
 import type { CategoryInstance } from '../../types'
+import { usePswEdit } from "../../usePswEdit"
 import { use2faSetup } from './use2faSetup'
-import { usePswEdit } from "./usePswEdit"
 import { useVerify } from "./useVerify"
 
 const useLevelSelectStyle = () => {
@@ -99,7 +98,7 @@ const TestButton: FunctionalComponent<{ onClick: NoArgCallback }> = props => (
 const _default = defineComponent((_, ctx) => {
     const { option } = useOption<tt4b.option.LimitOption>({ defaultValue: DEFAULT_LIMIT, copy })
     const { verified, verify } = useVerify(option, true)
-    const { modifyPsw } = usePswEdit({ reset: () => option.limitPassword })
+    const editPsw = usePswEdit()
     const { setup2fa } = use2faSetup()
 
     ctx.expose({
@@ -113,7 +112,9 @@ const _default = defineComponent((_, ctx) => {
             } else if (val === '2fa') {
                 await setup2fa()
             } else if (val === "password") {
-                option.limitPassword = await modifyPsw()
+                const psw = await editPsw()
+                if (!psw) return
+                option.limitPassword = psw
             }
             option.limitLevel = val
         }).catch(e => console.warn("Failed to verify", e))
@@ -121,7 +122,9 @@ const _default = defineComponent((_, ctx) => {
 
     const handlePswEdit = async () => {
         verify().then(async () => {
-            option.limitPassword = await modifyPsw()
+            const psw = await editPsw()
+            if (!psw) return
+            option.limitPassword = psw
             ElMessage.success(t(msg => msg.operation.successMsg))
         }).catch(e => console.warn("Failed to verify", e))
     }

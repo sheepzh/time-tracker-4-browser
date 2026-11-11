@@ -6,7 +6,7 @@
  */
 
 import { getRegularTextColor } from '@pages/util/style'
-import { formatTimeYMD, getDayLength, isSameDay } from "@util/time"
+import { formatTimeYMD, getDayLength, isSameDay } from "@pages/util/time"
 import { type TitleComponentOption } from "echarts/components"
 
 export const generateTitleOption = (text: string): TitleComponentOption => {

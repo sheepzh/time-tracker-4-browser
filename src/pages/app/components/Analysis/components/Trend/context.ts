@@ -8,10 +8,10 @@
 import { getWeekStartDay } from '@api/sw/option'
 import { isCircle, type Circle, type DimensionEntry } from '@app/components/Analysis/types'
 import { localRef, useProvide, useProvider, useRequest } from '@hooks'
-import { locale } from '@i18n'
+import { locale } from '@app/locale'
+import { addDays, daysAgo, formatTimeYMD, getDayLength, getWeekDay, getWeekStartTime } from '@pages/util/time'
 import { max, sum, toMap } from "@util/array"
 import DateIterator from '@util/date-iterator'
-import { addDays, daysAgo, formatTimeYMD, getDayLength, getWeekDay, getWeekStartTime } from "@util/time"
 import { computed, ref, type Ref } from "vue"
 import { useAnalysisRows } from '../../context'
 

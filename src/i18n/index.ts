@@ -5,6 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { isVNode, type VNode } from 'vue'
 import { getUILanguage } from "../api/chrome/i18n"
 import { getOption } from '../api/sw/option'
 import { setDir, setLocale } from "../util/document"
@@ -143,18 +144,17 @@ function getI18nVal<MessageType>(
     return typeof result === 'string' ? result : JSON.stringify(result)
 }
 
+export type TParam = Record<string, string | number | undefined | null>
 type TranslateProps<MessageType> = {
-    key: I18nKey<MessageType>,
-    param?: { [key: string]: string | number }
+    key: I18nKey<MessageType>
+    param?: TParam
 }
 
-function fillWithParam(result: string, param: { [key: string]: string | number }) {
-    if (!result) {
-        return ''
-    }
+function fillWithParam(result: string, param: TParam) {
+    if (!result) return result
     Object.entries(param)
         .filter(([_key, value]) => value !== null && value !== undefined)
-        .forEach(([key, value]) => result = result.replace(`{${key}}`, value.toString()))
+        .forEach(([key, value]) => result = result.replace(`{${key}}`, (value ?? '').toString()))
     return result
 }
 
@@ -164,17 +164,17 @@ export function t<MessageType>(messages: Messages<MessageType>, props: Translate
     return param ? fillWithParam(result, param) : result
 }
 
-export type I18nKey<MessageType> = (messages: MessageType) => any
+export type I18nKey<MessageType> = (messages: MessageType) => string | undefined
 
-export type I18nResultItem<Node> = Node | string
+export type I18nResultItem = VNode | string
 
-const findParamAndReplace = <Node,>(resultArr: I18nResultItem<Node>[], [key, value]: any) => {
+const findParamAndReplace = (resultArr: I18nResultItem[], [key, value]: [string, I18nResultItem]) => {
     const paramPlacement = `{${key}}`
-    const temp: I18nResultItem<Node>[] = []
+    const temp: I18nResultItem[] = []
     resultArr.forEach((item) => {
         if (typeof item === 'string' && item.includes(paramPlacement)) {
-            let splits: I18nResultItem<Node>[] = (item as string).split(paramPlacement)
-            splits = splits.reduce<I18nResultItem<Node>[]>((left, right) => left.length ? left.concat(value, right) : left.concat(right), [])
+            let splits: I18nResultItem[] = item.split(paramPlacement)
+            splits = splits.reduce<I18nResultItem[]>((left, right) => left.length ? left.concat(value, right) : left.concat(right), [])
             temp.push(...splits)
         } else {
             temp.push(item)
@@ -183,30 +183,47 @@ const findParamAndReplace = <Node,>(resultArr: I18nResultItem<Node>[], [key, val
     return temp
 }
 
-type NodeTranslateProps<MessageType, Node> = {
+export type TnParam = Record<string, I18nResultItem> | VNode
+
+export type NodeTranslateProps<MessageType> = {
     key: I18nKey<MessageType>,
-    param: { [key: string]: I18nResultItem<Node> }
+    param?: TnParam
 }
 
 /**
  * Translate with slots for vue
- * I18nResultItemArray of VNodes or strings
  */
-export const tN = <MessageType, Node>(messages: Messages<MessageType>, props: NodeTranslateProps<MessageType, Node>): I18nResultItem<Node>[] => {
-    const { key, param } = props
-    const result = getI18nVal(messages, key)
-    let resultArr: I18nResultItem<Node>[] = [result]
-    if (param) {
-        resultArr = Object.entries(param).reduce(findParamAndReplace, resultArr)
-    }
-    return resultArr
+export const tN = <MessageType>(messages: Messages<MessageType>, props: NodeTranslateProps<MessageType>): I18nResultItem[] | I18nResultItem => {
+    const result = getI18nVal(messages, props.key)
+    let { param } = props
+    isVNode(param) && (param = { slot: param })
+    return param ? Object.entries(param).reduce(findParamAndReplace, [result]) : result
 }
 
 const jsLocale = () => locale.replace('_', '-')
 
 export const tNum = (val: number) => val.toLocaleString(jsLocale())
 
-export const dateFmt = (opt?: Intl.DateTimeFormatOptions) => Intl.DateTimeFormat(jsLocale(), opt)
+type PtFmtOptions = Pick<Intl.NumberFormatOptions, 'roundingMode'> & {
+    displaySign?: boolean
+}
+export const ptFmt = (fraction: number, options?: PtFmtOptions) => new Intl.NumberFormat(jsLocale(), {
+    style: "percent",
+    minimumFractionDigits: fraction,
+    maximumFractionDigits: fraction,
+    roundingMode: options?.roundingMode ?? "halfCeil",
+    signDisplay: options?.displaySign ? 'always' : 'auto',
+})
+
+export const durFmt = () => new Intl.DurationFormat(jsLocale(), { style: "narrow" })
+
+export const unitFmt = (unit: "minute" | "second" | "hour" | "millisecond", fraction?: number) =>
+    new Intl.NumberFormat(
+        jsLocale(),
+        { style: "unit", unit, maximumFractionDigits: fraction, minimumFractionDigits: fraction },
+    )
+
+export const dateFmt = (opt?: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat(jsLocale(), opt)
 
 export const dateTimeFmt = () => dateFmt({
     year: "numeric",
@@ -243,14 +260,31 @@ export const tWeekDays = (): string[] => {
     })
 }
 
-export const tMonths = (): string[] => {
-    const fmt = dateFmt({ month: "short" })
-    return Array.from({ length: 12 }, (_, i) => fmt.format(new Date(2023, i, 1)))
-}
-
 export const tYMD = (): string => {
     const parts = dateFmt({ year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date())
     return parts
         .map(({ type: t, value: v }) => t === 'year' ? 'YYYY' : t === 'month' ? 'MM' : t === 'day' ? 'DD' : v)
         .join('')
+}
+
+const formatUnsignedDuration = (milliseconds: number): string => {
+    const totalSec = Math.floor(milliseconds / 1000)
+    if (!totalSec) return unitFmt('second', 0).format(totalSec)
+    const days = Math.floor(totalSec / 86400)
+    const hours = Math.floor(totalSec / 3600 - days * 24)
+    const minutes = Math.floor(totalSec / 60 - (days * 24 + hours) * 60)
+    const seconds = totalSec - days * 86400 - hours * 3600 - minutes * 60
+    return durFmt().format({ days, hours, minutes, seconds })
+}
+
+export function fmtDuration(milliseconds: number): string {
+    const str = formatUnsignedDuration(Math.abs(milliseconds))
+    return milliseconds < 0 ? '-' + str : str
+}
+
+export function fmtHourMinute(totalMin: number): string {
+    const days = Math.floor(totalMin / 1440)
+    const hours = Math.floor(totalMin / 60) - days * 24
+    const minutes = totalMin % 60
+    return durFmt().format({ days, hours, minutes })
 }

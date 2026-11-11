@@ -24,7 +24,7 @@ export const useScrollRequest = <T>(getter: (pageNo: number, pageSize: number) =
         (pageNo: number) => getter(pageNo, pageSize),
         {
             defaultParam: [1],
-            onSuccess: (list, pageNo) => {
+            onSuccess: (list, _, pageNo) => {
                 list.length && (data.value = [...data.value, ...list])
                 end.value = list.length < pageSize
                 list.length && (queriedPage.value = pageNo)

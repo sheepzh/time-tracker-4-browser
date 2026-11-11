@@ -3,7 +3,7 @@ import { DEFAULT_LIMIT } from '@/util/constant/option'
 import { deleteLimits, listLimits, updateLimits } from "@api/sw/limit"
 import { t } from '@app/locale'
 import type { LimitQuery } from '@app/router/constants'
-import { judgeVerificationRequired, processVerification } from '@app/util/limit'
+import { judgeVerificationRequired, processVerification } from '@pages/util/limit'
 import { useDocumentVisibility, useOperation, useProvide, useProvider, useRequest } from '@hooks'
 import { tryParseInteger } from '@util/number'
 import { ElMessage, ElMessageBox } from "element-plus"

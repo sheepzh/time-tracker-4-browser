@@ -5,28 +5,25 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { type I18nResultItem, type I18nKey as _I18nKey, t as _t, tN as _tN } from "@i18n"
+import { t as _t, tN as _tN, locale, type I18nKey as _I18nKey, type TnParam, type TParam } from "@i18n"
 import messages, { type AppMessage } from "@i18n/message/app"
-import { type VNode } from "vue"
 
 export type I18nKey = _I18nKey<AppMessage>
+export { locale }
 
-export function t(key: I18nKey, param?: any) {
-    const props = { key, param }
-    return _t<AppMessage>(messages, props)
-}
+export const t = (key: I18nKey, param?: TParam) => _t<AppMessage>(messages, { key, param })
 
 /**
  * @since 0.8.8
  */
-export function tWith(key: I18nKey, specLocale: tt4b.Locale, param?: any) {
-    const props = { key, param }
-    return _t<AppMessage>(messages, props, specLocale)
+export function tWith(key: I18nKey, specLocale: tt4b.Locale, param?: TParam) {
+    return _t<AppMessage>(messages, { key, param }, specLocale)
 }
 
-export function tN(key: I18nKey, param?: any): I18nResultItem<VNode>[] {
-    return _tN<AppMessage, VNode>(messages, { key, param })
-}
+export const tN = (key: I18nKey, param?: TnParam) => _tN<AppMessage>(messages, { key, param })
 
-export { dateFmt, dateTimeFmt, tDateRangeSeparator, tMonths, tWeekDays, tYMD } from "@i18n"
+export {
+    ALL_LOCALES, dateFmt, dateTimeFmt, initLocale, isTranslatingLocale, localeSameAsBrowser, ptFmt,
+    tDateRangeSeparator, tNum, tWeekDays, tYMD, unitFmt
+} from "@i18n"
 

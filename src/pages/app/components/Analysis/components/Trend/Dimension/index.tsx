@@ -9,7 +9,7 @@ import { formatValue } from "@app/components/Analysis/util"
 import { GRID_CELL_STYLE } from '@app/components/common/grid'
 import { KanbanIndicatorCell } from '@app/components/common/kanban'
 import type { RingValue, ValueFormatter } from '@app/components/common/kanban/types'
-import { cvt2LocaleDate } from '@app/util/time'
+import { cvt2LocaleDate } from '@pages/util/time'
 import { useEcharts, useXsState } from '@hooks'
 import { Box, Flex } from '@pages/components'
 import { defineComponent } from "vue"

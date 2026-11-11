@@ -17,11 +17,7 @@ type MakeRequired<T, K extends keyof T = keyof T> = T extends any
     : never
 
 type PartialPick<T, K extends keyof T> = Partial<Pick<T, K>>
-
 type RequiredPick<T, K extends keyof T> = Required<Pick<T, K>>
-
-type Exactly<T, U> = T & Record<Exclude<keyof U, keyof T>, never>
-
 type RequiredKeys<T> = { [K in keyof T]-?: {} extends Pick<T, K> ? never : K }[keyof T]
 type OptionalKeys<T> = { [K in keyof T]-?: {} extends Pick<T, K> ? K : never }[keyof T]
 type MakeOptionalUndefined<T> = {
@@ -29,6 +25,9 @@ type MakeOptionalUndefined<T> = {
 } & {
     [K in OptionalKeys<T>]-?: T[K] | undefined
 } extends infer O ? { [K in keyof O]: O[K] } : never
+type KeyOf<Obj, Val> = {
+    [K in keyof Obj]-?: NonNullable<Obj[K]> extends Val ? K : never
+}[keyof Obj]
 
 /**
  * Tuple with length

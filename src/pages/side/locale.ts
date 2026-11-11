@@ -10,7 +10,6 @@ import messages, { type SideMessage } from "@i18n/message/side"
 
 type I18nKey = _I18nKey<SideMessage>
 
-export const t = (key: I18nKey, param?: any) => {
-    const props = { key, param }
-    return _t<SideMessage>(messages, props)
-}
+export const t = (key: I18nKey, param?: any) => _t<SideMessage>(messages, { key, param })
+
+export { initLocale, ptFmt } from "@i18n"

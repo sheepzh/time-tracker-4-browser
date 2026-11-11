@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { initLocale } from "@app/locale"
 import { listenMediaSizeChange } from "@hooks"
-import { initLocale } from "@i18n"
 import { createElApp } from "@pages/element-ui/app"
 import { initDarkTheme } from "@pages/util/dark-mode"
 import { initEcharts } from "../util/echarts"

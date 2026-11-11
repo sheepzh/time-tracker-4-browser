@@ -11,8 +11,8 @@ import {
 } from "@api/gist"
 import { SOURCE_CODE_PAGE } from "@util/constant/url"
 import MonthIterator from "@util/month-iterator"
-import { getBirthday, parseTime } from "@util/time"
-import { calcAllBuckets, divide2Buckets, gistData2Rows, type GistData } from "./compressor"
+import { BIRTHDAY, parseTime } from "@util/time"
+import { divide2Buckets, gistData2Rows, type GistData } from "./compressor"
 
 const TIMER_META_GIST_DESC = "Used for timer to save meta info. Don't change this description :)"
 const TIMER_DATA_GIST_DESC = "Used for timer to save stat data. Don't change this description :)"
@@ -97,21 +97,17 @@ export default class GistCoordinator implements tt4b.backup.Coordinator<Cache> {
     }
 
     async download(context: tt4b.backup.CoordinatorContext<Cache>, start: string, end: string, targetCid?: string): Promise<tt4b.core.Row[]> {
-        const startTime = parseTime(start) ?? getBirthday()
-        const endTime = parseTime(end) ?? new Date()
-        const monthIterator = new MonthIterator(startTime, endTime)
+        const monthIterator = new MonthIterator(parseTime(start), parseTime(end))
         const result: tt4b.core.Row[] = []
-        await Promise.all([...monthIterator].map(async yearMonth => {
+        for (const yearMonth of monthIterator) {
             const filename = bucket2filename(yearMonth, targetCid || context.cid)
-            const gist: Gist = await this.getStatGist(context)
+            const gist = await this.getStatGist(context)
             const file = gist.files[filename]
-            if (file) {
-                const gistData = await getJsonFileContent<GistData>(file)
-                const rows = gistData && gistData2Rows(yearMonth, gistData)
-                rows?.filter(row => filterDate(row, start, end))
-                    ?.forEach(row => result.push(row))
-            }
-        }))
+            if (!file) continue
+            const gistData = await getJsonFileContent<GistData>(file)
+            const rows = gistData ? gistData2Rows(yearMonth, gistData) : []
+            result.push(...rows.filter(row => filterDate(row, start, end)))
+        }
         return result
     }
 
@@ -203,8 +199,8 @@ export default class GistCoordinator implements tt4b.backup.Coordinator<Cache> {
     async clear(context: tt4b.backup.CoordinatorContext<Cache>, client: tt4b.backup.Client): Promise<void> {
         // 1. Find the names of file to delete
         const { minDate, maxDate, id: cid } = client || {}
-        const allBuckets = calcAllBuckets(minDate, maxDate)
-        const allFileNames = allBuckets.map(bucket => bucket2filename(bucket, cid))
+        const allBuckets = new MonthIterator(parseTime(minDate) ?? BIRTHDAY, parseTime(maxDate) ?? new Date())
+        const allFileNames = [...allBuckets].map(bucket => bucket2filename(bucket, cid))
         const gist = await this.getStatGist(context)
         const toDelete = Object.keys(gist?.files || {}).filter(fileName => allFileNames.includes(fileName))
         // 2. delete

@@ -6,12 +6,11 @@
  */
 
 import { type I18nKey, t } from '@app/locale'
-import { periodFormatter } from '@app/util/time'
+import { fmtDur, formatTimeYMD } from '@pages/util/time'
 import { exportCsv as exportCsv_, exportJson as exportJson_ } from "@util/file"
 import { truthy } from '@util/lang'
 import { CATE_NOT_SET_ID } from "@util/site"
 import { getAlias, getGroupName, getHost, getRelatedCateId, isGroup } from "@util/stat"
-import { formatTimeYMD } from '@util/time'
 import type { RecordFilterOption } from "./types"
 
 type ExportInfo = {
@@ -46,7 +45,7 @@ const generateJsonData = ({ rows, categories, groupMap }: ExportParam): ExportIn
     date: row.date,
     alias: getAlias(row),
     cate: getCateName(row, categories),
-    focus: periodFormatter(row.focus, { format: 'second', hideUnit: true }),
+    focus: fmtDur(row.focus, { format: 'second', hideUnit: true }),
     time: row.time
 }))
 
@@ -116,7 +115,7 @@ const CSV_COLUMN_CONFIGS: Record<CsvColumn, CsvColumnConfig> = {
     focus: {
         visible: () => true,
         i18n: msg => msg.item.focus,
-        formatter: row => periodFormatter(row.focus, { format: 'second', hideUnit: true }),
+        formatter: row => fmtDur(row.focus, { format: 'second', hideUnit: true }),
     },
     time: {
         visible: () => true,

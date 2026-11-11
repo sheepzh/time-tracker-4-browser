@@ -922,6 +922,12 @@ declare namespace tt4b {
              * @since 4.0.0
              */
             storage: StorageType
+            /**
+             * The password to view the data of data pages, empty means no password
+             *
+             * @since 4.7.0
+             */
+            dataPassword: string
         }
 
         type TrackingRequired = MakeRequired<TrackingOption, 'weekStart'>

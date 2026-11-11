@@ -12,7 +12,7 @@ export type RequestOption<T, P extends any[]> = {
     loadingOptions?: LoadingOptions
     defaultParam?: P
     deps?: WatchSource<unknown> | WatchSource<unknown>[]
-    onSuccess?: (result: T, ...p: P) => void,
+    onSuccess?: (result: T, before: T | undefined, ...p: P) => void,
     onError?: (e: unknown) => void
 }
 
@@ -56,8 +56,9 @@ export function useRequest<P extends any[], T>(
         const loadingInstance = await createLoading?.()
         try {
             const value = await getter?.(...p)
+            const before = data.value
             data.value = value
-            onSuccess?.(value, ...p)
+            onSuccess?.(value, before, ...p)
         } catch (e) {
             console.log("Errored when requesting", e)
             onError?.(e)

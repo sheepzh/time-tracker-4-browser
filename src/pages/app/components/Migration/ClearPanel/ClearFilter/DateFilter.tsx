@@ -5,17 +5,16 @@
  * https://opensource.org/licenses/MIT
  */
 import { t, tDateRangeSeparator, tN, tYMD } from "@app/locale"
-import { cvt2LocaleDate } from '@app/util/time'
 import { getDatePickerIconSlots } from '@pages/element-ui/rtl'
 import type { ElDatePickerShortcut } from '@pages/element-ui/types'
-import { addDays, getBirthday, getYesterday } from "@util/time"
+import { addDays, BIRTHDAY, cvt2LocaleDate } from '@pages/util/time'
 import { ElDatePicker } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
 
 type Props = ModelValue<[Date, Date] | undefined>
 const _default = defineComponent<Props>(props => {
-    const birthday = getBirthday()
-    const yesterday = getYesterday()
+    const birthday = BIRTHDAY
+    const yesterday = addDays(Date.now(), -1)
     const shortcuts: ElDatePickerShortcut[] = [{
         text: t(msg => msg.calendar.range.tillYesterday),
         value: [birthday, yesterday],

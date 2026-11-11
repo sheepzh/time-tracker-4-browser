@@ -1,8 +1,8 @@
 import { EchartsWrapper } from '@hooks'
 import { getColor, getInfoColor, getRegularTextColor, getSecondaryTextColor } from '@pages/util/style'
-import { t } from '@popup/locale'
+import { fmtDur, MILL_PER_SECOND } from '@pages/util/time'
+import { dateFmt, t } from '@popup/locale'
 import { clamp } from '@util/number'
-import { formatPeriodCommon, MILL_PER_SECOND } from '@util/time'
 import type { ComposeOption, GaugeSeriesOption, LegendComponentOption, PieSeriesOption, TitleComponentOption, TooltipComponentOption } from 'echarts'
 
 type EcOption = ComposeOption<
@@ -70,10 +70,10 @@ const createGauge = (options: GaugeOptions): GaugeSeriesOption => {
     const percent = limit ? clamp((used * 100) / limit, 0, 100) : 40
     const percentText = `${percent.toFixed(1)}%`
     const usedText = name === 'time'
-        ? formatPeriodCommon(used, true)
+        ? fmtDur(used)
         : t(msg => msg.shared.limit.visits, { n: used })
     const progressText = name === 'time'
-        ? `${usedText}/${formatPeriodCommon(limit, true)}`
+        ? `${usedText}/${fmtDur(limit)}`
         : t(msg => msg.shared.limit.visits, { n: `${used}/${limit}` })
 
     return {
@@ -145,7 +145,7 @@ class Wrapper extends EchartsWrapper<tt4b.limit.Item, EcOption> {
         const [timeUsed, timeLimit] = time
         const timeMax = timeLimit ? timeLimit * MILL_PER_SECOND : 0
         const timeLabel = timeMax
-            ? t(msg => msg.content.limit.remain, { remaining: formatPeriodCommon(Math.max(0, timeMax - timeUsed), true) })
+            ? t(msg => msg.content.limit.remain, { remaining: fmtDur(Math.max(0, timeMax - timeUsed)) })
             : noLimitText
         const timeOpts: GaugeOptions = {
             name: 'time', center: leftPos,
@@ -195,8 +195,9 @@ class Wrapper extends EchartsWrapper<tt4b.limit.Item, EcOption> {
             .filter(({ start, end }) => start < end)
             .sort((a, b) => a.start - b.start)
 
-        const fmt = (m: number) =>
-            `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`
+        const timeFmt = dateFmt({ hour12: false, hour: "2-digit", minute: "2-digit" })
+        const plain = (min: number) => new Temporal.PlainTime(Math.floor(min / 60) % 24, min % 60)
+        const formatRange = ({ start, end }: typeof blocked[0]) => timeFmt.formatRange(plain(start), plain(end))
 
         // Gauge axisLine color segments (cumulative ratios 0→1)
         const gaugeColors: [number, string][] = []
@@ -220,17 +221,15 @@ class Wrapper extends EchartsWrapper<tt4b.limit.Item, EcOption> {
             const item = blocked[i]
             if (!item) continue
             const { start, end } = item
-            pieData.push({ value: end - start, name: `${fmt(start)} - ${fmt(end)}`, itemStyle: { color: 'rgba(0,0,0,0)' } })
+            pieData.push({ value: end - start, name: formatRange(item), itemStyle: { color: 'rgba(0,0,0,0)' } })
             const nextStart = blocked[i + 1]?.start
-            if (nextStart !== undefined && nextStart > end) {
+            if (nextStart && nextStart > end) {
                 pieData.push({ value: nextStart - end, name: '', itemStyle: { color: 'rgba(0,0,0,0)' } })
             }
         }
 
         const hitPeriod = blocked.find(({ start, end }) => nowMinutes >= start && nowMinutes < end)
-        const infoText = hitPeriod
-            ? `${fmt(hitPeriod.start)} - ${fmt(hitPeriod.end)}`
-            : t(msg => msg.content.limit.notHit)
+        const infoText = hitPeriod ? formatRange(hitPeriod) : t(msg => msg.content.limit.notHit)
 
         return {
             titles: [

@@ -6,7 +6,7 @@
  */
 
 import { type I18nKey, t } from "@app/locale"
-import { cvt2LocaleDate, periodFormatter } from '@app/util/time'
+import { cvt2LocaleDate, fmtDur } from '@pages/util/time'
 import { useState } from "@hooks"
 import { Box } from "@pages/components"
 import { type Column, ElAutoResizer, ElTableV2, type SortBy, TableV2SortOrder } from "element-plus"
@@ -39,12 +39,12 @@ const focusCol = (comparedCol: I18nKey): Column[] => [
         width: 150,
         align: 'center',
         title: t(comparedCol),
-        cellRenderer: ({ rowData }) => <span>{periodFormatter((rowData as tt4b.imported.Row).focus)}</span>,
+        cellRenderer: ({ rowData }) => <span>{fmtDur((rowData as tt4b.imported.Row).focus)}</span>,
     }, {
         width: 150,
         align: 'center',
         title: t(msg => msg.dataManage.importOther.local),
-        cellRenderer: ({ rowData }) => <span>{periodFormatter((rowData as tt4b.imported.Row).exist?.focus)}</span>,
+        cellRenderer: ({ rowData }) => <span>{fmtDur((rowData as tt4b.imported.Row).exist?.focus)}</span>,
     }
 ]
 

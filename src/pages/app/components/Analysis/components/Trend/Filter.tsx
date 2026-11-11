@@ -10,7 +10,7 @@ import { DateRangeFilter } from '@app/components/common/filter'
 import { I18nKey, t } from "@app/locale"
 import { Flex } from '@pages/components'
 import type { ElDatePickerShortcut } from "@pages/element-ui/types"
-import { daysAgo } from "@util/time"
+import { daysAgo } from '@pages/util/time'
 import { ElRadioButton, ElRadioGroup } from 'element-plus'
 import { defineComponent } from "vue"
 import { useAnalysisTrendCircle, useAnalysisTrendDateRange } from "./context"

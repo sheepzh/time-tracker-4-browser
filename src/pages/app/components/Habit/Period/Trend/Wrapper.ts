@@ -4,9 +4,9 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { dateFmt } from '@app/locale'
 import { getSeriesPalette } from "@app/util/echarts"
-import { periodFormatter } from '@app/util/time'
+import { dateFmt } from '@app/locale'
+import { fmtDur } from '@pages/util/time'
 import { EchartsWrapper } from "@hooks"
 import { getPrimaryTextColor } from '@pages/util/style'
 import type { BarSeriesOption, ComposeOption, GridComponentOption, TooltipComponentOption } from "echarts"
@@ -40,7 +40,7 @@ function formatTimeOfEcharts(params: TopLevelFormatterParams, timeFormat: tt4b.u
         <div>${fmt.formatRange(start, end)}</div>
         <div>
             <b>
-                ${periodFormatter(milliseconds, { format: timeFormat })}
+                ${fmtDur(milliseconds, { format: timeFormat })}
             </b>
         </div>
     `

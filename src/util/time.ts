@@ -5,8 +5,6 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { isRtl } from "./document"
-
 export function formatTimeYMD(time: Date | number): string {
     time = new Date(time)
     const y = time.getFullYear()
@@ -15,94 +13,11 @@ export function formatTimeYMD(time: Date | number): string {
     return `${String(y).padStart(4, '0')}${String(m).padStart(2, '0')}${String(d).padStart(2, '0')}`
 }
 
-type PeriodMsgFormat = Record<'dayMsg' | 'hourMsg' | 'minuteMsg' | 'secondMsg', string>
-
-/**
- * Format milliseconds for display
- */
-function formatPeriod(milliseconds: number, message: PeriodMsgFormat): string {
-    const prefix = milliseconds < 0 ? '-' : ''
-    milliseconds = Math.abs(milliseconds)
-    const { dayMsg, hourMsg, minuteMsg, secondMsg } = message
-    const seconds = Math.floor(milliseconds / 1000)
-    const day = Math.floor(seconds / 86400)
-    const hour = Math.floor(seconds / 3600 - day * 24)
-    const minute = Math.floor(seconds / 60 - (day * 24 + hour) * 60)
-    const second = seconds - day * 86400 - hour * 3600 - minute * 60
-
-    let msg = dayMsg
-    if (!day) {
-        msg = hourMsg
-        if (!hour) {
-            msg = minuteMsg
-            if (!minute) {
-                msg = secondMsg
-            }
-        }
-    }
-    const result = msg
-        .replace('{day}', day.toString())
-        .replace('{hour}', hour.toString())
-        .replace('{minute}', minute.toString())
-        .replace('{second}', second.toString())
-    return prefix + result
-}
-
-const PERIOD_RTL: PeriodMsgFormat = {
-    dayMsg: 's{second} m{minute} h{hour} d{day}',
-    hourMsg: 's{second} m{minute} h{hour}',
-    minuteMsg: 's{second} m{minute}',
-    secondMsg: 's{second}',
-}
-const PERIOD_RTL_SIMPLIFIED: PeriodMsgFormat = {
-    dayMsg: 's{second}m{minute}h{hour}d{day}',
-    hourMsg: 's{second}m{minute}h{hour}',
-    minuteMsg: 's{second}m{minute}',
-    secondMsg: 's{second}',
-}
-const PERIOD_LTR: PeriodMsgFormat = {
-    dayMsg: '{day}d {hour}h {minute}m {second}s',
-    hourMsg: '{hour}h {minute}m {second}s',
-    minuteMsg: '{minute}m {second}s',
-    secondMsg: '{second}s',
-}
-const PERIOD_LTR_SIMPLIFIED: PeriodMsgFormat = {
-    dayMsg: '{day}d{hour}h{minute}m{second}s',
-    hourMsg: '{hour}h{minute}m{second}s',
-    minuteMsg: '{minute}m{second}s',
-    secondMsg: '{second}s',
-}
-
-/**
- * e.g.
- *
- * 2d 10h 0m 0s
- * 20h 0m 1s
- * 10m 20s
- * 30s
- *
- * @return (xx+h)(xx+m)xx+s
- */
-export function formatPeriodCommon(milliseconds: number, simplified?: boolean): string {
-    const defaultMessage = isRtl()
-        ? (simplified ? PERIOD_RTL_SIMPLIFIED : PERIOD_RTL)
-        : (simplified ? PERIOD_LTR_SIMPLIFIED : PERIOD_LTR)
-    return formatPeriod(milliseconds, defaultMessage)
-}
-
 export const MILL_PER_SECOND = 1000
 
 export const MILL_PER_MINUTE = MILL_PER_SECOND * 60
 
 export const MILL_PER_HOUR = MILL_PER_MINUTE * 60
-
-/**
- * Date range between {start} days ago and {end} days ago
- */
-export const daysAgo = (start: number, end: number): [Date, Date] => {
-    const current = new Date().getTime()
-    return [addDays(current, -start), addDays(current, -end)]
-}
 
 export function isSameDay(a: Date | number, b: Date | number): boolean {
     a = typeof a === 'number' ? new Date(a) : a
@@ -128,36 +43,6 @@ export function getWeekStartTime(now: number | Date, weekStart: number): number 
 }
 
 /**
- * Get the start time and end time of this month
- *
- * @param target the specific time
- * @returns [startTime, endTime]
- *
- * @since 0.6.0
- */
-export function getMonthTime(target: Date): [Date, Date] {
-    const currentMonth = target.getMonth()
-    const currentYear = target.getFullYear()
-    const start = new Date(currentYear, currentMonth, 1)
-    const endTime = new Date(currentYear, currentMonth + 1, 1).getTime()
-    const end = new Date(endTime - 1)
-    return [start, end]
-}
-
-/**
- * Get the start time of this day
- *
- * @param target the specific time
- * @returns the start of this day, in milliseconds
- * @since 1.0.0
- */
-export function getStartOfDay(target: Date | number): number {
-    const date = new Date(target)
-    date.setHours(0, 0, 0, 0)
-    return date.getTime()
-}
-
-/**
  * Get the start time of the next day (local midnight)
  *
  * @param target the specific time
@@ -170,73 +55,8 @@ export function getStartOfNextDay(target: Date | number): number {
     return date.getTime()
 }
 
-/**
- * The birthday of this extension
- *
- * @since 1.2.0
- */
-export function getBirthday(): Date {
-    const date = new Date()
-    // 2021-03-03
-    date.setFullYear(2021)
-    date.setMonth(2)
-    date.setDate(3)
-    date.setHours(0, 0, 0, 0)
-    return date
-}
-
-export const getYesterday = () => addDays(Date.now(), -1)
-
-export const BIRTHDAY = '20210303'
-
-/**
- * Calc the day length
- * @returns
- *  1 if 2022-06-09 00:00:00 to 2022-06-09 00:00:01
- *  0 if 2022-06-10 00:00:00 to 2022-06-09 00:00:01
- *  2 if 2022-11-10 08:00:00 to 2022-11-11 00:00:01
- */
-export function getDayLength(start: Date | number, end: Date | number): number {
-    const d1 = new Date(start)
-    const d2 = new Date(end)
-
-    if (d1 > d2) return 0
-
-    d1.setUTCFullYear(d1.getFullYear(), d1.getMonth(), d1.getDate())
-    d2.setUTCFullYear(d2.getFullYear(), d2.getMonth(), d2.getDate())
-    d1.setUTCHours(0, 0, 0, 0)
-    d2.setUTCHours(0, 0, 0, 0)
-
-    return (d2.getTime() - d1.getTime()) / (MILL_PER_HOUR * 24) + 1
-}
-
-/**
- * Calc the dates between {@param dateStart} and {@param dateEnd}
- *
- * @returns
- *  [20220609]              if 2022-06-09 00:00:00 to 2022-06-09 00:00:01
- *  []                      if 2022-06-10 00:00:00 to 2022-06-09 00:00:01
- *  [20221110, 20221111]    if 2022-11-10 08:00:00 to 2022-11-11 00:00:01
- */
-export function getAllDatesBetween(start: Date | number, end: Date | number, formatter?: Converter<Date, string>): string[] {
-    const current = new Date(start)
-    const target = new Date(end)
-
-    if (current > target) return []
-
-    current.setHours(0, 0, 0, 0)
-    target.setHours(0, 0, 0, 0)
-
-    const dates: string[] = []
-    const fmt = formatter ?? formatTimeYMD
-
-    while (current <= target) {
-        dates.push(fmt(current))
-        current.setDate(current.getDate() + 1)
-    }
-
-    return dates
-}
+export const BIRTHDAY_STR = '20210303'
+export const BIRTHDAY = new Date(2021, 2, 3, 0, 0, 0, 0)
 
 export function addDays(date: Date | number, days: number): Date {
     const result = new Date(date)

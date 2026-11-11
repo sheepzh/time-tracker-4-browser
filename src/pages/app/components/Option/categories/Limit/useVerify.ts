@@ -1,5 +1,5 @@
 import { listLimits } from "@api/sw/limit"
-import { judgeVerificationRequired, processVerification } from "@app/util/limit/index"
+import { judgeVerificationRequired, processVerification } from "@pages/util/limit"
 import { ref } from "vue"
 
 /**

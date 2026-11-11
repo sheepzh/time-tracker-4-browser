@@ -7,7 +7,7 @@
 import { useAnalysisRows, useAnalysisTimeFormat } from "@app/components/Analysis/context"
 import { KanbanCard, KanbanIndicatorCell } from '@app/components/common/kanban'
 import { t } from '@app/locale'
-import { cvt2LocaleDate, periodFormatter } from '@app/util/time'
+import { cvt2LocaleDate, fmtDur } from '@pages/util/time'
 import { css } from '@emotion/css'
 import { Grid } from '@pages/components'
 import { computed, defineComponent } from "vue"
@@ -59,7 +59,7 @@ const _default = defineComponent(() => {
                     <TargetInfo />
                     <KanbanIndicatorCell
                         mainName={FOCUS_LABEL}
-                        mainValue={periodFormatter(summary.value?.focus, { format: timeFormat.value })}
+                        mainValue={fmtDur(summary.value?.focus, { format: timeFormat.value })}
                     />
                     <KanbanIndicatorCell
                         mainName={DAYS_LABEL}

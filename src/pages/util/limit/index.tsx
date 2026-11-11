@@ -1,43 +1,34 @@
 import { sendMsg2Runtime, trySendMsg2Runtime } from '@api/sw/common'
 import { css } from '@emotion/css'
 import { useCountDown } from "@hooks"
-import { type I18nKey, type I18nResultItem, locale, t as t_, tN as tN_ } from "@i18n"
+import { dateFmt, type I18nKey, type I18nResultItem, locale, t as t_, tN as tN_ } from "@i18n"
 import limitMessages, { type LimitMessage } from "@i18n/message/app/limit"
 import buttonMessages from "@i18n/message/common/button"
+import calendarMessages from "@i18n/message/common/calendar"
+import sharedMessages from "@i18n/message/common/shared"
 import { getCssVariable } from "@pages/util/style"
-import { dateMinute2Idx, hasLimited, isEffective, isInPeriod } from "@util/limit"
+import { dateMinute2Idx, FULL_PERIOD, hasLimited, isEffective, isInPeriod } from "@util/limit"
 import { ElMessage, ElMessageBox, type InputType, useId, useNamespace } from "element-plus"
-import { defineComponent, onMounted, ref, type VNode } from "vue"
+import { defineComponent, onMounted, ref } from "vue"
 import verificationProcessor from './processor'
 
 const t = (key: I18nKey<LimitMessage>, param?: any) => t_(limitMessages, { key, param })
 
-const tN = (key: I18nKey<LimitMessage>, param?: any) => tN_<LimitMessage, VNode>(limitMessages, { key, param })
+const tN = (key: I18nKey<LimitMessage>, param?: any) => tN_(limitMessages, { key, param })
 
-/**
- * Judge wether verification is required
- *
- * @returns T/F
- */
-export async function judgeVerificationRequired(item: tt4b.limit.Item, delayDuration: number): Promise<boolean> {
-    if (!item.enabled || !isEffective(item.weekdays)) return false
+const idx2Time = (idx: number): Temporal.PlainTime => {
+    const hour = Math.floor(idx / 60)
+    const minute = idx - hour * 60
+    return new Temporal.PlainTime(hour, minute)
+}
 
-    const { visitTime, periods } = item
-    // Daily or weekly
-    if (hasLimited(item, delayDuration)) return true
-    // Period
-    if (periods?.length) {
-        const idx = dateMinute2Idx(new Date())
-        const hitPeriod = periods?.some(p => isInPeriod(idx, p))
-        if (hitPeriod) return true
+export const period2Str = ([start, end]: tt4b.limit.Period): string => {
+    if (start === FULL_PERIOD[0] && end === FULL_PERIOD[1]) {
+        return t_(calendarMessages, { key: msg => msg.range.allTime })
     }
-    // Visit
-    if (visitTime) {
-        // If error occurs, regarded as not hitting
-        const hitVisit = await trySendMsg2Runtime('limit.hitVisit', item) ?? false
-        if (hitVisit) return true
-    }
-    return false
+    const fmt = dateFmt({ hour12: false, hour: "numeric", minute: "numeric" })
+    const str = fmt.formatRange(idx2Time(start), idx2Time(end))
+    return end < start ? `${str} (+1)` : str
 }
 
 const ANSWER_CANVAS_FONT_SIZE = 24
@@ -91,9 +82,35 @@ const MSG_CLS = css`
     left: 50%;
     transform: translate(-50%);
 `
-const okBtnTxt = t_(buttonMessages, { key: msg => msg.okay })
+const okBtnTxt = () => t_(buttonMessages, { key: msg => msg.okay })
 
 const errMsg = (message: string) => ElMessage.error({ message, customClass: MSG_CLS })
+
+/**
+ * Judge wether verification is required
+ *
+ * @returns T/F
+ */
+export async function judgeVerificationRequired(item: tt4b.limit.Item, delayDuration: number): Promise<boolean> {
+    if (!item.enabled || !isEffective(item.weekdays)) return false
+
+    const { visitTime, periods } = item
+    // Daily or weekly
+    if (hasLimited(item, delayDuration)) return true
+    // Period
+    if (periods?.length) {
+        const idx = dateMinute2Idx(new Date())
+        const hitPeriod = periods?.some(p => isInPeriod(idx, p))
+        if (hitPeriod) return true
+    }
+    // Visit
+    if (visitTime) {
+        // If error occurs, regarded as not hitting
+        const hitVisit = await trySendMsg2Runtime('limit.hitVisit', item) ?? false
+        if (hitVisit) return true
+    }
+    return false
+}
 
 /**
  * NOT TO return Promise.resolve()
@@ -117,13 +134,13 @@ export function processVerification(option: tt4b.option.LimitOption): Promise<vo
     }
     let inputType: InputType | undefined
     let answerValue: string | undefined
-    let messageNode: I18nResultItem<VNode>[] | undefined | I18nResultItem<VNode>
+    let messageNode: I18nResultItem[] | undefined | I18nResultItem
     let incorrectMessage: string
     let countdown: number | undefined
     if (limitLevel === 'password' && limitPassword) {
         answerValue = limitPassword
         messageNode = t(msg => msg.verification.pswInputTip)
-        incorrectMessage = t(msg => msg.verification.incorrectPsw)
+        incorrectMessage = t_(sharedMessages, { key: msg => msg.incorrectPassword })
         inputType = 'password'
     } else if (limitLevel === 'verification') {
         const pair = verificationProcessor.generate(limitVerifyDifficulty ?? 'easy', locale)
@@ -143,7 +160,7 @@ export function processVerification(option: tt4b.option.LimitOption): Promise<vo
     if (!messageNode || !answerValue) return Promise.resolve()
 
     const okBtnClz = `limit-confirm-btn-${useId().value}`
-    const btnText = (leftSec: number) => `${okBtnTxt} (${leftSec})`
+    const btnText = (leftSec: number) => `${okBtnTxt()} (${leftSec})`
 
     const msgData = ElMessageBox({
         autofocus: true,
@@ -154,7 +171,7 @@ export function processVerification(option: tt4b.option.LimitOption): Promise<vo
         inputType,
         showCancelButton: true,
         showClose: false,
-        confirmButtonText: countdown ? btnText(countdown) : okBtnTxt,
+        confirmButtonText: countdown ? btnText(countdown) : okBtnTxt(),
         confirmButtonClass: okBtnClz,
         buttonSize: "small",
         modalClass: MODAL_CLS,
@@ -197,7 +214,7 @@ function process2faVerification(): Promise<void> {
         showInput: true,
         showCancelButton: true,
         showClose: false,
-        confirmButtonText: okBtnTxt,
+        confirmButtonText: okBtnTxt(),
         buttonSize: 'small',
         modalClass: MODAL_CLS,
         beforeClose: (act, instance, done) => {

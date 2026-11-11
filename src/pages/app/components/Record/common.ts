@@ -3,9 +3,8 @@ import {
     listGroupStats, listSiteStats,
 } from "@api/sw/stat"
 import { t } from '@app/locale'
-import { cvt2LocaleDate } from '@app/util/time'
+import { BIRTHDAY, cvt2LocaleDate, cvtDateRange2Str } from '@pages/util/time'
 import { getGroupName, isGroup, isSite } from "@util/stat"
-import { cvtDateRange2Str, getBirthday } from "@util/time"
 import type { RecordFilterOption, RecordSort } from "./types"
 
 export function computeDeleteConfirmMsg(row: tt4b.stat.Row, filterOption: RecordFilterOption, groupMap: Record<number, chrome.tabGroups.TabGroup>): string {
@@ -20,7 +19,7 @@ export function computeDeleteConfirmMsg(row: tt4b.stat.Row, filterOption: Record
     const { mergeDate, dateRange } = filterOption
     const [start, end] = mergeDate ? dateRange : [row.date]
     if (start === undefined && end === undefined) return t(msg => msg.item.operation.deleteConfirmMsgAll, { url })
-    const date = cvt2LocaleDate(start ?? getBirthday(), end ?? new Date())
+    const date = cvt2LocaleDate(start ?? BIRTHDAY, end ?? new Date())
     return t(msg => msg.item.operation.deleteConfirmMsg, { url, date })
 }
 

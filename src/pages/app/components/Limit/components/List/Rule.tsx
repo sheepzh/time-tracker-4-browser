@@ -2,8 +2,8 @@ import { useDelayDuration } from '@app/components/Limit/context'
 import { t } from '@app/locale'
 import { Flex } from '@pages/components'
 import { period2Str } from '@pages/util/limit'
+import { fmtDur, MILL_PER_SECOND } from '@pages/util/time'
 import { isEffective, meetLimit, meetTimeLimit } from '@util/limit'
-import { formatPeriodCommon, MILL_PER_SECOND } from '@util/time'
 import { ElDescriptions, ElDescriptionsItem, ElTag } from 'element-plus'
 import { defineComponent, type FunctionalComponent } from 'vue'
 import { DAILY_WEEKLY_TAG_TYPE, PERIOD_TAG_TYPE, VISIT_TAG_TYPE } from '../style'
@@ -17,7 +17,7 @@ const TimeCountPair: FunctionalComponent<{ time?: number, count?: number }> = ({
     return (
         <Flex gap={2} wrap>
             {!!time && (
-                <ElTag size="small" type={DAILY_WEEKLY_TAG_TYPE}>{formatPeriodCommon(time * MILL_PER_SECOND, true)}</ElTag>
+                <ElTag size="small" type={DAILY_WEEKLY_TAG_TYPE}>{fmtDur(time * MILL_PER_SECOND)}</ElTag>
             )}
             {!!count && (
                 <ElTag size="small" type={DAILY_WEEKLY_TAG_TYPE}>{t(msg => msg.shared.limit.visits, { n: count })}</ElTag>
@@ -40,7 +40,7 @@ const WastePair: FunctionalComponent<WastePairProps> = props => {
     return (
         <Flex gap={2}>
             <ElTag size="small" type={timeType}>
-                {formatPeriodCommon(props.time.wasted)}
+                {fmtDur(props.time.wasted)}
             </ElTag>
             <ElTag size="small" type={visitType}>
                 {t(msg => msg.shared.limit.visits, { n: props.visit ?? 0 })}
@@ -62,7 +62,7 @@ const Rule = defineComponent<Props>(props => {
             </ElDescriptionsItem>
             {!!props.value.visitTime && (
                 <ElDescriptionsItem label={t(msg => msg.limit.item.visitTime)}>
-                    <ElTag size="small" type={VISIT_TAG_TYPE}>{formatPeriodCommon(props.value.visitTime * MILL_PER_SECOND, true)}</ElTag>
+                    <ElTag size="small" type={VISIT_TAG_TYPE}>{fmtDur(props.value.visitTime * MILL_PER_SECOND)}</ElTag>
                 </ElDescriptionsItem>
             )}
             {!!props.value.periods?.length && (

@@ -1,7 +1,7 @@
 import { GRID_CELL_STYLE } from '@app/components/common/grid'
 import { KanbanIndicatorCell } from '@app/components/common/kanban'
 import { t } from '@app/locale'
-import { periodFormatter } from '@app/util/time'
+import { fmtDur } from '@pages/util/time'
 import { useXsState } from '@hooks'
 import { Flex } from '@pages/components'
 import { sum } from "@util/array"
@@ -59,9 +59,9 @@ const _default = defineComponent<{ rows: tt4b.stat.Row[] }>(props => {
         <Flex flex={isXs.value ? undefined : 4} column gap={1}>
             <KanbanIndicatorCell
                 mainName={t(msg => msg.analysis.common.focusTotal)}
-                mainValue={periodFormatter(summary.value?.focus?.total, { format: filter.timeFormat })}
+                mainValue={fmtDur(summary.value?.focus?.total, { format: filter.timeFormat })}
                 subTips={msg => msg.habit.common.focusAverage}
-                subValue={periodFormatter(summary.value?.focus?.average, { format: filter.timeFormat })}
+                subValue={fmtDur(summary.value?.focus?.average, { format: filter.timeFormat })}
                 subInfo={summary.value?.exclusiveToday4Average ? t(msg => msg.habit.site.exclusiveToday) : undefined}
                 containerStyle={GRID_CELL_STYLE}
             />

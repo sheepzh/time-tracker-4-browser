@@ -1,11 +1,10 @@
 
 import { t } from '@app/locale'
 import { getLineSeriesPalette, tooltipDot, tooltipFlexLine, tooltipSpaceLine } from "@app/util/echarts"
-import { cvt2LocaleDate, periodFormatter } from "@app/util/time"
+import { cvt2LocaleDate, fmtDur, getAllDatesBetween } from '@pages/util/time'
 import { EchartsWrapper } from '@hooks'
 import { groupBy, sum } from "@util/array"
 import { getHost } from "@util/stat"
-import { getAllDatesBetween } from "@util/time"
 import type {
     ComposeOption, GridComponentOption, LegendComponentOption, LineSeriesOption, LinearGradientObject,
     TitleComponentOption, TooltipComponentOption,
@@ -57,7 +56,7 @@ const formatTimeTooltip = (params: TopLevelFormatterParams, format: tt4b.ui.Time
         const { value, seriesName = '' } = param
         const color = LEGEND_COLOR_MAP[seriesName]
         if (!color || !isNumber(value)) return ''
-        let valueStr = seriesName === FOCUS_LEGEND ? periodFormatter(value, { format }) : value
+        let valueStr = seriesName === FOCUS_LEGEND ? fmtDur(value, { format }) : value
         return tooltipFlexLine(
             `<b>${tooltipDot(color)}&ensp;${valueStr}</b>`,
             seriesName,

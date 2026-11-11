@@ -11,7 +11,7 @@ import { ElInput } from "element-plus"
 import type { FunctionalComponent, StyleValue } from "vue"
 
 type Props = ModelValue<string> & {
-    i18nKey: keyof DataManageMessage
+    i18nKey: KeyOf<DataManageMessage, string>
     lineNo: number
 }
 

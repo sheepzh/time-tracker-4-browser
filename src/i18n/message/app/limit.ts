@@ -48,7 +48,6 @@ export type LimitMessage = {
         inputTip2: string
         pswInputTip: string
         strictTip: string
-        incorrectPsw: string
         incorrectAnswer: string
         twoFaInputTip: string
         incorrect2fa: string

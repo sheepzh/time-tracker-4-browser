@@ -1,10 +1,10 @@
 import { getWeekStartTime } from "@api/sw/option"
 import { listCateStats, listGroupStats, listSiteStats } from '@api/sw/stat'
 import { RECORD_ROUTE, type RecordQuery } from "@app/router/constants"
+import { addDays, cvtDateRange2Str, getMonthTime, type DateRange } from "@pages/util/time"
 import { isRemainHost } from "@util/constant/remain-host"
 import { getAppPageUrl } from "@util/constant/url"
 import { isSite } from "@util/stat"
-import { addDays, cvtDateRange2Str, getMonthTime, type DateRange } from "@util/time"
 import type { StatDuration, StatQuery } from './context'
 
 type DateRangeCalculator = (now: Date, num?: number) => Awaitable<[Date, Date] | Date | undefined>

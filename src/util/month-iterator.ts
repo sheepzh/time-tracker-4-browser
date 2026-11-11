@@ -11,13 +11,16 @@
 export default class MonthIterator implements IterableIterator<string> {
     #cursor: [number, number]
     #end: [number, number]
+    #valid: boolean
 
     constructor(start: Date, end: Date) {
         this.#cursor = [start.getFullYear(), start.getMonth()]
         this.#end = [end.getFullYear(), end.getMonth()]
+        this.#valid = [...this.#cursor, ...this.#end].every(Number.isFinite)
     }
 
     next(): IteratorResult<string> {
+        if (!this.#valid) return { done: true, value: undefined }
         const [year, month] = this.#cursor
         if (year > this.#end[0] || (year === this.#end[0] && month > this.#end[1])) {
             return { done: true, value: undefined }

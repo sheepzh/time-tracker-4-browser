@@ -1,4 +1,4 @@
-import { FULL_PERIOD } from '@pages/util/limit'
+import { FULL_PERIOD } from '@util/limit'
 import type { ElementHandle, Page } from "puppeteer"
 import { fillCondEditor } from "../common/cond-editor"
 import { waitForLimitFrame } from '../common/overlay'

@@ -4,7 +4,8 @@
         "target": "esnext",
         "lib": [
             "ESNext",
-            "DOM"
+            "DOM",
+            "DOM.Iterable"
         ],
         "types": [
             "firefox-webext-browser",

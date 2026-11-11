@@ -1,13 +1,11 @@
-import { t } from '@app/locale'
+import { dateFmt, t, unitFmt } from '@app/locale'
 import { getSeriesPalette, tooltipDot } from '@app/util/echarts'
 import { EchartsWrapper } from '@hooks'
 import { getPrimaryTextColor } from '@pages/util/style'
+import { fmtDur, getStartOfDay, getStartOfNextDay, MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND } from '@pages/util/time'
 import { groupBy, toMap } from '@util/array'
 import DateIterator from '@util/date-iterator'
 import { CATE_NOT_SET_ID } from '@util/site'
-import {
-    formatPeriodCommon, getStartOfDay, getStartOfNextDay, MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND
-} from '@util/time'
 import type {
     ComposeOption, CustomSeriesOption, CustomSeriesRenderItem, DataZoomComponentOption, GridComponentOption,
     LegendComponentOption, TooltipComponentOption,
@@ -38,22 +36,24 @@ type MyValue = [
     duration: number,
 ]
 
-const formatTimeLabel = (val: number) => [val / MILL_PER_HOUR, val / MILL_PER_MINUTE % 60]
-    .map(value => Math.floor(value).toString().padStart(2, '0'))
-    .join(':')
-
-const formatStart = (startMs: number): string => {
-    const second = Math.floor(startMs / MILL_PER_SECOND) % 60
-    return `${formatTimeLabel(startMs)}:${second.toString().padStart(2, '0')}`
+const formatTime = (val: number, incSec?: boolean) => {
+    const hour = Math.floor(val / MILL_PER_HOUR) % 24
+    const minute = Math.floor(val / MILL_PER_MINUTE) % 60
+    const second = Math.floor(val / MILL_PER_SECOND) % 60
+    const fmt = dateFmt({
+        hourCycle: "h23",
+        hour: "2-digit", minute: "2-digit", second: incSec ? "2-digit" : undefined,
+    })
+    return fmt.format(new Temporal.PlainTime(hour, minute, incSec ? second : undefined))
 }
 
 const formatDuration = (duration: number): string => {
     if (duration < MILL_PER_SECOND) {
-        return `${duration}ms`
+        return unitFmt("millisecond").format(duration)
     } else if (duration < MILL_PER_SECOND * 10) {
-        return `${(duration / MILL_PER_SECOND).toFixed(1)}s`
+        return unitFmt("second", 1).format(duration / MILL_PER_SECOND)
     } else {
-        return formatPeriodCommon(duration)
+        return fmtDur(duration)
     }
 }
 
@@ -233,7 +233,7 @@ class Wrapper extends EchartsWrapper<BizData, EcOption> {
                 minInterval: 10 * MILL_PER_MINUTE,
                 interval: 4 * MILL_PER_HOUR,
                 axisLabel: {
-                    formatter: formatTimeLabel,
+                    formatter: val => formatTime(val),
                     color: primaryTextColor,
                 },
                 splitLine: { show: false },
@@ -246,7 +246,7 @@ class Wrapper extends EchartsWrapper<BizData, EcOption> {
                     if (!param) return ''
                     const { value, seriesName, color } = param
                     const [, start, , duration] = value as MyValue
-                    const rangeStr = `${formatStart(start)} ~ ${formatDuration(duration)}`
+                    const rangeStr = `${formatTime(start, true)} ~ ${formatDuration(duration)}`
                     return `${tooltipDot(color)} ${tooltipSeriesName(seriesName)}<br/>${rangeStr}`
                 },
             },

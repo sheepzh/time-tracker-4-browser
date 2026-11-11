@@ -1,5 +1,5 @@
 import { createTab } from '@api/chrome/tab'
-import { locale } from '@i18n'
+import { locale } from '@popup/locale'
 import { Flex } from '@pages/components'
 import { Coffee } from '@pages/icons'
 import { BUY_ME_A_COFFEE_PAGE, DONATION_PAGE } from '@util/constant/url'

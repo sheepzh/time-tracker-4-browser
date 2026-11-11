@@ -11,8 +11,8 @@ import { css } from '@emotion/css'
 import { useState, useSwitch, useXsState } from '@hooks'
 import { Flex } from '@pages/components'
 import { Forbidden } from '@pages/icons'
-import { FULL_PERIOD, period2Str } from '@pages/util/limit'
-import { dateMinute2Idx, isInPeriod } from "@util/limit"
+import { period2Str } from '@pages/util/limit'
+import { dateMinute2Idx, FULL_PERIOD, isInPeriod } from "@util/limit"
 import { MILL_PER_HOUR } from "@util/time"
 import { ElButton, ElTag, ElTimePicker, ElTooltip, useNamespace } from "element-plus"
 import { type StyleValue, computed, defineComponent } from "vue"
@@ -136,7 +136,7 @@ const usePickerStyle = () => {
             padding: 0 !important;
             background: transparent !important;
         }
-        
+
         & .${inputNs.e('inner')} {
             text-align: center;
             height: 28px;

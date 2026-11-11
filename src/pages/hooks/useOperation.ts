@@ -10,7 +10,7 @@ type Options = {
 
 export const useOperation = <P extends any[]>(action: Action<P>, options?: Options) => {
     const { refreshAsync } = useManualRequest(action, {
-        onSuccess: async (res, ..._args: P) => {
+        onSuccess: async (res, _, ..._args: P) => {
             // Cancelled, don't show success message
             if (res === false) return
 

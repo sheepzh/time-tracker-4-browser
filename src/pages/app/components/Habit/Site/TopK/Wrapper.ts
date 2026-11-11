@@ -7,7 +7,7 @@
 
 import { t } from '@app/locale'
 import { getStepColors } from "@app/util/echarts"
-import { periodFormatter } from "@app/util/time"
+import { fmtDur } from '@pages/util/time'
 import { EchartsWrapper } from '@hooks'
 import { generateSiteLabel } from "@util/site"
 import { identifyTargetKey, isSite } from "@util/stat"
@@ -46,7 +46,7 @@ const formatFocusTooltip = (params: TopLevelFormatterParams, format: tt4b.ui.Tim
     return `
         <div>${siteLabel}</div>
         <div>
-            <b>${periodFormatter(focus, { format })}</b>
+            <b>${fmtDur(focus, { format })}</b>
         </div>
     `
 }

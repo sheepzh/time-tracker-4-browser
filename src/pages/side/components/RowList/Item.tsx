@@ -1,8 +1,9 @@
 import { createTab } from "@api/chrome/tab"
 import { Flex } from '@pages/components'
+import { fmtDur } from '@pages/util/time'
+import { ptFmt } from '@side/locale'
 import { isRemainHost } from "@util/constant/remain-host"
 import { getAlias, getHost, isSite } from "@util/stat"
-import { formatPeriodCommon } from "@util/time"
 import { ElAvatar, ElCard, ElLink, ElProgress, ElTag, ElText, ElTooltip } from "element-plus"
 import { computed, defineComponent, toRef } from "vue"
 
@@ -41,9 +42,9 @@ const _default = defineComponent<Props>(props => {
         return (row.value?.focus ?? 0) / props.max * 100
     })
     const percentage = computed(() => {
-        if (!props.total) return '0 %'
-        const val = (row.value?.focus ?? 0) / props.total * 100
-        return val.toFixed(2) + ' %'
+        return props.total
+            ? ptFmt(2).format((row.value?.focus ?? 0) / props.total)
+            : ptFmt(0).format(0)
     })
     const handleJump = () => clickable.value && createTab("https://" + host.value)
     return () => (
@@ -90,7 +91,7 @@ const _default = defineComponent<Props>(props => {
                 <Flex column justify="space-around" flex={1}>
                     <Flex justify="end" width="100%">
                         <ElText size="small">
-                            {formatPeriodCommon(props.value?.focus ?? 0)}
+                            {fmtDur(props.value?.focus ?? 0)}
                         </ElText>
                     </Flex>
                     <ElProgress percentage={rate.value} showText={false} />

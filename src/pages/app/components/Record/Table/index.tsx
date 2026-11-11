@@ -10,7 +10,7 @@ import Editable from '@app/components/common/Editable'
 import HostAlert from '@app/components/common/HostAlert'
 import Pagination from '@app/components/common/Pagination'
 import { t } from '@app/locale'
-import { cvt2LocaleDate } from '@app/util/time'
+import { cvt2LocaleDate } from '@pages/util/time'
 import { Histogram } from "@element-plus/icons-vue"
 import { useDocumentVisibility, useManualRequest, useRemoteValue, useRequest, useState } from '@hooks'
 import { Flex, TooltipWrapper } from '@pages/components'

@@ -1,10 +1,9 @@
 import { listSiteStats } from '@api/sw/stat'
-import { cvt2LocaleDate, periodFormatter } from '@app/util/time'
 import { css } from '@emotion/css'
 import { useRequest } from '@hooks'
 import { Flex } from '@pages/components'
+import { cvt2LocaleDate, fmtDur, formatTimeYMD } from '@pages/util/time'
 import { toMap } from '@util/array'
-import { formatPeriodCommon, formatTimeYMD } from '@util/time'
 import { CalendarDateType, ElCalendar, ElText, useNamespace } from 'element-plus'
 import { computed, defineComponent, FunctionalComponent, ref, Teleport } from 'vue'
 import { SITE_SUMMARY_DROPDOWN_SLOT } from '../common'
@@ -27,7 +26,7 @@ const Cell: FunctionalComponent<{ date: Date, rows: Record<string, tt4b.stat.Row
             <span>{date.getDate()}</span>
             <Flex>
                 <ElText size='small' type='primary'>
-                    {focus !== undefined ? periodFormatter(focus, { format: 'auto' }) : ''}
+                    {focus !== undefined ? fmtDur(focus, { format: 'auto' }) : ''}
                 </ElText>
             </Flex>
         </Flex>
@@ -78,7 +77,7 @@ const Calendar = defineComponent<{}>(() => {
     return () => (
         <Flex flex={1} gap={15} column>
             <ElText type='primary' style={{ fontSize: '24px' }}>
-                {cvt2LocaleDate(current.value)} - {formatPeriodCommon(row.value?.focus ?? 0, true)}
+                {cvt2LocaleDate(current.value)} - {fmtDur(row.value?.focus ?? 0)}
             </ElText>
             <Flex flex={1}>
                 <ElCalendar

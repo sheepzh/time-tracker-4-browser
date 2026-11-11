@@ -1,7 +1,7 @@
 import { t } from '@app/locale'
 import { Flex, TooltipWrapper } from '@pages/components'
+import { fmtDur } from '@pages/util/time'
 import { meetLimit, meetTimeLimit } from "@util/limit"
-import { formatPeriodCommon } from "@util/time"
 import { ElTag, type TagProps } from "element-plus"
 import { type FunctionalComponent } from "vue"
 
@@ -26,7 +26,7 @@ const Waste: FunctionalComponent<Props> = props => (
                     content: () => `${t(msg => msg.limit.item.delayCount)}: ${props.delay.count}`,
                     default: () => (
                         <ElTag size="small" type={timeType(props)}>
-                            {formatPeriodCommon(props.time.wasted)}
+                            {fmtDur(props.time.wasted)}
                         </ElTag>
                     ),
                 }}

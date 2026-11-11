@@ -54,8 +54,6 @@
                 "strict": "不允许手动解锁",
                 "strictTitle": "危险操作",
                 "strictContent": "当您选择这个选项之后，如果某个站点触发了每日限制，除了等到第二天自动解锁以外，不允许您手动解锁。如果规则设置不当，很有可能会阻碍您的日常工作！",
-                "pswFormLabel": "解锁密码",
-                "pswFormAgain": "再次输入",
                 "2fa": "必须使用 2FA 解锁",
                 "twoFaTitle": "启用 2FA 验证",
                 "twoFaScanHint": "使用身份验证器应用扫描二维码或将设置链接导入支持TOTP的密码管理器。",
@@ -108,6 +106,10 @@
         "accessibility": {
             "title": "无障碍功能",
             "chartDecal": "{input} 是否显示图表的贴花图案"
+        },
+        "psw": {
+            "label": "解锁密码",
+            "labelAgain": "再次输入"
         },
         "notification": {
             "title": "消息推送",
@@ -189,9 +191,7 @@
                 },
                 "strict": "不允許手動解除",
                 "strictTitle": "危險操作",
-                "strictContent": "選擇此選項後，若網站觸發每日限制，除等待次日自動解除外，將無法手動解除。若規則設定不當，可能影響日常工作！",
-                "pswFormLabel": "解除密碼",
-                "pswFormAgain": "再次輸入"
+                "strictContent": "選擇此選項後，若網站觸發每日限制，除等待次日自動解除外，將無法手動解除。若規則設定不當，可能影響日常工作！"
             }
         },
         "backup": {
@@ -238,6 +238,10 @@
         "accessibility": {
             "title": "無障礙設定",
             "chartDecal": "{input} 是否顯示圖表裝飾"
+        },
+        "psw": {
+            "label": "解除密碼",
+            "labelAgain": "再次輸入"
         },
         "notification": {
             "title": "通知",
@@ -298,7 +302,9 @@
             "weekStart": "The first day for each week {input}",
             "weekStartAsNormal": "As Normal",
             "storage": "Store the tracking data in {input}",
-            "storageConfirm": "Do you want to change the storage type to {type}?"
+            "storageConfirm": "Do you want to change the storage type to {type}?",
+            "dataPsw": "Require a password to view the tracking data pages",
+            "dataPswReset": "Verify the password to reset it"
         },
         "limit": {
             "prompt": "Prompt displayed when restricted {input}",
@@ -318,8 +324,6 @@
                 "strict": "Not allow unlocking anyway",
                 "strictTitle": "Operation confirm",
                 "strictContent": "When you select this option, if a site triggers daily limit, you will not be allowed to manually unblock it other than waiting until the next day. If rules are not set up properly, they can very well hinder your routines!",
-                "pswFormLabel": "Password",
-                "pswFormAgain": "Re-enter",
                 "2fa": "Must use 2FA code to unlock",
                 "twoFaTitle": "Enable 2FA",
                 "twoFaScanHint": "Scan the QR code with an authenticator app or import the setup link into a password manager that supports TOTP.",
@@ -375,6 +379,10 @@
         "accessibility": {
             "title": "Accessibility",
             "chartDecal": "{input} Whether to display the chart decal"
+        },
+        "psw": {
+            "label": "Password",
+            "labelAgain": "Re-enter"
         },
         "notification": {
             "title": "Notification",
@@ -451,9 +459,7 @@
                 },
                 "strict": "とにかくロック解除を許可しない",
                 "strictTitle": "操作確認",
-                "strictContent": "このオプションを選択した場合、サイトが毎日の制限をトリガーする場合 手動でブロックを解除することは翌日まで待つ以外はできません ルールが適切に設定されていない場合、彼らはあなたのルーチンを非常によく妨げることができます!",
-                "pswFormLabel": "パスワード",
-                "pswFormAgain": "再入力"
+                "strictContent": "このオプションを選択した場合、サイトが毎日の制限をトリガーする場合 手動でブロックを解除することは翌日まで待つ以外はできません ルールが適切に設定されていない場合、彼らはあなたのルーチンを非常によく妨げることができます!"
             }
         },
         "backup": {
@@ -500,6 +506,10 @@
         "accessibility": {
             "title": "ユーザー補助機能",
             "chartDecal": "{input} チャートデカールを表示するかどうか"
+        },
+        "psw": {
+            "label": "パスワード",
+            "labelAgain": "再入力"
         },
         "notification": {
             "title": "通知",
@@ -575,8 +585,6 @@
                 "strict": "Não permitir desbloqueio",
                 "strictTitle": "Confirmação",
                 "strictContent": "Se selecionado, não poderá desbloquear manualmente - apenas esperar até ao dia seguinte. Configurações incorretas podem afetar sua rotina!",
-                "pswFormLabel": "Senha",
-                "pswFormAgain": "Confirmar senha",
                 "twoFaCopyLink": "Copiar link",
                 "twoFaVerifyLabel": "Insira o código de 6 dígitos para verificar"
             },
@@ -626,6 +634,10 @@
         "accessibility": {
             "title": "Acessibilidade",
             "chartDecal": "{input} Mostrar decalque no gráfico"
+        },
+        "psw": {
+            "label": "Senha",
+            "labelAgain": "Confirmar senha"
         },
         "notification": {
             "title": "Notificações",
@@ -697,8 +709,6 @@
                 "strict": "Не дозволяти розблокування",
                 "strictTitle": "Підтвердження операції",
                 "strictContent": "Коли ви вибираєте цю опцію, якщо сайт активує щоденний ліміт, ви не зможете розблокувати його вручну до наступного дня. Якщо не налаштувати правила належним чином, вони можуть дуже заважати вашій роботі!",
-                "pswFormLabel": "Пароль",
-                "pswFormAgain": "Повторне введення",
                 "2fa": "Необхідно використати код 2FA, щоб розблокувати",
                 "twoFaTitle": "Увімкнути 2FA",
                 "twoFaScanHint": "Скануйте QR-код за допомогою програми автентифікації або імпортуйте посилання для налаштування до менеджера паролів з підтримкою TOTP.",
@@ -752,6 +762,10 @@
         "accessibility": {
             "title": "Доступність",
             "chartDecal": "{input} Показувати наклейку діаграми"
+        },
+        "psw": {
+            "label": "Пароль",
+            "labelAgain": "Повторне введення"
         },
         "notification": {
             "title": "Сповіщення",
@@ -835,8 +849,6 @@
                 "strict": "No permitir desbloquear de ningún modo",
                 "strictTitle": "Confirmación de operación",
                 "strictContent": "Al seleccionar esta opción, si un sitio activa el límite diario, no se te permitirá desbloquearlo manualmente, más que esperar hasta el día siguiente. ¡Si las reglas no se establecen correctamente, pueden entorpecer tus rutinas!",
-                "pswFormLabel": "Contraseña",
-                "pswFormAgain": "Reingresar",
                 "2fa": "Debe usar código de autenticación en dos pasos para desbloquear",
                 "twoFaTitle": "Activar autenticación en dos pasos",
                 "twoFaCopyLink": "Copiar enlace",
@@ -888,6 +900,10 @@
         "accessibility": {
             "title": "Accesibilidad",
             "chartDecal": "{input} Si se debe mostrar la calcomanía del gráfico"
+        },
+        "psw": {
+            "label": "Contraseña",
+            "labelAgain": "Reingresar"
         },
         "notification": {
             "title": "Notificación",
@@ -962,8 +978,6 @@
                 "strict": "Entsperren trotzdem nicht zulassen",
                 "strictTitle": "Operation bestätigen",
                 "strictContent": "Wenn Sie diese Option wählen, wenn eine Site Tageslimit auslöst, Sie dürfen die Blockierung nur bis zum nächsten Tag manuell entsperren. Wenn Regeln nicht richtig eingerichtet sind, können sie sehr gut Ihre Routinen behindern!",
-                "pswFormLabel": "Passwort",
-                "pswFormAgain": "Erneut eingeben",
                 "2fa": "Zum Entsperren ist ein 2FA‑Code erforderlich",
                 "twoFaTitle": "Zwei Faktor Authentifikation - 2FA nutzen",
                 "twoFaScanHint": "Scanne den QR‑Code mit einer Authentifikation‑App oder importiere den Einrichtungslink in einen TOTP‑fähigen Passwortmanager.",
@@ -1017,6 +1031,10 @@
         "accessibility": {
             "title": "Barrierefreiheit",
             "chartDecal": "{input} Ob das Diagramm-Aufkleber angezeigt werden soll"
+        },
+        "psw": {
+            "label": "Passwort",
+            "labelAgain": "Erneut eingeben"
         },
         "notification": {
             "title": "Benachrichtigungen",
@@ -1100,8 +1118,6 @@
                 "strict": "Ne pas autoriser le déblocage",
                 "strictTitle": "Confirmation de l'opération",
                 "strictContent": "Lorsque vous sélectionnez cette option, si un site déclenche une limite quotidienne, vous ne serez pas autorisé à le débloquer manuellement sauf en attendant le lendemain. Si les règles ne sont pas correctement configurées, elles peuvent très bien gêner vos routines !",
-                "pswFormLabel": "Mot de passe",
-                "pswFormAgain": "Retapez",
                 "2fa": "Utilisez le code 2FA pour déverrouiller",
                 "twoFaTitle": "Activer l'authentification à deux facteurs (A2F)",
                 "twoFaScanHint": "Scannez le code QR avec une application d'authentification ou importez le lien d'installation dans un gestionnaire de mots de passe qui prend en charge TOTP.",
@@ -1155,6 +1171,10 @@
         "accessibility": {
             "title": "Accessibilité",
             "chartDecal": "{input} afficher les motifs de la carte"
+        },
+        "psw": {
+            "label": "Mot de passe",
+            "labelAgain": "Retapez"
         },
         "notification": {
             "title": "Notification",
@@ -1236,8 +1256,6 @@
                 "strict": "Не разрешать разблокировку при любых обстоятельствах",
                 "strictTitle": "Подтверждение операции",
                 "strictContent": "При выборе этой опции, если сайт вызывает ежедневное ограничение, вам не будет разрешено разблокировать его вручную, кроме ожидания, до следующего дня. Если правила настроены неправильно, они могут очень затруднять ваши процедуры!",
-                "pswFormLabel": "Пароль",
-                "pswFormAgain": "Введите повторно",
                 "2fa": "Для разблокировки необходимо использовать двухфакторный код",
                 "twoFaTitle": "Включить двухфакторную аутентификацию",
                 "twoFaCopyLink": "Копировать ссылку"
@@ -1287,6 +1305,10 @@
         "accessibility": {
             "title": "Специальные возможности",
             "chartDecal": "{input} Отображать клетки на графике"
+        },
+        "psw": {
+            "label": "Пароль",
+            "labelAgain": "Введите повторно"
         },
         "notification": {
             "title": "Уведомление",
@@ -1357,9 +1379,7 @@
                 },
                 "strict": "عدم السماح بالفك بأي طريقة",
                 "strictTitle": "تأكيد العملية",
-                "strictContent": "عند اختيار هذا الخيار، إذا تم تقييد موقع ما، لن يُسمح لك بفك القيد يدويًا إلا بانتظار اليوم التالي. إذا لم يتم إعداد القواعد بشكل صحيح، قد تعيق روتينك اليومي!",
-                "pswFormLabel": "كلمة المرور",
-                "pswFormAgain": "إعادة الإدخال"
+                "strictContent": "عند اختيار هذا الخيار، إذا تم تقييد موقع ما، لن يُسمح لك بفك القيد يدويًا إلا بانتظار اليوم التالي. إذا لم يتم إعداد القواعد بشكل صحيح، قد تعيق روتينك اليومي!"
             }
         },
         "backup": {
@@ -1406,6 +1426,10 @@
         "accessibility": {
             "title": "إمكانية الوصول",
             "chartDecal": "{input} هل يتم عرض الزخرفة على الرسم البياني"
+        },
+        "psw": {
+            "label": "كلمة المرور",
+            "labelAgain": "إعادة الإدخال"
         },
         "button": {
             "reset": "إعادة الضبط",
@@ -1468,9 +1492,7 @@
                 },
                 "strict": "Her halükarda kilidin açılmasına izin verme",
                 "strictTitle": "İşlemi onayla",
-                "strictContent": "Bu seçeneği seçtiğinizde, bir site günlük sınırı tetiklediğinde, ertesi güne kadar beklemek dışında manuel olarak engellemeyi kaldırmanız mümkün olmayacaktır. Kurallar doğru şekilde ayarlanmazsa, günlük rutinlerinizi büyük ölçüde engelleyebilirler!",
-                "pswFormLabel": "Şifre",
-                "pswFormAgain": "Yeniden girin"
+                "strictContent": "Bu seçeneği seçtiğinizde, bir site günlük sınırı tetiklediğinde, ertesi güne kadar beklemek dışında manuel olarak engellemeyi kaldırmanız mümkün olmayacaktır. Kurallar doğru şekilde ayarlanmazsa, günlük rutinlerinizi büyük ölçüde engelleyebilirler!"
             }
         },
         "backup": {
@@ -1517,6 +1539,10 @@
         "accessibility": {
             "title": "Erişilebilirlik",
             "chartDecal": "{input} Grafik çıkartmasını gösterip göstermemeyi seçin"
+        },
+        "psw": {
+            "label": "Şifre",
+            "labelAgain": "Yeniden girin"
         },
         "notification": {
             "title": "Bildirim",
@@ -1597,8 +1623,6 @@
                 "strict": "Nie zezwalaj na odblokowanie mimo to",
                 "strictTitle": "Potwierdzenie operacji",
                 "strictContent": "Gdy wybierzesz tę opcję, jeśli witryna osiągnie dzienny limit, nie będzie wolno jej odblokować ręcznie inaczej, niż czekając do następnego dnia. Jeśli reguły nie są poprawnie skonfigurowane, mogą one skutecznie utrudnić twoją rutynę!",
-                "pswFormLabel": "Hasło",
-                "pswFormAgain": "Wprowadź ponownie",
                 "2fa": "Trzeba użyć kod 2FA do odblokowania",
                 "twoFaTitle": "Włącz 2FA",
                 "twoFaScanHint": "Zeskanuj kod QR za pomocą aplikacji uwierzytelniającej lub zaimportuj link konfiguracyjny do menedżera haseł obsługującego TOTP.",
@@ -1652,6 +1676,10 @@
         "accessibility": {
             "title": "Ułatwienia dostępu",
             "chartDecal": "{input} - czy wyświetlić wykres typu decal"
+        },
+        "psw": {
+            "label": "Hasło",
+            "labelAgain": "Wprowadź ponownie"
         },
         "notification": {
             "title": "Powiadomienie",
@@ -1735,8 +1763,6 @@
                 "strict": "Non consentire comunque lo sblocco",
                 "strictTitle": "Conferma operazione",
                 "strictContent": "Quando si seleziona questa opzione, se un sito attiva il limite giornaliero, non ti sarà permesso di sbloccare manualmente se non aspettare fino al giorno successivo. Se le regole non sono impostate correttamente, possono molto bene ostacolare le tue routine!",
-                "pswFormLabel": "Password",
-                "pswFormAgain": "Conferma",
                 "2fa": "È necessario utilizzare il codice 2FA per sbloccare",
                 "twoFaTitle": "Abilita 2FA",
                 "twoFaScanHint": "Scansiona il codice QR con un'app di autenticazione o importa il link di configurazione in un gestore di password che supporta TOTP.",
@@ -1790,6 +1816,10 @@
         "accessibility": {
             "title": "Accessibilità",
             "chartDecal": "{input} Indica se visualizzare la decal del grafico"
+        },
+        "psw": {
+            "label": "Password",
+            "labelAgain": "Conferma"
         },
         "notification": {
             "title": "Notifiche",

@@ -8,7 +8,7 @@
 import CompositionTable from '@app/components/Record/components/CompositionTable'
 import { useRecordFilter } from "@app/components/Record/context"
 import { t } from '@app/locale'
-import { periodFormatter } from '@app/util/time'
+import { fmtDur } from '@pages/util/time'
 import { useRemoteValue } from '@hooks'
 import { TooltipWrapper } from '@pages/components'
 import { getComposition, isDimension } from "@util/stat"
@@ -24,7 +24,7 @@ type Props = {
 const TimeColumn = defineComponent<Props>(props => {
     const filter = useRecordFilter()
     const remote = useRemoteValue()
-    const formatter = (focus: number | undefined): string => periodFormatter(focus, { format: filter.timeFormat })
+    const formatter = (focus: number | undefined): string => fmtDur(focus, { format: filter.timeFormat })
     return () => (
         <ElTableColumn
             prop={props.dimension}

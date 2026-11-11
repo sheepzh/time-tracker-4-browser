@@ -10,7 +10,7 @@ import DialogSop from '@app/components/common/DialogSop'
 import { initDialogSopContext } from '@app/components/common/DialogSop/context'
 import { t } from "@app/locale"
 import { Files } from "@element-plus/icons-vue"
-import { BIRTHDAY, formatTimeYMD } from '@util/time'
+import { BIRTHDAY_STR, formatTimeYMD } from '@pages/util/time'
 import { ElButton } from "element-plus"
 import { defineComponent, ref, toRaw } from "vue"
 import ClientTable from '../ClientTable'
@@ -24,7 +24,7 @@ const STEP_TITLES = [
 
 async function fetchData(client: tt4b.backup.Client): Promise<tt4b.imported.Data> {
     const { id: specCid, maxDate, minDate } = client
-    const start = minDate ?? BIRTHDAY
+    const start = minDate ?? BIRTHDAY_STR
     const end = maxDate ?? formatTimeYMD(Date.now())
     const rows = await previewBackup({ specCid, start, end })
     return { rows, focus: true, time: true }
