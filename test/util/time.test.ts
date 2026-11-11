@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getAllDatesBetween, getDayLength, getMonthTime, getStartOfDay, getStartOfNextDay, isSameDay } from "@util/time"
+import { getAllDatesBetween, getDayLength, getMonthTime, getStartOfDay, getStartOfNextDay, isSameDay } from "@pages/util/time"
 
 test("is same day", () => {
     const date1 = new Date(2022, 4, 11)
@@ -40,8 +40,8 @@ describe("date-range helpers", () => {
 
     test("getMonthTime handles year rollover", () => {
         const [start, end] = getMonthTime(new Date(2022, 11, 31, 12, 30))
-        expect(start).toEqual(new Date(2022, 11, 1).getTime())
-        expect(end).toEqual(new Date(2023, 0, 1).getTime() - 1)
+        expect(start.getTime()).toEqual(new Date(2022, 11, 1).getTime())
+        expect(end.getTime()).toEqual(new Date(2023, 0, 1).getTime() - 1)
     })
 })
 
