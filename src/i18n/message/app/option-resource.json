@@ -1818,7 +1818,6 @@
             "chartDecal": "{input} Indica se visualizzare la decal del grafico"
         },
         "psw": {
-            "label": "Password",
             "labelAgain": "Conferma"
         },
         "notification": {
