@@ -958,7 +958,9 @@
             "weekStart": "Erster Tag der Woche {input}",
             "weekStartAsNormal": "Wie normal",
             "storage": "Speichern der Trackingdaten in {input}",
-            "storageConfirm": "Möchten Sie die Speicherart ändern zu {type}?"
+            "storageConfirm": "Möchten Sie die Speicherart ändern zu {type}?",
+            "dataPsw": "Benötigt ein Passwort, um die Tracking-Daten-Seiten anzusehen",
+            "dataPswReset": "Verifizieren sie das Password um es zurückzusetzen"
         },
         "limit": {
             "prompt": "Eingabeaufforderung wird angezeigt, wenn eingeschränkt {input}",

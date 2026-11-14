@@ -280,6 +280,11 @@
         },
         "followBrowser": "Browser verfolgen",
         "incorrectPassword": "Falsches Passwort",
+        "dataLock": {
+            "unlock": "Entsperren",
+            "tip": "Geben sie das Datenpasswort ein um die Daten einzusehen",
+            "durationLabel": "Entsperren für {slot}"
+        },
         "allowUnblocking": "Freigabe erlauben",
         "unlimited": "Unbegrenzt"
     },
