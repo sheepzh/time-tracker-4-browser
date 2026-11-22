@@ -1,4 +1,4 @@
-import { createRecordGuard, isInt, isUnknown, type TypeGuard, } from 'typescript-guard'
+import { createRecordGuard, createStringUnionGuard, isInt, isUnknown, type TypeGuard } from 'typescript-guard'
 
 export const isRecord = createRecordGuard<unknown>(isUnknown)
 
@@ -10,3 +10,5 @@ function createTupleGuard<T, const L extends number>(
 }
 
 export const isVector2 = createTupleGuard(isInt, 2)
+
+export const isSiteType = createStringUnionGuard<tt4b.site.Type>('merged', 'normal', 'virtual')

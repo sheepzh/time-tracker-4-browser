@@ -2,13 +2,14 @@ import { listCateStats, listGroupStats, listSiteStats } from '@api/sw/stat'
 import type { RecordQuery } from '@app/router/constants'
 import { isOptionalIntArray, isTimeFormat } from '@app/util/types'
 import { localReactive, useManualRequest, useProvide, useProvider, useRemoteValue } from '@hooks'
+import { queryInt, queryStr, type MakeRouteQuery } from '@pages/util/route'
 import { BIRTHDAY, cvtDateRange2Str, fmtDur } from '@pages/util/time'
 import { sum } from '@util/array'
 import { truthy } from '@util/lang'
 import {
     createObjectGuard, createOptionalGuard, createStringUnionGuard, isBoolean, isOptionalString,
 } from 'typescript-guard'
-import { reactive, ref, WatchSource, type ShallowRef } from "vue"
+import { ref, type ShallowRef, type WatchSource } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import type { DisplayComponent, RecordFilterOption, RecordSort } from "./types"
 
@@ -31,23 +32,20 @@ const isSiteMerge = createStringUnionGuard<Exclude<RecordFilterOption['siteMerge
 function initQuery(filter: RecordFilterOption): RecordSort['prop'] | undefined {
     const route = useRoute()
     const router = useRouter()
-    const { q, md, ds, de, mm, sc } = route.query as RecordQuery
+    const { q, md, ds, de, mm, sc }: MakeRouteQuery<RecordQuery> = route.query
     // Remove queries
     router.replace({ query: {} })
 
     // Query
-    const query = q?.trim()
-    if (query) filter.query = query
+    q && (filter.query = queryStr(q))
     // Date range
-    let dateStart = ds ? Number.parseInt(ds) : undefined
-    if (Number.isNaN(dateStart)) dateStart = undefined
-    let dateEnd = de ? Number.parseInt(de) : undefined
-    if (Number.isNaN(dateEnd)) dateEnd = undefined
-    if (dateStart || dateEnd) {
+    const dateStart = queryInt(ds)
+    const dateEnd = queryInt(de)
+    if (dateStart !== undefined || dateEnd !== undefined) {
         filter.dateRange = [dateStart ?? BIRTHDAY.getTime(), dateEnd ?? Date.now()]
     }
     // Merge method
-    if (md === 'true' || md === '1') filter.mergeDate = true
+    if (md && ['true', '1'].includes(queryStr(md))) filter.mergeDate = true
     if (isSiteMerge(mm)) filter.siteMerge = mm
 
     return isSortProp(sc) ? sc : undefined
@@ -64,24 +62,13 @@ const isCacheValue = createObjectGuard<CacheValue>({
 })
 
 export const initRecordContext = () => {
-    const cached = localReactive('record_filter', isCacheValue, {
+    const filter = localReactive<RecordFilterOption, keyof CacheValue>('record_filter', isCacheValue, {
         query: undefined,
         mergeDate: false,
         timeFormat: 'default',
-    })
-    const filter = reactive({
-        get query() { return cached.query },
-        set query(val) { cached.query = val },
-        get mergeDate() { return cached.mergeDate },
-        set mergeDate(val) { cached.mergeDate = val },
-        get siteMerge() { return cached.siteMerge },
-        set siteMerge(val) { cached.siteMerge = val },
-        get cateIds() { return cached.cateIds },
-        set cateIds(val) { cached.cateIds = val },
-        get timeFormat() { return cached.timeFormat },
-        set timeFormat(val) { cached.timeFormat = val },
-        dateRange: [Date.now(), Date.now()],
-    } satisfies RecordFilterOption)
+        siteMerge: undefined,
+        cateIds: undefined,
+    }, { dateRange: [Date.now(), Date.now()] })
     const querySort = initQuery(filter)
     const sort = ref<RecordSort>({ order: 'descending', prop: querySort ?? 'focus' })
     const comp = ref<DisplayComponent>()

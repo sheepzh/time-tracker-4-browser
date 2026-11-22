@@ -3,10 +3,11 @@ import { DEFAULT_LIMIT } from '@/util/constant/option'
 import { deleteLimits, listLimits, updateLimits } from "@api/sw/limit"
 import { t } from '@app/locale'
 import type { LimitQuery } from '@app/router/constants'
-import { judgeVerificationRequired, processVerification } from '@pages/util/limit'
 import { useDocumentVisibility, useOperation, useProvide, useProvider, useRequest } from '@hooks'
-import { tryParseInteger } from '@util/number'
+import { judgeVerificationRequired, processVerification } from '@pages/util/limit'
+import { queryInt, queryStr, type MakeRouteQuery } from '@pages/util/route'
 import { ElMessage, ElMessageBox } from "element-plus"
+import { createStringUnionGuard } from 'typescript-guard'
 import { computed, onMounted, reactive, ref, toRaw, watch, type ShallowRef } from "vue"
 import { useRoute, useRouter } from 'vue-router'
 import type { LimitFilterOption, ModifyInstance, TestInstance } from "./types"
@@ -32,14 +33,15 @@ type Context = {
 
 const NAMESPACE = 'limit'
 
+const isAction = createStringUnionGuard<Exclude<LimitQuery['action'], undefined>>('create', 'modify')
+
 const initialQuery = () => {
-    const { url, action, id: idQuery } = useRoute().query as LimitQuery
+    const { url, action, id }: MakeRouteQuery<LimitQuery> = useRoute().query
     useRouter().replace({ query: {} })
-    const [isNum, idMaybe] = idQuery ? tryParseInteger(idQuery) : [false, undefined]
     return {
-        url: url && decodeURIComponent(url),
-        action,
-        id: isNum && !Number.isNaN(idMaybe) && idMaybe ? idMaybe : undefined,
+        url: url ? decodeURIComponent(queryStr(url)) : undefined,
+        action: isAction(action) ? action : undefined,
+        id: queryInt(id),
     }
 }
 

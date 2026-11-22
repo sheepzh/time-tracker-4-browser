@@ -1,5 +1,5 @@
 import { isRecord } from '@util/guard'
-import { createObjectGuard, isInt, isString, TypeGuard } from 'typescript-guard'
+import { createObjectGuard, isInt, isString, type TypeGuard } from 'typescript-guard'
 import type { BrowserMigratableNamespace } from '../types'
 
 export const isExportData = createObjectGuard<Pick<tt4b.backup.ExportData, '__meta__'>>({

@@ -53,33 +53,6 @@ export function isValidHost(host: string) {
 }
 
 /**
- * Test whether the host is a valid virtual host
- *
- * github.com/              = false
- * github.com               = false
- * github.com/sheepzh       = true
- * github.com/*             = true
- * github.com/**            = true
- * github.com/sheepzh/      = false
- * github.com/sheepzh?      = false
- * github.com/sheepzh?a=1   = false
- * http://github.com/123    = false
- *
- * @since 1.6.0
- */
-export function isValidVirtualHost(host: string) {
-    if (!host) return false
-    if (host.includes('?') || host.includes('=') || host.includes(":")) return false
-    // Can't ends with /
-    if (host.endsWith('/')) return false
-    const segments = host.split('/')
-    // Can't be normal host
-    if (segments.length === 1) return false
-    const [seg] = segments
-    return seg && isValidHost(seg)
-}
-
-/**
  * Judge virtual host fast
  *
  * @param host

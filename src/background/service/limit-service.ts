@@ -115,7 +115,7 @@ type LimitTimeStateResult = {
     weekly: TimeLimitState
 }
 
-export function calcTimeState(item: tt4b.limit.Item, reminderMills: number, delayDuration: number): LimitTimeStateResult {
+function calcTimeState(item: tt4b.limit.Item, reminderMills: number, delayDuration: number): LimitTimeStateResult {
     const res: LimitTimeStateResult = { daily: 'NORMAL', weekly: 'NORMAL' }
     const {
         time, waste, delayCount,

@@ -9,13 +9,13 @@ import Category from '@app/components/common/Category'
 import ColumnHeader from '@app/components/common/ColumnHeader'
 import ContentCard from '@app/components/common/ContentCard'
 import HostAlert from '@app/components/common/HostAlert'
-import Pagination from '@app/components/common/Pagination'
+import Pagination, { useStoredPage } from '@app/components/common/Pagination'
 import { t } from '@app/locale'
 import { Delete } from '@element-plus/icons-vue'
 import { useOperation, useRequest } from '@hooks'
 import { ConfirmButton, EditableImg, Flex } from '@pages/components'
 import { ElTable, ElTableColumn, ElTag, TagProps, type RenderRowData } from "element-plus"
-import { defineComponent, reactive, ref } from "vue"
+import { defineComponent, ref } from "vue"
 import { ALL_TYPES } from '../common'
 import { useSiteManage } from '../context'
 import { DisplayComponent } from '../types'
@@ -32,13 +32,13 @@ const TYPE_TAG: Record<tt4b.site.Type, TagProps['type']> = {
 const _default = defineComponent<{}>((_, ctx) => {
     const selected = ref<tt4b.site.SiteInfo[]>([])
     const { filter } = useSiteManage()
-    const page = reactive<tt4b.common.PageQuery>({ num: 1, size: 20 })
+    const page = useStoredPage('site_table')
     const { data: pagination, refresh, loading } = useRequest(() => {
         const { query: fuzzyQuery, cateIds, types, host } = filter
         return getSitePage({ fuzzyQuery, cateIds, types, host }, page)
     }, {
         defaultValue: { list: [], total: 0 },
-        deps: [() => ({ ...filter }), () => page],
+        deps: () => ({ ...filter, ...page }),
     })
 
     const changeIcon = useOperation(({ type, host, alias }: tt4b.site.SiteInfo, iconUrl: string | undefined) => {
@@ -134,7 +134,7 @@ const _default = defineComponent<{}>((_, ctx) => {
                         disabled={loading.value}
                         defaultValue={page}
                         total={pagination.value.total}
-                        onChange={val => { page.num = val.num, page.size = val.size }}
+                        onChange={val => Object.assign(page, val)}
                     />
                 </Flex>
             </Flex>

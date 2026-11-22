@@ -5,10 +5,12 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { type AppSiteAnalysisQuery } from '@/shared/route'
+import type { AppSiteAnalysisQuery } from '@/shared/route'
 import { listCateStats, listSiteStats } from "@api/sw/stat"
 import { isTimeFormat } from '@app/util/types'
 import { localRef, useProvide, useProvider, useRemoteValue, useRequest } from "@hooks"
+import { queryInt, queryStr, type MakeRouteQuery } from '@pages/util/route'
+import { isSiteType } from '@util/guard'
 import { extractHostname } from '@util/pattern'
 import { ref, type Ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
@@ -21,13 +23,13 @@ type Context = {
 }
 
 function parseQuery(): AnalysisTarget | undefined {
-    // Process the query param
-    const query = useRoute().query as unknown as AppSiteAnalysisQuery
+    const query: MakeRouteQuery<AppSiteAnalysisQuery> = useRoute().query
+    const { cateId, type, host, url } = query
     useRouter().replace({ query: {} })
-    const { host, type: siteType, cateId, url } = query
-    if (cateId) return { type: 'cate', key: parseInt(cateId) }
-    if (host && siteType) return { type: 'site', key: { host, type: siteType } }
-    if (url) return { type: 'site', key: { host: extractHostname(url).host, type: 'normal' } }
+    const cateIdVal = queryInt(cateId)
+    if (cateIdVal) return { type: 'cate', key: cateIdVal }
+    if (host && isSiteType(type)) return { type: 'site', key: { host: queryStr(host), type } }
+    if (url) return { type: 'site', key: { host: extractHostname(queryStr(url)).host, type: 'normal' } }
     return undefined
 }
 

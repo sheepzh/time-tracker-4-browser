@@ -112,8 +112,8 @@ declare namespace tt4b {
         }
 
         type PageQuery = {
-            num?: number
-            size?: number
+            num: number
+            size: number
         }
 
         type PageResult<T> = {

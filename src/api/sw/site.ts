@@ -4,7 +4,7 @@ export const getCurrentSite = (url?: string) => sendMsg2Runtime('site.current', 
 
 export const listSites = (param?: tt4b.site.Query) => sendMsg2Runtime('site.list', param)
 
-export function getSitePage(param?: tt4b.site.Query, page?: tt4b.common.PageQuery) {
+export function getSitePage(param: tt4b.site.Query, page: tt4b.common.PageQuery) {
     return sendMsg2Runtime('site.page', { ...param, ...page })
 }
 

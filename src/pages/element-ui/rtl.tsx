@@ -1,7 +1,6 @@
 import { ArrowLeft, ArrowRight, DArrowLeft, DArrowRight } from "@element-plus/icons-vue"
 import { isRtl } from "@util/document"
-import { ElIcon } from "element-plus"
-import { VNode } from "vue"
+import { ElIcon, type PaginationProps } from "element-plus"
 
 export const getDatePickerIconSlots = () => {
     const rtl = isRtl()
@@ -14,13 +13,8 @@ export const getDatePickerIconSlots = () => {
     }
 }
 
-export const getPaginationIconProps = (): {
-    prevIcon?: VNode
-    nextIcon?: VNode
-} => {
-    if (!isRtl()) return {}
-    return {
-        prevIcon: <ElIcon><ArrowRight /></ElIcon>,
-        nextIcon: <ElIcon><ArrowLeft /></ElIcon>,
-    }
-}
+type PaginationIcons = Partial<Pick<PaginationProps, 'prevIcon' | 'nextIcon'>>
+export const getPaginationIconProps = (): PaginationIcons => isRtl() ? {
+    prevIcon: <ElIcon><ArrowRight /></ElIcon>,
+    nextIcon: <ElIcon><ArrowLeft /></ElIcon>,
+} : {}

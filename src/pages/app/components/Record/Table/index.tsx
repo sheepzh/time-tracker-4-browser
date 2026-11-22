@@ -8,12 +8,12 @@ import { modifySite } from '@api/sw/site'
 import ContentCard from '@app/components/common/ContentCard'
 import Editable from '@app/components/common/Editable'
 import HostAlert from '@app/components/common/HostAlert'
-import Pagination from '@app/components/common/Pagination'
+import Pagination, { useStoredPage } from '@app/components/common/Pagination'
 import { t } from '@app/locale'
-import { cvt2LocaleDate } from '@pages/util/time'
 import { Histogram } from "@element-plus/icons-vue"
 import { useDocumentVisibility, useManualRequest, useRemoteValue, useRequest, useState } from '@hooks'
 import { Flex, TooltipWrapper } from '@pages/components'
+import { cvt2LocaleDate } from '@pages/util/time'
 import { isRtl } from "@util/document"
 import { identifySiteKey } from '@util/site'
 import { getAlias, getComposition, isSite } from "@util/stat"
@@ -64,14 +64,14 @@ const HostCell: FunctionalComponent<{ row: tt4b.stat.Row, merge?: SiteMerge }> =
 
 const _default = defineComponent<{}>((_, ctx) => {
     const rtl = isRtl()
-    const [page, setPage] = useState<tt4b.common.PageQuery>({ size: 20, num: 1 })
+    const page = useStoredPage('record_table')
     const sort = useRecordSort()
     const filter = useRecordFilter()
     const remote = useRemoteValue()
     const visible = computed(() => computeVisible(filter))
-    const { data, refresh, loading } = useRequest(() => queryPage(filter, sort.value, page.value, remote.value), {
+    const { data, refresh, loading } = useRequest(() => queryPage(filter, sort.value, page, remote.value), {
         loadingTarget: () => table.value?.$el,
-        deps: [() => ({ ...filter }), sort, page, remote],
+        deps: [() => ({ ...filter, ...page }), sort, remote],
         defaultValue: { list: [], total: 0 },
     })
     const summary = useSummary()
@@ -197,9 +197,9 @@ const _default = defineComponent<{}>((_, ctx) => {
                     />
                     <Pagination
                         disabled={loading.value}
-                        defaultValue={page.value}
+                        defaultValue={page}
                         total={data.value.total}
-                        onChange={setPage}
+                        onChange={val => Object.assign(page, val)}
                     />
                 </Flex>
             </Flex>

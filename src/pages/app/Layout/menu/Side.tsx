@@ -9,7 +9,7 @@ import { getVersion } from '@api/chrome/runtime'
 import { t } from '@app/locale'
 import { Expand, Fold } from '@element-plus/icons-vue'
 import { css } from '@emotion/css'
-import { localRef, useState } from '@hooks'
+import { localRef } from '@hooks'
 import { Flex } from '@pages/components'
 import { colorVariant } from '@pages/util/style'
 import { ElCollapseTransition, ElIcon, ElMenu, ElMenuItem, ElMenuItemGroup, ElScrollbar, ElText, ElTooltip, useNamespace } from "element-plus"
@@ -19,21 +19,6 @@ import { type Router, useRouter } from "vue-router"
 import { indexOfItem, menuGroups, type MenuItem } from "./item"
 import { handleClick, initTitle } from "./route"
 import { colorMenu } from './style'
-
-const useCollapseState = () => {
-    const collapsed = localRef('menu-collapsed', isBoolean, false)
-    const [tooltipVisible, setTooltipVisible] = useState(false)
-
-    const toggle = () => {
-        setTooltipVisible(false)
-        nextTick(() => collapsed.value = !collapsed.value)
-    }
-
-    return {
-        collapsed, toggle,
-        tooltipVisible, setTooltipVisible,
-    }
-}
 
 const useStyle = () => {
     const menuNs = useNamespace('menu')
@@ -78,10 +63,12 @@ const _default = defineComponent(() => {
 
     onMounted(() => initTitle(router))
 
-    const {
-        collapsed, toggle,
-        tooltipVisible, setTooltipVisible,
-    } = useCollapseState()
+    const collapsed = localRef('menu-collapsed', isBoolean, false)
+    const tooltipVisible = ref(false)
+    const toggle = () => {
+        tooltipVisible.value = false
+        nextTick(() => collapsed.value = !collapsed.value)
+    }
     const cls = useStyle()
     const menus = menuGroups()
 
@@ -117,7 +104,7 @@ const _default = defineComponent(() => {
             >
                 <ElTooltip
                     visible={tooltipVisible.value}
-                    onUpdate:visible={setTooltipVisible}
+                    onUpdate:visible={val => tooltipVisible.value = val}
                     effect='dark' placement='right'
                     transition='el-fade-in-linear'
                     offset={collapsed.value ? 32 : undefined}

@@ -2,15 +2,16 @@ import cateDatabase from '@db/cate-database'
 import { extractNamespace } from '@db/common/migratable'
 import siteDatabase from '@db/site-database'
 import type { BrowserMigratable } from '@db/types'
+import { isSiteType } from '@util/guard'
 import {
-    createArrayGuard, createObjectGuard, createOptionalGuard, createStringUnionGuard, isInt, isOptionalBoolean,
-    isOptionalInt, isOptionalString, isString,
+    createArrayGuard, createObjectGuard, createOptionalGuard, isInt, isOptionalBoolean, isOptionalInt,
+    isOptionalString, isString,
 } from 'typescript-guard'
 import { saveSite } from '.'
 
 const isSiteInfo = createObjectGuard<tt4b.site.SiteInfo>({
     host: isString,
-    type: createStringUnionGuard<tt4b.site.Type>('normal', 'merged', 'virtual'),
+    type: isSiteType,
     alias: isOptionalString,
     iconUrl: isOptionalString,
     cate: isOptionalInt,

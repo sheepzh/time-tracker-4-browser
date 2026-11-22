@@ -1,5 +1,5 @@
 import { JSON_HOST, PDF_HOST, PIC_HOST, TXT_HOST } from "@util/constant/remain-host"
-import { extractFileHost, extractHostname, isHomepage, isIpAndPort, isValidHost, isValidVirtualHost } from "@util/pattern"
+import { extractFileHost, extractHostname, isHomepage, isIpAndPort, isValidHost } from "@util/pattern"
 
 test('ip and port', () => {
     expect(isIpAndPort('222.222.22.01')).toBeFalsy()
@@ -69,17 +69,4 @@ test("extractFileHost", () => {
     expect(extractFileHost("file://123json")).toEqual(undefined)
     expect(extractFileHost("file://123.html")).toEqual(undefined)
     expect(extractFileHost("file://123.")).toEqual(undefined)
-})
-
-test("valid virtual host", () => {
-    expect(isValidVirtualHost("github.com")).toBeFalsy()
-    expect(isValidVirtualHost("http://github.com")).toBeFalsy()
-    expect(isValidVirtualHost("github.com/")).toBeFalsy()
-
-    expect(isValidVirtualHost("github.com/sheepzh")).toBeTruthy()
-    expect(isValidVirtualHost("github.com/**")).toBeTruthy()
-    expect(isValidVirtualHost("github.com/*")).toBeTruthy()
-    expect(isValidVirtualHost("github.com/*/timer")).toBeTruthy()
-    // Can't end with /
-    expect(isValidVirtualHost("github.com/*/timer/")).toBeFalsy()
 })

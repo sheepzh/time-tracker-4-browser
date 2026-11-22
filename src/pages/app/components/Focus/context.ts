@@ -1,6 +1,7 @@
 import { deleteFocusPreset, getCurrentSession, listFocusPresets } from '@api/sw/focus'
 import { type FocusQuery } from '@app/router/constants'
 import { useOperation, useProvide, useProvider, useRequest } from '@hooks'
+import { queryStr, type MakeRouteQuery } from '@pages/util/route'
 import { onMounted, ref, type ShallowRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -19,11 +20,10 @@ export type ModifyInstance = {
 
 const NAMESPACE = 'focus-preset'
 
-const parseQuery = (): FocusQuery['action'] => {
-    const router = useRouter()
-    const { action } = useRoute().query as FocusQuery
-    router.replace({ query: {} })
-    return action
+const parseQuery = (): string | undefined => {
+    const { action }: MakeRouteQuery<FocusQuery> = useRoute().query
+    useRouter().replace({ query: {} })
+    return queryStr(action)
 }
 
 export const initFocusManage = () => {
