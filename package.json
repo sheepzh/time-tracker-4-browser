@@ -50,7 +50,7 @@
         "husky": "^9.1.7",
         "jsdom": "^31.0.1",
         "jszip": "^3.10.2",
-        "knip": "^6.47.0",
+        "knip": "^6.48.0",
         "postcss": "^8.5.33",
         "postcss-loader": "^8.2.2",
         "postcss-rtlcss": "^6.0.0",

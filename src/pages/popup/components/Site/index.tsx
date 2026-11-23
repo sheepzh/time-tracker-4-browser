@@ -36,7 +36,7 @@ const Site = defineComponent<{}>(() => {
         <Teleport defer to={`#${HEADER_OPTION_SLOT}`}>
             <OptionLink href={OPTION_URL} />
         </Teleport>
-        <ElCard shadow='never' style={{ width: '100%' } satisfies StyleValue}>
+        <ElCard shadow='never' style={{ width: '100%', height: '100%' } satisfies StyleValue}>
             <Flex column width='100%' height='100%'>
                 <Summary />
                 {tab.value === 'limit' && trackable.value && <Limit />}
