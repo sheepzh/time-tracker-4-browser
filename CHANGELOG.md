@@ -4,6 +4,11 @@ All notable changes to Time Tracker will be documented in this file.
 
 It is worth mentioning that the release time of each change refers to the time when the installation package is submitted to the webstore. It is about one week for Firefox to moderate packages, while only 1-2 days for Chrome and Edge.
 
+## [4.7.1] - 2026-11-24
+
+-  Supported remembering the page size of tables
+-  Fixed some bugs
+
 ## [4.7.0] - 2026-11-12
 
 -  Added data password (#595)
