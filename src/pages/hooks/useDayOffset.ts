@@ -18,4 +18,4 @@ export const initDayOffset = () => {
     return dayStart
 }
 
-export const useDayOffset = () => useProvider<Context, "weekStart" | "dayStart">("weekStart", "dayStart")
+export const useDayOffset = () => useProvider<Context, "weekStart" | "dayStart">(NAMESPACE, "weekStart", "dayStart")
