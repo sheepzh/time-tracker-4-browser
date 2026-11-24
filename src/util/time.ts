@@ -5,6 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
+export const pad = (n: number, len = 2) => n.toString().padStart(len, '0')
+
 export function formatTimeYMD(time: Date | number): string {
     time = new Date(time)
     const y = time.getFullYear()
