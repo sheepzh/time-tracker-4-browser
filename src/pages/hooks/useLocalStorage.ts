@@ -29,10 +29,11 @@ export function localRef<T>(key: string, guard: TypeGuard<T>, defaultValue?: T):
     return result
 }
 
-export function localReactive<T extends StorageObject, StoreKeys extends keyof T>(
+export function localReactive<T extends object, StoreKeys extends keyof T>(
     key: string,
     guard: TypeGuard<Pick<T, StoreKeys>>,
-    defaultValue: MakeOptionalUndefined<Pick<T, StoreKeys>>,
+    defaultValue: MakeOptionalUndefined<Pick<T, StoreKeys>> extends StorageObject
+        ? MakeOptionalUndefined<Pick<T, StoreKeys>> : never,
     defaultNonStored: Omit<T, StoreKeys>,
 ): Reactive<T>
 export function localReactive<T extends StorageObject>(key: string, guard: TypeGuard<T>, defaultValue: T): Reactive<T>
@@ -40,10 +41,10 @@ export function localReactive(
     key: string,
     guard: TypeGuard<StorageObject>,
     defaultValue: StorageObject,
-    defaultNonStored?: StorageObject,
-): Reactive<StorageObject> {
+    defaultNonStored?: object,
+) {
     const stored = reactive({ ...defaultValue, ...deserialize(localStorage.getItem(key), guard) })
     watch(stored, val => localStorage.setItem(key, JSON.stringify(toRaw(val))), { deep: true })
     if (!defaultNonStored) return stored
-    return reactive({ ...toRefs(stored), ...defaultNonStored } as StorageObject)
+    return reactive({ ...toRefs(stored), ...defaultNonStored })
 }
