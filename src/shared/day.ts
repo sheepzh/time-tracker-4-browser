@@ -68,7 +68,7 @@ export default class StatDay {
      * @return 0-6 means Monday to Sunday
      */
     weekday(): number {
-        return this.toLabel().getDay() - 1
+        return (this.toLabel().getDay() + 6) % 7
     }
 
     toLabel(): Date {
