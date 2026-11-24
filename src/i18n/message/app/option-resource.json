@@ -301,6 +301,7 @@
             "fileAccessDisabled": "Access to file URLs is currently not allowed. Please enable it on the manage page first",
             "weekStart": "The first day for each week {input}",
             "weekStartAsNormal": "As Normal",
+            "dayStart": "The time each day begains {input}",
             "storage": "Store the tracking data in {input}",
             "storageConfirm": "Do you want to change the storage type to {type}?",
             "dataPsw": "Require a password to view the tracking data pages",

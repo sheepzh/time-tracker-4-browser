@@ -36,6 +36,7 @@ function copy(target: tt4b.option.TrackingOption, source: Readonly<tt4b.option.T
     target.countLocalFiles = source.countLocalFiles
     target.countTabGroup = source.countTabGroup
     target.weekStart = source.weekStart
+    target.dayStart = source.dayStart
     target.autoPauseTracking = source.autoPauseTracking
     target.autoPauseInterval = source.autoPauseInterval
     target.storage = source.storage
@@ -47,15 +48,8 @@ const _default = defineComponent((_props, ctx) => {
     const { data: fileAccess } = useRequest(isAllowedFileSchemeAccess)
     const reset = () => {
         // Not to reset these fields
-        const {
-            autoPauseInterval: oldInterval,
-            storage: oldStorage,
-            dataPassword: oldPsw,
-        } = option
-        copy(option, DEFAULT_TRACKING)
-        option.autoPauseInterval = oldInterval
-        option.storage = oldStorage
-        option.dataPassword = oldPsw
+        const { autoPauseInterval, storage, dataPassword } = option
+        copy(option, { ...DEFAULT_TRACKING, autoPauseInterval, storage, dataPassword })
     }
     ctx.expose({ reset } satisfies CategoryInstance)
 
@@ -86,6 +80,12 @@ const _default = defineComponent((_props, ctx) => {
             const interval = date.getHours() * 3600 + date.getMinutes() * 60 + date.getSeconds()
             option.autoPauseInterval = Math.max(5, interval)
         },
+    })
+
+    const dayStart = computed<Date>({
+        // Use fixed day to keep the wall clock away from any DST transition
+        get: () => new Date(2000, 0, 1, 0, option.dayStart),
+        set: val => option.dayStart = val.getHours() * 60 + val.getMinutes(),
     })
 
     const intervalFormat = computed(() => {
@@ -162,6 +162,16 @@ const _default = defineComponent((_props, ctx) => {
                 style={{ width: '120px' }}
                 onChange={(val: tt4b.option.WeekStartOption) => option.weekStart = val}
                 options={weekStartOptionPairs.map(([value, label]) => ({ value, label }))}
+            />
+        </OptionItem>
+        <OptionItem label={msg => msg.option.tracking.dayStart} defaultValue={DEFAULT_TRACKING.dayStart}>
+            <ElTimePicker
+                size='small'
+                clearable={false}
+                format='HH:mm'
+                modelValue={dayStart.value}
+                onUpdate:modelValue={val => dayStart.value = val}
+                style={{ width: '120px' }}
             />
         </OptionItem>
         <OptionItem label={msg => msg.option.tracking.storage}>

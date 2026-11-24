@@ -1,5 +1,6 @@
 export * from "./useCopy"
 export * from "./useCount"
+export * from "./useDayOffset"
 export * from "./useDebounce"
 export * from "./useDocumentVisibility"
 export * from "./useEcharts"

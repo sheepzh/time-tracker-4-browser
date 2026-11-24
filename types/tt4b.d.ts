@@ -916,7 +916,13 @@ declare namespace tt4b {
              * The start of one week
              * @since 2.4.1
              */
-            weekStart?: WeekStartOption
+            weekStart: WeekStartOption
+            /**
+             * The start of one day, by minute
+             * 
+             * @since 4.8.0
+             */
+            dayStart: number
             /**
              * Where to store the tracking data
              *
@@ -930,8 +936,6 @@ declare namespace tt4b {
              */
             dataPassword: string
         }
-
-        type TrackingRequired = MakeRequired<TrackingOption, 'weekStart'>
 
         type LimitOption = {
             /**
@@ -1045,7 +1049,7 @@ declare namespace tt4b {
         }
 
         export type DefaultOption =
-            & AppearanceRequired & TrackingRequired & LimitRequired
+            & AppearanceRequired & TrackingOption & LimitRequired
             & BackupOption & AccessibilityOption & NotificationOption
 
         type AllOption =

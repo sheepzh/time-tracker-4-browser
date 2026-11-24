@@ -20,7 +20,7 @@ export const DEFAULT_APPEARANCE: tt4b.option.AppearanceRequired = {
     chartAnimationDuration: 1000,
 } as const
 
-export const DEFAULT_TRACKING: tt4b.option.TrackingRequired = {
+export const DEFAULT_TRACKING: tt4b.option.TrackingOption = {
     dataPassword: '',
     autoPauseTracking: false,
     // 10 minutes
@@ -29,6 +29,7 @@ export const DEFAULT_TRACKING: tt4b.option.TrackingRequired = {
     // Additional permission required, so default to false
     countTabGroup: false,
     weekStart: 'default',
+    dayStart: 0,
     storage: 'classic',
 } as const
 

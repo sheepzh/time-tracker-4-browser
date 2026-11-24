@@ -40,6 +40,7 @@ export type OptionMessage = {
         fileAccessDisabled: string
         weekStart: string
         weekStartAsNormal: string
+        dayStart: string
         storage: string
         storageConfirm: string
         dataPsw: string
