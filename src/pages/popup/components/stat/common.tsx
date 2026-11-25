@@ -1,32 +1,34 @@
-import { getWeekStartTime } from "@api/sw/option"
+import StatDay, { statRangeStr, type StatRange } from '@/shared/day'
 import { listCateStats, listGroupStats, listSiteStats } from '@api/sw/stat'
 import { RECORD_ROUTE, type RecordQuery } from "@app/router/constants"
-import { addDays, cvtDateRange2Str, getMonthTime, type DateRange } from "@pages/util/time"
 import { isRemainHost } from "@util/constant/remain-host"
 import { getAppPageUrl } from "@util/constant/url"
 import { isSite } from "@util/stat"
 import type { StatDuration, StatQuery } from './context'
 
-type DateRangeCalculator = (now: Date, num?: number) => Awaitable<[Date, Date] | Date | undefined>
+type DateRangeCalculator = (today: StatDay, weekStart: tt4b.WeekStart, num?: number) => StatRange | undefined
 
 const DATE_RANGE_CALCULATORS: Record<StatDuration, DateRangeCalculator> = {
-    today: now => now,
-    yesterday: now => addDays(now, -1),
-    thisWeek: async now => {
-        const start = await getWeekStartTime(now)
-        return [start, now]
-    },
-    thisMonth: now => [getMonthTime(now)[0], now],
-    lastDays: (now, num) => [addDays(now, -(num ?? 1 - 1)), now],
+    today: today => today.rangeTo(0),
+    yesterday: today => today.prev().rangeTo(0),
+    thisWeek: (today, weekStart) => today.weekStart(weekStart).rangeTo(today),
+    thisMonth: today => today.monthStart().rangeTo(today),
+    lastDays: (today, _, num) => today.rangeTo(-(num ?? 0)),
     allTime: () => undefined,
 }
 
-export const queryRows = async (param: StatQuery): Promise<[rows: tt4b.stat.Row[], date: [Date, Date] | Date | undefined]> => {
-    const { duration, mergeMethod, dimension: sortKey } = param
+type RowsResult = [rows: tt4b.stat.Row[], date: StatRange | undefined]
+type RowsQuery = StatQuery & {
+    weekStart: tt4b.WeekStart
+    dayStart: number
+}
+export const queryRows = async (query: RowsQuery): Promise<RowsResult> => {
+    const { duration, mergeMethod, dimension: sortKey, weekStart, dayStart } = query
+    const today = StatDay.today(dayStart)
     const dateRange = typeof duration === 'string'
-        ? await DATE_RANGE_CALCULATORS[duration](new Date(), undefined)
-        : await DATE_RANGE_CALCULATORS[duration.type](new Date(), duration.value)
-    const date = cvtDateRange2Str(dateRange)
+        ? DATE_RANGE_CALCULATORS[duration](today, weekStart)
+        : DATE_RANGE_CALCULATORS[duration.type](today, weekStart, duration.value)
+    const date = statRangeStr(dateRange)
     const sortDirection: tt4b.common.SortDirection = 'DESC'
     let rows: tt4b.stat.Row[]
     if (mergeMethod === 'cate') {
@@ -44,23 +46,15 @@ export const queryRows = async (param: StatQuery): Promise<[rows: tt4b.stat.Row[
     return [rows, dateRange]
 }
 
-function buildRecordQuery(siteType: tt4b.site.Type, date: DateRange | undefined, type: tt4b.core.Dimension): RecordQuery {
+function buildRecordQuery(siteType: tt4b.site.Type, date: StatRange | undefined, type: tt4b.core.Dimension): RecordQuery {
     const query: RecordQuery = {}
     // Merge host
     siteType === 'merged' && (query.mm = 'domain')
     // Date
     query.md = '1'
-    if (Array.isArray(date)) {
-        if (date.length === 1) {
-            query.ds = query.de = date[0]?.getTime?.()?.toString?.()
-        } else if (date.length === 2) {
-            query.ds = date[0]?.getTime?.()?.toString?.()
-            // End is now
-            // Not the end of this week/month
-            query.de = new Date().getTime().toString()
-        }
-    } else if (!!date) {
-        query.ds = query.de = date.getTime?.()?.toString?.()
+    if (date) {
+        query.ds = date[0].toString()
+        query.de = date[1].toString()
     }
     // Sorted column
     query.sc = type
@@ -69,7 +63,7 @@ function buildRecordQuery(siteType: tt4b.site.Type, date: DateRange | undefined,
 
 export function calJumpUrl(
     row: tt4b.stat.Row | undefined,
-    date: DateRange | undefined,
+    date: StatRange | undefined,
     type: tt4b.core.Dimension,
 ): string | undefined {
     if (!row) return

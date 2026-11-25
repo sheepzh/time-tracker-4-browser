@@ -7,12 +7,14 @@ import { useRequest } from './useRequest'
 const NAMESPACE = "day_offset_provider"
 
 type Context = {
-    weekStart: Ref<number>
+    weekStart: Ref<tt4b.WeekStart>
     dayStart: Ref<number>
 }
 
 export const initDayOffset = () => {
-    const { data: weekStart } = useRequest(getWeekStartDay, { defaultValue: locale === "zh_CN" ? 0 : 6 })
+    const { data: weekStart } = useRequest(getWeekStartDay, {
+        defaultValue: locale === "zh_CN" ? (1 as const) : (7 as const),
+    })
     const { data: dayStart } = useRequest(() => getOption().then(o => o.dayStart), { defaultValue: 0 })
     useProvide<Context>(NAMESPACE, { weekStart, dayStart })
     return dayStart

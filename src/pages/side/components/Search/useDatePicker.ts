@@ -1,24 +1,23 @@
+import StatDay from '@/shared/day'
 import { listSiteStats } from '@api/sw/stat'
-import { useRequest, useState } from '@hooks'
-import { addDays, formatTimeYMD, getMonthTime } from '@pages/util/time'
-import { watch } from 'vue'
+import { useDayOffset, useRequest, useShadow } from '@hooks'
+import { computed } from 'vue'
 
-export const useDatePicker = (options: { onChange: ArgCallback<Date> }) => {
-    const { onChange } = options
-    const [date, setDate] = useState(new Date())
-
-    watch(date, val => onChange(val))
+export const useDatePicker = () => {
+    const { dayStart } = useDayOffset()
+    const [date, setDate] = useShadow(() => StatDay.today(dayStart.value).toLabel())
+    const day = computed(() => StatDay.ofLabel(date.value))
 
     const { data: dataDates, refresh: refreshDates } = useRequest(async (dateInMonth: Date) => {
-        const [ms, me] = getMonthTime(dateInMonth)
-        const start = formatTimeYMD(addDays(ms, -ms.getDay() * 7))
-        const end = formatTimeYMD(addDays(me, (6 - me.getDay()) * 7))
+        const day = StatDay.of(dateInMonth, dayStart.value)
+        const start = day.monthStart().addDays(-14).toString()
+        const end = day.monthEnd().addDays(14).toString()
 
         const stats = await listSiteStats({ date: [start, end], remote: false })
         const dateSet = new Set<string>()
         stats.forEach(({ date }) => date && dateSet.add(date))
         return Array.from(dateSet)
-    }, { defaultValue: [], defaultParam: [new Date()] })
+    }, { defaultValue: [], defaultParam: [new Date()], deps: dayStart })
 
     const onPanelChange = (val: Date | Date[], mode: 'year' | 'month') => {
         if (mode !== 'month') return
@@ -27,11 +26,5 @@ export const useDatePicker = (options: { onChange: ArgCallback<Date> }) => {
         refreshDates(date)
     }
 
-    const disabledDate = (date: Date) => date.getTime() > Date.now()
-
-    return {
-        dataDates, date, setDate,
-        onPanelChange,
-        disabledDate,
-    }
+    return { dataDates, date, day, setDate, onPanelChange }
 }

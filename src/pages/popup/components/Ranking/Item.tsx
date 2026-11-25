@@ -1,9 +1,10 @@
+import { type StatRange } from '@/shared/day'
 import { createTab } from "@api/chrome/tab"
 import { Mouse, Timer } from "@element-plus/icons-vue"
 import { useTabGroups } from "@hooks"
 import { Flex, TooltipWrapper } from '@pages/components'
 import { cvtGroupColor } from '@pages/util/style'
-import { DateRange, fmtDur } from '@pages/util/time'
+import { fmtDur } from '@pages/util/time'
 import { calJumpUrl } from "@popup/components/stat/common"
 import { useCateNameMap } from "@popup/context"
 import { ptFmt, t } from '@popup/locale'
@@ -82,7 +83,7 @@ type ItemProps = {
     value: tt4b.stat.Row
     max?: number
     total?: number
-    date?: DateRange
+    date?: StatRange
     displaySiteName?: boolean
     onJump?: NoArgCallback
 }

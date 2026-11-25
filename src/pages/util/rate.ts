@@ -1,6 +1,6 @@
+import StatDay from '@/shared/day'
 import { trySendMsg2Runtime } from '@api/sw/common'
 import { REVIEW_PAGE } from '@util/constant/url'
-import { getDayLength } from './time'
 
 const INSTALL_DAY_MIN_LIMIT = 14
 
@@ -10,7 +10,7 @@ export async function recommendRate(): Promise<boolean> {
     if (!REVIEW_PAGE) return false
     const installTime = await trySendMsg2Runtime('meta.installTs')
     if (!installTime) return false
-    const installedDays = getDayLength(new Date(installTime), new Date())
+    const installedDays = StatDay.ofLabel(new Date(installTime)).daysTo(StatDay.today(0))
     if (installedDays < INSTALL_DAY_MIN_LIMIT) return false
     return !localStorage.getItem(FLAG)
 }

@@ -1,20 +1,16 @@
-import { getWeekStartDay } from '@api/sw/option'
 import { dateFmt, fmtDuration, tWeekDays, unitFmt } from '@i18n'
 import { rotate } from '@util/array'
-import { addDays, formatTimeYMD, MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND, parseTime } from '@util/time'
+import { MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND, parseTime } from '@util/time'
 
-export {
-    addDays, BIRTHDAY, BIRTHDAY_STR, cvt2Time, cvtDateRange2Str, formatTimeYMD, getStartOfNextDay, getWeekDay,
-    getWeekStartTime, isSameDay, MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND, parseTime, type DateRange
-} from '@util/time'
+export { addDays, BIRTHDAY, BIRTHDAY_STR, getStartOfNextDay, MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND, parseTime } from '@util/time'
 
 type DurFormatOption = {
     format?: tt4b.ui.TimeFormat | 'auto'
     hideUnit?: boolean
 }
 
-const UNIT_MAP: { [unit in Exclude<tt4b.ui.TimeFormat, 'default'>]
-    : [timeConversion: number, fraction: number, unit: Parameters<typeof unitFmt>[0]] } = {
+type UnitConfig = [conversion: number, fraction: number, unit: Parameters<typeof unitFmt>[0]]
+const UNIT_MAP: Record<Exclude<tt4b.ui.TimeFormat, 'default'>, UnitConfig> = {
     second: [MILL_PER_SECOND, 0, "second"],
     minute: [MILL_PER_MINUTE, 1, "minute"],
     hour: [MILL_PER_HOUR, 2, "hour"],
@@ -37,7 +33,7 @@ export function fmtDur(milliseconds: number | undefined | null, option?: DurForm
     return unitFmt(unit, fraction).format(val)
 }
 
-type DateLike = string | Date | number
+type DateLike = string | Date | number | Temporal.PlainDate
 
 const parseDateLike = (like?: DateLike) => typeof like === 'string' ? parseTime(like) : like
 
@@ -49,36 +45,10 @@ export const cvt2LocaleDate = (startLike?: DateLike, endLike?: DateLike): string
     return end === undefined ? fmt.format(start) : fmt.formatRange(start, end)
 }
 
-export async function getWeekDays() {
-    const weekStart = await getWeekStartDay()
+export function getWeekDays(weekStart: tt4b.WeekStart) {
     const weekDays = tWeekDays().reverse()
-    rotate(weekDays, weekStart)
+    rotate(weekDays, weekStart - 1)
     return weekDays
-}
-
-/**
- * Date range between {start} days ago and {end} days ago
- */
-export const daysAgo = (start: number, end: number): [Date, Date] => {
-    const current = new Date().getTime()
-    return [addDays(current, -start), addDays(current, -end)]
-}
-
-/**
- * Get the start time and end time of this month
- *
- * @param target the specific time
- * @returns [startTime, endTime]
- *
- * @since 0.6.0
- */
-export function getMonthTime(target: Date): [Date, Date] {
-    const currentMonth = target.getMonth()
-    const currentYear = target.getFullYear()
-    const start = new Date(currentYear, currentMonth, 1)
-    const endTime = new Date(currentYear, currentMonth + 1, 1).getTime()
-    const end = new Date(endTime - 1)
-    return [start, end]
 }
 
 /**
@@ -93,53 +63,4 @@ export function getStartOfDay(target: Date | number): number {
     const date = new Date(target)
     date.setHours(0, 0, 0, 0)
     return date.getTime()
-}
-
-/**
- * Calc the day length
- * @returns
- *  1 if 2022-06-09 00:00:00 to 2022-06-09 00:00:01
- *  0 if 2022-06-10 00:00:00 to 2022-06-09 00:00:01
- *  2 if 2022-11-10 08:00:00 to 2022-11-11 00:00:01
- */
-export function getDayLength(start: Date | number, end: Date | number): number {
-    const d1 = new Date(start)
-    const d2 = new Date(end)
-
-    if (d1 > d2) return 0
-
-    d1.setUTCFullYear(d1.getFullYear(), d1.getMonth(), d1.getDate())
-    d2.setUTCFullYear(d2.getFullYear(), d2.getMonth(), d2.getDate())
-    d1.setUTCHours(0, 0, 0, 0)
-    d2.setUTCHours(0, 0, 0, 0)
-
-    return (d2.getTime() - d1.getTime()) / (MILL_PER_HOUR * 24) + 1
-}
-
-/**
- * Calc the dates between {@param dateStart} and {@param dateEnd}
- *
- * @returns
- *  [20220609]              if 2022-06-09 00:00:00 to 2022-06-09 00:00:01
- *  []                      if 2022-06-10 00:00:00 to 2022-06-09 00:00:01
- *  [20221110, 20221111]    if 2022-11-10 08:00:00 to 2022-11-11 00:00:01
- */
-export function getAllDatesBetween(start: Date | number, end: Date | number, formatter?: Converter<Date, string>): string[] {
-    const current = new Date(start)
-    const target = new Date(end)
-
-    if (current > target) return []
-
-    current.setHours(0, 0, 0, 0)
-    target.setHours(0, 0, 0, 0)
-
-    const dates: string[] = []
-    const fmt = formatter ?? formatTimeYMD
-
-    while (current <= target) {
-        dates.push(fmt(current))
-        current.setDate(current.getDate() + 1)
-    }
-
-    return dates
 }

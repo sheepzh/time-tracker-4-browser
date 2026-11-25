@@ -1,47 +1,35 @@
+import StatDay from '@/shared/day'
 import { listSiteStats } from "@api/sw/stat"
-import { useRequest } from "@hooks"
+import { initDayOffset, useRequest } from "@hooks"
 import { DataLock, Flex } from '@pages/components'
-import { cvt2LocaleDate, formatTimeYMD } from '@pages/util/time'
+import { cvt2LocaleDate } from '@pages/util/time'
 import { ElText } from "element-plus"
-import { defineComponent, ref } from "vue"
+import { defineComponent } from "vue"
 import RowList from "./components/RowList"
 import Search from "./components/Search"
 import { t } from "./locale"
 
 const _default = defineComponent<{}>(() => {
-    const date = ref(new Date())
-    const query = ref('')
-
-    const { data, refresh, loading } = useRequest(() => listSiteStats({
-        date: formatTimeYMD(date.value),
-        query: query.value,
-        sortKey: 'focus',
-        sortDirection: 'DESC',
-        remote: false,
-    }), { defaultValue: [] })
+    const dayStart = initDayOffset()
+    const { data, refresh, loading } = useRequest(async (query: string, day: StatDay) => {
+        const date = day.toString()
+        const list = await listSiteStats({ date, query, sortKey: 'focus', sortDirection: 'DESC', remote: false })
+        return { list, day }
+    }, { defaultParam: ['', StatDay.today(dayStart.value)] })
 
     return () => <DataLock>
         <Flex column height='100%'>
-            <Search
-                defaultQuery={query.value}
-                defaultDate={date.value}
-                onSearch={(newQuery, newDate) => {
-                    query.value = newQuery
-                    date.value = newDate
-                    // Force refresh
-                    refresh()
-                }}
-            />
+            <Search onSearch={refresh} />
             <Flex height={60} style={{ paddingInlineStart: '5px' }}>
                 <ElText>
                     {t(msg => msg.list.title)}
                 </ElText>
                 &emsp;
                 <ElText size="small">
-                    @{cvt2LocaleDate(date.value)}
+                    @{cvt2LocaleDate(data.value?.day.toDate())}
                 </ElText>
             </Flex>
-            <RowList loading={loading.value} data={data.value} />
+            <RowList loading={loading.value} data={data.value?.list ?? []} />
         </Flex>
     </DataLock>
 })

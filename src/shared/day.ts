@@ -1,4 +1,7 @@
 import { MILL_PER_HOUR, pad } from '@util/time'
+import { createNumberUnionGuard } from 'typescript-guard'
+
+export const isWeekStart = createNumberUnionGuard<tt4b.WeekStart>(1, 2, 3, 4, 5, 6, 7)
 
 export default class StatDay {
     private constructor(readonly y: number, readonly m: number, readonly d: number) { }
@@ -27,7 +30,7 @@ export default class StatDay {
         return StatDay.of(new Date(), offset)
     }
 
-    static parse(label: string): StatDay | undefined {
+    static parse(label: string | undefined): StatDay | undefined {
         if (!label || !/^\d{8}$/.test(label)) return undefined
         return new StatDay(
             Number(label.substring(0, 4)),
@@ -60,15 +63,13 @@ export default class StatDay {
         return StatDay.ofLabel(new Date(this.y, this.m, 0))
     }
 
-    weekStart(weekStart: number): StatDay {
+    weekStart(weekStart: tt4b.WeekStart): StatDay {
         return this.addDays(-((this.weekday() - weekStart + 7) % 7))
     }
 
-    /**
-     * @return 0-6 means Monday to Sunday
-     */
-    weekday(): number {
-        return (this.toLabel().getDay() + 6) % 7
+    weekday(): tt4b.WeekStart {
+        // 0 means Sunday when using getDay()
+        return (this.toLabel().getDay() || 7) as tt4b.WeekStart
     }
 
     toLabel(): Date {
@@ -97,6 +98,11 @@ export default class StatDay {
     daysTo(end: StatDay): number {
         const delta = end.valueOf() - this.valueOf()
         return delta < 0 ? 0 : delta / MILL_PER_HOUR / 24 + 1
+    }
+
+    rangeTo(end: StatDay | number): StatRange {
+        if (typeof end === "number") return end > 0 ? [this, this.addDays(end)] : [this.addDays(end), this]
+        return this > end ? [end, this] : [this, end]
     }
 }
 

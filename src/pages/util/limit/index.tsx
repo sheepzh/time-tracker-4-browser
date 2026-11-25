@@ -1,3 +1,4 @@
+import type StatDay from '@/shared/day'
 import { sendMsg2Runtime, trySendMsg2Runtime } from '@api/sw/common'
 import { css } from '@emotion/css'
 import { useCountDown } from "@hooks"
@@ -91,8 +92,8 @@ const errMsg = (message: string) => ElMessage.error({ message, customClass: MSG_
  *
  * @returns T/F
  */
-export async function judgeVerificationRequired(item: tt4b.limit.Item, delayDuration: number): Promise<boolean> {
-    if (!item.enabled || !isEffective(item.weekdays)) return false
+export async function judgeVerificationRequired(item: tt4b.limit.Item, delayDuration: number, today: StatDay): Promise<boolean> {
+    if (!item.enabled || !isEffective(item.weekdays, today.weekday())) return false
 
     const { visitTime, periods } = item
     // Daily or weekly

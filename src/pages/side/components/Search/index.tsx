@@ -1,11 +1,13 @@
+import StatDay from '@/shared/day'
 import { Search } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
 import { useState } from "@hooks"
 import { Flex } from '@pages/components'
 import { getDatePickerIconSlots } from '@pages/element-ui/rtl'
+import { useStatToday } from '@pages/element-ui/useStatToday'
 import { t } from '@side/locale'
 import { type DateCell, ElDatePicker, ElInput, useNamespace } from "element-plus"
-import { defineComponent, h } from "vue"
+import { defineComponent, h, watch } from "vue"
 import Cell from './Cell'
 import { useDatePicker } from './useDatePicker'
 
@@ -43,20 +45,15 @@ const useCalendarStyle = () => {
     return [triggerCls, popoverCls]
 }
 
-type Props = {
-    defaultDate: Date
-    defaultQuery: string
-    onSearch?: (query: string, date: Date) => void
-}
+type OnSearch = (query: string, day: StatDay) => void
 
-const _default = defineComponent<Props>(props => {
-    const [query, setQuery] = useState(props.defaultQuery)
-    const handleSearch = () => props.onSearch?.(query.value.trim(), date.value)
-    const {
-        date, setDate, dataDates,
-        disabledDate, onPanelChange,
-    } = useDatePicker({ onChange: handleSearch })
-
+const _default = defineComponent<{ onSearch: OnSearch }>(props => {
+    const [query, setQuery] = useState('')
+    const { date, day, setDate, dataDates, onPanelChange } = useDatePicker()
+    const handleSearch = () => props.onSearch(query.value.trim(), day.value)
+    watch(day, handleSearch)
+    const disabledDate = (date: Date) => StatDay.ofLabel(date) > today.value
+    const { today, cellClassName, statTodayPopoverCls } = useStatToday()
     const [calendarCls, popoverCls] = useCalendarStyle()
 
     return () => (
@@ -71,16 +68,17 @@ const _default = defineComponent<Props>(props => {
                     setQuery('')
                     handleSearch()
                 }}
-                onKeydown={kv => (kv as KeyboardEvent).code === 'Enter' && handleSearch()}
+                onKeydown={kv => kv instanceof KeyboardEvent && kv.code === 'Enter' && handleSearch()}
             />
             {/* The events of date picker is not compatible with typescript, so use h() to workaround */}
             {h(ElDatePicker, {
                 clearable: false,
                 disabledDate,
+                cellClassName,
                 modelValue: date.value,
                 'onUpdate:modelValue': setDate,
                 class: calendarCls,
-                popperClass: popoverCls,
+                popperClass: [popoverCls, statTodayPopoverCls],
                 onPanelChange,
             }, {
                 ...getDatePickerIconSlots(),
@@ -88,6 +86,6 @@ const _default = defineComponent<Props>(props => {
             })}
         </Flex>
     )
-}, { props: ['defaultDate', 'defaultQuery', 'onSearch'] })
+}, { props: ['onSearch'] })
 
 export default _default

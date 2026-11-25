@@ -1,6 +1,6 @@
 import { EXCLUDING_PREFIX } from './constant/remain-host'
 import { escapeRegExp } from './pattern'
-import { getWeekDay, MILL_PER_MINUTE, MILL_PER_SECOND } from "./time"
+import { MILL_PER_MINUTE, MILL_PER_SECOND } from "./time"
 
 const GLOBSTAR_TOKEN = `__GLOBSTAR${Math.random().toString(36).slice(2, 6)}__`
 
@@ -91,10 +91,10 @@ export function hasLimited(item: tt4b.limit.Item, delayDuration: number): boolea
     return hasDailyLimited(item, delayDuration) || hasWeeklyLimited(item, delayDuration)
 }
 
-export function isEffective(weekdays: tt4b.limit.Rule['weekdays'], weekday?: number): boolean {
+export function isEffective(weekdays: tt4b.limit.Rule['weekdays'], weekday: tt4b.WeekStart): boolean {
     const weekdayLen = weekdays?.length
     if (!weekdayLen || weekdayLen <= 0 || weekdayLen >= 7) return true
-    return weekdays.includes(weekday ?? getWeekDay(new Date()))
+    return weekdays.includes(weekday - 1)
 }
 
 export const dateMinute2Idx = (date: Date): number => {

@@ -1,21 +1,14 @@
-import { formatTimeYMD } from '@util/time'
+import StatDay from '@/shared/day'
 import { type DateCell, useNamespace } from "element-plus"
-import { computed, defineComponent } from 'vue'
+import type { FunctionalComponent } from 'vue'
 
 const DOT_SIZE = '3px'
 const DATE_SIZE = '22px'
 
-const Cell = defineComponent<{ cell: DateCell, dataDates: string[] }>(props => {
-    const text = computed(() => {
-        const { renderText, text } = props.cell
-        return renderText ?? text
-    })
-    const hasData = computed(() => {
-        const { date } = props.cell
-        if (!date) return false
-        const dateStr = formatTimeYMD(date)
-        return props.dataDates.includes(dateStr)
-    })
+const Cell: FunctionalComponent<{ cell: DateCell, dataDates: string[] }> = ({ cell, dataDates }) => {
+    const { renderText, text, date } = cell
+    const dateStr = date && StatDay.ofLabel(date).toString()
+    const hasData = !!dateStr && dataDates.includes(dateStr)
     const ns = useNamespace('date-table-cell')
 
     return () => (
@@ -23,8 +16,8 @@ const Cell = defineComponent<{ cell: DateCell, dataDates: string[] }>(props => {
             <span
                 class={ns.e('text')}
                 style={{ width: DATE_SIZE, height: DATE_SIZE, lineHeight: DATE_SIZE }}
-            >{text.value}</span>
-            {hasData.value && <span style={{
+            >{renderText ?? text}</span>
+            {hasData && <span style={{
                 position: 'absolute',
                 width: DOT_SIZE,
                 height: DOT_SIZE,
@@ -36,6 +29,6 @@ const Cell = defineComponent<{ cell: DateCell, dataDates: string[] }>(props => {
             }} />}
         </div>
     )
-}, { props: ['cell', 'dataDates'] })
+}
 
 export default Cell
