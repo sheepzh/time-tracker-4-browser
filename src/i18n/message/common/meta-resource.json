@@ -1,72 +1,72 @@
 {
     "zh_CN": {
         "name": "网费很贵",
-        "marketName": "网费很贵 - 屏幕习惯分析 & 成瘾网站拦截",
-        "description": "追踪网页时间，分析浏览习惯，防止网站沉迷，提高工作效率"
+        "marketName": "网费很贵 - 屏幕时间追踪 & 成瘾网站拦截 & 专注番茄钟",
+        "description": "免费屏幕时间追踪器与网站拦截器，含专注计时器——开源、无需账号、数据纯本地存储。"
     },
     "zh_TW": {
         "name": "網費很貴",
-        "marketName": "網費很貴 - 螢幕習慣分析 & 成癮網站攔截",
-        "description": "追蹤上網時間，分析瀏覽習慣，避免沉迷網站，提升工作效率"
+        "marketName": "網費很貴 - 螢幕時間追蹤 & 成癮網站攔截 & 專注番茄鐘",
+        "description": "免費螢幕時間追蹤器與網站攔截器，含專注計時器——開源、無需帳號、資料純本機儲存。"
     },
     "ja": {
         "name": "タイムトラッカー",
-        "marketName": "タイムトラッカー - Web習慣ビルダー",
-        "description": "時間を追跡し、習慣を分析し、依存性のあるサイトをブロック"
+        "marketName": "タイムトラッカー - Web習慣ビルダー & サイトブロッカー",
+        "description": "無料のスクリーンタイムトラッカー＆サイトブロッカー、集中タイマー付き——オープンソース、アカウント不要、データは全てローカル保存。"
     },
     "en": {
         "name": "Time Tracker",
-        "marketName": "Time Tracker - Web Habit Builder",
-        "description": "Track time, analyze your habits and block addictive sites"
+        "marketName": "Time Tracker - Web Habit Builder, Website Blocker & Focus Timer",
+        "description": "Free screen time tracker & website blocker with focus timer — open-source, no account, all data stays local."
     },
     "pt_PT": {
         "name": "Rastreador de Tempo",
-        "marketName": "Rastreador de Tempo - Construtor de Hábitos na Web",
-        "description": "Acompanhe o tempo, analise seus hábitos e bloqueie sites viciantes"
+        "marketName": "Rastreador de Tempo - Construtor de Hábitos na Web & Bloqueador de Sites",
+        "description": "Rastreador de tempo de tela e bloqueador de sites grátis com temporizador de foco — código aberto, sem conta, dados locais."
     },
     "uk": {
         "name": "Веб-трекер часу",
-        "marketName": "Веб-трекер часу - Творець веб-звичок",
-        "description": "Відстежуйте час, аналізуйте звички та блокуйте сайти, що викликають залежність"
+        "marketName": "Веб-трекер часу - Творець веб-звичок та блокування сайтів",
+        "description": "Безкоштовний трекер екранного часу та блокувальник сайтів з таймером фокусу — відкритий код, без акаунта, дані локально."
     },
     "es": {
         "name": "Rastreador de tiempo web",
-        "marketName": "Rastreador de tiempo web - Creador de hábitos web",
-        "description": "Realice un seguimiento del tiempo, analice sus hábitos y bloquee sitios adictivos"
+        "marketName": "Rastreador de tiempo web - Creador de hábitos & Bloqueador de sitios",
+        "description": "Rastreador de pantalla y bloqueador de sitios gratis con timer de concentración — código abierto, sin cuenta, datos locales."
     },
     "de": {
         "name": "Zeiterfassung",
-        "marketName": "Zeiterfassung - Web-Gewohnheitstrainer",
-        "description": "Verfolgen Sie die Zeit, analysieren Sie Ihre Gewohnheiten und blockieren Sie süchtig machende Websites"
+        "marketName": "Zeiterfassung - Web-Gewohnheitstrainer & Website-Blocker",
+        "description": "Kostenloser Bildschirmzeit-Tracker & Website-Blocker mit Fokus-Timer — Open Source, kein Konto, alle Daten bleiben lokal."
     },
     "fr": {
         "name": "Suivi du temps Web",
-        "marketName": "Suivi du temps Web - Créateur d'habitudes web",
-        "description": "Suivez votre temps, analysez vos habitudes et bloquez les sites addictifs"
+        "marketName": "Suivi du temps Web - Créateur d'habitudes & Bloqueur de sites",
+        "description": "Traqueur de temps d'écran & bloqueur de sites gratuit avec minuteur de concentration — open source, sans compte, données locales."
     },
     "ru": {
         "name": "Трекер времени",
-        "marketName": "Трекер времени — Формирование веб-привычек",
-        "description": "Отслеживайте время, анализируйте свои привычки и блокируйте вызывающие зависимость сайты"
+        "marketName": "Трекер времени — Формирование веб-привычек и блокировка сайтов",
+        "description": "Бесплатный трекер экранного времени и блокировщик сайтов с таймером фокусировки — открытый код, без аккаунта, данные локально."
     },
     "ar": {
         "name": "متتبع الوقت",
-        "marketName": "متتبع الوقت - منشئ عادات الويب",
-        "description": "تتبع الوقت، حلل عاداتك، واحظر المواقع الإدمانية"
+        "marketName": "متتبع الوقت - منشئ عادات الويب وحاجب المواقع",
+        "description": "متتبع وقت الشاشة وحاجب المواقع مجاني مع مؤقّت تركيز — مفتوح المصدر، بدون حساب، البيانات محلية."
     },
     "tr": {
         "name": "Zaman Takipçisi",
         "marketName": "Zaman Takipçisi – Alışkanlık Oluşturucu ve Site Engelleyici",
-        "description": "Zamanınızı takip edin, alışkanlıklarınızı analiz edin, bağımlılık yapan siteleri engelleyin"
+        "description": "Ücretsiz ekran süresi takipçisi ve site engelleyici, odak zamanlayıcı ile — açık kaynak, hesap yok, veriler yerel."
     },
     "pl": {
         "name": "Zegar Czasu",
-        "marketName": "Zegar Czasu - Kreator Nawyków Internetowych",
-        "description": "Śledź czas, analizuj swoje nawyki i blokuj uzależniające strony"
+        "marketName": "Zegar Czasu - Kreator Nawyków Internetowych & Bloker Stron",
+        "description": "Darmowy tracker czasu ekranowego i bloker stron z timerem koncentracji — open source, bez konta, dane lokalne."
     },
     "it": {
         "name": "Tracker del Tempo",
-        "marketName": "Tracker del Tempo - Costruttore di Abitudini Web",
-        "description": "Traccia il tempo, analizza le tue abitudini e blocca i siti che creano dipendenza"
+        "marketName": "Tracker del Tempo - Costruttore di Abitudini Web & Blocco Siti",
+        "description": "Tracker del tempo di schermo e blocco siti gratuito con timer di concentrazione — open source, nessun account, dati locali."
     }
 }
