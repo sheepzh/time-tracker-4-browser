@@ -89,6 +89,8 @@ declare namespace tt4b {
         salt: string
     }
 
+    type WeekStart = 1 | 2 | 3 | 4 | 5 | 6 | 7
+
     namespace ui {
         /**
          * @since 1.1.7
@@ -361,6 +363,8 @@ declare namespace tt4b {
              */
             locked: boolean
             /**
+             * 0-6 means Monday to Sunday
+             * 
              * @since 2.3.4
              */
             weekdays?: number[]
@@ -828,9 +832,7 @@ declare namespace tt4b {
         /**
          * @since 1.2.5
          */
-        type WeekStartOption =
-            | 'default'
-            | number  // Weekday, From 1 to 7
+        type WeekStartOption = WeekStart | 'default'
 
         type DarkMode =
             // Follow the OS, @since 1.3.3
@@ -1133,7 +1135,7 @@ declare namespace tt4b {
             & _MakeRegistry<'option.sync' | 'option.download'>
             & _MakeRegistry<'option.changeStorage', option.StorageType>
             & _MakeRegistry<'option.testNotification', void, string | undefined>
-            & _MakeRegistry<'option.weekStartDay', void, number>
+            & _MakeRegistry<'option.weekStartDay', void, WeekStart>
             // Meta
             & _MakeRegistry<'meta.installTs', void, number>
             & _MakeRegistry<'meta.usedStorage', void, common.StorageUsage>

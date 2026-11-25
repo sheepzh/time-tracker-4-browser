@@ -24,11 +24,12 @@ const ALL_STORAGES: Record<tt4b.option.StorageType, string> = {
     indexed_db: 'IndexedDB',
 }
 
-const weekStartOptionPairs: [[tt4b.option.WeekStartOption, string]] = [
+type WeekStartPair = [tt4b.option.WeekStartOption, string]
+const weekStartOptionPairs: WeekStartPair[] = [
     ['default', t(msg => msg.option.tracking.weekStartAsNormal)]
 ]
-const allWeekDays = tWeekDays()
-    .map((weekDay, idx) => [idx + 1, weekDay] satisfies [tt4b.option.WeekStartOption, string])
+const allWeekDays: WeekStartPair[] = tWeekDays()
+    .map((weekDay, idx) => [(idx + 1) as tt4b.option.WeekStartOption, weekDay])
 locale !== 'zh_CN' && rotate(allWeekDays, 1)
 allWeekDays.forEach(weekDayInfo => weekStartOptionPairs.push(weekDayInfo))
 

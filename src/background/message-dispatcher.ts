@@ -15,10 +15,10 @@ import siteDatabase from './database/site-database'
 import statDatabase from './database/stat-database'
 import { check2faCode, prepare2fa } from "./service/2fa-service"
 import backupProcessor from "./service/backup/processor"
+import { getWeekStartDay } from "./service/components/calendar"
 import { exportData, importData, migrateStorage } from "./service/components/immigration"
 import { importOther, previewBackup } from "./service/components/import-processor"
 import optionHolder from "./service/components/option-holder"
-import { getWeekStartDay } from "./service/components/week-helper"
 import { handleAction, saveLastPopup } from "./service/focus"
 import { getTodayResult } from './service/item-service'
 import { getInstallTime, getLastBackUp } from "./service/meta-service"
