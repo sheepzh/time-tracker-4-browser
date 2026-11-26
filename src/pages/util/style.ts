@@ -4,6 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import type { TooltipComponentOption } from 'echarts'
 import { camelize, type CSSProperties } from "vue"
 
 type Variant = "primary" | "success" | "warning" | "info" | "danger"
@@ -89,4 +90,12 @@ export const cvtGroupColor = (color?: `${chrome.tabGroups.Color}`): string => {
         case 'orange': return '#FA913E'
         case undefined: return '#000'
     }
+}
+
+/**
+ * Keep the tooltip inside the chart container and wrap the long content
+ */
+export const CONFINE_TOOLTIP_OPTION: Pick<TooltipComponentOption, 'confine' | 'extraCssText'> = {
+    confine: true,
+    extraCssText: 'max-width: 100%; white-space: normal; overflow-wrap: anywhere; box-sizing: border-box;',
 }

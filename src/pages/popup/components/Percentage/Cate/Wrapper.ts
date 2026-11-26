@@ -1,5 +1,5 @@
 import { EchartsWrapper } from '@hooks'
-import { getInfoColor, getPrimaryTextColor } from "@pages/util/style"
+import { CONFINE_TOOLTIP_OPTION, getInfoColor, getPrimaryTextColor } from "@pages/util/style"
 import { CATE_NOT_SET_ID } from "@util/site"
 import { isCate } from "@util/stat"
 import type {
@@ -93,7 +93,7 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
             left: '5%',
             top: 50,
             bottom: 50,
-            textStyle: { color: textColor },
+            textStyle: { color: textColor, width: 120, overflow: 'truncate' },
             pageTextStyle: { color: textColor },
             inactiveColor,
             data: rows.filter(isCate).map(({ cateKey }) => ({ name: String(cateNameMap[cateKey] ?? cateKey), cateKey })),
@@ -121,6 +121,8 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
             label: {
                 show: !selected,
                 color: textColor,
+                width: 200,
+                overflow: 'truncate',
                 position: selected ? 'inner' : 'outer',
                 fontSize: selected ? 10 : undefined,
             },
@@ -135,6 +137,7 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
                 radius: '55%',
                 minShowLabelAngle: 3,
                 selectedMode: false,
+                label: { width: 120 },
             })
 
             legend = {
@@ -143,7 +146,7 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
                 left: '5%',
                 top: '48%',
                 bottom: 50,
-                textStyle: { color: textColor },
+                textStyle: { color: textColor, width: 120, overflow: 'truncate' },
                 pageTextStyle: { color: textColor },
                 inactiveColor,
                 data: siteSeries.data?.map(val => ({ name: (val as any).name })),
@@ -156,8 +159,8 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
             title: generateTitleOption(result, titleSuffix),
             legend,
             tooltip: {
-                show: true,
-                formatter: (params: any) => formatTooltip(result, params),
+                ...CONFINE_TOOLTIP_OPTION,
+                formatter: params => formatTooltip(result, params),
             },
             series,
             toolbox: generateToolbox(() => this.instance),

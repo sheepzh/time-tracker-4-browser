@@ -295,7 +295,7 @@ function formatLabel(params: CallbackDataParams, groupMap: Record<number, chrome
 
 type CustomOption = Pick<
     PieSeriesOption,
-    'center' | 'radius' | 'selectedMode' | 'minShowLabelAngle'
+    'center' | 'radius' | 'selectedMode' | 'minShowLabelAngle' | 'label'
 >
 
 export function generateSiteSeriesOption(
@@ -332,6 +332,8 @@ export function generateSiteSeriesOption(
     const textColor = getPrimaryTextColor()
 
     return {
+        ...customOption,
+        ...adaptDonutSeries(donutChart, customOption.radius),
         name: "NO_DATA",
         type: "pie",
         startAngle: 300,
@@ -344,16 +346,16 @@ export function generateSiteSeriesOption(
             },
         },
         label: {
+            ...customOption.label,
             formatter: params => formatLabel(params, groupMap),
             color: textColor,
+            overflow: 'truncate',
             rich: {
                 a: { fontSize: LABEL_FONT_SIZE },
                 ...iconRich,
             },
         },
         avoidLabelOverlap: true,
-        ...customOption,
-        ...adaptDonutSeries(donutChart, customOption.radius),
     }
 }
 
@@ -410,8 +412,7 @@ export function formatTooltip({ query, dateLength }: PercentageResult, params: T
     let averageLine: string | undefined = undefined
     if (!isOther(row)) {
         if (isSite(row)) {
-            const { siteKey: { host } } = row
-            nameLine = generateSiteLabel(host, name)
+            nameLine = generateSiteLabel(row.siteKey.host, name)
         }
         // Don't show averages for single-day durations (today/yesterday)
         const isSingleDay = duration === 'today' || duration === 'yesterday'
@@ -428,9 +429,7 @@ export function formatTooltip({ query, dateLength }: PercentageResult, params: T
  */
 export function handleClick(data: PieSeriesItemOption, date: PercentageResult['date'], type: tt4b.core.Dimension): void {
     const { row } = data
-    if (isOther(row)) {
-        return
-    }
+    if (isOther(row)) return
     const url = calJumpUrl(row, date, type)
     url && createTab(url)
 }

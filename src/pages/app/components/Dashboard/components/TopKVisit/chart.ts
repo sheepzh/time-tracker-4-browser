@@ -1,4 +1,5 @@
 import { tooltipDot } from '@app/util/echarts'
+import { CONFINE_TOOLTIP_OPTION } from '@pages/util/style'
 import { generateSiteLabel } from '@util/site'
 import type { BarSeriesOption, ComposeOption, PieSeriesOption, TooltipComponentOption } from 'echarts'
 import { isBizOption } from './context'
@@ -9,17 +10,16 @@ type EcOption = ComposeOption<
     | BarSeriesOption
 >
 
-export const tooltipOption = (): EcOption['tooltip'] => (
-    {
-        show: true,
-        borderWidth: 0,
-        formatter(params) {
-            const param = Array.isArray(params) ? params[0] : params
-            if (!param) return ''
-            const { color, data } = param
-            if (!isBizOption(data)) return ''
-            const { value, host, alias } = data
-            return `${tooltipDot(color)} ${generateSiteLabel(host, alias)}<br/><b>${value}</b>`
-        }
+export const tooltipOption = (): EcOption['tooltip'] => ({
+    ...CONFINE_TOOLTIP_OPTION,
+    show: true,
+    borderWidth: 0,
+    formatter(params) {
+        const param = Array.isArray(params) ? params[0] : params
+        if (!param) return ''
+        const { color, data } = param
+        if (!isBizOption(data)) return ''
+        const { value, host, alias } = data
+        return `${tooltipDot(color)} ${generateSiteLabel(host, alias)}<br/><b>${value}</b>`
     }
-)
+})

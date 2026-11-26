@@ -7,8 +7,9 @@
 
 import { t } from '@app/locale'
 import { getStepColors } from "@app/util/echarts"
-import { fmtDur } from '@pages/util/time'
 import { EchartsWrapper } from '@hooks'
+import { CONFINE_TOOLTIP_OPTION } from '@pages/util/style'
+import { fmtDur } from '@pages/util/time'
 import { generateSiteLabel } from "@util/site"
 import { identifyTargetKey, isSite } from "@util/stat"
 import type {
@@ -95,6 +96,7 @@ async function generateOption(rows: tt4b.stat.Row[] = [], timeFormat: tt4b.ui.Ti
             bottom: '4%',
         },
         tooltip: {
+            ...CONFINE_TOOLTIP_OPTION,
             trigger: "axis",
             axisPointer: { type: "shadow" },
             formatter: (params: TopLevelFormatterParams) => formatFocusTooltip(params, timeFormat),

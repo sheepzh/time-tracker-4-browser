@@ -1,7 +1,7 @@
 import { dateFmt, t, unitFmt } from '@app/locale'
 import { getSeriesPalette, tooltipDot } from '@app/util/echarts'
 import { EchartsWrapper } from '@hooks'
-import { getPrimaryTextColor } from '@pages/util/style'
+import { CONFINE_TOOLTIP_OPTION, getPrimaryTextColor } from '@pages/util/style'
 import { fmtDur, getStartOfDay, getStartOfNextDay, MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND } from '@pages/util/time'
 import { groupBy, toMap } from '@util/array'
 import DateIterator from '@util/date-iterator'
@@ -239,6 +239,7 @@ class Wrapper extends EchartsWrapper<BizData, EcOption> {
                 splitLine: { show: false },
             },
             tooltip: {
+                ...CONFINE_TOOLTIP_OPTION,
                 position: 'top',
                 borderWidth: 0,
                 formatter: params => {

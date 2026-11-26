@@ -1,11 +1,9 @@
 import { EchartsWrapper } from '@hooks'
-import { getInfoColor, getPrimaryTextColor } from "@pages/util/style"
+import { CONFINE_TOOLTIP_OPTION, getInfoColor, getPrimaryTextColor } from "@pages/util/style"
 import type {
     ComposeOption, LegendComponentOption, PieSeriesOption, TitleComponentOption, ToolboxComponentOption,
     TooltipComponentOption,
 } from "echarts"
-import type { ECElementEvent } from "echarts/core"
-import type { TopLevelFormatterParams } from "echarts/types/dist/shared"
 import {
     formatTooltip, generateSiteSeriesOption, generateTitleOption, generateToolbox, handleClick,
     type PieSeriesItemOption,
@@ -25,9 +23,9 @@ const maxWidth = 750
 function calcPositionOfTooltip(container: HTMLElement, point: (number | string)[]) {
     const p = point[0] ?? 0
     const pN: number = typeof p === 'number' ? p : Number.parseFloat(p)
-    const tooltip = container.children.item(1) as HTMLDivElement
+    const tooltip = container.children.item(1)
     let tooltipWidth = 0
-    if (tooltip) {
+    if (tooltip instanceof HTMLElement) {
         tooltipWidth = tooltip.offsetWidth
         if (!tooltipWidth) {
             const styleWidth = tooltip.style.width
@@ -46,11 +44,11 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
 
     override init(container: HTMLDivElement): void {
         super.init(container)
-        this.instance?.on('click', (params: ECElementEvent) => {
-            const { type: evType, componentType, data } = params || {}
+        this.instance?.on('click', params => {
+            const { type: evType, componentType, data } = params
             if (evType !== 'click' || componentType !== 'series') return
 
-            const { query: { dimension } = {}, date } = this.resultCache || {}
+            const { query: { dimension } = {}, date } = this.resultCache ?? {}
             dimension && handleClick(data as PieSeriesItemOption, date, dimension)
         })
     }
@@ -66,6 +64,7 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
             center: ['60%', '56%'],
             selectedMode: false,
             minShowLabelAngle: 3,
+            label: { width: 200 },
         })
 
         const textColor = getPrimaryTextColor()
@@ -74,9 +73,10 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
         const options: EcOption = {
             title: generateTitleOption(result),
             tooltip: {
+                ...CONFINE_TOOLTIP_OPTION,
                 trigger: 'item',
-                formatter: (params: TopLevelFormatterParams) => formatTooltip(result, params),
-                position: (point: (number | string)[]) => calcPositionOfTooltip(this.getDom(), point)
+                formatter: params => formatTooltip(result, params),
+                position: point => calcPositionOfTooltip(this.getDom(), point)
             },
             legend: {
                 type: 'scroll',
@@ -84,7 +84,7 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
                 left: 15,
                 top: 20,
                 bottom: 50,
-                textStyle: { color: textColor },
+                textStyle: { color: textColor, width: 120, overflow: 'truncate' },
                 pageTextStyle: { color: textColor },
                 inactiveColor,
             },
