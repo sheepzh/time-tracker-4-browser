@@ -5,7 +5,7 @@ import { useNamespace } from 'element-plus'
 import { computed } from 'vue'
 
 const TODAY_CLS = 'stat-today'
-const NOT_SELECTED = ['current', 'start-date', 'end-date'].map(cls => `:not(.${cls})`).join()
+const NOT_SELECTED = ['current', 'start-date', 'end-date'].map(cls => `:not(.${cls})`).join('')
 
 const dateTableNs = useNamespace('date-table')
 const statTodayPopoverCls = css`
@@ -14,7 +14,7 @@ const statTodayPopoverCls = css`
         font-weight: inherit;
     }
     
-    $ .${dateTableNs.b()} td.available.${TODAY_CLS}${NOT_SELECTED} .${dateTableNs.be('cell', 'text')} {
+    & .${dateTableNs.b()} td.available.${TODAY_CLS}${NOT_SELECTED} .${dateTableNs.be('cell', 'text')} {
         color: var(--el-color-primary);
         font-weight: 700;
     }
