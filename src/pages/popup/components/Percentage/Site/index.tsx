@@ -1,7 +1,7 @@
 import { useEcharts } from '@hooks'
 import { useDarkMode } from "@popup/context"
 import { defineComponent, toRef } from "vue"
-import { type PercentageResult } from "../query"
+import type { PercentageResult } from '../types'
 import Wrapper from "./Wrapper"
 
 type Props = {

@@ -1,14 +1,10 @@
 import { useEcharts } from '@hooks'
 import { useDarkMode } from "@popup/context"
 import { defineComponent, toRef } from "vue"
-import { type PercentageResult } from "../query"
+import type { PercentageResult } from '../types'
 import Wrapper from "./Wrapper"
 
-type Props = {
-    value: PercentageResult | undefined
-}
-
-const Cate = defineComponent<Props>(props => {
+const Cate = defineComponent<{ value?: PercentageResult }>(props => {
     const { darkMode } = useDarkMode()
     const data = toRef(props, 'value')
     const { elRef } = useEcharts(Wrapper, data, { deps: darkMode })

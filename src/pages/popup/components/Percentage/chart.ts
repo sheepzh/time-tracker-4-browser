@@ -2,9 +2,9 @@ import { getIconUrl, getRuntimeName } from "@api/chrome/runtime"
 import { createTab } from "@api/chrome/tab"
 import { generateQrCanvas } from "@pages/util/qrcode"
 import { getCssVariable, getInfoColor, getPrimaryTextColor, getSecondaryTextColor } from "@pages/util/style"
-import { cvt2LocaleDate, fmtDur, isSameDay, parseTime } from '@pages/util/time'
+import { fmtDur } from '@pages/util/time'
 import { calJumpUrl } from "@popup/components/stat/common"
-import { dateFmt, ptFmt, t, tDateRangeSeparator } from '@popup/locale'
+import { dateFmt, ptFmt, t } from '@popup/locale'
 import { sum, toMap } from "@util/array"
 import { IS_SAFARI } from "@util/constant/environment"
 import { INSTALL_PAGE } from "@util/constant/url"
@@ -16,24 +16,7 @@ import type { ECharts } from "echarts/core"
 import type { CallbackDataParams, TopLevelFormatterParams } from "echarts/types/dist/shared"
 import { ElMessage } from "element-plus"
 import type { StatQuery } from '../stat/context'
-import type { PercentageResult } from "./query"
-
-function combineDate(start: Date, end: Date): string {
-    if (isSameDay(start, end)) return cvt2LocaleDate(start)
-    // Not same year
-    if (start.getFullYear() !== end.getFullYear()) return cvt2LocaleDate(start, end)
-
-    const startFmt = dateFmt({ year: 'numeric', month: 'numeric', day: 'numeric' })
-    const endFmt = dateFmt({ month: 'numeric', day: 'numeric' })
-    return [startFmt.format(start), endFmt.format(end)].join(tDateRangeSeparator())
-}
-
-function formatDateStr(date: Date | [Date, Date?] | undefined, dataDate: [string, string]): string {
-    const [start, end] = date
-        ? (Array.isArray(date) ? date : [date])
-        : [parseTime(dataDate[0]), parseTime(dataDate[1])]
-    return end ? combineDate(start, end) : cvt2LocaleDate(start)
-}
+import type { PercentageResult } from './types'
 
 type FormatterRegistry = Record<'total' | 'avg', Converter<number, string>>
 
@@ -51,7 +34,9 @@ const FORMATTERS: Record<StatQuery['dimension'], FormatterRegistry> = {
 function calculateSubTitleText(result: PercentageResult): string {
     let { date, dataDate, rows, query: { dimension, duration }, dateLength } = result
     const formatter = FORMATTERS[dimension]
-    const dateStr = dataDate ? formatDateStr(date, dataDate) : ''
+    const range = date ?? dataDate
+    const fmt = dateFmt({ year: '2-digit', month: 'short', day: 'numeric' })
+    const dateStr = range ? fmt.formatRange(range[0].toDate(), range[1].toDate()) : ''
     const total = sum(rows.map(r => r[dimension]))
     const totalStr = formatter.total(total)
     const firstLineParts = [totalStr, dateStr].filter(s => !!s)
@@ -63,8 +48,12 @@ function calculateSubTitleText(result: PercentageResult): string {
 }
 
 export function generateTitleOption(result: PercentageResult, suffix?: string): TitleComponentOption {
+    const { duration } = result.query
+    const chartTitle = typeof duration === 'string'
+        ? t(msg => msg.content.percentage.title[duration])
+        : t(msg => msg.content.percentage.title[duration.type], { n: duration.value })
     return {
-        text: [result.chartTitle, suffix].filter(v => !!v).join(' - '),
+        text: [chartTitle, suffix].filter(Boolean).join(' - '),
         subtext: calculateSubTitleText(result),
         textStyle: { color: getPrimaryTextColor() },
         subtextStyle: { color: getSecondaryTextColor(), lineHeight: 15, fontSize: 12 },
@@ -303,10 +292,10 @@ export function generateSiteSeriesOption(
     result: PercentageResult,
     customOption: CustomOption,
 ): PieSeriesOption {
-    const { displaySiteName, query: { dimension }, itemCount, groups, donutChart } = result
+    const { option: { showName, topN, donutChart }, query: { dimension }, groups } = result
     const groupMap = toMap(groups, g => g.id)
 
-    const chartRows = cvt2ChartRows(rows, dimension, itemCount)
+    const chartRows = cvt2ChartRows(rows, dimension, topN)
     const iconRich: PieLabelRichOption = {}
     const data = chartRows.map(row => {
         const item: PieSeriesItemOption = { name: 'NaN', value: row[dimension], row }
@@ -316,7 +305,7 @@ export function generateSiteSeriesOption(
         } else if (!isOther(row) && isSite(row as tt4b.stat.StatKey)) {
             const { siteKey, alias, iconUrl } = row as tt4b.stat.SiteRow
             const { host, type } = siteKey ?? {}
-            const name = item.name = (displaySiteName ? (alias ?? host) : host) ?? ''
+            const name = item.name = showName ? (alias ?? host) : host
             const richValue: PieLabelRichValueOption = { ...BASE_LABEL_RICH_VALUE }
             if (type === 'normal' && iconUrl && !IS_SAFARI) {
                 richValue.backgroundColor = { image: iconUrl }

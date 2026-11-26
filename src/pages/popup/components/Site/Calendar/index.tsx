@@ -1,11 +1,12 @@
+import StatDay, { statRangeStr, type StatRange } from '@/shared/day'
 import { listSiteStats } from '@api/sw/stat'
 import { css } from '@emotion/css'
-import { useRequest } from '@hooks'
+import { useDayOffset, useRequest, useShadow } from '@hooks'
 import { Flex } from '@pages/components'
-import { cvt2LocaleDate, fmtDur, formatTimeYMD } from '@pages/util/time'
+import { cvt2LocaleDate, fmtDur } from '@pages/util/time'
 import { toMap } from '@util/array'
 import { CalendarDateType, ElCalendar, ElText, useNamespace } from 'element-plus'
-import { computed, defineComponent, FunctionalComponent, ref, Teleport } from 'vue'
+import { computed, defineComponent, FunctionalComponent, Teleport } from 'vue'
 import { SITE_SUMMARY_DROPDOWN_SLOT } from '../common'
 import { useSite } from '../context'
 import Dropdown from './Dropdown'
@@ -19,11 +20,11 @@ type CalendarCellParam = {
     }
 }
 
-const Cell: FunctionalComponent<{ date: Date, rows: Record<string, tt4b.stat.Row> }> = ({ date, rows }) => {
-    const { focus } = rows[formatTimeYMD(date)] ?? {}
+const Cell: FunctionalComponent<{ date: StatDay, rows: Record<string, tt4b.stat.Row> }> = ({ date, rows }) => {
+    const { focus } = rows[date.toString()] ?? {}
     return (
         <Flex justify='space-between' align='center' height='100%'>
-            <span>{date.getDate()}</span>
+            <span>{date.d}</span>
             <Flex>
                 <ElText size='small' type='primary'>
                     {focus !== undefined ? fmtDur(focus, { format: 'auto' }) : ''}
@@ -54,39 +55,39 @@ const useCalendarStyle = () => {
 
 const Calendar = defineComponent<{}>(() => {
     const { site } = useSite()
-    const current = ref(new Date())
-    const dateRange = computed<[string, string]>(() => {
+    const { dayStart } = useDayOffset()
+    const [current, setCurrent] = useShadow(() => StatDay.today(dayStart.value))
+    const dateRange = computed<StatRange>(() => {
         const v = current.value
-        const start = new Date(v.getFullYear(), v.getMonth(), 1, 0, 0, 0, 0)
-        start.setDate(start.getDate() - 7)
-        const end = new Date(v.getFullYear(), v.getMonth() + 1, 0, 0, 0, 0, 0)
-        end.setDate(end.getDate() + 7)
-        return [formatTimeYMD(start), formatTimeYMD(end)]
+        const start = v.monthStart().addDays(-7)
+        const end = v.monthEnd().addDays(6)
+        return start.rangeTo(end)
     })
     const { data: rows } = useRequest(async () => {
         const s = site.value
         if (!s) return {}
-        const list = await listSiteStats({ ...cvtStatQuery(s), date: dateRange.value, remote: false })
+        const date = statRangeStr(dateRange.value)
+        const list = await listSiteStats({ ...cvtStatQuery(s), date, remote: false })
         return toMap(list, l => l.date)
     }, { deps: [dateRange, site], defaultValue: {} })
 
-    const row = computed(() => rows.value[formatTimeYMD(current.value)])
+    const row = computed(() => rows.value[current.value.toString()])
 
     const calendarCls = useCalendarStyle()
 
     return () => (
         <Flex flex={1} gap={15} column>
             <ElText type='primary' style={{ fontSize: '24px' }}>
-                {cvt2LocaleDate(current.value)} - {fmtDur(row.value?.focus ?? 0)}
+                {cvt2LocaleDate(current.value.toDate())} - {fmtDur(row.value?.focus ?? 0)}
             </ElText>
             <Flex flex={1}>
                 <ElCalendar
-                    modelValue={current.value}
-                    onUpdate:modelValue={v => current.value = v}
+                    modelValue={current.value.toLabel()}
+                    onUpdate:modelValue={v => setCurrent(StatDay.ofLabel(v))}
                     controllerType='button'
                     class={calendarCls}
                     v-slots={{
-                        'date-cell': ({ data: { date } }: CalendarCellParam) => <Cell date={date} rows={rows.value} />
+                        'date-cell': ({ data: { date } }: CalendarCellParam) => <Cell date={StatDay.ofLabel(date)} rows={rows.value} />
                     }}
                 />
             </Flex>

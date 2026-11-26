@@ -11,7 +11,7 @@ import {
     adaptDonutSeries, formatTooltip, generateSiteSeriesOption, generateTitleOption, generateToolbox,
     handleClick, isOther, type PieSeriesItemOption,
 } from "../chart"
-import { type PercentageResult } from "../query"
+import type { PercentageResult } from '../types'
 
 type EcOption = ComposeOption<
     | PieSeriesOption
@@ -30,7 +30,7 @@ type SelectChangeEvent = {
     }
 }
 
-export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOption> {
+export default class CateWrapper extends EchartsWrapper<PercentageResult, EcOption> {
     private resultCache: PercentageResult | undefined
     private selectedCache: number | undefined
 
@@ -78,7 +78,7 @@ export default class SiteWrapper extends EchartsWrapper<PercentageResult, EcOpti
 
         if (!result) return {}
 
-        const { rows, query, donutChart, cateNameMap } = result
+        const { rows, query, option: { donutChart }, cateNameMap } = result
         const { dimension } = query
         const selected: tt4b.stat.Row | undefined = this.selectedCache
             ? rows.filter(isCate).filter(r => r.cateKey === this.selectedCache)[0]

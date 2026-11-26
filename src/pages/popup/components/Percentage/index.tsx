@@ -1,20 +1,58 @@
-import { useRequest } from "@hooks"
+import StatDay, { type StatRange } from '@/shared/day'
+import { listAllGroups } from '@api/chrome/tabGroups'
+import { useDayOffset, useRequest } from "@hooks"
 import { useCateNameMap } from '@popup/context'
 import { HEADER_OPTION_SLOT, TOOLBAR_SLOT } from '@popup/slot'
 import { ElCard } from "element-plus"
-import { defineComponent, Teleport } from "vue"
+import { computed, defineComponent, Teleport } from "vue"
+import { queryRows } from '../stat/common'
 import { initStatContext } from '../stat/context'
 import StatToolbar from '../stat/StatToolbar'
 import Cate from "./Cate"
 import PercentageOption from './Option'
-import { doQuery } from "./query"
 import Site from "./Site"
+import type { PercentageResult } from './types'
+
+const findAllDates = (row: tt4b.stat.Row): string[] => {
+    const set = new Set<string>()
+    const { date, mergedDates } = row
+    date && set.add(date)
+    mergedDates?.forEach(d => set.add(d))
+    'mergedRows' in row && row.mergedRows?.flatMap(findAllDates).forEach(d => set.add(d))
+    return Array.from(set)
+}
+
+const findDateRange = (dates: Set<string>): StatRange | undefined => {
+    let minDate: string | undefined = undefined
+    let maxDate: string | undefined = undefined
+    for (const d of dates) {
+        if (!minDate || d < minDate) minDate = d
+        if (!maxDate || d > maxDate) maxDate = d
+    }
+    const end = StatDay.parse(maxDate)
+    return end && StatDay.parse(minDate)?.rangeTo(end)
+}
 
 const Percentage = defineComponent(() => {
     const { query, option } = initStatContext()
     const cateNameMap = useCateNameMap()
-    const { data } = useRequest(() => doQuery(query, option, cateNameMap.value), {
-        deps: [cateNameMap, () => ({ ...query, ...option })],
+    const { dayStart, weekStart } = useDayOffset()
+    const { data: rowData } = useRequest(
+        () => queryRows({ ...query, dayStart: dayStart.value, weekStart: weekStart.value }),
+        { deps: [dayStart, weekStart, () => ({ ...query })] },
+    )
+    const { data: groups } = useRequest(listAllGroups)
+    const data = computed(() => {
+        const [rows = [], date] = rowData.value ?? []
+        const allDates = new Set<string>()
+        rows.flatMap(findAllDates).forEach(d => allDates.add(d))
+        return {
+            query: { ...query }, option: { ...option }, rows, date,
+            groups: groups.value ?? [],
+            cateNameMap: cateNameMap.value,
+            dataDate: findDateRange(allDates),
+            dateLength: (allDates.size || date?.[0].daysTo(date?.[1])) ?? 1,
+        } satisfies PercentageResult
     })
 
     return () => <>

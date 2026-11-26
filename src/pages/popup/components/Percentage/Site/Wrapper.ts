@@ -8,7 +8,7 @@ import {
     formatTooltip, generateSiteSeriesOption, generateTitleOption, generateToolbox, handleClick,
     type PieSeriesItemOption,
 } from "../chart"
-import { type PercentageResult } from "../query"
+import type { PercentageResult } from '../types'
 
 type EcOption = ComposeOption<
     | PieSeriesOption
