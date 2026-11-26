@@ -4,7 +4,7 @@ import { handleError } from "./common"
 const action = IS_MV3 ? chrome.action : chrome.browserAction
 
 export function setBadgeText(text: string, tabId?: number): Promise<void> {
-    const details = tabId ? { text, tabId } : { text }
+    const details = tabId && tabId > 0 ? { text, tabId } : { text }
     return new Promise(resolve => action?.setBadgeText(details, () => {
         handleError('setBadgeText')
         resolve()

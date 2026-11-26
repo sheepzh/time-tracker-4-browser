@@ -27,14 +27,14 @@ const Summary = defineComponent<{}>(() => {
     })
 
     return () => (
-        <Flex column justify='center' align='center' gap={10} marginTop={20} marginBottom={20}>
+        <Flex column justify='center' align='stretch' gap={10} marginTop={20} marginBottom={20}>
             <Flex align='center' justify='center' gap={12} height={35} fontSize={TITLE_SIZE}>
-                <Img src={site.value?.iconUrl} size={TITLE_SIZE}>
+                <Img src={site.value?.iconUrl} size={TITLE_SIZE} style={{ flexShrink: 0 }}>
                     <ElIcon>
                         {site.value?.type ? h(SITE_TYPE_ICON[site.value.type]) : null}
                     </ElIcon>
                 </Img>
-                <ElText style={{ fontSize: `${TITLE_SIZE}px` } satisfies CSSProperties}>
+                <ElText truncated style={{ fontSize: `${TITLE_SIZE}px`, minWidth: 0 } satisfies CSSProperties}>
                     {siteLabel.value}
                 </ElText>
                 <Flex id={SITE_SUMMARY_DROPDOWN_SLOT} />

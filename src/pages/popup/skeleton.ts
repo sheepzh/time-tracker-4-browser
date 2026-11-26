@@ -24,10 +24,7 @@ function injectFrame() {
 async function main() {
     // Calculate the latest mode
     initDarkTheme()
-    injectSkeletonCss()
-    // Resize after init theme
-    document.body.style.width = '766px'
-    document.body.style.height = '596px'
+    await injectSkeletonCss()
 
     setTimeout(() => injectFrame())
 }

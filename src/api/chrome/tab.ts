@@ -123,9 +123,19 @@ export function updateTab(tabId: number, updateProperties: chrome.tabs.UpdatePro
         return chrome.tabs.update(tabId, updateProperties)
     }
     return new Promise((resolve) => {
-        chrome.tabs.update(tabId, updateProperties, (tab) => {
+        chrome.tabs.update(tabId, updateProperties, tab => {
             handleError("updateTab")
             resolve(tab)
         })
     })
+}
+
+export async function getCurrentZoomSettings(): Promise<chrome.tabs.ZoomSettings> {
+    if (IS_MV3) {
+        return chrome.tabs.getZoomSettings()
+    }
+    return new Promise(resolve => chrome.tabs.getZoomSettings(settings => {
+        handleError("getCurrentZoomSettings")
+        resolve(settings)
+    }))
 }

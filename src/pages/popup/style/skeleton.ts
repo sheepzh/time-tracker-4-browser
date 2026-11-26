@@ -1,13 +1,14 @@
+import { getCurrentZoomSettings } from '@api/chrome/tab'
 import { injectGlobal } from '@emotion/css'
 import { injectCommonCss } from './common'
 
-export const injectSkeletonCss = () => {
+export const injectSkeletonCss = async () => {
     injectCommonCss()
 
     injectGlobal`
         body {
-            width: 0px;
-            height: 0px;
+            width: 766px;
+            height: 596px;
             box-sizing: border-box;
             overflow: hidden;
         }
@@ -18,4 +19,7 @@ export const injectSkeletonCss = () => {
             width: 100%;
         }
     `
+
+    const { defaultZoomFactor } = await getCurrentZoomSettings()
+    defaultZoomFactor && document.body.style.setProperty('zoom', `${1 / defaultZoomFactor}`)
 }

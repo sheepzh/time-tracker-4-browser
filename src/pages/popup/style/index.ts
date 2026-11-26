@@ -9,10 +9,10 @@ export const injectGlobalCss = () => {
 
     injectGlobal`
         body {
+            width: 100%;
+            height: 100vh;
             padding: 10px;
             box-sizing: border-box;
-            height: 596px;
-            width: 766px;
             overflow: hidden;
         }
 
