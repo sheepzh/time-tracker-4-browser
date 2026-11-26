@@ -108,10 +108,9 @@ export default class StatDay {
 
 export type StatRange = [StatDay, StatDay]
 
-export const statRangeStr = (range: StatDay | [StatDay?, StatDay?] | undefined) => {
+export function statRangeStr(range: StatRange | undefined): [string, string] | undefined {
     if (!range) return undefined
-    const [start, end] = Array.isArray(range) ? range : [range, range]
-    return [start?.toString(), end?.toString()] satisfies [string?, string?]
+    return [range[0].toString(), range[1].toString()]
 }
 
 export const splitStatDays = (start: number, end: number, offset: number): Map<StatDay, number> => {

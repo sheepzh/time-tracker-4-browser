@@ -15,7 +15,4 @@ export const t = (key: I18nKey, param?: any) => _t<PopupMessage>(messages, { key
 
 export const tN = (key: I18nKey, param?: any) => _tN<PopupMessage>(messages, { key, param })
 
-export {
-    ALL_LOCALES, dateFmt, handleLocaleOption, initLocale, localeSameAsBrowser, ptFmt, tDateRangeSeparator
-} from "@i18n"
-
+export { ALL_LOCALES, dateFmt, handleLocaleOption, initLocale, localeSameAsBrowser, ptFmt } from "@i18n"

@@ -7,14 +7,9 @@
 
 import resource from './content-resource.json'
 
-type PopupDuration =
-    | "today" | "yesterday" | "thisWeek" | "thisMonth"
-    | "lastDays"
-    | "allTime"
-
 export type ContentMessage = {
     percentage: {
-        title: { [key in PopupDuration]: string }
+        title: Record<tt4b.ui.PopupDuration, string>
         shareTitle: string
         installTip: string
         averageTime: string

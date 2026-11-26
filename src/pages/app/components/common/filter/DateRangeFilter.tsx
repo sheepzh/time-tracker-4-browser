@@ -5,6 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
+import StatDay, { type StatRange } from '@/shared/day'
 import { t, tDateRangeSeparator, tYMD } from "@app/locale"
 import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
 import { css } from '@emotion/css'
@@ -12,9 +13,10 @@ import { useXsState } from '@hooks'
 import { Flex } from '@pages/components'
 import { getDatePickerIconSlots } from '@pages/element-ui/rtl'
 import { ElDatePickerShortcut } from '@pages/element-ui/types'
-import { addDays, cvt2Time, getStartOfDay } from '@pages/util/time'
+import { useStatToday } from '@pages/element-ui/useStatToday'
 import { isRtl } from '@util/document'
 import { type DatePickerProps, ElButton, ElDatePicker, ElText, useNamespace } from "element-plus"
+import { isInt } from 'typescript-guard'
 import { computed, defineComponent, type FunctionalComponent, type StyleValue, toRaw, toRef } from "vue"
 
 const clearShortcut = (): ElDatePickerShortcut => ({
@@ -22,10 +24,13 @@ const clearShortcut = (): ElDatePickerShortcut => ({
     value: [new Date(0), new Date(0)],
 })
 
-type Props = ModelValue<[number?, number?]>
-    & PartialPick<DatePickerProps, 'startPlaceholder' | 'endPlaceholder' | 'shortcuts' | 'clearable'>
+type Shortcut = { text: string, value: StatRange }
+
+type Props = ModelValue<StatRange | undefined>
+    & PartialPick<DatePickerProps, 'startPlaceholder' | 'endPlaceholder' | 'clearable'>
     & {
-        disabledDate?: (d: Date) => boolean,
+        shortcuts?: Shortcut[]
+        disabledDate?: (d: StatDay) => boolean
         shiftStep?: number
     }
 
@@ -52,80 +57,70 @@ const usePopperStyle = () => {
     `
 }
 
-const shiftDate = (value: number, days: number): number => {
-    const date = addDays(getStartOfDay(value), days)
-    return getStartOfDay(date)
-}
-
 const useRange = (props: Props) => {
     const backwardDisabled = computed(() => {
         const start = props.modelValue?.[0]
-        if (!start) return true
-        const { disabledDate } = props
-        if (!disabledDate) return false
-        const lastDay = shiftDate(start, -1)
-        return disabledDate(new Date(lastDay))
+        return !start || !!props.disabledDate?.(start.prev())
     })
 
     const forwardDisabled = computed(() => {
         const end = props.modelValue?.[1]
-        if (!end) return true
-        const { disabledDate } = props
-        if (!disabledDate) return false
-        const nextDate = shiftDate(end, 1)
-        return disabledDate(new Date(nextDate))
+        return !end || !!props.disabledDate?.(end.prev())
     })
 
     const shift = (multiple: number) => {
-        const { modelValue, onChange, shiftStep } = props
+        const { modelValue, onChange, shiftStep = 1 } = props
         const [start, end] = modelValue ?? []
         if (!start || !end) return
-        const daysDiff = (shiftStep ?? 1) * multiple
-        onChange?.([shiftDate(start, daysDiff), shiftDate(end, daysDiff)])
+        const daysDiff = shiftStep * multiple
+        onChange?.(start.addDays(daysDiff).rangeTo(end.addDays(daysDiff)))
     }
 
     const clearable = toRef(props, "clearable", true)
 
     const shortcuts = computed(() => {
-        const { shortcuts: value } = props
-        if (!value?.length || !clearable.value) return value
-        return [...value, clearShortcut()]
+        const { shortcuts, clearable } = props
+        if (!shortcuts?.length) return undefined
+        const items: ElDatePickerShortcut[] = shortcuts.map(({ text, value }) =>
+            ({ text, value: [value[0].toLabel(), value[1].toLabel()] }))
+        return clearable ? [...items, clearShortcut()] : items
     })
+
+    const disabledDate = (date: Date) => !!props.disabledDate?.(StatDay.ofLabel(date))
 
     return {
         backwardDisabled, forwardDisabled,
-        shift,
+        shift, disabledDate,
         clearable, shortcuts,
     }
 }
+
+const cvt2Time = (data: unknown) => isInt(data) || data instanceof Date ? new Date(data) : undefined
 
 const DefaultRange = defineComponent<Props>(props => {
     const rtl = isRtl()
     const {
         backwardDisabled,
         forwardDisabled,
-        shift,
+        shift, disabledDate,
         shortcuts, clearable,
     } = useRange(props)
+    const { cellClassName, statTodayPopoverCls } = useStatToday()
 
     const innerVal = computed(() => {
-        const [start, end] = props.modelValue ?? []
-        return start && end ? [start, end] : undefined
+        if (!props.modelValue) return undefined
+        const [start, end] = props.modelValue
+        return [start.toLabel(), end.toLabel()]
     })
 
-    const handleUpdate = (innerVal: any) => {
-        let value: [number | undefined, number | undefined] = [undefined, undefined]
-        if (Array.isArray(innerVal)) {
-            const start = cvt2Time(innerVal[0])
-            const end = cvt2Time(innerVal[1])
-            value = [start, end]
+    const handleUpdate = (innerVal: unknown) => {
+        const val = Array.isArray(innerVal) ? innerVal : []
+        const start = cvt2Time(val[0])
+        const end = cvt2Time(val[1])
+        if (!start || !end || (!start.getTime() && !end.getTime())) {
+            return props.onChange?.(undefined)
         }
-
-        if (value[0] === 0 && value[1] === 0) {
-            // clear shortcuts
-            value = [undefined, undefined]
-        }
-        props.onChange?.(value)
+        props.onChange?.(StatDay.ofLabel(start).rangeTo(StatDay.ofLabel(end)))
     }
 
     return () => (
@@ -150,7 +145,8 @@ const DefaultRange = defineComponent<Props>(props => {
                 format={tYMD()}
                 type="daterange"
                 rangeSeparator={tDateRangeSeparator()}
-                disabledDate={props.disabledDate}
+                disabledDate={disabledDate}
+                cellClassName={cellClassName}
                 shortcuts={shortcuts.value}
                 onUpdate:modelValue={newVal => handleUpdate(toRaw(newVal))}
                 startPlaceholder={props.startPlaceholder}
@@ -160,7 +156,7 @@ const DefaultRange = defineComponent<Props>(props => {
                     "--el-date-editor-width": "240px",
                     "--el-border-radius-base": 0,
                 } satisfies StyleValue}
-                popperClass={usePopperStyle()}
+                popperClass={[usePopperStyle(), statTodayPopoverCls]}
                 v-slots={getDatePickerIconSlots()}
             />
             <ElButton
@@ -183,8 +179,8 @@ const DefaultRange = defineComponent<Props>(props => {
 }, { props: ALL_PROPS })
 
 type XsDatePickerProps =
-    & ModelValue<number | undefined>
-    & Partial<Pick<DatePickerProps, 'placeholder' | 'disabledDate' | 'clearable'>>
+    & ModelValue<StatDay | undefined>
+    & Partial<Pick<DatePickerProps, 'placeholder' | 'disabledDate' | 'clearable' | 'cellClassName' | 'popperClass'>>
 
 const XsDatePicker: FunctionalComponent<XsDatePickerProps> = props => {
     const inputNs = useNamespace('input')
@@ -195,13 +191,19 @@ const XsDatePicker: FunctionalComponent<XsDatePickerProps> = props => {
             display: none;
         }
     `
+    const onChange = (unk: unknown) => {
+        const time = cvt2Time(unk)
+        props.onChange?.(time && StatDay.ofLabel(time))
+    }
     return (
         <ElDatePicker
             class={cls}
-            modelValue={props.modelValue}
-            onUpdate:modelValue={val => props.onChange?.(val)}
+            modelValue={props.modelValue?.toLabel()}
+            onUpdate:modelValue={onChange}
             placeholder={props.placeholder}
             disabledDate={props.disabledDate}
+            cellClassName={props.cellClassName}
+            popperClass={props.popperClass}
             clearable={props.clearable}
             format={tYMD()}
         />
@@ -209,27 +211,29 @@ const XsDatePicker: FunctionalComponent<XsDatePickerProps> = props => {
 }
 
 const XsRange = defineComponent<Props>(props => {
-    const handleChange = (start: number | undefined, end: number | undefined) => {
-        const needReverse = start && end && start >= end
-        const arr: [number?, number?] = needReverse ? [end, start] : [start, end]
-        props.onChange?.(arr)
-    }
+    const { disabledDate } = useRange(props)
+    const { cellClassName, statTodayPopoverCls } = useStatToday()
+    const onChange = (s?: StatDay, e?: StatDay) => props.onChange?.(e && s?.rangeTo(e))
 
     return () => (
         <Flex align='center' gap={2}>
             <XsDatePicker
-                modelValue={props.modelValue[0]}
-                onChange={val => handleChange(val, props.modelValue[1])}
+                modelValue={props.modelValue?.[0]}
+                onChange={val => onChange(val, props.modelValue?.[1])}
                 placeholder={props.startPlaceholder}
-                disabledDate={props.disabledDate}
+                disabledDate={disabledDate}
+                cellClassName={cellClassName}
+                popperClass={statTodayPopoverCls}
                 clearable={props.clearable}
             />
             <ElText>-</ElText>
             <XsDatePicker
-                modelValue={props.modelValue[1]}
-                onChange={val => handleChange(props.modelValue[0], val)}
+                modelValue={props.modelValue?.[1]}
+                onChange={val => onChange(props.modelValue?.[0], val)}
                 placeholder={props.endPlaceholder}
-                disabledDate={props.disabledDate}
+                disabledDate={disabledDate}
+                cellClassName={cellClassName}
+                popperClass={statTodayPopoverCls}
                 clearable={props.clearable}
             />
         </Flex>

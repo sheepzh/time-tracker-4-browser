@@ -5,9 +5,9 @@ import { isRecord } from '@util/guard'
 import { type CascaderInstance, type CascaderOption, ElCascader, ElInputNumber, useNamespace } from "element-plus"
 import { createGuard, createNumberUnionGuard } from 'typescript-guard'
 import { computed, defineComponent, ref, watch } from "vue"
-import { type DurationValue, isDuration, type StatDuration } from './context'
+import { type DurationValue, isDuration } from './context'
 
-const rangeLabel = (duration: StatDuration, n?: string | number): string => t(calendarMessages, {
+const rangeLabel = (duration: tt4b.ui.PopupDuration, n?: string | number): string => t(calendarMessages, {
     key: msg => msg.range[duration],
     param: n ? { n } : undefined,
 })
@@ -17,7 +17,7 @@ type BuiltinDay = typeof BUILTIN_DAY_NUM[number]
 const isBuiltinDay = createNumberUnionGuard<BuiltinDay>(7, 30, 90, 180)
 const DEFAULT_CUSTOM = 365
 
-const cvt2Opt = (value: StatDuration, n?: string | number): CascaderOption => ({
+const cvt2Opt = (value: tt4b.ui.PopupDuration, n?: string | number): CascaderOption => ({
     value, label: rangeLabel(value, n),
 })
 
@@ -33,11 +33,11 @@ const options = (num?: number): CascaderOption[] => [
             { value: 'custom', label: rangeLabel('lastDays', num ?? DEFAULT_CUSTOM) },
         ],
     },
-    ...(['thisMonth', 'thisWeek', 'yesterday', 'today'] satisfies StatDuration[]).map(cvt2Opt),
+    ...(['thisMonth', 'thisWeek', 'yesterday', 'today'] satisfies tt4b.ui.PopupDuration[]).map(cvt2Opt),
 ]
 
 type CasValue =
-    | [Exclude<StatDuration, 'lastDays'>]
+    | [Exclude<tt4b.ui.PopupDuration, 'lastDays'>]
     | [type: 'lastDays', value: 'custom' | BuiltinDay]
 
 const isCasValue = createGuard<CasValue>(val => {

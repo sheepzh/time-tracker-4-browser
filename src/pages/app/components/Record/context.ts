@@ -1,9 +1,10 @@
+import StatDay, { statRangeStr } from '@/shared/day'
 import { listCateStats, listGroupStats, listSiteStats } from '@api/sw/stat'
 import type { RecordQuery } from '@app/router/constants'
 import { isOptionalIntArray, isTimeFormat } from '@app/util/types'
-import { localReactive, useManualRequest, useProvide, useProvider, useRemoteValue } from '@hooks'
-import { queryInt, queryStr, type MakeRouteQuery } from '@pages/util/route'
-import { BIRTHDAY, cvtDateRange2Str, fmtDur } from '@pages/util/time'
+import { localReactive, useDayOffset, useManualRequest, useProvide, useProvider, useRemoteValue } from '@hooks'
+import { queryStr, type MakeRouteQuery } from '@pages/util/route'
+import { fmtDur } from '@pages/util/time'
 import { sum } from '@util/array'
 import { truthy } from '@util/lang'
 import {
@@ -39,11 +40,9 @@ function initQuery(filter: RecordFilterOption): RecordSort['prop'] | undefined {
     // Query
     q && (filter.query = queryStr(q))
     // Date range
-    const dateStart = queryInt(ds)
-    const dateEnd = queryInt(de)
-    if (dateStart !== undefined || dateEnd !== undefined) {
-        filter.dateRange = [dateStart ?? BIRTHDAY.getTime(), dateEnd ?? Date.now()]
-    }
+    const start = StatDay.parse(queryStr(ds))
+    const end = StatDay.parse(queryStr(de))
+    filter.dateRange = end && start?.rangeTo(end)
     // Merge method
     if (md && ['true', '1'].includes(queryStr(md))) filter.mergeDate = true
     if (isSiteMerge(mm)) filter.siteMerge = mm
@@ -62,13 +61,14 @@ const isCacheValue = createObjectGuard<CacheValue>({
 })
 
 export const initRecordContext = () => {
+    const { dayStart } = useDayOffset()
     const filter = localReactive<RecordFilterOption, keyof CacheValue>('record_filter', isCacheValue, {
         query: undefined,
         mergeDate: false,
         timeFormat: 'default',
         siteMerge: undefined,
         cateIds: undefined,
-    }, { dateRange: [Date.now(), Date.now()] })
+    }, { dateRange: StatDay.today(dayStart.value).rangeTo(0) })
     const querySort = initQuery(filter)
     const sort = ref<RecordSort>({ order: 'descending', prop: querySort ?? 'focus' })
     const comp = ref<DisplayComponent>()
@@ -90,7 +90,7 @@ export const useSummary = (watchFilter?: boolean) => {
     const remote = useRemoteValue()
     const { data, refresh, loading } = useManualRequest(async () => {
         const { siteMerge, dateRange, query, cateIds } = filter
-        const date = cvtDateRange2Str(dateRange)
+        const date = statRangeStr(dateRange)
         let rows: tt4b.stat.Row[] = []
         if (siteMerge === 'group') {
             rows = await listGroupStats({ date, query })

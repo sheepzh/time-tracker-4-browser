@@ -4,11 +4,11 @@ import { RECORD_ROUTE, type RecordQuery } from "@app/router/constants"
 import { isRemainHost } from "@util/constant/remain-host"
 import { getAppPageUrl } from "@util/constant/url"
 import { isSite } from "@util/stat"
-import type { StatDuration, StatQuery } from './context'
+import type { StatQuery } from './context'
 
 type DateRangeCalculator = (today: StatDay, weekStart: tt4b.WeekStart, num?: number) => StatRange | undefined
 
-const DATE_RANGE_CALCULATORS: Record<StatDuration, DateRangeCalculator> = {
+const DATE_RANGE_CALCULATORS: Record<tt4b.ui.PopupDuration, DateRangeCalculator> = {
     today: today => today.rangeTo(0),
     yesterday: today => today.prev().rangeTo(0),
     thisWeek: (today, weekStart) => today.weekStart(weekStart).rangeTo(today),

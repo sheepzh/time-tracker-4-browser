@@ -4,26 +4,22 @@ import {
     isBoolean, isInt,
 } from 'typescript-guard'
 
-export type StatDuration =
-    | "today" | "yesterday" | "thisWeek" | "thisMonth"
-    | "lastDays"
-    | "allTime"
 
-export const isDuration = createStringUnionGuard<StatDuration>(
+export const isDuration = createStringUnionGuard<tt4b.ui.PopupDuration>(
     "allTime", "today", "yesterday", "thisWeek", "thisMonth", "lastDays",
 )
 
 export type DurationValue = {
-    type: StatDuration & 'lastDays'
+    type: tt4b.ui.PopupDuration & 'lastDays'
     value: number
-} | Exclude<StatDuration, 'lastDays'>
+} | Exclude<tt4b.ui.PopupDuration, 'lastDays'>
 
 const isDurationValue = createUnionGuard(
-    createStringUnionGuard<Exclude<StatDuration, 'lastDays'>>(
+    createStringUnionGuard<Exclude<tt4b.ui.PopupDuration, 'lastDays'>>(
         "allTime", "today", "yesterday", "thisWeek", "thisMonth",
     ),
     createObjectGuard<{
-        type: StatDuration & 'lastDays'
+        type: tt4b.ui.PopupDuration & 'lastDays'
         value: number
     }>({
         type: createLiteralGuard("lastDays"),

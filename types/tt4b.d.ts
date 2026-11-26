@@ -102,6 +102,10 @@ declare namespace tt4b {
             | "hour"
 
         type PopupMenu = 'percentage' | 'site' | 'ranking' | 'focus'
+        type PopupDuration =
+            | 'today' | 'yesterday' | 'thisWeek' | 'thisMonth'
+            | 'lastDays'
+            | 'allTime'
     }
 
     namespace common {

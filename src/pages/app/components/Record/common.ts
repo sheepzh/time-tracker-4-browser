@@ -1,9 +1,10 @@
+import { statRangeStr } from '@/shared/day'
 import {
     deleteSiteStatByGroup, deleteSiteStatByHost, getCateStatPage, getGroupStatPage, getSiteStatPage, listCateStats,
     listGroupStats, listSiteStats,
 } from "@api/sw/stat"
 import { t } from '@app/locale'
-import { BIRTHDAY, cvt2LocaleDate, cvtDateRange2Str } from '@pages/util/time'
+import { cvt2LocaleDate } from '@pages/util/time'
 import { getGroupName, isGroup, isSite } from "@util/stat"
 import type { RecordFilterOption, RecordSort } from "./types"
 
@@ -17,9 +18,8 @@ export function computeDeleteConfirmMsg(row: tt4b.stat.Row, filterOption: Record
         url = 'NaN'
     }
     const { mergeDate, dateRange } = filterOption
-    const [start, end] = mergeDate ? dateRange : [row.date]
-    if (start === undefined && end === undefined) return t(msg => msg.item.operation.deleteConfirmMsgAll, { url })
-    const date = cvt2LocaleDate(start ?? BIRTHDAY, end ?? new Date())
+    const rangeDate = dateRange && cvt2LocaleDate(dateRange[0].toDate(), dateRange[1].toDate())
+    const date = mergeDate ? rangeDate : cvt2LocaleDate(row.date)
     return t(msg => msg.item.operation.deleteConfirmMsg, { url, date })
 }
 
@@ -32,9 +32,8 @@ export async function handleDelete(row: tt4b.stat.Row, filterOption: RecordFilte
         isGroup(row) && date && await deleteSiteStatByGroup(row.groupKey, date)
         return
     }
-    const strRange = cvtDateRange2Str(dateRange)
-    const [start, end] = strRange ?? []
-    if (!start && !end) {
+    const strRange = statRangeStr(dateRange)
+    if (!strRange) {
         // Delete all
         isSite(row) && await deleteSiteStatByHost(row.siteKey.host)
         isGroup(row) && await deleteSiteStatByGroup(row.groupKey)
@@ -56,7 +55,7 @@ const cvt2GroupQuery = (
     { query, mergeDate, dateRange: date, focusRange, timeRange }: RecordFilterOption,
     { prop, order }: RecordSort,
 ): tt4b.stat.GroupQuery => ({
-    date: cvtDateRange2Str(date), mergeDate, query,
+    date: statRangeStr(date), mergeDate, query,
     sortKey: prop !== 'host' ? prop : undefined,
     sortDirection: cvtOrderDir(order),
     focusRange, timeRange,
@@ -66,7 +65,7 @@ const cvt2SiteQuery = (
     { dateRange: date, mergeDate, siteMerge, query, cateIds, focusRange, timeRange }: RecordFilterOption,
     { prop, order }: RecordSort,
 ): Omit<tt4b.stat.SiteQuery, 'remote'> => ({
-    date: cvtDateRange2Str(date), mergeDate,
+    date: statRangeStr(date), mergeDate,
     mergeHost: siteMerge === 'domain',
     query, cateIds,
     virtual: true,
@@ -79,7 +78,7 @@ const cvt2CateQuery = (
     { dateRange: date, mergeDate, query, cateIds, focusRange, timeRange }: RecordFilterOption,
     { prop, order }: RecordSort,
 ): Omit<tt4b.stat.CateQuery, 'remote'> => ({
-    date: cvtDateRange2Str(date), mergeDate, query, cateIds,
+    date: statRangeStr(date), mergeDate, query, cateIds,
     sortKey: prop !== 'host' ? prop : undefined,
     sortDirection: cvtOrderDir(order),
     focusRange, timeRange,

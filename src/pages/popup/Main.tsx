@@ -1,3 +1,4 @@
+import { initDayOffset } from '@hooks'
 import { DataLock, Flex } from '@pages/components'
 import { defineComponent } from "vue"
 import { RouterView } from "vue-router"
@@ -7,6 +8,7 @@ import { initPopupContext } from "./context"
 import { TOOLBAR_SLOT } from './slot'
 
 const Main = defineComponent(() => {
+    initDayOffset()
     initPopupContext()
 
     return () => (

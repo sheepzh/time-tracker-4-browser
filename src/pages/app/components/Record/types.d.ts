@@ -1,3 +1,4 @@
+import type { StatRange } from '@/shared/day'
 import type { RenderRowData, Sort } from "element-plus"
 
 export type RecordSort = Omit<Sort, 'prop'> & {
@@ -10,7 +11,7 @@ export type RowData = RenderRowData<tt4b.stat.Row>
 
 export type RecordFilterOption = {
     query?: string
-    dateRange: [number?, number?]
+    dateRange: StatRange | undefined
     mergeDate: boolean
     siteMerge?: SiteMerge
     cateIds?: number[]
