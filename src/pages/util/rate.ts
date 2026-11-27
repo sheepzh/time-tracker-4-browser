@@ -1,4 +1,4 @@
-import StatDay from '@/shared/day'
+import { StatDay } from '@/shared/day'
 import { trySendMsg2Runtime } from '@api/sw/common'
 import { REVIEW_PAGE } from '@util/constant/url'
 

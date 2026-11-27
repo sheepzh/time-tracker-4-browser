@@ -4,20 +4,20 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { getOption, getWeekStartDay } from "@api/sw/option"
+import { getOption } from "@api/sw/option"
 import ColumnHeader from "@app/components/common/ColumnHeader"
 import ContentCard from '@app/components/common/ContentCard'
 import { useDelayDuration, useLimitAction, useLimitData } from "@app/components/Limit/context"
 import { locale, t, tWeekDays } from '@app/locale'
 import { Delete, Edit } from '@element-plus/icons-vue'
-import { localRef, useRequest } from '@hooks'
+import { localRef, useDayOffset, useRequest } from '@hooks'
 import { isEffective } from "@util/limit"
 import { MILL_PER_SECOND } from "@util/time"
 import {
     ElButton, ElSwitch, ElTable, ElTableColumn, ElTag, type RenderRowData, type Sort, type TableInstance,
 } from "element-plus"
 import { createObjectGuard, createStringUnionGuard, isAny } from 'typescript-guard'
-import { defineComponent, ref } from "vue"
+import { computed, defineComponent, ref } from "vue"
 import Rule from "./Rule"
 import Waste from "./Waste"
 import Weekday from "./Weekday"
@@ -56,15 +56,15 @@ function sortByEffectiveDays(a: tt4b.limit.Item, b: tt4b.limit.Item) {
 }
 
 const _default = defineComponent<{}>(() => {
-    const { data: weeklyInfo } = useRequest(async () => {
-        const offset = await getWeekStartDay()
-        const weekStart = tWeekDays()[offset] ?? 'NaN'
-        return t(msg => msg.limit.item.weekStartInfo, { weekStart })
-    })
+    const { today, weekStart } = useDayOffset()
+    const weeklyInfo = computed(() => t(msg => msg.limit.item.weekStartInfo, {
+        weekStart: tWeekDays()[weekStart.value - 1] ?? 'NaN',
+    }))
 
     const { list, selected, changeEnabled, changeDelay, changeLocked } = useLimitData()
     const { modify, remove } = useLimitAction()
     const delayDuration = useDelayDuration()
+    const weekday = computed(() => today.value.weekday())
 
     const sort = localRef<Sort>('__limit_sort__', isSort, { prop: 'waste', order: 'descending' })
     const table = ref<TableInstance>()
@@ -128,7 +128,7 @@ const _default = defineComponent<{}>(() => {
                     minWidth={90}
                     align="center"
                 >
-                    {({ row }: RenderRowData<tt4b.limit.Item>) => isEffective(row.weekdays) ? (
+                    {({ row }: RenderRowData<tt4b.limit.Item>) => isEffective(row.weekdays, weekday.value) ? (
                         <Waste
                             time={{ wasted: row.waste, maxLimit: (row.time ?? 0) * MILL_PER_SECOND }}
                             delay={{ count: row.delayCount, duration: delayDuration.value, allow: !!row.allowDelay }}

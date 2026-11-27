@@ -1,4 +1,4 @@
-import StatDay from '@/shared/day'
+import { StatDay } from '@/shared/day'
 import optionHolder from './option-holder'
 
 function getDefaultWeekStart(locale: tt4b.option.LocaleOption): tt4b.WeekStart {

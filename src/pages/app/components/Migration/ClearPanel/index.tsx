@@ -5,21 +5,24 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { type StatDay } from '@/shared/day'
 import { batchDeleteStats, listGroupStats, listSiteStats } from "@api/sw/stat"
 import { t } from "@app/locale"
-import { addDays, BIRTHDAY, cvtDateRange2Str, MILL_PER_SECOND } from "@pages/util/time"
+import { useDayOffset } from '@hooks'
+import { cvt2LocaleDate, MILL_PER_SECOND } from "@pages/util/time"
+import { BIRTH_DATE } from '@util/time'
 import { ElCard, ElMessage, ElMessageBox } from "element-plus"
 import { defineComponent, type StyleValue } from "vue"
 import { useDataMemory } from "../context"
 import DataManageAlert from '../DataManageAlert'
 import ClearFilter, { type FilterOption } from "./ClearFilter"
 
-function buildClearStatQuery(option: FilterOption): tt4b.stat.BaseQuery {
+function buildClearStatQuery(option: FilterOption, today: StatDay): tt4b.stat.BaseQuery {
     const { date, focus, visit } = option
     const focusMax = str2Num(focus, MILL_PER_SECOND)
     const visitMax = str2Num(visit)
     return {
-        date: cvtDateRange2Str([date?.[0] ?? BIRTHDAY, date?.[1] ?? addDays(Date.now(), -1)]),
+        date: cvt2LocaleDate(date ?? today.rangeTo(BIRTH_DATE)),
         focusRange: [, focusMax],
         timeRange: [, visitMax],
     }
@@ -34,8 +37,9 @@ const str2Num = (str: string | undefined, multiplier?: number): number | undefin
 
 const _default = defineComponent<{}>(() => {
     const { refreshMemory } = useDataMemory()
+    const { today } = useDayOffset()
     const onDelete = async (option: FilterOption) => {
-        const q = buildClearStatQuery(option)
+        const q = buildClearStatQuery(option, today.value)
         if (!q) return ElMessage.warning("Param error")
         const siteRows = await listSiteStats({ ...q, virtual: true, remote: false })
         const groupRows = await listGroupStats(q)

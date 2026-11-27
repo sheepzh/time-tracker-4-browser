@@ -3,7 +3,7 @@ import { createNumberUnionGuard } from 'typescript-guard'
 
 export const isWeekStart = createNumberUnionGuard<tt4b.WeekStart>(1, 2, 3, 4, 5, 6, 7)
 
-export default class StatDay {
+export class StatDay {
     private constructor(readonly y: number, readonly m: number, readonly d: number) { }
 
     static ofLabel(label: Date): StatDay {

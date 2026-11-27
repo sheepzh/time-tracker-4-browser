@@ -5,12 +5,12 @@
  * https://opensource.org/licenses/MIT
  */
 
+import type { StatRange } from '@/shared/day'
 import { listPeriods } from '@api/sw/period'
 import { localReactive, useProvide, useProvider, useRequest } from '@hooks'
-import { addDays, getDayLength } from "@pages/util/time"
 import { keyOf, MAX_PERIOD_ORDER } from "@util/period"
 import { createObjectGuard } from 'typescript-guard'
-import { computed, type Ref } from "vue"
+import { computed, type ComputedRef, type Ref } from "vue"
 import { useHabitFilter } from "../context"
 import { isChartType, isPeriodSize, type ChartType, type PeriodRange, type PeriodSize } from './types'
 
@@ -24,24 +24,22 @@ const isFilterOption = createObjectGuard<FilterOption>({
     chartType: isChartType,
 })
 
-type Value = {
+type Data = {
     curr: tt4b.period.Row[]
     prev: tt4b.period.Row[]
 }
 
 type Context = {
-    value: Ref<Value>
+    data: Ref<Data>
     filter: FilterOption
+    range: ComputedRef<PeriodRange>
 }
 
-const computeRange = (dateRange: [number, number]): PeriodRange => {
-    const [startDate, endDate] = dateRange
-    const dateLength = getDayLength(startDate, endDate)
-    const prevStartDate = addDays(startDate, -dateLength)
-    const prevEndDate = addDays(startDate, -1)
+const computeRange = ([start, end]: StatRange): PeriodRange => {
+    const dateLength = start.daysTo(end)
     return {
-        curr: [keyOf(startDate, 0), keyOf(endDate, MAX_PERIOD_ORDER)],
-        prev: [keyOf(prevStartDate, 0), keyOf(prevEndDate, MAX_PERIOD_ORDER)],
+        curr: [keyOf(start.toDate(), 0), keyOf(end.toDate(), MAX_PERIOD_ORDER)],
+        prev: [keyOf(start.addDays(-dateLength).toDate(), 0), keyOf(start.prev().toDate(), MAX_PERIOD_ORDER)],
     }
 }
 
@@ -54,7 +52,7 @@ export const initProvider = () => {
         'habit_period_filter', isFilterOption, { periodSize: 1, chartType: 'average' }
     )
 
-    const { data: value } = useRequest(async () => {
+    const { data } = useRequest(async () => {
         const { curr: currRange, prev: prevRange } = periodRange.value || {}
         const periodSize = filter.periodSize
         const [curr, prev] = await Promise.all([
@@ -67,11 +65,9 @@ export const initProvider = () => {
         defaultValue: { curr: [], prev: [] },
     })
 
-    useProvide<Context>(NAMESPACE, { value, filter })
+    useProvide<Context>(NAMESPACE, { data, filter, range: periodRange })
 
     return { filter, periodRange }
 }
 
-export const usePeriodValue = () => useProvider<Context, 'value'>(NAMESPACE, "value").value
-
-export const usePeriodFilter = () => useProvider<Context, 'filter'>(NAMESPACE, "filter").filter
+export const usePeriod = () => useProvider<Context, 'data' | 'filter' | 'range'>(NAMESPACE, 'data', 'range', 'filter')

@@ -1,6 +1,6 @@
+import { statRangeStr } from '@/shared/day'
 import { getSiteStatPage } from "@api/sw/stat"
-import { EchartsWrapper, localReactive, useEcharts, useProvide, useProvider, useRemoteValue } from "@hooks"
-import { addDays, cvtDateRange2Str } from "@util/time"
+import { EchartsWrapper, localReactive, useDayOffset, useEcharts, useProvide, useProvider, useRemoteValue } from "@hooks"
 import { createObjectGuard, createStringUnionGuard, isInt, isNumber, isOptionalString, isString } from 'typescript-guard'
 
 export type BizOption = {
@@ -47,13 +47,12 @@ export const initProvider = () => {
 export const useTopKChart = <EC>(Wrapper: new () => EchartsWrapper<BizOption[], EC>) => {
     const filter = useTopKFilter()
     const remote = useRemoteValue()
+    const { today } = useDayOffset()
     return useEcharts(Wrapper, async () => {
-        const now = new Date()
         const { dayNum, topK: size } = filter
-        const startTime = addDays(now, -dayNum)
         const { list: top } = await getSiteStatPage({
             num: 1, size,
-            date: cvtDateRange2Str([startTime, now]),
+            date: statRangeStr(today.value.rangeTo(-dayNum)),
             sortKey: "time",
             sortDirection: 'DESC',
             mergeDate: true,
@@ -66,7 +65,7 @@ export const useTopKChart = <EC>(Wrapper: new () => EchartsWrapper<BizOption[], 
             data.push({ name: '', host: '', value: 0 })
         }
         return data
-    }, { deps: [() => ({ ...filter }), remote] })
+    }, { deps: [() => ({ ...filter }), remote, today] })
 }
 
 export const useTopKFilter = () => useProvider<Context, 'filter'>(NAMESPACE, "filter").filter

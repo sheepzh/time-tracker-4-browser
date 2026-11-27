@@ -1,4 +1,4 @@
-import StatDay, { statRangeStr, type StatRange } from '@/shared/day'
+import { StatDay, statRangeStr, type StatRange } from '@/shared/day'
 import { listSiteStats } from '@api/sw/stat'
 import { css } from '@emotion/css'
 import { useDayOffset, useRequest, useShadow } from '@hooks'
@@ -55,8 +55,8 @@ const useCalendarStyle = () => {
 
 const Calendar = defineComponent<{}>(() => {
     const { site } = useSite()
-    const { dayStart } = useDayOffset()
-    const [current, setCurrent] = useShadow(() => StatDay.today(dayStart.value))
+    const { today } = useDayOffset()
+    const [current, setCurrent] = useShadow(today)
     const dateRange = computed<StatRange>(() => {
         const v = current.value
         const start = v.monthStart().addDays(-7)
@@ -78,7 +78,7 @@ const Calendar = defineComponent<{}>(() => {
     return () => (
         <Flex flex={1} gap={15} column>
             <ElText type='primary' style={{ fontSize: '24px' }}>
-                {cvt2LocaleDate(current.value.toDate())} - {fmtDur(row.value?.focus ?? 0)}
+                {cvt2LocaleDate(current.value)} - {fmtDur(row.value?.focus ?? 0)}
             </ElText>
             <Flex flex={1}>
                 <ElCalendar

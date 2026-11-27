@@ -5,12 +5,14 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { StatDay } from '@/shared/day'
 import { clearBackup, queryBackup } from '@api/sw/backup'
+import { getOption } from '@api/sw/option'
 import DialogSop from "@app/components/common/DialogSop"
 import { initDialogSopContext } from '@app/components/common/DialogSop/context'
 import { t } from '@app/locale'
 import { Delete } from "@element-plus/icons-vue"
-import { BIRTHDAY_STR, formatTimeYMD } from '@pages/util/time'
+import { BIRTHDAY_STR } from '@pages/util/time'
 import { ElButton } from "element-plus"
 import { defineComponent, ref } from "vue"
 import ClientTable from '../ClientTable'
@@ -23,7 +25,8 @@ const STEP_TITLES = [
 ]
 
 async function fetchStatResult(client: tt4b.backup.Client): Promise<StatResult> {
-    const { id: specCid, minDate = BIRTHDAY_STR, maxDate = formatTimeYMD(Date.now()) } = client
+    const { dayStart } = await getOption()
+    const { id: specCid, minDate = BIRTHDAY_STR, maxDate = StatDay.today(dayStart).toString() } = client
     const remoteRows = await queryBackup({ specCid, start: minDate, end: maxDate })
     const siteSet: Set<string> = new Set()
     remoteRows?.forEach(row => {

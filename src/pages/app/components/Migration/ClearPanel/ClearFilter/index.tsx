@@ -4,6 +4,7 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import type { StatRange } from '@/shared/day'
 import { t } from "@app/locale"
 import { Delete } from "@element-plus/icons-vue"
 import { useState } from "@hooks"
@@ -14,7 +15,7 @@ import DateFilter from "./DateFilter"
 import NumberFilter from "./NumberFilter"
 
 export type FilterOption = {
-    date: [Date, Date] | undefined
+    date?: StatRange
     focus: string
     visit: string
 }
@@ -22,7 +23,7 @@ export type FilterOption = {
 type Props = { onDelete?: ArgCallback<FilterOption> }
 
 const _default = defineComponent<Props>(props => {
-    const [date, setDate] = useState<[Date, Date]>()
+    const [date, setDate] = useState<StatRange>()
     const [focus, setFocus] = useState<string>('2')
     const [visit, setVisit] = useState<string>('')
     const handleDelete = () => props.onDelete?.({ date: date.value, focus: focus.value, visit: visit.value })

@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import type StatDay from '@/shared/day'
+import type { StatDay, StatRange } from '@/shared/day'
 
 /**
  * Iterate from the {@param start} to the {@param end}
@@ -13,10 +13,10 @@ import type StatDay from '@/shared/day'
 export default class DateIterator<T> implements IterableIterator<T> {
     private constructor(private start: StatDay, private end: StatDay, private converter: (date: StatDay) => T) { }
 
-    static of(start: StatDay, end: StatDay): DateIterator<string>
-    static of<T>(start: StatDay, end: StatDay, converter: (date: StatDay) => T): DateIterator<T>
-    static of(start: StatDay, end: StatDay, converter?: (date: StatDay) => any): IterableIterator<any> {
-        return new DateIterator(start, end, converter ?? (d => d.toString()))
+    static of(range: StatRange): DateIterator<string>
+    static of<T>(range: StatRange, converter: Converter<StatDay, T>): DateIterator<T>
+    static of(range: StatRange, converter?: Converter<StatDay, any>): IterableIterator<any> {
+        return new DateIterator(range[0], range[1], converter ?? (d => d.toString()))
     }
 
     next(): IteratorResult<T> {

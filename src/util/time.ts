@@ -5,6 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { StatDay } from '@/shared/day'
+
 export const pad = (n: number, len = 2) => n.toString().padStart(len, '0')
 
 export const MILL_PER_SECOND = 1000
@@ -24,7 +26,7 @@ export function getStartOfNextDay(target: Date | number): number {
 
 export const BIRTHDAY_STR = '20210303'
 export const BIRTHDAY = new Date(2021, 2, 3, 0, 0, 0, 0)
-export const BIRTH_DATE = new Temporal.PlainDate(2021, 3, 3)
+export const BIRTH_DATE = StatDay.ofLabel(BIRTHDAY)
 
 export function addDays(date: Date | number, days: number): Date {
     const result = new Date(date)

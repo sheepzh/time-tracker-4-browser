@@ -1,4 +1,4 @@
-import type StatDay from '@/shared/day'
+import { type StatDay } from '@/shared/day'
 import { sendMsg2Runtime, trySendMsg2Runtime } from '@api/sw/common'
 import { css } from '@emotion/css'
 import { useCountDown } from "@hooks"

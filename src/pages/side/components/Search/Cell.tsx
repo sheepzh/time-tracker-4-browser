@@ -1,4 +1,4 @@
-import StatDay from '@/shared/day'
+import { StatDay } from '@/shared/day'
 import { type DateCell, useNamespace } from "element-plus"
 import type { FunctionalComponent } from 'vue'
 

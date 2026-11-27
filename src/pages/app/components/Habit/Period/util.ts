@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getDayLength } from '@pages/util/time'
+import { StatDay } from '@/shared/day'
 import { after, keyOf, MINUTE_PER_PERIOD, PERIOD_PER_DATE, rowOf } from '@util/period'
 
 function startOrderOfRow(row: tt4b.period.Row): number {
@@ -25,7 +25,7 @@ function generateOrderMap(data: tt4b.period.Row[], periodSize: number): Map<numb
 
 function cvt2AverageResult(map: Map<number, number>, periodSize: number, dateNum: number): tt4b.period.Row[] {
     const result: tt4b.period.Row[] = []
-    let period = keyOf(new Date(), 0)
+    let period = keyOf(Temporal.Now.plainDateISO(), 0)
     for (let i = 0; i < PERIOD_PER_DATE / periodSize; i++) {
         const key = period.order / periodSize
         const val = map.get(key) ?? 0
@@ -36,12 +36,13 @@ function cvt2AverageResult(map: Map<number, number>, periodSize: number, dateNum
     return result
 }
 
-export function averageByDay(data: tt4b.period.Row[], periodSize: number): tt4b.period.Row[] {
+export function averageByDay(
+    data: tt4b.period.Row[],
+    periodSize: number,
+    range: tt4b.period.KeyRange,
+): tt4b.period.Row[] {
     if (!data?.length) return []
-    const rangeStart = data[0]?.startTime
-    const rangeEnd = data[data.length - 1]?.endTime
-    if (!rangeStart || !rangeEnd) return []
-    const dateNum = getDayLength(rangeStart, rangeEnd) || 1
+    const dateNum = StatDay.ofPeriod(range[0]).daysTo(StatDay.ofPeriod(range[1])) || 1
     const map = generateOrderMap(data, periodSize)
     return cvt2AverageResult(map, periodSize, dateNum)
 }

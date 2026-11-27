@@ -18,7 +18,7 @@ export function computeDeleteConfirmMsg(row: tt4b.stat.Row, filterOption: Record
         url = 'NaN'
     }
     const { mergeDate, dateRange } = filterOption
-    const rangeDate = dateRange && cvt2LocaleDate(dateRange[0].toDate(), dateRange[1].toDate())
+    const rangeDate = dateRange && cvt2LocaleDate(dateRange)
     const date = mergeDate ? rangeDate : cvt2LocaleDate(row.date)
     return t(msg => msg.item.operation.deleteConfirmMsg, { url, date })
 }

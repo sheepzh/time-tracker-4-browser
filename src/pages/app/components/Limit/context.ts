@@ -1,4 +1,5 @@
 import { getOption } from '@/api/sw/option'
+import { StatDay } from '@/shared/day'
 import { DEFAULT_LIMIT } from '@/util/constant/option'
 import { deleteLimits, listLimits, updateLimits } from "@api/sw/limit"
 import { t } from '@app/locale'
@@ -47,10 +48,11 @@ const initialQuery = () => {
 
 const batchJudge = async (items: tt4b.limit.Item[]): Promise<boolean> => {
     if (!items?.length) return false
-    const { limitDelayDuration, limitLevel } = await getOption()
+    const { limitDelayDuration, limitLevel, dayStart } = await getOption()
+    const today = StatDay.today(dayStart)
     for (const item of items) {
         if (!item) continue
-        let needVerify = await judgeVerificationRequired(item, limitDelayDuration)
+        let needVerify = await judgeVerificationRequired(item, limitDelayDuration, today)
         // If locked and the level is not strict, verification is also required to modify the rule
         if (limitLevel !== 'strict') needVerify ||= item.locked
         if (needVerify) return true

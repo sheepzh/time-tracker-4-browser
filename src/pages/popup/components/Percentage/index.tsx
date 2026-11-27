@@ -1,4 +1,4 @@
-import StatDay, { type StatRange } from '@/shared/day'
+import { StatDay, type StatRange } from '@/shared/day'
 import { listAllGroups } from '@api/chrome/tabGroups'
 import { useDayOffset, useRequest } from "@hooks"
 import { useCateNameMap } from '@popup/context'
@@ -36,10 +36,11 @@ const findDateRange = (dates: Set<string>): StatRange | undefined => {
 const Percentage = defineComponent(() => {
     const { query, option } = initStatContext()
     const cateNameMap = useCateNameMap()
-    const { dayStart, weekStart } = useDayOffset()
+    const { today, weekStart } = useDayOffset()
+
     const { data: rowData } = useRequest(
-        () => queryRows({ ...query, dayStart: dayStart.value, weekStart: weekStart.value }),
-        { deps: [dayStart, weekStart, () => ({ ...query })] },
+        () => queryRows({ ...query, today: today.value, weekStart: weekStart.value }),
+        { deps: [today, weekStart, () => ({ ...query })] },
     )
     const { data: groups } = useRequest(listAllGroups)
     const data = computed(() => {

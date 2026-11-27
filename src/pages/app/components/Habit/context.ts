@@ -5,14 +5,14 @@
  * https://opensource.org/licenses/MIT
  */
 
+import type { StatRange } from '@/shared/day'
 import { isTimeFormat } from '@app/util/types'
-import { localReactive, useProvide, useProvider } from '@hooks'
-import { daysAgo } from '@pages/util/time'
+import { localReactive, useDayOffset, useProvide, useProvider } from '@hooks'
 import { createObjectGuard } from 'typescript-guard'
 
 type FilterOption = {
     timeFormat: tt4b.ui.TimeFormat
-    dateRange: [number, number]
+    dateRange: StatRange
 }
 
 type Context = {
@@ -22,8 +22,8 @@ type Context = {
 const NAMESPACE = 'habit'
 
 export const initHabit = () => {
-    const [defaultStart, defaultEnd] = daysAgo(7, 0)
-    const dateRange: [number, number] = [defaultStart.getTime(), defaultEnd.getTime()]
+    const { today } = useDayOffset()
+    const dateRange = today.value.rangeTo(-7)
     const filter = localReactive<FilterOption, 'timeFormat'>(`${NAMESPACE}_filter`,
         createObjectGuard({ timeFormat: isTimeFormat }), { timeFormat: "default" }, { dateRange }
     )

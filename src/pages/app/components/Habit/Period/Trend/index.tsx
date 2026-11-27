@@ -8,7 +8,7 @@
 import { useEcharts } from "@hooks"
 import { computed, defineComponent, type StyleValue } from "vue"
 import { useHabitFilter } from "../../context"
-import { usePeriodValue } from "../context"
+import { usePeriod } from '../context'
 import Wrapper, { BizOption } from "./Wrapper"
 
 const CONTAINER_STYLE: StyleValue = {
@@ -17,10 +17,10 @@ const CONTAINER_STYLE: StyleValue = {
 }
 
 const _default = defineComponent(() => {
-    const value = usePeriodValue()
+    const { data } = usePeriod()
     const globalFilter = useHabitFilter()
     const bizOption = computed<BizOption>(() => ({
-        data: value.value?.curr,
+        data: data.value?.curr,
         timeFormat: globalFilter.timeFormat,
     }))
     const { elRef } = useEcharts(Wrapper, bizOption, { manual: true })

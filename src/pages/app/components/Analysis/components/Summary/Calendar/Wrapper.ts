@@ -4,13 +4,14 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
-import { getWeekStartTime } from '@api/sw/option'
+import { type StatDay } from '@/shared/day'
 import { dateFmt, t } from '@app/locale'
 import { isCalendarValue, parseValueOfFormatter, type CalendarValue } from "@app/util/echarts"
 import { EchartsWrapper } from '@hooks'
 import { getCssVariable, getRegularTextColor, getSecondaryTextColor } from '@pages/util/style'
-import { addDays, cvt2LocaleDate, fmtDur, getAllDatesBetween, getWeekDays, parseTime } from '@pages/util/time'
+import { cvt2LocaleDate, fmtDur, getWeekDays, parseTime } from '@pages/util/time'
 import { groupBy, toMap } from "@util/array"
+import DateIterator from '@util/date-iterator'
 import type {
     ComposeOption, EffectScatterSeriesOption, GridComponentOption, TitleComponentOption, TooltipComponentOption,
     VisualMapComponentOption,
@@ -123,6 +124,8 @@ function optionOf(
 }
 
 export type BizOption = {
+    today: StatDay
+    weekStart: tt4b.WeekStart
     rows: tt4b.stat.Row[]
     timeFormat: tt4b.ui.TimeFormat
 }
@@ -130,22 +133,19 @@ export type BizOption = {
 class Wrapper extends EchartsWrapper<BizOption, EcOption> {
     override isSizeSensitize = true
 
-    protected async generateOption({ rows = [], timeFormat }: BizOption): Promise<EcOption> {
+    protected async generateOption({ today, weekStart, rows, timeFormat }: BizOption): Promise<EcOption> {
         const width = this.getDomWidth()
         const colNum = getWeekNum(width)
-        const endTime = new Date()
-        const startTime = await getWeekStartTime(addDays(endTime, -(colNum - 1) * 7))
-        const allDates = getAllDatesBetween(startTime, endTime)
+        const dateRange = today.addDays(-(colNum - 1) * 7).weekStart(weekStart).rangeTo(today)
         const value = toMap(rows, r => r.date, r => r.focus)
-        const data: CalendarValue[] = []
-        allDates.forEach((date, index) => {
+        const data = [...DateIterator.of(dateRange)].map((date, index) => {
             const dailyMills = value[date] || 0
             const colIndex = parseInt((index / 7).toString())
             const weekDay = index % 7
             const x = colIndex, y = 7 - (1 + weekDay)
-            data.push([x, y, dailyMills, date])
+            return [x, y, dailyMills, date] satisfies CalendarValue
         })
-        const weekDays = await getWeekDays()
+        const weekDays = getWeekDays(weekStart)
         return optionOf(data, weekDays, timeFormat, width)
     }
 }

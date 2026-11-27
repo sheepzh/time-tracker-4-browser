@@ -1,3 +1,5 @@
+import type { StatRange } from '@/shared/day'
+import { StatDay } from '@/shared/day'
 import { dateFmt, fmtDuration, tWeekDays, unitFmt } from '@i18n'
 import { rotate } from '@util/array'
 import { MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND, parseTime } from '@util/time'
@@ -33,16 +35,22 @@ export function fmtDur(milliseconds: number | undefined | null, option?: DurForm
     return unitFmt(unit, fraction).format(val)
 }
 
-type DateLike = string | Date | number | Temporal.PlainDate
+type DateLike = string | Date | StatDay | number | Temporal.PlainDate
 
-const parseDateLike = (like?: DateLike) => typeof like === 'string' ? parseTime(like) : like
+function parseDateLike(like: DateLike | undefined): Exclude<DateLike, StatDay | string> | undefined {
+    if (typeof like === 'string') return parseTime(like)
+    if (like instanceof StatDay) return like.toDate()
+    return like
+}
 
-export const cvt2LocaleDate = (startLike?: DateLike, endLike?: DateLike): string => {
-    const start = parseDateLike(startLike)
-    const end = parseDateLike(endLike)
-    if (start === undefined) return '-'
+export function cvt2LocaleDate(startOrRange?: StatRange | DateLike, endLike?: DateLike): string {
+    if (!startOrRange) return '-'
+    const [start, end] = Array.isArray(startOrRange)
+        ? [parseDateLike(startOrRange[0]), parseDateLike(startOrRange[1])]
+        : [parseDateLike(startOrRange), parseDateLike(endLike)]
+    if (!start) return '-'
     const fmt = dateFmt()
-    return end === undefined ? fmt.format(start) : fmt.formatRange(start, end)
+    return end ? fmt.formatRange(start, end) : fmt.format(start)
 }
 
 export function getWeekDays(weekStart: tt4b.WeekStart) {

@@ -12,14 +12,14 @@ import Item from "./Item"
 
 const Ranking = defineComponent(() => {
     const { option, query } = initStatContext()
-    const { dayStart, weekStart } = useDayOffset()
+    const { today, weekStart } = useDayOffset()
     const { data: result } = useRequest(async () => {
-        const [rows, date] = await queryRows({ ...query, dayStart: dayStart.value, weekStart: weekStart.value })
+        const [rows, date] = await queryRows({ ...query, today: today.value, weekStart: weekStart.value })
         const values = rows.map(r => r[query.dimension])
         const max = Math.max(0, ...values)
         const total = sum(values)
         return { max, total, rows, date, displaySiteName: option.showName }
-    }, { deps: [() => ({ ...query, ...option }), dayStart, weekStart] })
+    }, { deps: [() => ({ ...query, ...option }), today, weekStart] })
 
     const popover = ref<PopoverInstance>()
     watch(() => option.showName, () => popover.value?.close())

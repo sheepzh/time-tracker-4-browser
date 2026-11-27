@@ -1,5 +1,6 @@
 import { useDelayDuration } from '@app/components/Limit/context'
 import { t } from '@app/locale'
+import { useDayOffset } from '@hooks'
 import { Flex } from '@pages/components'
 import { period2Str } from '@pages/util/limit'
 import { fmtDur, MILL_PER_SECOND } from '@pages/util/time'
@@ -51,6 +52,7 @@ const WastePair: FunctionalComponent<WastePairProps> = props => {
 
 const Rule = defineComponent<Props>(props => {
     const delayDuration = useDelayDuration()
+    const { today } = useDayOffset()
 
     return () => <>
         <ElDescriptions border size='small' column={1} labelWidth={130}>
@@ -77,7 +79,7 @@ const Rule = defineComponent<Props>(props => {
         </ElDescriptions>
         <ElDescriptions border size='small' column={1} labelWidth={130}>
             <ElDescriptionsItem label={t(msg => msg.calendar.range.today)}>
-                {isEffective(props.value.weekdays) ? (
+                {isEffective(props.value.weekdays, today.value.weekday()) ? (
                     <WastePair
                         time={{ wasted: props.value.waste, maxLimit: (props.value.time ?? 0) * MILL_PER_SECOND }}
                         delay={{ count: props.value.delayCount, duration: delayDuration.value, allow: props.value.allowDelay }}

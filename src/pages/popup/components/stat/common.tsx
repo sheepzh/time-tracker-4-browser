@@ -1,4 +1,4 @@
-import StatDay, { statRangeStr, type StatRange } from '@/shared/day'
+import { statRangeStr, type StatDay, type StatRange } from '@/shared/day'
 import { listCateStats, listGroupStats, listSiteStats } from '@api/sw/stat'
 import { RECORD_ROUTE, type RecordQuery } from "@app/router/constants"
 import { isRemainHost } from "@util/constant/remain-host"
@@ -20,11 +20,10 @@ const DATE_RANGE_CALCULATORS: Record<tt4b.ui.PopupDuration, DateRangeCalculator>
 type RowsResult = [rows: tt4b.stat.Row[], date: StatRange | undefined]
 type RowsQuery = StatQuery & {
     weekStart: tt4b.WeekStart
-    dayStart: number
+    today: StatDay
 }
 export const queryRows = async (query: RowsQuery): Promise<RowsResult> => {
-    const { duration, mergeMethod, dimension: sortKey, weekStart, dayStart } = query
-    const today = StatDay.today(dayStart)
+    const { duration, mergeMethod, dimension: sortKey, weekStart, today } = query
     const dateRange = typeof duration === 'string'
         ? DATE_RANGE_CALCULATORS[duration](today, weekStart)
         : DATE_RANGE_CALCULATORS[duration.type](today, weekStart, duration.value)

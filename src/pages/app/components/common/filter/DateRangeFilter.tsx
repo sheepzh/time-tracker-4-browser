@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import StatDay, { type StatRange } from '@/shared/day'
+import { StatDay, type StatRange } from '@/shared/day'
 import { t, tDateRangeSeparator, tYMD } from "@app/locale"
 import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
 import { css } from '@emotion/css'
@@ -24,12 +24,12 @@ const clearShortcut = (): ElDatePickerShortcut => ({
     value: [new Date(0), new Date(0)],
 })
 
-type Shortcut = { text: string, value: StatRange }
+export type DateRangeShortcut = { text: string, value: StatRange }
 
 type Props = ModelValue<StatRange | undefined>
     & PartialPick<DatePickerProps, 'startPlaceholder' | 'endPlaceholder' | 'clearable'>
     & {
-        shortcuts?: Shortcut[]
+        shortcuts?: DateRangeShortcut[]
         disabledDate?: (d: StatDay) => boolean
         shiftStep?: number
     }

@@ -1,4 +1,4 @@
-import StatDay from '@/shared/day'
+import { type StatDay } from '@/shared/day'
 import { listSiteStats } from "@api/sw/stat"
 import { initDayOffset, useRequest } from "@hooks"
 import { DataLock, Flex } from '@pages/components'
@@ -10,12 +10,12 @@ import Search from "./components/Search"
 import { t } from "./locale"
 
 const _default = defineComponent<{}>(() => {
-    const dayStart = initDayOffset()
+    const today = initDayOffset()
     const { data, refresh, loading } = useRequest(async (query: string, day: StatDay) => {
         const date = day.toString()
         const list = await listSiteStats({ date, query, sortKey: 'focus', sortDirection: 'DESC', remote: false })
         return { list, day }
-    }, { defaultParam: ['', StatDay.today(dayStart.value)] })
+    }, { defaultParam: ['', today.value] })
 
     return () => <DataLock>
         <Flex column height='100%'>
@@ -26,7 +26,7 @@ const _default = defineComponent<{}>(() => {
                 </ElText>
                 &emsp;
                 <ElText size="small">
-                    @{cvt2LocaleDate(data.value?.day.toDate())}
+                    @{cvt2LocaleDate(data.value?.day)}
                 </ElText>
             </Flex>
             <RowList loading={loading.value} data={data.value?.list ?? []} />

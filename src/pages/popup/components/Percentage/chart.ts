@@ -9,6 +9,7 @@ import { sum, toMap } from "@util/array"
 import { IS_SAFARI } from "@util/constant/environment"
 import { INSTALL_PAGE } from "@util/constant/url"
 import { isRtl } from "@util/document"
+import { truthy } from '@util/lang'
 import { generateSiteLabel } from "@util/site"
 import { getGroupName, isGroup, isSite } from "@util/stat"
 import type { PieSeriesOption, TitleComponentOption, ToolboxComponentOption } from "echarts"
@@ -36,15 +37,14 @@ function calculateSubTitleText(result: PercentageResult): string {
     const formatter = FORMATTERS[dimension]
     const range = date ?? dataDate
     const fmt = dateFmt({ year: '2-digit', month: 'short', day: 'numeric' })
-    const dateStr = range ? fmt.formatRange(range[0].toDate(), range[1].toDate()) : ''
+    const dateStr = range && fmt.formatRange(range[0].toDate(), range[1].toDate())
     const total = sum(rows.map(r => r[dimension]))
     const totalStr = formatter.total(total)
-    const firstLineParts = [totalStr, dateStr].filter(s => !!s)
+    const firstLineParts = truthy(totalStr, dateStr)
+    isRtl() && firstLineParts.reverse()
     const isSingleDay = duration === 'today' || duration === 'yesterday'
-    return [
-        (isRtl() ? firstLineParts.reverse() : firstLineParts).join(' '),
-        dateLength && !isSingleDay && formatter.avg(total / dateLength),
-    ].filter(Boolean).join('\n')
+    const secLine = dateLength && !isSingleDay && formatter.avg(total / dateLength)
+    return truthy(firstLineParts.join(' '), secLine).join('\n')
 }
 
 export function generateTitleOption(result: PercentageResult, suffix?: string): TitleComponentOption {

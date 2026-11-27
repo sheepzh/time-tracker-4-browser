@@ -1,4 +1,4 @@
-import StatDay from '@/shared/day'
+import { StatDay } from '@/shared/day'
 import { Search } from "@element-plus/icons-vue"
 import { css } from '@emotion/css'
 import { useState } from "@hooks"

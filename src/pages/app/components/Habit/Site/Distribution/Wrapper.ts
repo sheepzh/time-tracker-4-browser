@@ -1,3 +1,4 @@
+import type { StatDay, StatRange } from '@/shared/day'
 import { t } from '@app/locale'
 import { getPieBorderColor, getSeriesPalette } from "@app/util/echarts"
 import { EchartsWrapper } from '@hooks'
@@ -11,7 +12,8 @@ import { computeAverageLen, generateTitleOption } from "../common"
 
 export type BizOption = {
     rows: tt4b.stat.Row[]
-    dateRange: [number, number]
+    dateRange: StatRange
+    today: StatDay
 }
 
 type EcOption = ComposeOption<
@@ -128,8 +130,8 @@ const baseLegendTitle = (): TitleComponentOption => ({
 })
 
 function generateOption(bizOption: BizOption): EcOption {
-    let { rows = [], dateRange } = bizOption || {}
-    const [averageLen, _, exclusiveDate] = computeAverageLen(dateRange)
+    let { rows, dateRange, today } = bizOption || {}
+    const [averageLen, _, exclusiveDate] = computeAverageLen(dateRange, today)
     if (exclusiveDate) {
         rows = rows.filter(r => r.date !== exclusiveDate)
     }

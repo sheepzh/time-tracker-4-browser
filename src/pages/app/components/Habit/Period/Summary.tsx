@@ -6,7 +6,7 @@ import { Flex } from '@pages/components'
 import { fmtDur } from '@pages/util/time'
 import { computed, defineComponent } from 'vue'
 import { useHabitFilter } from "../context"
-import { usePeriodFilter, usePeriodValue } from "./context"
+import { usePeriod } from "./context"
 import { averageByDay } from "./util"
 
 type Result = {
@@ -20,8 +20,8 @@ type Result = {
     }
 }
 
-const computeSummary = (rows: tt4b.period.Row[], periodSize: number): Result => {
-    const averaged = averageByDay(rows, periodSize)
+const computeSummary = (rows: tt4b.period.Row[], periodSize: number, range: tt4b.period.KeyRange): Result => {
+    const averaged = averageByDay(rows, periodSize, range)
     const fav = averaged.sort((b, a) => a.milliseconds - b.milliseconds)[0]
     const favFmt = dateFmt({ hour: '2-digit', minute: '2-digit' })
     const favPeriod = fav ? favFmt.formatRange(fav.startTime, fav.endTime) : '-'
@@ -69,10 +69,9 @@ const computeSummary = (rows: tt4b.period.Row[], periodSize: number): Result => 
 }
 
 const _default = defineComponent(() => {
-    const data = usePeriodValue()
-    const filter = usePeriodFilter()
+    const { data, filter, range } = usePeriod()
     const globalFilter = useHabitFilter()
-    const summary = computed(() => computeSummary(data.value.curr, filter.periodSize))
+    const summary = computed(() => computeSummary(data.value.curr, filter.periodSize, range.value.curr))
     const isXs = useXsState()
 
     return () => (

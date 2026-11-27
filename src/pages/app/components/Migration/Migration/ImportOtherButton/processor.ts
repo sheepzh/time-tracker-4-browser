@@ -6,11 +6,12 @@
  */
 
 import { AUTHOR_EMAIL } from "@/package"
+import { StatDay } from '@/shared/day'
 import { sendMsg2Runtime } from '@api/sw/common'
 import { IS_WINDOWS, isNotTrackable } from "@util/constant/environment"
 import { extractHostname } from "@util/pattern"
 import { mergeWith } from '@util/stat'
-import { formatTimeYMD, MILL_PER_SECOND } from "@util/time"
+import { MILL_PER_SECOND } from "@util/time"
 import type { OtherExtension } from './types'
 
 function throwError<T>(): T {
@@ -84,10 +85,8 @@ const parseWattJsonFile = (fileContent: string) => {
             const [month, day, year] = date.split('/')
             if (!year || !month || !day) throw new Error("Invalid date format: " + date)
             const dateObj = new Date(parseInt(year), parseInt(month) - 1, parseInt(day))
-            const realDate = formatTimeYMD(dateObj)
             rows.push({
-                host,
-                date: realDate,
+                host, date: dateObj.toString(),
                 focus: (summary ?? 0) * MILL_PER_SECOND,
                 time: time ?? 0,
             })
@@ -159,7 +158,7 @@ function parseHistoryTrendsUnlimitedLine(line: string, data: { [dateAndHost: str
         // Backup data
         let date: string
         try {
-            date = formatTimeYMD(parseFloat(tsMaybe.substring(1)))
+            date = StatDay.ofLabel(new Date(parseFloat(tsMaybe.substring(1)))).toString()
         } catch {
             console.error("Invalid line: " + line)
             return

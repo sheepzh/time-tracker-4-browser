@@ -1,15 +1,15 @@
-import StatDay from '@/shared/day'
+import { StatDay } from '@/shared/day'
 import { listSiteStats } from '@api/sw/stat'
 import { useDayOffset, useRequest, useShadow } from '@hooks'
 import { computed } from 'vue'
 
 export const useDatePicker = () => {
-    const { dayStart } = useDayOffset()
-    const [date, setDate] = useShadow(() => StatDay.today(dayStart.value).toLabel())
+    const { today } = useDayOffset()
+    const [date, setDate] = useShadow(() => today.value.toLabel())
     const day = computed(() => StatDay.ofLabel(date.value))
 
     const { data: dataDates, refresh: refreshDates } = useRequest(async (dateInMonth: Date) => {
-        const day = StatDay.of(dateInMonth, dayStart.value)
+        const day = StatDay.ofLabel(dateInMonth)
         const start = day.monthStart().addDays(-14).toString()
         const end = day.monthEnd().addDays(14).toString()
 
@@ -17,7 +17,7 @@ export const useDatePicker = () => {
         const dateSet = new Set<string>()
         stats.forEach(({ date }) => date && dateSet.add(date))
         return Array.from(dateSet)
-    }, { defaultValue: [], defaultParam: [new Date()], deps: dayStart })
+    }, { defaultValue: [] })
 
     const onPanelChange = (val: Date | Date[], mode: 'year' | 'month') => {
         if (mode !== 'month') return

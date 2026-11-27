@@ -52,8 +52,8 @@ const handleClick = (inst: ECharts, ev: ECElementEvent) => {
 }
 
 const TimelineChart = defineComponent<{}>(() => {
-    const { dates, activities, merge, setMerge } = useTimelineContext()
-    const bizData = computed<BizData>(() => ({ dates, activities: activities.value, merge: merge.value }))
+    const { data, merge, setMerge } = useTimelineContext()
+    const bizData = computed<BizData>(() => ({ ...data.value, merge: merge.value }))
 
     const { elRef } = useEcharts(Wrapper, bizData, {
         afterInit: ew => {

@@ -10,7 +10,7 @@ import { t } from '@app/locale'
 import { Flex } from '@pages/components'
 import { ElRadioButton, ElRadioGroup } from 'element-plus'
 import { defineComponent } from 'vue'
-import { usePeriodFilter } from './context'
+import { usePeriod } from './context'
 import { type ChartType, isChartType, isPeriodSize, type PeriodSize } from './types'
 
 const PERIODS: Record<PeriodSize, string> = {
@@ -27,15 +27,15 @@ const CHARTS: Record<ChartType, string> = {
 }
 
 const _default = defineComponent(() => {
-    const filter = usePeriodFilter()
+    const { filter } = usePeriod()
 
     return () => (
         <Flex justify="space-between">
             <SelectFilter
-                modelValue={`${filter.periodSize}`}
+                modelValue={String(filter.periodSize)}
                 options={PERIODS}
                 onChange={val => {
-                    const intVal = parseInt(val ?? '')
+                    const intVal = val && parseInt(val)
                     isPeriodSize(intVal) && (filter.periodSize = intVal)
                 }}
             />

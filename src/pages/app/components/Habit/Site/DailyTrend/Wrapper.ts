@@ -1,9 +1,11 @@
 
+import type { StatRange } from '@/shared/day'
 import { t } from '@app/locale'
 import { getLineSeriesPalette, tooltipDot, tooltipFlexLine, tooltipSpaceLine } from "@app/util/echarts"
-import { cvt2LocaleDate, fmtDur, getAllDatesBetween } from '@pages/util/time'
 import { EchartsWrapper } from '@hooks'
+import { cvt2LocaleDate, fmtDur } from '@pages/util/time'
 import { groupBy, sum } from "@util/array"
+import DateIterator from '@util/date-iterator'
 import { getHost } from "@util/stat"
 import type {
     ComposeOption, GridComponentOption, LegendComponentOption, LineSeriesOption, LinearGradientObject,
@@ -35,7 +37,7 @@ const TITLE = t(msg => msg.habit.site.trend.title)
 
 export type BizOption = {
     rows: tt4b.stat.Row[]
-    dateRange: [number, number]
+    dateRange: StatRange
     timeFormat: tt4b.ui.TimeFormat
 }
 
@@ -87,7 +89,7 @@ const legendOptionOf = (color: LinearGradientObject, name: string): Exclude<Lege
 function generateOption(bizOption: BizOption): EcOption {
     const { dateRange, rows, timeFormat } = bizOption
 
-    const allDates = getAllDatesBetween(dateRange[0], dateRange[1])
+    const allDates = [...DateIterator.of(dateRange)]
     const focusMap = groupBy(rows, r => r.date, l => sum(l.map(e => e.focus)))
     const visitMap = groupBy(rows, r => r.date, l => sum(l.map(e => e.time)))
     const siteMap = groupBy(rows, r => r.date, l => new Set(l.map(e => getHost(e))).size)

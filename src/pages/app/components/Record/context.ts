@@ -1,4 +1,4 @@
-import StatDay, { statRangeStr } from '@/shared/day'
+import { StatDay, statRangeStr } from '@/shared/day'
 import { listCateStats, listGroupStats, listSiteStats } from '@api/sw/stat'
 import type { RecordQuery } from '@app/router/constants'
 import { isOptionalIntArray, isTimeFormat } from '@app/util/types'
@@ -61,14 +61,14 @@ const isCacheValue = createObjectGuard<CacheValue>({
 })
 
 export const initRecordContext = () => {
-    const { dayStart } = useDayOffset()
+    const { today } = useDayOffset()
     const filter = localReactive<RecordFilterOption, keyof CacheValue>('record_filter', isCacheValue, {
         query: undefined,
         mergeDate: false,
         timeFormat: 'default',
         siteMerge: undefined,
         cateIds: undefined,
-    }, { dateRange: StatDay.today(dayStart.value).rangeTo(0) })
+    }, { dateRange: today.value.rangeTo(0) })
     const querySort = initQuery(filter)
     const sort = ref<RecordSort>({ order: 'descending', prop: querySort ?? 'focus' })
     const comp = ref<DisplayComponent>()

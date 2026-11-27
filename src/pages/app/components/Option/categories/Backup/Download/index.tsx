@@ -4,13 +4,15 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import { type StatDay } from '@/shared/day'
 import { previewBackup } from '@api/sw/backup'
 import { importOther } from '@api/sw/immigration'
 import DialogSop from '@app/components/common/DialogSop'
 import { initDialogSopContext } from '@app/components/common/DialogSop/context'
 import { t } from "@app/locale"
 import { Files } from "@element-plus/icons-vue"
-import { BIRTHDAY_STR, formatTimeYMD } from '@pages/util/time'
+import { useDayOffset } from '@hooks'
+import { BIRTHDAY_STR } from '@pages/util/time'
 import { ElButton } from "element-plus"
 import { defineComponent, ref, toRaw } from "vue"
 import ClientTable from '../ClientTable'
@@ -22,16 +24,17 @@ const STEP_TITLES = [
     t(msg => msg.option.backup.confirmStep),
 ]
 
-async function fetchData(client: tt4b.backup.Client): Promise<tt4b.imported.Data> {
+async function fetchData(client: tt4b.backup.Client, today: StatDay): Promise<tt4b.imported.Data> {
     const { id: specCid, maxDate, minDate } = client
     const start = minDate ?? BIRTHDAY_STR
-    const end = maxDate ?? formatTimeYMD(Date.now())
+    const end = maxDate ?? today.toString()
     const rows = await previewBackup({ specCid, start, end })
     return { rows, focus: true, time: true }
 }
 
 const _default = defineComponent(() => {
     const tableKey = ref(0)
+    const { today } = useDayOffset()
     const { open: openSop, step, form } = initDialogSopContext<DownloadForm>({
         stepCount: STEP_TITLES.length,
         init: () => ({ data: { rows: [], focus: true, time: true }, resolution: undefined }),
@@ -39,7 +42,7 @@ const _default = defineComponent(() => {
             if (target === 1) {
                 const clientVal = form.client
                 if (!clientVal) throw new Error(t(msg => msg.option.backup.clientTable.notSelected))
-                form.data = await fetchData(clientVal)
+                form.data = await fetchData(clientVal, today.value)
             }
         },
         onFinish: async ({ form }) => {

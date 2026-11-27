@@ -88,8 +88,8 @@ const Score: FunctionalComponent<{ score: number, label: string, desc: string }>
 )
 
 const Summary = defineComponent<{}>(() => {
-    const { activities } = useTimelineContext()
-    const scores = computed(() => analyze(activities.value))
+    const { data } = useTimelineContext()
+    const scores = computed(() => analyze(data.value.activities))
 
     return () => (
         <Flex column justify='center' gap={30} height='100%'>

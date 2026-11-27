@@ -1,11 +1,12 @@
+import { statRangeStr, type StatRange } from '@/shared/day'
 import { getGroup } from "@api/chrome/tabGroups"
 import {
     batchDeleteStats, countGroupStatsByIds, countSiteStats, deleteSiteStatByGroup, deleteSiteStatByHost,
 } from "@api/sw/stat"
 import { t } from '@app/locale'
-import { BIRTHDAY, cvt2LocaleDate, cvtDateRange2Str } from '@pages/util/time'
 import { DeleteFilled } from "@element-plus/icons-vue"
 import { useRemoteValue } from '@hooks'
+import { cvt2LocaleDate } from '@pages/util/time'
 import { isGroup, isNormalSite, isSite } from "@util/stat"
 import { ElButton, ElMessage, ElMessageBox } from "element-plus"
 import { computed, defineComponent } from "vue"
@@ -22,7 +23,7 @@ async function extractExample(hostExample: string | undefined, groupIdExample: n
     return 'NaN'
 }
 
-async function computeBatchDeleteMsg(selected: tt4b.stat.Row[], mergeDate: boolean, dateRange: [number?, number?]): Promise<string> {
+async function computeBatchDeleteMsg(selected: tt4b.stat.Row[], mergeDate: boolean, dateRange?: StatRange): Promise<string> {
     const host: string[] = []
     const groupIds: number[] = []
     selected.forEach(row => {
@@ -33,17 +34,14 @@ async function computeBatchDeleteMsg(selected: tt4b.stat.Row[], mergeDate: boole
     let count = selected.length
     if (mergeDate) {
         // All the items
-        const date = cvtDateRange2Str(dateRange) ?? []
+        const date = statRangeStr(dateRange) ?? []
         const siteCount = host.length ? await countSiteStats({ host, date }) : 0
         const groupCount = groupIds.length ? await countGroupStatsByIds(groupIds, date) : 0
         count = siteCount + groupCount
     }
 
-    let [startDate, endDate] = dateRange
-    if (startDate === undefined && endDate === undefined) {
-        return t(msg => msg.record.batchDelete.confirmMsgAll, { count, example })
-    }
-    const date = cvt2LocaleDate(startDate ?? BIRTHDAY, endDate ?? new Date())
+    if (!dateRange) return t(msg => msg.record.batchDelete.confirmMsgAll, { count, example })
+    const date = cvt2LocaleDate(dateRange)
     return t(msg => msg.record.batchDelete.confirmMsg, { count, example, date })
 }
 
@@ -73,10 +71,10 @@ async function handleBatchDelete(displayComp: DisplayComponent | undefined, filt
     })
 }
 
-async function deleteBatch(selected: tt4b.stat.Row[], mergeDate: boolean, dateRange: [number?, number?]) {
+async function deleteBatch(selected: tt4b.stat.Row[], mergeDate: boolean, dateRange: StatRange | undefined) {
     if (mergeDate) {
         // Delete according to the date range
-        const date = cvtDateRange2Str(dateRange)
+        const date = statRangeStr(dateRange)
         for (const row of selected) {
             isNormalSite(row) && await deleteSiteStatByHost(row.siteKey.host, date)
             isGroup(row) && await deleteSiteStatByGroup(row.groupKey, date)

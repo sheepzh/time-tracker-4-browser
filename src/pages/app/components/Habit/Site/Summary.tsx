@@ -1,9 +1,10 @@
+import type { StatDay, StatRange } from '@/shared/day'
 import { GRID_CELL_STYLE } from '@app/components/common/grid'
 import { KanbanIndicatorCell } from '@app/components/common/kanban'
 import { t } from '@app/locale'
-import { fmtDur } from '@pages/util/time'
-import { useXsState } from '@hooks'
+import { useDayOffset, useXsState } from '@hooks'
 import { Flex } from '@pages/components'
+import { fmtDur } from '@pages/util/time'
 import { sum } from "@util/array"
 import { getHost } from "@util/stat"
 import { computed, defineComponent } from "vue"
@@ -23,8 +24,8 @@ type Result = {
     exclusiveToday4Average: boolean
 }
 
-const computeSummary = (rows: tt4b.stat.Row[], dateRange: [number, number]): Result => {
-    const [averageLen, exclusiveToday4Average, exclusiveDate] = computeAverageLen(dateRange)
+const computeSummary = (rows: tt4b.stat.Row[], dateRange: StatRange, today: StatDay): Result => {
+    const [averageLen, exclusiveToday4Average, exclusiveDate] = computeAverageLen(dateRange, today)
     const totalFocus = sum(rows.map(r => r.focus))
     const totalFocus4Average = exclusiveDate ? sum(rows.filter(r => r.date !== exclusiveDate).map(r => r.focus)) : totalFocus
     const totalTime = sum(rows.map(r => r.time))
@@ -52,7 +53,8 @@ const computeCountText = (count: Result['count']): string => {
 
 const _default = defineComponent<{ rows: tt4b.stat.Row[] }>(props => {
     const filter = useHabitFilter()
-    const summary = computed(() => computeSummary(props.rows, filter.dateRange))
+    const { today } = useDayOffset()
+    const summary = computed(() => computeSummary(props.rows, filter.dateRange, today.value))
     const isXs = useXsState()
 
     return () => (

@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
+import type { StatDay, StatRange } from '@/shared/day'
 import { getRegularTextColor } from '@pages/util/style'
-import { formatTimeYMD, getDayLength, isSameDay } from "@pages/util/time"
 import { type TitleComponentOption } from "echarts/components"
 
 export const generateTitleOption = (text: string): TitleComponentOption => {
@@ -32,16 +32,10 @@ export type SeriesDataItem = {
  * @param dateRange date range of filter
  * @returns [averageLen, exclusiveToday4Average, exclusiveDate]
  */
-export const computeAverageLen = (dateRange: [number, number] | undefined): [number, boolean, string | null] => {
-    if (!dateRange) return [0, false, null]
-    const start = new Date(dateRange[0])
-    const end = new Date(dateRange[1])
-    if (isSameDay(start, end)) return [1, false, null]
-    const dateDiff = getDayLength(start, end)
-    const endIsTody = isSameDay(end, new Date())
-    if (endIsTody) {
-        return [dateDiff - 1, true, formatTimeYMD(end)]
-    } else {
-        return [dateDiff, false, null]
-    }
+export const computeAverageLen = ([start, end]: StatRange, today: StatDay): [number, boolean, string?] => {
+    if (start.equals(end)) return [1, false]
+    const dateDiff = start.daysTo(end)
+    return end.equals(today)
+        ? [dateDiff - 1, true, end.toString()]
+        : [dateDiff, false]
 }

@@ -2,21 +2,18 @@ import { dateFmt, t, unitFmt } from '@app/locale'
 import { getSeriesPalette, tooltipDot } from '@app/util/echarts'
 import { EchartsWrapper } from '@hooks'
 import { CONFINE_TOOLTIP_OPTION, getPrimaryTextColor } from '@pages/util/style'
-import { fmtDur, getStartOfDay, getStartOfNextDay, MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND } from '@pages/util/time'
+import { fmtDur, MILL_PER_HOUR, MILL_PER_MINUTE, MILL_PER_SECOND } from '@pages/util/time'
 import { groupBy, toMap } from '@util/array'
-import DateIterator from '@util/date-iterator'
 import { CATE_NOT_SET_ID } from '@util/site'
 import type {
     ComposeOption, CustomSeriesOption, CustomSeriesRenderItem, DataZoomComponentOption, GridComponentOption,
     LegendComponentOption, TooltipComponentOption,
 } from 'echarts'
 import { graphic } from "echarts/core"
-import { formatYAxis } from '../common'
+import type { TimelineData } from '../context'
 
-export type BizData = {
-    activities: tt4b.timeline.Activity[]
+export type BizData = TimelineData & {
     merge: tt4b.timeline.MergeMethod
-    dates: string[]
 }
 
 const CLOCK_END = 24 * MILL_PER_HOUR
@@ -93,36 +90,6 @@ const clockTimeOf = (time: number): number => {
         + date.getSeconds() * MILL_PER_SECOND + date.getMilliseconds()
 }
 
-const collectDayPeriods = (start: number) => {
-    const end = getStartOfNextDay(start)
-    const periods: [start: number, end: number][] = []
-    let periodStart = start
-    let cursor = start
-    let offset = new Date(start).getTimezoneOffset()
-    let repeated = false
-    while (cursor < end) {
-        const next = Math.min(cursor + MILL_PER_HOUR, end)
-        if (new Date(next - 1).getTimezoneOffset() === offset) {
-            cursor = next
-            continue
-        }
-        let low = cursor
-        let high = next - 1
-        while (low < high) {
-            const middle = Math.floor((low + high) / 2)
-            if (new Date(middle).getTimezoneOffset() === offset) low = middle + 1
-            else high = middle
-        }
-        const nextOffset = new Date(low).getTimezoneOffset()
-        repeated ||= nextOffset > offset
-        periods.push([periodStart, low])
-        periodStart = cursor = low
-        offset = nextOffset
-    }
-    periods.push([periodStart, end])
-    return repeated ? periods.map(period => [period]) : [periods]
-}
-
 const calcDataZoomDefaultRange = (series: { data: MyValue[] }[]): [start: number, end: number] => {
     if (!series.length) return [0, CLOCK_END]
     const [min, max] = series.reduce<[number, number]>((range, { data }) =>
@@ -132,16 +99,12 @@ const calcDataZoomDefaultRange = (series: { data: MyValue[] }[]): [start: number
     return [Math.max(0, Math.floor(min / interval) * interval), Math.min(CLOCK_END, Math.ceil(max / interval) * interval)]
 }
 
-const collectChartData = ({ activities, dates, merge }: BizData) => {
-    const dayStarts = activities.flatMap(({ start, duration }) => {
-        const end = start + duration
-        if (!(start < end)) return []
-        const from = new Date(getStartOfDay(start))
-        return [...DateIterator.of(from, new Date(end - 1), getStartOfDay)]
-    })
-    const periodsByDate = toMap([...new Set(dayStarts)], formatYAxis, collectDayPeriods)
-    const rows = dates.flatMap(date =>
-        (periodsByDate[date] ?? [[]]).map(periods => ({ date, periods })))
+const DAY_FMT = dateFmt({ month: 'short', day: '2-digit' })
+const collectChartData = ({ activities, days, merge }: BizData) => {
+    const rows = days.map(day => ({
+        date: DAY_FMT.format(day.toDate()),
+        range: [day.toLabel().getTime(), day.next().toLabel().getTime()] as const,
+    }))
     const groups = groupBy(activities, activity => activity.seriesKey, list => ({
         list,
         total: list.reduce((total, activity) => total + activity.duration, 0),
@@ -168,13 +131,13 @@ const collectChartData = ({ activities, dates, merge }: BizData) => {
         },
         renderItem,
         selectedMode: true,
-        data: rows.flatMap(({ periods }, yIndex) => periods.flatMap(([from, to]) => list.flatMap<MyValue>(activity => {
+        data: rows.flatMap(({ range: [from, to] }, yIndex) => list.flatMap<MyValue>(activity => {
             const start = Math.max(activity.start, from)
             const duration = Math.min(activity.start + activity.duration, to) - start
             if (!(duration > 0)) return []
             const clockStart = clockTimeOf(start)
             return [[yIndex, clockStart, clockStart + duration, duration]]
-        }))),
+        })),
     } satisfies CustomSeriesOption)).filter(series => series.data.length)
     return { dates: rows.map(row => row.date), series, legendData, legendMap }
 }

@@ -75,10 +75,10 @@ const LABEL_COLOR = getPrimaryTextColor()
 
 const generateOption = (biz: BizOption): EcOption => {
     const fmt = dateFmt({ timeStyle: "short", hourCycle: "h23" })
-    let { curr, prev, periodSize } = biz
+    let { curr, prev, periodSize, currRange, prevRange } = biz
 
-    curr = averageByDay(curr, periodSize)
-    prev = averageByDay(prev, periodSize)
+    curr = averageByDay(curr, periodSize, currRange)
+    prev = averageByDay(prev, periodSize, prevRange)
 
     const currData = curr.map(r => r.milliseconds)
     const prevData = prev.map(r => -r.milliseconds)

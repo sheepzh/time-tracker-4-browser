@@ -5,11 +5,12 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { type StatDay } from '@/shared/day'
 import { CategoryFilter, DateRangeFilter, InputFilter, TimeFormatFilter } from '@app/components/common/filter'
+import type { DateRangeShortcut } from '@app/components/common/filter/DateRangeFilter'
 import { t } from '@app/locale'
+import { useDayOffset } from '@hooks'
 import { Flex } from '@pages/components'
-import { ElDatePickerShortcut } from '@pages/element-ui/types'
-import { daysAgo } from '@pages/util/time'
 import { defineComponent } from "vue"
 import { useRecordFilter } from "../context"
 import BatchDelete from "./BatchDelete"
@@ -17,20 +18,18 @@ import DownloadFile from "./DownloadFile"
 import MergeFilterItem from "./MergeFilterItem"
 import RangeFilter from './RangeFilter'
 
-const shortcut = (text: string, agoOfStart?: number, agoOfEnd?: number): ElDatePickerShortcut => (
-    { text, value: daysAgo(agoOfStart ?? 0, agoOfEnd ?? 0) }
-)
-
-const dateShortcuts: ElDatePickerShortcut[] = [
-    shortcut(t(msg => msg.calendar.range.today)),
-    shortcut(t(msg => msg.calendar.range.yesterday), 1, 1),
-    shortcut(t(msg => msg.calendar.range.lastDays, { n: 7 }), 7),
-    shortcut(t(msg => msg.calendar.range.lastDays, { n: 30 }), 30),
-    shortcut(t(msg => msg.calendar.range.lastDays, { n: 60 }), 60),
+const buildShortCuts = (today: StatDay): DateRangeShortcut[] => [
+    { text: t(msg => msg.calendar.range.today), value: today.rangeTo(0) },
+    { text: t(msg => msg.calendar.range.yesterday), value: today.prev().rangeTo(0) },
+    ...[7, 30, 60].map(n => ({
+        text: t(msg => msg.calendar.range.lastDays, { n }),
+        value: today.rangeTo(-n),
+    })),
 ]
 
 const _default = defineComponent<{}>(() => {
     const filter = useRecordFilter()
+    const { today } = useDayOffset()
 
     return () => (
         <Flex justify="space-between" width="100%" gap={10} wrap>
@@ -39,8 +38,8 @@ const _default = defineComponent<{}>(() => {
                 <DateRangeFilter
                     startPlaceholder={t(msg => msg.calendar.label.startDate)}
                     endPlaceholder={t(msg => msg.calendar.label.endDate)}
-                    disabledDate={(date: Date | number) => new Date(date) > new Date()}
-                    shortcuts={dateShortcuts}
+                    disabledDate={date => date > today.value}
+                    shortcuts={buildShortCuts(today.value)}
                     modelValue={filter.dateRange}
                     onChange={val => filter.dateRange = val}
                 />

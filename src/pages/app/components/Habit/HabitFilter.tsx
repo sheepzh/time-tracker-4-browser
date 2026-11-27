@@ -5,38 +5,33 @@
  * https://opensource.org/licenses/MIT
  */
 
+import type { StatDay } from '@/shared/day'
 import { DateRangeFilter, TimeFormatFilter } from '@app/components/common/filter'
 import { t } from '@app/locale'
+import { useDayOffset } from '@hooks'
 import { Flex } from '@pages/components'
-import { ElDatePickerShortcut } from '@pages/element-ui/types'
-import { addDays, daysAgo } from '@pages/util/time'
 import { defineComponent } from "vue"
+import type { DateRangeShortcut } from '../common/filter/DateRangeFilter'
 import { useHabitFilter } from "./context"
 
-const shortcutProps: [label: string, dayAgo: number][] = [
-    [t(msg => msg.calendar.range.today), 0],
-    [t(msg => msg.calendar.range.lastDays, { n: 3 }), 3],
-    [t(msg => msg.calendar.range.lastDays, { n: 7 }), 7],
-    [t(msg => msg.calendar.range.lastDays, { n: 15 }), 15],
-    [t(msg => msg.calendar.range.lastDays, { n: 30 }), 30],
-    [t(msg => msg.calendar.range.lastDays, { n: 180 }), 180],
-    [t(msg => msg.calendar.range.lastDays, { n: 365 }), 365],
+const buildShortcuts = (today: StatDay): DateRangeShortcut[] => [
+    { text: t(msg => msg.calendar.range.today), value: today.rangeTo(0) },
+    ...[3, 7, 15, 30, 180, 365].map(n =>
+        ({ text: t(msg => msg.calendar.range.lastDays, { n }), value: today.addDays(-n).rangeTo(today) })),
 ]
-
-const SHORTCUTS: ElDatePickerShortcut[] = shortcutProps.map(([text, agoOfStart]) => ({ text, value: daysAgo(agoOfStart, 0) }))
 
 const HabitFilter = defineComponent<{}>(() => {
     const filter = useHabitFilter()
-    const earliestDate = addDays(new Date(), - 366)
+    const { today } = useDayOffset()
 
     return () => (
         <Flex gap={10}>
             <DateRangeFilter
                 clearable={false}
                 modelValue={filter.dateRange}
-                shortcuts={SHORTCUTS}
-                onChange={([s, e]) => s && e && (filter.dateRange = [s, e])}
-                disabledDate={d => d < earliestDate}
+                shortcuts={buildShortcuts(today.value)}
+                onChange={range => range && (filter.dateRange = range)}
+                disabledDate={d => d < today.value.addDays(-366)}
             />
             <TimeFormatFilter modelValue={filter.timeFormat} onChange={v => filter.timeFormat = v} />
         </Flex>
