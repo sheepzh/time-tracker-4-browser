@@ -5,7 +5,7 @@ export type BaseProps = Pick<
     | 'position'
     | 'width' | 'height' | 'minHeight' | 'maxWidth' | 'lineHeight'
     | 'boxSizing' | 'cursor'
-    | 'padding' | 'paddingBlock' | 'paddingInline'
+    | 'padding' | 'paddingTop' | 'paddingBlock' | 'paddingInline'
     | 'margin' | 'marginTop' | 'marginBottom' | 'marginBlock' | 'marginInline'
     | 'fontSize' | 'fontWeight'
 >
@@ -21,7 +21,7 @@ export type BaseProps = Pick<
 export const ALL_BASE_PROPS: (keyof BaseProps)[] = [
     'margin', 'marginTop', 'marginBottom', 'marginBlock', 'marginInline',
     'maxWidth', 'minHeight', 'width', 'height', 'lineHeight',
-    'padding', 'paddingBlock', 'paddingInline',
+    'padding', 'paddingTop', 'paddingBlock', 'paddingInline',
     'position', 'boxSizing', 'cursor',
     'color', 'fontSize', 'fontWeight', 'bgColor',
     'inline',
@@ -52,6 +52,7 @@ export const cvt2BaseStyle = (props: BaseProps): CSSProperties => ({
     marginBottom: cvtPxScale(props.marginBottom),
     maxWidth: cvtPxScale(props.maxWidth),
     padding: cvtPxScale(props.padding),
+    paddingTop: cvtPxScale(props.paddingTop),
     paddingBlock: cvtPxScale(props.paddingBlock),
     paddingInline: cvtPxScale(props.paddingInline),
     color: cvtColor(props.color),

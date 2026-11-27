@@ -14,6 +14,7 @@ type Props = {
     flex?: number
     align?: CSSProperties['alignItems']
     justify?: CSSProperties['justifyContent']
+    shrink?: CSSProperties['flexShrink']
     gap?: string | number
     columnGap?: string | number
     rowGap?: string | number
@@ -36,11 +37,12 @@ const _Flex: FunctionalComponent<Props> = (props, { slots, attrs }) => {
                 alignItems: props.align,
                 justifyContent: props.justify,
                 flexWrap: cvtFlexWrap(props.wrap),
+                flexShrink: props.shrink,
                 columnGap: cvtPxScale(props.columnGap),
                 rowGap: cvtPxScale(props.rowGap),
                 gap: cvtPxScale(props.gap),
                 ...cvt2BaseStyle(props),
-            }}
+            } satisfies CSSProperties}
             href={props.href}
             target={props.target}
         >

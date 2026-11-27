@@ -77,13 +77,10 @@ const Editable = defineComponent<Props>(props => {
             }}
         />
         : <Flex justify="center" gap={4}>
-            {labelSlot ? labelSlot(inputVal.value) : inputVal.value && <span>{inputVal.value}</span>}
-            <Flex
-                onClick={handleEdit}
-                align="center"
-                wrap="wrap"
-                style={{ paddingTop: '2px' }}
-            >
+            {labelSlot
+                ? labelSlot(inputVal.value)
+                : inputVal.value && <span style={{ minWidth: 0, wordBreak: 'break-all' }}>{inputVal.value}</span>}
+            <Flex align="center" wrap="wrap" shrink={0} paddingTop={2} onClick={handleEdit}>
                 <ElIcon style={{ cursor: 'pointer', lineHeight: '17px' }}>
                     <Edit />
                 </ElIcon>

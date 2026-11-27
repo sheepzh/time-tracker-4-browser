@@ -1,32 +1,19 @@
 import { t, type I18nKey } from '@app/locale'
+import { Flex } from '@pages/components'
 import { ElAlert, type AlertProps } from 'element-plus'
-import { computed, defineComponent } from 'vue'
+import { type FunctionalComponent } from 'vue'
 
 type Props = {
     type?: AlertProps['type']
     text: I18nKey | string
 }
 
-const DataManageAlert = defineComponent<Props>(props => {
-    const message = computed(() =>
-        typeof props.text === 'string' ? props.text : t(props.text))
-
-    return () => (
-        <div
-            style={{
-                flexShrink: 0,
-                width: '100%',
-                minHeight: 52,
-                display: 'flex',
-                alignItems: 'center',
-                boxSizing: 'border-box',
-            }}
-        >
-            <ElAlert type={props.type ?? 'info'} closable={false} center style={{ width: '100%' }}>
-                {message.value}
-            </ElAlert>
-        </div>
-    )
-}, { props: ['text', 'type'] })
+const DataManageAlert: FunctionalComponent<Props> = ({ text, type = 'info' }) => (
+    <Flex align="center" boxSizing="border-box" shrink={0} minHeight={52}>
+        <ElAlert type={type} closable={false} center style={{ width: '100%' }}>
+            {typeof text === 'string' ? text : t(text)}
+        </ElAlert>
+    </Flex>
+)
 
 export default DataManageAlert
