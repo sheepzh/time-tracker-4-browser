@@ -6,11 +6,11 @@
  */
 
 import { type I18nKey, t } from "@app/locale"
-import { cvt2LocaleDate, fmtDur } from '@pages/util/time'
 import { useState } from "@hooks"
 import { Box } from "@pages/components"
+import { cvt2LocaleDate, fmtDur } from '@pages/util/time'
 import { type Column, ElAutoResizer, ElTableV2, type SortBy, TableV2SortOrder } from "element-plus"
-import { computed, defineComponent, toRef } from "vue"
+import { computed, defineComponent } from "vue"
 import HostAlert from "../HostAlert"
 
 type SortInfo = SortBy & {
@@ -19,19 +19,12 @@ type SortInfo = SortBy & {
 
 function computeList(sort: SortInfo, originRows: tt4b.imported.Row[]): tt4b.imported.Row[] {
     const { key, order } = sort
-    if (!key) {
-        return originRows
-    }
-    const comparator = (a: tt4b.imported.Row, b: tt4b.imported.Row): number => {
+    if (!key) return originRows
+    const factor = order === TableV2SortOrder.DESC ? -1 : 1
+    return originRows.toSorted((a, b) => {
         const av = a[key] ?? 0, bv = b[key] ?? 0
-        if (av == bv) return 0
-        if (order === TableV2SortOrder.DESC) {
-            return av > bv ? -1 : 1
-        } else {
-            return av > bv ? 1 : -1
-        }
-    }
-    return originRows.sort(comparator)
+        return av === bv ? 0 : factor * (av > bv ? 1 : -1)
+    })
 }
 
 const focusCol = (comparedCol: I18nKey): Column[] => [
@@ -93,12 +86,11 @@ const BASE_COLUMNS: Column[] = [
 ]
 
 const _default = defineComponent<Props>((props) => {
-    const data = toRef(props, 'data')
     const [sort, setSort] = useState<SortInfo>({ order: TableV2SortOrder.ASC, key: 'date' })
-    const list = computed(() => computeList(sort.value, data.value.rows))
+    const list = computed(() => computeList(sort.value, props.data.rows))
     const columns = computed(() => {
         const value = [...BASE_COLUMNS]
-        const { focus, time } = data.value
+        const { focus, time } = props.data
         focus && value.push(...focusCol(props.comparedCol))
         time && value.push(...timeCol(props.comparedCol))
         return value

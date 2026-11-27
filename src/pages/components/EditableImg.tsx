@@ -1,8 +1,7 @@
 import { t } from '@app/locale'
-import { Check, Close, Edit, Picture } from '@element-plus/icons-vue'
-import { useState } from '@hooks'
+import { Check, Close, Edit, Loading, Picture } from '@element-plus/icons-vue'
 import { ElButton, ElIcon, ElInput, ElPopover, ElText } from 'element-plus'
-import { computed, CSSProperties, defineComponent, ref, watch } from 'vue'
+import { computed, CSSProperties, defineComponent, ref, shallowRef } from 'vue'
 import Flex from './Flex'
 import Img, { ALL_IMG_PROPS, type ImgProps } from './Img'
 
@@ -15,44 +14,55 @@ type ImgSetupProps = Pick<EditableImgProps, 'onSave'> & {
     onClose: NoArgCallback
 }
 
-type SetupState = 'empty' | 'error' | 'ready'
+type SetupState = 'empty' | 'invalid' | 'checking' | 'failed' | 'ready'
+
 const STATE_STYLES: Record<SetupState, CSSProperties> = {
     empty: {
         borderColor: 'var(--el-border-color-lighter)',
         backgroundColor: 'var(--el-fill-color-blank)'
     },
-    error: {
+    invalid: {
+        borderColor: 'var(--el-color-danger)',
+        backgroundColor: 'var(--el-color-danger-light-9)'
+    },
+    checking: {
+        borderColor: 'var(--el-border-color)',
+        backgroundColor: 'var(--el-fill-color-light)'
+    },
+    failed: {
         borderColor: 'var(--el-color-danger)',
         backgroundColor: 'var(--el-color-danger-light-9)'
     },
     ready: {
         borderColor: 'var(--el-color-success)',
         backgroundColor: 'var(--el-color-success-light-9)'
-    }
+    },
+}
+
+const STATE_HINTS: Partial<Record<SetupState, string>> = {
+    invalid: 'INVALID URL',
+    failed: 'FAILED TO LOAD'
 }
 
 const ImgSetup = defineComponent<ImgSetupProps>(props => {
     const url = ref(props.initial)
-    const [error, setError, resetError] = useState<string>()
+    const src = computed(() => url.value.trim() ?? undefined)
+    const result = shallowRef<{ src: string; ok: boolean }>()
+
     const state = computed<SetupState>(() => {
-        if (!url.value) return 'empty'
-        if (error.value) return 'error'
-        return 'ready'
-    })
-    watch(url, val => {
-        if (!val.trim()) return resetError()
+        const val = src.value
+        if (!val) return 'empty'
         try {
             new URL(val)
-            resetError()
         } catch {
-            setError('INVALID URL')
+            return 'invalid'
         }
+        if (result.value?.src !== val) return 'checking'
+        return result.value.ok ? 'ready' : 'failed'
     })
 
-    const handleSave = () => {
-        if (state.value === 'error') return
-        props.onSave(url.value.trim() || undefined)
-    }
+    const disabled = computed(() => state.value !== 'empty' && state.value !== 'ready')
+    const handleSave = () => !disabled.value && props.onSave(src.value || undefined)
 
     return () => (
         <Flex column gap={10}>
@@ -72,16 +82,22 @@ const ImgSetup = defineComponent<ImgSetupProps>(props => {
                 <ElIcon v-show={state.value === 'empty'} size={36} color="var(--el-color-info)">
                     <Picture />
                 </ElIcon>
-                <ElText v-show={error.value} type="danger">
-                    {error.value}
+                <ElIcon v-show={state.value === 'checking'} class="is-loading" size={36} color="var(--el-color-primary)">
+                    <Loading />
+                </ElIcon>
+                <ElText v-show={!!STATE_HINTS[state.value]} type="danger">
+                    {STATE_HINTS[state.value]}
                 </ElText>
-                <Img
-                    v-show={state.value === 'ready'}
-                    src={url.value}
-                    onError={() => setError("FAILED TO LOAD")}
-                    size={80}
-                    style={{ objectFit: 'contain' }}
-                />
+                {/* Keep the <img> mounted while hidden, so its load/error events keep driving the state */}
+                <div v-show={state.value === 'ready'}>
+                    <Img
+                        src={src.value}
+                        onLoad={() => result.value = { src: src.value, ok: true }}
+                        onError={() => result.value = { src: src.value, ok: false }}
+                        size={80}
+                        style={{ objectFit: 'contain' }}
+                    />
+                </div>
             </Flex>
             <ElInput
                 modelValue={url.value}
@@ -89,13 +105,12 @@ const ImgSetup = defineComponent<ImgSetupProps>(props => {
                 size="small"
                 clearable
                 placeholder="e.g. https://example.com/image.png"
-                type={error.value ? 'error' : (url.value ? 'success' : '')}
             />
             <Flex justify="flex-end" gap={4}>
                 <ElButton icon={Close} size="small" onClick={props.onClose}>
                     {t(msg => msg.button.cancel)}
                 </ElButton>
-                <ElButton icon={Check} size="small" onClick={handleSave} disabled={state.value === 'error'}>
+                <ElButton icon={Check} size="small" onClick={handleSave} disabled={disabled.value}>
                     {t(msg => msg.button.save)}
                 </ElButton>
             </Flex>

@@ -1,5 +1,6 @@
-import { computed, defineComponent, nextTick, onMounted, onUnmounted, ref, toRef } from 'vue'
-import { ALL_BASE_PROPS, cvt2BaseStyle, cvtPxScale, type BaseProps } from './common'
+import { useMounted } from '@hooks'
+import { computed, defineComponent, nextTick, ref } from 'vue'
+import { ALL_BASE_PROPS, cvtPxScale, wrapStyle, type BaseProps } from './common'
 
 function useGridPlaceholder() {
     const containerRef = ref<HTMLElement>()
@@ -20,22 +21,17 @@ function useGridPlaceholder() {
             .length
     }
 
-    let observer: ResizeObserver | null = null
-    let mutationObserver: MutationObserver | null = null
-
-    onMounted(() => {
+    useMounted(() => {
         nextTick(measure)
 
-        observer = new ResizeObserver(measure)
+        const observer = new ResizeObserver(measure)
         if (containerRef.value) observer.observe(containerRef.value)
-
-        mutationObserver = new MutationObserver(measure)
+        const mutationObserver = new MutationObserver(measure)
         if (containerRef.value) mutationObserver.observe(containerRef.value, { childList: true })
-    })
-
-    onUnmounted(() => {
-        observer?.disconnect()
-        mutationObserver?.disconnect()
+        return () => {
+            observer.disconnect()
+            mutationObserver.disconnect()
+        }
     })
 
     const placeholderCount = computed(() => {
@@ -44,11 +40,7 @@ function useGridPlaceholder() {
         return remainder === 0 ? 0 : columnCount.value - remainder
     })
 
-    return {
-        containerRef,
-        columnCount,
-        placeholderCount,
-    }
+    return { containerRef, columnCount, placeholderCount }
 }
 
 type Gap = number | string
@@ -68,34 +60,29 @@ const calcGridGap = (val: Gap | [Gap, Gap] | undefined): string | undefined => {
 }
 
 export default defineComponent<Props>((props, { slots }) => {
-    const minColumnWidth = toRef(props, 'minColumnWidth', 200)
-    const maxColumnWidth = toRef(props, 'maxColumnWidth', '1fr')
-    const columnGap = computed(() => calcGridGap(props.columnGap))
-    const rowGap = toRef(props, 'rowGap', 16)
+    const style = computed(() => {
+        const { minColumnWidth = 200, maxColumnWidth = '1fr', rowGap = 16, columnGap } = props
+        const style = wrapStyle(props, {
+            gridTemplateColumns: `repeat(auto-fill, minmax(${cvtPxScale(minColumnWidth)}, ${cvtPxScale(maxColumnWidth)}))`,
+            columnGap: calcGridGap(columnGap),
+            rowGap: cvtPxScale(rowGap),
+        })
+        style.width ??= '100%'
+        style.display = 'grid'
+        return style
+    })
 
     const { containerRef, placeholderCount } = useGridPlaceholder()
 
-    return () => (
-        <div
-            ref={containerRef}
-            id={props.id}
-            class={props.class}
-            onClick={props.onClick}
-            style={{
-                display: 'grid',
-                gridTemplateColumns: `repeat(auto-fill, minmax(${cvtPxScale(minColumnWidth.value)}, ${cvtPxScale(maxColumnWidth.value)}))`,
-                columnGap: columnGap.value,
-                rowGap: cvtPxScale(rowGap.value),
-                width: '100%',
-                ...cvt2BaseStyle(props),
-            }}
-        >
+    return () => {
+        const { id, class: cls, onClick } = props
+        return <div id={id} ref={containerRef} class={cls} onClick={onClick} style={style.value}>
             {slots.default?.()}
             {Array.from({ length: placeholderCount.value }, (_, idx) => (
                 <i key={idx} data-grid-placeholder aria-hidden="true" style={{ height: 0, overflow: 'hidden' }} />
             ))}
         </div>
-    )
+    }
 }, {
     props: [...ALL_BASE_PROPS, 'columnGap', 'rowGap', 'minColumnWidth', 'maxColumnWidth']
 })

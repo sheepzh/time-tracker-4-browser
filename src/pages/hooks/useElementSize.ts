@@ -1,99 +1,32 @@
-import { isRef, type MaybeRef, onMounted, onUnmounted, ref, unref, watch } from 'vue'
+import { type Ref, ref, watch } from 'vue'
 import { useDebounceFn } from './useDebounce'
 
 type Options = {
     debounce?: number
 }
 
-type Target = MaybeRef<Element | null | undefined> | string
-
-export function useElementSize(target: Target, options?: Options) {
+export function useElementSize(target: Ref<Element | undefined>, options?: Options) {
     const { debounce = 0 } = options ?? {}
 
-    const width = ref(0)
-    const height = ref(0)
+    const size = ref({ w: 0, h: 0 })
 
-    let observer: ResizeObserver | undefined
-
-    const getTargetElement = (): Element | null => {
-        const el = unref(target) ?? null
-
-        if (typeof el === 'string') {
-            return document.querySelector(el)
-        }
-
-        return el
-    }
-
-    const updateSize = (entry: ResizeObserverEntry) => {
-        if (entry.contentBoxSize?.[0]) {
-            width.value = entry.contentBoxSize[0].inlineSize
-            height.value = entry.contentBoxSize[0].blockSize
-        } else {
-            // fallback
-            width.value = entry.contentRect.width
-            height.value = entry.contentRect.height
-        }
-    }
-
-    const debouncedUpdateSize = useDebounceFn(
-        (entry: ResizeObserverEntry) => updateSize(entry),
-        debounce
-    )
-
-    const handleResize: ResizeObserverCallback = (entries: ResizeObserverEntry[]) => {
-        const entry = entries[0]
+    const updateSize = (entry?: ResizeObserverEntry) => {
         if (!entry) return
-
-        if (debounce > 0) {
-            debouncedUpdateSize(entry)
-        } else {
-            updateSize(entry)
-        }
+        const { contentBoxSize: [box], contentRect: rect } = entry
+        const w = box?.inlineSize ?? rect.width
+        const h = box?.blockSize ?? rect.height
+        size.value = { w, h }
     }
 
-    const start = () => {
-        if (observer) return
+    const onSize = debounce > 0 ? useDebounceFn(updateSize, debounce) : updateSize
 
-        const element = getTargetElement()
-        if (!element) {
-            console.warn('useElementSize: target element not found')
-            return
-        }
+    watch(target, (el, _, onCleanup) => {
+        if (!el) return
 
-        try {
-            observer = new ResizeObserver(handleResize)
-            observer.observe(element, { box: 'content-box' })
-        } catch (error) {
-            console.error('useElementSize: filed to create observer', error)
-        }
-    }
+        const observer = new ResizeObserver(entries => onSize(entries[0]))
+        observer.observe(el, { box: 'content-box' })
+        onCleanup(() => observer.disconnect())
+    }, { immediate: true, flush: 'post' })
 
-    const stop = () => {
-        if (!observer) return
-
-        observer.disconnect()
-        observer = undefined
-    }
-
-    onMounted(() => {
-        if (!isRef(target)) {
-            return start()
-        }
-
-        watch(
-            () => getTargetElement(),
-            (newEl, oldEl) => {
-                if (newEl && newEl !== oldEl) {
-                    stop()
-                    start()
-                }
-            },
-            { immediate: true }
-        )
-    })
-
-    onUnmounted(stop)
-
-    return { width, height }
+    return size
 }

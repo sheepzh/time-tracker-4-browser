@@ -8,7 +8,7 @@ import { judgeVerificationRequired, processVerification } from '@pages/util/limi
 import { queryInt, queryStr, type MakeRouteQuery } from '@pages/util/route'
 import { ElMessage, ElMessageBox } from "element-plus"
 import { createStringUnionGuard } from 'typescript-guard'
-import { computed, onMounted, reactive, ref, toRaw, watch, type ShallowRef } from "vue"
+import { computed, onMounted, reactive, ref, shallowRef, toRaw, watch, type ShallowRef } from "vue"
 import { useRoute, useRouter } from 'vue-router'
 import type { LimitFilterOption, ModifyInstance, TestInstance } from "./types"
 
@@ -39,7 +39,7 @@ const initialQuery = () => {
     const { url, action, id }: MakeRouteQuery<LimitQuery> = useRoute().query
     useRouter().replace({ query: {} })
     return {
-        url: url ? decodeURIComponent(queryStr(url)) : undefined,
+        url: queryStr(url),
         action: isAction(action) ? action : undefined,
         id: queryInt(id),
     }
@@ -77,13 +77,13 @@ export const initLimitContext = () => {
         onMounted(() => setTimeout(() => modifyInst.value?.create(url)))
     }
 
-    const filter = reactive<LimitFilterOption>({ url: initialUrl, effective: false })
+    const filter = reactive<LimitFilterOption>({ query: initialUrl, effective: false })
 
     const { data: list, refresh, loading } = useRequest(
-        () => listLimits({ url: filter.url, effective: filter.effective }),
+        () => listLimits({ query: filter.query, effective: filter.effective }),
         {
             defaultValue: [],
-            deps: [() => filter.url, () => filter.effective],
+            deps: () => ({ ...filter }),
             onSuccess: data => {
                 if (action !== 'modify' || modifyTriggered) return
                 const target = data.find(i => i.id === id)
@@ -109,9 +109,9 @@ export const initLimitContext = () => {
         await deleteLimits([row.id])
     }, { onSuccess: refresh })
 
-    const selected = ref<tt4b.limit.Item[]>([])
+    const selected = shallowRef<tt4b.limit.Item[]>([])
 
-    const selectedAndThen = (then: (list: tt4b.limit.Item[]) => void): void => {
+    const selectedAndThen = (then: ArgCallback<tt4b.limit.Item[]>): void => {
         const list = selected.value
         if (!list.length) return void ElMessage.info('No limit rule selected')
         then(list)

@@ -1,7 +1,6 @@
 import { ElLoadingService, type LoadingInstance, type LoadingOptions } from "element-plus"
 import {
-    onBeforeMount, onMounted, ref, shallowRef, toValue, watch,
-    type Ref, type ShallowRef, type WatchSource,
+    onBeforeMount, onMounted, ref, shallowRef, toValue, watch, type Ref, type ShallowRef, type WatchSource,
 } from "vue"
 
 export type RequestOption<T, P extends any[]> = {

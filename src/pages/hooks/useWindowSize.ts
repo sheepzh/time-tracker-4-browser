@@ -1,20 +1,16 @@
-import { onMounted, shallowRef } from 'vue'
+import { shallowRef } from 'vue'
 import { useWindowListener } from './useWindowListener'
 
 export function useWindowSize() {
-    const width = shallowRef(Number.POSITIVE_INFINITY)
-    const height = shallowRef(Number.POSITIVE_INFINITY)
+    const size = shallowRef({ w: Number.POSITIVE_INFINITY, h: Number.POSITIVE_INFINITY })
 
-    const update = () => {
+    const resize = () => {
         if (typeof window === 'undefined') return
-        width.value = window.innerWidth
-        height.value = window.innerHeight
+        size.value = { w: window.innerWidth, h: window.innerHeight }
     }
 
-    update()
-    onMounted(update)
+    useWindowListener('resize', resize, { passive: true })
+    resize()
 
-    useWindowListener('resize', update, { passive: true })
-
-    return { width, height }
+    return size
 }

@@ -2,11 +2,11 @@ import {
     APP_LIMIT_ROUTE, APP_SITE_ANALYSIS_ROUTE, type AppLimitQuery, type AppSiteAnalysisQuery,
 } from '@/shared/route'
 import { trySendMsg2Runtime } from '@api/sw/common'
-import { processVerification } from '@pages/util/limit'
 import { t } from "@cs/locale"
 import { Plus, Timer } from "@element-plus/icons-vue"
 import { Flex } from '@pages/components'
 import { Trend } from "@pages/icons"
+import { processVerification } from '@pages/util/limit'
 import { getAppPageUrl } from '@util/constant/url'
 import { meetTimeLimit } from '@util/limit'
 import { MILL_PER_SECOND } from '@util/time'
@@ -20,7 +20,7 @@ const _default = defineComponent(() => {
     const reason = useLimitReason()
 
     const analysisUrl = computed(() => getAppPageUrl(APP_SITE_ANALYSIS_ROUTE, { url: url.value } satisfies AppSiteAnalysisQuery))
-    const ruleUrl = computed(() => getAppPageUrl(APP_LIMIT_ROUTE, { url: encodeURI(url.value) } satisfies AppLimitQuery))
+    const ruleUrl = computed(() => getAppPageUrl(APP_LIMIT_ROUTE, { url: url.value } satisfies AppLimitQuery))
 
     const rule = useRule()
     const showDelay = computed(() => {

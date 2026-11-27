@@ -1,5 +1,6 @@
 import { listAllGroups, onChanged, removeChangedHandler } from "@api/chrome/tabGroups"
-import { computed, onMounted } from "vue"
+import { computed } from "vue"
+import { useMounted } from './useMounted'
 import { useRequest } from "./useRequest"
 
 export const useTabGroups = () => {
@@ -10,7 +11,7 @@ export const useTabGroups = () => {
         return map
     })
 
-    onMounted(() => {
+    useMounted(() => {
         onChanged(refresh)
         return () => removeChangedHandler(refresh)
     })

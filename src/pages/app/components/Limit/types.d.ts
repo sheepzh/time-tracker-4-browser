@@ -1,5 +1,5 @@
 export type LimitFilterOption = {
-    url: string | undefined
+    query?: string
     effective: boolean
 }
 

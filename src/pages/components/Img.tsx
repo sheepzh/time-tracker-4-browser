@@ -3,10 +3,11 @@ import { type CSSProperties, defineComponent, watch } from 'vue'
 
 export type ImgProps = Partial<Pick<HTMLImageElement, 'src' | 'alt' | 'title'>> & {
     style?: CSSProperties
+    onLoad?: ArgCallback<Event>
     onError?: ArgCallback<Event>
     size?: number
 }
-export const ALL_IMG_PROPS: (keyof ImgProps)[] = ['src', 'alt', 'title', 'style', 'onError', 'size']
+export const ALL_IMG_PROPS: (keyof ImgProps)[] = ['src', 'alt', 'title', 'style', 'onLoad', 'onError', 'size']
 
 export default defineComponent<ImgProps>((props, ctx) => {
     const [imgErr, setImgErr] = useState(false)
@@ -22,6 +23,7 @@ export default defineComponent<ImgProps>((props, ctx) => {
             src={props.src}
             alt={props.alt}
             title={props.title}
+            onLoad={props.onLoad}
             onError={handleError}
             width={props.size}
             height={props.size}

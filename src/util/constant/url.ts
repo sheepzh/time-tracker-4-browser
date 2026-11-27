@@ -62,7 +62,7 @@ export const UNINSTALL_QUESTIONNAIRE: { [locale in tt4b.RequiredLocale]: string 
 export function getAppPageUrl(route?: string, query?: any): string {
     let url = getUrl('static/app.html')
     route && (url += '#' + route)
-    const queries = query ? Object.entries(query).map(([k, v]) => `${k}=${v}`).join('&') : ''
+    const queries = query ? Object.entries(query).map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`).join('&') : ''
     queries && (url += '?' + queries)
     return url
 }

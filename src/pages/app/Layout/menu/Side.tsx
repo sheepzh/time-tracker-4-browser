@@ -9,12 +9,12 @@ import { getVersion } from '@api/chrome/runtime'
 import { t } from '@app/locale'
 import { Expand, Fold } from '@element-plus/icons-vue'
 import { css } from '@emotion/css'
-import { localRef } from '@hooks'
+import { localRef, useShadow } from '@hooks'
 import { Flex } from '@pages/components'
 import { colorVariant } from '@pages/util/style'
 import { ElCollapseTransition, ElIcon, ElMenu, ElMenuItem, ElMenuItemGroup, ElScrollbar, ElText, ElTooltip, useNamespace } from "element-plus"
 import { isBoolean } from 'typescript-guard'
-import { defineComponent, h, nextTick, onMounted, type Ref, ref, type StyleValue, watch } from "vue"
+import { defineComponent, h, nextTick, onMounted, type Ref, ref, type StyleValue } from "vue"
 import { type Router, useRouter } from "vue-router"
 import { indexOfItem, menuGroups, type MenuItem } from "./item"
 import { handleClick, initTitle } from "./route"
@@ -54,12 +54,7 @@ const renderItem = (item: MenuItem, router: Router, curr: Ref<string | undefined
 
 const _default = defineComponent(() => {
     const router = useRouter()
-    const curr = ref<string>()
-    const syncRouter = () => {
-        const route = router.currentRoute.value
-        route && (curr.value = route.path)
-    }
-    watch(router.currentRoute, syncRouter)
+    const [curr] = useShadow(() => router.currentRoute.value.path)
 
     onMounted(() => initTitle(router))
 

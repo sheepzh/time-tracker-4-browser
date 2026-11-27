@@ -115,9 +115,9 @@ export const useEcharts = <
         watch(elRef, () => elRef.value && wrapper.init(elRef.value))
     })
 
-    const { width: winW, height: winH } = useWindowSize()
-    const { width: elW, height: elH } = useElementSize(elRef, { debounce: 50 })
-    watch([winW, winH, elW, elH], () => wrapper.resize())
+    const winSize = useWindowSize()
+    const elSize = useElementSize(elRef, { debounce: 50 })
+    watch([winSize, elSize], () => wrapper.resize())
 
     return { elRef, wrapper, data }
 }

@@ -15,7 +15,7 @@ import { getWeekStartDay } from './components/week-helper'
 import siteHolder from './site-service/holder'
 
 export async function selectLimit(param?: tt4b.limit.Query): Promise<tt4b.limit.Item[]> {
-    const { enabled, url, id, limited, effective } = param ?? {}
+    const { enabled, url, query, id, limited, effective } = param ?? {}
     const now = new Date()
     const today = formatTimeYMD(now)
     const weekStart = await getWeekStartDay()
@@ -28,6 +28,7 @@ export async function selectLimit(param?: tt4b.limit.Query): Promise<tt4b.limit.
     if (enabled) list = list.filter(item => item.enabled)
     if (id) list = list.filter(item => item.id === id)
     if (url) list = list.filter(item => matches(item.cond, url))
+    if (query) list = list.filter(({ cond }) => matches(cond, query) || cond.some(c => c.includes(query)))
 
     let items = list.map(rec => cvtRecord2Item(rec, today, startDate))
 

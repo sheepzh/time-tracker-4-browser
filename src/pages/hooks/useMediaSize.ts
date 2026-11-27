@@ -26,14 +26,13 @@ const computeMediaSize = (width: number): MediaSize => {
 }
 
 export const useMediaSize = () => {
-    const { width } = useWindowSize()
-    const size = computed<MediaSize>(() => computeMediaSize(width.value))
-    return size
+    const winSize = useWindowSize()
+    return computed(() => computeMediaSize(winSize.value.w))
 }
 
 export const useXsState = () => {
-    const { width } = useWindowSize()
-    return computed(() => width.value < XS_MAX)
+    const winSize = useWindowSize()
+    return computed(() => winSize.value.w < XS_MAX)
 }
 
 export const listenMediaSizeChange = () => {

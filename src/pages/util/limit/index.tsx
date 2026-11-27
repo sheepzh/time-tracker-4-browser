@@ -185,7 +185,7 @@ export function processVerification(option: tt4b.option.LimitOption): Promise<vo
             ElMessage.warning(t(msg => msg.message.timeout))
             btn.remove()
         },
-        onTick: (val: number) => {
+        onTick: val => {
             const btnSpan = document.querySelector(`.${okBtnClz} span`)
             if (!btnSpan) return
             btnSpan.textContent = btnText(Math.floor(val / 1000))
@@ -201,7 +201,7 @@ export function processVerification(option: tt4b.option.LimitOption): Promise<vo
             const { value } = data
             if (value === answerValue) return resolve()
             errMsg(incorrectMessage)
-        }).catch(() => cleanCountdown?.())
+        }).catch(() => { }).finally(cleanCountdown)
     })
 }
 

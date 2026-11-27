@@ -24,8 +24,7 @@ export const ALL_BASE_PROPS: (keyof BaseProps)[] = [
     'padding', 'paddingTop', 'paddingBlock', 'paddingInline',
     'position', 'boxSizing', 'cursor',
     'color', 'fontSize', 'fontWeight', 'bgColor',
-    'inline',
-    'onClick',
+    'inline', 'onClick', 'style',
 ]
 
 export const cvtPxScale = (val: number | string | undefined): string | undefined => typeof val === 'number' ? `${val}px` : val
@@ -37,27 +36,35 @@ const cvtColor = (color: BaseProps['color']): CSSProperties['color'] => {
     return color
 }
 
-export const cvt2BaseStyle = (props: BaseProps): CSSProperties => ({
-    position: props.position,
-    width: cvtPxScale(props.width),
-    height: cvtPxScale(props.height),
-    lineHeight: cvtPxScale(props.lineHeight),
-    minHeight: cvtPxScale(props.minHeight),
-    boxSizing: props.boxSizing,
-    cursor: props.cursor,
-    margin: cvtPxScale(props.margin),
-    marginInline: cvtPxScale(props.marginInline),
-    marginBlock: cvtPxScale(props.marginBlock),
-    marginTop: cvtPxScale(props.marginTop),
-    marginBottom: cvtPxScale(props.marginBottom),
-    maxWidth: cvtPxScale(props.maxWidth),
-    padding: cvtPxScale(props.padding),
-    paddingTop: cvtPxScale(props.paddingTop),
-    paddingBlock: cvtPxScale(props.paddingBlock),
-    paddingInline: cvtPxScale(props.paddingInline),
-    color: cvtColor(props.color),
-    backgroundColor: props.bgColor,
-    fontSize: cvtPxScale(props.fontSize),
-    fontWeight: props.fontWeight,
-    ...props.style,
-})
+const mergeStyle = (target: CSSProperties, from: CSSProperties) =>
+    Object.entries(from).forEach(([k, v]) => v !== undefined && (target[k as keyof CSSProperties] = v))
+
+export const wrapStyle = (props: BaseProps, others: CSSProperties): CSSProperties => {
+    const style: CSSProperties = {}
+    mergeStyle(style, {
+        position: props.position,
+        width: cvtPxScale(props.width),
+        height: cvtPxScale(props.height),
+        lineHeight: cvtPxScale(props.lineHeight),
+        minHeight: cvtPxScale(props.minHeight),
+        boxSizing: props.boxSizing,
+        cursor: props.cursor,
+        margin: cvtPxScale(props.margin),
+        marginInline: cvtPxScale(props.marginInline),
+        marginBlock: cvtPxScale(props.marginBlock),
+        marginTop: cvtPxScale(props.marginTop),
+        marginBottom: cvtPxScale(props.marginBottom),
+        maxWidth: cvtPxScale(props.maxWidth),
+        padding: cvtPxScale(props.padding),
+        paddingTop: cvtPxScale(props.paddingTop),
+        paddingBlock: cvtPxScale(props.paddingBlock),
+        paddingInline: cvtPxScale(props.paddingInline),
+        color: cvtColor(props.color),
+        backgroundColor: props.bgColor,
+        fontSize: cvtPxScale(props.fontSize),
+        fontWeight: props.fontWeight,
+    })
+    mergeStyle(style, others)
+    mergeStyle(style, props.style ?? {})
+    return style
+}

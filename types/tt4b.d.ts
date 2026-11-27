@@ -413,6 +413,7 @@ declare namespace tt4b {
         type Query = {
             id?: number
             url?: string
+            query?: string
             // Only enabled rules
             enabled?: boolean
             // Only effective rules (should be enabled and meet effective conditions)

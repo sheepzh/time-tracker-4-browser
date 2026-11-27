@@ -1,4 +1,5 @@
-import { computed, type ComputedRef, onBeforeUnmount, onMounted, reactive } from 'vue'
+import { computed, type ComputedRef, reactive } from 'vue'
+import { useWindowListener } from './useWindowListener'
 
 type KeyMatcher = KeyboardEvent['key'] | ((ev: KeyboardEvent) => boolean)
 
@@ -8,39 +9,18 @@ const matchKey = (matcher: KeyMatcher, ev: KeyboardEvent) => {
 
 export const useKeyPressed = (...matcher: KeyMatcher[]): ComputedRef<boolean> => {
     const pressedKeys = reactive(new Set<string>())
-    const pressed = computed(() => pressedKeys.size > 0)
 
-    const handleKeydown = (ev: KeyboardEvent) => matcher.some(m => matchKey(m, ev)) && pressedKeys.add(ev.key)
-    const handleKeyup = (ev: KeyboardEvent) => matcher.some(m => matchKey(m, ev)) && pressedKeys.delete(ev.key)
-    const reset = () => pressedKeys.clear()
+    useWindowListener('keydown', ev => matcher.some(m => matchKey(m, ev)) && pressedKeys.add(ev.key))
+    useWindowListener('keyup', ev => matcher.some(m => matchKey(m, ev)) && pressedKeys.delete(ev.key))
+    useWindowListener('blur', () => pressedKeys.clear())
 
-    onMounted(() => {
-        window.addEventListener('keydown', handleKeydown)
-        window.addEventListener('keyup', handleKeyup)
-        window.addEventListener('blur', reset)
-    })
-
-    onBeforeUnmount(() => {
-        window.removeEventListener('keydown', handleKeydown)
-        window.removeEventListener('keyup', handleKeyup)
-        window.removeEventListener('blur', reset)
-    })
-
-    return pressed
+    return computed(() => pressedKeys.size > 0)
 }
 
 export const useHotKey = (matcher: KeyMatcher, handler: ArgCallback<KeyboardEvent>) => {
-    const handleKeyDown = (ev: KeyboardEvent) => {
+    useWindowListener('keydown', ev => {
         if (ev.defaultPrevented || ev.isComposing || ev.repeat) return
         if (!matchKey(matcher, ev)) return
         handler(ev)
-    }
-
-    onMounted(() => {
-        window.addEventListener('keydown', handleKeyDown)
-    })
-
-    onBeforeUnmount(() => {
-        window.removeEventListener('keydown', handleKeyDown)
     })
 }

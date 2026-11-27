@@ -7,7 +7,6 @@ import { Flex } from '@pages/components'
 import { t } from '@popup/locale'
 import { isNotTrackable } from '@util/constant/environment'
 import { getAppPageUrl } from '@util/constant/url'
-import { extractHostname } from '@util/pattern'
 import { ElButton, ElResult, ElSelect } from 'element-plus'
 import { computed, CSSProperties, defineComponent, ref, Teleport, type FunctionalComponent } from 'vue'
 import { SITE_TOOLBAR_SLOT } from '../common'
@@ -35,10 +34,7 @@ const Limit = defineComponent<{}>(() => {
     const handleNew = async () => {
         let url = summary.value?.url
         const query: AppLimitQuery = { action: 'create' }
-        if (url && !isNotTrackable(url)) {
-            const { host } = extractHostname(url)
-            query.url = encodeURIComponent(host)
-        }
+        if (url && !isNotTrackable(url)) query.url = url
         await createTab(getAppPageUrl(APP_LIMIT_ROUTE, query))
     }
 

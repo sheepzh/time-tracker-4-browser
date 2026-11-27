@@ -11,11 +11,11 @@ import { ButtonFilter, InputFilter, SwitchFilter } from '@app/components/common/
 import { t } from '@app/locale'
 import { OPTION_ROUTE } from '@app/router/constants'
 import { Delete, Open, Operation, Plus, SetUp, TurnOff, WarningFilled } from "@element-plus/icons-vue"
-import { useXsState } from '@hooks'
+import { useSwitch, useXsState } from '@hooks'
 import { Flex } from '@pages/components'
 import { getAppPageUrl } from "@util/constant/url"
 import { ElIcon, ElText, ElTooltip } from 'element-plus'
-import { computed, defineComponent, ref, type Ref, watch } from "vue"
+import { computed, defineComponent, type Ref, watch } from "vue"
 import { useLimitAction, useLimitBatch, useLimitFilter } from "../context"
 
 const optionPageUrl = getAppPageUrl(OPTION_ROUTE, { i: 'limit' })
@@ -23,15 +23,15 @@ const optionPageUrl = getAppPageUrl(OPTION_ROUTE, { i: 'limit' })
 type BatchOpt = 'delete' | 'enable' | 'disable'
 
 const useCreateTip = (empty: Ref<boolean>, isXs: Ref<boolean>) => {
-    const tipVisible = ref(false)
+    const [tipVisible, openTip, closeTip] = useSwitch(false)
     let initialized = false
-    watch(empty, emptyVal => {
-        if (initialized || !emptyVal) return
-        tipVisible.value = true
+    watch(empty, (val, _, onCleanup) => {
+        if (!val || initialized) return closeTip()
         initialized = true
-        setTimeout(closeTip, 10000)
+        openTip()
+        const timer = setTimeout(closeTip, 10000)
+        onCleanup(() => clearTimeout(timer))
     })
-    const closeTip = () => tipVisible.value = false
     const finalVisible = computed(() => !isXs.value && tipVisible.value)
     return { tipVisible: finalVisible, closeTip }
 }
@@ -72,9 +72,9 @@ const _default = defineComponent(() => {
             <Flex gap={10}>
                 <InputFilter
                     width={200}
-                    defaultValue={filter.url}
+                    defaultValue={filter.query}
                     placeholder={t(msg => msg.limit.item.condition)}
-                    onSearch={val => filter.url = val}
+                    onSearch={val => filter.query = val}
                 />
                 <SwitchFilter
                     v-show={!isXs.value}
