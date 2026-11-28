@@ -35,8 +35,9 @@ type Context = {
     range: ComputedRef<PeriodRange>
 }
 
-const computeRange = ([start, end]: StatRange): PeriodRange => {
-    const dateLength = start.daysTo(end)
+const computeRange = (range: StatRange): PeriodRange => {
+    const dateLength = range.days()
+    const { start, end } = range
     return {
         curr: [keyOf(start.toDate(), 0), keyOf(end.toDate(), MAX_PERIOD_ORDER)],
         prev: [keyOf(start.addDays(-dateLength).toDate(), 0), keyOf(start.prev().toDate(), MAX_PERIOD_ORDER)],

@@ -1,4 +1,4 @@
-import { statRangeStr, type StatRange } from '@/shared/day'
+import type { StatRange } from '@/shared/day'
 import { getGroup } from "@api/chrome/tabGroups"
 import {
     batchDeleteStats, countGroupStatsByIds, countSiteStats, deleteSiteStatByGroup, deleteSiteStatByHost,
@@ -34,7 +34,7 @@ async function computeBatchDeleteMsg(selected: tt4b.stat.Row[], mergeDate: boole
     let count = selected.length
     if (mergeDate) {
         // All the items
-        const date = statRangeStr(dateRange) ?? []
+        const date = dateRange?.toRangeStr() ?? []
         const siteCount = host.length ? await countSiteStats({ host, date }) : 0
         const groupCount = groupIds.length ? await countGroupStatsByIds(groupIds, date) : 0
         count = siteCount + groupCount
@@ -74,7 +74,7 @@ async function handleBatchDelete(displayComp: DisplayComponent | undefined, filt
 async function deleteBatch(selected: tt4b.stat.Row[], mergeDate: boolean, dateRange: StatRange | undefined) {
     if (mergeDate) {
         // Delete according to the date range
-        const date = statRangeStr(dateRange)
+        const date = dateRange?.toRangeStr()
         for (const row of selected) {
             isNormalSite(row) && await deleteSiteStatByHost(row.siteKey.host, date)
             isGroup(row) && await deleteSiteStatByGroup(row.groupKey, date)

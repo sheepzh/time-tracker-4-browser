@@ -41,7 +41,7 @@ const _default = defineComponent<Props>(props => {
             <a style={{ marginInlineEnd: '10px' }}>1.</a>
             {tN(msg => msg.dataManage.filterDate, {
                 picker: <ElDatePicker
-                    modelValue={props.modelValue?.map(d => d.toLabel())}
+                    modelValue={props.modelValue?.toLabels()}
                     onUpdate:modelValue={handleUpdate}
                     size="small"
                     style={{ width: "250px" } satisfies StyleValue}

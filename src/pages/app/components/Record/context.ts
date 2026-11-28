@@ -1,4 +1,4 @@
-import { StatDay, statRangeStr } from '@/shared/day'
+import { StatDay } from '@/shared/day'
 import { listCateStats, listGroupStats, listSiteStats } from '@api/sw/stat'
 import type { RecordQuery } from '@app/router/constants'
 import { isOptionalIntArray, isTimeFormat } from '@app/util/types'
@@ -90,7 +90,7 @@ export const useSummary = (watchFilter?: boolean) => {
     const remote = useRemoteValue()
     const { data, refresh, loading } = useManualRequest(async () => {
         const { siteMerge, dateRange, query, cateIds } = filter
-        const date = statRangeStr(dateRange)
+        const date = dateRange?.toRangeStr()
         let rows: tt4b.stat.Row[] = []
         if (siteMerge === 'group') {
             rows = await listGroupStats({ date, query })

@@ -1,4 +1,3 @@
-import { statRangeStr } from '@/shared/day'
 import {
     deleteSiteStatByGroup, deleteSiteStatByHost, getCateStatPage, getGroupStatPage, getSiteStatPage, listCateStats,
     listGroupStats, listSiteStats,
@@ -32,7 +31,7 @@ export async function handleDelete(row: tt4b.stat.Row, filterOption: RecordFilte
         isGroup(row) && date && await deleteSiteStatByGroup(row.groupKey, date)
         return
     }
-    const strRange = statRangeStr(dateRange)
+    const strRange = dateRange?.toRangeStr()
     if (!strRange) {
         // Delete all
         isSite(row) && await deleteSiteStatByHost(row.siteKey.host)
@@ -55,7 +54,7 @@ const cvt2GroupQuery = (
     { query, mergeDate, dateRange: date, focusRange, timeRange }: RecordFilterOption,
     { prop, order }: RecordSort,
 ): tt4b.stat.GroupQuery => ({
-    date: statRangeStr(date), mergeDate, query,
+    date: date?.toRangeStr(), mergeDate, query,
     sortKey: prop !== 'host' ? prop : undefined,
     sortDirection: cvtOrderDir(order),
     focusRange, timeRange,
@@ -65,7 +64,7 @@ const cvt2SiteQuery = (
     { dateRange: date, mergeDate, siteMerge, query, cateIds, focusRange, timeRange }: RecordFilterOption,
     { prop, order }: RecordSort,
 ): Omit<tt4b.stat.SiteQuery, 'remote'> => ({
-    date: statRangeStr(date), mergeDate,
+    date: date?.toRangeStr(), mergeDate,
     mergeHost: siteMerge === 'domain',
     query, cateIds,
     virtual: true,
@@ -78,7 +77,7 @@ const cvt2CateQuery = (
     { dateRange: date, mergeDate, query, cateIds, focusRange, timeRange }: RecordFilterOption,
     { prop, order }: RecordSort,
 ): Omit<tt4b.stat.CateQuery, 'remote'> => ({
-    date: statRangeStr(date), mergeDate, query, cateIds,
+    date: date?.toRangeStr(), mergeDate, query, cateIds,
     sortKey: prop !== 'host' ? prop : undefined,
     sortDirection: cvtOrderDir(order),
     focusRange, timeRange,

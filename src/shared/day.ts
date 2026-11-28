@@ -101,16 +101,39 @@ export class StatDay {
     }
 
     rangeTo(end: StatDay | number): StatRange {
-        if (typeof end === "number") return end > 0 ? [this, this.addDays(end)] : [this.addDays(end), this]
-        return this > end ? [end, this] : [this, end]
+        return StatRange.of(this, typeof end === 'number' ? this.addDays(end) : end)
     }
 }
 
-export type StatRange = [StatDay, StatDay]
+export class StatRange {
+    private constructor(readonly start: StatDay, readonly end: StatDay) { }
 
-export function statRangeStr(range: StatRange | undefined): [string, string] | undefined {
-    if (!range) return undefined
-    return [range[0].toString(), range[1].toString()]
+    static of(start: StatDay, end: StatDay) {
+        return start > end ? new StatRange(end, start) : new StatRange(start, end)
+    }
+
+    toRangeStr(): [start: string, end: string] {
+        return [this.start.toString(), this.end.toString()]
+    }
+
+    /**
+     * @returns days count inclusive these two bounds
+     */
+    days(): number {
+        return this.start.daysTo(this.end)
+    }
+
+    shift(days: number): StatRange {
+        return this.start.addDays(days).rangeTo(this.end.addDays(days))
+    }
+
+    format(fmt: Intl.DateTimeFormat): string {
+        return fmt.formatRange(this.start.toDate(), this.end.toDate())
+    }
+
+    toLabels(): [Date, Date] {
+        return [this.start.toLabel(), this.end.toLabel()]
+    }
 }
 
 export const splitStatDays = (start: number, end: number, offset: number): Map<StatDay, number> => {

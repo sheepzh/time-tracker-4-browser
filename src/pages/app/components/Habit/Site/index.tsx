@@ -5,7 +5,6 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { statRangeStr } from '@/shared/day'
 import { listSiteStats } from '@api/sw/stat'
 import { CategoryFilter } from '@app/components/common/filter'
 import { GRID_CELL_STYLE, GRID_WRAPPER_STYLE } from '@app/components/common/grid'
@@ -32,8 +31,8 @@ const _default = defineComponent<{}>(() => {
     const globalFilter = useHabitFilter()
     const filter = localReactive<{ cateIds?: number[] }>('habit_site_filter', isFilter, {})
     const remote = useRemoteValue()
-    const date = computed(() => statRangeStr(globalFilter.dateRange))
-    const dateLength = computed(() => globalFilter.dateRange[0].daysTo(globalFilter.dateRange[1]))
+    const date = computed(() => globalFilter.dateRange.toRangeStr())
+    const dateLength = computed(() => globalFilter.dateRange.days())
     const watchSource = [() => date.value, () => filter.cateIds, remote]
     const el = ref<HTMLElement>()
     const { data: rows } = useRequest(

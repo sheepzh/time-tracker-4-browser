@@ -1,11 +1,11 @@
+import type { StatDay, StatRange } from '@/shared/day'
 import { listSiteStats } from "@api/sw/stat"
 import ChartTitle from "@app/components/Dashboard/ChartTitle"
 import { t } from "@app/locale"
-import { useEcharts, useRemoteValue } from "@hooks"
+import { useDayOffset, useEcharts, useRemoteValue } from "@hooks"
 import { Flex } from '@pages/components'
 import { groupBy, sum } from "@util/array"
 import DateIterator from "@util/date-iterator"
-import { addDays, cvtDateRange2Str, formatTimeYMD } from "@util/time"
 import { defineComponent } from "vue"
 import Wrapper from "./Wrapper"
 
@@ -17,29 +17,26 @@ type Row = {
     total: number
 }
 
-const cvtRow = (rows: tt4b.stat.Row[], start: Date, end: Date): Row[] => {
+const cvtRow = (rows: tt4b.stat.Row[], range: StatRange): Row[] => {
     const groupByDate = groupBy(rows, r => r.date, l => sum(l.map(e => e.focus)))
-    const iterator = DateIterator.of(start, end, formatTimeYMD)
-    return [...iterator].map(date => ({ total: groupByDate[date] ?? 0, date }))
+    return [...DateIterator.of(range)].map(date => ({ total: groupByDate[date] ?? 0, date }))
 }
 
-const fetchData = async (remote: boolean): Promise<[thisMonth: Row[], lastMonth: Row[]]> => {
-    const now = new Date()
-    const lastPeriodStart = addDays(now, -(PERIOD_WIDTH * 2 - 1))
-    const lastPeriodEnd = addDays(now, -PERIOD_WIDTH)
-    const thisPeriodStart = addDays(now, -(PERIOD_WIDTH - 1))
-    const thisPeriodEnd = now
+const fetchData = async (remote: boolean, today: StatDay): Promise<[thisMonth: Row[], lastMonth: Row[]]> => {
+    const lastRange = today.addDays(1 - PERIOD_WIDTH * 2).rangeTo(PERIOD_WIDTH - 1)
+    const thisRange = today.addDays(1 - PERIOD_WIDTH).rangeTo(PERIOD_WIDTH - 1)
 
-    const lastPeriodItems = await listSiteStats({ date: cvtDateRange2Str([lastPeriodStart, lastPeriodEnd]), remote })
-    const lastRows = cvtRow(lastPeriodItems, lastPeriodStart, lastPeriodEnd)
-    const thisPeriodItems = await listSiteStats({ date: cvtDateRange2Str([thisPeriodStart, thisPeriodEnd]), remote })
-    const thisRows = cvtRow(thisPeriodItems, thisPeriodStart, thisPeriodEnd)
+    const lastPeriodItems = await listSiteStats({ date: lastRange.toRangeStr(), remote })
+    const lastRows = cvtRow(lastPeriodItems, lastRange)
+    const thisPeriodItems = await listSiteStats({ date: thisRange.toRangeStr(), remote })
+    const thisRows = cvtRow(thisPeriodItems, thisRange)
     return [lastRows, thisRows]
 }
 
 const _default = defineComponent<{}>(() => {
     const remote = useRemoteValue()
-    const { elRef } = useEcharts(Wrapper, () => fetchData(remote.value), { deps: remote })
+    const { today } = useDayOffset()
+    const { elRef } = useEcharts(Wrapper, () => fetchData(remote.value, today.value), { deps: [remote, today] })
     return () => (
         <Flex height="100%" column gap={4}>
             <ChartTitle

@@ -5,18 +5,16 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { getWeekStartDay } from '@api/sw/option'
+import type { StatRange } from '@/shared/day'
 import { isCircle, type Circle, type DimensionEntry } from '@app/components/Analysis/types'
-import { locale } from '@app/locale'
-import { localRef, useProvide, useProvider, useRequest } from '@hooks'
-import { addDays, daysAgo, formatTimeYMD, getDayLength, getWeekDay, getWeekStartTime } from '@pages/util/time'
+import { localRef, useDayOffset, useProvide, useProvider } from '@hooks'
 import { max, sum, toMap } from "@util/array"
 import DateIterator from '@util/date-iterator'
 import { computed, ref, type Ref } from "vue"
 import { useAnalysisRows } from '../../context'
 
 type Context = {
-    dateRange: Ref<[number, number]>
+    dateRange: Ref<StatRange>
     circle: Ref<Circle>
 }
 
@@ -44,7 +42,7 @@ const indicatorOf = (entries: DimensionEntry[]) => {
 
 function computeDataset(
     dateMap: Record<string, tt4b.stat.Row>,
-    [start, end]: [number, number],
+    dateRange: StatRange,
     circle: Circle, weekStart: number,
 ): Dataset {
     const entries: Record<DimensionType, DimensionEntry[]> = { focus: [], visit: [] }
@@ -58,9 +56,9 @@ function computeDataset(
         entries.focus.push({ date, endDate, value: sum.focus })
         entries.visit.push({ date, endDate, value: sum.visit })
     }
-    for (const cursor of DateIterator.of(new Date(start), new Date(end))) {
-        const date = formatTimeYMD(cursor)
-        if (!bucket || circle === "daily" || getWeekDay(cursor) === weekStart) {
+    for (const day of DateIterator.of(dateRange, d => d)) {
+        const date = day.toString()
+        if (!bucket || circle === "daily" || day.weekday() === weekStart) {
             closeBucket()
             bucket = [date]
             sum = { focus: 0, visit: 0 }
@@ -80,25 +78,23 @@ function computeDataset(
     }
 }
 
-function lastRange(dateRange: [number, number]): [number, number] {
-    const [start, end] = dateRange
-    const dayLength = getDayLength(start, end)
-    return [addDays(start, -dayLength).getTime(), addDays(start, -1).getTime()]
-}
+const lastRange = (range: StatRange) => range.shift(-range.days())
 
 const NAMESPACE = 'siteAnalysis_trend'
 
 export const initAnalysisTrend = () => {
     const circle = localRef<Circle>('analysis-circle', isCircle, 'daily')
-    const { data: weekStart } = useRequest(getWeekStartDay, { defaultValue: locale === "zh_CN" ? 0 : 6 })
-    const align2Week = ([start, end]: [number, number]): [number, number] =>
-        [getWeekStartTime(start, weekStart.value), addDays(getWeekStartTime(end, weekStart.value), 6).getTime()]
-
-    const [defaultStart, defaultEnd] = daysAgo(14, 0)
-    const dateRangeInner = ref<[number, number]>([defaultStart.getTime(), defaultEnd.getTime()])
-    const dateRange = computed<[number, number], [number?, number?]>({
-        get: () => circle.value === "daily" ? dateRangeInner.value : align2Week(dateRangeInner.value),
-        set: ([s, e]) => s && e && (dateRangeInner.value = circle.value === "weekly" ? align2Week([s, e]) : [s, e]),
+    const { today, weekStart } = useDayOffset()
+    const dateRangeInner = ref<StatRange>()
+    const dateRange = computed<StatRange>({
+        get: () => {
+            const ws = weekStart.value
+            const range = dateRangeInner.value ?? today.value.rangeTo(-14)
+            if (circle.value === 'daily') return range
+            const { start, end } = range
+            return start.weekStart(ws).rangeTo(end.weekStart(ws).addDays(6))
+        },
+        set: range => dateRangeInner.value = range,
     })
     const rows = useAnalysisRows()
     const rowMap = computed(() => rows.value && toMap(rows.value, r => r.date))

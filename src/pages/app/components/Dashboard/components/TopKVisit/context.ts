@@ -1,4 +1,3 @@
-import { statRangeStr } from '@/shared/day'
 import { getSiteStatPage } from "@api/sw/stat"
 import { EchartsWrapper, localReactive, useDayOffset, useEcharts, useProvide, useProvider, useRemoteValue } from "@hooks"
 import { createObjectGuard, createStringUnionGuard, isInt, isNumber, isOptionalString, isString } from 'typescript-guard'
@@ -52,7 +51,7 @@ export const useTopKChart = <EC>(Wrapper: new () => EchartsWrapper<BizOption[], 
         const { dayNum, topK: size } = filter
         const { list: top } = await getSiteStatPage({
             num: 1, size,
-            date: statRangeStr(today.value.rangeTo(-dayNum)),
+            date: today.value.rangeTo(-dayNum).toRangeStr(),
             sortKey: "time",
             sortDirection: 'DESC',
             mergeDate: true,

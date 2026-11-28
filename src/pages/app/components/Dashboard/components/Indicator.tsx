@@ -5,13 +5,14 @@
  * https://opensource.org/licenses/MIT
  */
 
+import { StatDay } from '@/shared/day'
 import { listPeriods } from "@api/sw/period"
 import { listSiteStats } from "@api/sw/stat"
 import { tN, type I18nKey } from "@app/locale"
 import { Sunrise } from "@element-plus/icons-vue"
-import { useRequest, useXsState } from "@hooks"
+import { useDayOffset, useRequest, useXsState } from "@hooks"
 import { Flex } from '@pages/components'
-import { getDayLength, getStartOfDay, MILL_PER_HOUR, parseTime } from "@pages/util/time"
+import { getStartOfDay, MILL_PER_HOUR } from "@pages/util/time"
 import { groupBy, sum } from '@util/array'
 import { ElIcon, ElScrollbar } from "element-plus"
 import { computed, defineComponent, type FunctionalComponent, type VNode } from "vue"
@@ -35,7 +36,7 @@ function calcBusiestClock(rows: tt4b.period.Row[]): number | undefined {
     return Math.floor(Number.parseInt(maxOffsetStr) / MILL_PER_HOUR)
 }
 
-async function query(): Promise<_Value> {
+async function query(today: StatDay): Promise<_Value> {
     const allData = await listSiteStats()
     const hostSet = new Set<string>()
     let visits = 0
@@ -47,13 +48,12 @@ async function query(): Promise<_Value> {
     })
     const periods = await listPeriods({ size: 8 })
     const firstDate = allData.map(a => a.date).toSorted((a, b) => a.localeCompare(b))[0]
-
     return {
         sites: hostSet.size,
         visits,
         browsingTime,
         busiestClock: calcBusiestClock(periods),
-        installedDays: firstDate ? getDayLength(parseTime(firstDate), new Date()) : 0
+        installedDays: StatDay.parse(firstDate)?.daysTo(today) ?? 0
     }
 }
 
@@ -83,7 +83,8 @@ const computeMost2HourParam = (value: _Value | undefined): { start: number, end:
 }
 
 const _default = defineComponent(() => {
-    const { data } = useRequest(query)
+    const { today } = useDayOffset()
+    const { data } = useRequest(() => query(today.value), { deps: today })
     const isXs = useXsState()
     const most2HourParam = computed(() => computeMost2HourParam(data.value))
 

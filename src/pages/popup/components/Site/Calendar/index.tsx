@@ -1,4 +1,4 @@
-import { StatDay, statRangeStr, type StatRange } from '@/shared/day'
+import { StatDay, type StatRange } from '@/shared/day'
 import { listSiteStats } from '@api/sw/stat'
 import { css } from '@emotion/css'
 import { useDayOffset, useRequest, useShadow } from '@hooks'
@@ -66,7 +66,7 @@ const Calendar = defineComponent<{}>(() => {
     const { data: rows } = useRequest(async () => {
         const s = site.value
         if (!s) return {}
-        const date = statRangeStr(dateRange.value)
+        const date = dateRange.value.toRangeStr()
         const list = await listSiteStats({ ...cvtStatQuery(s), date, remote: false })
         return toMap(list, l => l.date)
     }, { deps: [dateRange, site], defaultValue: {} })

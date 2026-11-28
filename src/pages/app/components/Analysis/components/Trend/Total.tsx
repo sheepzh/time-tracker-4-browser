@@ -10,9 +10,9 @@ import { GRID_CELL_STYLE } from '@app/components/common/grid'
 import { KanbanIndicatorCell } from '@app/components/common/kanban'
 import type { RingValue } from '@app/components/common/kanban/types'
 import { t } from "@app/locale"
-import { fmtDur, getDayLength } from '@pages/util/time'
 import { Flex } from '@pages/components'
-import { computed, defineComponent, type CSSProperties } from "vue"
+import { fmtDur } from '@pages/util/time'
+import { defineComponent, type CSSProperties } from "vue"
 import { useAnalysisTrendDateRange } from './context'
 
 const computeDayValue = (activeDay: RingValue | undefined, rangeLength: number) => {
@@ -29,13 +29,12 @@ const INDICATOR_CONTAINER_STYLE: CSSProperties = {
 
 const _default = defineComponent<Props>(props => {
     const dateRange = useAnalysisTrendDateRange()
-    const rangeLength = computed(() => getDayLength(dateRange.value[0], dateRange.value[1]))
     const timeFormat = useAnalysisTimeFormat()
     return () => (
         <Flex flex={1} column gap={1}>
             <KanbanIndicatorCell
                 mainName={t(msg => msg.analysis.trend.activeDay)}
-                mainValue={computeDayValue(props.activeDay, rangeLength.value)}
+                mainValue={computeDayValue(props.activeDay, dateRange.value.days())}
                 subRing={props.activeDay}
                 containerStyle={INDICATOR_CONTAINER_STYLE}
             />

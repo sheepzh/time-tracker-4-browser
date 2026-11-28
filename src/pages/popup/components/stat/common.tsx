@@ -1,6 +1,6 @@
-import { statRangeStr, type StatDay, type StatRange } from '@/shared/day'
+import type { StatDay, StatRange } from '@/shared/day'
 import { listCateStats, listGroupStats, listSiteStats } from '@api/sw/stat'
-import { RECORD_ROUTE, type RecordQuery } from "@app/router/constants"
+import { RECORD_ROUTE } from "@app/router/constants"
 import { isRemainHost } from "@util/constant/remain-host"
 import { getAppPageUrl } from "@util/constant/url"
 import { isSite } from "@util/stat"
@@ -27,7 +27,7 @@ export const queryRows = async (query: RowsQuery): Promise<RowsResult> => {
     const dateRange = typeof duration === 'string'
         ? DATE_RANGE_CALCULATORS[duration](today, weekStart)
         : DATE_RANGE_CALCULATORS[duration.type](today, weekStart, duration.value)
-    const date = statRangeStr(dateRange)
+    const date = dateRange?.toRangeStr()
     const sortDirection: tt4b.common.SortDirection = 'DESC'
     let rows: tt4b.stat.Row[]
     if (mergeMethod === 'cate') {
@@ -45,21 +45,6 @@ export const queryRows = async (query: RowsQuery): Promise<RowsResult> => {
     return [rows, dateRange]
 }
 
-function buildRecordQuery(siteType: tt4b.site.Type, date: StatRange | undefined, type: tt4b.core.Dimension): RecordQuery {
-    const query: RecordQuery = {}
-    // Merge host
-    siteType === 'merged' && (query.mm = 'domain')
-    // Date
-    query.md = '1'
-    if (date) {
-        query.ds = date[0].toString()
-        query.de = date[1].toString()
-    }
-    // Sorted column
-    query.sc = type
-    return query
-}
-
 export function calJumpUrl(
     row: tt4b.stat.Row | undefined,
     date: StatRange | undefined,
@@ -73,8 +58,12 @@ export function calJumpUrl(
             return `http://${host}`
         }
 
-        const query = buildRecordQuery(siteType, date, type)
-        query.q = host
-        return getAppPageUrl(RECORD_ROUTE, query)
+        return getAppPageUrl(RECORD_ROUTE, {
+            mm: siteType === 'merged' ? 'domain' : undefined,
+            ds: date?.start.toString(),
+            de: date?.end.toString(),
+            sc: type,
+            q: host,
+        })
     }
 }

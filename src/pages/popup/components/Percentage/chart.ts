@@ -33,14 +33,12 @@ const FORMATTERS: Record<StatQuery['dimension'], FormatterRegistry> = {
 }
 
 function calculateSubTitleText(result: PercentageResult): string {
-    let { date, dataDate, rows, query: { dimension, duration }, dateLength } = result
-    const formatter = FORMATTERS[dimension]
+    const { date, dataDate, rows, query: { dimension, duration }, dateLength } = result
     const range = date ?? dataDate
-    const fmt = dateFmt({ year: '2-digit', month: 'short', day: 'numeric' })
-    const dateStr = range && fmt.formatRange(range[0].toDate(), range[1].toDate())
     const total = sum(rows.map(r => r[dimension]))
-    const totalStr = formatter.total(total)
-    const firstLineParts = truthy(totalStr, dateStr)
+    const formatter = FORMATTERS[dimension]
+    const rangeFmt = dateFmt({ year: '2-digit', month: 'short', day: 'numeric' })
+    const firstLineParts = truthy(formatter.total(total), range?.format(rangeFmt))
     isRtl() && firstLineParts.reverse()
     const isSingleDay = duration === 'today' || duration === 'yesterday'
     const secLine = dateLength && !isSingleDay && formatter.avg(total / dateLength)

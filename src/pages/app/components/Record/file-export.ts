@@ -5,7 +5,6 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { statRangeStr } from '@/shared/day'
 import { type I18nKey, t } from '@app/locale'
 import { fmtDur } from '@pages/util/time'
 import { exportCsv as exportCsv_, exportJson as exportJson_ } from "@util/file"
@@ -31,7 +30,7 @@ function computeFileName(filterParam: RecordFilterOption): string {
     const { dateRange, siteMerge, mergeDate, timeFormat } = filterParam
     return truthy(
         t(msg => msg.record.exportFileName),
-        ...statRangeStr(dateRange) ?? [],
+        ...dateRange?.toRangeStr() ?? [],
         mergeDate && t(msg => msg.shared.merge.mergeMethod.date),
         siteMerge && t(msg => msg.shared.merge.mergeMethod[siteMerge]),
         timeFormat && t(msg => msg.timeFormat[timeFormat]),

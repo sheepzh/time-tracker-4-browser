@@ -32,10 +32,10 @@ export type SeriesDataItem = {
  * @param dateRange date range of filter
  * @returns [averageLen, exclusiveToday4Average, exclusiveDate]
  */
-export const computeAverageLen = ([start, end]: StatRange, today: StatDay): [number, boolean, string?] => {
-    if (start.equals(end)) return [1, false]
-    const dateDiff = start.daysTo(end)
-    return end.equals(today)
-        ? [dateDiff - 1, true, end.toString()]
-        : [dateDiff, false]
+export const computeAverageLen = (range: StatRange, today: StatDay): [number, boolean, string?] => {
+    const days = range.days()
+    if (days === 1) return [1, false]
+    return range.end.equals(today)
+        ? [days - 1, true, range.end.toString()]
+        : [days, false]
 }

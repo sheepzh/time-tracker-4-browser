@@ -52,7 +52,7 @@ const Percentage = defineComponent(() => {
             groups: groups.value ?? [],
             cateNameMap: cateNameMap.value,
             dataDate: findDateRange(allDates),
-            dateLength: (allDates.size || date?.[0].daysTo(date?.[1])) ?? 1,
+            dateLength: allDates.size || date?.days() || 1,
         } satisfies PercentageResult
     })
 

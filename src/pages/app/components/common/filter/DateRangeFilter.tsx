@@ -59,21 +59,18 @@ const usePopperStyle = () => {
 
 const useRange = (props: Props) => {
     const backwardDisabled = computed(() => {
-        const start = props.modelValue?.[0]
+        const start = props.modelValue?.start
         return !start || !!props.disabledDate?.(start.prev())
     })
 
     const forwardDisabled = computed(() => {
-        const end = props.modelValue?.[1]
+        const end = props.modelValue?.end
         return !end || !!props.disabledDate?.(end.prev())
     })
 
     const shift = (multiple: number) => {
         const { modelValue, onChange, shiftStep = 1 } = props
-        const [start, end] = modelValue ?? []
-        if (!start || !end) return
-        const daysDiff = shiftStep * multiple
-        onChange?.(start.addDays(daysDiff).rangeTo(end.addDays(daysDiff)))
+        onChange?.(modelValue?.shift(shiftStep * multiple))
     }
 
     const clearable = toRef(props, "clearable", true)
@@ -81,8 +78,7 @@ const useRange = (props: Props) => {
     const shortcuts = computed(() => {
         const { shortcuts, clearable } = props
         if (!shortcuts?.length) return undefined
-        const items: ElDatePickerShortcut[] = shortcuts.map(({ text, value }) =>
-            ({ text, value: [value[0].toLabel(), value[1].toLabel()] }))
+        const items: ElDatePickerShortcut[] = shortcuts.map(({ text, value }) => ({ text, value: value.toLabels() }))
         return clearable ? [...items, clearShortcut()] : items
     })
 
@@ -109,7 +105,7 @@ const DefaultRange = defineComponent<Props>(props => {
 
     const innerVal = computed(() => {
         if (!props.modelValue) return undefined
-        const [start, end] = props.modelValue
+        const { start, end } = props.modelValue
         return [start.toLabel(), end.toLabel()]
     })
 
@@ -218,8 +214,8 @@ const XsRange = defineComponent<Props>(props => {
     return () => (
         <Flex align='center' gap={2}>
             <XsDatePicker
-                modelValue={props.modelValue?.[0]}
-                onChange={val => onChange(val, props.modelValue?.[1])}
+                modelValue={props.modelValue?.start}
+                onChange={val => onChange(val, props.modelValue?.end)}
                 placeholder={props.startPlaceholder}
                 disabledDate={disabledDate}
                 cellClassName={cellClassName}
@@ -228,8 +224,8 @@ const XsRange = defineComponent<Props>(props => {
             />
             <ElText>-</ElText>
             <XsDatePicker
-                modelValue={props.modelValue?.[1]}
-                onChange={val => onChange(props.modelValue?.[0], val)}
+                modelValue={props.modelValue?.end}
+                onChange={val => onChange(props.modelValue?.start, val)}
                 placeholder={props.endPlaceholder}
                 disabledDate={disabledDate}
                 cellClassName={cellClassName}

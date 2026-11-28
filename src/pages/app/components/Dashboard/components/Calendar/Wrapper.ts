@@ -4,14 +4,14 @@
  * This software is released under the MIT License.
  * https://opensource.org/licenses/MIT
  */
+import type { StatRange } from '@/shared/day'
 import { dateFmt } from '@app/locale'
 import { getStepColors, isCalendarValue, parseValueOfFormatter, type CalendarValue } from '@app/util/echarts'
 import { EchartsWrapper } from "@hooks"
 import { getCssVariable, getPrimaryTextColor } from '@pages/util/style'
-import {
-    cvt2LocaleDate, fmtDur, getAllDatesBetween, getWeekDays, MILL_PER_HOUR, MILL_PER_MINUTE,
-} from '@pages/util/time'
+import { cvt2LocaleDate, fmtDur, getWeekDays, MILL_PER_HOUR, MILL_PER_MINUTE } from '@pages/util/time'
 import { groupBy } from "@util/array"
+import DateIterator from '@util/date-iterator'
 import type {
     ComposeOption, GridComponentOption, HeatmapSeriesOption, ScatterSeriesOption, TooltipComponentOption,
     VisualMapComponentOption,
@@ -25,8 +25,8 @@ type EcOption = ComposeOption<
 >
 
 export type BizOption = {
-    startTime: Date
-    endTime: Date
+    dateRange: StatRange
+    weekStart: tt4b.WeekStart
     value: { [date: string]: number }
 }
 
@@ -154,17 +154,15 @@ class Wrapper extends EchartsWrapper<BizOption, EcOption> {
     protected async generateOption(option: BizOption): Promise<EcOption> {
         if (!option) return {}
 
-        const { startTime, endTime, value } = option
-        const allDates = getAllDatesBetween(startTime, endTime)
-        const data: CalendarValue[] = []
-        allDates.forEach((date, index) => {
+        const { dateRange, value, weekStart } = option
+        const data = [...DateIterator.of(dateRange)].map((date, index) => {
             const dailyMills = value[date] || 0
             const colIndex = parseInt((index / 7).toString())
             const weekDay = index % 7
             const x = colIndex, y = 7 - (1 + weekDay)
-            data.push([x, y, dailyMills, date])
+            return [x, y, dailyMills, date] satisfies CalendarValue
         })
-        const weekDays = await getWeekDays()
+        const weekDays = getWeekDays(weekStart)
         return optionOf(data, weekDays, this.getDom())
     }
 }

@@ -16,7 +16,7 @@ export default class DateIterator<T> implements IterableIterator<T> {
     static of(range: StatRange): DateIterator<string>
     static of<T>(range: StatRange, converter: Converter<StatDay, T>): DateIterator<T>
     static of(range: StatRange, converter?: Converter<StatDay, any>): IterableIterator<any> {
-        return new DateIterator(range[0], range[1], converter ?? (d => d.toString()))
+        return new DateIterator(range.start, range.end, converter ?? (d => d.toString()))
     }
 
     next(): IteratorResult<T> {
